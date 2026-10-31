@@ -185,9 +185,11 @@ footer{max-width:1100px;margin:30px auto 40px;padding:0 20px;color:var(--muted);
 .wkbar button.on{background:var(--text);color:#111;border-color:var(--text)}
 .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
 @media(max-width:560px){.sgrid{grid-template-columns:1fr 1fr;gap:8px}.sbox{padding:8px}.sbox .tr span{font-size:13px}.sbox .tr b{font-size:15px}}
-.sbox{background:var(--card);border:1px solid var(--line,#2a2f3a);border-radius:12px;padding:10px 12px;cursor:pointer}
+.sbox{background:var(--card);border:1px solid var(--line,#2a2f3a);border-radius:12px;padding:10px 12px}
 .sbox.sel{outline:2px solid var(--text)}
-.sbox .tr{display:flex;align-items:center;gap:8px;padding:3px 0}
+.sgrid>*{min-width:0}
+.sbox .tr{display:flex;align-items:center;gap:8px;padding:3px 0;min-width:0}
+.sbox .tr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .sbox .tr b{margin-left:auto;font-variant-numeric:tabular-nums;font-size:17px}
 .sbox .tr.l{opacity:.55}
 .sbox .st{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
@@ -209,7 +211,7 @@ footer{max-width:1100px;margin:30px auto 40px;padding:0 20px;color:var(--muted);
     <a href="#plays" data-v="plays">Plays of the Week</a>
     <a href="#props" data-v="props">Player Props</a>
     <a href="#public" data-v="public">Predictions</a>
-    <a href="#weeks" data-v="weeks">Past Weeks</a>
+    <a href="#weeks" data-v="weeks">Scores</a>
     <a href="#trends" data-v="trends">Team Trends</a>
     <a href="#injuries" data-v="injuries">Injuries</a>
     <a href="#calc" data-v="calc">Odds Calculator</a>
@@ -1790,50 +1792,25 @@ function covImportUI(){
 }
 
 
-/* ---------- Past Weeks: scores + player stats ---------- */
+/* ---------- Scores ---------- */
 function viewWeeks(){
   const maxW=Math.max(...RESULTS.map(r=>r[0]));
-  if(!S.wk)S.wk={w:Math.min(7,maxW),team:"",pos:"all"};
+  if(!S.wk)S.wk={w:maxW};
   const W=S.wk,w=W.w;
   const G=RESULTS.filter(r=>r[0]===w).map(([wk,a,ap,h,hp])=>({a,ap,h,hp,final:true}));
   if(w===maxW&&typeof SLATE!=="undefined")SLATE.filter(g=>!g.final&&!G.some(x=>x.a===g.away&&x.h===g.home)).forEach(g=>G.push({a:g.away,h:g.home,when:g.when,final:false}));
   const playing=new Set(G.flatMap(g=>[g.a,g.h]));const bye=Object.keys(TEAMS).filter(t=>!playing.has(t)).sort();
-  if(W.team&&!playing.has(W.team))W.team="";
-  const seen=new Set();
-  let L=S.playerLogs.filter(l=>l.season===CUR&&l.week===w).filter(l=>{const k=l.player+"|"+l.week;if(seen.has(k))return false;seen.add(k);return true});
-  const nAll=L.length;
-  if(W.team){const g=G.find(x=>x.a===W.team||x.h===W.team);L=L.filter(l=>l.team===g.a||l.team===g.h)}
-  if(W.pos!=="all")L=L.filter(l=>l.pos===W.pos);
-  const n=v=>v==null?"—":v;
-  const pass=L.filter(l=>l.pos==="QB"&&l.passYds!=null).sort((a,b)=>b.passYds-a.passYds);
-  const rush=L.filter(l=>(l.rushAtt||0)>0||(l.rushYds||0)!==0).sort((a,b)=>(b.rushYds||0)-(a.rushYds||0));
-  const recv=L.filter(l=>l.pos!=="QB"&&l.rec!=null).sort((a,b)=>(b.recYds||0)-(a.recYds||0)||(b.rec||0)-(a.rec||0));
-  const who=l=>`<td>${badge(l.team)} <b>${esc(l.player)}</b> <span class="small">${l.pos}</span></td><td class="small">${l.home?"vs":"at"} ${l.opp}</td>`;
-  const tbl=(title,head,rows,fn)=>`<div class="card"><h2>${title} <span class="small">(${rows.length})</span></h2>${rows.length?`<div style="max-height:480px;overflow:auto"><table class="wtbl"><thead><tr><th>Player</th><th>Opp</th>${head.map(h=>`<th class="r">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(l=>`<tr class="pl" data-p="${esc(l.player)}">${who(l)}${fn(l).map(v=>`<td class="r num">${v}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:'<p class="note">No tracked players in this view.</p>'}</div>`;
-  const box=g=>{const aw=g.final&&g.ap>g.hp,hw=g.final&&g.hp>g.ap;const sel=W.team&&(W.team===g.a||W.team===g.h);
-    return `<div class="sbox ${sel?"sel":""}" data-t="${g.a}"><div class="st">${g.final?"Final":esc(g.when||"Upcoming")}</div>
+  const box=g=>{const aw=g.final&&g.ap>g.hp,hw=g.final&&g.hp>g.ap;
+    return `<div class="sbox"><div class="st">${g.final?"Final":esc(g.when||"Upcoming")}</div>
      <div class="tr ${g.final&&!aw?"l":""}">${badge(g.a)}<span>${short(g.a)}</span><b>${g.final?g.ap:""}</b></div>
      <div class="tr ${g.final&&!hw?"l":""}">${badge(g.h)}<span>${short(g.h)}</span><b>${g.final?g.hp:""}</b></div></div>`};
-  $("#v-weeks").innerHTML=`<h1>Past Weeks</h1><p class="sub">Pick a week to see every final score and the stat lines for the players tracked on this site.</p>
+  $("#v-weeks").innerHTML=`<h1>Scores</h1><p class="sub">Pick a week to see every final score from Week 1 until now.</p>
    <div class="wkbar">${Array.from({length:maxW},(_,i)=>i+1).map(i=>`<button data-w="${i}" class="${i===w?"on":""}">Week ${i}${i===maxW?" (now)":""}</button>`).join("")}</div>
    <h2 style="margin:0 0 8px">Week ${w} scores</h2>
    <div class="sgrid">${G.map(box).join("")}</div>
-   <p class="note" style="margin-top:8px">${bye.length?`Bye: ${bye.join(", ")}. `:""}Tap a game to show only its players; tap it again to show all.</p>
-   <div class="row" style="margin:20px 0 10px;gap:10px;flex-wrap:wrap;align-items:center"><h2 style="margin:0">Player stats · Week ${w}${W.team?` · ${(()=>{const g=G.find(x=>x.a===W.team||x.h===W.team);return short(g.a)+" @ "+short(g.h)})()}`:""}</h2><span class="sp"></span>
-    <div class="seg" style="margin:0">${["all","QB","RB","WR","TE"].map(p=>`<button data-wp="${p}" class="${W.pos===p?"on":""}">${p==="all"?"All":p}</button>`).join("")}</div>
-    ${W.team?'<button class="btn" id="wkAll">Show all games</button>':""}</div>
-   ${nAll?`${tbl("Passing",["Cmp/Att","Yds","TD","INT","Rush yds"],pass,l=>[l.comp!=null?l.comp+(l.passAtt!=null?"/"+l.passAtt:""):"—",n(l.passYds),n(l.passTD),n(l.int),n(l.rushYds)])}
-    <div class="section grid g2">${tbl("Rushing",["Rushing Att","Yds","TD"],rush,l=>[n(l.rushAtt),n(l.rushYds),n(l.rushTD)])}
-    ${tbl("Receiving",["Rec","Yds","TD"],recv,l=>[n(l.rec),n(l.recYds),n(l.recTD)])}</div>`
-    :`<div class="card"><p class="note" style="margin:0">Player stat lines for Week ${w} aren't loaded yet${w===maxW?" — this week's games are still being played":""}.</p></div>`}
-   <p class="note" style="margin-top:10px">Scores: CBS Sports. Player lines: ESPN / CBS game logs for the ${new Set(S.playerLogs.filter(l=>l.season===CUR).map(l=>l.player)).size} players tracked on this site (players with prop lines), not full box scores. Tap a player to open his prop page.</p>`;
-  document.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{W.w=+b.dataset.w;W.team="";viewWeeks()});
-  document.querySelectorAll("[data-wp]").forEach(b=>b.onclick=()=>{W.pos=b.dataset.wp;viewWeeks()});
-  document.querySelectorAll(".sbox").forEach(b=>b.onclick=()=>{W.team=W.team===b.dataset.t?"":b.dataset.t;viewWeeks()});
-  const all=$("#wkAll");if(all)all.onclick=()=>{W.team="";viewWeeks()};
-  document.querySelectorAll("tr.pl").forEach(r=>r.onclick=()=>{S.prop={player:r.dataset.p,open:true};location.hash="props"});
+   <p class="note" style="margin-top:8px">${bye.length?`Bye: ${bye.join(", ")}. `:""}Scores: CBS Sports / ESPN. Player stats for each game are on every player's page under Player Props.</p>`;
+  document.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{W.w=+b.dataset.w;viewWeeks()});
 }
-
 /* ---------- Router ---------- */
 function route(){
   const h=(location.hash||"#games").slice(1);let v=h.startsWith("game-")?"game":h;
