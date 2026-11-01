@@ -165,6 +165,10 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 .usage-line{margin:6px 0 2px;color:var(--text2)}.usage-line b{color:var(--text)}
 .usage-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media(max-width:560px){.usage-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bpl{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);margin:10px 0 5px}
+.bpg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bpc{background:var(--card2);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.bpc span{font-size:13px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bpc b{font-size:20px}.bpc small{font-size:11px;color:var(--text2)}
 .betbtn{font-size:13px;padding:6px 10px}
 .modal{position:fixed;inset:0;background:#000b;z-index:50;display:grid;place-items:center;padding:16px}
 .mbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;width:min(440px,100%);max-height:92vh;overflow:auto}
@@ -1258,15 +1262,12 @@ function marketSection(g){const m=MOVE[g.id],B=BEST[g.id];if(!m&&!B)return "";
      <tr><td>Total</td><td class="r">${m.open.tot}</td><td class="r"><b>${m.now.tot}</b></td></tr>
      <tr><td>Moneyline</td><td class="r small">—</td><td class="r"><b>${short(g.away)} ${amTxt(m.now.ml[0])} / ${short(g.home)} ${amTxt(m.now.ml[1])}</b></td></tr></tbody></table>
     <p class="note" style="margin:8px 0 0">${big?"A move of 3+ points usually means injury news or heavy money from sharp bettors. ":""}"Opened" is the first line posted; "Now" is as of ${MARKET_ASOF} (ESPN odds page).</p></div>`:"";
-  const bp=B?`<div class="card"><h2>Best price by sportsbook</h2>
-    <table><tbody>
-     <tr><td>${short(g.away)} ${sgn(B.sp[0][0])}</td><td class="r"><b>${amTxt(B.sp[0][1])}</b></td><td class="r small">${B.sp[0][2]}</td></tr>
-     <tr><td>${short(g.home)} ${sgn(B.sp[1][0])}</td><td class="r"><b>${amTxt(B.sp[1][1])}</b></td><td class="r small">${B.sp[1][2]}</td></tr>
-     <tr><td>${short(g.away)} moneyline</td><td class="r"><b>${amTxt(B.ml[0][0])}</b></td><td class="r small">${B.ml[0][1]}</td></tr>
-     <tr><td>${short(g.home)} moneyline</td><td class="r"><b>${amTxt(B.ml[1][0])}</b></td><td class="r small">${B.ml[1][1]}</td></tr>
-     <tr><td>Over ${B.tot[0][0]}</td><td class="r"><b>${amTxt(B.tot[0][1])}</b></td><td class="r small">${B.tot[0][2]}</td></tr>
-     <tr><td>Under ${B.tot[1][0]}</td><td class="r"><b>${amTxt(B.tot[1][1])}</b></td><td class="r small">${B.tot[1][2]}</td></tr></tbody></table>
-    <p class="note" style="margin:8px 0 0">Best price across DraftKings, FanDuel, BetMGM, Fanatics, Hard Rock Bet and BetRivers (WIN DAILY, ${MARKET_ASOF}). These are US books — in Quebec the only provincially regulated sportsbook is Mise-o-jeu, so compare there too. Shopping for the best price is the easiest edge in betting.</p></div>`:"";
+  const cell=(lab,price,book)=>`<div class="bpc"><span>${lab}</span><b>${amTxt(price)}</b><small>${book}</small></div>`;
+  const bp=B?`<div class="card"><h2>Best price</h2>
+    <div class="bpl">Spread</div><div class="bpg">${cell(`${short(g.away)} ${sgn(B.sp[0][0])}`,B.sp[0][1],B.sp[0][2])}${cell(`${short(g.home)} ${sgn(B.sp[1][0])}`,B.sp[1][1],B.sp[1][2])}</div>
+    <div class="bpl">Moneyline</div><div class="bpg">${cell(short(g.away),B.ml[0][0],B.ml[0][1])}${cell(short(g.home),B.ml[1][0],B.ml[1][1])}</div>
+    <div class="bpl">Total</div><div class="bpg">${cell(`Over ${B.tot[0][0]}`,B.tot[0][1],B.tot[0][2])}${cell(`Under ${B.tot[1][0]}`,B.tot[1][1],B.tot[1][2])}</div>
+    <p class="note" style="margin:10px 0 0">Best of 6 US sportsbooks, ${MARKET_ASOF}. In Quebec, also check Mise-o-jeu.</p></div>`:"";
   return `<div class="section"><h2>Line movement & best prices</h2><div class="grid g2">${mv}${bp}</div></div>`}
 function propMoveTxt(name,k){const m=PROP_MOVE[name+"|"+k];if(!m)return "";
   return `<div class="small" style="margin-top:4px">📈 Line moved ${m.open} → <b>${m.now}</b> <span style="opacity:.7">(${esc(m.src)})</span></div>`}
