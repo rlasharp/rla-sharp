@@ -1483,12 +1483,12 @@ function covBar(t){const s=manShare(t)*100;return `<div class="bar2" style="heig
   <div class="winlab"><span>Man ${DEF_COV[t][0]}%</span><span>Zone ${DEF_COV[t][1]}%</span></div>`}
 function defYdsHtml(def){const d=COV_IMP&&COV_IMP.def&&COV_IMP.def[def];
   if(d)return `<p class="small" style="margin:12px 0 6px">${short(def)} yards per pass attempt allowed <span class="tag imp">Imported</span></p><div class="grid g2" style="gap:8px"><div class="stat" style="padding:10px"><div class="l">vs Man</div><div class="v" style="font-size:20px">${d[0]}</div></div><div class="stat" style="padding:10px"><div class="l">vs Zone</div><div class="v" style="font-size:20px">${d[1]}</div></div></div>`;
-  return `<p class="small" style="margin-top:10px">Yards allowed in man vs in zone: this split is behind paywalls (PFF, StatRankings+, FTN), so it isn't shown. Paste it on the Data page (type <b>defense</b>) and it will appear here.</p>`}
+  return ""}
 function covGameHtml(off,def){
   if(!(COV_IMP&&COV_IMP.off&&COV_IMP.off[off])){const mostly=manShare(def)>LG_MAN+.04?"man":manShare(def)<LG_MAN-.04?"zone":"mix";
     return `<div class="card"><h3>${badge(def)} ${short(def)} defense coverage</h3>
      <p class="small" style="margin:8px 0 6px">${mostly==="man"?`Plays <b>more man</b> than most teams (${ordinal(manRank(def))} most)`:mostly==="zone"?`Plays <b>more zone</b> than most teams`:"About a league-average mix"} — this is what ${short(off)+(/s$/.test(short(off))?"'":"'s")} passing game will face.</p>${covBar(def)}${defYdsHtml(def)}
-     <p class="small" style="margin-top:10px">${short(off)+(/s$/.test(short(off))?"'":"'s")} own man-vs-zone splits aren't published for free; add them on the Data page to see them here.</p></div>`}
+     </div>`}
   const c=offCov(off),better=c.m>c.z?"man":"zone",mostly=manShare(def)>LG_MAN+.04?"man":manShare(def)<LG_MAN-.04?"zone":"mix";
   const f=covFit(c,def),w=f>=.03?[`✅ Good matchup for ${short(off)} passing`,"#7fdc95"]:f<=-.03?[`⚠️ Tough matchup for ${short(off)} passing`,"#ff9a9d"]:["Neutral matchup","#b9bdc4"];
   return `<div class="card"><h3>${badge(def)} ${short(def)} defense <span class="small">vs</span> ${badge(off)} ${short(off)} passing</h3>
@@ -1515,9 +1515,7 @@ function runGameHtml(off,def){
    <div class="grid g2" style="gap:8px;margin-top:10px">
     <div class="stat" style="padding:10px"><div class="l">${short(off)} yards per rushing attempt</div><div class="v" style="font-size:22px">${f(oy)}</div><div class="s">${Number.isFinite(oR)?ordinal(oR)+" in NFL":""} · ${RUSH_ATT[off]||"—"} carries/game</div></div>
     <div class="stat" style="padding:10px"><div class="l">${short(def)} YPC allowed</div><div class="v" style="font-size:22px">${f(dy)}</div><div class="s">${Number.isFinite(dR)?ordinal(dR)+" fewest allowed":""}</div></div></div>
-   <p class="small" style="margin:14px 0 6px">Yards per rushing attempt by run type ${RO||RD?'<span class="tag imp">Imported</span>':""}</p>
-   ${RO||RD?`<table><thead><tr><th>Run type</th><th class="r">${short(off)} offense</th><th class="r">${short(def)} allow</th></tr></thead><tbody>${types.map((n,i)=>`<tr><td>${n}</td><td class="r num"><b>${RO?RO[i]:"—"}</b></td><td class="r num"><b>${RD?RD[i]:"—"}</b></td></tr>`).join("")}</tbody></table>`
-     :`<p class="small" style="margin:0">Inside zone / outside zone / power splits are behind paywalls (PFF, FTN, StatRankings+). Paste them on the Data page and they'll show here.</p>`}</div>`}
+   ${RO||RD?`<p class="small" style="margin:14px 0 6px">Yards per rushing attempt by run type</p><table><thead><tr><th>Run type</th><th class="r">${short(off)} offense</th><th class="r">${short(def)} allow</th></tr></thead><tbody>${types.map((n,i)=>`<tr><td>${n}</td><td class="r num"><b>${RO?RO[i]:"—"}</b></td><td class="r num"><b>${RD?RD[i]:"—"}</b></td></tr>`).join("")}</tbody></table>`:""}</div>`}
 function runImportUI(){
   const d=document.createElement("div");d.className="card";d.style.marginTop="14px";
   d.innerHTML=`<div class="row"><h2 style="margin:0">Run type splits (yards per rushing attempt)</h2><span class="sp"></span>${RUN_IMP?'<span class="tag imp">Imported</span>':'<span class="tag">Not loaded</span>'}</div>
@@ -1598,7 +1596,7 @@ function propCard(r){const td=r.k==="anyTD";
    <div class="bet n">${td?"Anytime TD":MARKETS[r.k].n+" "+r.line}</div>
    ${lineTag(r)}${oddsRow(r)}
    <div class="facts">${Number.isFinite(r.avg)?`<span>Season average: <b>${fmt(r.avg,MARKETS[r.k].cnt?1:0)}</b></span>`:""}<span class="small">${defRankTxt(r.dv,r.opp,r.pl.pos)}</span></div>
-   ${r.ssn.n?`<div class="small" style="margin-bottom:-4px">${td?"Scored a TD":"Went over "+r.line} (${CUR}):</div><div class="hr">${hrBox("L3",r.l3)}${hrBox("L5",r.l5)}${hrBox("Season",r.ssn)}</div>`:`<div class="small" style="background:var(--card2);border-radius:8px;padding:8px">Game log not loaded yet.</div>`}</div>`}
+   ${r.ssn.n?`<div class="small" style="margin-bottom:-4px">${td?"Scored a TD":"Went over "+r.line} (${CUR}):</div><div class="hr">${hrBox("L3",r.l3)}${hrBox("L5",r.l5)}${hrBox("Season",r.ssn)}</div>`:`<div class="small" style="background:var(--card2);border-radius:8px;padding:8px">No games logged yet this season.</div>`}</div>`}
 function bindProps(scope){scope.querySelectorAll("[data-p]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.p,market:el.dataset.k,open:true};if(location.hash==="#props")viewProps();else location.hash="props"})}
 let propFilter={pos:"all",tab:"best",sort:"game",dir:"asc",n:30};
 function viewProps(){
@@ -1657,7 +1655,7 @@ function drawDefense(){
 function playerCovHtml(pl,opp,k){
   if(!(COV_IMP&&COV_IMP.pl&&COV_IMP.pl[pl.name]))return `<div class="section card"><div class="row"><h2 style="margin:0">Man vs zone</h2><span class="sp"></span><span class="tag real">Real</span></div>
     <p class="small" style="margin:8px 0">${TEAMS[opp][0]} coverage this season:</p>${covBar(opp)}
-    <p class="small" style="margin-top:10px">His personal man-vs-zone numbers aren't published for free — add them on the Data page to see if this coverage suits him.</p></div>`;
+    </div>`;
   const c=plCov(pl.name,pl.pos),qb=pl.pos==="QB",unit=qb?"passer rating":"yards per route",better=c.m>c.z?"man":"zone",f=covFit(c,opp),w=covWord(f);
   const mostly=manShare(opp)>LG_MAN+.04?"man":manShare(opp)<LG_MAN-.04?"zone":"mix";
   const runOnly=k==="rushYds"||k==="rushAtt";
@@ -1676,7 +1674,7 @@ function lineStr(s,pos){const p=[];if(pos==="QB"){if(s.passYds!=null)p.push(`${s
   else{if(s.rushAtt)p.push(`${s.rushAtt}-${s.rushYds} rush${s.rushTD?", "+s.rushTD+" TD":""}`);if(s.rec!=null)p.push(`${s.rec}-${s.recYds} rec${s.recTD?", "+s.recTD+" TD":""}`)}return p.join(" · ")}
 function vsCard(pl,opp,k,line,unit){if(!opp)return "";const V=(typeof VS_LOGS!=="undefined"&&VS_LOGS[pl.name])||[];
   const ouTag=v=>!Number.isFinite(v)?'<span class="small">—</span>':v>line?'<span class="ou o">OVER</span>':v<line?'<span class="ou u">UNDER</span>':'<span class="ou p">PUSH</span>';
-  if(!V.length)return `<div class="card"><h2>His career games vs ${short(opp)}</h2><p class="note">No past games found for ${esc(pl.name)} against ${TEAMS[opp][0]} (or not loaded yet).</p></div>`;
+  if(!V.length)return `<div class="card"><h2>His career games vs ${short(opp)}</h2><p class="note">No past games found for ${esc(pl.name)} against ${TEAMS[opp][0]} this season or in past seasons on file.</p></div>`;
   const vals=V.map(([,,s])=>stat(Object.assign({passYds:null,comp:null,passTD:null,rushYds:null,rushAtt:null,rec:null,recYds:null},s),k)).filter(Number.isFinite),o=vals.filter(v=>v>line).length;
   return `<div class="card"><h2>His career games vs ${short(opp)} <span class="tag real">StatMuse</span></h2>
    <p class="small" style="margin-top:-6px">${vals.length?`Went over ${line} in <b>${o} of ${vals.length}</b> · average <b>${fmt(avg(vals),MARKETS[k].cnt?1:0)}</b> ${unit}`:"This stat isn't in his logs vs this team."}</p>
