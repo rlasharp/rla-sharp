@@ -173,7 +173,15 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 .podn{flex:0 0 28px;height:28px;border-radius:50%;background:#f3c75a;color:#1a1608;display:flex;align-items:center;justify-content:center;font-weight:800}
 .ptabs{display:flex;margin:0 0 12px}.ptabs a{flex:1;text-align:center;padding:8px 12px;border-radius:999px;color:var(--text2);font-weight:600;font-size:14px;text-decoration:none}.ptabs a.on{background:var(--text);color:#111}
 .gopl{display:block;margin-top:8px;padding:8px 10px;border-radius:10px;background:var(--card2);color:var(--text);font-size:13px;font-weight:600;text-decoration:none;text-align:center}
-.plines tr:hover td{background:var(--card2)}
+.pl{padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}.pl:last-of-type{border-bottom:0}
+.plh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}.plh b{font-size:14.5px}
+.plv{font-size:18px;font-weight:800;color:#f3c75a;margin-left:4px}
+.plg{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin:8px 0 6px}
+.lc{border-radius:8px;text-align:center;padding:5px 2px;line-height:1.15}.lc b{display:block;font-size:15px}.lc span{font-size:10px;opacity:.8}
+span.lc{display:inline;padding:1px 6px;font-weight:600}
+.lc.o{background:#173323;color:#7ee2a0}.lc.u{background:#3a1d1e;color:#ff9a9d}.lc.p{background:var(--card2);color:var(--text2)}.lc.pv{opacity:.55}
+.plf{font-size:13px;display:flex;gap:8px;align-items:center}
+.pll{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--card2);color:var(--text2)}.pll.o{background:#173323;color:#7ee2a0}.pll.u{background:#3a1d1e;color:#ff9a9d}
 .bpc{background:var(--card2);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:1px;min-width:0}
 .bpc span{font-size:13px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bpc b{font-size:20px}.bpc small{font-size:11px;color:var(--text2)}
 .psearch{position:relative;margin:10px 0 2px;max-width:340px}
@@ -2376,11 +2384,18 @@ function nbaPlayer(el,nm){
   const tk=NB.ptk||"pts";
   const dvp=opp&&p.p5?nbaDvp(opp,p.p5,"pts",5):null,dvpAvg=dvp&&dvp.rows.length?dvp.rows.reduce((s,r)=>s+r.v,0)/dvp.rows.length:null;
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
-  const linesTbl=props.length?`<div class="card plines" style="margin-top:12px"><h2 style="margin-bottom:6px">His lines tonight</h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Prop</th><th>Line</th><th>Odds O/U</th><th>L10</th><th>Season</th></tr></thead><tbody>${props.map(r=>{
-      const [,k,line,op,up,book]=r,all=nbaAllG(nm),l10=all.slice(-10),ss=all.filter(o=>!o.prev),ov=a=>a.filter(o=>nbaVal(o.x,k)>line).length;
-      const cls=a=>!a.length?"":ov(a)/a.length>=.6?"up":ov(a)/a.length<=.4?"dn":"";
-      return `<tr data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p" style="cursor:pointer"><td>${NBA_MK[k]?NBA_MK[k][2]:k}</td><td><b>${line}</b></td><td class="small">${op!=null?oddsFmt(op):"–"} / ${up!=null?oddsFmt(up):"–"}<br>${nbaEsc(book||"")}</td><td class="${cls(l10)}">${ov(l10)}/${l10.length}</td><td class="${cls(ss)}">${ov(ss)}/${ss.length}</td></tr>`}).join("")}</tbody></table></div>
-    <div class="small" style="margin-top:6px">How many games he went <b>over</b> each line. Tap a row for its chart.</div></div>`:(g?`<div class="info"><span>No prop lines posted for him today.</span></div>`:"");
+  const linesTbl=props.length?`<div class="card plines" style="margin-top:12px"><h2 style="margin-bottom:2px">His lines tonight</h2>
+    <div class="small" style="margin-bottom:8px">Last 6 games, newest on the right: <span class="lc o">green</span> = went over, <span class="lc u">red</span> = went under. Tap a line for its chart.</div>
+    ${props.map(r=>{
+      const [,k,line,op,up,book]=r,l6=nbaAllG(nm).slice(-6),vals=l6.map(o=>nbaVal(o.x,k)),ov=vals.filter(v=>v>line).length;
+      const lean=l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
+      return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p">
+        <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span></div>
+          <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>
+        <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
+        <div class="plf"><b class="${ov/Math.max(1,l6.length)>=.5?"up":"dn"}">${ov}/${l6.length} over</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
+      </div>`}).join("")}
+    ${props.length&&nbaAllG(nm).slice(-6).some(o=>o.prev)?`<div class="small" style="margin-top:6px">Faded boxes are from last season.</div>`:""}</div>`:(g?`<div class="info"><span>No prop lines posted for him today.</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
