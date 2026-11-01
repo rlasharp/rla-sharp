@@ -1266,8 +1266,7 @@ function marketSection(g){const m=MOVE[g.id],B=BEST[g.id];if(!m&&!B)return "";
   const bp=B?`<div class="card"><h2>Best price</h2>
     <div class="bpl">Spread</div><div class="bpg">${cell(`${short(g.away)} ${sgn(B.sp[0][0])}`,B.sp[0][1],B.sp[0][2])}${cell(`${short(g.home)} ${sgn(B.sp[1][0])}`,B.sp[1][1],B.sp[1][2])}</div>
     <div class="bpl">Moneyline</div><div class="bpg">${cell(short(g.away),B.ml[0][0],B.ml[0][1])}${cell(short(g.home),B.ml[1][0],B.ml[1][1])}</div>
-    <div class="bpl">Total</div><div class="bpg">${cell(`Over ${B.tot[0][0]}`,B.tot[0][1],B.tot[0][2])}${cell(`Under ${B.tot[1][0]}`,B.tot[1][1],B.tot[1][2])}</div>
-    <p class="note" style="margin:10px 0 0">Best of 6 US sportsbooks, ${MARKET_ASOF}. In Quebec, also check Mise-o-jeu.</p></div>`:"";
+    <div class="bpl">Total</div><div class="bpg">${cell(`Over ${B.tot[0][0]}`,B.tot[0][1],B.tot[0][2])}${cell(`Under ${B.tot[1][0]}`,B.tot[1][1],B.tot[1][2])}</div></div>`:"";
   return `<div class="section"><h2>Line movement & best prices</h2><div class="grid g2">${mv}${bp}</div></div>`}
 function propMoveTxt(name,k){const m=PROP_MOVE[name+"|"+k];if(!m)return "";
   return `<div class="small" style="margin-top:4px">📈 Line moved ${m.open} → <b>${m.now}</b> <span style="opacity:.7">(${esc(m.src)})</span></div>`}
