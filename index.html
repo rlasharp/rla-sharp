@@ -265,7 +265,7 @@ nav[hidden]{display:none!important}
 .bpc{border:1px solid #3a3320}
 .bp{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}.bp:last-of-type{border-bottom:0}
 .bpn{flex:0 0 24px;height:24px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-.bpm{flex:1;min-width:0}.bpl{font-size:14.5px;margin:2px 0 4px}
+.bpm{flex:1;min-width:0;overflow-wrap:anywhere}.bpm .bpl,.pod .bpl{font-size:14.5px;margin:2px 0 4px;text-transform:none;letter-spacing:0;color:var(--text)}
 .bph{display:flex;flex-wrap:wrap;gap:4px}.bph span{font-size:11px;background:var(--card2);border-radius:6px;padding:2px 6px;color:var(--text2)}
 .bph b{font-size:12px}
 .bph span.g{background:#173323;color:#7ee2a0}.bph span.r{background:#3a1d1e;color:#ff9a9d}
@@ -2857,7 +2857,64 @@ function propCard(r){const td=r.k==="anyTD";
    ${usageLine(r.pl.name)}${r.k==="anyTD"?rzLine(r.pl.name):""}<div class="facts">${Number.isFinite(r.avg)?`<span>Season average: <b>${fmt(r.avg,MARKETS[r.k].cnt?1:0)}</b></span>`:""}<span class="small">${defRankTxt(r.dv,r.opp,r.pl.pos)}</span></div>
    ${r.ssn.n?`<div class="small" style="margin-bottom:-4px">${td?"Scored a TD":"Went over "+r.line} (${CUR}):</div><div class="hr">${hrBox("L3",r.l3)}${hrBox("L5",r.l5)}${hrBox("Season",r.ssn)}</div>`:`<div class="small" style="background:var(--card2);border-radius:8px;padding:8px">No games logged yet this season.</div>`}</div>`}
 function bindProps(scope){scope.querySelectorAll("[data-p]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.p,market:el.dataset.k,open:true};if(location.hash==="#props")viewProps();else location.hash="props"})}
-let propFilter={pos:"all",tab:"best",sort:"game",dir:"asc",n:30};
+/* ---------- NFL best props: every real line, both sides, ranked (same method as NBA) ---------- */
+const NFL_BE=0.524; /* break-even at the standard -110 when a book's price isn't listed */
+function nflImpl(o){return o==null?null:o>0?100/(o+100):-o/(-o+100)}
+function nflEval(name,k,side){
+  const pl=(typeof PINFO!=="undefined"&&PINFO[name])||allPlayers().find(p=>p.name===name);if(!pl||!MARKETS[k])return null;
+  const o=oppOf(pl.team);if(!o)return null;
+  if(typeof OUT!=="undefined"&&OUT[name])return null;if(typeof injSidelined!=="undefined"&&injSidelined(name))return null;
+  const rp=realProp(name,k);if(!rp)return null;const line=rp[0],odds=side==="o"?rp[1]:rp[2];
+  if(k==="anyTD"&&side==="u")return null;
+  const L=pLogs(name),cur=L.filter(l=>l.season===CUR).filter(l=>Number.isFinite(stat(l,k))),vs=L.filter(l=>l.opp===o.opp&&Number.isFinite(stat(l,k)));
+  if(cur.length<3)return null;
+  const hit=a=>a.filter(l=>side==="o"?stat(l,k)>line:stat(l,k)<line).length;
+  const l5=cur.slice(-5),r5=hit(l5)/l5.length,rS=hit(cur)/cur.length,rH=vs.length>=2?hit(vs)/vs.length:rS;
+  let sc=.45*r5+.35*rS+.2*rH;
+  const dv=dvpFor(o.opp,pl.pos,k).rank;let dvOk=null;
+  if(Number.isFinite(dv)){const easy=dv<=8,hard=dv>=25;dvOk=side==="o"?(easy?1:hard?-1:0):(hard?1:easy?-1:0);sc+=.05*dvOk}
+  sc=Math.max(0,Math.min(.97,sc));
+  const be=odds!=null?nflImpl(odds):NFL_BE;
+  return {name,k,side,line,odds,book:rp[3],pl,opp:o.opp,home:o.home,g:o.g,sc,be,edge:sc-be,dvOk,dv,
+    c5:[hit(l5),l5.length],cS:[hit(cur),cur.length],cH:[hit(vs),vs.length]};
+}
+function nflBest(){
+  const out=[];
+  for(const key of Object.keys(REAL_PROPS)){const [name,k]=key.split("|");for(const side of ["o","u"]){const e=nflEval(name,k,side);if(e&&e.edge>0)out.push(e)}}
+  const seen=new Set(),per={},top=[],rest=[];
+  for(const x of out.sort((a,b)=>b.edge-a.edge)){const key=x.name+"|"+x.k;if(seen.has(key))continue;seen.add(key);per[x.name]=(per[x.name]||0)+1;(per[x.name]<=2?top:rest).push(x)}
+  return top.concat(rest);
+}
+function nflBestRow(b,i){
+  const hr=(c,l)=>c[1]?`<span class="${c[0]/c[1]>=.6?"g":c[0]/c[1]<.4?"r":""}"><b>${c[0]}/${c[1]}</b> ${l}</span>`:"";
+  const td=b.k==="anyTD";
+  return `<div class="bp" data-nflp="${esc(b.name)}" data-k="${b.k}"><div class="bpn">${i+1}</div>
+    <div class="bpm"><div><b>${esc(b.name)}</b> <span class="small">${b.pl.pos} · ${b.pl.team} ${b.home?"vs":"@"} ${b.opp}</span></div>
+      <div class="bpl"><b class="${b.side==="o"?"up":"dn"}">${td?"Scores a TD":(b.side==="o"?"Over ":"Under ")+b.line}</b> ${td?"":MARKETS[b.k].n} <span class="small">${b.odds!=null?amTxt(b.odds):"odds not listed"}${b.book?" · "+esc(b.book):""}</span></div>
+      <div class="bph">${hr(b.c5,"L5")}${hr(b.cS,"season")}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
+    <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">${b.odds!=null?"odds need":"≈ needs"} ${Math.round(b.be*100)}%</span></div></div>`;
+}
+function nflTopHtml(){
+  const L=nflBest();
+  return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props this week</h2>
+   <div class="small" style="margin-bottom:8px">Every real book line we found, over and under, ranked by how often it would have hit (last 5 games 45%, ${CUR} season 35%, vs this opponent 20%, ±5 for the defense's rank vs his position) compared with what the odds need. Where a book's price isn't listed we compare to the standard −110 break-even (52%). Tap one for his full page.</div>
+   ${L.length?L.map(nflBestRow).join(""):`<div class="small">No line shows an edge right now.</div>`}
+   <div class="small" style="margin-top:8px">Leans from past results, not guarantees. NFL samples are small (one game a week) — bet small.</div></div>`;
+}
+/* player page: every real line for him with his last 6 games, green = over, red = under */
+function nflLinesBlock(pl){
+  const MK=marketsFor(pl.pos).filter(m=>realProp(pl.name,m));if(!MK.length)return "";
+  const L=pLogs(pl.name).filter(l=>l.season===CUR);
+  return `<div class="card plines" style="margin:12px 0"><h2 style="margin-bottom:2px">His lines this week</h2>
+   <div class="small" style="margin-bottom:8px">Last 6 games, newest on the right: <span class="lc o">green</span> = went over, <span class="lc u">red</span> = went under. Tap a line for its full chart.</div>
+   ${MK.map(m=>{const rp=realProp(pl.name,m),line=rp[0],td=m==="anyTD";const G=L.filter(l=>Number.isFinite(stat(l,m))).slice(-6),vals=G.map(l=>stat(l,m)),ov=vals.filter(v=>v>line).length;
+     const lean=G.length?(ov/G.length>=.67?["o",td?"Scores often":"Leans over"]:ov/G.length<=.33?["u",td?"Rarely scores":"Leans under"]:["n","Split"]):["n",""];
+     return `<div class="pl" data-m="${m}"><div class="plh"><div><b>${MARKETS[m].n}</b> ${td?"":`<span class="plv">${line}</span>`}</div>
+       <div class="small">${rp[1]!=null?(td?"Yes ":"O ")+amTxt(rp[1]):""}${rp[2]!=null?" · U "+amTxt(rp[2]):""}${rp[1]==null&&rp[2]==null?"odds not listed":""}${rp[3]?" · "+esc(rp[3]):""}</div></div>
+       ${G.length?`<div class="plg">${G.map((l,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}" title="Week ${l.week} ${l.home?"vs":"@"} ${l.opp}"><b>${v}</b><span>${l.home?"":"@"}${l.opp}</span></div>`}).join("")}</div>
+       <div class="plf"><b class="${ov/G.length>=.5?"up":"dn"}">${ov}/${G.length} ${td?"with a TD":"over"}</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>`:`<div class="small" style="margin-top:6px">No ${CUR} games logged yet.</div>`}</div>`}).join("")}</div>`;
+}
+let propFilter={pos:"all",tab:"top",sort:"game",dir:"asc",n:30};
 function viewProps(){
   if(S.prop&&S.prop.open)return viewPlayer();
   const all=[];SLATE.filter(g=>!g.final).forEach(g=>all.push(...propRows(playersOf(g.away),g.home),...propRows(playersOf(g.home),g.away)));
@@ -2872,16 +2929,18 @@ function viewProps(){
      ${seg("dir",[["asc","Low → High"],["desc","High → Low"]])}<span class="sp"></span><span class="small">${sorted.length} props with a public book line · hit rate = how often he went <b>over</b> the line</span></div>
     <div class="props">${sorted.slice(0,propFilter.n).map(propCard).join("")}</div>
     ${sorted.length>propFilter.n?`<div style="text-align:center;margin-top:16px"><button class="btn" id="more">Show more</button></div>`:""}`;
-  }else body=defenseHtml();
+  }else if(propFilter.tab==="top")body=nflTopHtml();
+  else body=defenseHtml();
   const P=allPlayers().sort((a,b)=>a.team.localeCompare(b.team)||POS.indexOf(a.pos)-POS.indexOf(b.pos));
   $("#v-props").innerHTML=`<h1>Player props</h1><p class="sub">Every player prop line we found for this week, with each player's recent games and how the defense handles his position. We don't make picks. ${srcTag("player")}</p>
-   <div class="row" style="margin-bottom:18px">${seg("tab",[["best","All props"],["def","Defense rankings"]])}<span class="sp"></span>
+   <div class="row" style="margin-bottom:18px">${seg("tab",[["top","🔥 Best this week"],["best","All props"],["def","Defense rankings"]])}<span class="sp"></span>
     <select id="find"><option value="">Find a player…</option>${P.map(p=>`<option value="${esc(p.name)}">${p.team} · ${esc(p.name)}</option>`).join("")}</select></div>${body}`;
   document.querySelectorAll("#v-props .seg button").forEach(b=>b.onclick=()=>{propFilter[b.dataset.f]=b.dataset.v;if(b.dataset.f!=="dir")propFilter.n=30;viewProps()});
   if($("#sortBy"))$("#sortBy").onchange=e=>{propFilter.sort=e.target.value;propFilter.dir=["ssn","l5","l3"].includes(e.target.value)?"desc":"asc";propFilter.n=30;viewProps()};
   if($("#more"))$("#more").onclick=()=>{propFilter.n+=30;viewProps()};
   $("#find").onchange=e=>{if(!e.target.value)return;const p=P.find(x=>x.name===e.target.value);S.prop={player:p.name,market:marketsFor(p.pos)[0],open:true};viewPlayer()};
   bindProps($("#v-props"));
+  document.querySelectorAll("#v-props [data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};viewPlayer()});
   if(propFilter.tab==="def")drawDefense();
 }
 let defSel={pos:"WR",k:"recYds"};
@@ -2997,6 +3056,7 @@ function viewPlayer(){
   $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← All props</a>
    <div class="row" style="margin:16px 0 6px">${badge(pl.team)}<h1 style="margin:0">${esc(pl.name)}</h1><span class="small">${pl.pos} · ${TEAMS[pl.team][0]}</span>${typeof INJ_P!=="undefined"&&INJ_P[pl.name]?injTag(pl.name):(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[pl.name]?`<span class="tag" style="background:#3a2a10;color:#fab219">⚠ ${QUESTIONABLE[pl.name]}</span>`:"")}</div>
    <p class="sub">${o?`This week: ${o.home?"vs":"at"} <b>${TEAMS[opp][0]}</b> · ${o.g.when}`:"No game this week"} ${srcTag("player")}</p>
+   ${nflLinesBlock(pl)}
    <div class="seg" style="margin-bottom:16px">${MK.map(m=>`<button data-m="${m}" class="${m===k?"on":""}">${MARKETS[m].n}</button>`).join("")}</div>
    <div class="verdict n"><div><div class="small">${realProp(pl.name,k)?"Book line":"Line"}</div><div class="big">${k==="anyTD"?"Anytime TD":line+" "+unit}</div><div style="margin-top:4px">${lineTag({pl,k})}</div></div><span class="sp"></span>
     <div style="text-align:right"><label class="small">Your sportsbook's line <input type="number" step=".5" id="lineIn" value="${line}" style="width:80px;margin-left:6px"></label></div></div>
