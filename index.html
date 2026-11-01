@@ -258,6 +258,11 @@ nav[hidden]{display:none!important}
 .nbln{position:absolute;left:0;right:0;border-top:2px dashed #f3c75a;z-index:1;pointer-events:none}
 .nbln span{position:absolute;right:0;top:-18px;font-size:10.5px;color:#f3c75a;background:var(--card);padding:0 3px}
 .nbsum{font-size:13px;margin-top:6px;color:var(--text2)}
+.nbmin{padding:14px 16px;margin-bottom:14px}.nbmv{font-size:14px;color:var(--text2)}.nbmv b{color:var(--text)}
+.nbrng{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 8px}.nbrng label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.nbrng input{width:100%;padding:0;accent-color:#3987e5;background:none;border:0}
+.nbqk{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.nbqk button{background:var(--card2);border:1px solid var(--line);color:var(--text2);border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.nbqk button.on{background:#3987e5;border-color:#3987e5;color:#fff}
 .up{color:#7fdc95}.dn{color:#ff9a9d}
 .nbl{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .nbl span{background:var(--card2);border-radius:999px;padding:5px 11px;font-size:13px;color:var(--text2)}
@@ -1704,6 +1709,25 @@ const NBA_PREV={"Paul George":[[401810388,"2026-01-09","ORL","A",33,18,9,3,0,1,8
 const NBA_H2H={"BOS@ORL":[["2025-11-07","BOS","ORL",110,123,"RS","2025-26"],["2025-11-09","BOS","ORL",111,107,"RS","2025-26"],["2025-11-23","ORL","BOS",129,138,"RS","2025-26"],["2026-04-12","ORL","BOS",108,113,"RS","2025-26"]],"BKN@IND":[["2025-11-05","BKN","IND",112,103,"RS","2025-26"],["2026-02-11","IND","BKN",115,110,"RS","2025-26"],["2026-04-09","IND","BKN",123,94,"RS","2025-26"]],"LAC@GS":[["2025-10-28","LAC","GS",79,98,"RS","2025-26"],["2026-01-05","GS","LAC",102,103,"RS","2025-26"],["2026-03-02","LAC","GS",114,101,"RS","2025-26"],["2026-04-12","GS","LAC",110,115,"RS","2025-26"],["2026-04-15","GS","LAC",126,121,"PI","2025-26"]],"TOR@LAL":[["2025-12-04","LAL","TOR",123,120,"RS","2025-26"],["2026-01-18","TOR","LAL",93,110,"RS","2025-26"]]};
 /* ---------- NBA section (separate from NFL; all globals prefixed nba / NB) ---------- */
 const NB={date:null,sel:null,team:"tonight",q:"",sort:"pts",ij:"tonight"};
+(()=>{const m=(typeof LS!=="undefined"&&LS.get("nbaMin"))||null;NB.mlo=m?m[0]:0;NB.mhi=m?m[1]:48})();
+function nbaInR(x){return x[4]>=NB.mlo&&x[4]<=NB.mhi}
+function nbaMinOn(){return NB.mlo>0||NB.mhi<48}
+function nbaMinUI(id){
+  return `<div class="card nbmin" id="${id}"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+    <b style="font-size:14px">Minutes played</b><span class="nbmv"><b data-lo>${NB.mlo}</b> to <b data-hi>${NB.mhi}</b> min</span></div>
+    <div class="nbrng"><label>Min<input type="range" min="0" max="48" step="1" value="${NB.mlo}" data-r="lo"></label><label>Max<input type="range" min="0" max="48" step="1" value="${NB.mhi}" data-r="hi"></label></div>
+    <div class="nbqk">${[[0,48,"All"],[10,48,"10+"],[20,48,"20+"],[25,48,"25+"],[30,48,"30+"]].map(([a,b,l])=>`<button data-q="${a}-${b}" class="${NB.mlo===a&&NB.mhi===b?"on":""}">${l}</button>`).join("")}</div>
+    <div class="small">Only games where the player played in this range count in the charts, hit rates and averages.</div></div>`;
+}
+function nbaWireMin(root,redraw){
+  const box=root.querySelector(".nbmin");if(!box)return;
+  const lo=box.querySelector('[data-r="lo"]'),hi=box.querySelector('[data-r="hi"]');
+  const show=()=>{box.querySelector("[data-lo]").textContent=lo.value;box.querySelector("[data-hi]").textContent=hi.value};
+  const fix=w=>{if(+lo.value>+hi.value){if(w==="lo")hi.value=lo.value;else lo.value=hi.value}show()};
+  const apply=()=>{NB.mlo=+lo.value;NB.mhi=+hi.value;try{LS.set("nbaMin",[NB.mlo,NB.mhi])}catch(e){}const y=window.scrollY;redraw();window.scrollTo(0,y)};
+  lo.oninput=()=>fix("lo");hi.oninput=()=>fix("hi");lo.onchange=apply;hi.onchange=apply;
+  box.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{const [a,c]=b.dataset.q.split("-");lo.value=a;hi.value=c;show();apply()});
+}
 const NBA_MK={pts:[5,"Points","PTS"],reb:[6,"Rebounds","REB"],ast:[7,"Assists","AST"],"3pm":[8,"3-Pointers made","3PM"],"3pa":[15,"3-Pointers attempted","3PA"],
   pa:[[5,7],"Points + Assists","P+A"],pra:[[5,6,7],"Points + Rebounds + Assists","PRA"],pr:[[5,6],"Points + Rebounds","P+R"],ra:[[6,7],"Rebounds + Assists","R+A"],blk:[13,"Blocks","BLK"],stl:[12,"Steals","STL"]};
 const NBA_HCA=2.0;
@@ -1842,7 +1866,7 @@ function nbaH2HCard(g){
 }
 
 /* ---------- Props ---------- */
-function nbaHit(p,k,line,n){const g=n?p.g.slice(-n):p.g;const o=g.filter(x=>nbaVal(x,k)>line).length;return [o,g.length]}
+function nbaHit(p,k,line,n){const f=p.g.filter(nbaInR);const g=n?f.slice(-n):f;const o=g.filter(x=>nbaVal(x,k)>line).length;return [o,g.length]}
 function nbaPosRank(oppTm,pos){const t=NBA_TEAM[oppTm];if(!t||!pos)return null;const k={G:"pG",F:"pF",C:"pC"}[pos];return k?[t[k],t[k+"R"]]:null}
 /* defense vs position: what a team allowed to each position, game by game */
 let NBA_DVP_IDX=null;
@@ -1876,7 +1900,7 @@ function nbaDvpChart(team,pos,k){
 /* game sets for a player: this season, last 10 (fills from last season if needed), H2H vs tonight's opponent */
 function nbaSets(nm,opp){
   const p=NBA_LOGS[nm],prev=(typeof NBA_PREV!=="undefined"&&NBA_PREV[nm])||[];
-  const cur=p.g.map(x=>({x,prev:0})),pv=prev.map(x=>({x,prev:1}));
+  const cur=p.g.filter(nbaInR).map(x=>({x,prev:0})),pv=prev.filter(nbaInR).map(x=>({x,prev:1}));
   const all=[...pv,...cur];
   return {
     l5:all.slice(-5),
@@ -1931,14 +1955,15 @@ function nbaProps(el){
   const list=Object.entries(NBA_LOGS).filter(([nm,p])=>tonight.includes(p.tm)&&nbaAvg(p,"min",5)>=18&&!/out/i.test((nbaInjOf(nm)||[])[2]||"")).sort((a,b)=>nbaAvg(b[1],k)-nbaAvg(a[1],k));
   const lbl=NBA_MK[k][1];
   el.innerHTML=`<h1>NBA Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>
-  <select id="nbaMk" style="width:100%;max-width:340px;font-size:16px;padding:10px 12px;margin-bottom:14px">${Object.entries(NBA_MK).map(([m,v])=>`<option value="${m}">${v[1]}${cnt(m)?` (${cnt(m)} lines)`:""}</option>`).join("")}</select>
+  <select id="nbaMk" style="width:100%;max-width:340px;font-size:16px;padding:10px 12px;margin-bottom:10px">${Object.entries(NBA_MK).map(([m,v])=>`<option value="${m}">${v[1]}${cnt(m)?` (${cnt(m)} lines)`:""}</option>`).join("")}</select>
+  ${nbaMinUI("nbaMinP")}
   ${props.length?`<p class="sub">How often each player beat today's line. Best hit rates first.</p><div class="grid g2">${props.map((r,i)=>nbaPropCard(r,i)).join("")}</div>`
    :`<p class="sub">${NBA_PROPS.length?`No ${lbl.toLowerCase()} lines posted today.`:"Today's prop lines aren't out yet — books post them in the morning."} Here's how tonight's players have been doing.</p>`}
-  <div class="card" style="margin-top:14px"><h2>${lbl} · playing tonight</h2>
+  <div class="card" style="margin-top:14px"><h2>${lbl} · playing tonight</h2>${nbaMinOn()?`<div class="small" style="margin:-6px 0 8px">Games with ${NB.mlo}–${NB.mhi} minutes only.</div>`:""}
   <div class="nbatbl"><table style="min-width:0"><thead><tr><th>Player</th><th>Season</th><th>Last 5</th><th>Best</th></tr></thead><tbody>${list.map(([nm,p])=>{
-    const s=nbaAvg(p,k),l5=nbaAvg(p,k,5),d=l5-s,hi=Math.max(...p.g.map(x=>nbaVal(x,k)));
+    const q={g:p.g.filter(nbaInR)};if(!q.g.length)return "";const s=nbaAvg(q,k),l5=nbaAvg(q,k,5),d=l5-s,hi=Math.max(...q.g.map(x=>nbaVal(x,k)));
     return `<tr><td>${nbaLink(nm)} <span class="small">${p.tm}</span>${nbaInjChip(nbaInjOf(nm))}</td><td><b>${nbaF(s)}</b></td><td class="${Math.abs(d)<Math.max(1,s*.15)?"":d>0?"up":"dn"}">${nbaF(l5)}</td><td>${hi}</td></tr>`}).join("")}</tbody></table></div></div>`;
-  const sel=document.getElementById("nbaMk");sel.value=k;sel.onchange=()=>{NB.mk=sel.value;nbaProps(el)};nbaWireCharts(el);
+  const sel=document.getElementById("nbaMk");sel.value=k;sel.onchange=()=>{NB.mk=sel.value;nbaProps(el)};nbaWireCharts(el);nbaWireMin(el,()=>nbaProps(el));
 }
 
 /* ---------- Player stats list ---------- */
@@ -1979,12 +2004,13 @@ function nbaPlayer(el,nm){
   ${inj?`<div class="info">Injury report: <b style="color:${nbaInjCol(inj[2])}">${nbaEsc(inj[2])}</b> — ${nbaEsc(inj[3])}${inj[4]?", est. return "+nbaEsc(inj[4]):""}</div>`:""}
   ${pr&&(pr[1]<=8||pr[1]>=23)?`<div class="info">Tonight: the ${nbaShort(opp)} ${pr[1]<=8?"give up a lot of points":"are tough"} on ${p.pos==="G"?"guards":p.pos==="F"?"forwards":"centers"}.</div>`:""}
   <div class="grid g4" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">${tile("pts","Points")}${tile("reb","Rebounds")}${tile("ast","Assists")}${tile("3pm","3-Pointers")}</div>
-  ${props.length?`<div class="grid g2" style="margin-top:14px">${props.map((r,i)=>nbaPropCard(r,100+i)).join("")}</div>`:""}
+  ${props.length?`<div style="margin-top:14px">${nbaMinUI("nbaMinPl")}</div><div class="grid g2" style="margin-top:14px">${props.map((r,i)=>nbaPropCard(r,100+i)).join("")}</div>`:""}
   <div class="card" style="margin-top:14px"><h2>Points, last ${last.length} games</h2>
     <div style="display:flex;align-items:flex-end;gap:6px;height:120px">${last.map(x=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0"><span class="small">${x[5]}</span><div style="width:100%;background:#3987e5;border-radius:6px 6px 0 0;height:${Math.max(4,Math.round(x[5]/mx*80))}px"></div><span class="small" style="font-size:10.5px">${x[3]==="H"?"":"@"}${x[2]}</span></div>`).join("")}</div></div>
   <div class="card" style="margin-top:14px"><h2>Game log</h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Date</th><th>Opp</th><th>PTS</th><th>REB</th><th>AST</th><th>FG</th><th>3PT</th><th>FT</th></tr></thead><tbody>
   ${p.g.slice().reverse().map(x=>`<tr><td style="min-width:0">${+x[1].slice(5,7)}/${+x[1].slice(8)}</td><td>${x[3]==="H"?"":"@"}${x[2]}</td><td><b>${x[5]}</b></td><td>${x[6]}</td><td>${x[7]}</td><td>${x[10]}-${x[11]}</td><td>${x[8]}-${x[15]??"?"}</td><td>${x[16]??"?"}-${x[17]??"?"}</td></tr>`).join("")}
   </tbody></table></div></div>`;
+  nbaWireMin(el,()=>nbaPlayer(el,nm));
   nbaWireCharts(el);
 }
 
