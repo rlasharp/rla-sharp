@@ -218,7 +218,6 @@ footer{max-width:1100px;margin:30px auto 40px;padding:0 20px;color:var(--muted);
     <a href="#trends" data-v="trends">Team Trends</a>
     <a href="#injuries" data-v="injuries">Injuries</a>
     <a href="#calc" data-v="calc">Odds Calculator</a>
-    <a href="#data" data-v="data">Data</a>
   </nav>
 </div></header>
 <main>
@@ -1825,7 +1824,7 @@ function viewWeeks(){
 function route(){
   const h=(location.hash||"#games").slice(1);let v=h.startsWith("game-")?"game":h;
   if(v==="slate")v="games";
-  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","data"].includes(v))v="games";
+  if(!["games","game","plays","props","public","weeks","trends","calc","injuries"].includes(v))v="games";
   if(v!=="props"&&S.prop)S.prop.open=false;
   document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));
   document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v||(v==="game"&&a.dataset.v==="games")));
