@@ -1180,8 +1180,8 @@ const PLAYS=[
    why:p=>`Two or more touchdown passes in ${p.ov} of ${p.n} games this season (avg ${p.avg} per game). The Jets allow the ${p.rankTxt} TD passes to quarterbacks (league middle), and the model projects a competitive game (Jets by about a field goal), which keeps Las Vegas throwing all four quarters.`},
   {type:"spread",game:10,team:"LAR",
    why:g=>`The Chargers are ${g.rec.LAC} and scoring ${TEAM_STATS.LAC.ppg} points a game with the league's ${ordinal(rankOf("pass_","LAC",true))}-lowest passing output (${TEAM_STATS.LAC.pass_} yds/g). The Rams allow just ${TEAM_STATS.LAR.dpass} passing yards per game. Our model has the Rams by ${g.x.margin} — ${(g.x.margin-Math.abs(g.L.sp)).toFixed(1)} points more than the line. Risk: McConkey and Tre' Harris are both back for the Chargers.`},
-  {type:"ml",game:5,team:"MIN",
-   why:g=>`Minnesota is ${g.rec.MIN} and allows only ${teamRec("MIN").pa} points per game, the fewest in the NFL. The model makes this close to a coin flip (Lions ${g.x.winP}%), while +${g.L.ml[0]} implies the Vikings win only ${impl(g.L.ml[0])}% of the time — the price is better than the matchup suggests.`},
+  {type:"spread",game:5,team:"MIN",
+   why:g=>`Minnesota is ${g.rec.MIN} and allows only ${teamRec("MIN").pa} points per game, the fewest in the NFL. Our model has Detroit winning by just ${g.x.margin} (Lions ${g.x.winP}%), so getting +${Math.abs(g.L.sp)} gives the Vikings room to lose a close game and still cover. A ${Math.abs(g.L.sp)}-point Lions win is a push (stake returned).`},
   {type:"total",game:3,side:"under",
    why:g=>`Tennessee scores ${TEAM_STATS.TEN.ppg} points per game (${g.rec.TEN}) and has been held to 10 or fewer three times. The model projects ${g.x.total} total points, ${(g.L.tot-g.x.total).toFixed(1)} under the line — big favourites like Cincinnati often lean on the run once ahead, which drains the clock.`},
 ];
@@ -1260,7 +1260,7 @@ function viewPlays(){
       <p style="margin:12px 0 0;line-height:1.55">${pl.why(pl.type==="prop"?d:d)}</p>
       <div style="margin-top:10px"><a href="#" class="btn plink" data-i="${i}">${pl.type==="prop"?"Open player page →":"Open matchup →"}</a></div></div>`}).join("");
   $("#v-plays").innerHTML=`<h1>Plays of the Week</h1>
-   <p class="sub">Week ${PLAYS_WEEK} · our ${PLAYS.length} favourite spots based on the matchup data on this site — props, a spread, a moneyline and a total. Lines as of ${PLAYS_ASOF}; check your sportsbook before betting, prices move.</p>
+   <p class="sub">Week ${PLAYS_WEEK} · our ${PLAYS.length} favourite spots based on the matchup data on this site — props, two spreads and a total. Lines as of ${PLAYS_ASOF}; check your sportsbook before betting, prices move.</p>
    ${recordPanel()}
    <div class="grid g2">${cards}</div>
    <div class="card" style="margin-top:14px;padding:14px 18px"><p class="note" style="margin:0"><b>How these are chosen:</b> props need a strong season hit rate against the posted line plus a matchup that doesn't work against it (defense vs position rank). Game plays come from our score model disagreeing with the betting line by a meaningful margin. These are data-based leans, <b>not guarantees</b> — football is high-variance and even good plays lose often. Never bet more than you can afford to lose. Must be 18+ in Quebec (19+ in Ontario). Need help? Jeu : aide et référence 1-800-461-0140 (Montreal 514-527-0140, 24/7, free, aidejeu.ca).</p></div>`;
