@@ -167,6 +167,7 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 @media(max-width:560px){.usage-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .bpl{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);margin:10px 0 5px}
 .bpg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nbsort{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px}.nbsort select{font-size:14px;padding:7px 10px}
 .bpc{background:var(--card2);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:1px;min-width:0}
 .bpc span{font-size:13px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bpc b{font-size:20px}.bpc small{font-size:11px;color:var(--text2)}
 .psearch{position:relative;margin:10px 0 2px;max-width:340px}
@@ -243,6 +244,17 @@ nav[hidden]{display:none!important}
 .hr3 b{display:block;font-size:16px;color:var(--text)}
 .nbatbl td:first-child{white-space:normal;min-width:120px}
 .bxt th,.bxt td{padding:7px 3px;font-size:12.5px}.bxt td:first-child{min-width:84px;max-width:110px}.bxt th:not(:first-child),.bxt td:not(:first-child){text-align:center}
+.bpc{border:1px solid #3a3320}
+.bp{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}.bp:last-of-type{border-bottom:0}
+.bpn{flex:0 0 24px;height:24px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.bpm{flex:1;min-width:0}.bpl{font-size:14.5px;margin:2px 0 4px}
+.bph{display:flex;flex-wrap:wrap;gap:4px}.bph span{font-size:11px;background:var(--card2);border-radius:6px;padding:2px 6px;color:var(--text2)}
+.bph b{font-size:12px}
+.bph span.g{background:#173323;color:#7ee2a0}.bph span.r{background:#3a1d1e;color:#ff9a9d}
+.bps{flex:0 0 66px;text-align:center;display:flex;flex-direction:column;line-height:1.15}.bps b{font-size:18px;color:#f3c75a}.bps span{font-size:10.5px;color:var(--muted)}
+.bst{border:1px solid #2f2a45}.bst td .small{font-size:10.5px}
+.bstn{font-size:12.5px;background:#221f33;border-radius:8px;padding:6px 8px;margin:0 0 8px;color:var(--text2);line-height:1.4}
+.prop.flash{box-shadow:0 0 0 2px #f3c75a;transition:box-shadow .3s}
 .hr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
 .hr4 div{background:var(--card2);border-radius:10px;padding:7px 4px;text-align:center;font-size:11.5px;color:var(--muted)}
 .hr4 b{display:block;font-size:15px;color:var(--text)}
@@ -1872,9 +1884,11 @@ function nbaGames(el){
   el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>
   <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today. Tap a game for injuries, head-to-head and player stats.</p>
   <div class="grid g2">${NBA_SLATE.map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
+  <div style="margin-top:14px">${nbaBestCard(3,1)}</div>
   <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary>
   <p class="small" style="margin:8px 0 0"><b>Spread</b>: the favorite (minus number) has to win by more than that many points; the underdog (plus number) can lose by less. <b>Win</b>: moneyline odds to win the game outright. <b>Total</b>: bet whether both teams together score over or under that number. "Missing" lists regulars who are out. Lines from DraftKings. Research, not a guarantee.</p></details>`;
   el.querySelectorAll("[data-ng]").forEach(c=>c.onclick=()=>location.hash="nba-game-"+c.dataset.ng);
+  nbaWireBest(el);
 }
 
 /* ---------- Game page ---------- */
@@ -1973,6 +1987,7 @@ function nbaGame(el,id){
     <div class="card"><h2>${nbaShort(g.a)} injuries</h2>${nbaInjTable(g.a)}</div>
     <div class="card"><h2>${nbaShort(g.h)} injuries</h2>${nbaInjTable(g.h)}</div>
   </div>
+  ${(()=>{const b=nbaBoostCard(g.a,6)+nbaBoostCard(g.h,6);return b?`<div class="grid g2" style="margin-top:14px">${b}</div>`:""})()}
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${nbaShort(g.a)} players</h2>${nbaPlayerTable(nbaTopPlayers(g.a,7),{no3:1,nonote:1})}</div>
     <div class="card"><h2>${nbaShort(g.h)} players</h2>${nbaPlayerTable(nbaTopPlayers(g.h,7),{no3:1,nonote:1})}</div>
@@ -2078,7 +2093,7 @@ function nbaPropCard(r,idx){
   return `<div class="card prop" id="${id}" data-k="${k}" data-nm="${nbaEsc(nm)}" data-line="${line}" data-opp="${opp}" data-pos="${p.p5||""}">
   <div><b>${nbaLink(nm)}</b> <span class="small">${p.p5||p.pos} · ${p.tm}${opp?(g.a===p.tm?" @ ":" vs ")+opp:""} · <b style="color:var(--text2)">${nbaF(nbaAvg(p,"min"))} min/g</b></span>${nbaInjChip(inj)}</div>
   <div style="margin:8px 0 10px;font-size:16px"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)} ${line}</b> <span class="small">${op!=null?"O "+oddsFmt(op):""}${up!=null?" · U "+oddsFmt(up):""}${book?" · "+nbaEsc(book):""}</span></div>
-  ${nbaMateSel(nm)}
+  ${nbaBoostNote(nm,k)}${nbaMateSel(nm)}
   <div class="hr4"><div><b>${rate(S.l5)}</b>Last 5</div><div><b>${rate(S.l10)}</b>Last 10</div><div><b>${rate(S.season)}</b>Season</div><div><b>${rate(S.h2h)}</b>vs ${opp||"opp"}</div></div>
   <div class="nbtabs">${tab("l5","L5")}${tab("l10","L10")}${tab("season","Season")}${tab("h2h","H2H",S.h2h.length)}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
@@ -2094,24 +2109,133 @@ function nbaWireCharts(root,redraw){
     c.querySelectorAll("[data-pct]").forEach(x=>x.classList.toggle("on",x===b));
   });
 }
+/* ---------- "When a star sits": teammates' numbers with vs without an Out regular ---------- */
+function nbaAllG(nm){
+  const p=NBA_LOGS[nm],prev=((typeof NBA_PREV!=="undefined"&&NBA_PREV[nm])||[]).filter(x=>(x[19]||[]).length);
+  return [...prev.map(x=>({x,prev:1})),...(p?p.g.map(x=>({x,prev:0})):[])];
+}
+function nbaStarsOut(tm){
+  const ros=(typeof NBA_ROS!=="undefined"&&NBA_ROS[tm])||[];
+  return nbaOutNames(tm).filter(n=>{const p=NBA_LOGS[n];if(!p||p.tm!==tm||!ros.includes(n))return false;
+    const g=nbaAllG(n);return g.length>=3&&g.reduce((s,o)=>s+o.x[4],0)/g.length>=22});
+}
+const NBA_BK=[["min",4],["pts",5],["reb",6],["ast",7],["3pm",8]];
+function nbaSplit(nm,star,tm){
+  const ros=(typeof NBA_ROS!=="undefined"&&NBA_ROS[tm])||[],mi=ros.indexOf(nm);
+  /* last-season games only count if the two were teammates then */
+  const mates=((typeof NBA_PREV!=="undefined"&&NBA_PREV[star])||[]).some(x=>(x[19]||[]).includes(mi));
+  const all=nbaAllG(nm).filter(g=>!g.prev||mates),w=[],o=[];
+  for(const g of all)(nbaMatePlayed(star,g,tm)?w:o).push(g.x);
+  const av=a=>{const r={n:a.length};for(const [k,i] of NBA_BK)r[k]=a.length?a.reduce((s,x)=>s+(x[i]||0),0)/a.length:0;r.fn=k=>a.length?a.reduce((s,x)=>s+nbaVal(x,k),0)/a.length:0;return r};
+  return {w:av(w),o:av(o)};
+}
+function nbaBoost(star,tm){
+  const ros=((typeof NBA_ROS!=="undefined"&&NBA_ROS[tm])||[]).filter(n=>n!==star&&NBA_LOGS[n]&&NBA_LOGS[n].tm===tm&&!/out/i.test((nbaInjOf(n)||[])[2]||""));
+  return ros.map(nm=>({nm,...nbaSplit(nm,star,tm)})).filter(r=>r.w.n>=2&&r.o.n>=2&&(r.w.min>=10||r.o.min>=10))
+    .map(r=>({...r,d:(r.o.pts+r.o.reb+r.o.ast)-(r.w.pts+r.w.reb+r.w.ast)})).sort((a,b)=>b.d-a.d);
+}
+function nbaDl(a,b){const d=b-a;return Math.abs(d)<.5?`<span class="small">${nbaF(b)}</span>`:`<b class="${d>0?"up":"dn"}">${nbaF(b)}</b><span class="small"> ${d>0?"+":"−"}${nbaF(Math.abs(d))}</span>`}
+function nbaBoostCard(tm,max){
+  const stars=nbaStarsOut(tm);if(!stars.length)return "";
+  return stars.map(s=>{
+    const rows=nbaBoost(s,tm).slice(0,max||5);
+    const head=`<h2 style="margin-bottom:4px">${nbaShort(tm)} without ${nbaEsc(s)}</h2><div class="small" style="margin-bottom:8px">${nbaEsc(s)} is <b style="color:#ff9a9d">out</b> tonight. How teammates did in games he missed vs games he played (this season, plus last season if they were teammates).</div>`;
+    if(!rows.length)return `<div class="card bst">${head}<div class="small">Not enough games without him yet to compare.</div></div>`;
+    return `<div class="card bst">${head}<div class="nbatbl"><table style="min-width:0" class="bxt"><thead><tr><th>Player</th><th>Min</th><th>PTS</th><th>REB</th><th>AST</th></tr></thead><tbody>${rows.map(r=>
+      `<tr><td>${nbaLink(r.nm)}<div class="small">${r.o.n} game${r.o.n===1?"":"s"} without${r.o.n<5?" · small sample":""}</div></td><td>${nbaDl(r.w.min,r.o.min)}</td><td>${nbaDl(r.w.pts,r.o.pts)}</td><td>${nbaDl(r.w.reb,r.o.reb)}</td><td>${nbaDl(r.w.ast,r.o.ast)}</td></tr>`).join("")}</tbody></table></div>
+      <div class="small" style="margin-top:6px">Big number = average <b>without</b> him; small number = change vs games <b>with</b> him.</div></div>`}).join("");
+}
+/* one-line note on a prop card when a teammate star is out tonight */
+function nbaBoostNote(nm,k){
+  const p=NBA_LOGS[nm];if(!p)return "";
+  return nbaStarsOut(p.tm).map(s=>{const r=nbaSplit(nm,s,p.tm);if(r.o.n<2||r.w.n<2)return "";
+    const a=r.w.fn(k),b=r.o.fn(k),d=b-a;
+    return `<div class="bstn">⚡ <b>${nbaEsc(s)} is out.</b> Without him: <b class="${d>=0?"up":"dn"}">${nbaF(b)}</b> ${NBA_MK[k][2]} in ${r.o.n} game${r.o.n===1?"":"s"} vs ${nbaF(a)} with him${r.o.n<5?" (small sample)":""}.</div>`}).join("");
+}
+
+/* ---------- Best props tonight: every posted line, both sides, ranked ---------- */
+function nbaBest(){
+  const out=[];
+  for(const r of NBA_PROPS){
+    const [nm,k,line,op,up,book]=r,p=NBA_LOGS[nm];if(!p||!NBA_MK[k])continue;
+    const g=nbaGameOf(p.tm);if(!g||/out/i.test((nbaInjOf(nm)||[])[2]||""))continue;
+    const opp=g.a===p.tm?g.h:g.a,all=nbaAllG(nm),l10=all.slice(-10),l5=all.slice(-5),ss=all.filter(o=>!o.prev),h2=all.filter(o=>o.x[2]===opp);
+    if(l10.length<5)continue;
+    let dv=null;if(p.p5){const d=nbaDvp(opp,p.p5,k,5);if(d.rows.length>=3&&d.lg>0)dv=(d.rows.reduce((s,x)=>s+x.v,0)/d.rows.length)/d.lg-1}
+    for(const side of ["o","u"]){
+      const odds=side==="o"?op:up;if(odds==null)continue;
+      const hit=a=>a.filter(o=>side==="o"?nbaVal(o.x,k)>line:nbaVal(o.x,k)<line).length;
+      const r10=hit(l10)/l10.length,rS=ss.length>=3?hit(ss)/ss.length:r10,rH=h2.length>=2?hit(h2)/h2.length:r10;
+      let sc=.45*r10+.35*rS+.2*rH;
+      const dvOk=dv==null?null:(side==="o"?dv>.08:dv<-.08)?1:(side==="o"?dv<-.08:dv>.08)?-1:0;
+      if(dvOk)sc+=.05*dvOk;
+      sc=Math.max(0,Math.min(.97,sc));
+      const be=nbaImpl(odds);
+      out.push({nm,k,line,side,odds,book,p,opp,g,sc,be,edge:sc-be,dvOk,
+        c5:[hit(l5),l5.length],c10:[hit(l10),l10.length],cS:[hit(ss),ss.length],cH:[hit(h2),h2.length],
+        id:"pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k});
+    }
+  }
+  const seen=new Set(),per={},top=[],rest=[];
+  for(const x of out.sort((a,b)=>b.edge-a.edge)){const key=x.nm+"|"+x.k;if(seen.has(key)||x.edge<=0)continue;seen.add(key);per[x.nm]=(per[x.nm]||0)+1;(per[x.nm]<=2?top:rest).push(x)}
+  return top.concat(rest);
+}
+function nbaBestRow(b,i){
+  const hr=(c,l)=>c[1]?`<span class="${c[0]/c[1]>=.6?"g":c[0]/c[1]<.4?"r":""}"><b>${c[0]}/${c[1]}</b> ${l}</span>`:"";
+  return `<div class="bp" data-bp="${b.k}|${b.id}">
+    <div class="bpn">${i+1}</div>
+    <div class="bpm"><div><b>${nbaEsc(b.nm)}</b> <span class="small">${b.p.tm} ${b.g.a===b.p.tm?"@":"vs"} ${b.opp}</span>${nbaInjChip(nbaInjOf(b.nm))}</div>
+      <div class="bpl"><b class="${b.side==="o"?"up":"dn"}">${b.side==="o"?"Over":"Under"} ${b.line}</b> ${NBA_MK[b.k][1]} <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
+      <div class="bph">${hr(b.c5,"L5")}${hr(b.c10,"L10")}${b.cS[1]>=3?hr(b.cS,"season"):""}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
+    <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">odds need ${Math.round(b.be*100)}%</span></div>
+  </div>`;
+}
+function nbaBestCard(n,more){
+  const L=nbaBest(),top=L.slice(0,n);
+  if(!NBA_PROPS.length||!top.length)return "";
+  return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props tonight</h2>
+  <div class="small" style="margin-bottom:8px">Every posted line, over and under, ranked by how often it would have hit vs what the odds need. Tap one for charts.</div>
+  ${top.map(nbaBestRow).join("")}
+  ${more&&L.length>n?`<a href="#nba-props" class="small" style="display:block;text-align:center;margin-top:8px;color:var(--text2)">See all ${L.length} →</a>`:""}
+  <div class="small" style="margin-top:8px">Hit score blends last 10 (45%), this season (35%) and vs tonight's opponent (20%), ±5 for the position matchup. A lean, not a guarantee.</div></div>`;
+}
+function nbaWireBest(root,el){
+  root.querySelectorAll("[data-bp]").forEach(b=>b.onclick=()=>{const [k,id]=b.dataset.bp.split("|");NB.mk=k;NB.goto=id;
+    if(location.hash.replace("#","")==="nba-props"&&el)nbaProps(el);else location.hash="nba-props"});
+}
+
 function nbaProps(el){
   const k=NB.mk||(NB.mk="pts");
   const tonight=NBA_SLATE.flatMap(g=>[g.a,g.h]);
   const props=NBA_PROPS.filter(r=>r[1]===k&&NBA_LOGS[r[0]]&&nbaGameOf(NBA_LOGS[r[0]].tm));
-  props.sort((a,b)=>{const ha=nbaHit(NBA_LOGS[a[0]],a[1],a[2]),hb=nbaHit(NBA_LOGS[b[0]],b[1],b[2]);return hb[0]/Math.max(1,hb[1])-ha[0]/Math.max(1,ha[1])});
+  if(!NB.ps){const v=(typeof LS!=="undefined"&&LS.get("nbaPS"))||["hi","l10"];NB.ps=v[0];NB.pb=v[1]}
+  const rt=r=>{const p=NBA_LOGS[r[0]],g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):"",a=nbaSets(r[0],opp)[NB.pb]||[];return a.length?a.filter(z=>nbaVal(z.x,r[1])>r[2]).length/a.length:-1};
+  props.forEach(r=>r._rt=rt(r));
+  props.sort((a,b)=>(a._rt<0)-(b._rt<0)||(NB.ps==="lo"?a._rt-b._rt:b._rt-a._rt));
   const cnt=m=>NBA_PROPS.filter(r=>r[1]===m&&NBA_LOGS[r[0]]&&nbaGameOf(NBA_LOGS[r[0]].tm)).length;
   const list=Object.entries(NBA_LOGS).filter(([nm,p])=>tonight.includes(p.tm)&&nbaAvg(p,"min",5)>=18&&!/out/i.test((nbaInjOf(nm)||[])[2]||"")).sort((a,b)=>nbaAvg(b[1],k)-nbaAvg(a[1],k));
   const lbl=NBA_MK[k][1];
+  const bxs=NBA_SLATE.flatMap(g=>[g.a,g.h]).map(t=>nbaBoostCard(t,4)).join("");
   el.innerHTML=`<h1>NBA Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>
+  ${nbaBestCard(NB.bpAll?99:8,0)}${!NB.bpAll&&nbaBest().length>8?`<button class="btn" id="bpMore" style="width:100%;margin:-4px 0 14px">Show all ${nbaBest().length} ranked props</button>`:""}
   <select id="nbaMk" style="width:100%;max-width:340px;font-size:16px;padding:10px 12px;margin-bottom:10px">${Object.entries(NBA_MK).map(([m,v])=>`<option value="${m}">${v[1]}${cnt(m)?` (${cnt(m)} lines)`:""}</option>`).join("")}</select>
   ${nbaMinUI("nbaMinP")}
-  ${props.length?`<p class="sub">How often each player beat today's line. Best hit rates first.</p><div class="grid g2">${props.map((r,i)=>nbaPropCard(r,i)).join("")}</div>`
+  ${props.length?`<div class="nbsort"><span class="small">Sort by over hit rate</span>
+    <div class="seg">${[["hi","High → low"],["lo","Low → high"]].map(([v,l])=>`<button class="btn${NB.ps===v?" on":""}" data-ps="${v}">${l}</button>`).join("")}</div>
+    <select id="nbaPB">${[["l5","Last 5"],["l10","Last 10"],["season","This season"],["h2h","vs opponent"]].map(([v,l])=>`<option value="${v}"${NB.pb===v?" selected":""}>${l}</option>`).join("")}</select></div>
+  <p class="sub">How often each player went over today's line. ${NB.ps==="lo"?"Lowest over rates first — those lean under.":"Highest over rates first."}</p><div class="grid g2">${props.map((r,i)=>nbaPropCard(r,i)).join("")}</div>`
    :`<p class="sub">${NBA_PROPS.length?`No ${lbl.toLowerCase()} lines posted today.`:"Today's prop lines aren't out yet — books post them in the morning."} Here's how tonight's players have been doing.</p>`}
+  ${bxs?`<h2 style="margin-top:18px">⚡ Stars out tonight — who gets more</h2><div class="grid g2">${bxs}</div>`:""}
   <div class="card" style="margin-top:14px"><h2>${lbl} · playing tonight</h2>${nbaMinOn()?`<div class="small" style="margin:-6px 0 8px">Games with ${NB.mlo}–${NB.mhi} minutes only.</div>`:""}
   <div class="nbatbl"><table style="min-width:0"><thead><tr><th>Player</th><th>Min</th><th>Season</th><th>Last 5</th><th>Best</th></tr></thead><tbody>${list.map(([nm,p])=>{
     const q={g:p.g.filter(nbaInR)};if(!q.g.length)return "";const s=nbaAvg(q,k),l5=nbaAvg(q,k,5),d=l5-s,hi=Math.max(...q.g.map(x=>nbaVal(x,k)));
     return `<tr><td>${nbaLink(nm)} <span class="small">${p.tm}</span>${nbaInjChip(nbaInjOf(nm))}</td><td>${nbaF(nbaAvg(p,"min"))}</td><td><b>${nbaF(s)}</b></td><td class="${Math.abs(d)<Math.max(1,s*.15)?"":d>0?"up":"dn"}">${nbaF(l5)}</td><td>${hi}</td></tr>`}).join("")}</tbody></table></div></div>`;
   const sel=document.getElementById("nbaMk");sel.value=k;sel.onchange=()=>{NB.mk=sel.value;nbaProps(el)};nbaWireCharts(el,()=>nbaProps(el));nbaWireMin(el,()=>nbaProps(el));
+  nbaWireBest(el,el);
+  const saveS=()=>{try{LS.set("nbaPS",[NB.ps,NB.pb])}catch(e){}const y=window.scrollY;nbaProps(el);window.scrollTo(0,y)};
+  el.querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{NB.ps=b.dataset.ps;saveS()});
+  const pb=document.getElementById("nbaPB");if(pb)pb.onchange=()=>{NB.pb=pb.value;saveS()};const mb=document.getElementById("bpMore");if(mb)mb.onclick=()=>{NB.bpAll=1;const y=window.scrollY;nbaProps(el);window.scrollTo(0,y)};
+  if(NB.goto){const c=document.getElementById(NB.goto);NB.goto=null;if(c){c.scrollIntoView({block:"start"});c.classList.add("flash");setTimeout(()=>c.classList.remove("flash"),1600)}}
 }
 
 /* ---------- Player stats list ---------- */
