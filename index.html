@@ -210,6 +210,8 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 .sgp{margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--card2)}.sgr{display:flex;flex-direction:column;gap:2px;padding:6px 0;border-top:1px solid var(--line)}.sgr:first-of-type{border-top:0}.sgr.t b:first-child{color:#7ee2a0}.sgr.a b:first-child{color:#ff9a9d}
 .bpc .bp,.gpp,#v-nba .grid>.prop,.games>.game,#v-props .props>.card{content-visibility:auto;contain-intrinsic-size:auto 220px}
 .dvpwho{display:block;width:100%;flex:1 1 100%;border-top:1px solid var(--line);margin-top:8px;padding-top:2px;text-align:left}.dwr{display:block;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.5}.dwr:last-of-type{border-bottom:0}.dwg{display:block;color:var(--text2);font-size:12.5px}.dwg b{color:var(--text);margin-left:6px}.dwg b::after{content:" total"; font-weight:400;color:var(--text2)}.dwn{display:block}.dwn a{color:var(--text);text-decoration:none;border-bottom:1px dotted var(--text2);white-space:nowrap}
+.lmv{font-size:11.5px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:999px;white-space:nowrap}.lmv.up{background:#173323;color:#7ee2a0}.lmv.dn{background:#3a1d1e;color:#ff9a9d}.lmv.fl{background:var(--card2);color:var(--text2)}
+.upd.lo{color:#f3c75a}#loPill{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:60;background:#f3c75a;color:#1a1505;border:0;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;box-shadow:0 6px 20px #0008;cursor:pointer}@media(min-width:900px){#loPill{bottom:24px}}
 .gl{border-bottom:1px dotted currentColor;cursor:help;text-decoration:none}.gl::after{content:"ⓘ";font-size:.68em;opacity:.55;margin-left:2px;vertical-align:super;line-height:0}
 #glpop{position:absolute;z-index:9999;display:none;background:#1f232a;color:#e9ecf1;border:1px solid #3a3f48;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.4;box-shadow:0 10px 30px #0008}#glpop.open{display:block}#glpop b{color:#f3c75a}
 .glrow{display:grid;grid-template-columns:130px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}.glrow span{color:var(--text2)}@media(max-width:480px){.glrow{grid-template-columns:1fr;gap:2px}}
@@ -2788,7 +2790,7 @@ function nbaLineRow(nm,r){
       const [,k,line,op,up,book]=r,l6=nbaAllG(nm).slice(-6),vals=l6.map(o=>nbaVal(o.x,k)),ov=vals.filter(v=>v>line).length;
       const lean=l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
       return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p">
-        <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span></div>
+        <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span>${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
           <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):""}${nbaShopHtml(r)}
         <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
         <div class="plf"><b class="${ov/Math.max(1,l6.length)>=.5?"up":"dn"}">${ov}/${l6.length} over</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
@@ -3251,6 +3253,54 @@ async function liveTick(){
 window.addEventListener("hashchange",()=>setTimeout(()=>{liveDecorate();liveTick()},60));
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveTick()});
 setTimeout(liveTick,300);
+/* ---------- ⚡ Live odds from data/live_odds.json (GitHub Action + PropLine, every ~30 min) ----------
+   Merges real sportsbook lines into NBA_PROPS / REAL_PROPS, keeps the open line to show ▲▼ moves.
+   The bundled daily data stays as the fallback when the file is missing (e.g. the private copy). */
+const LO={data:null,move:{},applied:0,nba:0,nfl:0};
+function loNorm(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g,"").replace(/[^a-z]/g,"")}
+let LO_IDX=null;
+function loIdx(){if(LO_IDX)return LO_IDX;const nba={},nfl={};
+  if(typeof NBA_LOGS!=="undefined")for(const nm in NBA_LOGS)nba[loNorm(nm)]=nm;
+  if(typeof PINFO!=="undefined")for(const nm in PINFO)nfl[loNorm(nm)]=nm;
+  return LO_IDX={nba,nfl}}
+function loMoveTag(nm,k,line){const m=LO.move[nm+"|"+k];if(!m)return "";
+  if(m.l!=null&&m.l!==line)return `<span class="lmv ${line>m.l?"up":"dn"}" title="Opened at ${m.l} today">${line>m.l?"▲":"▼"} from ${m.l}</span>`;
+  if(m.o!=null&&m.oNow!=null&&Math.abs(m.oNow-m.o)>=10)return `<span class="lmv fl" title="Over price opened ${m.o>0?"+":""}${m.o}">price ${m.oNow>m.o?"↑":"↓"} ${m.o>0?"+":""}${m.o}→${m.oNow>0?"+":""}${m.oNow}</span>`;
+  return ""}
+function loApply(d){
+  const I=loIdx();let nNba=0,nNfl=0;LO.move={};
+  const nb=d.nba||{},nf=d.nfl||{};
+  if(typeof NBA_PROPS!=="undefined"&&nb.props&&typeof NBA_SLATE_DATE!=="undefined"){
+    const today=new Set((nb.events||[]).filter(e=>e.date===NBA_SLATE_DATE).map(e=>String(e.id)));
+    const pos={};NBA_PROPS.forEach((r,i)=>pos[r[0]+"|"+r[1]]=i);
+    for(const r of nb.props){if(!today.has(String(r[13])))continue;const nm=I.nba[loNorm(r[0])];if(!nm||!NBA_MK[r[1]])continue;
+      const row=[nm,r[1],r[2],r[3],r[4],r[5],r[6],r[7],r[8],r[9]];while(row.length&&row[row.length-1]==null&&row.length>6)row.pop();
+      const k=nm+"|"+r[1];if(k in pos)NBA_PROPS[pos[k]]=row;else{pos[k]=NBA_PROPS.length;NBA_PROPS.push(row)}
+      LO.move[k]={l:r[10],o:r[11],oNow:r[3]};nNba++}
+    if(typeof NB!=="undefined"){NB._best=null}
+  }
+  if(typeof REAL_PROPS!=="undefined"&&nf.props&&typeof SLATE!=="undefined"){
+    const teams=new Set(SLATE.filter(g=>!g.final).flatMap(g=>[g.away,g.home]));
+    for(const r of nf.props){const nm=I.nfl[loNorm(r[0])];if(!nm||!MARKETS[r[1]])continue;const P=PINFO[nm];if(!P||!teams.has(P.team))continue;
+      if(typeof pLogs!=="undefined"&&!pLogs(nm).length)continue;
+      REAL_PROPS[nm+"|"+r[1]]=[r[2],r[3],r[4],r[5]];LO.move[nm+"|"+r[1]]={l:r[10],o:r[11],oNow:r[3]};nNfl++}
+    if(typeof NFL_BEST_C!=="undefined")NFL_BEST_C=null;
+  }
+  LO.nba=nNba;LO.nfl=nNfl;return nNba+nNfl}
+function loAgo(){if(!LO.data)return "";const m=Math.max(0,Math.round((Date.now()-Date.parse(LO.data.updated))/60000));return m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"}
+function loBadge(){return LO.data&&(LO.nba||LO.nfl)?`<div class="upd lo">⚡ Live sportsbook odds · updated <b>${loAgo()}</b> · ${LO.nba?LO.nba+" NBA":""}${LO.nba&&LO.nfl?" + ":""}${LO.nfl?LO.nfl+" NFL":""} lines</div>`:""}
+function loRerender(){const y=scrollY;if(typeof route==="function")route();scrollTo(0,y)}
+async function loFetch(first){
+  if(location.protocol==="file:")return;
+  try{const r=await fetch("data/live_odds.json",{cache:"no-store"});if(!r.ok)return;const d=await r.json();if(!d||!d.updated)return;
+    if(LO.data&&LO.data.updated===d.updated)return;
+    LO.data=d;const n=loApply(d);if(!n)return;
+    if(first||!LO.applied){LO.applied=1;loRerender();return}
+    let b=document.getElementById("loPill");if(!b){b=document.createElement("button");b.id="loPill";document.body.appendChild(b);b.onclick=()=>{b.remove();loRerender()}}
+    b.textContent="🔄 New odds — tap to update";
+  }catch(e){}}
+window.addEventListener("load",()=>{setTimeout(()=>loFetch(true),300);setInterval(()=>loFetch(false),5*60*1000)});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)loFetch(false)});
 /* ---------- Shared pages: combined record, beginner guide; share images; install-as-app ---------- */
 
 /* ===== Combined record (NFL Plays of the Week + NBA Plays of the day) ===== */
@@ -3439,6 +3489,8 @@ function favDecorate(){
 
 /* ===== Updated-at strip ===== */
 function updatedHtml(sport){
+  const lb=typeof loBadge!=="undefined"?loBadge():"";if(lb&&(sport==="nba"?LO.nba:LO.nfl))return lb+updatedHtml0(sport);return updatedHtml0(sport)}
+function updatedHtml0(sport){
   if(sport==="nba"&&typeof NBA_GEN!=="undefined")return `<div class="upd">🕒 NBA updated <b>${esc(NBA_GEN)}</b> · stats through ${nbaDayS(NBA_ASOF)} · game lines ${esc(NBA_LINES_ASOF||"")}</div>`;
   if(sport==="nfl")return `<div class="upd">🕒 NFL lines & injuries <b>${typeof MARKET_ASOF!=="undefined"?esc(MARKET_ASOF):""}</b> · stats ${typeof USAGE_ASOF!=="undefined"?esc(USAGE_ASOF):""}${typeof NFL_XWEEK!=="undefined"?` · standings through Week ${NFL_XWEEK}`:""} · <a href="#guide" style="color:inherit">sources</a></div>`;
   return "";
@@ -4322,7 +4374,7 @@ function nflLinesBlock(pl,head){
    <div class="small" style="margin-bottom:8px">Last 6 games, newest on the right: <span class="lc o">green</span> = went over, <span class="lc u">red</span> = went under. Tap a line for its full chart.</div>`}
    ${MK.map(m=>{const rp=realProp(pl.name,m),line=rp[0],td=m==="anyTD";const G=L.filter(l=>Number.isFinite(stat(l,m))).slice(-6),vals=G.map(l=>stat(l,m)),ov=vals.filter(v=>v>line).length;
      const lean=G.length?(ov/G.length>=.67?["o",td?"Scores often":"Leans over"]:ov/G.length<=.33?["u",td?"Rarely scores":"Leans under"]:["n","Split"]):["n",""];
-     return `<div class="pl" data-m="${m}"><div class="plh"><div><b>${MARKETS[m].n}</b> ${td?"":`<span class="plv">${line}</span>`}</div>
+     return `<div class="pl" data-m="${m}"><div class="plh"><div><b>${MARKETS[m].n}</b> ${td?"":`<span class="plv">${line}</span>`}${typeof loMoveTag!=="undefined"?loMoveTag(pl.name,m,line):""}</div>
        <div class="small">${rp[1]!=null?(td?"Yes ":"O ")+amTxt(rp[1]):""}${rp[2]!=null?" · U "+amTxt(rp[2]):""}${rp[1]==null&&rp[2]==null?"odds not listed":""}${rp[3]?" · "+esc(rp[3]):""}</div></div>${typeof nflVerdict!=="undefined"?nflVerdict(pl.name,m,1):""} ${typeof actBtn!=="undefined"?(()=>{const o=specProp(pl.name,m,"over"),u=specProp(pl.name,m,"under");return `<div class="obrow">${o.odds!=null?actBtn(o,`${td?"Yes":"Over "+line} <b>${oddsFmt(o.odds)}</b>`,"ov"):""}${!td&&u.odds!=null?actBtn(u,`Under ${line} <b>${oddsFmt(u.odds)}</b>`,"un"):""}${snapBtn("nfl",pl.name,m)}</div>`})():""}
        ${G.length?`<div class="plg">${G.map((l,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}" title="Week ${l.week} ${l.home?"vs":"@"} ${l.opp}"><b>${v}</b><span>${l.home?"":"@"}${l.opp}</span></div>`}).join("")}</div>
        <div class="plf"><b class="${ov/G.length>=.5?"up":"dn"}">${ov}/${G.length} ${td?"with a TD":"over"}</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>`:`<div class="small" style="margin-top:6px">No ${CUR} games logged yet.</div>`}</div>`}).join("")}</div>`;
