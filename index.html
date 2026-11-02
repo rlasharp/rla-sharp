@@ -390,6 +390,7 @@ nav[hidden]{display:none!important}
 .card.prop .shop{font-size:12.5px;background:var(--card2);border-radius:10px;padding:7px 10px;margin:0 0 10px;line-height:1.5}
 .nbmate{-webkit-appearance:none;appearance:none;background:var(--card2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23999' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid rgba(127,127,127,.3);border-radius:10px;color:inherit;padding:9px 34px 9px 12px!important;font-size:14px}
 .vbox li div{flex:1;min-width:0}
+.pmk{margin:12px 0 10px;flex-wrap:wrap;border-radius:14px}.pmk button{flex:0 0 auto}.pmk button small{opacity:.7;font-weight:500}.pmkc[hidden]{display:none}.pmkw{max-width:720px}
 .hr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
 .hr4 div{background:var(--card2);border-radius:10px;padding:7px 4px;text-align:center;font-size:11.5px;color:var(--muted)}
 .hr4 b{display:block;font-size:15px;color:var(--text)}
@@ -2633,7 +2634,7 @@ function nbaBestCard(n,more){
 }
 /* clicking a best prop / play / card button opens the player's page, scrolled to that line */
 function nbaUnesc(s){return s.replace(/&quot;/g,'"').replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&")}
-function nbaGoPlayer(nm,k){NB.goto="pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k+"_p";NB.from=location.hash.replace("#","")||"nba";location.hash="nba-player-"+encodeURIComponent(nm)}
+function nbaGoPlayer(nm,k){NB.pmk=k;NB.goto="pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k+"_p";NB.from=location.hash.replace("#","")||"nba";location.hash="nba-player-"+encodeURIComponent(nm)}
 function nbaWireBest(root){
   root.querySelectorAll("[data-shimg=nba]").forEach(b=>b.onclick=e=>{e.stopPropagation();shareNbaPlays()});
   root.querySelectorAll("[data-bp]").forEach(b=>b.onclick=()=>nbaGoPlayer(nbaUnesc(b.dataset.nm),b.dataset.bp.split("|")[0]));
@@ -2931,7 +2932,9 @@ function nbaPlayer(el,nm){
   const tk=NB.ptk||"pts";
   const dvp=opp&&p.p5?nbaDvp(opp,p.p5,"pts",5):null,dvpAvg=dvp&&dvp.rows.length?dvp.rows.reduce((s,r)=>s+r.v,0)/dvp.rows.length:null;
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
-  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}<div class="grid g2">${props.map((r,i)=>nbaPropCard(r,100+i)).join("")}</div>`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
+  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
+    return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div>
+    <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
@@ -2966,6 +2969,7 @@ function nbaPlayer(el,nm){
   el.querySelectorAll("[data-ptk]").forEach(b=>b.onclick=()=>{NB.ptk=b.dataset.ptk;document.getElementById("ptrend").innerHTML=nbaTrend(p,NB.ptk);el.querySelectorAll("[data-ptk]").forEach(x=>x.classList.toggle("on",x===b))});
   nbaWireMin(el,()=>nbaPlayer(el,nm));
   if(typeof nbaWirePx!=="undefined")nbaWirePx(el,nm);
+  el.querySelectorAll("[data-pmk]").forEach(b=>b.onclick=()=>{NB.pmk=b.dataset.pmk;el.querySelectorAll("[data-pmk]").forEach(x=>x.classList.toggle("on",x===b));el.querySelectorAll("[data-pmkc]").forEach(c=>c.hidden=c.dataset.pmkc!==NB.pmk)});
   nbaWireCharts(el,()=>nbaPlayer(el,nm));
   el.querySelectorAll("[data-jump]").forEach(r=>r.onclick=()=>nbaFlash(r.dataset.jump));
   if(NB.goto){const id=NB.goto;NB.goto=null;setTimeout(()=>nbaFlash(id),60)}
