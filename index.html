@@ -203,6 +203,10 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 .brandlink{display:flex;align-items:center;gap:inherit;color:inherit;text-decoration:none}
 .upd{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.5}.upd b{color:var(--text2);font-weight:600}
 #banner .upd{margin:0 0 10px}
+.gtabs{display:flex;gap:6px;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:4px;margin:12px 0}.gtabs a{flex:1;text-align:center;padding:10px 8px;border-radius:10px;font-weight:700;font-size:14px;color:var(--text2);text-decoration:none}.gtabs a.on{background:var(--card);color:var(--text);box-shadow:0 1px 0 var(--line)}.gtabs small{background:#f3c75a22;color:#f3c75a;border-radius:999px;padding:1px 7px;margin-left:4px;font-size:11px}
+.gpf{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 4px}.gpf .seg{display:flex;gap:6px;flex-wrap:wrap}.gpf select{font-size:15px;padding:8px 10px;max-width:100%}
+.gph{display:flex;gap:10px;align-items:center;margin-bottom:8px}.gph a{color:var(--text);text-decoration:none}.gph a:hover{text-decoration:underline}
+.gpcnt{display:block;margin:8px 0 2px;padding:8px 10px;border-radius:10px;background:#f3c75a14;border:1px solid #f3c75a40;color:#f3c75a;font-weight:700;font-size:13.5px;text-decoration:none}
 .gl{border-bottom:1px dotted currentColor;cursor:help;text-decoration:none}.gl::after{content:"ⓘ";font-size:.68em;opacity:.55;margin-left:2px;vertical-align:super;line-height:0}
 #glpop{position:absolute;z-index:9999;display:none;background:#1f232a;color:#e9ecf1;border:1px solid #3a3f48;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.4;box-shadow:0 10px 30px #0008}#glpop.open{display:block}#glpop b{color:#f3c75a}
 .glrow{display:grid;grid-template-columns:130px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}.glrow span{color:var(--text2)}@media(max-width:480px){.glrow{grid-template-columns:1fr;gap:2px}}
@@ -2044,6 +2048,7 @@ function nbaGameCard(g){
   const fav=L?(L.sp<=0?g.h:g.a):null;
   return `<div class="card nbag nbg2" data-ng="${g.id}">
     <div class="when"><span><b style="color:var(--text)">${g.t}</b> ET</span><span>Details →</span></div>
+    ${(()=>{const n=nbaGamePropCount(g);return n?`<a class="gpcnt" href="#nba-game-${g.id}-props" onclick="event.stopPropagation()">🎯 ${n} player props →</a>`:""})()}
     ${row(g.a,false)}${row(g.h,true)}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>
     <div class="nbwpl"><span>${g.a} ${Math.round(W.a*100)}%</span><span class="small">chance to win (from the odds)</span><span>${g.h} ${Math.round(W.h*100)}%</span></div>`:""}
@@ -2056,7 +2061,7 @@ function nbaGameCard(g){
 }
 function nbaGames(el){
   el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>
-  <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today. Tap a game for injuries, head-to-head and player stats.</p>
+  <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
   <div class="grid g2">${NBA_SLATE.map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
   <div style="margin-top:14px">${nbaPlaysCard()}</div>
   <div style="margin-top:14px">${nbaRecordCard(0)}</div>
@@ -2121,6 +2126,7 @@ function nbaLast5(t){
     return `<div class="l5r"><span class="chip ${w?"w":"l"}">${w?"W":"L"}</span><span>${home?"vs":"@"} ${opp}</span><span class="small">${nbaDayS(r[1])}</span><b>${us}-${them}</b></div>`}).join("")||`<div class="small">No games yet.</div>`;
 }
 function nbaGame(el,id){
+  const tabP=/-props$/.test(id);id=String(id).replace(/-props$/,"");
   const g=NBA_SLATE.find(x=>String(x.id)===String(id));
   if(!g){location.hash="nba";return}
   const A=NBA_TADV[g.a],H=NBA_TADV[g.h],M=nbaModel(g.a,g.h),k=nbaKeyOutAll(g),L=NBA_LINES[g.a+"@"+g.h],W=nbaWinPct(L);
@@ -2138,7 +2144,8 @@ function nbaGame(el,id){
     <div class="ghm"><b>${g.t}</b><span class="small">ET · ${nbaDayS(NBA_SLATE_DATE)}</span></div>
     <div class="ght">${nbaBadge(g.h)}<b>${nbaTeamLink(g.h,nbaEsc(nbaShort(g.h)))}</b><span class="small">${nbaRec(g.h)}</span></div>
   </div>
-  <div class="card">
+  ${nbaGameTabs(g,tabP)}
+  ${tabP?`<div id="gpBody">${nbaGameProps(g)}</div>`:`<div class="card">
     ${L?`<div class="nbl" style="justify-content:center"><span>Spread <b>${L.sp<=0?g.h:g.a} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`:`<div class="small">Lines not posted yet.</div>`}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>
     <div class="nbwpl"><span>${g.a} ${Math.round(W.a*100)}%</span><span class="small">chance to win (from the odds)</span><span>${g.h} ${Math.round(W.h*100)}%</span></div>`:""}
@@ -2170,7 +2177,17 @@ function nbaGame(el,id){
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${nbaShort(g.a)} players</h2>${nbaPlayerTable(nbaTopPlayers(g.a,7),{no3:1,nonote:1})}</div>
     <div class="card"><h2>${nbaShort(g.h)} players</h2>${nbaPlayerTable(nbaTopPlayers(g.h,7),{no3:1,nonote:1})}</div>
-  </div><p class="note" style="margin-top:8px">Per-game averages this season. ▲▼ = much hotter or colder over the last 5 games.</p>`;
+  </div><p class="note" style="margin-top:8px">Per-game averages this season. ▲▼ = much hotter or colder over the last 5 games.</p>`}`;
+  if(tabP)nbaWireGameProps(el,g);
+}
+function nbaGameTabs(g,tabP){const n=nbaGamePropCount(g);
+  return `<div class="gtabs"><a href="#nba-game-${g.id}" class="${tabP?"":"on"}">📊 Game</a><a href="#nba-game-${g.id}-props" class="${tabP?"on":""}">🎯 Player props${n?` <small>${n}</small>`:""}</a></div>`}
+function nbaWireGameProps(el,g){
+  const redraw=()=>{const y=scrollY;const b=document.getElementById("gpBody");if(b){b.innerHTML=nbaGameProps(g);nbaWireGameProps(el,g)}scrollTo(0,y)};
+  el.querySelectorAll("[data-gpt]").forEach(b=>b.onclick=()=>{NB.gpt=b.dataset.gpt;redraw()});
+  const s=document.getElementById("gpMk");if(s)s.onchange=()=>{NB.gpm=s.value;redraw()};
+  el.querySelectorAll("#gpBody [data-jump]").forEach(r=>{r.removeAttribute("data-jump")});
+  nbaWireBest(el);
 }
 
 /* ---------- By quarter / first half (from play-by-play) ---------- */
@@ -2641,6 +2658,37 @@ function nbaSplitsCard(nm){
   <div class="nbatbl"><table class="bxt spl" style="min-width:0"><thead><tr><th></th>${cols.map(c=>`<th>${c[1]}</th>`).join("")}</tr></thead><tbody>
   <tr><td><b>Season</b><div class="small">${p.g.length} games</div></td>${cols.map(([k])=>`<td><b>${nbaF(all[k])}</b></td>`).join("")}</tr>${rows}</tbody></table></div></div>`;
 }
+function nbaLineRow(nm,r){
+      const [,k,line,op,up,book]=r,l6=nbaAllG(nm).slice(-6),vals=l6.map(o=>nbaVal(o.x,k)),ov=vals.filter(v=>v>line).length;
+      const lean=l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
+      return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p">
+        <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span></div>
+          <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):""}${nbaShopHtml(r)}
+        <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
+        <div class="plf"><b class="${ov/Math.max(1,l6.length)>=.5?"up":"dn"}">${ov}/${l6.length} over</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
+        ${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}
+      </div>`}
+
+/* ---------- Game page: every player prop from this game ---------- */
+function nbaGameProps(g){
+  if(nbaStarted(g))return `<div class="info"><span>🔒 This game has started — pregame player props are closed.</span></div>`;
+  const tms=[g.a,g.h],all=NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&tms.includes(p.tm)&&NBA_MK[r[1]]});
+  if(!all.length)return `<div class="card"><h2>No player props yet</h2><p class="small" style="margin:0">Sportsbooks usually post NBA player props the morning of the game. We add them by about noon ET — check back then.</p></div>`;
+  const tf=NB.gpt&&tms.includes(NB.gpt)?NB.gpt:"all",mf=NB.gpm&&all.some(r=>r[1]===NB.gpm)?NB.gpm:"all";
+  const best=nbaBest().filter(b=>{const p=NBA_LOGS[b.nm];return p&&tms.includes(p.tm)}).slice(0,5);
+  const mks=[...new Set(all.map(r=>r[1]))].sort((x,y)=>Object.keys(NBA_MK).indexOf(x)-Object.keys(NBA_MK).indexOf(y));
+  const byP={};all.filter(r=>(tf==="all"||NBA_LOGS[r[0]].tm===tf)&&(mf==="all"||r[1]===mf)).forEach(r=>(byP[r[0]]=byP[r[0]]||[]).push(r));
+  const order=Object.keys(byP).sort((x,y)=>(NBA_LOGS[x].tm===g.a?0:1)-(NBA_LOGS[y].tm===g.a?0:1)||nbaAvg(NBA_LOGS[y],"min")-nbaAvg(NBA_LOGS[x],"min"));
+  const chip=(attr,v,l,on)=>`<button class="btn${on?" on":""}" data-${attr}="${v}">${l}</button>`;
+  return `${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best props in this game</h2><div class="small" style="margin-bottom:8px">Ranked by how far our hit score beats the odds.</div><div class="bpc">${best.map(nbaBestRow).join("")}</div></div>`:""}
+  <div class="gpf"><div class="seg">${chip("gpt","all",`Both teams`,tf==="all")}${tms.map(t=>chip("gpt",t,`${nbaBadge(t)} ${nbaShort(t)}`,tf===t)).join("")}</div>
+  <select id="gpMk"><option value="all">All markets (${all.length})</option>${mks.map(m=>`<option value="${m}"${mf===m?" selected":""}>${NBA_MK[m][1]} (${all.filter(r=>r[1]===m).length})</option>`).join("")}</select></div>
+  ${order.map(nm=>{const p=NBA_LOGS[nm];return `<div class="card plines gpp" style="margin-top:12px">
+    <div class="gph">${nbaBadge(p.tm)}<div style="min-width:0"><a href="#nba-player-${encodeURIComponent(nm)}"><b>${nbaEsc(nm)}</b></a>${nbaInjChip(nbaInjOf(nm))}<div class="small">${p.tm} · ${p.p5||p.pos||""} · ${nbaF(nbaAvg(p,"min"))} min/game · ${byP[nm].length} line${byP[nm].length>1?"s":""}</div></div></div>
+    ${byP[nm].map(r=>nbaLineRow(nm,r)).join("")}</div>`}).join("")||`<div class="small" style="margin-top:10px">No lines match these filters.</div>`}
+  <p class="note" style="margin-top:8px">Boxes = his last 6 games, newest on the right: <span class="lc o">green</span> over, <span class="lc u">red</span> under. Lines close when the game starts.</p>`;
+}
+function nbaGamePropCount(g){if(nbaStarted(g))return 0;return NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&(p.tm===g.a||p.tm===g.h)&&NBA_MK[r[1]]}).length}
 function nbaPlayer(el,nm){
   const p=NBA_LOGS[nm];
   if(!p){el.innerHTML=`<a href="#nba-players" class="small" style="color:var(--text2)">← Players</a><h1>${nbaEsc(nm)}</h1><p class="sub">No games played yet this season.</p>`;return}
@@ -2655,16 +2703,7 @@ function nbaPlayer(el,nm){
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
   const linesTbl=props.length?`<div class="card plines" style="margin-top:12px"><h2 style="margin-bottom:2px">His lines tonight</h2>
     <div class="small" style="margin-bottom:8px">Last 6 games, newest on the right: <span class="lc o">green</span> = went over, <span class="lc u">red</span> = went under. Tap a line for its chart.</div>
-    ${props.map(r=>{
-      const [,k,line,op,up,book]=r,l6=nbaAllG(nm).slice(-6),vals=l6.map(o=>nbaVal(o.x,k)),ov=vals.filter(v=>v>line).length;
-      const lean=l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
-      return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p">
-        <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span></div>
-          <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):""}${nbaShopHtml(r)}
-        <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
-        <div class="plf"><b class="${ov/Math.max(1,l6.length)>=.5?"up":"dn"}">${ov}/${l6.length} over</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
-        ${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}
-      </div>`}).join("")}
+    ${props.map(r=>nbaLineRow(nm,r)).join("")}
     ${props.length&&nbaAllG(nm).slice(-6).some(o=>o.prev)?`<div class="small" style="margin-top:6px">Faded boxes are from last season.</div>`:""}</div>`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">
@@ -3772,11 +3811,12 @@ function viewGames(){
       <div><div class="tm">${badge(g.away)}<span class="nm">${TEAMS[g.away][0]}<small>${recTxt(g.away)}</small></span></div>
       <div class="tm" style="margin-top:8px">${badge(g.home)}<span class="nm">${TEAMS[g.home][0]}<small>${recTxt(g.home)}</small></span></div></div>
       ${lineRows(g)}
+      ${(()=>{const n=nflGamePropCount(g);return n?`<a class="gpcnt" href="#game-${g.id}-props" onclick="event.stopPropagation()">🎯 ${n} player props →</a>`:""})()}
       <div class="pubmini">🔮 Prediction: <b>${short(pj.win)} ${Math.max(pj.a,pj.h)}–${Math.min(pj.a,pj.h)}</b> · ${short(pj.win)} win chance ${pj.winP}% · projected total ${pj.total}</div>
       ${typeof moveMini!=="undefined"?moveMini(g):""}${typeof restMini!=="undefined"?restMini(g):""}${wxMini(g)}${(()=>{const o=[...(INJ[g.away]||[]),...(INJ[g.home]||[])].filter(x=>x[2]==="Out"&&["QB","RB","WR","TE"].includes(x[1]));return o.length?`<div class="pubmini">🚑 Out: ${o.map(x=>esc(x[0])+" ("+x[1]+")").join(", ")}</div>`:""})()}
       <div class="pubmini">📈 ATS: ${g.away} <b>${ATS[g.away]||"n/a"}</b> · ${g.home} <b>${ATS[g.home]||"n/a"}</b> &nbsp; O/U: ${g.away} <b>${OU[g.away]||"n/a"}</b> · ${g.home} <b>${OU[g.home]||"n/a"}</b></div></div>`}).join("");
   const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:"";
-  $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1><p class="sub">${SLATE.filter(g=>!g.final).length} games to play, ${SLATE.filter(g=>g.final).length} final. Tap a game for matchups, injuries, weather and player props.</p>
+  $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1><p class="sub">${SLATE.filter(g=>!g.final).length} games to play, ${SLATE.filter(g=>g.final).length} final. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
    <div class="games">${cards}</div>
    <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary>
    <p class="small" style="margin:8px 0 0"><b>Moneyline</b>: bet on who wins. <b>Spread</b>: the favorite must win by more than the number. <b>Total</b>: will both teams' points add up to more or less than the line? <b>🔮 Prediction</b>: our model's projected score and win chance — an estimate, not a sure thing. New to betting? See <a href="#guide" style="color:inherit">Betting 101</a>.</p></details>
@@ -3791,6 +3831,7 @@ function betOdds(title,g){const o=bookML(g),sp=bookSpread(g),tl=bookTotal(g);
   const rows=title==="Moneyline"?[[short(g.away),amTxt(o.a),specGame(g,"ml",g.away)],[short(g.home),amTxt(o.h),specGame(g,"ml",g.home)]]:title==="Spread"?[[`${short(g.away)} ${sideLine(-sp)}`,amTxt(-110),specGame(g,"spread",g.away)],[`${short(g.home)} ${sideLine(sp)}`,amTxt(-110),specGame(g,"spread",g.home)]]:[[`Over ${tl}`,amTxt(-110),specGame(g,"total","over")],[`Under ${tl}`,amTxt(-110),specGame(g,"total","under")]];
   return `<div class="odds2">${rows.map(([a,b,sp])=>`<div><span>${a}</span><b>${b}</b>${g.final?"":`<button class="betplus" data-bet='${esc(JSON.stringify(sp))}' title="Add to My Bets" aria-label="Add ${esc(a)} to My Bets">＋</button>`}</div>`).join("")}<span class="small">${title==="Moneyline"?"Best available odds":`Best available line · standard ${amTxt(-110)} price (the book's exact price wasn't published)`}</span></div>`}
 function viewGame(id){
+  const tabP=/-props$/.test(String(id));id=String(id).replace(/-props$/,"");
   const g=SLATE.find(x=>x.id==id);if(!g){location.hash="games";return}
   const head=`<a class="btn" href="#games">← All games</a>
    <div class="card section" style="margin-top:14px"><div class="small" style="text-align:center">${g.when}${g.tv?" · "+g.tv:""}</div>`;
@@ -3801,6 +3842,8 @@ function viewGame(id){
       <div class="sbmid" style="font-size:22px">@</div>
       <div class="sbteam">${badge(g.home)}<div class="nm">${TEAMS[g.home][0]}</div><div class="rec">${recTxt(g.home)}</div></div>
     </div></div>
+   ${nflGameTabs(g,tabP)}
+   ${tabP?`<div id="gpBody">${nflGameProps(g)}</div>`:`
    <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
     <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p></div>
    ${nflEdgesCard(g)}
@@ -3818,11 +3861,34 @@ function viewGame(id){
     <div class="card"><h2>Recent form</h2><p class="small" style="margin-top:-6px">Every 2026 game, newest first. Green = won, red = lost. The bar shows how much they won or lost by. Source: CBS Sports scores.</p>${formHtml(g.away)}${formHtml(g.home)}</div>
     <div class="card"><h2>Head-to-head</h2>${h2hHtml(g)}</div></div>
    ${nfNextCard(g)}
-   <div class="section"><div class="row"><h2 style="margin:0">Player props in this game</h2><span class="sp"></span><a class="btn" href="#props">All props →</a></div>
-    <p class="small">${srcTag("player")} Tap a card for the full breakdown.</p><div class="props" id="gProps"></div></div>`;
-  const rows=[...propRows(playersOf(g.away),g.home),...propRows(playersOf(g.home),g.away)];
-  $("#gProps").innerHTML=rows.map(propCard).join("");bindProps($("#gProps"));
+   <a class="btn" href="#game-${g.id}-props" style="display:block;text-align:center;margin-top:14px">🎯 See every player prop in this game →</a>`}`;
+  if(tabP)nflWireGameProps(g);
   window.scrollTo(0,0);
+}
+function nflGamePlayers(g){const tms=[g.away,g.home];
+  return Object.values(PINFO).filter(p=>tms.includes(p.team)&&marketsFor(p.pos).some(m=>realProp(p.name,m)))
+   .sort((a,b)=>tms.indexOf(a.team)-tms.indexOf(b.team)||POS.indexOf(a.pos)-POS.indexOf(b.pos)||a.name.localeCompare(b.name))}
+function nflGamePropCount(g){if(g.final||nflStarted(g))return 0;return nflGamePlayers(g).reduce((n,p)=>n+marketsFor(p.pos).filter(m=>realProp(p.name,m)).length,0)}
+function nflGameTabs(g,tabP){if(g.final)return "";const n=nflGamePropCount(g);
+  return `<div class="gtabs" style="margin-top:12px"><a href="#game-${g.id}" class="${tabP?"":"on"}">📊 Game</a><a href="#game-${g.id}-props" class="${tabP?"on":""}">🎯 Player props${n?` <small>${n}</small>`:""}</a></div>`}
+let NFL_GPT="all";
+function nflGameProps(g){
+  if(nflStarted(g))return `<div class="info"><span>🔒 This game has kicked off — pregame player props are closed.</span></div>`;
+  const tms=[g.away,g.home],P=nflGamePlayers(g);
+  if(!P.length)return `<div class="card"><h2>No player props yet</h2><p class="small" style="margin:0">Sportsbooks post most NFL player props between Tuesday and Thursday. We add them as they come out — check back then.</p></div>`;
+  const tf=tms.includes(NFL_GPT)?NFL_GPT:"all";
+  const best=nflBest().filter(b=>tms.includes(b.pl.team)).slice(0,5);
+  const list=P.filter(p=>tf==="all"||p.team===tf);
+  return `${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best props in this game</h2><div class="small" style="margin-bottom:8px">Ranked by how far our hit score beats the odds.</div><div class="bpc">${best.map(nflBestRow).join("")}</div></div>`:""}
+  <div class="gpf"><div class="seg"><button class="btn${tf==="all"?" on":""}" data-ngpt="all">Both teams</button>${tms.map(t=>`<button class="btn${tf===t?" on":""}" data-ngpt="${t}">${badge(t)} ${esc(short(t))}</button>`).join("")}</div></div>
+  ${list.map(p=>nflLinesBlock(p,`<div class="gph">${badge(p.team)}<div style="min-width:0"><a href="#" data-gopl="${esc(p.name)}"><b>${esc(p.name)}</b></a><div class="small">${p.team} · ${p.pos} · ${marketsFor(p.pos).filter(m=>realProp(p.name,m)).length} line${marketsFor(p.pos).filter(m=>realProp(p.name,m)).length>1?"s":""}</div></div></div>`)).join("")}
+  <p class="note" style="margin-top:8px">Boxes = his last 6 games this season, newest on the right: <span class="lc o">green</span> over, <span class="lc u">red</span> under. Lines close at kickoff.</p>`;
+}
+function nflWireGameProps(g){const b=document.getElementById("gpBody");if(!b)return;
+  b.querySelectorAll("[data-ngpt]").forEach(x=>x.onclick=()=>{NFL_GPT=x.dataset.ngpt;const y=scrollY;b.innerHTML=nflGameProps(g);nflWireGameProps(g);scrollTo(0,y)});
+  b.querySelectorAll("[data-gopl]").forEach(x=>x.onclick=e=>{e.preventDefault();goPlayer(x.dataset.gopl.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'))});
+  b.querySelectorAll("[data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};location.hash="props"});
+  b.querySelectorAll(".pl[data-m]").forEach(el=>el.onclick=e=>{if(e.target.closest("button,a"))return;const nm=el.closest(".plines").querySelector("[data-gopl]");if(nm){S.prop={player:nm.dataset.gopl.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.m,open:true};location.hash="props"}});
 }
 /* ---------- Coverage: man vs zone ---------- */
 // REAL: defensive man/zone coverage rates, Sharp Football Analysis (updated Oct 27, 2026)
@@ -4042,12 +4108,12 @@ function nflTopHtml(){
    <div class="small" style="margin-top:8px">Leans from past results, not guarantees. NFL samples are small (one game a week) — bet small.</div></div>`;
 }
 /* player page: every real line for him with his last 6 games, green = over, red = under */
-function nflLinesBlock(pl){
+function nflLinesBlock(pl,head){
   const o=oppOf(pl.team);if(o&&nflStarted(o.g))return `<div class="info" style="margin:12px 0"><span>🔒 His game has kicked off — this week's pregame lines are closed.</span></div>`;
   const MK=marketsFor(pl.pos).filter(m=>realProp(pl.name,m));if(!MK.length)return "";
   const L=pLogs(pl.name).filter(l=>l.season===CUR);
-  return `<div class="card plines" style="margin:12px 0"><h2 style="margin-bottom:2px">His lines this week</h2>
-   <div class="small" style="margin-bottom:8px">Last 6 games, newest on the right: <span class="lc o">green</span> = went over, <span class="lc u">red</span> = went under. Tap a line for its full chart.</div>
+  return `<div class="card plines" style="margin:12px 0">${head||`<h2 style="margin-bottom:2px">His lines this week</h2>
+   <div class="small" style="margin-bottom:8px">Last 6 games, newest on the right: <span class="lc o">green</span> = went over, <span class="lc u">red</span> = went under. Tap a line for its full chart.</div>`}
    ${MK.map(m=>{const rp=realProp(pl.name,m),line=rp[0],td=m==="anyTD";const G=L.filter(l=>Number.isFinite(stat(l,m))).slice(-6),vals=G.map(l=>stat(l,m)),ov=vals.filter(v=>v>line).length;
      const lean=G.length?(ov/G.length>=.67?["o",td?"Scores often":"Leans over"]:ov/G.length<=.33?["u",td?"Rarely scores":"Leans under"]:["n","Split"]):["n",""];
      return `<div class="pl" data-m="${m}"><div class="plh"><div><b>${MARKETS[m].n}</b> ${td?"":`<span class="plv">${line}</span>`}</div>
