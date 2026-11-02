@@ -2112,11 +2112,12 @@ function nbaMinUI(id,tn){
   const f=NB.gf,spPre=[[-15,-7,"Fav 7+"],[-15,-.5,"Favored"],[.5,15,"Underdog"],[7,15,"Dog 7+"]].concat(tn&&tn.sp!=null?[[Math.max(-15,tn.sp-3),Math.min(15,tn.sp+3),"Near tonight"]]:[]).concat([[-15,15,"Any"]]);
   const ttPre=[[195,255,"Any"]].concat(tn&&tn.tot!=null?[[Math.max(195,tn.tot-5),Math.min(255,tn.tot+5),`Near tonight (${tn.tot})`]]:[]).concat([[195,225,"Low (225 or less)"],[225,255,"High (225+)"]]);
   const mnPre=[[0,48,"Any"],[10,48,"10+"],[20,48,"20+"],[25,48,"25+"],[30,48,"30+"]];
-  return `<div class="card nbmin pxf" id="${id}"><details class="pxfd"${NB.fOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary>
+  return `<div class="card nbmin pxf" id="${id}"${tn&&tn.nm?` data-nm="${nbaEsc(tn.nm)}"`:""}><details class="pxfd"${NB.fOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary>
    ${tn&&tn.sp!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">Tonight: ${pxSpTxt(tn.sp)}${tn.tot!=null?" · O/U "+tn.tot:""}</span></div>`:""}
    ${pxDual("sp","Team's spread",-15,15,.5,f.lo,f.hi,["Favored","PK","Underdog"],spPre)}
    ${pxDual("tt","Game total (O/U)",195,255,.5,f.tlo,f.thi,["195","225","255"],ttPre)}
    ${pxDual("mn","Minutes played",0,48,1,NB.mlo,NB.mhi,["0","24","48"],mnPre)}
+   ${tn&&tn.nm?`<div class="pxfr"><div class="pxfl"><span>Teammates</span><b class="noglo">${NB.tmf[tn.nm]?"":"All games"}</b></div>${nbaMateSel(tn.nm)}</div>`:""}
    <div class="small">Applies to every chart and hit rate (L5, L10, Season, H2H). Spreads and totals are DraftKings closing lines; older games have none, so they drop out when those filters are on.</div></details></div>`;
 }
 function nbaWireMin(root,redraw){
@@ -2128,8 +2129,9 @@ function nbaWireMin(root,redraw){
     box.querySelector(`[data-r="${nm}|lo"]`).value=a;box.querySelector(`[data-r="${nm}|hi"]`).value=b;
     box.querySelectorAll(`[data-pre^="${nm}|"]`).forEach(p=>{const [,pa,pb]=p.dataset.pre.split("|");p.classList.toggle("on",+pa===x&&+pb===y)})}
     const on=[];for(const nm in st){const x=Math.min(...st[nm]),y=Math.max(...st[nm]);if(x>R[nm][0]||y<R[nm][1])on.push(`<span class="fchip" data-fclr="${nm}">${txt[nm](x,y)} ✕</span>`)}
-    const fs=box.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.join(""):'<span class="fany">Any spread · Any total · Any minutes</span>';
-    box.querySelectorAll("[data-fclr]").forEach(c=>c.onclick=e=>{e.preventDefault();e.stopPropagation();st[c.dataset.fclr]=[...R[c.dataset.fclr]];paint();apply()})};
+    const mnm=box.dataset.nm?nbaUnesc(box.dataset.nm):null,mv=mnm&&NB.tmf[mnm];if(mv){const [w,who]=mv.split("|");on.push(`<span class="fchip" data-fclr="mate">${w==="w"?"With":"Without"} ${nbaEsc(who.split(" ").slice(-1)[0])} ✕</span>`)}
+    const fs=box.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.join(""):`<span class="fany">Any spread · Any total · Any minutes${mnm?" · All teammates":""}</span>`;
+    box.querySelectorAll("[data-fclr]").forEach(c=>c.onclick=e=>{e.preventDefault();e.stopPropagation();if(c.dataset.fclr==="mate"){delete NB.tmf[mnm];apply();return}st[c.dataset.fclr]=[...R[c.dataset.fclr]];paint();apply()})};
   const dd=box.querySelector("details");if(dd)dd.ontoggle=()=>{NB.fOpen=dd.open};
   const apply=()=>{const o=(nm)=>[Math.min(...st[nm]),Math.max(...st[nm])];[NB.gf.lo,NB.gf.hi]=o("sp");[NB.gf.tlo,NB.gf.thi]=o("tt");[NB.mlo,NB.mhi]=o("mn");
     try{LS.set("nbaMin",[NB.mlo,NB.mhi]);LS.set("nbaGF",[NB.gf.lo,NB.gf.hi,NB.gf.tlo,NB.gf.thi])}catch(e){}NB._best=null;const y=window.scrollY;redraw();window.scrollTo(0,y)};
@@ -2524,7 +2526,7 @@ function nbaPropCard(r,idx){
   <div class="pcl noglo"><div class="pcv">${line}<small>${NBA_MK[k]?NBA_MK[k][2]:""}</small></div>
     <div class="pcm"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)}</b><div class="pco">${op!=null?`<span class="o">Over ${oddsFmt(op)}</span>`:""}${up!=null?`<span class="u">Under ${oddsFmt(up)}</span>`:""}${book?`<span class="bk">${nbaEsc(book)}</span>`:""}</div></div></div>
   ${nbaShopHtml(r)}
-  ${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${nbaMateSel(nm)}
+  ${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${(idx||0)<100?nbaMateSel(nm):""}
   <div class="hr4"><div><b>${rate(S.l5)}</b>Last 5</div><div><b>${rate(S.l10)}</b>Last 10</div><div><b>${rate(S.season)}</b>Season</div><div><b>${rate(S.h2h)}</b>vs ${opp||"opp"}</div></div>
   <div class="nbtabs">${tab("l5","L5")}${tab("l10","L10")}${tab("season","Season")}${tab("h2h","H2H",S.h2h.length)}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
@@ -2945,7 +2947,7 @@ function nbaPlayer(el,nm){
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
   const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div>
-${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}
+${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm}})())}
     <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">
@@ -4936,11 +4938,6 @@ function viewPlayer(){
    ${typeof nflVerdict!=="undefined"&&realProp(pl.name,k)?nflVerdict(pl.name,k):""}
    <div class="section">${typeof nflPropFilterCard!=="undefined"?nflPropFilterCard(pl,k,line,CL):""}</div>
    ${QA?qbSplitCard(pl,k,line,CLall,QS,QM,qmode):""}
-   <div class="stats3" style="margin-top:14px">
-    <div class="stat"><div class="l">Season average${qmode==="all"?"":qmode==="with"?" (with QB1)":" (without QB1)"}</div><div class="v">${sv.length?fmt(avg(sv),dec):"—"}</div><div class="s">${unit} · ${sv.length} games</div></div>
-    <div class="stat"><div class="l">Season high / low</div><div class="v">${sv.length?Math.max(...sv)+" / "+Math.min(...sv):"—"}</div><div class="s">${unit}</div></div>
-    <div class="stat"><div class="l">${v10.length?`Last ${v10.length} games (${CUR})`:"Game log"}</div><div class="v">${v10.length?ov+" of "+v10.length:"—"}</div><div class="s">${v10.length?"went over "+line:"no games yet"}</div></div>
-    <div class="stat"><div class="l">${opp||"Defense"} vs ${pl.pos}s</div><div class="v">${Number.isFinite(dv.rank)?ordinal(dv.rank):"—"}</div><div class="s">most allowed (1st = most)</div></div></div>
    <div class="section">
     ${v10.length?"":`<div class="card"><h2>Game log</h2><p class="note">No game log loaded for ${esc(pl.name)} yet.</p></div>`}</div>
    ${typeof nflPropXCard!=="undefined"?nflPropXCard(pl,k,line,CL):""}
