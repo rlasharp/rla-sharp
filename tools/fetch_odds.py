@@ -131,6 +131,27 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
             prev_open[key] = op
     return evs, rows, used
 
+def save_close(sport_key, evs, rows, stamp):
+    """Closing lines: every run overwrites the latest PRE-GAME line per prop (rows only hold games that
+    haven't started), so the last write before tip-off is the close. One small file per ET game date."""
+    by_ev = {str(e["id"]): e.get("date") for e in evs}
+    per = {}
+    for r in rows:
+        d = by_ev.get(str(r[13]))
+        if d: per.setdefault(d, {})[f"{sport_key}|{r[0]}|{r[1]}"] = [r[2], r[3], r[4], r[5], stamp]
+    os.makedirs("data/close", exist_ok=True)
+    for d, m in per.items():
+        f = f"data/close/{d}.json"
+        try:
+            with open(f) as fh: cur = json.load(fh)
+        except Exception: cur = {}
+        cur.update(m)
+        with open(f, "w") as fh: json.dump(cur, fh, separators=(",", ":"), ensure_ascii=False)
+    # keep ~60 days
+    cutoff = (dt.datetime.now(ET) - dt.timedelta(days=60)).strftime("%Y-%m-%d")
+    for fn in os.listdir("data/close"):
+        if fn.endswith(".json") and fn[:10] < cutoff: os.remove(os.path.join("data/close", fn))
+
 def main():
     prev = load_prev()
     today = dt.datetime.now(ET).strftime("%Y-%m-%d")
@@ -144,6 +165,8 @@ def main():
     if used < 900:
         evs, rows, used = fetch_sport("basketball_nba", NBA_MK, 30, opens, used)
         if evs or rows: out["nba"] = {"at": out["updated"], "events": evs, "props": rows}
+        try: save_close("nba", evs, rows, out["updated"])
+        except Exception as e: print("close (nba) failed:", e)
     last_nfl = (prev.get("nfl") or {}).get("at")
     stale = True
     if last_nfl:
@@ -152,6 +175,8 @@ def main():
     if stale and used < 900:
         evs, rows, used = fetch_sport("football_nfl", NFL_MK, 8 * 24, opens, used)
         if evs or rows: out["nfl"] = {"at": out["updated"], "events": evs, "props": rows}
+        try: save_close("nfl", evs, rows, out["updated"])
+        except Exception as e: print("close (nfl) failed:", e)
     keep = {e["id"] for s in ("nba", "nfl") for e in (out[s].get("events") or [])}
     out["open"] = {k: v for k, v in opens.items() if k.split("|")[0] in {str(x) for x in keep}}
     out["budget"] = {"day": today, "used": used}

@@ -26,7 +26,7 @@ jobs:
         run: |
           git config user.name "rla-sharp-odds-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/live_odds.json
+          git add data/live_odds.json data/close
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "Live odds $(date -u +%H:%MZ)"
           for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0; sleep 5; done
