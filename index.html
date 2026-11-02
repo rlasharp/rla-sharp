@@ -233,6 +233,19 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 #agegate .agbox{background:var(--card);border:1px solid var(--line);border-radius:18px;max-width:420px;padding:24px;text-align:center;line-height:1.5}
 #agegate .btn{display:block;width:100%;margin-top:10px;padding:12px}#agegate .agyes{background:#f3c75a;color:#1a1608;border-color:#f3c75a}
 body.gated{overflow:hidden}
+.obrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:2px 0 8px}
+.obtn{background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;cursor:pointer}.obtn b{margin-left:4px}
+.obtn.ov{border-color:#2c5a3b}.obtn.un{border-color:#5a2c2e}.obtn.plus{padding:2px 9px;margin-top:4px;font-weight:800;border-radius:999px}
+#actmenu{position:absolute;z-index:80;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#actmenu .btn{display:block;width:100%;margin-top:6px;text-align:left}
+#slipBtn{position:fixed;right:14px;bottom:20px;z-index:55;background:#f3c75a;color:#1a1608;border:0;border-radius:999px;padding:11px 16px;font:inherit;font-weight:700;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.45);cursor:pointer}
+@media(max-width:700px){#slipBtn{bottom:calc(84px + env(safe-area-inset-bottom))}}
+#slipPanel{position:fixed;inset:0;z-index:61;pointer-events:none}
+#slipPanel .msback{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;transition:opacity .2s}
+#slipPanel .mspanel{position:absolute;left:0;right:0;bottom:0;max-height:86vh;overflow:auto;background:var(--card);border-radius:18px 18px 0 0;padding:10px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .22s;max-width:640px;margin:0 auto}
+#slipPanel.open{pointer-events:auto}#slipPanel.open .msback{opacity:1}#slipPanel.open .mspanel{transform:none}
+.roles{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 8px}
+.rchart{width:100%;height:auto;display:block}
 .potd{border:1px solid #4a3d1a;background:linear-gradient(180deg,#2a2412,var(--card) 60%)}
 .pod{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}.pod:last-of-type{border-bottom:0}
 .podn{flex:0 0 28px;height:28px;border-radius:50%;background:#f3c75a;color:#1a1608;display:flex;align-items:center;justify-content:center;font-weight:800}
@@ -448,6 +461,7 @@ nav[hidden]{display:none!important}
     <a href="#nba-scores" data-v="nba-scores">Scores</a>
     <a href="#nba-teams" data-v="nba-teams">Standings</a>
     <a href="#nba-injuries" data-v="nba-injuries">Injuries</a>
+    <a href="#bets" data-v="bets">🎟️ My Bets</a>
       <a href="#record" data-v="record">📒 Record</a>
     <a href="#guide" data-v="guide">Betting 101</a>
   </nav>
@@ -1166,7 +1180,10 @@ function realPropPlayers(){const m=new Map();Object.keys(REAL_PROPS).forEach(key
 function playersOf(t){return realPropPlayers().filter(p=>p.team===t)}
 function playersOfOld(t){const m=new Map();S.playerLogs.forEach(l=>{if(l.team===t&&!m.has(l.player))m.set(l.player,{name:l.player,team:t,pos:l.pos})});return [...m.values()].sort((a,b)=>POS.indexOf(a.pos)-POS.indexOf(b.pos)||a.name.localeCompare(b.name))}
 function allPlayers(){return realPropPlayers()}
-function pLogs(name){return S.playerLogs.filter(l=>l.player===name).sort((a,b)=>sortKey(a)-sortKey(b))}
+/* memoised per player; rebuilt automatically if the log array is replaced or grows */
+let PL_IDX=null,PL_SRC=null,PL_LEN=0;
+function pLogs(name){if(PL_SRC!==S.playerLogs||PL_LEN!==S.playerLogs.length){PL_IDX=new Map();for(const l of S.playerLogs){let a=PL_IDX.get(l.player);if(!a)PL_IDX.set(l.player,a=[]);a.push(l)}for(const a of PL_IDX.values())a.sort((x,y)=>sortKey(x)-sortKey(y));PL_SRC=S.playerLogs;PL_LEN=S.playerLogs.length}
+  return (PL_IDX.get(name)||[]).slice()}
 function marketsFor(pos){return Object.keys(MARKETS).filter(k=>MARKETS[k].pos.includes(pos))}
 function oppOf(team){const g=SLATE.find(g=>!g.final&&(g.home===team||g.away===team));return g?(g.home===team?{opp:g.away,home:1,g}:{opp:g.home,home:0,g}):null}
 
@@ -1692,15 +1709,26 @@ function betsLoad(){return LS.get("bets",[])}
 function betsSave(a){LS.set("bets",a)}
 function betStakeDefault(){return LS.get("betStake",10)}
 function betTitle(b){
+  if(b.k==="nbaprop"){const m=typeof NBA_MK!=="undefined"&&NBA_MK[b.market];return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1]:b.market}`}
+  if(b.k==="parlay")return `${b.legs.length}-leg parlay`;
   if(b.k==="prop"){const m=MARKETS[b.market];if(b.market==="anyTD")return `${b.player} anytime TD`;
     return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m.n.toLowerCase().replace(/\btds\b/,"TDs"):b.market}`}
   if(b.k==="spread")return `${TEAMS[b.team][0]} ${b.line>0?"+":""}${b.line}`;
   if(b.k==="ml")return `${TEAMS[b.team][0]} moneyline`;
   return `${short(b.away)} @ ${short(b.home)} ${b.side==="over"?"Over":"Under"} ${b.line}`}
-function betMatchup(b){if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
+function betMatchup(b){if(b.k==="nbaprop")return `NBA · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nbaDayS!=="undefined"?nbaDayS(b.date):b.date}`;
+  if(b.k==="parlay")return b.legs.map(l=>betTitle(l)).join(" + ");
+  if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
   const g=SLATE.find(x=>x.id===b.game);return `${short(b.away)} @ ${short(b.home)}${g?" · "+g.when:""}`}
 const betDec=a=>a>0?1+a/100:1+100/(-a);
 function gradeBet(b){
+  if(b.k==="nbaprop"){const p=typeof NBA_LOGS!=="undefined"&&NBA_LOGS[b.player],x=p&&p.g.find(y=>y[1]===b.date&&(!b.opp||y[2]===b.opp));
+    if(!x){const done=typeof NBA_RES!=="undefined"&&NBA_RES.some(z=>z[1]===b.date&&(z[2]===b.team||z[3]===b.team));return done?{r:"void",why:"Did not play — no action"}:{r:"pending"}}
+    const v=nbaVal(x,b.market),r=v===b.line?"push":((b.side==="over")===(v>b.line))?"win":"loss";return {r,why:`Final: ${v}`}}
+  if(b.k==="parlay"){const G=b.legs.map(gradeBet);if(G.some(g=>g.r==="loss"))return {r:"loss",why:`${G.filter(g=>g.r==="win").length}/${G.length} legs hit`};
+    if(G.some(g=>g.r==="pending"))return {r:"pending",why:`${G.filter(g=>g.r==="win").length}/${G.length} legs won so far`};
+    const live=b.legs.filter((l,i)=>G[i].r==="win");if(!live.length)return {r:"push",why:"All legs pushed or voided"};
+    return {r:"win",why:`All ${live.length} live legs hit`}}
   if(b.k==="prop"){const lg=pLogs(b.player).find(l=>l.season===CUR&&l.week===b.wk);
     const played=RESULTS.some(r=>r[0]===b.wk&&(r[1]===b.team||r[3]===b.team));
     if(!lg)return played?{r:"void",why:"Did not play — no action"}:{r:"pending"};
@@ -1712,16 +1740,19 @@ function gradeBet(b){
   if(b.k==="ml"){const w=ap>hp?b.away:hp>ap?b.home:null;return {r:w===null?"push":w===b.team?"win":"loss",why}}
   if(b.k==="spread"){const me=b.team===b.away?ap:hp,op=b.team===b.away?hp:ap,m=me-op+b.line;return {r:m>0?"win":m<0?"loss":"push",why}}
   const t=ap+hp;return {r:t===b.line?"push":((b.side==="over")===(t>b.line))?"win":"loss",why}}
-function betProfit(b,g){g=g||gradeBet(b);return g.r==="win"?b.stake*(betDec(b.odds)-1):g.r==="loss"?-b.stake:0}
+function betProfit(b,g){g=g||gradeBet(b);
+  if(b.k==="parlay"&&g.r==="win"){const G=b.legs.map(gradeBet),d=b.legs.reduce((a,l,i)=>a*(G[i].r==="win"?betDec(l.odds):1),1);return b.stake*(d-1)}
+  return g.r==="win"?b.stake*(betDec(b.odds)-1):g.r==="loss"?-b.stake:0}
 function addBet(spec){const a=betsLoad();
-  const key=JSON.stringify([spec.k,spec.player,spec.market,spec.side,spec.game,spec.team,spec.line]);
-  if(a.some(b=>b.key===key&&b.wk===BETS_WEEK)){toast("Already in My Bets");return}
-  const b=Object.assign({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),key,wk:BETS_WEEK,stake:betStakeDefault(),added:Date.now()},spec);
+  const key=JSON.stringify([spec.k,spec.player,spec.market,spec.side,spec.game,spec.team,spec.line,spec.date,spec.legs&&spec.legs.map(l=>l.key||betTitle(l))]);
+  const wk=spec.wk||BETS_WEEK;
+  if(a.some(b=>b.key===key&&b.wk===wk)){toast("Already in My Bets");return}
+  const b=Object.assign({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),key,wk,stake:betStakeDefault(),added:Date.now()},spec);
   if(b.odds==null){b.odds=-110;b.est=true}
   a.push(b);betsSave(a);toast("Added to My Bets: "+betTitle(b));updateBetsBadge()}
 function updateBetsBadge(){const n=betsLoad().filter(b=>gradeBet(b).r==="pending").length;const a=document.querySelector('#nav a[data-v="bets"]');if(a)a.textContent=n?`My Bets (${n})`:"My Bets"}
 // small button HTML; spec is JSON in a data attribute (handled by one delegated listener)
-function betBtn(spec,label){return `<button class="btn betbtn" data-bet='${esc(JSON.stringify(spec))}' title="Add to My Bets">＋ ${label||"My Bets"}</button>`}
+function betBtn(spec,label){return `<button class="btn betbtn" data-act='${esc(JSON.stringify(spec))}' title="Track or add to parlay">＋ ${label||"My Bets"}</button>`}
 function shareBtn(spec,label){return `<button class="btn betbtn" data-share='${esc(JSON.stringify(spec))}' title="Share as image">⤴ ${label||"Share"}</button>`}
 document.addEventListener("click",e=>{
   const t=e.target.closest&&e.target.closest("[data-bet],[data-share]");if(!t)return;
@@ -1747,7 +1778,7 @@ function viewBets(){
   const money=v=>(v<0?"−$":"$")+Math.abs(v).toFixed(2);
   const row=({b,g})=>{const c=RES_COL[g.r];const pr=betProfit(b,g);
     return `<div class="card betrow"><div class="row" style="gap:8px;align-items:center;flex-wrap:wrap">
-      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">Week ${b.wk} · ${betMatchup(b)}</span></div>
+      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="parlay"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
      <h3 style="margin:8px 0 2px">${esc(betTitle(b))}</h3>
      <div class="small">Odds ${amTxt(b.odds)}${b.est?" (assumed — exact price not published)":""}${b.book?" · "+esc(b.book):""}${g.why?` · <b style="color:${c}">${esc(g.why)}</b>`:""}</div>
      <div class="row" style="gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">
@@ -1765,7 +1796,7 @@ function viewBets(){
     ${a.length?'<span class="sp"></span><button class="btn" id="betClear">Clear all</button>':""}</div>
    ${a.length?`${pend.length?`<h2>Pending</h2><div class="grid g2">${pend.slice().reverse().map(row).join("")}</div>`:""}
      ${set.length?`<h2 style="margin-top:18px">Settled</h2><div class="grid g2">${set.slice().reverse().map(row).join("")}</div>`:""}`
-    :`<div class="card"><p class="note" style="margin:0">No bets yet. Go to <a href="#plays">Plays of the Week</a>, <a href="#props">Player Props</a> or any game and tap <b>＋ My Bets</b>.</p></div>`}
+    :`<div class="card"><p class="note" style="margin:0">No bets yet. Tap any <b>odds button</b> on an NBA prop (Best props, player pages) or <b>＋ My Bets</b> on NFL plays, props and games — then choose <b>Track</b> or <b>Add to parlay</b>.</p></div>`}
    <p class="note" style="margin-top:12px">For tracking only — this site doesn't take bets. 21+ (18+ in some states). Gambling problem? Call or text 1-800-GAMBLER. In Quebec: 1-800-461-0140.</p>`;
   const d=$("#betDef");if(d)d.onchange=()=>{LS.set("betStake",Math.max(0,+d.value||0))};
   el.querySelectorAll("[data-stake]").forEach(i=>i.onchange=()=>{const a=betsLoad(),b=a.find(x=>x.id===i.dataset.stake);if(b){b.stake=Math.max(0,+i.value||0);betsSave(a);viewBets()}});
@@ -2013,6 +2044,7 @@ function nbaGames(el){
   <div class="grid g2">${NBA_SLATE.map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
   <div style="margin-top:14px">${nbaPlaysCard()}</div>
   <div style="margin-top:14px">${nbaRecordCard(0)}</div>
+  ${typeof nbaRoleCard!=="undefined"&&NBA_SLATE.some(g=>!nbaStarted(g))?`<div style="margin-top:14px">${nbaRoleCard(8)}</div>`:""}
   <a href="#nba-best" class="btn" style="display:block;text-align:center;margin-top:10px">🔥 See every prop ranked →</a>
   <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary>
   <p class="small" style="margin:8px 0 0"><b>Spread</b>: the favorite (minus number) has to win by more than that many points; the underdog (plus number) can lose by less. <b>Win</b>: moneyline odds to win the game outright. <b>Total</b>: bet whether both teams together score over or under that number. "Missing" lists regulars who are out. Lines from DraftKings. Research, not a guarantee.</p></details>`;
@@ -2251,7 +2283,7 @@ function nbaPropCard(r,idx){
   return `<div class="card prop" id="${id}" data-k="${k}" data-nm="${nbaEsc(nm)}" data-line="${line}" data-opp="${opp}" data-pos="${p.p5||""}">
   <div><b>${nbaLink(nm)}</b> <span class="small">${p.p5||p.pos} · ${p.tm}${opp?(g.a===p.tm?" @ ":" vs ")+opp:""} · <b style="color:var(--text2)">${nbaF(nbaAvg(p,"min"))} min/g</b></span>${nbaInjChip(inj)}</div>
   <div style="margin:8px 0 10px;font-size:16px"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)} ${line}</b> <span class="small">${op!=null?"O "+oddsFmt(op):""}${up!=null?" · U "+oddsFmt(up):""}${book?" · "+nbaEsc(book):""}</span>${nbaShopHtml(r)}</div>
-  ${nbaBoostNote(nm,k)}${nbaMateSel(nm)}
+  ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${nbaBoostNote(nm,k)}${nbaMateSel(nm)}
   <div class="hr4"><div><b>${rate(S.l5)}</b>Last 5</div><div><b>${rate(S.l10)}</b>Last 10</div><div><b>${rate(S.season)}</b>Season</div><div><b>${rate(S.h2h)}</b>vs ${opp||"opp"}</div></div>
   <div class="nbtabs">${tab("l5","L5")}${tab("l10","L10")}${tab("season","Season")}${tab("h2h","H2H",S.h2h.length)}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
@@ -2358,7 +2390,7 @@ function nbaBestRow(b,i){
     <div class="bpm"><div><b>${nbaEsc(b.nm)}</b> <span class="small">${b.p.tm} ${b.g.a===b.p.tm?"@":"vs"} ${b.opp}</span>${nbaInjChip(nbaInjOf(b.nm))}</div>
       <div class="bpl"><b class="${b.side==="o"?"up":"dn"}">${b.side==="o"?"Over":"Under"} ${b.line}</b> ${NBA_MK[b.k][1]} <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
       <div class="bph">${hr(b.c5,"L5")}${hr(b.c10,"L10")}${b.cS[1]>=3?hr(b.cS,"season"):""}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
-    <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">odds need ${Math.round(b.be*100)}%</span></div>
+    <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">odds need ${Math.round(b.be*100)}%</span>${typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""}</div>
   </div>`;
 }
 function nbaBestCard(n,more){
@@ -2428,7 +2460,7 @@ function nbaPlaysCard(){
     return `<div class="pod" data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}"><div class="podn">${i+1}</div><div style="min-width:0;flex:1">
       <div><b>${nbaEsc(b.nm)}</b> <span class="small">${b.p.tm} ${b.g.a===b.p.tm?"@":"vs"} ${b.opp} · ${b.g.t} ET</span></div>
       <div class="bpl"><b class="${b.side==="o"?"up":"dn"}">${b.side==="o"?"Over":"Under"} ${b.line}</b> ${NBA_MK[b.k][1]} <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
-      <div class="small">${why}</div></div><div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span></div></div>`}).join("")}
+      <div class="small">${why}</div></div><div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span>${typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""}</div></div>`}).join("")}
   <button class="btn shbtn" data-shimg="nba">📤 Share today's plays</button>
   <div class="small" style="margin-top:8px">Picked automatically from real posted lines: 7+ of last 10, a winning record this season, a clear edge over what the odds need, no injury tag, odds no worse than −200. Leans, not guarantees — bet small.</div></div>`;
 }
@@ -2607,6 +2639,7 @@ function nbaPlayer(el,nm){
           <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${nbaShopHtml(r)}
         <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
         <div class="plf"><b class="${ov/Math.max(1,l6.length)>=.5?"up":"dn"}">${ov}/${l6.length} over</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
+        ${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}
       </div>`}).join("")}
     ${props.length&&nbaAllG(nm).slice(-6).some(o=>o.prev)?`<div class="small" style="margin-top:6px">Faded boxes are from last season.</div>`:""}</div>`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
@@ -2617,6 +2650,7 @@ function nbaPlayer(el,nm){
   </div>
   <div class="pbio">${bio?`<div><b>${nbaEsc(bio[0])||"–"}</b>Height</div><div><b>${nbaEsc(String(bio[1]).replace(" lbs",""))||"–"}<small> lbs</small></b>Weight</div><div><b>${nbaEsc(bio[2])||"–"}</b>Age</div><div><b>${bio[4]!==""&&bio[4]!=null?nbaEsc(bio[4]):"–"}</b>NBA seasons</div>`:""}<div><b>${p.g.length}</b>Games</div><div><b>${nbaF(nbaAvg(p,"min"))}</b>Min/game</div></div>
   ${g?`<div class="info"><span>Today ${g.a===p.tm?"@":"vs"} <b>${nbaTm(opp)}</b>, ${g.t} ET${dvpAvg!=null?`. ${opp} has allowed ${nbaF(dvpAvg)} points a game to ${nbaPosWord(p.p5)} over its last 5 (NBA average ${nbaF(dvp.lg)}).`:""}</span></div>`:""}
+  ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}
   ${linesTbl}
   ${inj?`<div class="info">Injury report: <b style="color:${nbaInjCol(inj[2])}">${nbaEsc(inj[2])}</b> — ${nbaEsc(inj[3])}${inj[4]?", est. return "+nbaEsc(inj[4]):""}</div>`:""}
   <div class="grid g4" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">${tile("pts","Points")}${tile("reb","Rebounds")}${tile("ast","Assists")}${tile("3pm","3-Pointers")}</div>
@@ -2976,15 +3010,34 @@ setTimeout(liveTick,300);
 function recAll(){
   const rows=[];
   if(typeof nbaRecord!=="undefined"){for(const x of nbaRecord().rows){const [d,nm,k,side,line,odds]=x.r;
-    rows.push({sport:"NBA",when:d,sort:d,label:`${nm} ${side==="o"?"Over":"Under"} ${line} ${NBA_MK[k]?NBA_MK[k][1]:k}`,type:"Player prop",st:x.st,u:x.u||0,odds,v:x.v})}}
+    rows.push({sport:"NBA",when:d,sort:d,date:d,label:`${nm} ${side==="o"?"Over":"Under"} ${line} ${NBA_MK[k]?NBA_MK[k][1]:k}`,type:"Player prop",st:x.st,u:x.u||0,odds,v:x.v})}}
   if(typeof PLAY_ARCHIVE!=="undefined"&&typeof gradeOne!=="undefined"){
     const tn={prop:"Player prop",spread:"Spread",ml:"Moneyline",total:"Over / Under"};
     const add=(pl,wk,d)=>{const g=gradeOne(pl,wk,d),odds=pl.odds!=null?pl.odds:d?d.odds:null;
-      rows.push({sport:"NFL",when:"Week "+wk,sort:"w"+String(wk).padStart(2,"0"),label:pl.title||(d&&d.title)||"",type:tn[pl.type]||"Other",st:g.r,u:unitsFor(g.r,odds),odds})};
+      rows.push({sport:"NFL",when:"Week "+wk,sort:"w"+String(wk).padStart(2,"0"),date:nflWeekDate(wk),label:pl.title||(d&&d.title)||"",type:tn[pl.type]||"Other",st:g.r,u:unitsFor(g.r,odds),odds})};
     Object.entries(PLAY_ARCHIVE).forEach(([wk,a])=>a.forEach(pl=>add(pl,+wk,null)));
     if(typeof PLAYS!=="undefined")PLAYS.forEach(pl=>add(pl,PLAYS_WEEK,playData(pl)));
   }
   return rows;
+}
+/* NFL week -> that week's Sunday (2026: Week 1 Sunday = Sep 13) */
+function nflWeekDate(wk){const d=new Date(Date.UTC((typeof CUR!=="undefined"?CUR:2026),8,13+7*(wk-1)));return d.toISOString().slice(0,10)}
+function recChart(R){
+  const G=R.filter(r=>r.st==="win"||r.st==="loss"||r.st==="push").sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  if(G.length<2)return `<div class="small" style="padding:10px 0">The profit chart appears once a few plays are graded.</div>`;
+  const pts=[];let u=0,nfl=0,nba=0;const P={all:[0],NFL:[0],NBA:[0]};
+  for(const r of G){u+=r.u;if(r.sport==="NFL")nfl+=r.u;else nba+=r.u;P.all.push(u);P.NFL.push(nfl);P.NBA.push(nba)}
+  const W=600,H=190,pad=28,all=[...P.all,...P.NFL,...P.NBA],mx=Math.max(1,...all),mn=Math.min(-1,...all);
+  const X=i=>pad+(W-pad*2)*i/(G.length),Y=v=>H-pad-(H-pad*2)*(v-mn)/(mx-mn);
+  const line=(a,c,w)=>`<polyline fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round" points="${a.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ")}"/>`;
+  const last=P.all[P.all.length-1];
+  return `<svg class="rchart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Units won over time">
+   <line x1="${pad}" x2="${W-pad}" y1="${Y(0)}" y2="${Y(0)}" stroke="#3a3f47" stroke-dasharray="4 4"/>
+   <text x="${pad}" y="${Y(0)-4}" fill="#7c828c" font-size="11">0u</text>
+   ${line(P.NFL,"#8cc0ff",1.5)}${line(P.NBA,"#ffb36b",1.5)}${line(P.all,last>=0?"#3fb26b":"#e5534b",3)}
+   <text x="${W-pad}" y="${Y(last)-6}" fill="#fff" font-size="13" font-weight="700" text-anchor="end">${last>0?"+":""}${last.toFixed(2)}u</text>
+   <text x="${pad}" y="${H-6}" fill="#7c828c" font-size="11">${G[0].date}</text><text x="${W-pad}" y="${H-6}" fill="#7c828c" font-size="11" text-anchor="end">${G[G.length-1].date}</text></svg>
+   <div class="small"><b style="color:${last>=0?"#3fb26b":"#e5534b"}">━</b> All plays · <b style="color:#8cc0ff">━</b> NFL · <b style="color:#ffb36b">━</b> NBA — cumulative units, 1 unit per play, in order of game date.</div>`;
 }
 function recSum(rows){const t={win:0,loss:0,push:0,void:0,pending:0,u:0};for(const r of rows){t[r.st]=(t[r.st]||0)+1;t.u+=r.u||0}t.g=t.win+t.loss;return t}
 function recLine(t){return `${t.win}-${t.loss}${t.push?"-"+t.push:""}`}
@@ -3002,6 +3055,7 @@ function viewRecord(){
   <div class="card rec"><div class="recs">${tile("Record",recLine(T))}${tile("Hit rate",T.g?Math.round(T.win/T.g*100)+"%":"–")}${tile("Units",uTxt(T.u),uCls(T.u))}</div>
    <div class="small" style="margin-top:6px">${T.pending?`${T.pending} play${T.pending>1?"s":""} still pending. `:""}Pushes and players who didn't play don't count.</div>
    <div class="row" style="gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn" id="recShare">📤 Share our record</button></div></div>
+  <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">📈 Profit over time</h2>${recChart(R)}</div>
   <div class="grid g2" style="margin-top:14px">${tbl("By sport",grp(r=>r.sport))}${tbl("By bet type",grp(r=>r.sport+" · "+r.type))}</div>
   <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">Every play</h2>
    ${recent.map(r=>`<div class="rcr"><span class="lc ${chip[r.st]?chip[r.st][1]:"p"} rcc">${chip[r.st]?chip[r.st][0]:r.st}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)} · ${esc(r.type)}${r.odds!=null?" · "+oddsFmt(r.odds):""}${r.v!=null?" · finished with "+r.v:""}</div></div><span class="${uCls(r.u)}">${r.st==="pending"?"":uTxt(r.u)}</span></div>`).join("")||`<div class="small">No plays yet.</div>`}</div>
@@ -3181,7 +3235,7 @@ function moreOpen(){
   let sh=document.getElementById("moresheet");if(!sh){sh=document.createElement("div");sh.id="moresheet";document.body.appendChild(sh)}
   const nba=[["#nba","🏀 Games"],["#nba-best","🔥 Best props"],["#nba-props","🎯 All props"],["#nba-players","👤 Players"],["#nba-teams","📊 Standings"],["#nba-scores","🧾 Scores"],["#nba-injuries","🚑 Injuries"]];
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#public","🔮 Predictions"],["#weeks","🧾 Scores"],["#standings","📊 Standings"],["#trends","📈 Team trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
-  const all=[["#record","📒 Our record"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
+  const all=[["#record","📒 Our record"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
   sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NFL",nfl)}${grp("More",all)}
@@ -3230,6 +3284,7 @@ function viewToday(){
       <a href="#plays" class="small" style="display:block;margin-top:8px;color:var(--text2)">Why we like them →</a></div>
   </div>
   <div style="margin-top:14px">${favHtml}</div>
+  ${nbaOpen.length&&typeof nbaRoleCard!=="undefined"?`<div style="margin-top:14px">${nbaRoleCard(5)}</div>`:""}
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2 style="margin-bottom:6px">🔥 Top NBA props</h2>${nbaTop.length?nbaTop.map(nbaBestRow).join(""):`<div class="small">${nbaGames.length&&!nbaOpen.length?"Tonight's games have started — new lines tomorrow morning.":"Lines usually post by late morning ET."}</div>`}<a href="#nba-best" class="small" style="display:block;margin-top:8px;color:var(--text2)">All ranked props →</a></div>
     <div class="card"><h2 style="margin-bottom:6px">🔥 Top NFL props</h2>${nflTop.length?nflTop.map(nflBestRow).join(""):`<div class="small">No open NFL lines with an edge right now.</div>`}<a href="#props" class="small" style="display:block;margin-top:8px;color:var(--text2)">All NFL props →</a></div>
@@ -3240,7 +3295,7 @@ function viewToday(){
   </div>
   <div style="margin-top:14px">${typeof recAll!=="undefined"?(()=>{const T=recSum(recAll());return `<a class="card recmini" href="#record"><span>📒 Our record</span><b>${recLine(T)}</b><span class="${T.u>0?"up":T.u<0?"dn":""}">${(T.u>0?"+":"")+T.u.toFixed(2)}u</span><span class="small">${T.pending?T.pending+" pending · ":""}see every play →</span></a>`})():""}</div>
   ${updatedHtml("nba")}${updatedHtml("nfl")}`;
-  host.querySelectorAll("[data-bp]").forEach(b=>b.onclick=()=>nbaGoPlayer(nbaUnesc(b.dataset.nm),b.dataset.bp.split("|")[0]));
+  host.querySelectorAll("[data-bp]").forEach(b=>b.onclick=e=>{if(e.target.closest("[data-act]"))return;nbaGoPlayer(nbaUnesc(b.dataset.nm),b.dataset.bp.split("|")[0])});
   host.querySelectorAll("[data-shimg=nba]").forEach(b=>b.onclick=e=>{e.stopPropagation();shareNbaPlays()});
   host.querySelectorAll("[data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};location.hash="props"});
   host.querySelectorAll("[data-nflfav]").forEach(el=>el.onclick=e=>{e.preventDefault();if(typeof goPlayer!=="undefined")goPlayer(el.dataset.nflfav.replace(/&amp;/g,"&"))});
@@ -3268,6 +3323,107 @@ window.addEventListener("hashchange",()=>setTimeout(appAfterRoute,40));
 window.addEventListener("load",()=>{setTimeout(appAfterRoute,60);ageGate()});
 /* NFL player view re-renders on market tabs: watch for it */
 new MutationObserver(()=>{if((location.hash||"")==="#props")favDecorate()}).observe(document.documentElement,{childList:true,subtree:true});
+
+/* ===== NBA role changes: minutes trend + lineup moves ===== */
+function nbaRole(nm){
+  const p=typeof NBA_LOGS!=="undefined"&&NBA_LOGS[nm];if(!p||p.g.length<5)return null;
+  const g=p.g,l3=g.slice(-3),pr=g.slice(0,-3),av=a=>a.reduce((s,x)=>s+x[4],0)/a.length;
+  const d=av(l3)-av(pr),st3=l3.filter(x=>x[9]).length,stP=pr.filter(x=>x[9]).length/pr.length;
+  const out=[];
+  if(g.slice(-2).every(x=>x[9])&&stP<.5)out.push({t:"🚀 Moved into the starting lineup",c:"o",w:3});
+  else if(g.slice(-2).every(x=>!x[9])&&stP>=.7)out.push({t:"⬇️ Moved to the bench",c:"u",w:3});
+  if(d>=5)out.push({t:`📈 Minutes up ${d.toFixed(1)}/game last 3 (${av(l3).toFixed(1)} vs ${av(pr).toFixed(1)})`,c:"o",w:d/5});
+  else if(d<=-5)out.push({t:`📉 Minutes down ${Math.abs(d).toFixed(1)}/game last 3 (${av(l3).toFixed(1)} vs ${av(pr).toFixed(1)})`,c:"u",w:-d/5});
+  return out.length?out:null;
+}
+function nbaRoleTag(nm){const R=nbaRole(nm);return R?`<div class="roles">${R.map(r=>`<span class="pll ${r.c}">${r.t}</span>`).join("")}</div>`:""}
+function nbaRoleList(){
+  if(typeof NBA_SLATE==="undefined")return [];const teams=NBA_SLATE.flatMap(g=>[g.a,g.h]),L=[];
+  for(const [n,p] of Object.entries(NBA_LOGS)){if(!teams.includes(p.tm)||/out/i.test((nbaInjOf(n)||[])[2]||""))continue;const R=nbaRole(n);if(R)L.push({n,p,R,w:Math.max(...R.map(r=>r.w))})}
+  return L.sort((a,b)=>b.w-a.w);
+}
+function nbaRoleCard(max){const L=nbaRoleList().slice(0,max||8);if(!L.length)return "";
+  return `<div class="card"><h2 style="margin-bottom:2px">📈 Role changes tonight</h2><div class="small" style="margin-bottom:6px">Players whose minutes or starting spot just changed — prop lines are often slow to catch up.</div>
+  ${L.map(x=>`<a class="fv" href="#nba-player-${encodeURIComponent(x.n)}"><b>${esc(x.n)} <span class="small">${x.p.tm}</span></b>${x.R.map(r=>`<span class="small ${r.c==="o"?"up":"dn"}">${r.t}</span>`).join("")}</a>`).join("")}</div>`}
+
+/* ===== Track / parlay buttons: one action menu for every bet button ===== */
+function nbaSpec(nm,k,side){
+  const r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k),p=NBA_LOGS[nm];if(!r||!p)return null;const g=nbaGameOf(p.tm);
+  const bp=typeof nbaBestPrice!=="undefined"?nbaBestPrice(r,side==="over"?"o":"u"):null;
+  return {k:"nbaprop",player:nm,market:k,side,line:r[2],odds:bp?bp[0]:(side==="over"?r[3]:r[4]),book:bp?bp[1]:r[5],team:p.tm,opp:g?(g.a===p.tm?g.h:g.a):"",home:g?g.h===p.tm:false,date:NBA_SLATE_DATE,wk:NBA_SLATE_DATE};
+}
+function actBtn(spec,label,cls){if(!spec)return "";return `<button class="obtn ${cls||""}" data-act='${esc(JSON.stringify(spec))}'>${label}</button>`}
+function nbaOddsBtns(nm,k){const o=nbaSpec(nm,k,"over"),u=nbaSpec(nm,k,"under");if(!o)return "";
+  return `<div class="obrow">${o.odds!=null?actBtn(o,`Over ${o.line} <b>${oddsFmt(o.odds)}</b>`,"ov"):""}${u.odds!=null?actBtn(u,`Under ${u.line} <b>${oddsFmt(u.odds)}</b>`,"un"):""}<span class="small">tap to track or parlay</span></div>`}
+function legHit(s){try{
+  if(s.k==="nbaprop"){const e=nbaEval(s.player,s.market,s.line,s.side==="over"?"o":"u",s.odds,s.book,s.opp);return e?e.sc:null}
+  if(s.k==="prop"&&typeof nflEval!=="undefined"){const e=nflEval(s.player,s.market,s.side==="over"?"o":"u");return e?e.sc:null}}catch(e){}return null}
+let ACT=null;
+document.addEventListener("click",e=>{
+  const m=document.getElementById("actmenu");
+  const b=e.target.closest&&e.target.closest("[data-act]");
+  if(m&&!e.target.closest("#actmenu")&&!b){m.remove();ACT=null}
+  if(!b)return;e.preventDefault();e.stopPropagation();
+  let spec;try{spec=JSON.parse(b.dataset.act.replace(/&quot;/g,'"').replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">"))}catch(err){return}
+  ACT=spec;if(m)m.remove();
+  const r=b.getBoundingClientRect(),d=document.createElement("div");d.id="actmenu";
+  d.innerHTML=`<div class="small" style="margin-bottom:6px"><b style="color:var(--text)">${esc(betTitle(spec))}</b>${spec.odds!=null?" · "+oddsFmt(spec.odds):""}${spec.book?" · "+esc(spec.book):""}</div>
+    <button class="btn" data-a="track">＋ Track in My Bets</button><button class="btn" data-a="slip">🎟 Add to parlay</button>`;
+  document.body.appendChild(d);
+  const W=Math.min(300,window.innerWidth-16);d.style.width=W+"px";d.style.left=Math.max(8,Math.min(window.innerWidth-W-8,r.left))+"px";
+  d.style.top=(r.bottom+6+window.scrollY)+"px";
+  d.querySelector('[data-a=track]').onclick=()=>{addBet(ACT);d.remove()};
+  d.querySelector('[data-a=slip]').onclick=()=>{slipAdd(ACT);d.remove()};
+},true);
+
+/* ===== Parlay slip ===== */
+function slipGet(){return LS.get("slip",[])||[]}
+function slipSet(a){LS.set("slip",a);slipRender()}
+function slipAdd(s){const a=slipGet();const key=JSON.stringify([s.k,s.player,s.market,s.game,s.team]);
+  if(a.some(x=>JSON.stringify([x.k,x.player,x.market,x.game,x.team])===key)){toast("That bet is already in your parlay (one side per market)");return}
+  if(a.length>=10){toast("Max 10 legs");return}
+  if(s.odds==null){s.odds=-110;s.est=true}
+  a.push(s);slipSet(a);toast(`Added to parlay — ${a.length} leg${a.length>1?"s":""}`)}
+function slipCalc(a){const dec=a.reduce((x,l)=>x*betDec(l.odds),1),am=dec>=2?Math.round((dec-1)*100):Math.round(-100/(dec-1));
+  const hs=a.map(legHit),known=hs.every(h=>h!=null);return {dec,am,impl:1/dec,est:known?hs.reduce((x,h)=>x*h,1):null,hs}}
+function slipRender(){
+  let btn=document.getElementById("slipBtn");const a=slipGet();
+  if(!a.length){if(btn)btn.remove();const p=document.getElementById("slipPanel");if(p)p.remove();return}
+  if(!btn){btn=document.createElement("button");btn.id="slipBtn";document.body.appendChild(btn);btn.onclick=slipOpen}
+  const c=slipCalc(a);btn.innerHTML=`🎟 Parlay · ${a.length} leg${a.length>1?"s":""} · <b>${a.length>1?(c.am>0?"+":"")+c.am:oddsFmt(a[0].odds)}</b>`;
+  const p=document.getElementById("slipPanel");if(p&&p.classList.contains("open"))slipOpen();
+}
+function slipOpen(){
+  const a=slipGet();let p=document.getElementById("slipPanel");if(!p){p=document.createElement("div");p.id="slipPanel";document.body.appendChild(p)}
+  const c=slipCalc(a),stake=LS.get("slipStake",10),pay=stake*c.dec;
+  const games={};a.forEach(l=>{const g=l.k==="nbaprop"?l.date+l.team+l.opp:l.team||l.game;if(g)games[g]=(games[g]||0)+1});
+  const same=a.filter(l=>l.k==="nbaprop").map(l=>[l.team,l.opp].sort().join("-")).filter((x,i,arr)=>arr.indexOf(x)!==i).length;
+  p.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div><h2 style="margin:4px 0 8px">🎟 Parlay builder</h2>
+   ${a.map((l,i)=>`<div class="rcr"><div style="flex:1;min-width:0"><b>${esc(betTitle(l))}</b><div class="small">${oddsFmt(l.odds)}${l.est?" (assumed)":""}${l.book?" · "+esc(l.book):""}${c.hs[i]!=null?` · our hit score ${Math.round(c.hs[i]*100)}%`:""}</div></div><button class="btn" data-rmleg="${i}">✕</button></div>`).join("")}
+   <div class="grid g2" style="gap:8px;margin-top:10px">
+    <div class="stat"><div class="l">Parlay odds</div><div style="font-size:22px;font-weight:800">${a.length>1?(c.am>0?"+":"")+c.am:oddsFmt(a[0].odds)}</div><div class="small">book's chance ${(c.impl*100).toFixed(1)}%</div></div>
+    <div class="stat"><div class="l">Our estimate</div><div style="font-size:22px;font-weight:800">${c.est!=null?(c.est*100).toFixed(1)+"%":"–"}</div><div class="small">${c.est!=null?(c.est>c.impl?"<b class='up'>above</b> the book's price":"<b class='dn'>below</b> the book's price"):"needs hit scores for every leg"}</div></div>
+   </div>
+   <label class="small" style="display:block;margin-top:10px">Stake $ <input type="number" min="0" step="1" id="slipStake" value="${stake}" style="width:90px"></label>
+   <div style="font-size:15px;margin-top:6px">Pays <b>$${pay.toFixed(2)}</b> (profit $${(pay-stake).toFixed(2)}) if all ${a.length} hit.</div>
+   ${same?`<div class="small" style="margin-top:6px;color:#f3c75a">⚠️ Two legs come from the same game — results can be linked, so the estimate is rough. Many books only allow these as a "same game parlay".</div>`:""}
+   <div class="small" style="margin-top:6px">Every leg must win. Our estimate multiplies each leg's hit score, as if the legs were independent — a guide, not a guarantee.</div>
+   <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn" id="slipTrack" ${a.length<2?"disabled":""}>＋ Track this parlay</button><button class="btn" id="slipClear">Clear</button><button class="btn" id="slipClose">Close</button></div></div>`;
+  p.className="open";
+  const close=()=>{p.className=""};p.querySelector(".msback").onclick=close;p.querySelector("#slipClose").onclick=close;
+  p.querySelectorAll("[data-rmleg]").forEach(b=>b.onclick=()=>{const x=slipGet();x.splice(+b.dataset.rmleg,1);slipSet(x);if(x.length)slipOpen()});
+  p.querySelector("#slipStake").onchange=e=>{LS.set("slipStake",Math.max(0,+e.target.value||0));slipOpen()};
+  p.querySelector("#slipClear").onclick=()=>{slipSet([]);close()};
+  const tr=p.querySelector("#slipTrack");if(tr)tr.onclick=()=>{const x=slipGet();if(x.length<2)return;const cc=slipCalc(x);
+    addBet({k:"parlay",legs:x,odds:cc.am,stake:LS.get("slipStake",10),wk:new Date().toISOString().slice(0,10)});slipSet([]);close()};
+}
+
+/* ===== Visitor stats (GoatCounter, privacy-friendly, no cookies) — set the code to switch on ===== */
+const ANALYTICS_CODE="";
+if(ANALYTICS_CODE&&/github\.io$/.test(location.hostname)){const s=document.createElement("script");s.async=true;s.dataset.goatcounter=`https://${ANALYTICS_CODE}.goatcounter.com/count`;s.src="https://gc.zgo.at/count.js";document.head.appendChild(s);
+  window.addEventListener("hashchange",()=>{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:location.pathname+location.hash})})}
+
+window.addEventListener("load",()=>setTimeout(slipRender,80));
 
 /* ============================================================
    SIMPLE UI
@@ -3608,12 +3764,14 @@ function nflEval(name,k,side){
   return {name,k,side,line,odds,book:rp[3],pl,opp:o.opp,home:o.home,g:o.g,sc,be,edge:sc-be,dvOk,dv,
     c5:[hit(l5),l5.length],cS:[hit(cur),cur.length],cH:[hit(vs),vs.length]};
 }
+let NFL_BEST_C=null;
 function nflBest(){
+  const ck=(typeof startedKey!=="undefined"?startedKey():"")+"|"+Object.keys(REAL_PROPS).length;if(NFL_BEST_C&&NFL_BEST_C.k===ck)return NFL_BEST_C.L;
   const out=[];
   for(const key of Object.keys(REAL_PROPS)){const [name,k]=key.split("|");for(const side of ["o","u"]){const e=nflEval(name,k,side);if(e&&e.edge>0)out.push(e)}}
   const seen=new Set(),per={},top=[],rest=[];
   for(const x of out.sort((a,b)=>b.edge-a.edge)){const key=x.name+"|"+x.k;if(seen.has(key))continue;seen.add(key);per[x.name]=(per[x.name]||0)+1;(per[x.name]<=2?top:rest).push(x)}
-  return top.concat(rest);
+  const L=top.concat(rest);NFL_BEST_C={k:ck,L};return L;
 }
 function nflBestRow(b,i){
   const hr=(c,l)=>c[1]?`<span class="${c[0]/c[1]>=.6?"g":c[0]/c[1]<.4?"r":""}"><b>${c[0]}/${c[1]}</b> ${l}</span>`:"";
@@ -3878,7 +4036,7 @@ function viewWeeks(){
 /* ---------- Router ---------- */
 function route(){
   const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
-  const SHARED=["calc","record","guide","today"],isNba=h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba");
+  const SHARED=["calc","record","guide","today","bets"],isNba=h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba");
   if(h.startsWith("nba"))LS.set("sport","nba");else if(!SHARED.includes(h))LS.set("sport","nfl");
   document.getElementById("nav").hidden=isNba;document.getElementById("nbaNav").hidden=!isNba;
   
