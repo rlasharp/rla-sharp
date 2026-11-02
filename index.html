@@ -2512,7 +2512,7 @@ function nbaPropCard(r,idx){
   <div class="pcl noglo"><div class="pcv">${line}<small>${NBA_MK[k]?NBA_MK[k][2]:""}</small></div>
     <div class="pcm"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)}</b><div class="pco">${op!=null?`<span class="o">Over ${oddsFmt(op)}</span>`:""}${up!=null?`<span class="u">Under ${oddsFmt(up)}</span>`:""}${book?`<span class="bk">${nbaEsc(book)}</span>`:""}</div></div></div>
   ${nbaShopHtml(r)}
-  ${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${opp?nbaOppAllows(opp,k):""}${nbaMateSel(nm)}
+  ${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${nbaMateSel(nm)}
   <div class="hr4"><div><b>${rate(S.l5)}</b>Last 5</div><div><b>${rate(S.l10)}</b>Last 10</div><div><b>${rate(S.season)}</b>Season</div><div><b>${rate(S.h2h)}</b>vs ${opp||"opp"}</div></div>
   <div class="nbtabs">${tab("l5","L5")}${tab("l10","L10")}${tab("season","Season")}${tab("h2h","H2H",S.h2h.length)}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
@@ -2931,11 +2931,7 @@ function nbaPlayer(el,nm){
   const tk=NB.ptk||"pts";
   const dvp=opp&&p.p5?nbaDvp(opp,p.p5,"pts",5):null,dvpAvg=dvp&&dvp.rows.length?dvp.rows.reduce((s,r)=>s+r.v,0)/dvp.rows.length:null;
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
-  const linesTbl=props.length?`<div class="card plines" style="margin-top:12px"><h2 style="margin-bottom:2px">His lines tonight</h2>
-    <div class="small" style="margin-bottom:8px">Bars = his last 10 games vs tonight's line (gold). Boxes = last 6, newest on the right: <span class="lc o">green</span> over, <span class="lc u">red</span> under. Tap a line for its chart.</div>
-    ${opp?nbaOppAllows(opp,null):""}
-    ${props.map(r=>nbaLineRow(nm,r)).join("")}
-    ${props.length&&nbaAllG(nm).slice(-6).some(o=>o.prev)?`<div class="small" style="margin-top:6px">Faded boxes are from last season.</div>`:""}</div>`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
+  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}<div class="grid g2">${props.map((r,i)=>nbaPropCard(r,100+i)).join("")}</div>`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
@@ -2964,7 +2960,6 @@ function nbaPlayer(el,nm){
   ${nbaSplitsCard(nm)}
   ${typeof nbaPropXCard!=="undefined"?nbaPropXCard(nm):""}
   <div class="card" style="margin-top:14px"><h2>${nbaShort(p.tm)} schedule · next 7 days</h2>${nbaNextHtml(p.tm)}</div>
-  ${props.length?`<h2 style="margin:18px 0 10px">Prop charts</h2>${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}<div class="grid g2">${props.map((r,i)=>nbaPropCard(r,100+i)).join("")}</div>`:""}
   <div class="card" style="margin-top:14px"><h2>Game log</h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Date</th><th>Opp</th><th>MIN</th><th>PTS</th><th>REB</th><th>AST</th><th>FG</th><th>3PT</th><th>FT</th></tr></thead><tbody>
   ${p.g.slice().reverse().map(x=>`<tr><td style="min-width:0">${+x[1].slice(5,7)}/${+x[1].slice(8)}</td><td>${x[3]==="H"?"":"@"}${x[2]}</td><td>${x[4]}</td><td><b>${x[5]}</b></td><td>${x[6]}</td><td>${x[7]}</td><td>${x[10]}-${x[11]}</td><td>${x[8]}-${x[15]??"?"}</td><td>${x[16]??"?"}-${x[17]??"?"}</td></tr>`).join("")}
   </tbody></table></div></div>`;
