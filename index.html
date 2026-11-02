@@ -385,6 +385,11 @@ nav[hidden]{display:none!important}
 .bst{border:1px solid #2f2a45}.bst td .small{font-size:10.5px}
 .bstn{font-size:12.5px;background:#221f33;border-radius:8px;padding:6px 8px;margin:0 0 8px;color:var(--text2);line-height:1.4}
 .prop.flash{box-shadow:0 0 0 2px #f3c75a;transition:box-shadow .3s}
+.pcw{display:flex;align-items:center;gap:10px;margin-bottom:10px}.pcb{flex:0 0 auto;min-width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;letter-spacing:.02em}.pcn{font-size:16px}.pcn a{text-decoration:none}
+.pcl{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,rgba(233,185,73,.16),rgba(233,185,73,.03));border:1px solid rgba(233,185,73,.3);border-radius:12px;padding:10px 12px;margin-bottom:8px}.pcv{font-size:28px;font-weight:800;color:#e9b949;line-height:1;text-align:center;min-width:58px}.pcv small{display:block;font-size:10.5px;color:var(--text2);letter-spacing:.05em;margin-top:4px}.pcm{min-width:0}.pcm>b{font-size:15px}.pco{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}.pco span{font-size:12px;padding:2px 8px;border-radius:999px;background:rgba(127,127,127,.15);font-weight:600}.pco .o{color:#7ee2a0}.pco .u{color:#f39b9b}.pco .bk{color:var(--text2);font-weight:500}
+.card.prop .shop{font-size:12.5px;background:var(--card2);border-radius:10px;padding:7px 10px;margin:0 0 10px;line-height:1.5}
+.nbmate{-webkit-appearance:none;appearance:none;background:var(--card2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23999' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid rgba(127,127,127,.3);border-radius:10px;color:inherit;padding:9px 34px 9px 12px!important;font-size:14px}
+.vbox li div{flex:1;min-width:0}
 .hr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
 .hr4 div{background:var(--card2);border-radius:10px;padding:7px 4px;text-align:center;font-size:11.5px;color:var(--muted)}
 .hr4 b{display:block;font-size:15px;color:var(--text)}
@@ -2502,8 +2507,11 @@ function nbaPropCard(r,idx){
   const tab=(t,l,n)=>`<button data-pct="${id}|${t}" class="${t==="l10"?"on":""}">${l}${n!=null?` <small>${n}</small>`:""}</button>`;
   const rate=a=>{if(!a.length)return "–";const o=a.filter(z=>nbaVal(z.x,k)>line).length;return `${o}/${a.length}`};
   return `<div class="card prop" id="${id}" data-k="${k}" data-nm="${nbaEsc(nm)}" data-line="${line}" data-opp="${opp}" data-pos="${p.p5||""}">
-  <div><b>${nbaLink(nm)}</b> <span class="small">${p.p5||p.pos} · ${p.tm}${opp?(g.a===p.tm?" @ ":" vs ")+opp:""} · <b style="color:var(--text2)">${nbaF(nbaAvg(p,"min"))} min/g</b></span>${nbaInjChip(inj)}</div>
-  <div style="margin:8px 0 10px;font-size:16px"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)} ${line}</b> <span class="small">${op!=null?"O "+oddsFmt(op):""}${up!=null?" · U "+oddsFmt(up):""}${book?" · "+nbaEsc(book):""}</span>${nbaShopHtml(r)}</div>
+  <div class="pcw"><span class="pcb" style="background:${nbaCol(p.tm)}">${p.tm}</span><div style="min-width:0"><b class="pcn">${nbaLink(nm)}</b>${nbaInjChip(inj)}
+    <div class="small">${p.p5||p.pos} · ${opp?(g.a===p.tm?"@ ":"vs ")+nbaEsc(nbaShort(opp)):"no game"} · ${nbaF(nbaAvg(p,"min"))} min/game</div></div></div>
+  <div class="pcl noglo"><div class="pcv">${line}<small>${NBA_MK[k]?NBA_MK[k][2]:""}</small></div>
+    <div class="pcm"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)}</b><div class="pco">${op!=null?`<span class="o">Over ${oddsFmt(op)}</span>`:""}${up!=null?`<span class="u">Under ${oddsFmt(up)}</span>`:""}${book?`<span class="bk">${nbaEsc(book)}</span>`:""}</div></div></div>
+  ${nbaShopHtml(r)}
   ${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${opp?nbaOppAllows(opp,k):""}${nbaMateSel(nm)}
   <div class="hr4"><div><b>${rate(S.l5)}</b>Last 5</div><div><b>${rate(S.l10)}</b>Last 10</div><div><b>${rate(S.season)}</b>Season</div><div><b>${rate(S.h2h)}</b>vs ${opp||"opp"}</div></div>
   <div class="nbtabs">${tab("l5","L5")}${tab("l10","L10")}${tab("season","Season")}${tab("h2h","H2H",S.h2h.length)}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
@@ -2590,7 +2598,7 @@ function nbaPayout(o){return o==null?0:o>0?o/100:100/-o}
 function nbaShopHtml(r){
   const bo=nbaBestPrice(r,"o"),bu=nbaBestPrice(r,"u");if(!bo&&!bu)return "";
   const save=(best,main)=>main==null?"":` <span class="up">+${Math.round((nbaPayout(best)-nbaPayout(main))*100)}¢ per $1</span>`;
-  return `<div class="shop">🛒 Best price: ${bo?`<b>O ${oddsFmt(bo[0])}</b> ${nbaEsc(bo[1])}${save(bo[0],r[3])}`:""}${bo&&bu?" · ":""}${bu?`<b>U ${oddsFmt(bu[0])}</b> ${nbaEsc(bu[1])}${save(bu[0],r[4])}`:""}</div>`;
+  return `<div class="shop">🛒 <b>Best price</b> ${bo?`<b>O ${oddsFmt(bo[0])}</b> ${nbaEsc(bo[1])}${save(bo[0],r[3])}`:""}${bo&&bu?" · ":""}${bu?`<b>U ${oddsFmt(bu[0])}</b> ${nbaEsc(bu[1])}${save(bu[0],r[4])}`:""}</div>`;
 }
 function nbaBest(){
   const ck=NB.mlo+"|"+NB.mhi+"|"+JSON.stringify(NB.gf)+"|"+startedKey();if(NB._best&&NB._best.v===ck)return NB._best.L;
@@ -4136,7 +4144,7 @@ function vBox(side,strength,items,small){
   const cls=strength==="Strong"?"vs3":strength==="Medium"?"vs2":strength==="Weak"?"vs1":"vs0";
   const head=strength==="none"?`<b>No clear lean</b>`:`<b>Lean ${side}</b> <span class="vst">· ${strength}</span>`;
   if(small)return `<span class="vpill ${cls}">${strength==="none"?"No clear lean":`Lean ${side} · ${strength}`}</span>`;
-  return `<div class="vbox ${cls}"><div class="vh">${head}</div><ul>${items.map(([m,t])=>`<li><span>${vMark(m)}</span>${t}</li>`).join("")}</ul></div>`;
+  return `<div class="vbox ${cls}"><div class="vh">${head}</div><ul>${items.map(([m,t])=>`<li><span>${vMark(m)}</span><div>${t}</div></li>`).join("")}</ul></div>`;
 }
 function vStrength(e){if(!e||e.edge<=0||e.sc<.55)return "none";if(e.sc>=.75&&e.edge>=.12)return "Strong";if(e.sc>=.62&&e.edge>=.05)return "Medium";return "Weak"}
 function nbaVerdict(nm,k,small){
