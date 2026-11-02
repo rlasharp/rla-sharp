@@ -3301,7 +3301,7 @@ function nflPropXCard(pl,k,line,CL){
    ${ladder?`<h3>Alt-line ladder</h3>${ladder}`:""}
    <h3>Game script</h3><div class="small" style="margin-bottom:6px">${sp!=null?`${esc(short(pl.team))} are ${sp<0?`favored by <b>${-sp}</b>`:sp>0?`<b>${sp}</b>-point underdogs`:"a pick'em"} this week. `:""}${tip}</div>
    ${pxTable(scr,td?(l=>val(l)>0?1:0):val,td?.5:line,td?1:dec,null,td?"Scored":null)}
-   <h3>By spread & total</h3>${pxFilterBlock("nfl|"+pl.name,nflSpreadGames(pl,k,L),td?.5:line,sp,MARKETS[k].u,dec,td,null,pxNflTot(pl.team),[35,57,3])}
+   <h3>By spread, total & snaps</h3>${pxFilterBlock("nfl|"+pl.name,nflSpreadGames(pl,k,L),td?.5:line,sp,MARKETS[k].u,dec,td,(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name]&&USAGE_RAW[pl.name].s)?USAGE_RAW[pl.name].s.snap:null,pxNflTot(pl.team),[35,57,3],{lab:"Snap share",max:100,u:"%",pre:[50,70],w:10,any:"Any snap share"})}
    <h3>Vs good & bad defenses</h3>${opp&&rk(opp)?`<div class="small" style="margin-bottom:6px">${esc(short(opp))} rank <b>${ordinal(rk(opp))}</b> at allowing ${MARKETS[k].n.toLowerCase()} to ${POSNAME[pl.pos]} (1st = gives up the most).</div>`:""}
    ${pxTable(defRows,td?(l=>val(l)>0?1:0):val,td?.5:line,td?1:dec,null,td?"Scored":null)}
    <div class="small" style="margin-top:8px">${CUR} games only (${L.length}). Spreads are the closing lines from nflverse; defense groups use each team's current rank. ${td?"For TDs, “Over” = games he scored. ":""}Small samples — leans, not guarantees.</div></div></div>`}
@@ -3319,30 +3319,31 @@ function pxDual(name,lab,min,max,step,lo,hi,ends,pre){
    <div class="dra">${ends.map(e=>`<span>${e}</span>`).join("")}</div>
    <div class="pxpre">${pre.map(p=>`<button data-pre="${name}|${p[0]}|${p[1]}">${p[2]}</button>`).join("")}</div></div>`}
 /* G: [{sp, v, min?, lab}] oldest first */
-function pxFilterBlock(key,G,line,tonight,unit,dec,isTD,minAvg,tonTot,TR){
+function pxFilterBlock(key,G,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN){
+  MN=MN||{lab:"Minutes played",max:48,u:" min",pre:[20,30],w:4,any:"Any minutes"};const MX=MN.max;
   const hasMin=G.some(g=>g.min!=null),tn=tonight!=null?Math.round(tonight*2)/2:null;
-  const S0=PXS[key]||(PXS[key]={lo:tn!=null?pxClamp(tn-3,-15,15):-15,hi:tn!=null?pxClamp(tn+3,-15,15):15,mlo:0,mhi:48});
+  const S0=PXS[key]||(PXS[key]={lo:tn!=null?pxClamp(tn-3,-15,15):-15,hi:tn!=null?pxClamp(tn+3,-15,15):15,mlo:0,mhi:MX});
   const [t0,t1,tw]=TR,tt=tonTot!=null?Math.round(tonTot*2)/2:null,hasTot=G.some(g=>g.tot!=null);if(S0.tlo==null){S0.tlo=t0;S0.thi=t1}
-  PXG[key]={G,line,unit,dec,isTD,TR};
+  PXG[key]={G,line,unit,dec,isTD,TR,MN};
   const totPre=[[t0,t1,"Any"]].concat(tt!=null?[[pxClamp(tt-tw,t0,t1),pxClamp(tt+tw,t0,t1),`Near tonight (${tt})`]]:[]).concat([[t0,(t0+t1)/2,`Low (${(t0+t1)/2} or less)`],[(t0+t1)/2,t1,`High (${(t0+t1)/2}+)`]]);
   const spPre=[[-15,-7,"Fav 7+"],[-15,-.5,"Favored"],[.5,15,"Underdog"],[7,15,"Dog 7+"]].concat(tn!=null?[[pxClamp(tn-3,-15,15),pxClamp(tn+3,-15,15),"Near tonight"]]:[]).concat([[-15,15,"Any"]]);
   const ma=minAvg!=null?Math.round(minAvg):null;
-  const mnPre=[[0,48,"Any"],[20,48,"20+"],[30,48,"30+"]].concat(ma!=null?[[pxClamp(ma-4,0,48),pxClamp(ma+4,0,48),`His usual (${ma}±4)`]]:[]);
+  const mnPre=[[0,MX,"Any"]].concat(MN.pre.map(v=>[v,MX,v+(MN.u==="%"?"%+":"+")])).concat(ma!=null?[[pxClamp(ma-MN.w,0,MX),pxClamp(ma+MN.w,0,MX),`His usual (${ma}${MN.u==="%"?"%":""}±${MN.w})`]]:[]);
   return `<div class="pxf" data-pxf="${esc(key)}">
    <div class="pxfh"><b>🎚 Filter his games</b>${tn!=null?`<span class="pxtn noglo">Tonight: ${pxSpTxt(tn)}${tt!=null?" · O/U "+tt:""}</span>`:""}</div>
    ${pxDual("sp","His team's spread",-15,15,.5,S0.lo,S0.hi,["Favored","PK","Underdog"],spPre)}
    ${hasTot?pxDual("tt","Game total (O/U)",t0,t1,.5,S0.tlo,S0.thi,[String(t0),String((t0+t1)/2),String(t1)],totPre):""}
-   ${hasMin?pxDual("mn","Minutes played",0,48,1,S0.mlo,S0.mhi,["0","24","48"],mnPre):""}
+   ${hasMin?pxDual("mn",MN.lab,0,MX,1,S0.mlo,S0.mhi,MN.u==="%"?["0%","50%","100%"]:["0",String(MX/2),String(MX)],mnPre):""}
    <div data-res></div></div>`}
 function pxResHtml(key){
   const S0=PXS[key],D=PXG[key];if(!S0||!D)return "";const {G,line,unit,dec,isTD,TR}=D;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi);
   const lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
-  const inSp=g=>g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi),inMn=g=>g.min==null||(g.min>=mlo&&(mhi>=48||g.min<=mhi)),inTt=g=>g.tot==null||((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi));
+  const inSp=g=>g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi),inMn=g=>g.min==null||(g.min>=mlo&&(mhi>=D.MN.max||g.min<=mhi)),inTt=g=>g.tot==null||((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi));
   const W=G.filter(g=>g.sp!=null),M=W.filter(g=>inSp(g)&&inMn(g)&&inTt(g)),N=M.length;
   if(!W.length)return `<div class="small">Spreads for his past games aren't loaded yet.</div>`;
   const av=a=>a.length?fmt(a.reduce((s,g)=>s+g.v,0)/a.length,dec):"—",ov=a=>a.filter(g=>g.v>line).length,r=N?ov(M)/N:null;
   return `<div class="pxsum"><div><b>${N}<small>/${W.length}</small></b><span>games</span></div><div><b>${av(M)}</b><span>avg ${isTD?"TDs":unit} · all ${av(W)}</span></div><div><b class="${r!=null&&r>=.6?"up":r!=null&&r<=.4?"dn":""}">${N?ov(M)+"/"+N:"—"}</b><span>${isTD?"scored":"over "+line}</span></div></div>
-   ${N?`<div class="plg">${M.slice(-12).map(g=>`<div class="lc ${g.v>line?"o":g.v<line?"u":"p"}" title="${g.min!=null?g.min+" min":""}${g.tot!=null?" · total "+g.tot:""}"><b>${isTD?(g.v>0?"TD":"–"):g.v}</b><span>${g.sp===0?"PK":(g.sp>0?"+":"−")+Math.abs(g.sp)} ${esc(g.lab)}</span>${g.tot!=null?`<span class="lct">O/U ${g.tot}</span>`:""}</div>`).join("")}</div>`:`<div class="small" style="padding:6px 0">No games in this range yet — widen the sliders.</div>`}`}
+   ${N?`<div class="plg">${M.slice(-12).map(g=>`<div class="lc ${g.v>line?"o":g.v<line?"u":"p"}" title="${g.min!=null?g.min+(PXG[key].MN.u==="%"?"% snaps":" min"):""}${g.tot!=null?" · total "+g.tot:""}"><b>${isTD?(g.v>0?"TD":"–"):g.v}</b><span>${g.sp===0?"PK":(g.sp>0?"+":"−")+Math.abs(g.sp)} ${esc(g.lab)}</span>${g.tot!=null?`<span class="lct">O/U ${g.tot}</span>`:""}</div>`).join("")}</div>`:`<div class="small" style="padding:6px 0">No games in this range yet — widen the sliders.</div>`}`}
 function pxPaint(f){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot;/g,'"'),S0=PXS[key];if(!S0)return;
   const set=(nm,a,b,mn,mx,txt)=>{const o=f.querySelector(`[data-out="${nm}"]`);if(!o)return;const x=Math.min(a,b),y=Math.max(a,b);o.textContent=txt(x,y);
     const fl=f.querySelector(`[data-fill="${nm}"]`);fl.style.left=(x-mn)/(mx-mn)*100+"%";fl.style.right=(100-(y-mn)/(mx-mn)*100)+"%";
@@ -3350,7 +3351,7 @@ function pxPaint(f){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot
     f.querySelectorAll(`[data-pre^="${nm}|"]`).forEach(p=>{const [,pa,pb]=p.dataset.pre.split("|");p.classList.toggle("on",+pa===x&&+pb===y)})};
   set("sp",S0.lo,S0.hi,-15,15,(x,y)=>x<=-15&&y>=15?"Any spread":`${pxSpTxt(x)} to ${pxSpTxt(y)}`);
   const TR=PXG[key].TR;set("tt",S0.tlo,S0.thi,TR[0],TR[1],(x,y)=>x<=TR[0]&&y>=TR[1]?"Any total":x<=TR[0]?`${y} or less`:y>=TR[1]?`${x} or more`:`${x} to ${y}`);
-  set("mn",S0.mlo,S0.mhi,0,48,(x,y)=>x<=0&&y>=48?"Any minutes":`${x} to ${y>=48?"48":y} min`);
+  const MN=PXG[key].MN;set("mn",S0.mlo,S0.mhi,0,MN.max,(x,y)=>x<=0&&y>=MN.max?MN.any:MN.u==="%"?`${x}% to ${y}%`:`${x} to ${y} min`);
   f.querySelector("[data-res]").innerHTML=pxResHtml(key)}
 function pxFilterWire(root){
   root.querySelectorAll("[data-pxf]").forEach(f=>{const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot;/g,'"');
@@ -3361,7 +3362,7 @@ function nbaSpreadGames(p,k){
   const SPR=typeof NBA_SPR!=="undefined"?NBA_SPR:{};
   return p.g.map(x=>{const s=SPR[x[0]];let sp=null;if(s){sp=s[2]===p.tm?s[3]:s[1]===p.tm?-s[3]:null}return {sp,tot:s?s[4]:null,v:nbaVal(x,k),min:x[4],lab:(x[3]==="H"?"":"@")+x[2]}})}
 function nflSpreadGames(pl,k,CL){const SP=typeof NFL_SPR!=="undefined"?NFL_SPR:{};
-  return CL.filter(l=>Number.isFinite(stat(l,k))).map(l=>{const s=SP[l.week+"|"+(l.team||pl.team)];return {sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,v:k==="anyTD"?(stat(l,k)>0?1:0):stat(l,k),lab:(+l.home?"":"@")+l.opp}})}
+  return CL.filter(l=>Number.isFinite(stat(l,k))).map(l=>{const s=SP[l.week+"|"+(l.team||pl.team)];const U=typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name],sn=U&&U.wk&&U.wk[l.week]?U.wk[l.week][0]:null;return {sp:s?s[0]:null,min:sn,tot:s&&s[2]!=null?s[2]:null,v:k==="anyTD"?(stat(l,k)>0?1:0):stat(l,k),lab:(+l.home?"":"@")+l.opp}})}
 
 function pxNbaTot(tm){const g=nbaGameOf(tm);if(!g||typeof NBA_LINES==="undefined")return null;const L=NBA_LINES[g.a+"@"+g.h];return L&&L.tot!=null?L.tot:null}
 function pxNflTot(t){const o=oppOf(t);if(!o||typeof LINES==="undefined")return null;const L=LINES[o.g.id];return L&&L.tot!=null?L.tot:null}
