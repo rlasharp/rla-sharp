@@ -390,7 +390,7 @@ nav[hidden]{display:none!important}
 .card.prop .shop{font-size:12.5px;background:var(--card2);border-radius:10px;padding:7px 10px;margin:0 0 10px;line-height:1.5}
 .nbmate{-webkit-appearance:none;appearance:none;background:var(--card2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23999' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid rgba(127,127,127,.3);border-radius:10px;color:inherit;padding:9px 34px 9px 12px!important;font-size:14px}
 .vbox li div{flex:1;min-width:0}
-.pmk{margin:12px 0 10px;flex-wrap:wrap;border-radius:14px}.pmk button{flex:0 0 auto}.pmk button small{opacity:.7;font-weight:500}.pmkc[hidden]{display:none}.pmkw{max-width:720px}
+.pmk{margin:12px 0 10px;flex-wrap:wrap;border-radius:14px}.pmk button{flex:0 0 auto}.pmk button small{display:block;opacity:.7;font-weight:500;font-size:11px}.pmk button{line-height:1.15;padding:6px 10px;white-space:nowrap}.pxin{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin:0 0 8px}.pxin input{width:84px;margin-left:6px}.pmkc[hidden]{display:none}.pmkw{max-width:720px}
 .hr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
 .hr4 div{background:var(--card2);border-radius:10px;padding:7px 4px;text-align:center;font-size:11.5px;color:var(--muted)}
 .hr4 b{display:block;font-size:15px;color:var(--text)}
@@ -3356,7 +3356,7 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
   const mnPre=[[0,MX,"Any"]].concat(MN.pre.map(v=>[v,MX,v+(MN.u==="%"?"%+":"+")])).concat(ma!=null?[[pxClamp(ma-MN.w,0,MX),pxClamp(ma+MN.w,0,MX),`His usual (${ma}${MN.u==="%"?"%":""}±${MN.w})`]]:[]);
   return `<div class="pxf" data-pxf="${esc(key)}">
    ${P?`<div class="pxprop noglo"><div class="pxpl">${P.big}</div><div class="pxpm"><b>${P.name}</b><span>${P.sub}</span></div></div>`:""}
-   <div class="pxfh"><b>🎚 Filter games</b>${tn!=null?`<span class="pxtn noglo">Tonight: ${pxSpTxt(tn)}${tt!=null?" · O/U "+tt:""}</span>`:""}</div>
+   <div class="pxfh"><b>🎚 Filter games</b>${tn!=null?`<span class="pxtn noglo">${key.startsWith("nfl")?"This week":"Tonight"}: ${pxSpTxt(tn)}${tt!=null?" · O/U "+tt:""}</span>`:""}</div>
    <div class="pxset">${[["l5","L5"],["l10","L10"],["ssn","Season"],["h2h","H2H"],["vp","Vs position"]].map(([v,l])=>`<button data-set="${v}"${SETS[v]&&SETS[v].length?"":" disabled"}>${l}<small>${SETS[v]?SETS[v].length:0}</small></button>`).join("")}</div>
    <div class="small pxsetn" data-setn></div>
    ${pxDual("sp","Team's spread",-15,15,.5,S0.lo,S0.hi,["Favored","PK","Underdog"],spPre)}
@@ -3412,7 +3412,7 @@ function pxLast(n){const w=n.split(" ").filter(x=>!/^(Jr\.?|Sr\.?|II|III|IV|V)$/
 
 /* NFL: one card per prop — sample tabs + spread / total / snap sliders + bar chart (replaces the old "last N games" chart) */
 function nflPropFilterCard(pl,k,line,CL){const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);const L=CL;
-  return `<div class="card" id="pxNfl"><h2 style="margin-bottom:8px">His games against this line</h2>${pxFilterBlock("nfl|"+pl.name,pxNflSets(pl,k,CL),td?.5:line,sp,MARKETS[k].u,dec,td,(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name]&&USAGE_RAW[pl.name].s)?USAGE_RAW[pl.name].s.snap:null,pxNflTot(pl.team),[35,57,3],{lab:"Snap share",max:100,u:"%",pre:[50,70],w:10,any:"Any snap share"},(()=>{const rp=realProp(pl.name,k);return {big:td?"TD":`${line}<small>${esc(MARKETS[k].u||"")}</small>`,name:`${esc(pl.name)} · ${td?"Anytime TD":"Over/Under "+line+" "+MARKETS[k].n}`,sub:rp?`${rp[1]!=null?amTxt(rp[1])+(td?" yes":" over"):""}${rp[2]!=null?" · "+amTxt(rp[2])+" under":""}${rp[3]?" · "+esc(rp[3]):""}`:"No book line yet — using his season average"}})())}</div>`}
+  return `<div class="card" id="pxNfl" style="padding:10px">${pxFilterBlock("nfl|"+pl.name,pxNflSets(pl,k,CL),td?.5:line,sp,MARKETS[k].u,dec,td,(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name]&&USAGE_RAW[pl.name].s)?USAGE_RAW[pl.name].s.snap:null,pxNflTot(pl.team),[35,57,3],{lab:"Snap share",max:100,u:"%",pre:[50,70],w:10,any:"Any snap share"},(()=>{const rp=realProp(pl.name,k);return {big:td?"TD":`${line}<small>${esc(MARKETS[k].u||"")}</small>`,name:`${esc(pl.name)} · ${td?"Anytime TD":"Over/Under "+line+" "+MARKETS[k].n}`,sub:rp?`${rp[1]!=null?amTxt(rp[1])+(td?" yes":" over"):""}${rp[2]!=null?" · "+amTxt(rp[2])+" under":""}${rp[3]?" · "+esc(rp[3]):""}`:"No book line yet — using his season average"}})())}</div>`}
 /* ---------- Live scores (NFL + NBA) from ESPN's public scoreboard feed ----------
    Runs in the visitor's browser, refreshes every 30 s while games are on. If the feed can't be
    reached (some hosts block outside requests), everything fails silently and the site shows its
@@ -4904,21 +4904,22 @@ function viewPlayer(){
   $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← All props</a>
    <div class="row" style="margin:16px 0 6px">${badge(pl.team)}<h1 style="margin:0">${esc(pl.name)}</h1><span class="small">${pl.pos} · ${TEAMS[pl.team][0]}</span>${typeof INJ_P!=="undefined"&&INJ_P[pl.name]?injTag(pl.name):(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[pl.name]?`<span class="tag" style="background:#3a2a10;color:#fab219">⚠ ${QUESTIONABLE[pl.name]}</span>`:"")}</div>
    <p class="sub">${o?`This week: ${o.home?"vs":"at"} <b>${TEAMS[opp][0]}</b> · ${o.g.when}`:"No game this week"} ${srcTag("player")}</p>
-   ${nflLinesBlock(pl)}
-   <div class="seg" style="margin-bottom:16px">${MK.map(m=>`<button data-m="${m}" class="${m===k?"on":""}">${MARKETS[m].n}</button>`).join("")}</div>
-   <div class="verdict n"><div><div class="small">${realProp(pl.name,k)?"Book line":"Line"}</div><div class="big">${k==="anyTD"?"Anytime TD":line+" "+unit}</div><div style="margin-top:4px">${lineTag({pl,k})}</div></div><span class="sp"></span>
-    <div style="text-align:right"><label class="small">Your sportsbook's line <input type="number" step=".5" id="lineIn" value="${line}" style="width:80px;margin-left:6px"></label></div></div>
-   <div class="card" style="margin-top:12px;padding:14px 18px">${oddsRow({pl,k})}${typeof nflVerdict!=="undefined"&&realProp(pl.name,k)?`<div style="margin-top:10px">${nflVerdict(pl.name,k)}</div>`:""}</div>
+   ${o&&nflStarted(o.g)?`<div class="info" style="margin:12px 0"><span>🔒 His game has kicked off — this week's pregame lines are closed.</span></div>`:""}
+   <div class="section"><div class="card"><h2>The matchup</h2>${opp?`<p style="margin-top:0">${TEAMS[opp][0]} allow <b>${fmt(dv.avg,dec)} ${unit}</b> per game to ${POSNAME[pl.pos]} (league average ${fmt(lgv,dec)}) — ${defWord}.</p>
+      <h3 class="dzh" style="margin-top:14px">What ${short(opp)} allow to ${POSNAME[pl.pos]} per game <span class="tag real">Pro-Football-Reference</span></h3>${dvpSummary(opp,pl.pos)}`:'<p class="note">No game this week.</p>'}</div></div>
+   <h2 class="noglo" style="margin:16px 0 10px">Prop charts · this week</h2>
+   <div class="nbtabs pmk">${[...MK].sort((a,b)=>(realProp(pl.name,b)?1:0)-(realProp(pl.name,a)?1:0)).map(m=>{const rl=realProp(pl.name,m);return `<button data-m="${m}" class="${m===k?"on":""}">${({passYds:"Pass yds",comp:"Comp",passTD:"Pass TD",int:"INT",passAtt:"Pass att",rushYds:"Rush yds",rushAtt:"Rush att",rec:"Rec",recYds:"Rec yds",rushRec:"Rush+Rec",anyTD:"TD"})[m]||MARKETS[m].n}<small>${m==="anyTD"?(rl?amTxt(rl[1]):"—"):rl?rl[0]:"avg "+fmt(lineFor(pl.name,m),0)}</small></button>`}).join("")}</div>
+   <div class="pxin"><label class="small">Your sportsbook's line <input type="number" step=".5" id="lineIn" value="${line}"></label>${S.lines[pl.name+"|"+k]?' <span class="small">(your line)</span>':""}</div>
+   ${typeof nflVerdict!=="undefined"&&realProp(pl.name,k)?nflVerdict(pl.name,k):""}
+   <div class="section">${typeof nflPropFilterCard!=="undefined"?nflPropFilterCard(pl,k,line,CL):""}</div>
    ${QA?qbSplitCard(pl,k,line,CLall,QS,QM,qmode):""}
    <div class="stats3" style="margin-top:14px">
     <div class="stat"><div class="l">Season average${qmode==="all"?"":qmode==="with"?" (with QB1)":" (without QB1)"}</div><div class="v">${sv.length?fmt(avg(sv),dec):"—"}</div><div class="s">${unit} · ${sv.length} games</div></div>
     <div class="stat"><div class="l">Season high / low</div><div class="v">${sv.length?Math.max(...sv)+" / "+Math.min(...sv):"—"}</div><div class="s">${unit}</div></div>
     <div class="stat"><div class="l">${v10.length?`Last ${v10.length} games (${CUR})`:"Game log"}</div><div class="v">${v10.length?ov+" of "+v10.length:"—"}</div><div class="s">${v10.length?"went over "+line:"no games yet"}</div></div>
     <div class="stat"><div class="l">${opp||"Defense"} vs ${pl.pos}s</div><div class="v">${Number.isFinite(dv.rank)?ordinal(dv.rank):"—"}</div><div class="s">most allowed (1st = most)</div></div></div>
-   <div class="section grid g2">
-    ${typeof nflPropFilterCard!=="undefined"?nflPropFilterCard(pl,k,line,CL):""}
-    ${v10.length?"":`<div class="card"><h2>Game log</h2><p class="note">No game log loaded for ${esc(pl.name)} yet.</p></div>`}<div class="card"><h2>The matchup</h2>${opp?`<p style="margin-top:0">${TEAMS[opp][0]} allow <b>${fmt(dv.avg,dec)} ${unit}</b> per game to ${POSNAME[pl.pos]} (league average ${fmt(lgv,dec)}) — ${defWord}.</p>
-      <h3 style="margin-top:14px">What ${short(opp)} allow to ${POSNAME[pl.pos]} per game <span class="tag real">Pro-Football-Reference</span></h3>${dvpSummary(opp,pl.pos)}`:'<p class="note">No game this week.</p>'}</div></div>
+   <div class="section">
+    ${v10.length?"":`<div class="card"><h2>Game log</h2><p class="note">No game log loaded for ${esc(pl.name)} yet.</p></div>`}</div>
    ${typeof nflPropXCard!=="undefined"?nflPropXCard(pl,k,line,CL):""}
    ${typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""}
    <div class="section">${usageCard(pl)}</div>
