@@ -3636,16 +3636,18 @@ const DZ_RULES=[
 ];
 function drawerize(){
   const h=decodeURIComponent((location.hash||"").slice(1));const rule=DZ_RULES.find(r=>r[0].test(h));if(!rule)return;
-  const root=document.querySelector(rule[1]);if(!root)return;
+  const root=document.querySelector(rule[1]);if(!root)return;dzRepair(root);
   root.querySelectorAll("h2,h3").forEach(hd=>{
     const t=hd.textContent.trim();if(!rule[2].some(re=>re.test(t)))return;
     let tgt=hd.closest(".section")||hd.closest(".card");if(!tgt||tgt===root||tgt.closest("details.drawer")||tgt.querySelector("canvas")||tgt.querySelector(".plines,.vbox"))return;
     if(tgt.classList.contains("section")&&(tgt.querySelectorAll(":scope > .card").length>1||tgt.querySelector("details.drawer"))){const c=hd.closest(".card");if(!c)return;tgt=c}
+    if(hd.classList.contains("dzh")||tgt.closest("details.drawer"))return;
     const label=t.replace(/\s+/g," ").slice(0,70),d=document.createElement("details");d.className="drawer";if(DZ_OPEN.has(label))d.open=true;
     d.innerHTML=`<summary><span>${esc(label)}</span><b>›</b></summary>`;tgt.parentNode.insertBefore(d,tgt);d.appendChild(tgt);hd.classList.add("dzh");
     d.addEventListener("toggle",()=>{if(d.open)DZ_OPEN.add(label);else DZ_OPEN.delete(label);LS.set("dzOpen",[...DZ_OPEN].slice(-60))});
   });
 }
+function dzRepair(root){root.querySelectorAll("details.drawer > details.drawer").forEach(inner=>{const outer=inner.parentElement;while(inner.lastChild&&inner.lastChild.tagName!=="SUMMARY")outer.insertBefore(inner.lastChild,inner.nextSibling);inner.remove()})}
 let DZ_T=null;const dzSoon=()=>{clearTimeout(DZ_T);DZ_T=setTimeout(drawerize,30)};
 ["v-nba","v-game","v-props"].forEach(id=>{const el=document.getElementById(id);if(el)new MutationObserver(dzSoon).observe(el,{childList:true})});
 window.addEventListener("hashchange",()=>setTimeout(drawerize,70));window.addEventListener("load",()=>setTimeout(drawerize,120));
