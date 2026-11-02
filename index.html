@@ -2662,12 +2662,15 @@ function nbaPlaysCard(){
   <div class="small" style="margin-top:8px">Picked automatically from real posted lines: 7+ of last 10, a winning record this season, a clear edge over what the odds need, no injury tag, odds no worse than −200. Leans, not guarantees — bet small.</div></div>`;
 }
 function nbaPropTabs(on){return `<div class="seg ptabs"><a class="${on==="best"?"on":""}" href="#nba-best">🔥 Best tonight</a><a class="${on==="all"?"on":""}" href="#nba-props">All props</a></div>`}
-function nbaBestFilter(L){const f=NB.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.min||b.sc>=f.min/100))}
+function nbaBestFilter(L){const f=NB.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.min||b.sc>=f.min/100)&&nbaHotOk(b,f.hot))}
+/* hot streak: hit this side in X of his last 5 / 10 */
+function nbaHotOk(b,h){if(!h)return true;const [n,of]=h.split('/').map(Number),c=of===10?b.c10:b.c5;return c&&c[1]>=of&&c[0]>=n}
 function nbaBestFilterUI(L0){const f=NB.bf||(NB.bf={});const games=NBA_SLATE.filter(g=>!nbaStarted(g));const mks=[...new Set(L0.map(b=>b.k))];
   return `<div class="bfil"><select data-bf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${g.a} @ ${g.h}</option>`).join("")}</select>
    <select data-bf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${NBA_MK[m][1]}</option>`).join("")}</select>
    <select data-bf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
-   <select data-bf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select></div>`}
+   <select data-bf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select>
+   <select data-bf="hot"><option value="">Any streak</option>${[["4/5","🔥 Hit 4+ of last 5"],["5/5","🔥 Hit 5 of last 5"],["8/10","🔥 Hit 8+ of last 10"]].map(([v,n])=>`<option value="${v}"${f.hot===v?" selected":""}>${n}</option>`).join("")}</select></div>`}
 function nbaBestPage(el){
   const L0=nbaBest(),L=nbaBestFilter(L0);
   el.innerHTML=`<h1>NBA Best Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>${nbaPropTabs("best")}
@@ -4516,14 +4519,16 @@ function nflBestRow(b,i){
       <div class="bph">${hr(b.c5,"L5")}${hr(b.cS,"season")}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
     <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">${b.odds!=null?"odds need":"≈ needs"} ${Math.round(b.be*100)}%</span></div></div>`;
 }
-let NFL_BF={g:"",m:"",s:"",pos:""};
+let NFL_BF={g:"",m:"",s:"",pos:"",min:"",hot:""};
 function nflTopHtml(){
-  const L0=nflBest(),f=NFL_BF,L=L0.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||b.pl.pos===f.pos));
+  const L0=nflBest(),f=NFL_BF,L=L0.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||b.pl.pos===f.pos)&&(!f.min||b.sc>=f.min/100)&&(!f.hot||(()=>{const [n,of]=f.hot.split('/').map(Number);return b.c5[1]>=of&&b.c5[0]>=n})()));
   const games=[...new Map(L0.map(b=>[b.g.id,b.g])).values()],mks=[...new Set(L0.map(b=>b.k))];
   const fil=`<div class="bfil"><select data-nbf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${g.away} @ ${g.home}</option>`).join("")}</select>
    <select data-nbf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${MARKETS[m].n}</option>`).join("")}</select>
    <select data-nbf="pos"><option value="">All positions</option>${["QB","RB","WR","TE"].map(p=>`<option${f.pos===p?" selected":""}>${p}</option>`).join("")}</select>
-   <select data-nbf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select></div>`;
+   <select data-nbf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
+   <select data-nbf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select>
+   <select data-nbf="hot"><option value="">Any streak</option>${[["4/5","🔥 Hit 4+ of last 5"],["5/5","🔥 Hit 5 of last 5"]].map(([v,n])=>`<option value="${v}"${f.hot===v?" selected":""}>${n}</option>`).join("")}</select></div>`;
   const closed=SLATE.filter(g=>!g.final&&nflStarted(g)).length;
   return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props this week</h2>${closed?`<div class="small" style="margin-bottom:4px">🔒 ${closed} game${closed>1?"s have":" has"} kicked off — those props are hidden.</div>`:""}
    <div class="small" style="margin-bottom:8px">Every real book line we found, over and under, ranked by how often it would have hit (last 5 games 45%, ${CUR} season 35%, vs this opponent 20%, ±5 for the defense's rank vs his position) compared with what the odds need. Where a book's price isn't listed we compare to the standard −110 break-even (52%). Tap one for his full page.</div>
