@@ -397,6 +397,8 @@ nav[hidden]{display:none!important}
 .pline{display:flex;flex-wrap:wrap;gap:4px 0;margin:8px 0 12px;font-size:13.5px;color:var(--text2)}.pline span:not(:last-child)::after{content:"·";margin:0 7px;opacity:.6}
 .pmk{position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(0,0,0,.45);overflow-x:auto;flex-wrap:nowrap!important;scrollbar-width:none;-webkit-overflow-scrolling:touch}.pmk::-webkit-scrollbar{display:none}.bpm .bpl b{font-weight:600;font-size:14px}
 .bpw{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.bpw .ab,.bpw .nbbdg{transform:scale(.9)}.bfire{font-size:11px;font-weight:700;background:rgba(255,120,40,.16);color:#ffa45c;border-radius:999px;padding:1px 7px}.bln{display:inline-block;font-size:17px;font-weight:800;padding:1px 8px;border-radius:8px;background:var(--card2);margin-right:2px}.bln.up{color:#7ee2a0}.bln.dn{color:#ff9a9d}.bp:hover{background:rgba(127,127,127,.06)}
+.swh{margin:-4px 0 8px;text-align:center;font-size:11.5px}@media (hover:hover) and (pointer:fine){.swh{display:none}}
+.rcnt{margin:6px 0 14px}.rcnth{display:block;font-size:12px;color:var(--text2);margin-bottom:6px}.rcntl{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.rcntl::-webkit-scrollbar{display:none}.rchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid rgba(127,127,127,.25);border-radius:999px;padding:4px 10px 4px 4px;font-size:13px;font-weight:600;text-decoration:none;color:inherit}.rchip .ab,.rchip .nbbdg{transform:scale(.85)}
 .hr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
 .hr4 div{background:var(--card2);border-radius:10px;padding:7px 4px;text-align:center;font-size:11.5px;color:var(--muted)}
 .hr4 b{display:block;font-size:15px;color:var(--text)}
@@ -2244,7 +2246,7 @@ function nbaGameCard(g){
   </div>`;
 }
 function nbaGames(el){
-  el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>${nbaDayTabs("nba")}
+  el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nba",4):""}${nbaDayTabs("nba")}
   <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
   <div class="grid g2">${NBA_SLATE.map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
   <div style="margin-top:14px">${nbaPlaysCard()}</div>
@@ -2946,7 +2948,7 @@ function nbaPlayer(el,nm){
   const dvp=opp&&p.p5?nbaDvp(opp,p.p5,"pts",5):null,dvpAvg=dvp&&dvp.rows.length?dvp.rows.reduce((s,r)=>s+r.v,0)/dvp.rows.length:null;
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
   const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
-    return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div>
+    return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div><div class="small swh">👆 Swipe the chart left or right for the next prop</div>
 ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm}})())}
     <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
@@ -2983,6 +2985,8 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
   el.querySelectorAll("[data-ptk]").forEach(b=>b.onclick=()=>{NB.ptk=b.dataset.ptk;document.getElementById("ptrend").innerHTML=nbaTrend(p,NB.ptk);el.querySelectorAll("[data-ptk]").forEach(x=>x.classList.toggle("on",x===b))});
   nbaWireMin(el,()=>nbaPlayer(el,nm));
   if(typeof nbaWirePx!=="undefined")nbaWirePx(el,nm);
+  if(typeof pxSwipe!=="undefined")pxSwipe(el.querySelector(".pmkw"),"#v-nba [data-pmk]");
+  if(typeof pxRecentAdd!=="undefined")pxRecentAdd("nba",nm,NB.pmk);
   el.querySelectorAll("[data-pmk]").forEach(b=>b.onclick=()=>{NB.pmk=b.dataset.pmk;el.querySelectorAll("[data-pmk]").forEach(x=>x.classList.toggle("on",x===b));el.querySelectorAll("[data-pmkc]").forEach(c=>c.hidden=c.dataset.pmkc!==NB.pmk)});
   nbaWireCharts(el,()=>nbaPlayer(el,nm));
   el.querySelectorAll("[data-jump]").forEach(r=>r.onclick=()=>nbaFlash(r.dataset.jump));
@@ -3437,6 +3441,25 @@ function pxLast(n){const w=n.split(" ").filter(x=>!/^(Jr\.?|Sr\.?|II|III|IV|V)$/
 /* NFL: one card per prop — sample tabs + spread / total / snap sliders + bar chart (replaces the old "last N games" chart) */
 function nflPropFilterCard(pl,k,line,CL){const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);const L=CL;
   return `<div class="card" id="pxNfl" style="padding:10px">${pxFilterBlock("nfl|"+pl.name,pxNflSets(pl,k,CL),td?.5:line,sp,MARKETS[k].u,dec,td,(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name]&&USAGE_RAW[pl.name].s)?USAGE_RAW[pl.name].s.snap:null,pxNflTot(pl.team),[35,57,3],{lab:"Snap share",max:100,u:"%",pre:[50,70],w:10,any:"Any snap share"},(()=>{const rp=realProp(pl.name,k);return {big:td?"TD":`${line}<small>${esc(MARKETS[k].u||"")}</small>`,name:`${esc(pl.name)} · ${td?"Anytime TD":"Over/Under "+line+" "+MARKETS[k].n}`,sub:rp?`${rp[1]!=null?amTxt(rp[1])+(td?" yes":" over"):""}${rp[2]!=null?" · "+amTxt(rp[2])+" under":""}${rp[3]?" · "+esc(rp[3]):""}`:"No book line yet — using his season average"}})())}</div>`}
+
+/* ===== Swipe left/right on a prop chart to move to the next/previous prop ===== */
+function pxSwipe(area,btnSel){
+  if(!area||area._sw)return;area._sw=1;let x0=null,y0=null,t0=0;
+  area.addEventListener("touchstart",e=>{const t=e.target;if(t.closest(".pxfd,input,select,textarea,.dr,.nbtabs,.pxset,button,a")){x0=null;return}const p=e.touches[0];x0=p.clientX;y0=p.clientY;t0=Date.now()},{passive:true});
+  area.addEventListener("touchend",e=>{if(x0==null)return;const p=e.changedTouches[0],dx=p.clientX-x0,dy=p.clientY-y0;x0=null;
+    if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.6||Date.now()-t0>800)return;
+    const B=[...document.querySelectorAll(btnSel)];const i=B.findIndex(b=>b.classList.contains("on"));if(i<0)return;const n=B[i+(dx<0?1:-1)];if(!n)return;
+    n.click();setTimeout(()=>{const on=document.querySelector(btnSel+".on");if(on&&on.scrollIntoView)on.scrollIntoView({inline:"center",block:"nearest"})},40)},{passive:true});
+}
+/* ===== Recently viewed players (this phone/browser only) ===== */
+function pxRecentAdd(sp,nm,k){try{let R=LS.get("recentP",[])||[];R=R.filter(r=>!(r[0]===sp&&r[1]===nm));R.unshift([sp,nm,k||""]);LS.set("recentP",R.slice(0,8))}catch(e){}}
+function pxRecentHtml(sp,n){let R=[];try{R=(LS.get("recentP",[])||[]).filter(r=>!sp||r[0]===sp)}catch(e){}
+  R=R.filter(r=>r[0]==="nba"?(typeof NBA_LOGS!=="undefined"&&NBA_LOGS[r[1]]):(typeof PINFO!=="undefined"&&PINFO[r[1]])).slice(0,n||4);if(!R.length)return "";
+  return `<div class="rcnt"><span class="rcnth">🕘 Recently viewed</span><div class="rcntl">${R.map(([s,nm,k])=>s==="nba"
+    ?`<a class="rchip" href="#nba-player-${encodeURIComponent(nm)}">${nbaBadge(NBA_LOGS[nm].tm)}<span>${nbaEsc(nm)}</span></a>`
+    :`<a class="rchip" href="#props" data-rnfl="${esc(nm)}|${k}">${badge(PINFO[nm].team)}<span>${esc(nm)}</span></a>`).join("")}</div></div>`}
+document.addEventListener("click",e=>{const a=e.target.closest("[data-rnfl]");if(!a)return;e.preventDefault();const [nm,k]=a.dataset.rnfl.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"').split("|");
+  S.prop={player:nm,market:k||marketsFor(PINFO[nm].pos)[0],open:true};if(location.hash!=="#props")location.hash="props";else viewProps()});
 /* ---------- Live scores (NFL + NBA) from ESPN's public scoreboard feed ----------
    Runs in the visitor's browser, refreshes every 30 s while games are on. If the feed can't be
    reached (some hosts block outside requests), everything fails silently and the site shows its
@@ -3985,7 +4008,7 @@ function viewToday(){
   const favHtml=favListHtml(false);
   const nbaTop=(typeof nbaBest!=="undefined"?nbaBest().slice(0,5):[]),nflTop=(typeof nflBest!=="undefined"?nflBest().slice(0,3):[]);
   const today=new Date().toLocaleDateString("en-US",{timeZone:"America/Toronto",weekday:"long",month:"long",day:"numeric"});
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA and NFL on one screen.</p>
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA and NFL on one screen.</p>${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div style="margin-top:12px">${favHtml}</div>`:""}
   <div class="grid g2" style="margin-top:12px">
@@ -4476,7 +4499,7 @@ function viewGames(){
       ${typeof moveMini!=="undefined"?moveMini(g):""}${typeof restMini!=="undefined"?restMini(g):""}${wxMini(g)}${(()=>{const o=[...(INJ[g.away]||[]),...(INJ[g.home]||[])].filter(x=>x[2]==="Out"&&["QB","RB","WR","TE"].includes(x[1]));return o.length?`<div class="pubmini">🚑 Out: ${o.map(x=>esc(x[0])+" ("+x[1]+")").join(", ")}</div>`:""})()}
       <div class="pubmini">📈 ATS: ${g.away} <b>${ATS[g.away]||"n/a"}</b> · ${g.home} <b>${ATS[g.home]||"n/a"}</b> &nbsp; O/U: ${g.away} <b>${OU[g.away]||"n/a"}</b> · ${g.home} <b>${OU[g.home]||"n/a"}</b></div></div>`}).join("");
   const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:"";
-  $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1>${typeof nfWeekTabs!=="undefined"?nfWeekTabs("games"):""}<p class="sub">${SLATE.filter(g=>!g.final).length} games to play, ${SLATE.filter(g=>g.final).length} final. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
+  $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nfl",4):""}${typeof nfWeekTabs!=="undefined"?nfWeekTabs("games"):""}<p class="sub">${SLATE.filter(g=>!g.final).length} games to play, ${SLATE.filter(g=>g.final).length} final. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
    <div class="games">${cards}</div>
    <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary>
    <p class="small" style="margin:8px 0 0"><b>Moneyline</b>: bet on who wins. <b>Spread</b>: the favorite must win by more than the number. <b>Total</b>: will both teams' points add up to more or less than the line? <b>🔮 Prediction</b>: our model's projected score and win chance — an estimate, not a sure thing. New to betting? See <a href="#guide" style="color:inherit">Betting 101</a>.</p></details>
@@ -4934,6 +4957,7 @@ function viewPlayer(){
       <h3 class="dzh" style="margin-top:14px">What ${short(opp)} allow to ${POSNAME[pl.pos]} per game <span class="tag real">Pro-Football-Reference</span></h3>${dvpSummary(opp,pl.pos)}`:'<p class="note">No game this week.</p>'}</div></div>
    <h2 class="noglo" style="margin:16px 0 10px">Prop charts · this week</h2>
    <div class="nbtabs pmk">${[...MK].sort((a,b)=>(realProp(pl.name,b)?1:0)-(realProp(pl.name,a)?1:0)).map(m=>{const rl=realProp(pl.name,m);return `<button data-m="${m}" class="${m===k?"on":""}">${({passYds:"Pass yds",comp:"Comp",passTD:"Pass TD",int:"INT",passAtt:"Pass att",rushYds:"Rush yds",rushAtt:"Rush att",rec:"Rec",recYds:"Rec yds",rushRec:"Rush+Rec",anyTD:"TD"})[m]||MARKETS[m].n}<small>${m==="anyTD"?(rl?amTxt(rl[1]):"—"):rl?rl[0]:"avg "+fmt(lineFor(pl.name,m),0)}</small></button>`}).join("")}</div>
+   <div class="small swh">👆 Swipe the chart left or right for the next prop</div>
    <div class="pxin"><label class="small">Your sportsbook's line <input type="number" step=".5" id="lineIn" value="${line}"></label>${S.lines[pl.name+"|"+k]?' <span class="small">(your line)</span>':""}</div>
    ${typeof nflVerdict!=="undefined"&&realProp(pl.name,k)?nflVerdict(pl.name,k):""}
    <div class="section">${typeof nflPropFilterCard!=="undefined"?nflPropFilterCard(pl,k,line,CL):""}</div>
@@ -4951,6 +4975,8 @@ function viewPlayer(){
     <div class="card"><h2>All ${CUR} games</h2><div style="max-height:340px;overflow:auto"><table><tbody>${allGameRows(pl,CL,CLall,qmode,QM,k,ouTag,QA)}</tbody></table></div><p class="note" style="margin:8px 0 0">"Did not play" weeks (injury / inactive) aren't counted in averages or hit rates.</p></div></div>`;
   $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;if(location.hash!=="#props")location.hash="props";else viewProps()};
   {const px=$("#pxNfl");if(px&&typeof pxFilterWire!=="undefined")pxFilterWire(px)}
+  if(typeof pxSwipe!=="undefined")pxSwipe($("#pxNfl"),"#v-props [data-m]");
+  if(typeof pxRecentAdd!=="undefined")pxRecentAdd("nfl",pl.name,k);
   document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{const y=window.scrollY;S.prop.market=b.dataset.m;viewPlayer();window.scrollTo(0,y)});
   document.querySelectorAll("[data-qb]").forEach(b=>b.onclick=()=>{S.prop.qb=b.dataset.qb;viewPlayer()});
   $("#lineIn").onchange=e=>{S.lines[pl.name+"|"+k]=e.target.value;saveUser();viewPlayer()};
