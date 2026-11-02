@@ -392,7 +392,7 @@ nav[hidden]{display:none!important}
 .vbox li div{flex:1;min-width:0}
 .pmk{margin:12px 0 10px;flex-wrap:wrap;border-radius:14px}.pmk button{flex:0 0 auto}.pmk button small{display:block;opacity:.7;font-weight:500;font-size:11px}.pmk button{line-height:1.15;padding:6px 10px;white-space:nowrap}.pxin{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin:0 0 8px}.pxin input{width:84px;margin-left:6px}.pmkc[hidden]{display:none}.pmkw{max-width:720px}
 .pxfd>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 10px;border-radius:10px;background:var(--card,#16181d);border:1px solid rgba(127,127,127,.25);margin-top:8px}.pxfd>summary::-webkit-details-marker{display:none}.pxfd[open]>summary{border-color:#e9b949}.pxft{font-size:13.5px}.pxfc{flex:1;display:flex;flex-wrap:wrap;gap:4px;min-width:0}.fany{font-size:12px;color:var(--text2)}.fchip{font-size:12px;font-weight:700;background:#e9b949;color:#111;border-radius:999px;padding:2px 8px;cursor:pointer}.pxchev{color:var(--text2);transition:transform .15s}.pxfd[open] .pxchev{transform:rotate(90deg)}
-.nbmin.pxf{padding:10px}.nbmin .pxfd>summary{margin-top:0}
+.nbmin.pxf{padding:10px;margin:0 0 10px}.nbmin .pxfd>summary{margin-top:0}.pxf>.pxfd{margin-bottom:10px}.pxf>.pxfd>summary{margin-top:0}.nbtabs.pmk button{min-width:max-content;padding:6px 12px;flex:0 0 auto}
 .vd>summary{list-style:none;cursor:pointer}.vd>summary::-webkit-details-marker{display:none}.vh{display:flex;align-items:center;gap:6px}.vwhy{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--text2);border:1px solid rgba(127,127,127,.35);border-radius:999px;padding:1px 8px}.vd[open] .vwhy{color:#e9b949;border-color:#e9b949}.vk{font-size:13px;color:var(--text2);margin-top:3px}.vd[open] .vk{display:none}.vd ul{margin-top:6px!important}
 .pline{display:flex;flex-wrap:wrap;gap:4px 0;margin:8px 0 12px;font-size:13.5px;color:var(--text2)}.pline span:not(:last-child)::after{content:"·";margin:0 7px;opacity:.6}
 .pmk{position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(0,0,0,.45);overflow-x:auto;flex-wrap:nowrap!important;scrollbar-width:none;-webkit-overflow-scrolling:touch}.pmk::-webkit-scrollbar{display:none}.bpm .bpl b{font-weight:600;font-size:14px}
@@ -2945,7 +2945,8 @@ function nbaPlayer(el,nm){
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
   const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div>
-    <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
+${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}
+    <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
@@ -3367,16 +3368,17 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
   const ma=minAvg!=null?Math.round(minAvg):null;
   const mnPre=[[0,MX,"Any"]].concat(MN.pre.map(v=>[v,MX,v+(MN.u==="%"?"%+":"+")])).concat(ma!=null?[[pxClamp(ma-MN.w,0,MX),pxClamp(ma+MN.w,0,MX),`His usual (${ma}${MN.u==="%"?"%":""}±${MN.w})`]]:[]);
   return `<div class="pxf" data-pxf="${esc(key)}">
-   ${P?`<div class="pxprop noglo"><div class="pxpl">${P.big}</div><div class="pxpm"><b>${P.name}</b><span>${P.sub}</span></div></div>`:""}
-   <div class="pxset">${[["l5","L5"],["l10","L10"],["ssn","Season"],["h2h","H2H"],["vp","Vs position"]].map(([v,l])=>`<button data-set="${v}"${SETS[v]&&SETS[v].length?"":" disabled"}>${l}<small>${SETS[v]?SETS[v].length:0}</small></button>`).join("")}</div>
-   <div class="small pxsetn" data-setn></div>
-   <div data-res></div>
    <details class="pxfd"${S0.open?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary>
    ${tn!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">${key.startsWith("nfl")?"This week":"Tonight"}: ${pxSpTxt(tn)}${tt!=null?" · O/U "+tt:""}</span></div>`:""}
    ${pxDual("sp","Team's spread",-15,15,.5,S0.lo,S0.hi,["Favored","PK","Underdog"],spPre)}
    ${hasTot?pxDual("tt","Game total (O/U)",t0,t1,.5,S0.tlo,S0.thi,[String(t0),String((t0+t1)/2),String(t1)],totPre):""}
    ${hasMin?pxDual("mn",MN.lab,0,MX,1,S0.mlo,S0.mhi,MN.u==="%"?["0%","50%","100%"]:["0",String(MX/2),String(MX)],mnPre):""}
-   </details></div>`}
+   </details>
+   ${P?`<div class="pxprop noglo"><div class="pxpl">${P.big}</div><div class="pxpm"><b>${P.name}</b><span>${P.sub}</span></div></div>`:""}
+   <div class="pxset">${[["l5","L5"],["l10","L10"],["ssn","Season"],["h2h","H2H"],["vp","Vs position"]].map(([v,l])=>`<button data-set="${v}"${SETS[v]&&SETS[v].length?"":" disabled"}>${l}<small>${SETS[v]?SETS[v].length:0}</small></button>`).join("")}</div>
+   <div class="small pxsetn" data-setn></div>
+   <div data-res></div>
+   </div>`}
 function pxResHtml(key){
   const S0=PXS[key],D=PXG[key];if(!S0||!D)return "";const {SETS,line,unit,dec,isTD,TR}=D;const G=SETS[S0.set]||SETS.ssn;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi);
   const lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
