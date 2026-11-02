@@ -203,6 +203,9 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 .brandlink{display:flex;align-items:center;gap:inherit;color:inherit;text-decoration:none}
 .upd{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.5}.upd b{color:var(--text2);font-weight:600}
 #banner .upd{margin:0 0 10px}
+.gl{border-bottom:1px dotted currentColor;cursor:help;text-decoration:none}.gl::after{content:"ⓘ";font-size:.68em;opacity:.55;margin-left:2px;vertical-align:super;line-height:0}
+#glpop{position:absolute;z-index:9999;display:none;background:#1f232a;color:#e9ecf1;border:1px solid #3a3f48;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.4;box-shadow:0 10px 30px #0008}#glpop.open{display:block}#glpop b{color:#f3c75a}
+.glrow{display:grid;grid-template-columns:130px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}.glrow span{color:var(--text2)}@media(max-width:480px){.glrow{grid-template-columns:1fr;gap:2px}}
 .favb{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid var(--line);color:var(--text2);border-radius:999px;padding:5px 12px;font-weight:700;font-size:13px;cursor:pointer;margin-top:6px}
 .favb b,.favb{line-height:1}.favb.on{background:#2b2a1a;color:#f3c75a;border-color:#5a4a1a}
 .stag{font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;letter-spacing:.04em}.stag.nb{background:#3a2412;color:#ffb36b}.stag.nf{background:#13233d;color:#8cc0ff}
@@ -246,6 +249,18 @@ body.gated{overflow:hidden}
 #slipPanel.open{pointer-events:auto}#slipPanel.open .msback{opacity:1}#slipPanel.open .mspanel{transform:none}
 .roles{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 8px}
 .rchart{width:100%;height:auto;display:block}
+.vbox{border-radius:12px;padding:10px 12px;margin:8px 0 10px;background:var(--card2);border-left:4px solid #8a8f98}
+.vbox.vs3{border-left-color:#3fb26b;background:#14261b}.vbox.vs2{border-left-color:#f3c75a;background:#231f12}.vbox.vs1{border-left-color:#8a8f98}.vbox.vs0{border-left-color:#5b6170}
+.vh{font-size:15px;margin-bottom:4px}.vh .vst{color:var(--text2);font-weight:600}.vbox.vs3 .vh b{color:#7ee2a0}.vbox.vs2 .vh b{color:#f3c75a}
+.vbox ul{list-style:none;margin:0;padding:0;font-size:13px;line-height:1.45;color:var(--text2)}.vbox li{display:flex;gap:6px;padding:2px 0}.vbox li span{flex:0 0 18px}
+.vpill{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;margin-top:6px;background:var(--card2);color:var(--text2)}
+.vpill.vs3{background:#173323;color:#7ee2a0}.vpill.vs2{background:#2b2a1a;color:#f3c75a}
+details.drawer{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:12px}
+details.drawer>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;font-weight:700;font-size:15px}
+details.drawer>summary::-webkit-details-marker{display:none}details.drawer>summary b{color:var(--muted);transition:transform .2s;font-size:20px}details.drawer[open]>summary b{transform:rotate(90deg)}
+details.drawer>.card,details.drawer>.section{margin:0!important;border:0;border-top:1px solid var(--line);border-radius:0 0 14px 14px}details.drawer .dzh{display:none}
+.bfil{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.bfil select{font-size:13px;padding:7px 8px;max-width:48%}
+.snapb{border-color:#4a3d1a;color:#f3c75a}
 .potd{border:1px solid #4a3d1a;background:linear-gradient(180deg,#2a2412,var(--card) 60%)}
 .pod{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}.pod:last-of-type{border-bottom:0}
 .podn{flex:0 0 28px;height:28px;border-radius:50%;background:#f3c75a;color:#1a1608;display:flex;align-items:center;justify-content:center;font-weight:800}
@@ -443,12 +458,11 @@ nav[hidden]{display:none!important}
     <a href="#games" data-v="games">Games</a>
     <a href="#plays" data-v="plays">Plays of the Week</a>
     <a href="#props" data-v="props">Player Props</a>
-    <a href="#public" data-v="public">Predictions</a>
     <a href="#weeks" data-v="weeks">Scores</a>
     <a href="#standings" data-v="standings">Standings</a>
-    <a href="#trends" data-v="trends">Team Trends</a>
     <a href="#injuries" data-v="injuries">Injuries</a>
     <a href="#calc" data-v="calc">Odds Calculator</a>
+    <a href="#favs" data-v="favs">⭐ Favorites</a>
     <a href="#bets" data-v="bets">My Bets</a>
     <a href="#record" data-v="record">📒 Record</a>
     <a href="#guide" data-v="guide">Betting 101</a>
@@ -461,6 +475,7 @@ nav[hidden]{display:none!important}
     <a href="#nba-scores" data-v="nba-scores">Scores</a>
     <a href="#nba-teams" data-v="nba-teams">Standings</a>
     <a href="#nba-injuries" data-v="nba-injuries">Injuries</a>
+    <a href="#favs" data-v="favs">⭐ Favorites</a>
     <a href="#bets" data-v="bets">🎟️ My Bets</a>
       <a href="#record" data-v="record">📒 Record</a>
     <a href="#guide" data-v="guide">Betting 101</a>
@@ -475,6 +490,7 @@ nav[hidden]{display:none!important}
   <section id="v-injuries" class="hide"></section>
   <section id="v-calc" class="hide"></section>
   <section id="v-bets" class="hide"></section>
+  <section id="v-favs" class="hide"></section>
   <section id="v-props" class="hide"></section>
   <section id="v-public" class="hide"></section>
   <section id="v-weeks" class="hide"></section>
@@ -2283,7 +2299,7 @@ function nbaPropCard(r,idx){
   return `<div class="card prop" id="${id}" data-k="${k}" data-nm="${nbaEsc(nm)}" data-line="${line}" data-opp="${opp}" data-pos="${p.p5||""}">
   <div><b>${nbaLink(nm)}</b> <span class="small">${p.p5||p.pos} · ${p.tm}${opp?(g.a===p.tm?" @ ":" vs ")+opp:""} · <b style="color:var(--text2)">${nbaF(nbaAvg(p,"min"))} min/g</b></span>${nbaInjChip(inj)}</div>
   <div style="margin:8px 0 10px;font-size:16px"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)} ${line}</b> <span class="small">${op!=null?"O "+oddsFmt(op):""}${up!=null?" · U "+oddsFmt(up):""}${book?" · "+nbaEsc(book):""}</span>${nbaShopHtml(r)}</div>
-  ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${nbaBoostNote(nm,k)}${nbaMateSel(nm)}
+  ${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${nbaMateSel(nm)}
   <div class="hr4"><div><b>${rate(S.l5)}</b>Last 5</div><div><b>${rate(S.l10)}</b>Last 10</div><div><b>${rate(S.season)}</b>Season</div><div><b>${rate(S.h2h)}</b>vs ${opp||"opp"}</div></div>
   <div class="nbtabs">${tab("l5","L5")}${tab("l10","L10")}${tab("season","Season")}${tab("h2h","H2H",S.h2h.length)}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
@@ -2465,17 +2481,25 @@ function nbaPlaysCard(){
   <div class="small" style="margin-top:8px">Picked automatically from real posted lines: 7+ of last 10, a winning record this season, a clear edge over what the odds need, no injury tag, odds no worse than −200. Leans, not guarantees — bet small.</div></div>`;
 }
 function nbaPropTabs(on){return `<div class="seg ptabs"><a class="${on==="best"?"on":""}" href="#nba-best">🔥 Best tonight</a><a class="${on==="all"?"on":""}" href="#nba-props">All props</a></div>`}
+function nbaBestFilter(L){const f=NB.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.min||b.sc>=f.min/100))}
+function nbaBestFilterUI(L0){const f=NB.bf||(NB.bf={});const games=NBA_SLATE.filter(g=>!nbaStarted(g));const mks=[...new Set(L0.map(b=>b.k))];
+  return `<div class="bfil"><select data-bf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${g.a} @ ${g.h}</option>`).join("")}</select>
+   <select data-bf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${NBA_MK[m][1]}</option>`).join("")}</select>
+   <select data-bf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
+   <select data-bf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select></div>`}
 function nbaBestPage(el){
-  const L=nbaBest();
+  const L0=nbaBest(),L=nbaBestFilter(L0);
   el.innerHTML=`<h1>NBA Best Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>${nbaPropTabs("best")}
   ${nbaPlaysCard()}
   <div style="margin-top:14px">${nbaRecordCard(1)}</div>
-  ${L.length?`<div class="card bpc" style="margin-top:14px"><h2 style="margin-bottom:2px">🔥 Every line, ranked</h2>
-    <div class="small" style="margin-bottom:8px">All ${L.length} posted lines with an edge, over or under, ranked by how often they would have hit vs what the odds need. Tap one for the player's stats and charts.</div>
+  ${L0.length?`<div class="card bpc" style="margin-top:14px"><h2 style="margin-bottom:2px">🔥 Every line, ranked</h2>
+    <div class="small" style="margin-bottom:8px">${L.length} of ${L0.length} posted lines with an edge, over or under, ranked by how often they would have hit vs what the odds need. Tap one for the player's stats and charts.</div>
+    ${nbaBestFilterUI(L0)}${L.length?"":`<div class="small" style="padding:8px 0">Nothing matches these filters.</div>`}
     ${L.map(nbaBestRow).join("")}
     <div class="small" style="margin-top:8px">Hit score blends last 10 (45%), this season (35%) and vs tonight's opponent (20%), ±5 for the position matchup. A lean, not a guarantee.</div></div>`
    :`<div class="card" style="margin-top:14px">${NBA_PROPS.length&&NBA_SLATE.length&&NBA_SLATE.every(nbaStarted)?"🔒 Every game today has started — pregame lines are closed. New lines come out tomorrow morning.":NBA_PROPS.length?"No open line shows an edge right now.":"Today's prop lines aren't out yet — books post them in the morning."}</div>`}`;
   nbaWireBest(el);
+  el.querySelectorAll("[data-bf]").forEach(s=>s.onchange=()=>{NB.bf[s.dataset.bf]=s.value;const y=window.scrollY;nbaBestPage(el);window.scrollTo(0,y)});
 }
 
 function nbaProps(el){
@@ -2636,7 +2660,7 @@ function nbaPlayer(el,nm){
       const lean=l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
       return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p">
         <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span></div>
-          <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${nbaShopHtml(r)}
+          <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):""}${nbaShopHtml(r)}
         <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
         <div class="plf"><b class="${ov/Math.max(1,l6.length)>=.5?"up":"dn"}">${ov}/${l6.length} over</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
         ${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}
@@ -2680,7 +2704,7 @@ function nbaPlayer(el,nm){
   if(NB.goto){const id=NB.goto;NB.goto=null;setTimeout(()=>nbaFlash(id),60)}
   NB.from=null;
 }
-function nbaFlash(id){const c=document.getElementById(id);if(!c)return;c.scrollIntoView({block:"start"});c.classList.add("flash");setTimeout(()=>c.classList.remove("flash"),1800)}
+function nbaFlash(id){const c=document.getElementById(id);if(!c)return;const dz=c.closest("details");if(dz)dz.open=true;c.scrollIntoView({block:"start"});c.classList.add("flash");setTimeout(()=>c.classList.remove("flash"),1800)}
 
 /* ---------- Scores + box scores ---------- */
 function nbaBox(id){
@@ -2816,7 +2840,9 @@ function viewStandings(){
    <div class="grid g2">${pic("AFC")}${pic("NFC")}</div>
    <h2 style="margin-top:18px">AFC</h2><div class="grid g2">${["AFC East","AFC North","AFC South","AFC West"].map(div).join("")}</div>
    <h2 style="margin-top:18px">NFC</h2><div class="grid g2">${["NFC East","NFC North","NFC South","NFC West"].map(div).join("")}</div>
+   <h2 style="margin-top:18px">Betting trends</h2><div class="card" style="overflow-x:auto"><div id="stTrends"></div></div>
    <p class="note" style="margin-top:10px">Source: nflverse schedule & results (open data).</p>`;
+  if(typeof viewTrends!=="undefined")viewTrends();
 }
 function nfPressCard(g){
   if(!NFX||!NFL_PRESS[g.away]||!NFL_PRESS[g.home])return "";
@@ -3117,7 +3143,7 @@ function shareWrap(ctx,text,x,y,maxW,lh){const words=String(text).split(" ");let
 async function shareImage(o){
   const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
   const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#1d1a10");g.addColorStop(.35,"#121418");g.addColorStop(1,"#0d0f12");x.fillStyle=g;x.fillRect(0,0,W,H);
-  x.fillStyle="#f3c75a";x.font="800 46px system-ui,-apple-system,Segoe UI,Roboto,sans-serif";x.fillText("RLA SHARP",72,110);
+  if(typeof drawLogo!=="undefined")drawLogo(x,72,52,84);x.fillStyle="#f3c75a";x.font="800 46px system-ui,-apple-system,Segoe UI,Roboto,sans-serif";x.fillText("RLA SHARP",172,110);
   x.fillStyle="#9aa0aa";x.font="500 30px system-ui,sans-serif";x.fillText(o.kicker||new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"}),72,160);
   x.fillStyle="#ffffff";x.font="800 70px system-ui,sans-serif";shareWrap(x,o.title,72,262,W-144,78);
   x.fillStyle="#c7cbd2";x.font="500 32px system-ui,sans-serif";shareWrap(x,o.sub||"",72,330,W-144,42);
@@ -3170,6 +3196,7 @@ if("serviceWorker" in navigator&&/^https:/.test(location.protocol)&&/github\.io$
 /* keep the active tab visible in the swipeable phone menu */
 function navCenter(){document.querySelectorAll("nav:not([hidden]) a.on").forEach(a=>{const n=a.parentElement;if(n.scrollWidth>n.clientWidth)n.scrollLeft=a.offsetLeft-n.offsetLeft-n.clientWidth/2+a.offsetWidth/2})}
 window.addEventListener("hashchange",()=>setTimeout(navCenter,80));window.addEventListener("load",()=>setTimeout(navCenter,200));
+
 /* ---------- App shell: Today page, bottom tab bar, global search, favorites, updated-at, age check ---------- */
 
 /* ===== Favorites (saved on this phone/browser only) ===== */
@@ -3179,7 +3206,7 @@ function toggleFav(t,id){let F=favs();F=isFav(t,id)?F.filter(f=>!(f.t===t&&f.id=
 function favBtn(t,id){const on=isFav(t,id);return `<button class="favb${on?" on":""}" data-fav="${t}|${esc(id)}" title="${on?"Remove from":"Add to"} My favorites">${on?"★":"☆"}<span>${on?"Saved":"Save"}</span></button>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-fav]");if(!b)return;e.preventDefault();e.stopPropagation();
   const v=b.dataset.fav.replace(/&amp;/g,"&").replace(/&quot;/g,'"'),i=v.indexOf("|"),on=toggleFav(v.slice(0,i),v.slice(i+1));
-  b.classList.toggle("on",on);b.innerHTML=`${on?"★":"☆"}<span>${on?"Saved":"Save"}</span>`;if(typeof shareToast!=="undefined")shareToast(on?"Added to My favorites ⭐ (see Today)":"Removed from favorites")});
+  b.classList.toggle("on",on);b.innerHTML=`${on?"★":"☆"}<span>${on?"Saved":"Save"}</span>`;if(typeof shareToast!=="undefined")shareToast(on?"Saved ⭐ — see Favorites (More menu or top of Today)":"Removed from favorites")});
 /* put a star button in page headers after each render */
 function favDecorate(){
   const h=decodeURIComponent((location.hash||"").slice(1));
@@ -3234,8 +3261,8 @@ function tabbarRender(){
 function moreOpen(){
   let sh=document.getElementById("moresheet");if(!sh){sh=document.createElement("div");sh.id="moresheet";document.body.appendChild(sh)}
   const nba=[["#nba","🏀 Games"],["#nba-best","🔥 Best props"],["#nba-props","🎯 All props"],["#nba-players","👤 Players"],["#nba-teams","📊 Standings"],["#nba-scores","🧾 Scores"],["#nba-injuries","🚑 Injuries"]];
-  const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#public","🔮 Predictions"],["#weeks","🧾 Scores"],["#standings","📊 Standings"],["#trends","📈 Team trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
-  const all=[["#record","📒 Our record"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
+  const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
+  const all=[["#favs","⭐ Favorites"],["#record","📒 Our record"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
   sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NFL",nfl)}${grp("More",all)}
@@ -3254,14 +3281,8 @@ function todayLive(){
   }
   return rows.length?`<div class="card"><h2 style="margin-bottom:6px"><span class="lvdot"></span>&nbsp; Live now</h2>${rows.join("")}</div>`:"";
 }
-function viewToday(){
-  const host=document.getElementById("v-today");if(!host)return;
-  const nbaGames=(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]),nbaOpen=nbaGames.filter(g=>!nbaStarted(g));
-  const nflUp=(typeof SLATE!=="undefined"?SLATE.filter(g=>!g.final&&!nflStarted(g)):[]);
-  const gameRow=g=>{const L=NBA_LINES[g.a+"@"+g.h],fav=L?(L.sp<=0?g.h:g.a):null;
-    return `<a class="tgame" href="#nba-game-${g.id}"><span class="small">${g.t}</span><span>${nbaBadge(g.a)} ${nbaShort(g.a)} <span class="small">@</span> ${nbaBadge(g.h)} ${nbaShort(g.h)}</span><span class="small">${L?`${nbaShort(fav)} −${Math.abs(L.sp)} · ${L.tot}`:""}</span></a>`};
-  const nflRow=g=>`<a class="tgame" href="#game-${g.id}"><span class="small">${esc(String(g.when).split("·")[0])}</span><span>${badge(g.away)} ${esc(short(g.away))} <span class="small">@</span> ${badge(g.home)} ${esc(short(g.home))}</span><span class="small">${esc((String(g.when).split("·")[1]||"").trim())}</span></a>`;
-  /* favorites */
+function favListHtml(full){
+  const emptyFav=`<div class="card tip"><b>⭐ No favorites yet.</b> Open any player or team page (NBA or NFL) and tap <b>☆ Save</b> next to the name. They'll show up here and at the top of Today, every day, with their lines.<div style="margin-top:8px"><a class="btn" href="#nba-players">Find an NBA player</a> <a class="btn" href="#props">Find an NFL player</a></div></div>`;
   const F=favs();let favHtml="";
   if(F.length){
     const items=F.map(f=>{
@@ -3272,18 +3293,33 @@ function viewToday(){
       if(f.t==="nflp"&&typeof PINFO!=="undefined"&&PINFO[f.id]){const P=PINFO[f.id],o=oppOf(P.team),MK=marketsFor(P.pos).filter(m=>realProp(f.id,m));
         return `<a class="fv" href="#" data-nflfav="${esc(f.id)}"><b>⭐ ${esc(f.id)}</b><span class="small">${P.team} ${P.pos} · ${o?`${o.home?"vs":"@"} ${o.opp} ${esc(o.g.when)}`:"no game this week"}${MK.length?` · ${MK.slice(0,3).map(m=>`${MARKETS[m].n} ${realProp(f.id,m)[0]}`).join(", ")}`:""}</span></a>`}
       return "";}).join("");
-    favHtml=`<div class="card"><h2 style="margin-bottom:6px">⭐ My favorites</h2>${items}<div class="small" style="margin-top:6px">Tap ☆ Save on any player or team page to add more.</div></div>`;
-  }else favHtml=`<div class="card tip"><b>⭐ Tip:</b> tap <b>☆ Save</b> on any player or team page and they'll show up here every day with their lines.</div>`;
+    if(!items)return emptyFav;
+    favHtml=`<div class="card"><h2 style="margin-bottom:6px">⭐ My favorites</h2>${items}${full?"":`<a href="#favs" class="small" style="display:block;margin-top:8px;color:var(--text2)">Open Favorites page →</a>`}<div class="small" style="margin-top:6px">Tap ☆ Save on any player or team page to add more.</div></div>`;
+  }else favHtml=emptyFav;
+  return favHtml;
+}
+function viewFavs(){const host=document.getElementById("v-favs");if(!host)return;const n=favs().length;
+  host.innerHTML=`<h1>⭐ Favorites</h1><p class="sub">${n?`${n} saved · `:""}Saved on this phone/browser only. Tap a name for today's lines and stats.</p>${favListHtml(true)}`;
+  host.querySelectorAll("[data-nflfav]").forEach(el=>el.onclick=e=>{e.preventDefault();if(typeof goPlayer!=="undefined")goPlayer(el.dataset.nflfav.replace(/&amp;/g,"&"))});}
+function viewToday(){
+  const host=document.getElementById("v-today");if(!host)return;
+  const nbaGames=(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]),nbaOpen=nbaGames.filter(g=>!nbaStarted(g));
+  const nflUp=(typeof SLATE!=="undefined"?SLATE.filter(g=>!g.final&&!nflStarted(g)):[]);
+  const gameRow=g=>{const L=NBA_LINES[g.a+"@"+g.h],fav=L?(L.sp<=0?g.h:g.a):null;
+    return `<a class="tgame" href="#nba-game-${g.id}"><span class="small">${g.t}</span><span>${nbaBadge(g.a)} ${nbaShort(g.a)} <span class="small">@</span> ${nbaBadge(g.h)} ${nbaShort(g.h)}</span><span class="small">${L?`${nbaShort(fav)} −${Math.abs(L.sp)} · ${L.tot}`:""}</span></a>`};
+  const nflRow=g=>`<a class="tgame" href="#game-${g.id}"><span class="small">${esc(String(g.when).split("·")[0])}</span><span>${badge(g.away)} ${esc(short(g.away))} <span class="small">@</span> ${badge(g.home)} ${esc(short(g.home))}</span><span class="small">${esc((String(g.when).split("·")[1]||"").trim())}</span></a>`;
+  const favHtml=favListHtml(false);
   const nbaTop=(typeof nbaBest!=="undefined"?nbaBest().slice(0,5):[]),nflTop=(typeof nflBest!=="undefined"?nflBest().slice(0,3):[]);
   const today=new Date().toLocaleDateString("en-US",{timeZone:"America/Toronto",weekday:"long",month:"long",day:"numeric"});
   host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA and NFL on one screen.</p>
   <div id="todayLive">${todayLive()}</div>
+  ${favs().length?`<div style="margin-top:12px">${favHtml}</div>`:""}
   <div class="grid g2" style="margin-top:12px">
     <div>${typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():""}</div>
     <div class="card"><h2 style="margin-bottom:6px">🏈 NFL Plays of the Week</h2>${typeof PLAYS!=="undefined"?PLAYS.map((pl,i)=>{const d=playData(pl);if(!d)return "";const g=gradeOne(pl,PLAYS_WEEK,d);return `<a class="fv" href="#plays"><b>${i+1}. ${esc(d.title)}</b><span class="small">${d.odds!=null?oddsFmt(d.odds)+" · ":""}<span style="color:${RES_COL[g.r]}">${RES_TXT[g.r]}</span></span></a>`}).join(""):""}
       <a href="#plays" class="small" style="display:block;margin-top:8px;color:var(--text2)">Why we like them →</a></div>
   </div>
-  <div style="margin-top:14px">${favHtml}</div>
+  ${favs().length?"":`<div style="margin-top:14px">${favHtml}</div>`}
   ${nbaOpen.length&&typeof nbaRoleCard!=="undefined"?`<div style="margin-top:14px">${nbaRoleCard(5)}</div>`:""}
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2 style="margin-bottom:6px">🔥 Top NBA props</h2>${nbaTop.length?nbaTop.map(nbaBestRow).join(""):`<div class="small">${nbaGames.length&&!nbaOpen.length?"Tonight's games have started — new lines tomorrow morning.":"Lines usually post by late morning ET."}</div>`}<a href="#nba-best" class="small" style="display:block;margin-top:8px;color:var(--text2)">All ranked props →</a></div>
@@ -3315,7 +3351,7 @@ function ageGate(){
 }
 
 /* ===== hooks ===== */
-function appAfterRoute(){tabbarRender();favDecorate();
+function appAfterRoute(){tabbarRender();favDecorate();{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
   const h=(location.hash||"").slice(1),host=document.getElementById("banner");
   if(host&&(h==="nba"||h==="games"||h==="nba-props"||h==="nba-best"||h==="props")){host.innerHTML=updatedHtml(h.startsWith("nba")?"nba":"nfl")}
 }
@@ -3354,7 +3390,7 @@ function nbaSpec(nm,k,side){
 }
 function actBtn(spec,label,cls){if(!spec)return "";return `<button class="obtn ${cls||""}" data-act='${esc(JSON.stringify(spec))}'>${label}</button>`}
 function nbaOddsBtns(nm,k){const o=nbaSpec(nm,k,"over"),u=nbaSpec(nm,k,"under");if(!o)return "";
-  return `<div class="obrow">${o.odds!=null?actBtn(o,`Over ${o.line} <b>${oddsFmt(o.odds)}</b>`,"ov"):""}${u.odds!=null?actBtn(u,`Under ${u.line} <b>${oddsFmt(u.odds)}</b>`,"un"):""}<span class="small">tap to track or parlay</span></div>`}
+  return `<div class="obrow">${o.odds!=null?actBtn(o,`Over ${o.line} <b>${oddsFmt(o.odds)}</b>`,"ov"):""}${u.odds!=null?actBtn(u,`Under ${u.line} <b>${oddsFmt(u.odds)}</b>`,"un"):""}${snapBtn("nba",nm,k)}</div>`}
 function legHit(s){try{
   if(s.k==="nbaprop"){const e=nbaEval(s.player,s.market,s.line,s.side==="over"?"o":"u",s.odds,s.book,s.opp);return e?e.sc:null}
   if(s.k==="prop"&&typeof nflEval!=="undefined"){const e=nflEval(s.player,s.market,s.side==="over"?"o":"u");return e?e.sc:null}}catch(e){}return null}
@@ -3408,7 +3444,7 @@ function slipOpen(){
    <div style="font-size:15px;margin-top:6px">Pays <b>$${pay.toFixed(2)}</b> (profit $${(pay-stake).toFixed(2)}) if all ${a.length} hit.</div>
    ${same?`<div class="small" style="margin-top:6px;color:#f3c75a">⚠️ Two legs come from the same game — results can be linked, so the estimate is rough. Many books only allow these as a "same game parlay".</div>`:""}
    <div class="small" style="margin-top:6px">Every leg must win. Our estimate multiplies each leg's hit score, as if the legs were independent — a guide, not a guarantee.</div>
-   <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn" id="slipTrack" ${a.length<2?"disabled":""}>＋ Track this parlay</button><button class="btn" id="slipClear">Clear</button><button class="btn" id="slipClose">Close</button></div></div>`;
+   <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn" id="slipTrack" ${a.length<2?"disabled":""}>＋ Track this parlay</button><button class="btn" data-snap="parlay||">📸 Share</button><button class="btn" id="slipClear">Clear</button><button class="btn" id="slipClose">Close</button></div></div>`;
   p.className="open";
   const close=()=>{p.className=""};p.querySelector(".msback").onclick=close;p.querySelector("#slipClose").onclick=close;
   p.querySelectorAll("[data-rmleg]").forEach(b=>b.onclick=()=>{const x=slipGet();x.splice(+b.dataset.rmleg,1);slipSet(x);if(x.length)slipOpen()});
@@ -3424,6 +3460,214 @@ if(ANALYTICS_CODE&&/github\.io$/.test(location.hostname)){const s=document.creat
   window.addEventListener("hashchange",()=>{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:location.pathname+location.hash})})}
 
 window.addEventListener("load",()=>setTimeout(slipRender,80));
+
+/* ===== One-glance verdict on every prop (NBA + NFL) ===== */
+function vMark(ok){return ok===1?"✅":ok===-1?"⚠️":"➖"}
+function vBox(side,strength,items,small){
+  const cls=strength==="Strong"?"vs3":strength==="Medium"?"vs2":strength==="Weak"?"vs1":"vs0";
+  const head=strength==="none"?`<b>No clear lean</b>`:`<b>Lean ${side}</b> <span class="vst">· ${strength}</span>`;
+  if(small)return `<span class="vpill ${cls}">${strength==="none"?"No clear lean":`Lean ${side} · ${strength}`}</span>`;
+  return `<div class="vbox ${cls}"><div class="vh">${head}</div><ul>${items.map(([m,t])=>`<li><span>${vMark(m)}</span>${t}</li>`).join("")}</ul></div>`;
+}
+function vStrength(e){if(!e||e.edge<=0||e.sc<.55)return "none";if(e.sc>=.75&&e.edge>=.12)return "Strong";if(e.sc>=.62&&e.edge>=.05)return "Medium";return "Weak"}
+function nbaVerdict(nm,k,small){
+  const r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k),p=NBA_LOGS[nm];if(!r||!p)return "";
+  const ev=sd=>{const bp=nbaBestPrice(r,sd),o=bp?bp[0]:(sd==="o"?r[3]:r[4]);return o==null?null:nbaEval(nm,k,r[2],sd,o,bp?bp[1]:r[5])};
+  const O=ev("o"),U=ev("u"),e=(O&&U)?(O.sc>=U.sc?O:U):(O||U);if(!e)return "";
+  const st=vStrength(e),side=e.side==="o"?"Over":"Under",over=e.side==="o",I=[];
+  const rate=(c,l)=>{if(!c[1])return;const x=c[0]/c[1];I.push([x>=.6?1:x<.5?-1:0,`${side} in <b>${c[0]} of ${c[1]}</b> ${l}`])};
+  rate(e.c10,"of his last games");if(e.cS[1]>=3)rate(e.cS,"this season");if(e.cH[1]>=2)rate(e.cH,"vs "+e.opp);
+  if(e.dvOk===1)I.push([1,`${e.opp} has been ${over?"soft":"tough"} on ${nbaPosWord(p.p5)} lately`]);else if(e.dvOk===-1)I.push([-1,`${e.opp} has been ${over?"tough":"soft"} on ${nbaPosWord(p.p5)} lately`]);
+  const R=typeof nbaRole!=="undefined"&&nbaRole(nm);if(R)for(const x of R){const up=x.c==="o";I.push([up===over?1:-1,x.t.replace(/^\S+\s/,"")])}
+  const rest=NBA_REST&&NBA_REST[p.tm];if(rest&&rest.rest===0)I.push([over?-1:1,"Back-to-back tonight (tired legs)"]);
+  for(const s of nbaStarsOut(p.tm)){const sp=nbaSplit(nm,s,p.tm);if(sp.o.n<2||sp.w.n<2)continue;const a=sp.w.fn(k),b=sp.o.fn(k);if(a>0&&Math.abs(b/a-1)>=.1)I.push([(b>a)===over?1:-1,`${nbaEsc(s)} is out — ${nbaF(b)} without him vs ${nbaF(a)} with`])}
+  const inj=nbaInjOf(nm);if(inj&&/day|quest/i.test(inj[2]))I.push([-1,"Listed as a game-time decision"]);
+  I.push([e.edge>=.05?1:e.edge>0?0:-1,`Price ${oddsFmt(e.odds)} needs ${Math.round(e.be*100)}% — hit score ${Math.round(e.sc*100)}%`]);
+  return vBox(side,st,I,small);
+}
+function nflVerdict(name,k,small){
+  if(typeof nflEval==="undefined")return "";const O=nflEval(name,k,"o"),U=nflEval(name,k,"u"),e=(O&&U)?(O.sc>=U.sc?O:U):(O||U);if(!e)return "";
+  const st=vStrength(e),td=k==="anyTD",side=td?"Yes (scores)":e.side==="o"?"Over":"Under",over=e.side==="o",I=[];
+  const rate=(c,l)=>{if(!c[1])return;const x=c[0]/c[1];I.push([x>=.6?1:x<.5?-1:0,`${td?"Scored":side} in <b>${c[0]} of ${c[1]}</b> ${l}`])};
+  rate(e.c5,"of his last games");rate(e.cS,"this season");if(e.cH[1]>=2)rate(e.cH,"vs "+e.opp);
+  if(Number.isFinite(e.dv))I.push([e.dvOk||0,`${short(e.opp)} allow the ${ordinal(e.dv)} most to ${POSNAME[e.pl.pos]||e.pl.pos}`]);
+  const u=typeof USAGE!=="undefined"&&USAGE[name];if(u&&u.s&&u.l3&&k!=="passYds"&&k!=="passTD"&&k!=="comp"){const rush=/rush/.test(k)&&!/Rec/.test(k),a=rush?u.s.csh:u.s.tsh,b=rush?u.l3.csh:u.l3.tsh;if(a!=null&&b!=null&&Math.abs(b-a)>=3)I.push([(b>a)===over?1:-1,`${rush?"Carry":"Target"} share ${b>a?"up":"down"} lately (${b}% last 3 vs ${a}%)`])}
+  if(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[name])I.push([-1,`Injury: ${esc(QUESTIONABLE[name])}`]);
+  I.push([e.edge>=.05?1:e.edge>0?0:-1,`${e.odds!=null?"Price "+amTxt(e.odds)+" needs":"Assumed −110 needs"} ${Math.round(e.be*100)}% — hit score ${Math.round(e.sc*100)}%`]);
+  return vBox(side,st,I,small);
+}
+
+/* ===== Collapsible drawers on long pages (keeps the top short; remembers what you opened) ===== */
+const DZ_OPEN=new Set(LS.get("dzOpen",[])||[]);
+const DZ_RULES=[
+  [/^nba-game-/,"#v-nba",[/^When the /,/^By quarter/,/ last 5$/,/^Head to head/,/ players$/]],
+  [/^nba-player-/,"#v-nba",[/^Advanced/,/^Where he scores/,/^Last \d+ games/,/^Splits/,/schedule/,/^Game log/]],
+  [/^game-/,"#v-game",[/^Offense vs defense/,/^Pass rush/,/^Target & snap/,/^Run game/,/^Coverage/,/^Recent form/,/^Head-to-head/,/next games$/,/^Pace/,/^Line movement/]],
+  [/^props$/,"#v-props",[/^Usage/,/^Splits/,/^Red zone/,/^All \d+ games/,/next games$/,/vs /,/^What .* allow/,/^How .* did/]],
+];
+function drawerize(){
+  const h=decodeURIComponent((location.hash||"").slice(1));const rule=DZ_RULES.find(r=>r[0].test(h));if(!rule)return;
+  const root=document.querySelector(rule[1]);if(!root)return;
+  root.querySelectorAll("h2,h3").forEach(hd=>{
+    const t=hd.textContent.trim();if(!rule[2].some(re=>re.test(t)))return;
+    let tgt=hd.closest(".section")||hd.closest(".card");if(!tgt||tgt===root||tgt.closest("details.drawer")||tgt.querySelector("canvas")||tgt.querySelector(".plines,.vbox"))return;
+    if(tgt.classList.contains("section")&&(tgt.querySelectorAll(":scope > .card").length>1||tgt.querySelector("details.drawer"))){const c=hd.closest(".card");if(!c)return;tgt=c}
+    const label=t.replace(/\s+/g," ").slice(0,70),d=document.createElement("details");d.className="drawer";if(DZ_OPEN.has(label))d.open=true;
+    d.innerHTML=`<summary><span>${esc(label)}</span><b>›</b></summary>`;tgt.parentNode.insertBefore(d,tgt);d.appendChild(tgt);hd.classList.add("dzh");
+    d.addEventListener("toggle",()=>{if(d.open)DZ_OPEN.add(label);else DZ_OPEN.delete(label);LS.set("dzOpen",[...DZ_OPEN].slice(-60))});
+  });
+}
+let DZ_T=null;const dzSoon=()=>{clearTimeout(DZ_T);DZ_T=setTimeout(drawerize,30)};
+["v-nba","v-game","v-props"].forEach(id=>{const el=document.getElementById(id);if(el)new MutationObserver(dzSoon).observe(el,{childList:true})});
+window.addEventListener("hashchange",()=>setTimeout(drawerize,70));window.addEventListener("load",()=>setTimeout(drawerize,120));
+
+/* ===== 📸 Snapshots: shareable images with the RLA Sharp logo ===== */
+function drawLogo(x,X,Y,S){ /* same design as the app icon: dark rounded square, white RLA, gold rising line */
+  const r=S*.22;x.save();x.fillStyle="#121418";x.strokeStyle="#3a3320";x.lineWidth=S*.03;x.beginPath();
+  if(x.roundRect)x.roundRect(X,Y,S,S,r);else x.rect(X,Y,S,S);x.fill();x.stroke();
+  x.fillStyle="#fff";x.font=`800 ${Math.round(S*.27)}px system-ui,sans-serif`;x.textAlign="center";x.fillText("RLA",X+S/2,Y+S*.42);
+  x.strokeStyle="#f3c75a";x.lineWidth=S*.05;x.lineJoin="round";x.beginPath();
+  const P=[[.18,.78],[.4,.62],[.56,.7],[.84,.42]];P.forEach(([a,b],i)=>i?x.lineTo(X+S*a,Y+S*b):x.moveTo(X+S*a,Y+S*b));x.stroke();
+  x.fillStyle="#f3c75a";P.forEach(([a,b])=>{x.beginPath();x.arc(X+S*a,Y+S*b,S*.035,0,7);x.fill()});x.restore();
+}
+async function snapImage(o){
+  const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#1d1a10");g.addColorStop(.35,"#121418");g.addColorStop(1,"#0d0f12");x.fillStyle=g;x.fillRect(0,0,W,H);
+  drawLogo(x,72,64,110);x.fillStyle="#fff";x.font="800 52px system-ui,sans-serif";x.fillText("RLA Sharp",204,122);
+  x.fillStyle="#f3c75a";x.font="600 26px system-ui,sans-serif";x.fillText(o.kicker||"NFL & NBA betting research",206,160);
+  const fit=(t,w,px,max)=>{let f=px;do{x.font=`${w} ${f}px system-ui,sans-serif`;if(x.measureText(t).width<=max)break;f-=2}while(f>22);return t};
+  let y=270;x.fillStyle="#fff";x.fillText(fit(o.title,800,66,W-144),72,y);y+=52;
+  x.fillStyle="#c7cbd2";x.fillText(fit(o.sub||"",500,32,W-144),72,y);y+=40;
+  if(o.lean){y+=26;const col=o.lean.st==="Strong"?"#3fb26b":o.lean.st==="Medium"?"#f3c75a":"#8a8f98";x.fillStyle=col+"33";x.beginPath();x.roundRect?x.roundRect(72,y,W-144,96,20):x.rect(72,y,W-144,96);x.fill();
+    x.fillStyle=col;x.fillText(fit(o.lean.txt,800,48,W-200),100,y+64);y+=124}
+  for(const it of (o.items||[]).slice(0,o.bars?4:5)){x.fillStyle="#e1e4e9";const t=(it[0]===1?"✅ ":it[0]===-1?"⚠️ ":"• ")+String(it[1]).replace(/<[^>]+>/g,"");x.fillText(fit(t,500,32,W-144),72,y+30);y+=50}
+  if(o.tiles&&o.tiles.length){y+=14;const n=o.tiles.length,gap=16,tw=(W-144-gap*(n-1))/n;
+    o.tiles.forEach((t,i)=>{const X=72+i*(tw+gap),pct=t[2]==null?null:t[1]/t[2],col=pct==null?"#c7cbd2":pct>=.6?"#7ee2a0":pct<=.4?"#ff9a9d":"#f3c75a";
+      x.fillStyle="#1c1f25";x.beginPath();x.roundRect?x.roundRect(X,y,tw,104,18):x.rect(X,y,tw,104);x.fill();
+      x.textAlign="center";x.fillStyle=col;x.font="800 44px system-ui,sans-serif";x.fillText(t[2]?`${t[1]}/${t[2]}`:"—",X+tw/2,y+54);
+      x.fillStyle="#9aa0aa";x.font="600 22px system-ui,sans-serif";x.fillText(t[0],X+tw/2,y+88);x.textAlign="left"});y+=128}
+  if(o.bars&&o.bars.vals.length){const B=o.bars,n=B.vals.length;y+=18;x.fillStyle="#9aa0aa";x.font="600 26px system-ui,sans-serif";x.fillText(B.cap||"Last games",72,y);y+=20;
+    const ch=196,top=y+40,base=top+ch,mx=Math.max(B.line,...B.vals.map(b=>b.v))*1.15||1,gap=12,bw=(W-144-gap*(n-1))/n,Y=v=>base-(v/mx)*ch;
+    x.fillStyle="#16191e";x.beginPath();x.roundRect?x.roundRect(60,y,W-120,ch+96,20):x.rect(60,y,W-120,ch+96);x.fill();
+    B.vals.forEach((b,i)=>{const X=72+i*(bw+gap),c=b.v>B.line?"#3fb26b":b.v<B.line?"#e5534b":"#8a8f98",h=Math.max(4,base-Y(b.v));
+      x.fillStyle=c;x.beginPath();x.roundRect?x.roundRect(X,base-h,bw,h,[10,10,0,0]):x.rect(X,base-h,bw,h);x.fill();
+      x.textAlign="center";x.fillStyle="#fff";x.font=`800 ${n>8?26:30}px system-ui,sans-serif`;x.fillText(String(b.v),X+bw/2,base-h-10);
+      x.fillStyle="#9aa0aa";x.font=`500 ${n>8?18:21}px system-ui,sans-serif`;x.fillText(String(b.lab||""),X+bw/2,base+30);x.textAlign="left"});
+    const ly=Y(B.line);x.strokeStyle="#f3c75a";x.lineWidth=4;x.setLineDash([16,12]);x.beginPath();x.moveTo(66,ly);x.lineTo(W-66,ly);x.stroke();x.setLineDash([]);
+    y=base+66}
+  if(!o.bars&&o.boxes&&o.boxes.length){y+=20;x.fillStyle="#9aa0aa";x.font="600 26px system-ui,sans-serif";x.fillText(o.boxCap||"Last games (newest on the right)",72,y);y+=18;
+    const n=o.boxes.length,gap=14,bw=(W-144-gap*(n-1))/n;
+    o.boxes.forEach((b,i)=>{const X=72+i*(bw+gap);x.fillStyle=b.c==="o"?"#173323":b.c==="u"?"#3a1d1e":"#24272c";x.beginPath();x.roundRect?x.roundRect(X,y,bw,120,18):x.rect(X,y,bw,120);x.fill();
+      x.fillStyle=b.c==="o"?"#7ee2a0":b.c==="u"?"#ff9a9d":"#c7cbd2";x.textAlign="center";x.font="800 46px system-ui,sans-serif";x.fillText(String(b.v),X+bw/2,y+66);x.font="500 22px system-ui,sans-serif";x.fillText(String(b.lab||""),X+bw/2,y+100);x.textAlign="left"});y+=150}
+  if(o.rows)for(const r of o.rows.slice(0,8)){x.fillStyle="#1c1f25";x.beginPath();x.roundRect?x.roundRect(72,y,W-144,88,18):x.rect(72,y,W-144,88);x.fill();
+    x.fillStyle="#fff";x.fillText(fit(r.a,700,32,W-360),100,y+40);x.fillStyle=r.col||"#9aa0aa";x.fillText(fit(r.b||"",500,26,W-360),100,y+74);
+    if(r.c){x.fillStyle="#f3c75a";x.font="800 36px system-ui,sans-serif";x.textAlign="right";x.fillText(r.c,W-100,y+56);x.textAlign="left"}y+=100}
+  if(o.big){y+=10;x.fillStyle="#f3c75a";x.font="800 60px system-ui,sans-serif";x.fillText(o.big,72,y+60);x.fillStyle="#9aa0aa";x.font="500 28px system-ui,sans-serif";x.fillText(o.bigSub||"",72,y+100)}
+  x.fillStyle="#7c828c";x.font="500 24px system-ui,sans-serif";x.fillText("Leans from past numbers, not guarantees. 21+ · 1-800-GAMBLER",72,H-110);
+  x.fillStyle="#fff";x.font="700 34px system-ui,sans-serif";x.fillText(typeof siteUrl!=="undefined"?siteUrl():"rlasharp.github.io/rla-sharp",72,H-58);
+  drawLogo(x,W-72-70,H-122,70);
+  const blob=await new Promise(r=>c.toBlob(r,"image/png"));const file=new File([blob],(o.file||"rla-sharp")+".png",{type:"image/png"});
+  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:o.title,text:`${o.title} — ${siteUrl()}`});return}}catch(e){if(e&&e.name==="AbortError")return}
+  try{const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=file.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}catch(e){}
+  if(typeof shareToast!=="undefined")shareToast("Snapshot saved — post it anywhere 📸");
+}
+function vData(html){const d=document.createElement("div");d.innerHTML=html;const b=d.querySelector(".vh"),items=[...d.querySelectorAll("li")].map(li=>{const m=li.querySelector("span").textContent;return [m==="✅"?1:m==="⚠️"?-1:0,li.textContent.slice(m.length)]});
+  const st=d.querySelector(".vbox");return b?{txt:b.textContent.replace(/\s+/g," ").trim(),st:st.classList.contains("vs3")?"Strong":st.classList.contains("vs2")?"Medium":"Weak",items}:null}
+function snapNba(nm,k){
+  const r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k),p=NBA_LOGS[nm];if(!r||!p)return;const g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):"";
+  const v=vData(nbaVerdict(nm,k)),L6=nbaAllG(nm).slice(-6),AG=nbaAllG(nm),VL=AG.map(o=>nbaVal(o.x,k)).filter(Number.isFinite),hr=m=>{const a=VL.slice(-m);return [`Last ${a.length}`,a.filter(z=>z>r[2]).length,a.length]},L10=AG.slice(-10);
+  snapImage({kicker:`NBA · ${nbaDay(NBA_SLATE_DATE)}`,title:nm,sub:`${p.tm} ${g?(g.a===p.tm?"@ ":"vs ")+opp:""} · ${NBA_MK[k][1]} ${r[2]} · O ${oddsFmt(r[3])} / U ${oddsFmt(r[4])}`,
+    lean:v,items:v?v.items:[],boxes:L6.map(o=>{const val=nbaVal(o.x,k);return {v:val,c:val>r[2]?"o":val<r[2]?"u":"p",lab:(o.x[3]==="H"?"":"@")+o.x[2]}}),boxCap:`Last ${L6.length} games vs ${r[2]} (green = over)`,tiles:[hr(5),hr(10),hr(20)].map(t=>[t[0]+" over",t[1],t[2]]),
+    bars:{line:r[2],cap:`${NBA_MK[k][1]} · last ${L10.length} games (gold line = ${r[2]})`,vals:L10.map(o=>({v:nbaVal(o.x,k),lab:(o.x[3]==="H"?"":"@")+o.x[2]})).filter(b=>Number.isFinite(b.v))},file:`${nm.replace(/\W+/g,"-")}-${k}`});
+}
+function snapNfl(name,k){
+  const rp=realProp(name,k),P=PINFO[name];if(!rp||!P)return;const o=oppOf(P.team),v=vData(nflVerdict(name,k)),G=pLogs(name).filter(l=>l.season===CUR&&Number.isFinite(stat(l,k))).slice(-6);
+  const ALL=pLogs(name).filter(l=>Number.isFinite(stat(l,k))),SZ=ALL.filter(l=>l.season===CUR),G10=ALL.slice(-10),ov=a=>a.filter(l=>stat(l,k)>rp[0]).length;
+  snapImage({kicker:`NFL · Week ${typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:""}`,title:name,sub:`${P.team} ${o?(o.home?"vs ":"@ ")+o.opp:""} · ${MARKETS[k].n} ${k==="anyTD"?"":rp[0]}${rp[1]!=null?" · "+amTxt(rp[1]):""}`,
+    lean:v,items:v?v.items:[],boxes:G.map(l=>{const val=stat(l,k);return {v:val,c:val>rp[0]?"o":val<rp[0]?"u":"p",lab:(l.home?"":"@")+l.opp}}),boxCap:`Last ${G.length} games vs ${rp[0]} (green = over)`,tiles:[[`Last ${Math.min(3,ALL.length)} over`,ov(ALL.slice(-3)),Math.min(3,ALL.length)],[`Last ${Math.min(5,ALL.length)} over`,ov(ALL.slice(-5)),Math.min(5,ALL.length)],[SZ.length===ALL.length?"This season":`Last ${G10.length} over`,SZ.length===ALL.length?ov(SZ):ov(G10),SZ.length===ALL.length?SZ.length:G10.length]],
+    bars:Number.isFinite(rp[0])?{line:rp[0],cap:`${MARKETS[k].n} · last ${G10.length} games (gold line = ${rp[0]})`,vals:G10.map(l=>({v:stat(l,k),lab:(l.season!==CUR?"'"+String(l.season).slice(2)+" ":"")+(l.home?"":"@")+l.opp}))}:null,file:`${name.replace(/\W+/g,"-")}-${k}`});
+}
+function snapParlay(){const a=slipGet();if(!a.length)return;const c=slipCalc(a);
+  snapImage({kicker:"My parlay",title:`${a.length}-leg parlay`,sub:`Built on RLA Sharp`,rows:a.map(l=>({a:betTitle(l),b:l.book||"",c:oddsFmt(l.odds)})),
+    big:a.length>1?(c.am>0?"+":"")+c.am:oddsFmt(a[0].odds),bigSub:`Book's chance ${(c.impl*100).toFixed(1)}%${c.est!=null?` · our estimate ${(c.est*100).toFixed(1)}%`:""}`,file:"rla-parlay"})}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-snap]");if(!b)return;e.preventDefault();e.stopPropagation();
+  const [sp,nm,k]=b.dataset.snap.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").split("|");
+  if(sp==="nba")snapNba(nm,k);else if(sp==="nfl")snapNfl(nm,k);else if(sp==="parlay")snapParlay()},true);
+function snapBtn(sp,nm,k,label){return `<button class="obtn snapb" data-snap="${sp}|${esc(nm||"")}|${k||""}">📸 ${label||"Snapshot"}</button>`}
+
+/* ===== ⓘ Glossary: tap a term for a one-line explanation ===== */
+const GLOSS=[
+ ["hit score","Our estimated chance this bet wins, built from his recent games, this season, the matchup and the minutes he's getting.",1],
+ ["hit rate","How often he went over this line in past games — e.g. 7/10 means over in 7 of his last 10.",1],
+ ["DvP","Defense vs Position: how much this opponent gives up to players at his position, ranked 1–30 (30 = softest).",0],
+ ["usage","Usage rate: the share of his team's plays he finishes (shots, free throws, turnovers) while on the court. Higher = more chances.",1],
+ ["USG%","Usage rate: the share of his team's plays he finishes while on the court. Higher = more chances to hit overs.",0],
+ ["USG","Usage rate: the share of his team's plays he finishes while on the court. Higher = more chances to hit overs.",0],
+ ["edge","Our hit score minus the chance the odds imply. Positive edge = the price looks better than it should.",1],
+ ["implied","The win chance hidden in the odds. −110 implies about 52.4%.",1],
+ ["book's chance","The win chance hidden in the odds. −110 implies about 52.4%.",1],
+ ["no-vig","The odds with the sportsbook's fee taken out — the market's fair price.",1],
+ ["vig","The sportsbook's built-in fee. It's why both sides of a bet are usually −110, not +100.",1],
+ ["juice","Another word for vig: the sportsbook's built-in fee in the odds.",1],
+ ["ATS","Against the spread: whether a team covered the point spread, not just won.",0],
+ ["O/U","Over/Under: a bet on whether the total points (or a player's stat) goes above or below a number.",0],
+ ["spread","The points a favorite must win by (or an underdog can lose by) for the bet to win.",1],
+ ["moneyline","A bet on who wins the game outright, no points involved.",1],
+ ["line movement","How the line or odds changed since they opened. Moves often follow sharp money or injury news.",1],
+ ["best price","The best odds we found for this bet across sportsbooks — shopping lines adds up over time.",1],
+ ["line shopping","Comparing the same bet across sportsbooks to get the best odds.",1],
+ ["pace","How many possessions a team plays per game. Faster pace = more shots and stats for everyone.",1],
+ ["back-to-back","Playing on two days in a row. Tired legs and rest days for stars are common on the second night.",1],
+ ["B2B","Back-to-back: playing on two days in a row. Stars often rest or play fewer minutes.",0],
+ ["target share","The share of his team's passes thrown his way. Steady 20%+ usually means steady catches.",1],
+ ["snap share","The share of his team's offensive plays he was on the field for.",1],
+ ["air yards","How far passes travel in the air to him before the catch — a sign of big-play chances.",1],
+ ["EPA","Expected Points Added: how much each play raised or lowered the team's expected score. Higher is better.",0],
+ ["red zone","Inside the opponent's 20-yard line, where most touchdowns are scored.",1],
+ ["pressure rate","How often the pass rush hurries, hits or sacks the quarterback.",1],
+ ["sack rate","Sacks per dropback. A high rate means the quarterback is often taken down.",1],
+ ["ROI","Return on investment: profit divided by total amount bet.",0],
+ ["units","A unit is your standard bet size (e.g. 1% of your bankroll). +3u = up three standard bets.",1],
+ ["parlay","Several bets joined into one. Bigger payout, but every leg must win.",1],
+ ["lean","Our side based on the numbers. A lean is not a guarantee.",1],
+ ["push","A tie with the line — the bet is refunded.",1],
+ ["prop","A bet on one player's stat (points, rebounds, yards…) instead of the game result.",1],
+];
+const GL_MAP={};GLOSS.forEach(g=>GL_MAP[g[0].toLowerCase()]=g[1]);
+const GL_RE=new RegExp("(?<![\\w%/])("+GLOSS.map(g=>g[0]).sort((a,b)=>b.length-a.length).map(t=>t.replace(/[.*+?^${}()|[\]\\\/%']/g,"\\$&")).join("|")+")(?![\\w%/])","gi");
+const GL_CASE=new Set(GLOSS.filter(g=>!g[2]).map(g=>g[0]));
+const GL_SKIP=new Set("A,BUTTON,SELECT,OPTION,INPUT,TEXTAREA,SCRIPT,STYLE,SVG,CANVAS,SUMMARY,H1,LABEL,TITLE,TEXT".split(","));
+function glDecorate(root){
+  if(!root)return;const nodes=[],C={};root.querySelectorAll(".gl").forEach(e=>C[e.dataset.gl]=(C[e.dataset.gl]||0)+1);
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){
+    if(!n.nodeValue||n.nodeValue.length<2)return NodeFilter.FILTER_REJECT;
+    for(let p=n.parentElement;p&&p!==root;p=p.parentElement){if(GL_SKIP.has(p.tagName.toUpperCase())||p.classList.contains("gl")||p.classList.contains("noglo")||p.id==="glossary")return NodeFilter.FILTER_REJECT}
+    return NodeFilter.FILTER_ACCEPT}});
+  while(w.nextNode())nodes.push(w.currentNode);
+  for(const n of nodes){
+    const txt=n.nodeValue;GL_RE.lastIndex=0;let m,last=0,frag=null;
+    while((m=GL_RE.exec(txt))){const raw=m[1],key=GLOSS.find(g=>g[0].toLowerCase()===raw.toLowerCase());if(!key)continue;
+      if(GL_CASE.has(key[0])&&raw!==key[0])continue;const k=key[0].toLowerCase();if((C[k]||0)>=2)continue;C[k]=(C[k]||0)+1;
+      frag=frag||document.createDocumentFragment();frag.append(txt.slice(last,m.index));
+      const sp=document.createElement("span");sp.className="gl";sp.dataset.gl=k;sp.tabIndex=0;sp.textContent=raw;frag.append(sp);last=m.index+raw.length}
+    if(frag){frag.append(txt.slice(last));n.replaceWith(frag)}
+  }
+}
+let GL_T=0;function glRun(){clearTimeout(GL_T);GL_T=setTimeout(()=>{const s=document.querySelector("main>section:not(.hide)");if(s)glDecorate(s);glGuide()},220)}
+function glShow(el){let p=document.getElementById("glpop");if(!p){p=document.createElement("div");p.id="glpop";p.setAttribute("role","tooltip");document.body.appendChild(p)}
+  const k=el.dataset.gl;p.innerHTML=`<b>${esc(k.replace(/\b\w/g,c=>c.toUpperCase()).replace(/^Dvp$/,"DvP").replace(/^(Ats|Roi|Epa|Usg%?|B2b|O\/u)$/,x=>x.toUpperCase()))}</b> — ${esc(GL_MAP[k]||"")}`;
+  p.className="open";const r=el.getBoundingClientRect(),pw=Math.min(300,innerWidth-24);p.style.width=pw+"px";
+  let L=Math.max(12,Math.min(innerWidth-pw-12,r.left+r.width/2-pw/2));p.style.left=L+"px";
+  const ph=p.offsetHeight;let T=r.top-ph-8;if(T<8)T=r.bottom+8;p.style.top=(T+scrollY)+"px"}
+function glHide(){const p=document.getElementById("glpop");if(p)p.className=""}
+document.addEventListener("click",e=>{const g=e.target.closest&&e.target.closest(".gl");if(g){e.preventDefault();e.stopPropagation();const p=document.getElementById("glpop");if(p&&p.className==="open"&&p.dataset.k===g.dataset.gl){glHide();p.dataset.k="";return}glShow(g);document.getElementById("glpop").dataset.k=g.dataset.gl;return}
+  if(!(e.target.closest&&e.target.closest("#glpop")))glHide()},true);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")glHide();if((e.key==="Enter"||e.key===" ")&&document.activeElement&&document.activeElement.classList.contains("gl")){e.preventDefault();glShow(document.activeElement)}});
+window.addEventListener("hashchange",glHide);
+function glGuide(){if((location.hash||"")!=="#guide")return;const h=document.getElementById("v-guide");if(!h||h.querySelector("#glossary"))return;
+  h.insertAdjacentHTML("beforeend",`<div class="card" id="glossary" style="margin-top:14px"><h2>📖 Glossary</h2><p class="small">Tip: anywhere on the site, tap a dotted-underlined word to see this in one line.</p>${GLOSS.filter((g,i,a)=>a.findIndex(z=>z[1]===g[1])===i).map(g=>`<div class="glrow"><b>${esc(g[0])}</b><span>${esc(g[1])}</span></div>`).join("")}</div>`)}
+{const mo=new MutationObserver(ms=>{if(ms.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&!(n.classList&&(n.classList.contains("gl")||n.id==="glpop")))))glRun()});
+ const mm=document.querySelector("main");if(mm)mo.observe(mm,{childList:true,subtree:true});window.addEventListener("hashchange",glRun);window.addEventListener("load",glRun)}
 
 /* ============================================================
    SIMPLE UI
@@ -3497,7 +3741,8 @@ function viewTrends(){
   const d=trSort.dir==="desc"?-1:1;rows.sort((a,b)=>{const x=a[trSort.k],y=b[trSort.k];if(!Number.isFinite(x))return 1;if(!Number.isFinite(y))return -1;return (x-y)*d||a.t.localeCompare(b.t)});
   const seg=(key,opts,st)=>`<div class="seg">${opts.map(([v,n])=>`<button data-${key}="${v}" class="${st===v?"on":""}">${n}</button>`).join("")}</div>`;
   const bar=(p,col)=>Number.isFinite(p)?`<div class="bar2" style="width:120px;display:inline-flex;vertical-align:middle;margin-left:8px"><div style="width:${p*100}%;background:${col}"></div><div style="width:${100-p*100}%;background:#33373d"></div></div>`:"";
-  $("#v-trends").innerHTML=`<h1>Team trends</h1><p class="sub">How every team has done for bettors this season. Sort to find teams that keep covering the spread, or games that keep going over.</p>
+  const TT=(location.hash==="#standings"&&document.getElementById("stTrends"))||document.getElementById("v-trends");
+  TT.innerHTML=`${TT.id==="stTrends"?"":"<h1>Team trends</h1>"}<p class="sub">How every team has done for bettors this season. Sort to find teams that keep covering the spread, or games that keep going over.</p>
    <div class="row" style="margin-bottom:14px"><span class="small">Sort by</span>${seg("trk",[["ats","Covers the spread"],["ou","Goes over"],["su","Wins"]],trSort.k)}${seg("trd",[["desc","High → Low"],["asc","Low → High"]],trSort.dir)}</div>
    <div class="card"><table><thead><tr><th>Team</th><th>Record</th><th>Against the spread</th><th>Over / under</th><th>This week</th></tr></thead><tbody>
    ${rows.map(r=>`<tr class="click" data-t="${r.t}"><td>${badge(r.t)} <b>${TEAMS[r.t][0]}</b></td><td class="num">${recTxt(r.t)}</td>
@@ -3505,9 +3750,9 @@ function viewTrends(){
      <td>${recCell(OU[r.t])}${bar(r.ou,"#fab219")} <span class="small">${Number.isFinite(r.ou)?pct(r.ou)+" over":""}</span></td>
      <td class="small">${r.o?(r.o.home?"vs ":"at ")+r.o.opp:"—"}</td></tr>`).join("")}</tbody></table>
    <p class="small" style="margin-top:10px">Against the spread from <a href="${TR_SRC.ats}" target="_blank" rel="noopener">Kingfish Bets</a> (through Oct 29). Over/under from <a href="${TR_SRC.ou}" target="_blank" rel="noopener">TeamRankings</a>; Denver, Minnesota and Jacksonville from League Station (about a week older). Green Bay and the Chargers' over/under records weren't available.</p></div>`;
-  document.querySelectorAll("[data-trk]").forEach(b=>b.onclick=()=>{trSort.k=b.dataset.trk;viewTrends()});
-  document.querySelectorAll("[data-trd]").forEach(b=>b.onclick=()=>{trSort.dir=b.dataset.trd;viewTrends()});
-  document.querySelectorAll("#v-trends tr[data-t]").forEach(tr=>tr.onclick=()=>{const o=oppOf(tr.dataset.t);if(o)location.hash="game-"+o.g.id});
+  TT.querySelectorAll("[data-trk]").forEach(b=>b.onclick=()=>{trSort.k=b.dataset.trk;viewTrends()});
+  TT.querySelectorAll("[data-trd]").forEach(b=>b.onclick=()=>{trSort.dir=b.dataset.trd;viewTrends()});
+  TT.querySelectorAll("tr[data-t]").forEach(tr=>tr.onclick=()=>{const o=oppOf(tr.dataset.t);if(o)location.hash="game-"+o.g.id});
 }
 
 /* ---------- Games list ---------- */
@@ -3729,7 +3974,7 @@ function propRows(players,opp){
 }
 function defRankTxt(r,opp,pos){return Number.isFinite(r)?`${short(opp)} allow the ${ordinal(r)} most to ${POSNAME[pos]}`:""}
 function hrBox(lab,h){const v=h.o,c=!Number.isFinite(v)?"":v>=.6?"g":v<=.4?"r":"";return `<div class="hrb ${c}"><span>${lab}</span><b>${h.n?h.oc+"/"+h.n:"—"}</b><i style="width:${(v||0)*100}%"></i></div>`}
-function trackRow(r){const td=r.k==="anyTD";return `<div class="row" style="gap:6px;margin-top:8px;flex-wrap:wrap">${betBtn(specProp(r.pl.name,r.k,"over"),td?"Yes":"Over")}${td?"":betBtn(specProp(r.pl.name,r.k,"under"),"Under")}${shareBtn(specProp(r.pl.name,r.k,"over"))}</div>`}
+function trackRow(r){const td=r.k==="anyTD";return `<div class="row" style="gap:6px;margin-top:8px;flex-wrap:wrap">${betBtn(specProp(r.pl.name,r.k,"over"),td?"Yes":"Over")}${td?"":betBtn(specProp(r.pl.name,r.k,"under"),"Under")}${realProp(r.pl.name,r.k)&&typeof snapBtn!=="undefined"?snapBtn("nfl",r.pl.name,r.k):shareBtn(specProp(r.pl.name,r.k,"over"))}</div>`}
 function oddsRow(r){const p=realProp(r.pl.name,r.k),td=r.k==="anyTD";const ov=p&&p[1]!=null?p[1]:null,un=p&&p[2]!=null?p[2]:null;
   return `<div class="odds">${ov==null&&un==null?`<span class="small">Odds: not listed publicly (usually ${amTxt(-110)})</span>`:`<span>Odds: ${ov!=null?`<b>${td?"Yes":"Over"} ${amTxt(ov)}</b>`:""}${ov!=null&&un!=null?" · ":""}${un!=null?`<b>Under ${amTxt(un)}</b>`:""}</span>`}</div>`}
 function lineTag(r){const p=realProp(r.pl.name,r.k);if(S.lines[r.pl.name+"|"+r.k])return '<span class="small">Your line</span>';
@@ -3738,7 +3983,7 @@ function lineTag(r){const p=realProp(r.pl.name,r.k);if(S.lines[r.pl.name+"|"+r.k
 function propCard(r){const td=r.k==="anyTD";
   return `<div class="card prop" data-p="${esc(r.pl.name)}" data-k="${r.k}">
    <div class="who">${badge(r.pl.team)}<span>${esc(r.pl.name)} <small>${r.pl.pos} · vs ${r.opp}</small>${typeof INJ_P!=="undefined"&&INJ_P[r.pl.name]?` <small style="color:${injColor(INJ_P[r.pl.name].s)}">⚠ ${INJ_P[r.pl.name].s}</small>`:""}</span></div>
-   <div class="bet n">${td?"Anytime TD":MARKETS[r.k].n+" "+r.line}</div>
+   <div class="bet n">${td?"Anytime TD":MARKETS[r.k].n+" "+r.line}</div>${typeof nflVerdict!=="undefined"&&realProp(r.pl.name,r.k)?nflVerdict(r.pl.name,r.k):""}
    ${lineTag(r)}${oddsRow(r)}${propMoveTxt(r.pl.name,r.k)}${trackRow(r)}
    ${usageLine(r.pl.name)}${r.k==="anyTD"?rzLine(r.pl.name):""}<div class="facts">${Number.isFinite(r.avg)?`<span>Season average: <b>${fmt(r.avg,MARKETS[r.k].cnt?1:0)}</b></span>`:""}<span class="small">${defRankTxt(r.dv,r.opp,r.pl.pos)}</span></div>
    ${r.ssn.n?`<div class="small" style="margin-bottom:-4px">${td?"Scored a TD":"Went over "+r.line} (${CUR}):</div><div class="hr">${hrBox("L3",r.l3)}${hrBox("L5",r.l5)}${hrBox("Season",r.ssn)}</div>`:`<div class="small" style="background:var(--card2);border-radius:8px;padding:8px">No games logged yet this season.</div>`}</div>`}
@@ -3782,12 +4027,18 @@ function nflBestRow(b,i){
       <div class="bph">${hr(b.c5,"L5")}${hr(b.cS,"season")}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
     <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">${b.odds!=null?"odds need":"≈ needs"} ${Math.round(b.be*100)}%</span></div></div>`;
 }
+let NFL_BF={g:"",m:"",s:"",pos:""};
 function nflTopHtml(){
-  const L=nflBest();
+  const L0=nflBest(),f=NFL_BF,L=L0.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||b.pl.pos===f.pos));
+  const games=[...new Map(L0.map(b=>[b.g.id,b.g])).values()],mks=[...new Set(L0.map(b=>b.k))];
+  const fil=`<div class="bfil"><select data-nbf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${g.away} @ ${g.home}</option>`).join("")}</select>
+   <select data-nbf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${MARKETS[m].n}</option>`).join("")}</select>
+   <select data-nbf="pos"><option value="">All positions</option>${["QB","RB","WR","TE"].map(p=>`<option${f.pos===p?" selected":""}>${p}</option>`).join("")}</select>
+   <select data-nbf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select></div>`;
   const closed=SLATE.filter(g=>!g.final&&nflStarted(g)).length;
   return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props this week</h2>${closed?`<div class="small" style="margin-bottom:4px">🔒 ${closed} game${closed>1?"s have":" has"} kicked off — those props are hidden.</div>`:""}
    <div class="small" style="margin-bottom:8px">Every real book line we found, over and under, ranked by how often it would have hit (last 5 games 45%, ${CUR} season 35%, vs this opponent 20%, ±5 for the defense's rank vs his position) compared with what the odds need. Where a book's price isn't listed we compare to the standard −110 break-even (52%). Tap one for his full page.</div>
-   ${L.length?L.map(nflBestRow).join(""):`<div class="small">No line shows an edge right now.</div>`}
+   ${fil}${L.length?L.map(nflBestRow).join(""):`<div class="small">${L0.length?"Nothing matches these filters.":"No line shows an edge right now."}</div>`}
    <div class="small" style="margin-top:8px">Leans from past results, not guarantees. NFL samples are small (one game a week) — bet small.</div></div>`;
 }
 /* player page: every real line for him with his last 6 games, green = over, red = under */
@@ -3800,7 +4051,7 @@ function nflLinesBlock(pl){
    ${MK.map(m=>{const rp=realProp(pl.name,m),line=rp[0],td=m==="anyTD";const G=L.filter(l=>Number.isFinite(stat(l,m))).slice(-6),vals=G.map(l=>stat(l,m)),ov=vals.filter(v=>v>line).length;
      const lean=G.length?(ov/G.length>=.67?["o",td?"Scores often":"Leans over"]:ov/G.length<=.33?["u",td?"Rarely scores":"Leans under"]:["n","Split"]):["n",""];
      return `<div class="pl" data-m="${m}"><div class="plh"><div><b>${MARKETS[m].n}</b> ${td?"":`<span class="plv">${line}</span>`}</div>
-       <div class="small">${rp[1]!=null?(td?"Yes ":"O ")+amTxt(rp[1]):""}${rp[2]!=null?" · U "+amTxt(rp[2]):""}${rp[1]==null&&rp[2]==null?"odds not listed":""}${rp[3]?" · "+esc(rp[3]):""}</div></div>
+       <div class="small">${rp[1]!=null?(td?"Yes ":"O ")+amTxt(rp[1]):""}${rp[2]!=null?" · U "+amTxt(rp[2]):""}${rp[1]==null&&rp[2]==null?"odds not listed":""}${rp[3]?" · "+esc(rp[3]):""}</div></div>${typeof nflVerdict!=="undefined"?nflVerdict(pl.name,m,1):""} ${typeof snapBtn!=="undefined"?snapBtn("nfl",pl.name,m):""}
        ${G.length?`<div class="plg">${G.map((l,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}" title="Week ${l.week} ${l.home?"vs":"@"} ${l.opp}"><b>${v}</b><span>${l.home?"":"@"}${l.opp}</span></div>`}).join("")}</div>
        <div class="plf"><b class="${ov/G.length>=.5?"up":"dn"}">${ov}/${G.length} ${td?"with a TD":"over"}</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>`:`<div class="small" style="margin-top:6px">No ${CUR} games logged yet.</div>`}</div>`}).join("")}</div>`;
 }
@@ -3831,6 +4082,7 @@ function viewProps(){
   if($("#more"))$("#more").onclick=()=>{propFilter.n+=30;viewProps()};
   $("#find").onchange=e=>{if(!e.target.value)return;const p=P.find(x=>x.name===e.target.value);S.prop={player:p.name,market:marketsFor(p.pos)[0],open:true};viewPlayer()};
   bindProps($("#v-props"));
+  document.querySelectorAll("#v-props [data-nbf]").forEach(s=>s.onchange=()=>{NFL_BF[s.dataset.nbf]=s.value;const y=window.scrollY;viewProps();window.scrollTo(0,y)});
   document.querySelectorAll("#v-props [data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};viewPlayer()});
   if(propFilter.tab==="def")drawDefense();
 }
@@ -3951,7 +4203,7 @@ function viewPlayer(){
    <div class="seg" style="margin-bottom:16px">${MK.map(m=>`<button data-m="${m}" class="${m===k?"on":""}">${MARKETS[m].n}</button>`).join("")}</div>
    <div class="verdict n"><div><div class="small">${realProp(pl.name,k)?"Book line":"Line"}</div><div class="big">${k==="anyTD"?"Anytime TD":line+" "+unit}</div><div style="margin-top:4px">${lineTag({pl,k})}</div></div><span class="sp"></span>
     <div style="text-align:right"><label class="small">Your sportsbook's line <input type="number" step=".5" id="lineIn" value="${line}" style="width:80px;margin-left:6px"></label></div></div>
-   <div class="card" style="margin-top:12px;padding:14px 18px">${oddsRow({pl,k})}</div>
+   <div class="card" style="margin-top:12px;padding:14px 18px">${oddsRow({pl,k})}${typeof nflVerdict!=="undefined"&&realProp(pl.name,k)?`<div style="margin-top:10px">${nflVerdict(pl.name,k)}</div>`:""}</div>
    ${QA?qbSplitCard(pl,k,line,CLall,QS,QM,qmode):""}
    <div class="stats3" style="margin-top:14px">
     <div class="stat"><div class="l">Season average${qmode==="all"?"":qmode==="with"?" (with QB1)":" (without QB1)"}</div><div class="v">${sv.length?fmt(avg(sv),dec):"—"}</div><div class="s">${unit} · ${sv.length} games</div></div>
@@ -4036,7 +4288,7 @@ function viewWeeks(){
 /* ---------- Router ---------- */
 function route(){
   const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
-  const SHARED=["calc","record","guide","today","bets"],isNba=h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba");
+  const SHARED=["calc","record","guide","today","bets","favs"],isNba=h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba");
   if(h.startsWith("nba"))LS.set("sport","nba");else if(!SHARED.includes(h))LS.set("sport","nfl");
   document.getElementById("nav").hidden=isNba;document.getElementById("nbaNav").hidden=!isNba;
   
@@ -4051,12 +4303,12 @@ function route(){
   document.querySelectorAll("#nbaNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===h));
   let v=h.startsWith("game-")?"game":h;
   if(v==="slate")v="games";
-  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today"].includes(v))v="today";
+  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs"].includes(v))v="today";
   if(v!=="props"&&S.prop)S.prop.open=false;
   document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));
   document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v||(v==="game"&&a.dataset.v==="games")));
   banner();if(typeof updateBetsBadge!=="undefined")updateBetsBadge();
-  ({games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
+  ({games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",route);
