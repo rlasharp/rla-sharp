@@ -5,7 +5,7 @@ DFS apps and prediction markets are dropped. Main line = first book (in BOOK_PRE
 that has BOTH over and under at the same line; best over/under = best price among books
 at that same line. Keeps the first-seen ("open") line of the day for each prop so the
 site can show line moves. Budget-aware for the free plan (1,000 requests/day)."""
-import json, os, sys, time, datetime as dt
+import json, os, re, sys, time, datetime as dt
 from zoneinfo import ZoneInfo
 try:
     from propline import PropLine
@@ -20,13 +20,13 @@ if not KEY:
 client = PropLine(KEY)
 
 BOOK_PREF = ["draftkings", "fanduel", "betmgm", "williamhill_us", "caesars", "fanatics", "espnbet", "betrivers",
-             "hardrockbet", "betonlineag", "bovada", "lowvig", "unibet"]
+             "hardrockbet", "unibet"]
 BOOK_NAME = {"draftkings": "DraftKings", "fanduel": "FanDuel", "betmgm": "BetMGM", "williamhill_us": "Caesars",
              "caesars": "Caesars", "fanatics": "Fanatics", "espnbet": "ESPN BET", "betrivers": "BetRivers",
-             "hardrockbet": "Hard Rock Bet", "betonlineag": "BetOnline", "bovada": "Bovada", "lowvig": "LowVig",
-             "unibet": "Unibet"}
+             "hardrockbet": "Hard Rock Bet", "unibet": "Unibet"}
 NOT_BOOKS = {"prizepicks", "underdog", "pick6", "kalshi", "polymarket", "prophetx", "novig", "smarkets",
-             "sleeper", "betr", "dabble", "matchbook", "betfair", "pinnacle"}
+             "sleeper", "betr", "dabble", "matchbook", "betfair", "pinnacle",
+             "bovada", "betonlineag", "lowvig", "mybookieag", "betus"}  # offshore books: not licensed in US states
 
 NBA_MK = {"player_points": "pts", "player_rebounds": "reb", "player_assists": "ast", "player_threes": "3pm",
           "player_steals": "stl", "player_blocks": "blk", "player_points_rebounds": "pr",
@@ -112,6 +112,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
                     name = str(g(oc, "name", "")); player = g(oc, "description")
                     side = "Over" if name.lower() in ("over", "yes") else "Under" if name.lower() in ("under", "no") else None
                     price, point = g(oc, "price"), g(oc, "point")
+                    if player: player = re.sub(r"\s*\([A-Z]{2,4}\)\s*$", "", str(player)).strip()
                     if not player or not side or price is None: continue
                     if point is None: point = 0.5
                     try: price = int(round(float(price))); point = float(point)
