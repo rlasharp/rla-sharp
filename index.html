@@ -3286,7 +3286,9 @@ async function liveNflBox(id){
 function liveNflVal(o,k){if(!o)return null;
   if(k==="rushRec")return (o.rushYds||0)+(o.recYds||0);if(k==="anyTD")return (o.rushTD||0)+(o.recTD||0);
   return o[k]!=null?o[k]:0}
-function liveNflGame(t){return Object.entries(LIVE.nfl||{}).filter(([k])=>!k.includes("@")).map(([,g])=>g).find(g=>g.a===t||g.h===t)||null}
+/* the live ESPN game for team t's CURRENT game only (same two teams) — ESPN's scoreboard can still show last week */
+function liveNflGame(t){const o=typeof oppOf!=="undefined"?oppOf(t):null;if(!o)return null;const a=o.g.away,h=o.g.home;
+  return Object.entries(LIVE.nfl||{}).filter(([k])=>!k.includes("@")).map(([,g])=>g).find(g=>g.a===a&&g.h===h)||null}
 async function liveDecorate(){
   const h=decodeURIComponent((location.hash||"#games").slice(1));
   /* NBA game cards + game page */
@@ -3310,7 +3312,7 @@ async function liveDecorate(){
     const m=/(Over|Under)\s+([\d.]+)/.exec(pd.querySelector(".bpl").innerText);if(!m)continue;
     const line=+m[2],over=m[1]==="Over",hit=over?v>line:v<line,fin=lg.st==="post";
     const txt=fin?(hit?`✅ Hit — finished with <b>${v}</b>`:`❌ Missed — finished with <b>${v}</b>`):`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${NBA_MK[k][2]} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${Math.floor(line-v)+1} more`):(v>line?" · already over ❌":"")}`;
-    const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${txt}</div>`;
+    const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${txt}</div>`;el=pd.querySelector(".lvp");
     if(el)el.outerHTML=html;else pd.children[1].insertAdjacentHTML("beforeend",html);
   }
   /* NFL Plays of the Week: live progress */
@@ -3328,6 +3330,7 @@ async function liveDecorate(){
           if(pl.type==="total"){txt=`<b>${tot}</b> points${fin?"":" so far"} (line ${L.tot}, ${pl.side})`}
           else{const t=pl.team,me=t===g.away?lg.as:lg.hs,op=t===g.away?lg.hs:lg.as,spT=t===g.home?L.sp:-L.sp;txt=`${esc(t)} ${me>op?"lead":me<op?"trail":"tied"} ${me}–${op} (${esc(t)} ${spT>0?"+":""}${spT})`}
           html=`<div class="lvp ${fin?"fin":"on"}">${fin?"FINAL · ":`<span class="lvdot"></span>&nbsp; ${esc(lg.det)} · `}${txt}</div>`}}
+      el=card.querySelector(".lvp"); /* re-check after the awaits: two overlapping refreshes used to add it twice */
       if(!html){if(el)el.remove();continue}
       if(el)el.outerHTML=html;else{const h2=card.querySelector("h2");(h2||card.firstElementChild).insertAdjacentHTML("afterend",html)}
     }
