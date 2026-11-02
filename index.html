@@ -172,6 +172,13 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 .rcr{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}.rcr:last-of-type{border-bottom:0}.rcc{flex:0 0 auto;min-width:34px;padding:4px 6px!important;font-weight:800}
 .mvl{margin-top:8px;font-size:13px;color:var(--text2);line-height:1.5}.mvl b{color:var(--text)}.mvt{font-size:11.5px;padding:1px 7px;border-radius:999px;background:#2b2a1a;color:#f3c75a;white-space:nowrap}
 .spl tr.tn td{background:rgba(63,178,107,.08)}.spl td{white-space:nowrap}
+.livebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;padding:7px 10px;border-radius:10px;margin:8px 0;background:var(--card2)}
+.livebar.on{background:#2a1416;border:1px solid #5a2328}.livebar.fin{opacity:.9}
+.livebar .lvl{font-size:11px;letter-spacing:.06em;color:#ff6b6b}.livebar.fin .lvl{color:var(--muted)}
+.lvt{color:var(--text2)}.lvt b{color:var(--text);font-size:15px}.lvt.lead b{color:#7ee2a0}.lvd{margin-left:auto;font-size:12px;color:var(--text2)}
+.lvdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff4d4f;animation:lvp 1.2s infinite}
+@keyframes lvp{0%{box-shadow:0 0 0 0 rgba(255,77,79,.6)}100%{box-shadow:0 0 0 8px rgba(255,77,79,0)}}
+.lvp{margin-top:6px;font-size:12.5px;padding:5px 8px;border-radius:8px;background:var(--card2)}.lvp.on{background:#2a1416}.lvp.w{background:#173323;color:#7ee2a0}.lvp.l{background:#3a1d1e;color:#ff9a9d}
 .potd{border:1px solid #4a3d1a;background:linear-gradient(180deg,#2a2412,var(--card) 60%)}
 .pod{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}.pod:last-of-type{border-bottom:0}
 .podn{flex:0 0 28px;height:28px;border-radius:50%;background:#f3c75a;color:#1a1608;display:flex;align-items:center;justify-content:center;font-weight:800}
@@ -2563,6 +2570,113 @@ function nbaRoute(h){
   if(h.startsWith("nba-player-"))return nbaPlayer(el,h.slice(11));
   ({"nba-props":nbaProps,"nba-best":nbaBestPage,"nba-players":nbaPlayers,"nba-scores":nbaScores,"nba-teams":nbaTeams,"nba-injuries":nbaInjuries}[h]||nbaGames)(el);
 }
+/* ---------- Live scores (NFL + NBA) from ESPN's public scoreboard feed ----------
+   Runs in the visitor's browser, refreshes every 30 s while games are on. If the feed can't be
+   reached (some hosts block outside requests), everything fails silently and the site shows its
+   normal daily data. Nothing here changes picks, records or stats. */
+const LIVE={nba:{},nfl:{},ok:{nba:0,nfl:0},box:{},timer:null,busy:0};
+const LIVE_URL={nba:"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+  nfl:"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"};
+const LIVE_SUM="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=";
+const LIVE_FIX={nfl:{WSH:"WAS"},nba:{}};
+function liveTeam(sp,ab){return (LIVE_FIX[sp]||{})[ab]||ab}
+async function liveFetch(sp){
+  try{
+    const r=await fetch(LIVE_URL[sp],{cache:"no-store"});if(!r.ok)throw new Error(r.status);
+    const j=await r.json(),m={};
+    for(const e of j.events||[]){
+      const c=(e.competitions||[])[0];if(!c)continue;
+      const t=((c.status||e.status||{}).type)||{};let home=null,away=null;
+      for(const x of c.competitors||[]){const o={ab:liveTeam(sp,(x.team&&x.team.abbreviation)||""),sc:+x.score||0,id:x.team&&x.team.id};if(x.homeAway==="home")home=o;else away=o}
+      if(!home||!away)continue;
+      const sit=c.situation||{};let poss=null;
+      if(sit.possession)poss=[home,away].find(o=>String(o.id)===String(sit.possession));
+      const g={id:String(e.id),a:away.ab,h:home.ab,as:away.sc,hs:home.sc,st:t.state||"pre",det:t.shortDetail||t.detail||"",
+        poss:poss?poss.ab:null,dd:sit.shortDownDistanceText||"",rz:!!sit.isRedZone};
+      m[g.id]=g;m[g.a+"@"+g.h]=g;
+    }
+    LIVE[sp]=m;LIVE.ok[sp]=1;
+  }catch(e){LIVE.ok[sp]=0}
+}
+function liveGet(sp,a,h,id){const m=LIVE[sp]||{};return (id!=null&&m[String(id)])||m[a+"@"+h]||null}
+function liveBar(sp,g){
+  if(!g||g.st==="pre")return "";
+  const lead=g.as===g.hs?"":g.as>g.hs?g.a:g.h;
+  const tm=(ab,sc)=>`<span class="lvt${lead===ab?" lead":""}">${g.poss===ab?"🏈 ":""}${ab} <b>${sc}</b></span>`;
+  return `<div class="livebar ${g.st==="in"?"on":"fin"}">${g.st==="in"?`<span class="lvdot"></span><b class="lvl">LIVE</b>`:`<b class="lvl">FINAL</b>`}
+    ${tm(g.a,g.as)}<span class="small">–</span>${tm(g.h,g.hs)}<span class="lvd">${g.st==="in"?esc(g.det):""}${g.st==="in"&&g.dd?" · "+esc(g.dd)+(g.rz?" 🔴 red zone":""):""}</span></div>`;
+}
+function livePut(host,html,before){
+  if(!host)return;let el=host.querySelector(":scope > .livebar");
+  if(!html){if(el)el.remove();return}
+  const tmp=document.createElement("div");tmp.innerHTML=html.trim();const nb=tmp.firstElementChild;
+  if(el)el.replaceWith(nb);else if(before)host.insertBefore(nb,before);else host.prepend(nb);
+}
+/* NBA live stat line for a player: value of a market so far */
+const LIVE_LAB={pts:["PTS"],reb:["REB"],ast:["AST"],"3pm":["3PT",0],"3pa":["3PT",1],blk:["BLK"],stl:["STL"],pa:["PTS","AST"],pr:["PTS","REB"],ra:["REB","AST"],pra:["PTS","REB","AST"]};
+async function liveBox(id){
+  const b=LIVE.box[id];if(b&&Date.now()-b.t<25000)return b.p;
+  try{const r=await fetch(LIVE_SUM+id,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json(),p={};
+    for(const tm of ((j.boxscore||{}).players||[]))for(const st of tm.statistics||[]){const lab=st.labels||st.names||[];
+      for(const a of st.athletes||[]){const nm=a.athlete&&a.athlete.displayName;if(!nm||!a.stats||!a.stats.length)continue;const o={};lab.forEach((l,i)=>o[l]=a.stats[i]);p[nm]=o}}
+    LIVE.box[id]={t:Date.now(),p};return p}catch(e){return b?b.p:null}
+}
+function liveVal(o,k){
+  const L=LIVE_LAB[k];if(!o||!L)return null;
+  if(k==="3pm"||k==="3pa"){const v=String(o["3PT"]||"").split("-");return v.length===2?+v[L[1]]:null}
+  let s=0;for(const l of L){const v=+o[l];if(!Number.isFinite(v))return null;s+=v}return s;
+}
+async function liveDecorate(){
+  const h=decodeURIComponent((location.hash||"#games").slice(1));
+  /* NBA game cards + game page */
+  document.querySelectorAll("#v-nba [data-ng]").forEach(c=>{const g=NBA_SLATE.find(x=>String(x.id)===c.dataset.ng);if(!g)return;
+    livePut(c,liveBar("nba",liveGet("nba",g.a,g.h,g.id)),c.querySelector(".when")&&c.querySelector(".when").nextSibling)});
+  if(h.startsWith("nba-game-")){const g=NBA_SLATE.find(x=>String(x.id)===h.slice(9)),gh=document.querySelector("#v-nba .gh");
+    if(g&&gh){const host=gh.parentElement,html=liveBar("nba",liveGet("nba",g.a,g.h,g.id));let el=host.querySelector(":scope > .livebar");
+      if(!html){if(el)el.remove()}else if(el)el.outerHTML=html;else gh.insertAdjacentHTML("afterend",html)}}
+  /* NBA scores tab: live / today strip */
+  if(h==="nba-scores"){const v=document.getElementById("v-nba");let box=document.getElementById("liveToday");
+    const evs=Object.entries(LIVE.nba).filter(([k])=>!k.includes("@")).map(([,g])=>g).filter(g=>g.st!=="pre");
+    const html=evs.length?`<div class="card" id="liveToday" style="margin-bottom:14px"><h2 style="margin-bottom:8px">Today ${evs.some(g=>g.st==="in")?"· live":""}</h2>${evs.map(g=>liveBar("nba",g)).join("")}<div class="small" style="margin-top:6px">Live from ESPN, refreshes every 30 seconds. Box scores appear here after the morning update.</div></div>`:"";
+    if(box)box.outerHTML=html||"";else if(html&&v){const h1=v.querySelector("h1");(h1&&h1.nextElementSibling?h1.nextElementSibling:h1).insertAdjacentHTML("afterend",html)}}
+  /* NBA plays of the day: live progress vs the line */
+  const pods=[...document.querySelectorAll("#v-nba .pod[data-nm]")];
+  for(const pd of pods){
+    const nm=nbaUnesc(pd.dataset.nm),k=pd.dataset.bp.split("|")[0],p=NBA_LOGS[nm];if(!p)continue;
+    const gg=nbaGameOf(p.tm),lg=gg&&liveGet("nba",gg.a,gg.h,gg.id);let el=pd.querySelector(".lvp");
+    if(!lg||lg.st==="pre"){if(el)el.remove();continue}
+    const bx=await liveBox(lg.id);const v=bx&&liveVal(bx[nm],k);if(v==null){if(el)el.remove();continue}
+    const m=/(Over|Under)\s+([\d.]+)/.exec(pd.querySelector(".bpl").innerText);if(!m)continue;
+    const line=+m[2],over=m[1]==="Over",hit=over?v>line:v<line,fin=lg.st==="post";
+    const txt=fin?(hit?`✅ Hit — finished with <b>${v}</b>`:`❌ Missed — finished with <b>${v}</b>`):`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${NBA_MK[k][2]} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${Math.floor(line-v)+1} more`):(v>line?" · already over ❌":"")}`;
+    const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${txt}</div>`;
+    if(el)el.outerHTML=html;else pd.children[1].insertAdjacentHTML("beforeend",html);
+  }
+  /* NFL game cards + game page */
+  if(typeof SLATE!=="undefined"){
+    document.querySelectorAll("#v-games .game[data-g]").forEach(c=>{const g=SLATE.find(x=>String(x.id)===c.dataset.g);if(!g||g.final)return;
+      livePut(c,liveBar("nfl",liveGet("nfl",g.away,g.home)),c.querySelector(".when")&&c.querySelector(".when").nextSibling)});
+    if(h.startsWith("game-")){const g=SLATE.find(x=>String(x.id)===h.slice(5)),sb=document.querySelector("#v-game .scoreboard");
+      if(g&&!g.final&&sb){const host=sb.parentElement,html=liveBar("nfl",liveGet("nfl",g.away,g.home));let el=host.querySelector(":scope > .livebar");
+        if(!html){if(el)el.remove()}else if(el)el.outerHTML=html;else sb.insertAdjacentHTML("beforebegin",html)}}
+  }
+}
+async function liveTick(){
+  if(LIVE.busy)return;LIVE.busy=1;
+  try{
+    const h=(location.hash||"#games").slice(1),nba=h.startsWith("nba");
+    await liveFetch(nba?"nba":"nfl");
+    await liveDecorate();
+  }finally{LIVE.busy=0}
+  const sp=(location.hash||"").slice(1).startsWith("nba")?"nba":"nfl";
+  const any=Object.values(LIVE[sp]).some(g=>g.st==="in");
+  clearTimeout(LIVE.timer);
+  if(LIVE.ok[sp]||!LIVE.fails)LIVE.timer=setTimeout(liveTick,document.hidden?120000:any?30000:120000);
+  if(!LIVE.ok[sp])LIVE.fails=(LIVE.fails||0)+1;
+}
+window.addEventListener("hashchange",()=>setTimeout(()=>{liveDecorate();liveTick()},60));
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveTick()});
+setTimeout(liveTick,300);
 
 /* ============================================================
    SIMPLE UI
