@@ -391,6 +391,12 @@ nav[hidden]{display:none!important}
 .nbmate{-webkit-appearance:none;appearance:none;background:var(--card2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23999' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid rgba(127,127,127,.3);border-radius:10px;color:inherit;padding:9px 34px 9px 12px!important;font-size:14px}
 .vbox li div{flex:1;min-width:0}
 .pmk{margin:12px 0 10px;flex-wrap:wrap;border-radius:14px}.pmk button{flex:0 0 auto}.pmk button small{display:block;opacity:.7;font-weight:500;font-size:11px}.pmk button{line-height:1.15;padding:6px 10px;white-space:nowrap}.pxin{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin:0 0 8px}.pxin input{width:84px;margin-left:6px}.pmkc[hidden]{display:none}.pmkw{max-width:720px}
+.pxfd>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 10px;border-radius:10px;background:var(--card,#16181d);border:1px solid rgba(127,127,127,.25);margin-top:8px}.pxfd>summary::-webkit-details-marker{display:none}.pxfd[open]>summary{border-color:#e9b949}.pxft{font-size:13.5px}.pxfc{flex:1;display:flex;flex-wrap:wrap;gap:4px;min-width:0}.fany{font-size:12px;color:var(--text2)}.fchip{font-size:12px;font-weight:700;background:#e9b949;color:#111;border-radius:999px;padding:2px 8px;cursor:pointer}.pxchev{color:var(--text2);transition:transform .15s}.pxfd[open] .pxchev{transform:rotate(90deg)}
+.nbmin.pxf{padding:10px}.nbmin .pxfd>summary{margin-top:0}
+.vd>summary{list-style:none;cursor:pointer}.vd>summary::-webkit-details-marker{display:none}.vh{display:flex;align-items:center;gap:6px}.vwhy{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--text2);border:1px solid rgba(127,127,127,.35);border-radius:999px;padding:1px 8px}.vd[open] .vwhy{color:#e9b949;border-color:#e9b949}.vk{font-size:13px;color:var(--text2);margin-top:3px}.vd[open] .vk{display:none}.vd ul{margin-top:6px!important}
+.pline{display:flex;flex-wrap:wrap;gap:4px 0;margin:8px 0 12px;font-size:13.5px;color:var(--text2)}.pline span:not(:last-child)::after{content:"·";margin:0 7px;opacity:.6}
+.pmk{position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(0,0,0,.45);overflow-x:auto;flex-wrap:nowrap!important;scrollbar-width:none;-webkit-overflow-scrolling:touch}.pmk::-webkit-scrollbar{display:none}.bpm .bpl b{font-weight:600;font-size:14px}
+.bpw{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.bpw .ab,.bpw .nbbdg{transform:scale(.9)}.bfire{font-size:11px;font-weight:700;background:rgba(255,120,40,.16);color:#ffa45c;border-radius:999px;padding:1px 7px}.bln{display:inline-block;font-size:17px;font-weight:800;padding:1px 8px;border-radius:8px;background:var(--card2);margin-right:2px}.bln.up{color:#7ee2a0}.bln.dn{color:#ff9a9d}.bp:hover{background:rgba(127,127,127,.06)}
 .hr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
 .hr4 div{background:var(--card2);border-radius:10px;padding:7px 4px;text-align:center;font-size:11.5px;color:var(--muted)}
 .hr4 b{display:block;font-size:15px;color:var(--text)}
@@ -2101,25 +2107,30 @@ function nbaInR(x){if(x[4]<NB.mlo||(NB.mhi<48&&x[4]>NB.mhi))return false;
     if(nbaTtOn()&&(L.tot==null||(f.tlo>195&&L.tot<f.tlo)||(f.thi<255&&L.tot>f.thi)))return false}
   return true}
 function nbaMinOn(){return NB.mlo>0||NB.mhi<48||nbaSpOn()||nbaTtOn()}
-function nbaFiltTxt(){const a=[];if(NB.mlo>0||NB.mhi<48)a.push(`${NB.mlo}–${NB.mhi} minutes`);const f=NB.gf;if(nbaSpOn())a.push(`team spread ${pxSpTxt(f.lo)} to ${pxSpTxt(f.hi)}`);if(nbaTtOn())a.push(`total ${f.tlo}–${f.thi}`);return a.join(" · ")}
+function nbaFiltTxt(){const a=[];if(NB.mlo>0||NB.mhi<48)a.push(`${NB.mlo}–${NB.mhi} minutes`);const f=NB.gf;if(nbaSpOn())a.push(pxSpRange(f.lo,f.hi));if(nbaTtOn())a.push(`total ${f.tlo}–${f.thi}`);return a.join(" · ")}
 function nbaMinUI(id,tn){
   const f=NB.gf,spPre=[[-15,-7,"Fav 7+"],[-15,-.5,"Favored"],[.5,15,"Underdog"],[7,15,"Dog 7+"]].concat(tn&&tn.sp!=null?[[Math.max(-15,tn.sp-3),Math.min(15,tn.sp+3),"Near tonight"]]:[]).concat([[-15,15,"Any"]]);
   const ttPre=[[195,255,"Any"]].concat(tn&&tn.tot!=null?[[Math.max(195,tn.tot-5),Math.min(255,tn.tot+5),`Near tonight (${tn.tot})`]]:[]).concat([[195,225,"Low (225 or less)"],[225,255,"High (225+)"]]);
   const mnPre=[[0,48,"Any"],[10,48,"10+"],[20,48,"20+"],[25,48,"25+"],[30,48,"30+"]];
-  return `<div class="card nbmin pxf" id="${id}"><div class="pxfh"><b>🎚 Filter games</b>${tn&&tn.sp!=null?`<span class="pxtn noglo">Tonight: ${pxSpTxt(tn.sp)}${tn.tot!=null?" · O/U "+tn.tot:""}</span>`:""}</div>
+  return `<div class="card nbmin pxf" id="${id}"><details class="pxfd"${NB.fOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary>
+   ${tn&&tn.sp!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">Tonight: ${pxSpTxt(tn.sp)}${tn.tot!=null?" · O/U "+tn.tot:""}</span></div>`:""}
    ${pxDual("sp","Team's spread",-15,15,.5,f.lo,f.hi,["Favored","PK","Underdog"],spPre)}
    ${pxDual("tt","Game total (O/U)",195,255,.5,f.tlo,f.thi,["195","225","255"],ttPre)}
    ${pxDual("mn","Minutes played",0,48,1,NB.mlo,NB.mhi,["0","24","48"],mnPre)}
-   <div class="small">Applies to every chart and hit rate below (L5, L10, Season, H2H). Spreads and totals are DraftKings closing lines; older games have none, so they drop out when those filters are on.</div></div>`;
+   <div class="small">Applies to every chart and hit rate (L5, L10, Season, H2H). Spreads and totals are DraftKings closing lines; older games have none, so they drop out when those filters are on.</div></details></div>`;
 }
 function nbaWireMin(root,redraw){
   const box=root.querySelector(".nbmin");if(!box)return;
   const st={sp:[NB.gf.lo,NB.gf.hi],tt:[NB.gf.tlo,NB.gf.thi],mn:[NB.mlo,NB.mhi]},R={sp:[-15,15],tt:[195,255],mn:[0,48]};
-  const txt={sp:(x,y)=>x<=-15&&y>=15?"Any spread":`${pxSpTxt(x)} to ${pxSpTxt(y)}`,tt:(x,y)=>x<=195&&y>=255?"Any total":x<=195?`${y} or less`:y>=255?`${x} or more`:`${x} to ${y}`,mn:(x,y)=>x<=0&&y>=48?"Any minutes":`${x} to ${y} min`};
+  const txt={sp:pxSpRange,tt:(x,y)=>x<=195&&y>=255?"Any total":x<=195?`${y} or less`:y>=255?`${x} or more`:`${x} to ${y}`,mn:(x,y)=>x<=0&&y>=48?"Any minutes":`${x} to ${y} min`};
   const paint=()=>{for(const nm in st){const [a,b]=st[nm],x=Math.min(a,b),y=Math.max(a,b),[mn,mx]=R[nm];
     box.querySelector(`[data-out="${nm}"]`).textContent=txt[nm](x,y);const fl=box.querySelector(`[data-fill="${nm}"]`);fl.style.left=(x-mn)/(mx-mn)*100+"%";fl.style.right=(100-(y-mn)/(mx-mn)*100)+"%";
     box.querySelector(`[data-r="${nm}|lo"]`).value=a;box.querySelector(`[data-r="${nm}|hi"]`).value=b;
-    box.querySelectorAll(`[data-pre^="${nm}|"]`).forEach(p=>{const [,pa,pb]=p.dataset.pre.split("|");p.classList.toggle("on",+pa===x&&+pb===y)})}};
+    box.querySelectorAll(`[data-pre^="${nm}|"]`).forEach(p=>{const [,pa,pb]=p.dataset.pre.split("|");p.classList.toggle("on",+pa===x&&+pb===y)})}
+    const on=[];for(const nm in st){const x=Math.min(...st[nm]),y=Math.max(...st[nm]);if(x>R[nm][0]||y<R[nm][1])on.push(`<span class="fchip" data-fclr="${nm}">${txt[nm](x,y)} ✕</span>`)}
+    const fs=box.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.join(""):'<span class="fany">Any spread · Any total · Any minutes</span>';
+    box.querySelectorAll("[data-fclr]").forEach(c=>c.onclick=e=>{e.preventDefault();e.stopPropagation();st[c.dataset.fclr]=[...R[c.dataset.fclr]];paint();apply()})};
+  const dd=box.querySelector("details");if(dd)dd.ontoggle=()=>{NB.fOpen=dd.open};
   const apply=()=>{const o=(nm)=>[Math.min(...st[nm]),Math.max(...st[nm])];[NB.gf.lo,NB.gf.hi]=o("sp");[NB.gf.tlo,NB.gf.thi]=o("tt");[NB.mlo,NB.mhi]=o("mn");
     try{LS.set("nbaMin",[NB.mlo,NB.mhi]);LS.set("nbaGF",[NB.gf.lo,NB.gf.hi,NB.gf.tlo,NB.gf.thi])}catch(e){}NB._best=null;const y=window.scrollY;redraw();window.scrollTo(0,y)};
   box.querySelectorAll("input[data-r]").forEach(inp=>{const [nm,w]=inp.dataset.r.split("|");inp.oninput=()=>{st[nm][w==="lo"?0:1]=+inp.value;paint()};inp.onchange=apply});
@@ -2617,8 +2628,8 @@ function nbaBestRow(b,i){
   const hr=(c,l)=>c[1]?`<span class="${c[0]/c[1]>=.6?"g":c[0]/c[1]<.4?"r":""}"><b>${c[0]}/${c[1]}</b> ${l}</span>`:"";
   return `<div class="bp" data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}">
     <div class="bpn">${i+1}</div>
-    <div class="bpm"><div><b>${nbaEsc(b.nm)}</b> <span class="small">${b.p.tm} ${b.g.a===b.p.tm?"@":"vs"} ${b.opp}</span>${nbaInjChip(nbaInjOf(b.nm))}</div>
-      <div class="bpl"><b class="${b.side==="o"?"up":"dn"}">${b.side==="o"?"Over":"Under"} ${b.line}</b> ${NBA_MK[b.k][1]} <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
+    <div class="bpm"><div class="bpw">${nbaBadge(b.p.tm)}<b>${nbaEsc(b.nm)}</b> <span class="small">${b.g.a===b.p.tm?"@":"vs"} ${b.opp}</span>${nbaInjChip(nbaInjOf(b.nm))}${b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:""}</div>
+      <div class="bpl"><span class="bln ${b.side==="o"?"up":"dn"}">${b.side==="o"?"O":"U"} ${b.line}</span> <b>${NBA_MK[b.k][1]}</b> <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
       <div class="bph">${hr(b.c5,"L5")}${hr(b.c10,"L10")}${b.cS[1]>=3?hr(b.cS,"season"):""}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
     <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">odds need ${Math.round(b.be*100)}%</span>${typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""}</div>
   </div>`;
@@ -2932,16 +2943,16 @@ function nbaPlayer(el,nm){
   const tk=NB.ptk||"pts";
   const dvp=opp&&p.p5?nbaDvp(opp,p.p5,"pts",5):null,dvpAvg=dvp&&dvp.rows.length?dvp.rows.reduce((s,r)=>s+r.v,0)/dvp.rows.length:null;
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
-  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
+  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div>
-    <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
+    <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;return {sp:sp!=null?Math.round(sp*2)/2:null,tot:t}})())}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
     <div style="min-width:0"><h1 style="margin:0">${nbaEsc(nm)}${nbaInjChip(inj)}</h1>
     <div class="sub" style="margin:4px 0 0">${posName?posName+" · ":""}${nbaTm(p.tm)}</div></div>
   </div>
-  <div class="pbio">${bio?`<div><b>${nbaEsc(bio[0])||"–"}</b>Height</div><div><b>${nbaEsc(String(bio[1]).replace(" lbs",""))||"–"}<small> lbs</small></b>Weight</div><div><b>${nbaEsc(bio[2])||"–"}</b>Age</div><div><b>${bio[4]!==""&&bio[4]!=null?nbaEsc(bio[4]):"–"}</b>NBA seasons</div>`:""}<div><b>${p.g.length}</b>Games</div><div><b>${nbaF(nbaAvg(p,"min"))}</b>Min/game</div></div>
+  <div class="pline">${[bio&&bio[0]?nbaEsc(bio[0]):"",bio&&bio[1]?nbaEsc(String(bio[1]).replace(" lbs",""))+" lbs":"",bio&&bio[2]?nbaEsc(bio[2])+" yrs":"",bio&&bio[4]!==""&&bio[4]!=null?nbaEsc(bio[4])+" NBA seasons":"",p.g.length+" games",nbaF(nbaAvg(p,"min"))+" min/game"].filter(Boolean).map(x=>`<span>${x}</span>`).join("")}</div>
   ${g?`<div class="info"><span>Today ${g.a===p.tm?"@":"vs"} <b>${nbaTm(opp)}</b>, ${g.t} ET${dvpAvg!=null?`. ${opp} has allowed ${nbaF(dvpAvg)} points a game to ${nbaPosWord(p.p5)} over its last 5 (NBA average ${nbaF(dvp.lg)}).`:""}</span></div>`:""}
   ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}
   ${linesTbl}
@@ -3334,6 +3345,7 @@ function nflPropXCard(pl,k,line,CL){
    Two-handle sliders update the results in place (no page re-render) so dragging stays smooth. */
 const PXS={},PXG={};
 function pxSpTxt(x){return x<=-15?"Fav 15+":x>=15?"Dog 15+":x===0?"PK":(x>0?"+":"−")+Math.abs(x)}
+function pxSpRange(x,y){if(x<=-15&&y>=15)return "Any spread";if(x<=-15)return y<=-.5&&y>-1?"Favored":y<0?`Fav by ${-y}+`:`${pxSpTxt(y)} or better`;if(y>=15)return x>=.5&&x<1?"Underdog":x>0?`Dog by ${x}+`:`${pxSpTxt(x)} or worse`;return `${pxSpTxt(x)} to ${pxSpTxt(y)}`}
 function pxClamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function pxDual(name,lab,min,max,step,lo,hi,ends,pre){
   return `<div class="pxfr" data-dr="${name}"><div class="pxfl"><span>${lab}</span><b class="noglo" data-out="${name}"></b></div>
@@ -3356,13 +3368,15 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
   const mnPre=[[0,MX,"Any"]].concat(MN.pre.map(v=>[v,MX,v+(MN.u==="%"?"%+":"+")])).concat(ma!=null?[[pxClamp(ma-MN.w,0,MX),pxClamp(ma+MN.w,0,MX),`His usual (${ma}${MN.u==="%"?"%":""}±${MN.w})`]]:[]);
   return `<div class="pxf" data-pxf="${esc(key)}">
    ${P?`<div class="pxprop noglo"><div class="pxpl">${P.big}</div><div class="pxpm"><b>${P.name}</b><span>${P.sub}</span></div></div>`:""}
-   <div class="pxfh"><b>🎚 Filter games</b>${tn!=null?`<span class="pxtn noglo">${key.startsWith("nfl")?"This week":"Tonight"}: ${pxSpTxt(tn)}${tt!=null?" · O/U "+tt:""}</span>`:""}</div>
    <div class="pxset">${[["l5","L5"],["l10","L10"],["ssn","Season"],["h2h","H2H"],["vp","Vs position"]].map(([v,l])=>`<button data-set="${v}"${SETS[v]&&SETS[v].length?"":" disabled"}>${l}<small>${SETS[v]?SETS[v].length:0}</small></button>`).join("")}</div>
    <div class="small pxsetn" data-setn></div>
+   <div data-res></div>
+   <details class="pxfd"${S0.open?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary>
+   ${tn!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">${key.startsWith("nfl")?"This week":"Tonight"}: ${pxSpTxt(tn)}${tt!=null?" · O/U "+tt:""}</span></div>`:""}
    ${pxDual("sp","Team's spread",-15,15,.5,S0.lo,S0.hi,["Favored","PK","Underdog"],spPre)}
    ${hasTot?pxDual("tt","Game total (O/U)",t0,t1,.5,S0.tlo,S0.thi,[String(t0),String((t0+t1)/2),String(t1)],totPre):""}
    ${hasMin?pxDual("mn",MN.lab,0,MX,1,S0.mlo,S0.mhi,MN.u==="%"?["0%","50%","100%"]:["0",String(MX/2),String(MX)],mnPre):""}
-   <div data-res></div></div>`}
+   </details></div>`}
 function pxResHtml(key){
   const S0=PXS[key],D=PXG[key];if(!S0||!D)return "";const {SETS,line,unit,dec,isTD,TR}=D;const G=SETS[S0.set]||SETS.ssn;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi);
   const lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
@@ -3377,9 +3391,14 @@ function pxPaint(f){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot
     const fl=f.querySelector(`[data-fill="${nm}"]`);fl.style.left=(x-mn)/(mx-mn)*100+"%";fl.style.right=(100-(y-mn)/(mx-mn)*100)+"%";
     f.querySelector(`[data-r="${nm}|lo"]`).value=a;f.querySelector(`[data-r="${nm}|hi"]`).value=b;
     f.querySelectorAll(`[data-pre^="${nm}|"]`).forEach(p=>{const [,pa,pb]=p.dataset.pre.split("|");p.classList.toggle("on",+pa===x&&+pb===y)})};
-  set("sp",S0.lo,S0.hi,-15,15,(x,y)=>x<=-15&&y>=15?"Any spread":`${pxSpTxt(x)} to ${pxSpTxt(y)}`);
+  set("sp",S0.lo,S0.hi,-15,15,pxSpRange);
   const TR=PXG[key].TR;set("tt",S0.tlo,S0.thi,TR[0],TR[1],(x,y)=>x<=TR[0]&&y>=TR[1]?"Any total":x<=TR[0]?`${y} or less`:y>=TR[1]?`${x} or more`:`${x} to ${y}`);
   const MN=PXG[key].MN;set("mn",S0.mlo,S0.mhi,0,MN.max,(x,y)=>x<=0&&y>=MN.max?MN.any:MN.u==="%"?`${x}% to ${y}%`:`${x} to ${y} min`);
+  {const TR2=PXG[key].TR,MN2=PXG[key].MN,on=[];const x=Math.min(S0.lo,S0.hi),y=Math.max(S0.lo,S0.hi);if(x>-15||y<15)on.push(["sp",pxSpRange(x,y)]);
+   const a=Math.min(S0.tlo,S0.thi),b=Math.max(S0.tlo,S0.thi);if(f.querySelector('[data-dr="tt"]')&&(a>TR2[0]||b<TR2[1]))on.push(["tt",`O/U ${a<=TR2[0]?"≤"+b:b>=TR2[1]?a+"+":a+"–"+b}`]);
+   const c=Math.min(S0.mlo,S0.mhi),d=Math.max(S0.mlo,S0.mhi);if(f.querySelector('[data-dr="mn"]')&&(c>0||d<MN2.max))on.push(["mn",MN2.u==="%"?`${c}–${d}% snaps`:`${c}–${d} min`]);
+   const fs=f.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.map(([n,t])=>`<span class="fchip" data-fclr="${n}">${t} ✕</span>`).join(""):`<span class="fany">Any spread · total · ${MN2.u==="%"?"snaps":"minutes"}</span>`;
+   f.querySelectorAll("[data-fclr]").forEach(ch=>ch.onclick=e=>{e.preventDefault();e.stopPropagation();const n=ch.dataset.fclr;if(n==="sp"){S0.lo=-15;S0.hi=15}else if(n==="tt"){S0.tlo=TR2[0];S0.thi=TR2[1]}else{S0.mlo=0;S0.mhi=MN2.max}pxPaint(f)})}
   f.querySelectorAll("[data-set]").forEach(b=>b.classList.toggle("on",b.dataset.set===S0.set));
   const sn=f.querySelector("[data-setn]");if(sn)sn.textContent={l5:"His last 5 games this season.",l10:"His last 10 games this season.",ssn:"All his games this season.",h2h:"His games vs tonight's opponent — this season and last.",vp:"Starters at his position vs tonight's opponent this season — what they did against tonight's line."}[S0.set]||"";
   f.querySelector("[data-res]").innerHTML=pxResHtml(key)}
@@ -3388,6 +3407,7 @@ function pxFilterWire(root){
     f.querySelectorAll("input[data-r]").forEach(inp=>inp.oninput=()=>{const [nm,w]=inp.dataset.r.split("|"),S0=PXS[key];S0[nm==="sp"?w:nm==="tt"?"t"+w:"m"+w]=+inp.value;pxPaint(f)});
     f.querySelectorAll("[data-set]").forEach(b=>b.onclick=e=>{e.stopPropagation();if(b.disabled)return;PXS[key].set=b.dataset.set;pxPaint(f)});
     f.querySelectorAll("[data-pre]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [nm,a,c]=b.dataset.pre.split("|"),S0=PXS[key];if(nm==="sp"){S0.lo=+a;S0.hi=+c}else if(nm==="tt"){S0.tlo=+a;S0.thi=+c}else{S0.mlo=+a;S0.mhi=+c}pxPaint(f)});
+    const dd=f.querySelector("details.pxfd");if(dd)dd.ontoggle=()=>{PXS[key].open=dd.open};
     pxPaint(f)})}
 function nbaRowPx(x,k,who){const SPR=typeof NBA_SPR!=="undefined"?NBA_SPR:{},s=SPR[x[0]];const sp=s?(x[3]==="H"?s[3]:-s[3]):null;
   return {sp,tot:s?s[4]:null,v:nbaVal(x,k),min:x[4],lab:who?"":(x[3]==="H"?"":"@")+x[2],who}}
@@ -4143,7 +4163,8 @@ function vBox(side,strength,items,small){
   const cls=strength==="Strong"?"vs3":strength==="Medium"?"vs2":strength==="Weak"?"vs1":"vs0";
   const head=strength==="none"?`<b>No clear lean</b>`:`<b>Lean ${side}</b> <span class="vst">· ${strength}</span>`;
   if(small)return `<span class="vpill ${cls}">${strength==="none"?"No clear lean":`Lean ${side} · ${strength}`}</span>`;
-  return `<div class="vbox ${cls}"><div class="vh">${head}</div><ul>${items.map(([m,t])=>`<li><span>${vMark(m)}</span><div>${t}</div></li>`).join("")}</ul></div>`;
+  const key=items.find(x=>x[0]===1)||items[0];
+  return `<div class="vbox ${cls}"><details class="vd"><summary><div class="vh">${head}<span class="vwhy">Why?</span></div>${key?`<div class="vk">${key[1]}</div>`:""}</summary><ul>${items.map(([m,t])=>`<li><span>${vMark(m)}</span><div>${t}</div></li>`).join("")}</ul></details></div>`;
 }
 function vStrength(e){if(!e||e.edge<=0||e.sc<.55)return "none";if(e.sc>=.75&&e.edge>=.12)return "Strong";if(e.sc>=.62&&e.edge>=.05)return "Medium";return "Weak"}
 function nbaVerdict(nm,k,small){
@@ -4724,8 +4745,8 @@ function nflBestRow(b,i){
   const hr=(c,l)=>c[1]?`<span class="${c[0]/c[1]>=.6?"g":c[0]/c[1]<.4?"r":""}"><b>${c[0]}/${c[1]}</b> ${l}</span>`:"";
   const td=b.k==="anyTD";
   return `<div class="bp" data-nflp="${esc(b.name)}" data-k="${b.k}"><div class="bpn">${i+1}</div>
-    <div class="bpm"><div><b>${esc(b.name)}</b> <span class="small">${b.pl.pos} · ${b.pl.team} ${b.home?"vs":"@"} ${b.opp}</span></div>
-      <div class="bpl"><b class="${b.side==="o"?"up":"dn"}">${td?"Scores a TD":(b.side==="o"?"Over ":"Under ")+b.line}</b> ${td?"":MARKETS[b.k].n} <span class="small">${b.odds!=null?amTxt(b.odds):"odds not listed"}${b.book?" · "+esc(b.book):""}</span></div>
+    <div class="bpm"><div class="bpw">${badge(b.pl.team)}<b>${esc(b.name)}</b> <span class="small">${b.pl.pos} · ${b.home?"vs":"@"} ${b.opp}</span>${b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:""}</div>
+      <div class="bpl"><span class="bln ${b.side==="o"?"up":"dn"}">${td?"TD":(b.side==="o"?"O ":"U ")+b.line}</span> <b>${td?"Anytime TD":MARKETS[b.k].n}</b> <span class="small">${b.odds!=null?amTxt(b.odds):"odds not listed"}${b.book?" · "+esc(b.book):""}</span></div>
       <div class="bph">${hr(b.c5,"L5")}${hr(b.cS,"season")}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
     <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">${b.odds!=null?"odds need":"≈ needs"} ${Math.round(b.be*100)}%</span></div></div>`;
 }
@@ -4788,7 +4809,7 @@ function viewProps(){
   $("#find").onchange=e=>{if(!e.target.value)return;const p=P.find(x=>x.name===e.target.value);S.prop={player:p.name,market:marketsFor(p.pos)[0],open:true};viewPlayer()};
   bindProps($("#v-props"));
   document.querySelectorAll("#v-props [data-nbf]").forEach(s=>s.onchange=()=>{NFL_BF[s.dataset.nbf]=s.value;const y=window.scrollY;viewProps();window.scrollTo(0,y)});
-  document.querySelectorAll("#v-props [data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};viewPlayer()});
+  document.querySelectorAll("#v-props [data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};viewPlayer();const t=document.querySelector("#v-props .pmk");if(t)setTimeout(()=>t.scrollIntoView({block:"start"}),30)});
   if(propFilter.tab==="def")drawDefense();
 }
 let defSel={pos:"WR",k:"recYds"};
@@ -4931,7 +4952,7 @@ function viewPlayer(){
     <div class="card"><h2>All ${CUR} games</h2><div style="max-height:340px;overflow:auto"><table><tbody>${allGameRows(pl,CL,CLall,qmode,QM,k,ouTag,QA)}</tbody></table></div><p class="note" style="margin:8px 0 0">"Did not play" weeks (injury / inactive) aren't counted in averages or hit rates.</p></div></div>`;
   $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;if(location.hash!=="#props")location.hash="props";else viewProps()};
   {const px=$("#pxNfl");if(px&&typeof pxFilterWire!=="undefined")pxFilterWire(px)}
-  document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{S.prop.market=b.dataset.m;viewPlayer()});
+  document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{const y=window.scrollY;S.prop.market=b.dataset.m;viewPlayer();window.scrollTo(0,y)});
   document.querySelectorAll("[data-qb]").forEach(b=>b.onclick=()=>{S.prop.qb=b.dataset.qb;viewPlayer()});
   $("#lineIn").onchange=e=>{S.lines[pl.name+"|"+k]=e.target.value;saveUser();viewPlayer()};
   const labels=l10.map(l=>"Wk "+l.week+" "+(l.home?"vs ":"@")+l.opp);if(!v10.length){window.scrollTo(0,0);return}
