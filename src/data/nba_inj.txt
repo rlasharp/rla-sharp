@@ -1,0 +1,123 @@
+#Atlanta Hawks
+Jalen Johnson|F|Out|ankle|Nov 4
+Jock Landale|C|Out|hip|Nov 4
+Mouhamed Gueye|F|Out|foot fracture|Nov 20
+Henri Veesaar|C|Out|ACL|Jul 1
+#Boston Celtics
+Paul George|F|Out|rest|Nov 4
+Devin Carter|G|Out|mononucleosis|Nov 8
+#Brooklyn Nets
+Egor Demin|G|Out|not specified|Nov 7
+Tyler Bilodeau|F|Out|shoulder|Nov 6
+#Charlotte Hornets
+Grant Williams|F|Out|hamstring|Nov 9
+Kon Knueppel|G|Out|hamstring|Nov 9
+#Chicago Bulls
+Nic Claxton|C|Out|hamstring|Nov 4
+#Cleveland Cavaliers
+Peyton Watson|G|Day-To-Day|hamstring|Nov 2
+Jaylon Tyson|G|Out|ankle|Nov 4
+#Dallas Mavericks
+Kyrie Irving|G|Day-To-Day|knee|Nov 4
+Tarik Biberovic|F|Out|heel|Nov 12
+Dereck Lively II|C|Out|foot|Nov 12
+Santi Aldama|F|Out|knee|Nov 2
+Sergio de Larrea|F|Out|knee|Nov 4
+#Denver Nuggets
+Spencer Jones|F|Out|hamstring|Nov 4
+Alpha Diallo|F|Out|wrist|Nov 2
+Julian Strawther|G|Out|knee sprain|Nov 29
+#Detroit Pistons
+Isaiah Joe|G|Out|hip|Nov 4
+Jalen Duren|C|Out|hamstring|Nov 9
+#Golden State Warriors
+Brandon Williams|G|Day-To-Day|quadriceps|Nov 2
+Al Horford|C|Out|rest|Nov 5
+Gui Santos|F|Out|knee|Nov 5
+Kristaps Porzingis|C|Out|personal health concerns|Dec 1
+Moses Moody|G|Out|knee patellar tendon|Dec 1
+Jimmy Butler III|F|Out|ACL|Jan 2
+#Houston Rockets
+Clint Capela|C|Out|ankle|Nov 4
+Reed Sheppard|G|Day-To-Day|back|Nov 2
+Steven Adams|C|Out|soleus strain|Nov 9
+#Indiana Pacers
+T.J. McConnell|G|Out|hamstring|Nov 9
+Ivica Zubac|C|Out|ankle|Nov 9
+Larry Nance Jr.|F|Day-To-Day|illness|Nov 4
+Obi Toppin|F|Day-To-Day|back|Nov 2
+Aaron Nesmith|G|Out|rest|Nov 4
+Andrew Nembhard|G|Out|cervical strain|Nov 4
+Pascal Siakam|F|Out|rest|Nov 4
+Johnny Furphy|G|Out|knee|Jan 2
+Ben Sheppard|G|Out|meniscus (knee)|Jan 2
+Tyrese Haliburton|G|Out|hamstring|Nov 13
+#LA Clippers
+Rui Hachimura|F|Out|quadriceps|Nov 4
+Derrick Jones Jr.|F|Out|knee|Nov 4
+Yanic Konan Niederhauser|C|Out|foot|Nov 8
+Brandon Ingram|F|Out|Achilles|Nov 8
+Bradley Beal|G|Out|knee|Nov 8
+Jordan Miller|G|Out|rotator cuff|Mar 2
+#Los Angeles Lakers
+Adou Thiero|F|Out|knee|Nov 9
+#Memphis Grizzlies
+Scotty Pippen Jr.|G|Day-To-Day|back|Nov 2
+Quinten Post|C|Day-To-Day|ankle|Nov 2
+#Minnesota Timberwolves
+Terrence Shannon Jr.|G|Day-To-Day|hip contusion|Nov 2
+LaMelo Ball|G|Day-To-Day|wrist contusion|Nov 2
+Anthony Edwards|G|Out|knee arthroscopic procedure|Dec 21
+Donte DiVincenzo|G|Out|Achilles|Apr 2
+#New Orleans Pelicans
+Dejounte Murray|G|Out|personal|Nov 4
+Jordan Poole|G|Out|ankle|Nov 4
+Yves Missi|C|Out|knee|Nov 8
+#Oklahoma City Thunder
+Thomas Sorber|C|Out|knee|Nov 4
+Cason Wallace|G|Out|shoulder labrum|Mar 2
+Chet Holmgren|C|Out|patellar tendon|Jan 2
+Jalen Williams|G|Out|leg fracture and ankle ligaments|Mar 2
+Alex Caruso|G|Out|ankle|Nov 4
+Nikola Topic|G|Out|back|Nov 4
+#Orlando Magic
+Anthony Black|G|Out|rest|Nov 5
+Jonathan Isaac|F|Out|knee|Nov 10
+Jalen Suggs|G|Out|knee bone bruise|Nov 10
+Paolo Banchero|F|Out|high-ankle sprain|Nov 22
+Noah Penda|F|Out|hamstring|Nov 18
+Izaiyah Nelson|F|Out|ankle|Nov 18
+#Philadelphia 76ers
+Joel Embiid|C|Day-To-Day|foot|Nov 2
+Dominick Barlow|F|Out|lumbar stress response|Nov 4
+Ariel Hukporti|C|Out|Achilles|Oct 1
+#Phoenix Suns
+Mark Williams|C|Out|shoulder labrum|Feb 3
+#Portland Trail Blazers
+Ja Morant|G|Out|hamstring|Dec 1
+Shaedon Sharpe|G|Out|knee meniscus|Mar 2
+#Sacramento Kings
+Dylan Cardwell|C|Out|calf|Nov 2
+Zach LaVine|G|Day-To-Day|elbow|Nov 2
+Maxime Raynaud|C|Out|knee|Nov 10
+Keegan Murray|F|Out|ankle|Nov 10
+Ben Simmons|G|Out|Achilles|Oct 1
+#San Antonio Spurs
+Tobias Harris|F|Out|calf|Nov 6
+Jayden Quaintance|F|Out|not yet cleared|Dec 3
+#Toronto Raptors
+Scottie Barnes|F|Day-To-Day|hip|Nov 2
+Jakob Poeltl|C|Day-To-Day|shoulder|Nov 2
+Nate Bittle|C|Out|foot|Nov 9
+Kawhi Leonard|F|Out|knee|Nov 23
+#Utah Jazz
+Jaren Jackson Jr.|F|Out|MCL (knee)|Dec 14
+Trey Alexander|G|Out|knee bone bruise|Nov 6
+Jusuf Nurkic|C|Out|toe plantar plate|Nov 4
+#Washington Wizards
+Reece Beekman|G|Out|shoulder (AC joint)|Dec 3
+Anthony Gill|F|Out|back|Nov 4
+Alex Sarr|C|Out|knee|Nov 4
+Tristan Vukcevic|F|Out|hip|Nov 9
+Justin Champagnie|F|Out|foot|Feb 25
+Jamir Watkins|G|Out|ACL|Apr 2
