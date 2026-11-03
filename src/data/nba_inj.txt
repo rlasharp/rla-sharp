@@ -1,7 +1,7 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 05:50Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 06:02Z
 #Atlanta Hawks
-Jalen Johnson|F|Out|ankle|Nov 4
-Jock Landale|C|Out|hip|Nov 4
+Jock Landale|C|Day-To-Day|hip|Nov 4
+Jalen Johnson|F|Day-To-Day|ankle|Nov 4
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
@@ -42,14 +42,14 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 4
 Steven Adams|C|Out|calf strain|Nov 9
 #Indiana Pacers
-Kelly Oubre Jr.|G|Out|knee bruise|Nov 4
-Larry Nance Jr.|F|Out|illness|Nov 4
+Pascal Siakam|F|Day-To-Day|rest|Nov 4
+Aaron Nesmith|G|Day-To-Day|rest|Nov 4
+Andrew Nembhard|G|Day-To-Day|neck|Nov 4
+Kelly Oubre Jr.|G|Day-To-Day|knee bruise|Nov 4
+Larry Nance Jr.|F|Day-To-Day|illness|Nov 4
 Obi Toppin|F|Out|coach's decision soreness|Nov 4
 T.J. McConnell|G|Out|hamstring strain|Nov 9
 Ivica Zubac|C|Out|ankle sprain|Nov 9
-Aaron Nesmith|G|Out|rest|Nov 4
-Andrew Nembhard|G|Out|neck|Nov 4
-Pascal Siakam|F|Out|rest|Nov 4
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 Tyrese Haliburton|G|Out|hamstring strain|Nov 13
