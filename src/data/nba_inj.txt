@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 05:40Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 05:50Z
 #Atlanta Hawks
 Jalen Johnson|F|Out|ankle|Nov 4
 Jock Landale|C|Out|hip|Nov 4
@@ -16,8 +16,8 @@ Kon Knueppel|G|Out|hamstring|Nov 9
 #Chicago Bulls
 Nic Claxton|C|Out|hamstring|Nov 4
 #Cleveland Cavaliers
-Peyton Watson|G|Out|hamstring soreness|Nov 4
-Jaylon Tyson|G|Out|ankle sprain|Nov 4
+Peyton Watson|G|Day-To-Day|hamstring soreness|Nov 4
+Jaylon Tyson|G|Day-To-Day|ankle sprain|Nov 4
 #Dallas Mavericks
 Max Christie|G|Day-To-Day|hip not specified|Nov 4
 Kyrie Irving|G|Out|knee|Nov 4
@@ -81,7 +81,7 @@ Jalen Williams|G|Out|leg fracture|Mar 2
 Alex Caruso|G|Out|ankle|Nov 4
 Nikola Topic|G|Out|back|Nov 6
 #Orlando Magic
-Anthony Black|G|Out|rest|Nov 5
+Anthony Black|G|Day-To-Day|rest|Nov 5
 Jonathan Isaac|F|Out|knee not specified|Nov 10
 Jalen Suggs|G|Out|knee|Nov 10
 Paolo Banchero|F|Out|ankle sprain|Nov 22
@@ -113,9 +113,9 @@ Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 Trey Alexander|G|Out|knee bruise|Nov 6
 Jusuf Nurkic|C|Out|foot strain|Nov 4
 #Washington Wizards
+Alex Sarr|C|Day-To-Day|knee soreness|Nov 4
+Anthony Gill|F|Day-To-Day|back spasms|Nov 4
 Reece Beekman|G|Out|shoulder|Dec 3
-Anthony Gill|F|Out|back spasms|Nov 4
-Alex Sarr|C|Out|knee soreness|Nov 4
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 9
 Justin Champagnie|F|Out|foot not specified|Feb 25
 Jamir Watkins|G|Out|knee surgery|Apr 2

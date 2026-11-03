@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-03 05:40Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-03 05:50Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Kendrick Bourne|WR|Out|Lower Leg|Feb 15
@@ -115,10 +115,10 @@ Cam Taylor-Britt|CB|IR|Groin|Nov 29
 #JAX
 Branson Combs|LB|Questionable|Shoulder|Nov 5
 Jarrian Jones|CB|Questionable|Ankle|Nov 5
-Jakobi Meyers|WR|Questionable|Hamstring|Nov 5
 Chris Rodriguez Jr.|RB|Questionable|Hand|Nov 5
 Bhayshul Tuten|RB|Questionable|Ankle|Nov 5
 Eric Murray|S|Out|Elbow|Feb 15
+Jakobi Meyers|WR|Questionable|Hamstring|Nov 5
 DaVon Hamilton|DT|Out|Knee|Feb 15
 Antonio Johnson|S|Out|Ankle|Nov 5
 Travon Walker|DE|Questionable|Ribs|Nov 5
