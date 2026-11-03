@@ -3,6 +3,7 @@
 Run from the src/ folder:
   python3 tools/auto_espn.py nba-inj                 -> data/nba_inj.txt
   python3 tools/auto_espn.py nba-lines YYYY-MM-DD    -> data/nba_lines.txt (keeps open numbers already saved)
+  python3 tools/auto_espn.py nba-finals YYYY-MM-DD   -> data/nba_espn.json + nba_espn.js (finals + box scores, last 8 days)
   python3 tools/auto_espn.py nfl-inj "Tue Nov 3"     -> data/espn_inj.txt + inj.js (via tools/injgen.py)
   python3 tools/auto_espn.py nfl-update              -> engine.js LINES (games not started) + market.js MOVE now,
                                                         finals into SLATE (final:[a,h]) + real.js RESULTS
@@ -183,10 +184,63 @@ def nfl_update():
     open("engine.js", "w", encoding="utf-8").write(js); open("real.js", "w", encoding="utf-8").write(real); open("market.js", "w", encoding="utf-8").write(mk)
     print(f"nfl-update: {nl} lines refreshed, {nf} new finals (weeks {sorted(weeks)})")
 
+def nba_finals(today, days=8):
+    """Finished NBA games for today and the last `days` days from ESPN scoreboards + box scores -> data/nba_espn.json + nba_espn.js.
+    Fills the gap until hoopR posts its box scores; the site uses these only for games hoopR doesn't have yet."""
+    fp = "data/nba_espn.json"
+    old = json.load(open(fp)) if os.path.exists(fp) else {"games": [], "logs": []}
+    G = {g[0]: g for g in old["games"]}; LOGS = {(l[3][0], l[0]): l for l in old["logs"]}
+    t0 = datetime.date.fromisoformat(today); keep = {(t0 - datetime.timedelta(days=i)).isoformat() for i in range(days + 3)}
+    nnew = 0
+    for i in range(days + 1):
+        d = (t0 - datetime.timedelta(days=i)).isoformat()
+        try: sb = get(B + "basketball/nba/scoreboard?dates=" + d.replace("-", ""))
+        except SystemExit as e: print(e, file=sys.stderr); continue
+        for e in sb.get("events", []):
+            c = (e.get("competitions") or [{}])[0]
+            if ((c.get("status") or e.get("status") or {}).get("type") or {}).get("state") != "post": continue
+            gid = int(e["id"]); T = {x.get("homeAway"): x for x in c.get("competitors", [])}
+            if "home" not in T or "away" not in T: continue
+            a, h = T["away"], T["home"]; ab = lambda x: (x.get("team") or {}).get("abbreviation", "")
+            ls = lambda x: [int(float(l.get("value") or 0)) for l in x.get("linescores", [])]
+            if gid in G and any(l[3][0] == gid for l in LOGS.values()): continue
+            G[gid] = [gid, d, ab(a), ab(h), int(float(a.get("score") or 0)), int(float(h.get("score") or 0)), ls(a), ls(h)]; nnew += 1
+            try: sm = get(B + "basketball/nba/summary?event=" + str(gid))
+            except SystemExit as e2: print(e2, file=sys.stderr); continue
+            side = {ab(a): "A", ab(h): "H"}; opp = {ab(a): ab(h), ab(h): ab(a)}
+            for tm in (sm.get("boxscore") or {}).get("players", []):
+                t = (tm.get("team") or {}).get("abbreviation", "")
+                for st in tm.get("statistics", [])[:1]:
+                    lab = [x.upper() for x in (st.get("labels") or st.get("names") or [])]
+                    for at in st.get("athletes", []):
+                        if at.get("didNotPlay") or not at.get("stats"): continue
+                        v = dict(zip(lab, at["stats"]))
+                        def n(k):
+                            try: return int(float(str(v.get(k, "0")).replace("+", "") or 0))
+                            except ValueError: return 0
+                        def sp(k):
+                            x = str(v.get(k, "0-0")).split("-")
+                            try: return int(x[0]), int(x[1])
+                            except (ValueError, IndexError): return 0, 0
+                        mn = n("MIN")
+                        if mn <= 0: continue
+                        fg, tp, ft = sp("FG"), sp("3PT"), sp("FT"); ath = at.get("athlete") or {}
+                        nm = ath.get("displayName", ""); pos = ((ath.get("position") or {}).get("abbreviation")) or ""
+                        row = [gid, d, opp.get(t, ""), side.get(t, "A"), mn, n("PTS"), n("REB"), n("AST"), tp[0], 1 if at.get("starter") else 0,
+                               fg[0], fg[1], n("STL"), n("BLK"), n("TO"), tp[1], ft[0], ft[1]]
+                        LOGS[(gid, nm)] = [nm, t, pos, row]
+    games = sorted([g for g in G.values() if g[1] in keep], key=lambda g: (g[1], g[0]))
+    ids = {g[0] for g in games}; logs = [l for l in LOGS.values() if l[3][0] in ids]
+    json.dump({"games": games, "logs": logs}, open(fp, "w"), separators=(",", ":"), ensure_ascii=False)
+    open("nba_espn.js", "w").write("/* NBA finals + box scores from ESPN (last days), used only for games hoopR hasn't posted yet. tools/auto_espn.py nba-finals */\nconst NBA_ESPN="
+                                   + json.dumps({"games": games, "logs": logs}, separators=(",", ":"), ensure_ascii=False) + ";\n")
+    print(f"NBA finals from ESPN: {len(games)} games kept ({nnew} new), {len(logs)} player lines")
+
 if __name__ == "__main__":
     cmd = sys.argv[1]
     if cmd == "nba-inj": nba_inj()
     elif cmd == "nba-lines": nba_lines(sys.argv[2])
+    elif cmd == "nba-finals": nba_finals(sys.argv[2])
     elif cmd == "nfl-inj": nfl_inj(sys.argv[2])
     elif cmd == "nfl-update": nfl_update()
     else: raise SystemExit("unknown command")

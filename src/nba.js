@@ -1,3 +1,10 @@
+/* ESPN finals + box scores fill in games hoopR hasn't posted yet (nba_espn.js, refreshed every 2 h) */
+(function(){if(typeof NBA_ESPN==="undefined")return;const have=new Set(NBA_RES.map(r=>r[0]));NBA_ESPN.added=new Set();
+  for(const g of NBA_ESPN.games||[]){if(have.has(g[0]))continue;NBA_RES.push(g.slice(0,6));NBA_ESPN.added.add(g[0])}
+  NBA_RES.sort((a,b)=>a[1]<b[1]?-1:a[1]>b[1]?1:a[0]-b[0]);
+  for(const [nm,tm,pos,row] of NBA_ESPN.logs||[]){if(!NBA_ESPN.added.has(row[0]))continue;const p=NBA_LOGS[nm]||(NBA_LOGS[nm]={tm,pos,id:0,g:[]});
+    if(p.g.some(x=>x[0]===row[0]))continue;p.g.push(row);p.g.sort((a,b)=>a[1]<b[1]?-1:a[1]>b[1]?1:0)}
+  NBA_ESPN.ls={};for(const g of NBA_ESPN.games||[])NBA_ESPN.ls[g[0]]=[g[6]||[],g[7]||[]];})();
 /* ---------- NBA section (separate from NFL; all globals prefixed nba / NB) ---------- */
 const NB={date:null,sel:null,team:"tonight",q:"",sort:"pts",ij:"tonight"};
 (()=>{const m=(typeof LS!=="undefined"&&LS.get("nbaMin"))||null;NB.mlo=m?m[0]:0;NB.mhi=m?m[1]:48;
@@ -926,10 +933,15 @@ function nbaBox(id){
   const rows={};for(const [nm,p] of Object.entries(NBA_LOGS))for(const x of p.g)if(x[0]===id){(rows[x[3]]=rows[x[3]]||[]).push([nm,x])}
   const r=NBA_RES.find(z=>z[0]===id);if(!r)return "";
   const tbl=(ha,tm)=>`<div class="card" style="margin-top:12px"><h2>${nbaTm(tm)}</h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Player</th><th>PTS</th><th>REB</th><th>AST</th><th>FG</th><th>3PT</th><th>FT</th></tr></thead><tbody>${(rows[ha]||[]).sort((a,b)=>b[1][9]-a[1][9]||b[1][4]-a[1][4]).map(([nm,x])=>`<tr><td>${nbaLink(nm)} <span class='small'>${x[4]}m</span></td><td><b>${x[5]}</b></td><td>${x[6]}</td><td>${x[7]}</td><td>${x[10]}-${x[11]}</td><td>${x[8]}-${x[15]??"?"}</td><td>${x[16]??"?"}-${x[17]??"?"}</td></tr>`).join("")}</tbody></table></div></div>`;
-  return `<h2 style="margin:18px 0 0">${nbaShort(r[2])} ${r[4]} – ${nbaShort(r[3])} ${r[5]} · box score</h2>${tbl("A",r[2])}${tbl("H",r[3])}`;
+  const LS=typeof NBA_ESPN!=="undefined"&&NBA_ESPN.ls&&NBA_ESPN.ls[id];
+  const lsT=LS&&LS[0].length?`<div class="card" style="margin-top:12px"><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th>${LS[0].map((_,i)=>`<th>${i<4?"Q"+(i+1):i===4?"OT":"OT"+(i-3)}</th>`).join("")}<th>T</th></tr></thead><tbody>
+    <tr><td><b>${nbaShort(r[2])}</b></td>${LS[0].map(v=>`<td>${v}</td>`).join("")}<td><b>${r[4]}</b></td></tr><tr><td><b>${nbaShort(r[3])}</b></td>${LS[1].map(v=>`<td>${v}</td>`).join("")}<td><b>${r[5]}</b></td></tr></tbody></table></div></div>`:"";
+  return `<h2 style="margin:18px 0 0">${nbaShort(r[2])} ${r[4]} – ${nbaShort(r[3])} ${r[5]} · box score</h2>${lsT}${tbl("A",r[2])}${tbl("H",r[3])}`;
 }
 function nbaScores(el){
-  const dates=[...new Set(NBA_RES.map(r=>r[1]))].sort().reverse();
+  const today=(typeof etNow!=="undefined"?etNow().d:NBA_SLATE_DATE),lo=new Date(new Date(today+"T12:00:00")-8*864e5).toISOString().slice(0,10);
+  let dates=[...new Set(NBA_RES.map(r=>r[1]))].filter(d=>d<today&&d>=lo).sort().reverse();
+  if(!dates.length)dates=[...new Set(NBA_RES.map(r=>r[1]))].sort().reverse().slice(0,8);
   if(!NB.date||!dates.includes(NB.date))NB.date=dates[0];
   const games=NBA_RES.filter(r=>r[1]===NB.date);
   el.innerHTML=`<h1>NBA Scores</h1>

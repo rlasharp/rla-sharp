@@ -8,6 +8,7 @@ cd "$ROOT/src"
 TODAY=$(TZ=America/Toronto date +%F); NOWS=$(TZ=America/Toronto date "+%a %b %-d")
 log(){ echo "::notice::$*"; echo "$*" >> "$WORK/summary.txt"; }
 if [ "$WHAT" = nba ] || [ "$WHAT" = all ]; then
+  python3 tools/auto_espn.py nba-finals "$TODAY" >> "$WORK/summary.txt" 2>&1 || log "NBA finals (ESPN): kept old"
   if bash tools/nbafetch.sh > "$WORK/nbafetch.log" 2>&1; then
     python3 tools/auto_espn.py nba-inj 2>>"$WORK/summary.txt" && log "NBA injuries refreshed" || log "NBA injuries: kept old"
     python3 tools/auto_espn.py nba-lines "$TODAY" 2>>"$WORK/summary.txt" && log "NBA lines checked" || log "NBA lines: kept old"
