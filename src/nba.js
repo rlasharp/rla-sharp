@@ -932,10 +932,14 @@ function nbaFlash(id){const c=document.getElementById(id);if(!c)return;const dz=
 function nbaBox(id){
   const rows={};for(const [nm,p] of Object.entries(NBA_LOGS))for(const x of p.g)if(x[0]===id){(rows[x[3]]=rows[x[3]]||[]).push([nm,x])}
   const r=NBA_RES.find(z=>z[0]===id);if(!r)return "";
-  const tbl=(ha,tm)=>`<div class="card" style="margin-top:12px"><h2>${nbaTm(tm)}</h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Player</th><th>PTS</th><th>REB</th><th>AST</th><th>FG</th><th>3PT</th><th>FT</th></tr></thead><tbody>${(rows[ha]||[]).sort((a,b)=>b[1][9]-a[1][9]||b[1][4]-a[1][4]).map(([nm,x])=>`<tr><td>${nbaLink(nm)} <span class='small'>${x[4]}m</span></td><td><b>${x[5]}</b></td><td>${x[6]}</td><td>${x[7]}</td><td>${x[10]}-${x[11]}</td><td>${x[8]}-${x[15]??"?"}</td><td>${x[16]??"?"}-${x[17]??"?"}</td></tr>`).join("")}</tbody></table></div></div>`;
+  const tags=x=>{const n=[x[5],x[6],x[7],x[12],x[13]].filter(v=>v>=10).length;return n>=3?`<span class="bxtag td">TRIPLE-DBL</span>`:n===2?`<span class="bxtag dd">DOUBLE-DBL</span>`:""};
+  const ptc=v=>v>=40?"bx40":v>=30?"bx30":v>=20?"bx20":"";
+  const tbl=(ha,tm)=>{const R=(rows[ha]||[]).sort((a,b)=>b[1][9]-a[1][9]||b[1][4]-a[1][4]),win=ha==="A"?r[4]>r[5]:r[5]>r[4];
+    return `<div class="card bxcard" style="margin-top:12px;--tc:${nbaCol(tm)}"><h2 class="bxh">${nbaBadge(tm)} ${nbaTm(tm)} <span class="bxwl ${win?"w":"l"}">${win?"W":"L"} ${ha==="A"?r[4]:r[5]}</span></h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Player</th><th>PTS</th><th>REB</th><th>AST</th><th>FG</th><th>3PT</th><th>FT</th></tr></thead><tbody>${R.map(([nm,x],i)=>`${i&&x[9]!==R[i-1][1][9]?`<tr class="bxsep"><td colspan="7">Bench</td></tr>`:""}<tr><td>${nbaLink(nm)} <span class='small'>${x[4]}m</span>${tags(x)}</td><td><b class="${ptc(x[5])}">${x[5]}</b></td><td class="${x[6]>=10?"bxhi":""}">${x[6]}</td><td class="${x[7]>=10?"bxhi":""}">${x[7]}</td><td>${x[10]}-${x[11]}</td><td>${x[8]}-${x[15]??"?"}</td><td>${x[16]??"?"}-${x[17]??"?"}</td></tr>`).join("")}</tbody></table></div></div>`};
   const LS=typeof NBA_ESPN!=="undefined"&&NBA_ESPN.ls&&NBA_ESPN.ls[id];
-  const lsT=LS&&LS[0].length?`<div class="card" style="margin-top:12px"><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th>${LS[0].map((_,i)=>`<th>${i<4?"Q"+(i+1):i===4?"OT":"OT"+(i-3)}</th>`).join("")}<th>T</th></tr></thead><tbody>
-    <tr><td><b>${nbaShort(r[2])}</b></td>${LS[0].map(v=>`<td>${v}</td>`).join("")}<td><b>${r[4]}</b></td></tr><tr><td><b>${nbaShort(r[3])}</b></td>${LS[1].map(v=>`<td>${v}</td>`).join("")}<td><b>${r[5]}</b></td></tr></tbody></table></div></div>`:"";
+  const q=(i,side)=>{const a=LS[0][i],h=LS[1][i],me=side?h:a,op=side?a:h;return `<td class="${me>op?"qw":""}">${me??""}</td>`};
+  const lsT=LS&&LS[0].length?`<div class="card" style="margin-top:12px"><div class="nbatbl"><table class="bxt lst" style="min-width:0"><thead><tr><th></th>${LS[0].map((_,i)=>`<th>${i<4?"Q"+(i+1):i===4?"OT":"OT"+(i-3)}</th>`).join("")}<th>T</th></tr></thead><tbody>
+    ${[0,1].map(sd=>`<tr><td>${nbaBadge(r[2+sd])} <b>${nbaShort(r[2+sd])}</b></td>${LS[0].map((_,i)=>q(i,sd)).join("")}<td><b class="${(sd?r[5]>r[4]:r[4]>r[5])?"qwT":""}">${r[4+sd]}</b></td></tr>`).join("")}</tbody></table></div><div class="small" style="margin-top:4px">Green = won the quarter.</div></div>`:"";
   return `<h2 style="margin:18px 0 0">${nbaShort(r[2])} ${r[4]} – ${nbaShort(r[3])} ${r[5]} · box score</h2>${lsT}${tbl("A",r[2])}${tbl("H",r[3])}`;
 }
 function nbaScores(el){
@@ -948,10 +952,12 @@ function nbaScores(el){
   <div id="liveTodayHost">${typeof nbaTodayHtml!=="undefined"?nbaTodayHtml():""}</div>
   <h2 style="margin:18px 0 4px">Results</h2><p class="sub" style="margin-top:0">Tap a final score to see the full box score.</p>
   <div class="nbadates">${dates.map(d=>`<button class="btn${d===NB.date?" pri":""}" data-nd="${d}">${nbaDayS(d)}</button>`).join("")}</div>
-  <div class="grid g2">${games.map(r=>{const aw=r[4]>r[5];return `<div class="card sbox click" data-nbx="${r[0]}" style="cursor:pointer">
-    <div class="nbarow"><div style="${aw?"font-weight:800":""}">${nbaTm(r[2])} <span class="small">${nbaRec(r[2])}</span></div><div></div><div></div><div style="font-size:18px;${aw?"font-weight:800":"color:var(--muted)"}">${r[4]}</div></div>
-    <div class="nbarow"><div style="${!aw?"font-weight:800":""}">${nbaTm(r[3])} <span class="small">${nbaRec(r[3])}</span></div><div></div><div></div><div style="font-size:18px;${!aw?"font-weight:800":"color:var(--muted)"}">${r[5]}</div></div>
-    <div class="small">Final</div></div>`}).join("")}</div>
+  <div class="grid g2">${games.map(r=>{const aw=r[4]>r[5],W=aw?r[2]:r[3],m=Math.abs(r[4]-r[5]),LS=typeof NBA_ESPN!=="undefined"&&NBA_ESPN.ls&&NBA_ESPN.ls[r[0]],ot=LS&&LS[0].length>4?(LS[0].length===5?"OT":(LS[0].length-4)+"OT"):"";
+    let top=null;for(const [nm,p] of Object.entries(NBA_LOGS))for(const x of p.g)if(x[0]===r[0]&&(!top||x[5]>top[1]))top=[nm,x[5]];
+    const row=(t,sc,w)=>`<div class="rsr${w?" w":""}"><span class="rsn">${nbaBadge(t)}<b>${nbaEsc(nbaShort(t))}</b><span class="small">${nbaRec(t)}</span></span>${w?`<span class="rsw">W</span>`:""}<span class="rss">${sc}</span></div>`;
+    return `<div class="card sbox click rsc${NB.sel===r[0]?" sel":""}" data-nbx="${r[0]}" style="cursor:pointer;--ca:${nbaCol(r[2])};--ch:${nbaCol(r[3])};--cw:${nbaCol(W)}">
+    ${row(r[2],r[4],aw)}${row(r[3],r[5],!aw)}
+    <div class="rsf"><span class="rsfin">FINAL${ot?"/"+ot:""}</span><span class="rsm">${nbaEsc(nbaShort(W))} by ${m}</span>${top?`<span class="small">🔥 ${nbaEsc(pxLast?pxLast(top[0]):top[0])} ${top[1]}</span>`:""}<span class="rsbx">${NB.sel===r[0]?"Hide box ▴":"Box score ▾"}</span></div></div>`}).join("")}</div>
   <div id="nbaBoxOut">${NB.sel?nbaBox(NB.sel):""}</div>`;
   el.querySelectorAll("[data-nd]").forEach(b=>b.onclick=()=>{NB.date=b.dataset.nd;NB.sel=null;nbaScores(el)});
   el.querySelectorAll("[data-nbx]").forEach(b=>b.onclick=()=>{const id=+b.dataset.nbx;NB.sel=NB.sel===id?null:id;nbaScores(el);if(NB.sel)document.getElementById("nbaBoxOut").scrollIntoView({behavior:"smooth",block:"start"})});

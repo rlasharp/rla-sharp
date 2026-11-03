@@ -184,6 +184,21 @@ tr.click{cursor:pointer}tr.click:hover td{background:#1d2023}
 .rcr{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}.rcr:last-of-type{border-bottom:0}.rcc{flex:0 0 auto;min-width:34px;padding:4px 6px!important;font-weight:800}
 .mvl{margin-top:8px;font-size:13px;color:var(--text2);line-height:1.5}.mvl b{color:var(--text)}.mvt{font-size:11.5px;padding:1px 7px;border-radius:999px;background:#2b2a1a;color:#f3c75a;white-space:nowrap}
 .spl tr.tn td{background:rgba(63,178,107,.08)}.spl td{white-space:nowrap}
+.clvres{font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;vertical-align:1px}.clvres.o{background:#11301d;color:#7fdc95}.clvres.u{background:#3a1618;color:#ff9a9d}.clvres.p{background:var(--card2);color:var(--text2)}
+.rsc{position:relative;overflow:hidden;padding-top:14px}.rsc:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--ca) 0 50%,var(--ch) 50% 100%)}
+.rsc.sel{box-shadow:0 0 0 2px var(--acc,#f5c451) inset}
+.rsr{display:flex;align-items:center;gap:8px;padding:6px 0}.rsr+.rsr{border-top:1px solid var(--line,#262a31)}
+.rsn{flex:1;min-width:0;display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden}.rsn b{font-size:15px}.rsn .small{color:var(--muted)}
+.rss{font-size:21px;font-weight:800;min-width:40px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}.rsr.w .rss{color:var(--text)}.rsr:not(.w) .rsn b{color:var(--text2)}
+.rsw{font-size:10.5px;font-weight:800;color:#0d1f14;background:#3fb26b;border-radius:5px;padding:1px 6px}
+.rsf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:7px;padding-top:7px;border-top:1px dashed var(--line,#262a31);font-size:12.5px}
+.rsfin{font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--muted)}.rsm{font-weight:700;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--cw) 30%,transparent);border:1px solid color-mix(in srgb,var(--cw) 70%,transparent)}
+.rsbx{margin-left:auto;color:var(--acc,#f5c451);font-weight:700}
+.bxcard{border-top:4px solid var(--tc)}.bxh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.bxwl{margin-left:auto;font-size:13px;padding:2px 9px;border-radius:7px;font-weight:800}.bxwl.w{background:#11301d;color:#7fdc95}.bxwl.l{background:#3a1618;color:#ff9a9d}
+.bxtag{margin-left:6px;font-size:9.5px;font-weight:800;padding:1px 5px;border-radius:4px;vertical-align:1px}.bxtag.dd{background:#11301d;color:#7fdc95}.bxtag.td{background:#2b1d4a;color:#c3a6ff}
+.bx20{color:var(--text)}.bx30{color:#f5c451}.bx40{color:#ff9f43}.bxhi{color:#7fdc95;font-weight:700}
+.bxsep td{font-size:10.5px!important;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:10px!important}
+.lst td.qw{color:#7fdc95;font-weight:700}.lst b.qwT{color:#7fdc95}
 .tdyw{margin-bottom:6px}.tdyt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .tdyp{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--card2);color:var(--text2);display:inline-flex;align-items:center;gap:5px}.tdyp.on{background:#2a1416;color:#ff8a8a}
 a.tdy{display:block;color:inherit;text-decoration:none}.tdy{padding:12px 12px 10px}.tdy.in{border-color:#5a2328;box-shadow:0 0 0 1px #5a2328 inset}
@@ -3065,10 +3080,14 @@ function nbaFlash(id){const c=document.getElementById(id);if(!c)return;const dz=
 function nbaBox(id){
   const rows={};for(const [nm,p] of Object.entries(NBA_LOGS))for(const x of p.g)if(x[0]===id){(rows[x[3]]=rows[x[3]]||[]).push([nm,x])}
   const r=NBA_RES.find(z=>z[0]===id);if(!r)return "";
-  const tbl=(ha,tm)=>`<div class="card" style="margin-top:12px"><h2>${nbaTm(tm)}</h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Player</th><th>PTS</th><th>REB</th><th>AST</th><th>FG</th><th>3PT</th><th>FT</th></tr></thead><tbody>${(rows[ha]||[]).sort((a,b)=>b[1][9]-a[1][9]||b[1][4]-a[1][4]).map(([nm,x])=>`<tr><td>${nbaLink(nm)} <span class='small'>${x[4]}m</span></td><td><b>${x[5]}</b></td><td>${x[6]}</td><td>${x[7]}</td><td>${x[10]}-${x[11]}</td><td>${x[8]}-${x[15]??"?"}</td><td>${x[16]??"?"}-${x[17]??"?"}</td></tr>`).join("")}</tbody></table></div></div>`;
+  const tags=x=>{const n=[x[5],x[6],x[7],x[12],x[13]].filter(v=>v>=10).length;return n>=3?`<span class="bxtag td">TRIPLE-DBL</span>`:n===2?`<span class="bxtag dd">DOUBLE-DBL</span>`:""};
+  const ptc=v=>v>=40?"bx40":v>=30?"bx30":v>=20?"bx20":"";
+  const tbl=(ha,tm)=>{const R=(rows[ha]||[]).sort((a,b)=>b[1][9]-a[1][9]||b[1][4]-a[1][4]),win=ha==="A"?r[4]>r[5]:r[5]>r[4];
+    return `<div class="card bxcard" style="margin-top:12px;--tc:${nbaCol(tm)}"><h2 class="bxh">${nbaBadge(tm)} ${nbaTm(tm)} <span class="bxwl ${win?"w":"l"}">${win?"W":"L"} ${ha==="A"?r[4]:r[5]}</span></h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Player</th><th>PTS</th><th>REB</th><th>AST</th><th>FG</th><th>3PT</th><th>FT</th></tr></thead><tbody>${R.map(([nm,x],i)=>`${i&&x[9]!==R[i-1][1][9]?`<tr class="bxsep"><td colspan="7">Bench</td></tr>`:""}<tr><td>${nbaLink(nm)} <span class='small'>${x[4]}m</span>${tags(x)}</td><td><b class="${ptc(x[5])}">${x[5]}</b></td><td class="${x[6]>=10?"bxhi":""}">${x[6]}</td><td class="${x[7]>=10?"bxhi":""}">${x[7]}</td><td>${x[10]}-${x[11]}</td><td>${x[8]}-${x[15]??"?"}</td><td>${x[16]??"?"}-${x[17]??"?"}</td></tr>`).join("")}</tbody></table></div></div>`};
   const LS=typeof NBA_ESPN!=="undefined"&&NBA_ESPN.ls&&NBA_ESPN.ls[id];
-  const lsT=LS&&LS[0].length?`<div class="card" style="margin-top:12px"><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th>${LS[0].map((_,i)=>`<th>${i<4?"Q"+(i+1):i===4?"OT":"OT"+(i-3)}</th>`).join("")}<th>T</th></tr></thead><tbody>
-    <tr><td><b>${nbaShort(r[2])}</b></td>${LS[0].map(v=>`<td>${v}</td>`).join("")}<td><b>${r[4]}</b></td></tr><tr><td><b>${nbaShort(r[3])}</b></td>${LS[1].map(v=>`<td>${v}</td>`).join("")}<td><b>${r[5]}</b></td></tr></tbody></table></div></div>`:"";
+  const q=(i,side)=>{const a=LS[0][i],h=LS[1][i],me=side?h:a,op=side?a:h;return `<td class="${me>op?"qw":""}">${me??""}</td>`};
+  const lsT=LS&&LS[0].length?`<div class="card" style="margin-top:12px"><div class="nbatbl"><table class="bxt lst" style="min-width:0"><thead><tr><th></th>${LS[0].map((_,i)=>`<th>${i<4?"Q"+(i+1):i===4?"OT":"OT"+(i-3)}</th>`).join("")}<th>T</th></tr></thead><tbody>
+    ${[0,1].map(sd=>`<tr><td>${nbaBadge(r[2+sd])} <b>${nbaShort(r[2+sd])}</b></td>${LS[0].map((_,i)=>q(i,sd)).join("")}<td><b class="${(sd?r[5]>r[4]:r[4]>r[5])?"qwT":""}">${r[4+sd]}</b></td></tr>`).join("")}</tbody></table></div><div class="small" style="margin-top:4px">Green = won the quarter.</div></div>`:"";
   return `<h2 style="margin:18px 0 0">${nbaShort(r[2])} ${r[4]} – ${nbaShort(r[3])} ${r[5]} · box score</h2>${lsT}${tbl("A",r[2])}${tbl("H",r[3])}`;
 }
 function nbaScores(el){
@@ -3081,10 +3100,12 @@ function nbaScores(el){
   <div id="liveTodayHost">${typeof nbaTodayHtml!=="undefined"?nbaTodayHtml():""}</div>
   <h2 style="margin:18px 0 4px">Results</h2><p class="sub" style="margin-top:0">Tap a final score to see the full box score.</p>
   <div class="nbadates">${dates.map(d=>`<button class="btn${d===NB.date?" pri":""}" data-nd="${d}">${nbaDayS(d)}</button>`).join("")}</div>
-  <div class="grid g2">${games.map(r=>{const aw=r[4]>r[5];return `<div class="card sbox click" data-nbx="${r[0]}" style="cursor:pointer">
-    <div class="nbarow"><div style="${aw?"font-weight:800":""}">${nbaTm(r[2])} <span class="small">${nbaRec(r[2])}</span></div><div></div><div></div><div style="font-size:18px;${aw?"font-weight:800":"color:var(--muted)"}">${r[4]}</div></div>
-    <div class="nbarow"><div style="${!aw?"font-weight:800":""}">${nbaTm(r[3])} <span class="small">${nbaRec(r[3])}</span></div><div></div><div></div><div style="font-size:18px;${!aw?"font-weight:800":"color:var(--muted)"}">${r[5]}</div></div>
-    <div class="small">Final</div></div>`}).join("")}</div>
+  <div class="grid g2">${games.map(r=>{const aw=r[4]>r[5],W=aw?r[2]:r[3],m=Math.abs(r[4]-r[5]),LS=typeof NBA_ESPN!=="undefined"&&NBA_ESPN.ls&&NBA_ESPN.ls[r[0]],ot=LS&&LS[0].length>4?(LS[0].length===5?"OT":(LS[0].length-4)+"OT"):"";
+    let top=null;for(const [nm,p] of Object.entries(NBA_LOGS))for(const x of p.g)if(x[0]===r[0]&&(!top||x[5]>top[1]))top=[nm,x[5]];
+    const row=(t,sc,w)=>`<div class="rsr${w?" w":""}"><span class="rsn">${nbaBadge(t)}<b>${nbaEsc(nbaShort(t))}</b><span class="small">${nbaRec(t)}</span></span>${w?`<span class="rsw">W</span>`:""}<span class="rss">${sc}</span></div>`;
+    return `<div class="card sbox click rsc${NB.sel===r[0]?" sel":""}" data-nbx="${r[0]}" style="cursor:pointer;--ca:${nbaCol(r[2])};--ch:${nbaCol(r[3])};--cw:${nbaCol(W)}">
+    ${row(r[2],r[4],aw)}${row(r[3],r[5],!aw)}
+    <div class="rsf"><span class="rsfin">FINAL${ot?"/"+ot:""}</span><span class="rsm">${nbaEsc(nbaShort(W))} by ${m}</span>${top?`<span class="small">🔥 ${nbaEsc(pxLast?pxLast(top[0]):top[0])} ${top[1]}</span>`:""}<span class="rsbx">${NB.sel===r[0]?"Hide box ▴":"Box score ▾"}</span></div></div>`}).join("")}</div>
   <div id="nbaBoxOut">${NB.sel?nbaBox(NB.sel):""}</div>`;
   el.querySelectorAll("[data-nd]").forEach(b=>b.onclick=()=>{NB.date=b.dataset.nd;NB.sel=null;nbaScores(el)});
   el.querySelectorAll("[data-nbx]").forEach(b=>b.onclick=()=>{const id=+b.dataset.nbx;NB.sel=NB.sel===id?null:id;nbaScores(el);if(NB.sel)document.getElementById("nbaBoxOut").scrollIntoView({behavior:"smooth",block:"start"})});
@@ -4150,10 +4171,11 @@ function clvCardHtml(R){
   const intro=`<div class="small" style="margin-bottom:8px">Pros judge picks by whether they beat the <b>closing line</b> — the last price before the game, when the market knows the most. Getting a better number than the close, again and again, is the best sign of a real edge, even before wins and losses settle.</div>`;
   if(!L.length)return `<div class="card"><h2 style="margin-bottom:4px">🎯 Beat the closing line</h2>${intro}<div class="small">Tracking started Nov 2, 2026 — results appear here after each play's game starts. Works on the public site (rlasharp.github.io/rla-sharp).</div></div>`;
   const beat=L.filter(x=>x.c.beat).length,even=L.filter(x=>x.c.even).length,pts=L.filter(x=>x.c.pts!=null),avgPc=L.filter(x=>x.c.pc!=null);
-  return `<div class="card"><h2 style="margin-bottom:4px">🎯 Beat the closing line</h2>${intro}
+  return `<div class="card rec"><h2 style="margin-bottom:4px">🎯 Beat the closing line</h2>${intro}
    <div class="recs"><div><b class="${beat*2>L.length?"up":beat*2<L.length?"dn":""}">${beat}/${L.length}</b>Beat the close</div><div><b>${pts.length?(pts.reduce((s,x)=>s+x.c.pts,0)/pts.length).toFixed(1):"–"}</b>Avg pts gained</div><div><b>${avgPc.length?(avgPc.reduce((s,x)=>s+x.c.pc,0)/avgPc.length).toFixed(1)+"%":"–"}</b>Avg price edge</div></div>
-   ${L.slice().sort((a,b)=>b.r.sort.localeCompare(a.r.sort)).slice(0,12).map(({r,c})=>`<div class="rcr"><span class="lc ${c.beat?"o":c.even?"p":"u"} rcc">${c.beat?"✓":c.even?"=":"✗"}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b> <span class="small">${oddsFmt(r.cl.odds)}</span><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)} · closed ${esc(c.close)}${c.book?" ("+esc(c.book)+")":""}</div></div><b class="${c.beat?"up":c.even?"":"dn"}">${c.txt}</b></div>`).join("")}
-   <div class="small" style="margin-top:6px">Points = how much better our line was than the closing line. % = how much more win-chance the closing price implied than the price we posted.</div></div>`;
+   ${L.slice().sort((a,b)=>b.r.sort.localeCompare(a.r.sort)).slice(0,12).map(({r,c})=>{const res={win:["Won","o"],loss:["Lost","u"],push:["Push","p"],void:["Void","p"]}[r.st];
+     return `<div class="rcr"><span class="lc ${c.beat?"o":c.even?"p":"u"} rcc" title="${c.beat?"Beat the closing line":c.even?"Same as the close":"Worse than the close"}">${c.beat?"▲":c.even?"=":"▼"}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b> <span class="small">${oddsFmt(r.cl.odds)}</span>${res?` <span class="clvres ${res[1]}">${res[0]}</span>`:""}<div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)} · we posted ${esc((r.cl.side==="o"?"O ":"U ")+r.cl.line)} · closed ${esc(c.close)}${c.book?" ("+esc(c.book)+")":""}</div></div><b class="${c.beat?"up":c.even?"":"dn"}" style="white-space:nowrap">${c.txt}</b></div>`}).join("")}
+   <div class="small" style="margin-top:6px">▲ = we got a better number than the close, ▼ = worse. This is separate from whether the bet won (shown next to each play). Points = how much better our line was than the closing line (for an Under, a higher line is better). % = how much more win-chance the closing price implied than the price we posted.</div></div>`;
 }
 /* ---------- App shell: Today page, bottom tab bar, global search, favorites, updated-at, age check ---------- */
 
