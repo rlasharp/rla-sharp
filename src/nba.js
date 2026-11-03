@@ -3,6 +3,11 @@ let PXSIDE=(typeof LS!=="undefined"&&LS.get("pxside","o"))==="u"?"u":"o";
 function pxHit(v,l){return PXSIDE==="u"?v<l:v>l}
 function pxSW(){return PXSIDE==="u"?"under":"over"}
 function pxSideTg(){return `<div class="sidetg noglo"><span>Show hits for</span><button data-side="o" class="${PXSIDE==="o"?"on o":""}">Over</button><button data-side="u" class="${PXSIDE==="u"?"on u":""}">Under</button></div>`}
+if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("click",e=>{const r=e.target.closest&&e.target.closest("[data-frst]");if(!r)return;e.preventDefault();e.stopPropagation();
+  const f=r.closest("[data-pxf]");
+  if(f&&typeof PXS!=="undefined"){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot;/g,'"'),S0=PXS[key]||{},D=typeof PXG!=="undefined"&&PXG[key];PXS[key]={lo:-15,hi:15,mlo:0,mhi:D&&D.MN?D.MN.max:100,set:S0.set,open:S0.open}}
+  else if(r.closest(".nbmin")){const box=r.closest(".nbmin"),nm=box.dataset.nm?nbaUnesc(box.dataset.nm):null;NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;if(nm)delete NB.tmf[nm];NB._best=null;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(x){}}
+  else return;const y=window.scrollY;if(typeof route!=="undefined")route();window.scrollTo(0,y)},true);
 if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-side]");if(!b)return;e.preventDefault();e.stopPropagation();
   if(b.dataset.side===PXSIDE)return;PXSIDE=b.dataset.side;try{LS.set("pxside",PXSIDE)}catch(x){}const y=window.scrollY;if(typeof route!=="undefined")route();window.scrollTo(0,y)},true);
 /* ESPN finals + box scores fill in games hoopR hasn't posted yet (nba_espn.js, refreshed every 2 h) */
@@ -57,7 +62,7 @@ function nbaMinUI(id,tn){
   const f=NB.gf,spPre=[[-15,-7,"Fav 7+"],[-15,-.5,"Favored"],[.5,15,"Underdog"],[7,15,"Dog 7+"]].concat(tn&&tn.sp!=null?[[Math.max(-15,tn.sp-3),Math.min(15,tn.sp+3),"Near tonight"]]:[]).concat([[-15,15,"Any"]]);
   const ttPre=[[195,255,"Any"]].concat(tn&&tn.tot!=null?[[Math.max(195,tn.tot-5),Math.min(255,tn.tot+5),`Near tonight (${tn.tot})`]]:[]).concat([[195,225,"Low (225 or less)"],[225,255,"High (225+)"]]);
   const mnPre=[[0,48,"Any"],[10,48,"10+"],[20,48,"20+"],[25,48,"25+"],[30,48,"30+"]];
-  return `<div class="card nbmin pxf" id="${id}"${tn&&tn.nm?` data-nm="${nbaEsc(tn.nm)}"`:""}${tn&&tn.ha?` data-tn='${JSON.stringify({ven:tn.ha,rest:tn.rest,role:tn.role})}'`:""}><details class="pxfd"${NB.fOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary>
+  return `<div class="card nbmin pxf" id="${id}"${tn&&tn.nm?` data-nm="${nbaEsc(tn.nm)}"`:""}${tn&&tn.ha?` data-tn='${JSON.stringify({ven:tn.ha,rest:tn.rest,role:tn.role})}'`:""}><details class="pxfd"${NB.fOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary><div class="pxrw"><button type="button" class="pxrst" data-frst>↺ Reset all filters</button></div>
    ${tn&&tn.sp!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">Tonight: ${pxSpTxt(tn.sp)}${tn.tot!=null?" · O/U "+tn.tot:""}</span></div>`:""}
    <div class="pxfr"><div class="pxfl"><span>Situation</span>${tn&&tn.ha?`<button class="likeT" data-like="1">🎯 Like tonight</button>`:""}</div>
     ${Object.entries(NBA_SIT).map(([g,[lab,o]])=>`<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...Object.entries(o)].map(([v,l])=>`<button data-sit="${g}|${v}" class="${(f[g]||"")===v?"on":""}">${l}${tn&&tn[g]===v&&v?" •":""}</button>`).join("")}</div></div>`).join("")}</div>
@@ -80,7 +85,7 @@ function nbaWireMin(root,redraw){
     const on=[];for(const nm in st){const x=Math.min(...st[nm]),y=Math.max(...st[nm]);if(x>R[nm][0]||y<R[nm][1])on.push(`<span class="fchip" data-fclr="${nm}">${txt[nm](x,y)} ✕</span>`)}
     for(const g in NBA_SIT)if(NB.gf[g])on.push(`<span class="fchip" data-fclr="sit|${g}">${NBA_SIT[g][1][NB.gf[g]]} ✕</span>`);
     const mnm=box.dataset.nm?nbaUnesc(box.dataset.nm):null,mv=mnm&&NB.tmf[mnm];if(mv&&typeof mv==="object")for(const [who,w] of Object.entries(mv))on.push(`<span class="fchip" data-fclr="mate|${nbaEsc(who)}">${w==="w"?"With":"Without"} ${nbaEsc(pxLast(who))} ✕</span>`);
-    const fs=box.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.join(""):`<span class="fany">No filters — all games${mnm?" · all teammates":""}</span>`;
+    const fs=box.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.join("")+`<span class="fchip frst" data-frst>↺ Reset</span>`:`<span class="fany">No filters — all games${mnm?" · all teammates":""}</span>`;
     box.querySelectorAll("[data-fclr]").forEach(c=>c.onclick=e=>{e.preventDefault();e.stopPropagation();if(c.dataset.fclr.startsWith("mate|")){const who=nbaUnesc(c.dataset.fclr.slice(5));if(NB.tmf[mnm]&&typeof NB.tmf[mnm]==="object"){delete NB.tmf[mnm][who];if(!Object.keys(NB.tmf[mnm]).length)delete NB.tmf[mnm]}apply();return}if(c.dataset.fclr.startsWith("sit|")){NB.gf[c.dataset.fclr.slice(4)]="";apply();return}st[c.dataset.fclr]=[...R[c.dataset.fclr]];paint();apply()})};
   const dd=box.querySelector("details");if(dd)dd.ontoggle=()=>{NB.fOpen=dd.open};
   const apply=()=>{const o=(nm)=>[Math.min(...st[nm]),Math.max(...st[nm])];[NB.gf.lo,NB.gf.hi]=o("sp");[NB.gf.tlo,NB.gf.thi]=o("tt");[NB.mlo,NB.mhi]=o("mn");[NB.gf.ilo,NB.gf.ihi]=o("it");[NB.gf.flo,NB.gf.fhi]=o("fa");
