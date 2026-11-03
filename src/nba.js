@@ -845,10 +845,11 @@ function nbaSplitsCard(nm){
   <tr><td><b>Season</b><div class="small">${p.g.length} games</div></td>${cols.map(([k])=>`<td><b>${nbaF(all[k])}</b></td>`).join("")}</tr>${rows}</tbody></table></div></div>`;
 }
 function nbaMiniBars(vals,line,labs){
-  /* HTML bars (not a stretched SVG) so numbers and labels stay crisp at any width */
-  if(!vals.length)return "";const mx=Math.max(line,...vals)*1.15||1,pct=v=>Math.max(3,Math.round(v/mx*100));
-  return `<div class="mb" role="img" aria-label="Last ${vals.length} games vs line ${line}"><div class="mbp"><div class="mbline" style="bottom:${(line/mx*100).toFixed(1)}%"></div>
-   ${vals.map((v,i)=>`<div class="mbc"><span class="mbv">${v}</span><i class="${v>line?"o":v<line?"u":"p"}" style="height:${pct(v)}%"></i></div>`).join("")}</div>
+  /* HTML bars (not a stretched SVG) so numbers and labels stay crisp at any width; bars keep a slim fixed width */
+  if(!vals.length)return "";const top=Math.max(line,...vals),mx=(top>0?top:1)*1.12,pct=v=>v<=0?0:Math.max(4,v/mx*100);
+  const ln=(line/mx*100).toFixed(1),grid=[.25,.5,.75,1].map(f=>`<div class="mbg" style="bottom:${f*100}%"></div>`).join("");
+  return `<div class="mb${vals.length<=6?" few":""}" role="img" aria-label="Last ${vals.length} games vs line ${line}"><div class="mbp">${grid}<div class="mbline" style="bottom:${ln}%"><span class="mbll">${line}</span></div>
+   ${vals.map((v,i)=>{const c=v>line?"o":v<line?"u":"p";return `<div class="mbc"><span class="mbv ${c}">${v}</span><i class="${c}${v<=0?" z":""}" style="height:${pct(v).toFixed(1)}%"></i></div>`}).join("")}</div>
    ${labs?`<div class="mbx">${labs.map(l=>`<span>${l}</span>`).join("")}</div>`:""}</div>`;
 }
 function nbaLineRow(nm,r){
