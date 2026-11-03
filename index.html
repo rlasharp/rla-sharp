@@ -406,6 +406,8 @@ nav[hidden]{display:none!important}
 .gsk{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--text2);margin-top:6px}.gsk i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}.gsk i.s{background:#3fb26b}.gsk i.a{background:#f05252}.gsk i.l{border-top:2px dashed #e9b949;height:0;width:14px;border-radius:0}
 .ngt{font-size:19px;font-weight:800;margin:4px 0 6px}.ngt span{color:var(--text2);font-weight:600;font-size:15px;margin:0 4px}
 .ngtab{width:100%;border-collapse:collapse;margin:2px 0 8px}.ngtab th{font-size:11px;font-weight:600;color:var(--text2);text-align:right;padding:0 4px 4px}.ngtab td{padding:7px 4px;border-top:1px solid var(--line);text-align:right;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}.ngtab td:first-child{text-align:left;width:100%}.ngtab td.ngfv{color:#7ee2a0}.ngtab th{white-space:nowrap}.ngn{display:flex;align-items:center;gap:8px}.ngn b{font-size:15px}.ngn small{display:block;font-size:11px;color:var(--text2);font-weight:500}
+.qbrow{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 8px}.qbc{font-size:12px;font-weight:600;background:var(--card2);border:1px solid rgba(127,127,127,.25);border-radius:999px;padding:3px 10px}.qbc.g{color:#7ee2a0}.qbc.y{color:#f3c75a}.qbc.r{color:#ff9a9d;border-color:rgba(240,82,82,.4)}
+.ubar{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:0 0 12px;max-width:420px}.ubar>div{position:relative;background:var(--card2);border-radius:8px;height:62px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}.ubar i{position:absolute;left:0;right:0;bottom:0;background:rgba(233,185,73,.28)}.ubar b{position:relative;font-size:14px}.ubar span{position:relative;font-size:10px;color:var(--text2);padding-bottom:4px;text-align:center;line-height:1.15}.ubar small{display:block;font-size:9.5px}
 .gchips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.gchips span{font-size:12px;background:var(--card2);border-radius:999px;padding:3px 9px;color:var(--text2)}.gchips b{color:var(--text)}
 .rcnt{margin:6px 0 14px}.rcnth{display:block;font-size:12px;color:var(--text2);margin-bottom:6px}.rcntl{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.rcntl::-webkit-scrollbar{display:none}.rchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid rgba(127,127,127,.25);border-radius:999px;padding:4px 10px 4px 4px;font-size:13px;font-weight:600;text-decoration:none;color:inherit}.rchip .ab,.rchip .nbbdg{transform:scale(.85)}
 .hr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
@@ -1709,7 +1711,7 @@ const ord=n=>typeof ordinal==="function"?ordinal(n):n;
 const nmKey=n=>n.toLowerCase().replace(/[.'’-]/g,"").replace(/\b(jr|sr|ii|iii|iv)\b/g,"").replace(/\s+/g," ").trim();
 let PIDX=null;function pinfoName(n){if(typeof PINFO==="undefined")return null;if(PINFO[n])return n;if(!PIDX){PIDX={};Object.keys(PINFO).forEach(k=>PIDX[nmKey(k)]=k)}return PIDX[nmKey(n)]||null}
 function plLink(name){const k=pinfoName(name);return k?`<a href="#" class="pl-go" data-pl="${esc(k)}">${esc(name)}</a>`:esc(name)}
-function goPlayer(name){const P=PINFO[name];if(!P)return;const mk=marketsFor(P.pos).find(m=>realProp(name,m))||marketsFor(P.pos)[0];
+function goPlayer(name){const P=PINFO[name];if(!P)return;const mk=null;
   S.prop={player:name,market:mk,open:true};if(location.hash==="#props")viewProps();else location.hash="props";window.scrollTo(0,0)}
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest(".pl-go");if(!a)return;e.preventDefault();goPlayer(a.dataset.pl)});
 
@@ -3415,6 +3417,7 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
    ${hasTot?pxDual("tt","Game total (O/U)",t0,t1,.5,S0.tlo,S0.thi,[String(t0),String((t0+t1)/2),String(t1)],totPre):""}
    ${hasMin?pxDual("mn",MN.lab,0,MX,1,S0.mlo,S0.mhi,MN.u==="%"?["0%","50%","100%"]:["0",String(MX/2),String(MX)],mnPre):""}
    ${key.startsWith("nfl")&&G.some(g=>g.tg>0)?(()=>{if(S0.glo==null){S0.glo=0;S0.ghi=15}const T=G.filter(g=>g.tg!=null),ta=Math.round(T.reduce((q,g)=>q+g.tg,0)/Math.max(1,T.length));return pxDual("tg","Targets",0,15,1,S0.glo,S0.ghi,["0","7","15"],[[0,15,"Any"],[5,15,"5+"],[8,15,"8+"],[10,15,"10+"],[Math.max(0,ta-2),Math.min(15,ta+2),`His usual (${ta}±2)`]])})():""}
+   ${P&&P.mates?P.mates:""}
    ${P&&P.extra?P.extra:""}
    </details>
    ${P&&P.big?`<div class="pxprop noglo"><div class="pxpl">${P.big}</div><div class="pxpm"><b>${P.name}</b><span>${P.sub}</span></div></div>`:""}
@@ -3424,7 +3427,7 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
    </div>`}
 function pxPred(key){const S0=PXS[key],D=PXG[key],TR=D.TR;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi),lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
   const spAny=lo<=-15&&hi>=15,ttAny=tlo<=TR[0]&&thi>=TR[1];
-  return g=>(spAny||(g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi)))&&(g.min==null||(g.min>=mlo&&(mhi>=D.MN.max||g.min<=mhi)))&&(ttAny||g.tot!=null&&((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi)))&&(!S0.ven||g.ha===S0.ven)&&(!S0.rest||g.rest===S0.rest)&&(S0.glo==null||((S0.glo<=0||(g.tg!=null&&g.tg>=S0.glo))&&(S0.ghi>=15||(g.tg!=null&&g.tg<=S0.ghi))))}
+  return g=>(spAny||(g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi)))&&(g.min==null||(g.min>=mlo&&(mhi>=D.MN.max||g.min<=mhi)))&&(ttAny||g.tot!=null&&((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi)))&&(!S0.ven||g.ha===S0.ven)&&(!S0.rest||g.rest===S0.rest)&&(S0.glo==null||((S0.glo<=0||(g.tg!=null&&g.tg>=S0.glo))&&(S0.ghi>=15||(g.tg!=null&&g.tg<=S0.ghi))))&&(!S0.mates||Object.entries(S0.mates).every(([n,v])=>{if(g.wk==null)return false;const p=nflMatePlayed(n,g.wk);return p==null?false:(v==="w"?p:!p)}))}
 function pxResHtml(key){
   const S0=PXS[key],D=PXG[key];if(!S0||!D)return "";const {SETS,line,unit,dec,isTD,TR}=D;const G=SETS[S0.set]||SETS.ssn;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi);
   const lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
@@ -3447,10 +3450,11 @@ function pxPaint(f){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot
    const a=Math.min(S0.tlo,S0.thi),b=Math.max(S0.tlo,S0.thi);if(f.querySelector('[data-dr="tt"]')&&(a>TR2[0]||b<TR2[1]))on.push(["tt",`O/U ${a<=TR2[0]?"≤"+b:b>=TR2[1]?a+"+":a+"–"+b}`]);
    const c=Math.min(S0.mlo,S0.mhi),d=Math.max(S0.mlo,S0.mhi);if(f.querySelector('[data-dr="mn"]')&&(c>0||d<MN2.max))on.push(["mn",MN2.u==="%"?`${c}–${d}% snaps`:`${c}–${d} min`]);
    for(const g in PX_SIT)if(S0[g])on.push(["sit|"+g,PX_SIT[g][1][S0[g]]]);
+   if(S0.mates)for(const [n,v] of Object.entries(S0.mates))on.push(["nmt|"+n,(v==="w"?"With ":"Without ")+pxLast(n)]);
    if(S0.glo!=null&&(S0.glo>0||S0.ghi<15))on.push(["tg",S0.ghi>=15?`${Math.min(S0.glo,S0.ghi)}+ targets`:`${Math.min(S0.glo,S0.ghi)}–${Math.max(S0.glo,S0.ghi)} targets`]);
    f.querySelectorAll("[data-sit]").forEach(b=>{const [g,v]=b.dataset.sit.split("|");b.classList.toggle("on",(S0[g]||"")===v)});
-   const fs=f.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.map(([n,t])=>`<span class="fchip" data-fclr="${n}">${t} ✕</span>`).join(""):`<span class="fany">Any spread · total · ${MN2.u==="%"?"snaps":"minutes"}</span>`;
-   f.querySelectorAll("[data-fclr]").forEach(ch=>ch.onclick=e=>{e.preventDefault();e.stopPropagation();const n=ch.dataset.fclr;if(n.startsWith("sit|")){S0[n.slice(4)]="";pxPaint(f);return}if(n==="tg"){S0.glo=0;S0.ghi=15;pxPaint(f);return}if(n==="sp"){S0.lo=-15;S0.hi=15}else if(n==="tt"){S0.tlo=TR2[0];S0.thi=TR2[1]}else{S0.mlo=0;S0.mhi=MN2.max}pxPaint(f)})}
+   const fs=f.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.map(([n,t])=>`<span class="fchip" data-fclr="${esc(n)}">${esc(t)} ✕</span>`).join(""):`<span class="fany">Any spread · total · ${MN2.u==="%"?"snaps":"minutes"}</span>`;
+   f.querySelectorAll("[data-fclr]").forEach(ch=>ch.onclick=e=>{e.preventDefault();e.stopPropagation();const n=ch.dataset.fclr;if(n.startsWith("sit|")){S0[n.slice(4)]="";pxPaint(f);return}if(n.startsWith("nmt|")){delete S0.mates[n.slice(4)];if(!Object.keys(S0.mates).length)delete S0.mates;pxPaint(f);f.querySelectorAll("[data-nmt]").forEach(b=>{const [m,v]=b.dataset.nmt.split("|");b.classList.toggle("on",((S0.mates||{})[m]||"")===v)});return}if(n==="tg"){S0.glo=0;S0.ghi=15;pxPaint(f);return}if(n==="sp"){S0.lo=-15;S0.hi=15}else if(n==="tt"){S0.tlo=TR2[0];S0.thi=TR2[1]}else{S0.mlo=0;S0.mhi=MN2.max}pxPaint(f)})}
   {const D=PXG[key],pr=pxPred(key),ln=D.isTD?.5:D.line;f.querySelectorAll("[data-set]").forEach(b=>{const A=(D.SETS[b.dataset.set]||[]).filter(pr),o=A.filter(g=>g.v>ln).length,sm=b.querySelector("small");if(sm)sm.innerHTML=A.length?`<b class="${o/A.length>=.6?"up":o/A.length<=.4?"dn":""}">${o}/${A.length}</b>`:"–"})}
   f.querySelectorAll("[data-set]").forEach(b=>b.classList.toggle("on",b.dataset.set===S0.set));
   const sn=f.querySelector("[data-setn]");if(sn)sn.textContent={l5:"His last 5 games this season.",l10:"His last 10 games this season.",ssn:"All his games this season.",h2h:"His games vs tonight's opponent — this season and last.",vp:"Starters at his position vs tonight's opponent this season — what they did against tonight's line."}[S0.set]||"";
@@ -3458,6 +3462,7 @@ function pxPaint(f){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot
 function pxFilterWire(root){
   root.querySelectorAll("[data-pxf]").forEach(f=>{const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot;/g,'"');
     f.querySelectorAll("input[data-r]").forEach(inp=>inp.oninput=()=>{const [nm,w]=inp.dataset.r.split("|"),S0=PXS[key];S0[nm==="sp"?w:nm==="tt"?"t"+w:nm==="tg"?"g"+w:"m"+w]=+inp.value;pxPaint(f)});
+    f.querySelectorAll("[data-nmt]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [m,v]=b.dataset.nmt.replace(/&#39;/g,"'").replace(/&amp;/g,"&").split("|"),S1=PXS[key];S1.mates=S1.mates||{};if(v)S1.mates[m]=v;else delete S1.mates[m];if(!Object.keys(S1.mates).length)delete S1.mates;f.querySelectorAll("[data-nmt]").forEach(x=>{const [mm,vv]=x.dataset.nmt.replace(/&#39;/g,"'").replace(/&amp;/g,"&").split("|");x.classList.toggle("on",((S1.mates||{})[mm]||"")===vv)});pxPaint(f)});
     f.querySelectorAll("[data-sit]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [g,v]=b.dataset.sit.split("|");PXS[key][g]=v;pxPaint(f)});
     {const lk=f.querySelector("[data-like]");if(lk)lk.onclick=e=>{e.stopPropagation();const t=PXG[key].TN||{};for(const g in PX_SIT)PXS[key][g]=t[g]||"";pxPaint(f)}}
     f.querySelectorAll("[data-set]").forEach(b=>b.onclick=e=>{e.stopPropagation();if(b.disabled)return;PXS[key].set=b.dataset.set;pxPaint(f)});
@@ -3474,7 +3479,7 @@ function pxNbaSets(nm,k,opp){const p=NBA_LOGS[nm],ssn=p.g.map(x=>nbaRowPx(x,k));
   return {l5:ssn.slice(-5),l10:ssn.slice(-10),ssn,h2h,vp}}
 function pxNflSets(pl,k,CL){const SP=typeof NFL_SPR!=="undefined"?NFL_SPR:{},U=typeof USAGE_RAW!=="undefined"?USAGE_RAW:{},o=oppOf(pl.team),opp=o?o.opp:null;
   const row=(l,who)=>{const s=l.season===CUR?SP[l.week+"|"+(l.team||pl.team)]:null,u=U[l.player||pl.name],sn=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][0]:null;
-    const rs=l.season===CUR&&typeof NFL_RST!=="undefined"?NFL_RST[l.week+"|"+(l.team||pl.team)]:null,tg=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][1]:(l.tgt!=null?l.tgt:null);return {tg,ha:+l.home?"H":"A",rest:rs==null?null:rs<=5?"short":rs>=12?"bye":"norm",sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,min:sn,v:k==="anyTD"?(stat(l,k)>0?1:0):stat(l,k),lab:who?"":(+l.home?"":"@")+l.opp+(l.season!==CUR?" ’"+String(l.season).slice(2):""),who}};
+    const rs=l.season===CUR&&typeof NFL_RST!=="undefined"?NFL_RST[l.week+"|"+(l.team||pl.team)]:null,wk=l.season===CUR&&!who?l.week:null,tg=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][1]:(l.tgt!=null?l.tgt:null);return {wk,tg,ha:+l.home?"H":"A",rest:rs==null?null:rs<=5?"short":rs>=12?"bye":"norm",sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,min:sn,v:k==="anyTD"?(stat(l,k)>0?1:0):stat(l,k),lab:who?"":(+l.home?"":"@")+l.opp+(l.season!==CUR?" ’"+String(l.season).slice(2):""),who}};
   const ok=l=>Number.isFinite(stat(l,k)),ssn=CL.filter(ok).map(l=>row(l));
   const h2h=opp?pLogs(pl.name).filter(l=>l.opp===opp&&ok(l)).map(l=>row(l)):[];
   const vp=opp?S.playerLogs.filter(l=>l.season===CUR&&l.opp===opp&&l.pos===pl.pos&&l.player!==pl.name&&ok(l)).filter(l=>{const u=U[l.player];const sn=u&&u.wk&&u.wk[l.week]?u.wk[l.week][0]:null;return sn==null?true:sn>=50})
@@ -3493,6 +3498,7 @@ function nflPropHead(pl,k,line){const td=k==="anyTD",rp=realProp(pl.name,k),u=({
 function nflPropFilterCard(pl,k,line,CL){const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);
   const o9=oppOf(pl.team),rr=o9&&typeof NFL_RST!=="undefined"?NFL_RST[(o9.g.wk||PLAYS_WEEK)+"|"+pl.team]:null;
   const P={tn:o9?{ven:o9.home?"H":"A",rest:rr==null?"":rr<=5?"short":rr>=12?"bye":"norm"}:null,head:nflPropHead(pl,k,line),
+    mates:nflMateHtml(pl,"nfl|"+pl.name),
     extra:`<div class="pxfr"><div class="pxfl"><span>✏️ Your sportsbook's line</span><input type="number" step=".5" id="lineIn" value="${line}" class="pxli"></div><div class="small">Different line at your book? Type it and every hit rate re-checks against it.</div></div>`};
   return `<div class="card" id="pxNfl" style="padding:10px">${pxFilterBlock("nfl|"+pl.name,pxNflSets(pl,k,CL),td?.5:line,sp,MARKETS[k].u,dec,td,(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name]&&USAGE_RAW[pl.name].s)?USAGE_RAW[pl.name].s.snap:null,pxNflTot(pl.team),[35,57,3],{lab:"Snap share",max:100,u:"%",pre:[50,70],w:10,any:"Any snap share"},P)}</div>`}
 
@@ -3513,7 +3519,7 @@ function pxRecentHtml(sp,n){let R=[];try{R=(LS.get("recentP",[])||[]).filter(r=>
     ?`<a class="rchip" href="#nba-player-${encodeURIComponent(nm)}">${nbaBadge(NBA_LOGS[nm].tm)}<span>${nbaEsc(nm)}</span></a>`
     :`<a class="rchip" href="#props" data-rnfl="${esc(nm)}|${k}">${badge(PINFO[nm].team)}<span>${esc(nm)}</span></a>`).join("")}</div></div>`}
 document.addEventListener("click",e=>{const a=e.target.closest("[data-rnfl]");if(!a)return;e.preventDefault();const [nm,k]=a.dataset.rnfl.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"').split("|");
-  S.prop={player:nm,market:k||marketsFor(PINFO[nm].pos)[0],open:true};if(location.hash!=="#props")location.hash="props";else viewProps()});
+  S.prop={player:nm,market:k||null,open:true};if(location.hash!=="#props")location.hash="props";else viewProps()});
 
 const PX_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{short:"Short week",norm:"Normal",bye:"After bye"}]};
 
@@ -3569,6 +3575,27 @@ function gsWire(root,rerender){
     const paint=()=>{fill("sp",S0.lo,S0.hi,-15,15,pxSpRange);fill("tt",S0.tlo,S0.thi,TR[0],TR[1],(x,y)=>x<=TR[0]&&y>=TR[1]?"Any total":x<=TR[0]?`${y} or less`:y>=TR[1]?`${x} or more`:`${x} to ${y}`)};
     c.querySelectorAll("input[data-r]").forEach(inp=>{const [n,w]=inp.dataset.r.split("|");inp.oninput=()=>{if(n==="sp")S0[w]=+inp.value;else S0["t"+w]=+inp.value;paint()};inp.onchange=re});
     paint()})}
+
+/* ===== NFL helpers: default prop, teammates, QB chip, weather chip, usage bars ===== */
+const NFL_MK_ORD={WR:["recYds","rec","anyTD","rushRec"],TE:["rec","recYds","anyTD"],RB:["rushYds","rushRec","rec","recYds","rushAtt","anyTD"],QB:["passYds","passTD","comp","rushYds","int"]};
+function nflDefMk(pl,MK){const o=(NFL_MK_ORD[pl.pos]||[]).filter(m=>MK.includes(m));return o.find(m=>realProp(pl.name,m))||MK.find(m=>realProp(pl.name,m))||o[0]||MK[0]}
+function nflMates(pl){const U=typeof USAGE_RAW!=="undefined"?USAGE_RAW:{};
+  return Object.entries(U).filter(([n,u])=>n!==pl.name&&u.tm===pl.team&&["QB","RB","WR","TE"].includes(u.pos)&&u.g>=1)
+   .sort((a,b)=>((b[1].s.tpg||0)+(b[1].s.cpg||0)+(b[1].pos==="QB"?20:0))-((a[1].s.tpg||0)+(a[1].s.cpg||0)+(a[1].pos==="QB"?20:0))).slice(0,8).map(([n,u])=>({n,pos:u.pos}))}
+function nflMatePlayed(n,wk){const u=typeof USAGE_RAW!=="undefined"&&USAGE_RAW[n];if(!u||!u.wk)return null;const w=u.wk[wk];return !!(w&&w[0]>0)}
+function nflMateHtml(pl,key){const S0=PXS[key]||{},cur=S0.mates||{},M=nflMates(pl);if(!M.length)return "";
+  const st=n=>{const i=typeof INJ_P!=="undefined"&&INJ_P[n];return i&&/out|ir|reserve|doubt/i.test(i.s||"")?` <span class="small" style="color:#ff9a9d">${esc(i.s)}</span>`:""};
+  return `<div class="pxfr"><div class="pxfl"><span>Teammates</span><span class="small">games he did / didn't play</span></div><div class="mtl">${M.map(m=>`<div class="sitr mtr"><span title="${esc(m.n)}">${esc(pxLast(m.n))} <small style="opacity:.6">${m.pos}</small>${st(m.n)}</span><div class="pxpre">${[["","Any"],["w","With"],["o","Without"]].map(([v,l])=>`<button data-nmt="${esc(m.n)}|${v}" class="${(cur[m.n]||"")===v?"on":""}">${l}</button>`).join("")}</div></div>`).join("")}</div></div>`}
+function nflQbChip(pl){if(pl.pos==="QB")return "";const q=typeof QB1_STATUS!=="undefined"&&QB1_STATUS[pl.team];
+  let qb=q?q.qb:null;if(!qb){const U=typeof USAGE_RAW!=="undefined"?USAGE_RAW:{};const c=Object.entries(U).filter(([,u])=>u.tm===pl.team&&u.pos==="QB").sort((a,b)=>(b[1].s.snap||0)*b[1].g-(a[1].s.snap||0)*a[1].g)[0];qb=c?c[0]:null}
+  if(!qb)return "";const now=q?q.now:"",inj=typeof INJ_P!=="undefined"&&INJ_P[qb];
+  const bad=/out|reserve|doubt/i.test(now)||(inj&&/out|reserve|doubt/i.test(inj.s||"")),mid=!bad&&(/quest/i.test(now)||(inj&&/quest/i.test(inj.s||"")));
+  return `<span class="qbc ${bad?"r":mid?"y":"g"}" title="${esc(now||(inj?inj.s:"No injury listed"))}">QB: ${esc(pxLast(qb))} ${bad?"⚠️ out":mid?"❓ questionable":"✅"}</span>`}
+function nflWxChip(pl){const o=oppOf(pl.team);if(!o||typeof WX==="undefined")return "";const x=WX[o.g.id];if(!x)return "";if(x.dome)return `<span class="qbc">🏟️ Indoors</span>`;
+  const ic=x.lvl>=3?"⛈️":x.rain&&/[1-9]/.test(x.rain)&&x.lvl>=1?"🌧️":"🌤️";return `<span class="qbc ${x.lvl>=2?"r":x.lvl>=1?"y":""}">${ic} ${esc(x.t)} · wind ${esc(x.wind)}</span>`}
+function nflUseBars(pl){const u=typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name];if(!u||!u.wk)return "";const W=Object.keys(u.wk).map(Number).sort((a,b)=>a-b).slice(-4);if(!W.length)return "";
+  const tg=pl.pos==="QB"?null:(pl.pos==="RB"?2:1),lab=pl.pos==="RB"?"car":"tgt";
+  return `<div class="small" style="margin:0 0 4px">Snap share · his last ${W.length} games</div><div class="ubar" title="Snap share by week">${W.map(w=>{const r=u.wk[w];return `<div><i style="height:${Math.max(4,r[0])}%"></i><b>${r[0]}%</b><span>Wk ${w}${tg!=null?`<small>${r[tg]} ${lab}${pl.pos==="RB"&&r[1]?` · ${r[1]} tgt`:""}</small>`:""}</span></div>`}).join("")}</div>`}
 /* ---------- Live scores (NFL + NBA) from ESPN's public scoreboard feed ----------
    Runs in the visitor's browser, refreshes every 30 s while games are on. If the feed can't be
    reached (some hosts block outside requests), everything fails silently and the site shows its
@@ -4467,6 +4494,17 @@ const GLOSS=[
  ["lean","Our side based on the numbers. A lean is not a guarantee.",1],
  ["push","A tie with the line — the bet is refunded.",1],
  ["prop","A bet on one player's stat (points, rebounds, yards…) instead of the game result.",1],
+ ["aDOT","Average depth of target: how far past the line of scrimmage his targets travel in the air. High = deep threat, low = short/underneath role.",0],
+ ["YAC","Yards after catch: yards he gains with the ball after catching it.",0],
+ ["target share","The share of his team's passes thrown to him. 25%+ is a true No. 1 option.",1],
+ ["snap share","The share of his team's offensive plays he was on the field for.",1],
+ ["air yards","How far the ball travelled in the air on passes thrown to him (caught or not).",1],
+ ["red zone","Inside the opponent's 20-yard line, where most touchdowns are scored.",1],
+ ["man coverage","Each defender follows one receiver around the field.",1],
+ ["zone coverage","Defenders guard areas of the field instead of following one player.",1],
+ ["blitz","The defense sends extra rushers (5 or more) after the quarterback.",1],
+ ["contested","A catch made with a defender right on him — the ball could have been knocked away.",1],
+ ["first downs","Plays where he gained enough yards to move the chains (a new set of downs).",1],
 ];
 const GL_MAP={};GLOSS.forEach(g=>GL_MAP[g[0].toLowerCase()]=g[1]);
 const GL_RE=new RegExp("(?<![\\w%/])("+GLOSS.map(g=>g[0]).sort((a,b)=>b.length-a.length).map(t=>t.replace(/[.*+?^${}()|[\]\\\/%']/g,"\\$&")).join("|")+")(?![\\w%/])","gi");
@@ -4961,7 +4999,7 @@ function viewProps(){
   document.querySelectorAll("#v-props .seg button").forEach(b=>b.onclick=()=>{propFilter[b.dataset.f]=b.dataset.v;if(b.dataset.f!=="dir")propFilter.n=30;viewProps()});
   if($("#sortBy"))$("#sortBy").onchange=e=>{propFilter.sort=e.target.value;propFilter.dir=["ssn","l5","l3"].includes(e.target.value)?"desc":"asc";propFilter.n=30;viewProps()};
   if($("#more"))$("#more").onclick=()=>{propFilter.n+=30;viewProps()};
-  $("#find").onchange=e=>{if(!e.target.value)return;const p=P.find(x=>x.name===e.target.value);S.prop={player:p.name,market:marketsFor(p.pos)[0],open:true};viewPlayer()};
+  $("#find").onchange=e=>{if(!e.target.value)return;const p=P.find(x=>x.name===e.target.value);S.prop={player:p.name,market:null,open:true};viewPlayer()};
   bindProps($("#v-props"));
   document.querySelectorAll("#v-props [data-nbf]").forEach(s=>s.onchange=()=>{NFL_BF[s.dataset.nbf]=s.value;const y=window.scrollY;viewProps();window.scrollTo(0,y)});
   document.querySelectorAll("#v-props [data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};viewPlayer();const t=document.querySelector("#v-props .pmk");if(t)setTimeout(()=>t.scrollIntoView({block:"start"}),30)});
@@ -5067,7 +5105,7 @@ function viewPlayer(){
   if(S.prop&&S._lastPl!==S.prop.player){if(typeof PXS!=="undefined")for(const key in PXS)delete PXS[key];S.prop.xt=null;S._lastPl=S.prop.player}
   const P=allPlayers();const pl=P.find(p=>p.name===S.prop.player);if(!pl){S.prop={};return viewProps()}
   const L0=pLogs(pl.name);const MK=marketsFor(pl.pos).filter(m=>realProp(pl.name,m)||L0.length);
-  if(!MK.includes(S.prop.market))S.prop.market=MK[0];
+  if(!S.prop.market||!MK.includes(S.prop.market))S.prop.market=nflDefMk(pl,MK);
   const k=S.prop.market,o=oppOf(pl.team),opp=o?o.opp:null,L=pLogs(pl.name),line=lineFor(pl.name,k),dv=opp?dvpFor(opp,pl.pos,k):{rank:NaN,avg:NaN};
   const CLall=L.filter(l=>l.season===CUR);const QA=qb1Applies(pl,k),QS=QA?QB1_STATUS[pl.team]:null,QM=QA?qb1Miss(pl.team):[];
   const qmode=QA?(S.prop.qb||"all"):"all";
@@ -5081,6 +5119,7 @@ function viewPlayer(){
   $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← All props</a>
    <div class="row" style="margin:16px 0 6px">${badge(pl.team)}<h1 style="margin:0">${esc(pl.name)}</h1>${typeof INJ_P!=="undefined"&&INJ_P[pl.name]?injTag(pl.name):(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[pl.name]?`<span class="tag" style="background:#3a2a10;color:#fab219">⚠ ${QUESTIONABLE[pl.name]}</span>`:"")}</div>
    <div class="pline">${(()=>{const U=(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name])||null,su=U&&U.s;return [pl.pos+" · "+short(pl.team),o?`${o.home?"vs":"@"} ${short(opp)} · ${o.g.when}`:"No game this week",su&&su.snap!=null?su.snap+"% snaps":"",su&&su.tpg?fmt(su.tpg,1)+" targets/game":"",su&&su.cpg&&pl.pos!=="WR"&&pl.pos!=="TE"?fmt(su.cpg,1)+" carries/game":""].filter(Boolean).map(x=>`<span>${x}</span>`).join("")})()}</div>
+   <div class="qbrow">${typeof nflQbChip!=="undefined"?nflQbChip(pl)+nflWxChip(pl):""}</div>${typeof nflUseBars!=="undefined"?nflUseBars(pl):""}
    ${o&&nflStarted(o.g)?`<div class="info" style="margin:12px 0"><span>🔒 His game has kicked off — this week's pregame lines are closed.</span></div>`:""}
    ${opp?`<div class="card" style="margin-top:12px;padding:12px">${nflAllowTiles(opp,pl.pos,k)}</div>`:""}
    <h2 class="noglo" style="margin:16px 0 10px">Prop charts · this week</h2>
