@@ -1,3 +1,10 @@
+# ⚙️ AUTOMATION (Nov 3 2026) — READ FIRST
+**Source of truth = the GitHub repo rlasharp/rla-sharp, folder `src/`** (all site source, tools/ and data/). The artifact is a private mirror.
+- **GitHub Action `auto.yml` (every 2 h, no Claude needed)** runs `bash src/tools/auto_run.sh`: hoopR download → ESPN JSON injuries + lines (NBA), PropLine feed props merge, day roll (drops yesterday's NBA props), plays lock, nbagen; NFL lines + **final scores** (SLATE final:[a,h] + RESULTS) + ESPN injuries; Tuesday mornings nflverse → nfl_tgt.js. Then `build.sh` and `tools/check.js` (every page at 390/1200px, no errors/overflow). Only if the check passes is the root `index.html` replaced and committed. Results → `data/health.json` + the run summary.
+- Other Actions: `odds.yml` (PropLine live odds every 30 min → data/live_odds.json, data/close/), `spreads.yml` (NBA closing spreads nightly → data/nba_spreads.json).
+- **Claude scheduled tasks now only do judgment work** (NFL props Tue/Wed + player stat lines, Saturday weather/plays check, Sunday-night week roll + new Plays of the Week) and the daily **health check** (re-runs failures, syncs the artifact). Every Claude task must: clone the repo, edit files in `src/`, run `bash src/build.sh` + `node src/tools/check.js $PWD/src/index.html`, copy `src/index.html` to `index.html`, commit **src/ and index.html** to main, push, then publish the same files to the artifact (index.html + src/<file> paths). Never edit only the artifact — the next Action run rebuilds from the repo.
+- Off days (no NBA games, NFL bye/off-season): the pipeline keeps the last data and the site shows "no games today" — not an error.
+
 # RLA Sharp — weekly update runbook
 
 RLA Sharp is a single-page NFL betting-research site published as a private Claude artifact
