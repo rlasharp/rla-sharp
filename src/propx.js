@@ -127,7 +127,7 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
    ${P&&P.extra?P.extra:""}
    </details>
    ${P&&P.big?`<div class="pxprop noglo"><div class="pxpl">${P.big}</div><div class="pxpm"><b>${P.name}</b><span>${P.sub}</span></div></div>`:""}
-   <div class="pxset">${[["l5","L5"],["l10","L10"],["ssn","Season"],["h2h","H2H"],["vp","Vs position"]].map(([v,l])=>`<button data-set="${v}"${SETS[v]&&SETS[v].length?"":" disabled"}>${l}<small>${SETS[v]?SETS[v].length:0}</small></button>`).join("")}</div>
+   ${typeof pxSideTg!=="undefined"?pxSideTg():""}<div class="pxset">${[["l5","L5"],["l10","L10"],["ssn","Season"],["h2h","H2H"],["vp","Vs position"]].map(([v,l])=>`<button data-set="${v}"${SETS[v]&&SETS[v].length?"":" disabled"}>${l}<small>${SETS[v]?SETS[v].length:0}</small></button>`).join("")}</div>
    <div class="small pxsetn" data-setn></div>
    <div data-res></div>
    </div>`}
@@ -140,8 +140,8 @@ function pxResHtml(key){
   const spAny=lo<=-15&&hi>=15,ttAny=tlo<=TR[0]&&thi>=TR[1];const inSp=g=>spAny||(g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi)),inMn=g=>g.min==null||(g.min>=mlo&&(mhi>=D.MN.max||g.min<=mhi)),inTt=g=>ttAny||g.tot!=null&&((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi));
   const W=G,noLn=(!spAny||!ttAny)?G.filter(g=>g.sp==null).length:0,M=W.filter(pxPred(key)),N=M.length;
   if(!W.length)return `<div class="small">No games in this sample.</div>`;
-  const av=a=>a.length?fmt(a.reduce((s,g)=>s+g.v,0)/a.length,dec):"—",ov=a=>a.filter(g=>g.v>line).length,r=N?ov(M)/N:null;
-  return `${noLn?`<div class="small" style="margin-bottom:6px">${noLn} game${noLn>1?"s":""} in this sample have no spread/total on file (older games), so the line filters leave ${noLn>1?"them":"it"} out.</div>`:""}<div class="pxsum"><div><b>${N}<small>/${W.length}</small></b><span>games</span></div><div><b>${av(M)}</b><span>avg ${isTD?"TDs":unit} · unfiltered ${av(W)}</span></div><div><b class="${r!=null&&r>=.6?"up":r!=null&&r<=.4?"dn":""}">${N?ov(M)+"/"+N:"—"}</b><span>${isTD?"scored":"over "+line}</span></div></div>
+  const av=a=>a.length?fmt(a.reduce((s,g)=>s+g.v,0)/a.length,dec):"—",ov=a=>a.filter(g=>pxHit(g.v,isTD?.5:line)).length,r=N?ov(M)/N:null;
+  return `${noLn?`<div class="small" style="margin-bottom:6px">${noLn} game${noLn>1?"s":""} in this sample have no spread/total on file (older games), so the line filters leave ${noLn>1?"them":"it"} out.</div>`:""}<div class="pxsum"><div><b>${N}<small>/${W.length}</small></b><span>games</span></div><div><b>${av(M)}</b><span>avg ${isTD?"TDs":unit} · unfiltered ${av(W)}</span></div><div><b class="${r!=null&&r>=.6?"up":r!=null&&r<=.4?"dn":""}">${N?ov(M)+"/"+N:"—"}</b><span>${isTD?(PXSIDE==="u"?"no TD":"scored"):pxSW()+" "+line}</span></div></div>
    ${N?(typeof nbaMiniBars!=="undefined"?nbaMiniBars(M.slice(-12).map(g=>g.v),isTD?.5:line,M.slice(-12).map(g=>`${g.who?esc(g.who):esc(g.lab)}<small>${g.sp==null?"":g.sp===0?"PK":(g.sp>0?"+":"−")+Math.abs(g.sp)}</small>`)):""):`<div class="small" style="padding:6px 0">No games in this range yet — widen the sliders.</div>`}`}
 function pxPaint(f){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot;/g,'"'),S0=PXS[key];if(!S0)return;
   const set=(nm,a,b,mn,mx,txt)=>{const o=f.querySelector(`[data-out="${nm}"]`);if(!o)return;const x=Math.min(a,b),y=Math.max(a,b);o.textContent=txt(x,y);
@@ -161,7 +161,7 @@ function pxPaint(f){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot
    f.querySelectorAll("[data-sit]").forEach(b=>{const [g,v]=b.dataset.sit.split("|");b.classList.toggle("on",(S0[g]||"")===v)});
    const fs=f.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.map(([n,t])=>`<span class="fchip" data-fclr="${esc(n)}">${esc(t)} ✕</span>`).join(""):`<span class="fany">Any spread · total · ${MN2.u==="%"?"snaps":"minutes"}</span>`;
    f.querySelectorAll("[data-fclr]").forEach(ch=>ch.onclick=e=>{e.preventDefault();e.stopPropagation();const n=ch.dataset.fclr;if(n.startsWith("sit|")){S0[n.slice(4)]="";pxPaint(f);return}if(n.startsWith("nmt|")){delete S0.mates[n.slice(4)];if(!Object.keys(S0.mates).length)delete S0.mates;pxPaint(f);f.querySelectorAll("[data-nmt]").forEach(b=>{const [m,v]=b.dataset.nmt.split("|");b.classList.toggle("on",((S0.mates||{})[m]||"")===v)});return}if(n==="tg"){S0.glo=0;S0.ghi=15;pxPaint(f);return}if(n==="sp"){S0.lo=-15;S0.hi=15}else if(n==="tt"){S0.tlo=TR2[0];S0.thi=TR2[1]}else{S0.mlo=0;S0.mhi=MN2.max}pxPaint(f)})}
-  {const D=PXG[key],pr=pxPred(key),ln=D.isTD?.5:D.line;f.querySelectorAll("[data-set]").forEach(b=>{const A=(D.SETS[b.dataset.set]||[]).filter(pr),o=A.filter(g=>g.v>ln).length,sm=b.querySelector("small");if(sm)sm.innerHTML=A.length?`<b class="${o/A.length>=.6?"up":o/A.length<=.4?"dn":""}">${o}/${A.length}</b>`:"–"})}
+  {const D=PXG[key],pr=pxPred(key),ln=D.isTD?.5:D.line;f.querySelectorAll("[data-set]").forEach(b=>{const A=(D.SETS[b.dataset.set]||[]).filter(pr),o=A.filter(g=>pxHit(g.v,ln)).length,sm=b.querySelector("small");if(sm)sm.innerHTML=A.length?`<b class="${o/A.length>=.6?"up":o/A.length<=.4?"dn":""}">${o}/${A.length}</b>`:"–"})}
   f.querySelectorAll("[data-set]").forEach(b=>b.classList.toggle("on",b.dataset.set===S0.set));
   const sn=f.querySelector("[data-setn]");if(sn)sn.textContent={l5:"His last 5 games this season.",l10:"His last 10 games this season.",ssn:"All his games this season.",h2h:`His games vs ${pxOppW(key)} opponent — this season and last.`,vp:`Starters at his position vs ${pxOppW(key)} opponent this season — what they did against ${pxOppW(key)} line.`}[S0.set]||"";
   f.querySelector("[data-res]").innerHTML=pxResHtml(key)}

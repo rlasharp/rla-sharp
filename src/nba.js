@@ -1,3 +1,10 @@
+/* Over/Under view for prop charts + hit counts (shared by NBA and NFL; remembered on this device) */
+let PXSIDE=(typeof LS!=="undefined"&&LS.get("pxside","o"))==="u"?"u":"o";
+function pxHit(v,l){return PXSIDE==="u"?v<l:v>l}
+function pxSW(){return PXSIDE==="u"?"under":"over"}
+function pxSideTg(){return `<div class="sidetg noglo"><span>Show hits for</span><button data-side="o" class="${PXSIDE==="o"?"on o":""}">Over</button><button data-side="u" class="${PXSIDE==="u"?"on u":""}">Under</button></div>`}
+if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-side]");if(!b)return;e.preventDefault();e.stopPropagation();
+  if(b.dataset.side===PXSIDE)return;PXSIDE=b.dataset.side;try{LS.set("pxside",PXSIDE)}catch(x){}const y=window.scrollY;if(typeof route!=="undefined")route();window.scrollTo(0,y)},true);
 /* ESPN finals + box scores fill in games hoopR hasn't posted yet (nba_espn.js, refreshed every 2 h) */
 (function(){if(typeof NBA_ESPN==="undefined")return;const have=new Set(NBA_RES.map(r=>r[0]));NBA_ESPN.added=new Set();
   for(const g of NBA_ESPN.games||[]){if(have.has(g[0]))continue;NBA_RES.push(g.slice(0,6));NBA_ESPN.added.add(g[0])}
@@ -369,7 +376,7 @@ function nbaH2HCard(g){
 }
 
 /* ---------- Props ---------- */
-function nbaHit(p,k,line,n){const f=p.g.filter(nbaInR);const g=n?f.slice(-n):f;const o=g.filter(x=>nbaVal(x,k)>line).length;return [o,g.length]}
+function nbaHit(p,k,line,n){const f=p.g.filter(nbaInR);const g=n?f.slice(-n):f;const o=g.filter(x=>pxHit(nbaVal(x,k),line)).length;return [o,g.length]}
 function nbaPosRank(oppTm,pos){const t=NBA_TEAM[oppTm];if(!t||!pos)return null;const k={G:"pG",F:"pF",C:"pC"}[pos];return k?[t[k],t[k+"R"]]:null}
 /* defense vs position: what a team allowed to each position, game by game */
 let NBA_DVP_IDX=null;
@@ -437,16 +444,16 @@ function nbaSets(nm,opp){
 }
 function nbaChart(items,k,line,id){
   if(!items.length)return `<div class="small" style="padding:18px 0;text-align:center">No games to show.</div>`;
-  const vals=items.map(o=>nbaVal(o.x,k)),mx=Math.max(line*1.35,...vals,1),H=120;
+  const vals=items.map(o=>nbaVal(o.x,k)),mx=Math.max(line*1.35,...vals,1),H=150;
   const ly=Math.round(line/mx*H);
-  const over=vals.filter(v=>v>line).length,avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  const over=vals.filter(v=>pxHit(v,line)).length,avg=vals.reduce((a,b)=>a+b,0)/vals.length;
   return `<div class="nbch" style="height:${H+34}px">
     <div class="nbln" style="bottom:${ly+20}px"></div>
-    ${items.map((o,i)=>{const v=vals[i],x=o.x,ok=v>line,psh=v===line;return `<div class="nbbar${o.prev?" pv":""}" title="${nbaEsc(x[1])} ${x[3]==="H"?"vs":"@"} ${x[2]}: ${v}">
-      <span class="v">${v}</span><i style="height:${Math.max(3,Math.round(v/mx*H))}px;background:${psh?"#8a8f98":ok?"#3fb26b":"#e5534b"}"></i>
+    ${items.map((o,i)=>{const v=vals[i],x=o.x,ok=pxHit(v,line),psh=v===line;return `<div class="nbbar${o.prev?" pv":""}" title="${nbaEsc(x[1])} ${x[3]==="H"?"vs":"@"} ${x[2]}: ${v}">
+      <span class="v ${psh?"":ok?"h":"m"}">${v}</span><i class="${psh?"p":ok?"h":"m"}" style="height:${Math.max(3,Math.round(v/mx*H))}px"></i>
       <span class="o">${x[3]==="H"?"":"@"}${x[2]}</span></div>`}).join("")}
   </div>
-  <div class="nbsum"><b class="${over/vals.length>=.5?"up":"dn"}">${over}/${vals.length} over</b> <span style="color:#f3c75a">${line}</span> · avg ${nbaF(avg)}${items.some(o=>o.prev)?` · <span class="small">faded = last season</span>`:""}</div>`;
+  <div class="nbsum"><b class="${over/vals.length>=.5?"up":"dn"}">${over}/${vals.length} ${pxSW()}</b> <span style="color:#f3c75a">${line}</span> · avg ${nbaF(avg)}${items.some(o=>o.prev)?` · <span class="small">faded = last season</span>`:""}</div>`;
 }
 
 /* ---------- What the opponent's defense allows (per game, ranked) — for player props ---------- */
@@ -473,7 +480,7 @@ function nbaPropCard(r,idx){
   const S=nbaSets(nm,opp),inj=nbaInjOf(nm),pr=nbaPosRank(opp,p.pos);
   const id="pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k+((idx||0)>=100?"_p":"");
   const tab=(t,l,n)=>{const c=typeof n==="string"&&n.includes("/")?(()=>{const [a,b]=n.split("/").map(Number);return a/b>=.6?"up":a/b<=.4?"dn":""})():"";return `<button data-pct="${id}|${t}" class="${t==="l10"?"on":""}">${l}${n!=null?`<small class="${c}">${n}</small>`:""}</button>`};
-  const rate=a=>{if(!a.length)return "–";const o=a.filter(z=>nbaVal(z.x,k)>line).length;return `${o}/${a.length}`};
+  const rate=a=>{if(!a.length)return "–";const o=a.filter(z=>pxHit(nbaVal(z.x,k),line)).length;return `${o}/${a.length}`};
   return `<div class="card prop" id="${id}" data-k="${k}" data-nm="${nbaEsc(nm)}" data-line="${line}" data-opp="${opp}" data-pos="${p.p5||""}">
   <div class="pcw"><span class="pcb" style="background:${nbaCol(p.tm)}">${p.tm}</span><div style="min-width:0"><b class="pcn">${nbaLink(nm)}</b>${nbaInjChip(inj)}
     <div class="small">${p.p5||p.pos} · ${opp?(g.a===p.tm?"@ ":"vs ")+nbaEsc(nbaShort(opp)):"no game"} · ${nbaF(nbaAvg(p,"min"))} min/game</div></div></div>
@@ -481,7 +488,7 @@ function nbaPropCard(r,idx){
     <div class="pcm"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)}</b><div class="pco">${op!=null?`<span class="o">Over ${oddsFmt(op)}</span>`:""}${up!=null?`<span class="u">Under ${oddsFmt(up)}</span>`:""}${book?`<span class="bk">${nbaEsc(book)}</span>`:""}</div></div></div>
   ${nbaShopHtml(r)}
   ${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${(idx||0)<100?nbaMateSel(nm):""}
-  <div class="nbtabs hrt">${tab("l5","L5",rate(S.l5))}${tab("l10","L10",rate(S.l10))}${tab("season","Season",rate(S.season))}${tab("h2h","H2H",rate(S.h2h))}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
+  ${pxSideTg()}<div class="nbtabs hrt">${tab("l5","L5",rate(S.l5))}${tab("l10","L10",rate(S.l10))}${tab("season","Season",rate(S.season))}${tab("h2h","H2H",rate(S.h2h))}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
   ${(idx||0)<100?`<a href="#nba-player-${encodeURIComponent(nm)}" class="gopl" data-gopl="${nbaEsc(nm)}|${k}">📊 ${nbaEsc(nm.split(" ").filter(w=>!/^(Jr\.?|Sr\.?|II|III|IV)$/.test(w)).slice(-1)[0])}'s stats &amp; all his lines →</a>`:""}
   ${opp&&p.p5?(()=>{const d=nbaDvp(opp,p.p5,k,5);if(!d.rows.length)return "";const av=d.rows.reduce((s,r)=>s+r.v,0)/d.rows.length;return `<div class="small" style="margin-top:6px">${opp} last 5: allowed ${nbaF(av)} ${NBA_MK[k][2]} a game to ${nbaPosWord(p.p5)} (NBA avg ${nbaF(d.lg)}) — <b class="${av>d.lg?"up":"dn"}">${av>d.lg?"easier":"tougher"}</b></div>`})():""}
@@ -849,7 +856,7 @@ function nbaMiniBars(vals,line,labs){
   if(!vals.length)return "";const top=Math.max(line,...vals),mx=(top>0?top:1)*1.12,pct=v=>v<=0?0:Math.max(4,v/mx*100);
   const ln=(line/mx*100).toFixed(1),grid=[.25,.5,.75,1].map(f=>`<div class="mbg" style="bottom:${f*100}%"></div>`).join("");
   return `<div class="mb${vals.length<=6?" few":""}" role="img" aria-label="Last ${vals.length} games vs line ${line}"><div class="mbp">${grid}<div class="mbline" style="bottom:${ln}%"><span class="mbll">${line}</span></div>
-   ${vals.map((v,i)=>{const c=v>line?"o":v<line?"u":"p";return `<div class="mbc"><span class="mbv ${c}">${v}</span><i class="${c}${v<=0?" z":""}" style="height:${pct(v).toFixed(1)}%"></i></div>`}).join("")}</div>
+   ${vals.map((v,i)=>{const c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="mbc"><span class="mbv ${c}">${v}</span><i class="${c}${v<=0?" z":""}" style="height:${pct(v).toFixed(1)}%"></i></div>`}).join("")}</div>
    ${labs?`<div class="mbx">${labs.map(l=>`<span>${l}</span>`).join("")}</div>`:""}</div>`;
 }
 function nbaLineRow(nm,r){
@@ -858,9 +865,9 @@ function nbaLineRow(nm,r){
       return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p">
         <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span>${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
           <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):""}${nbaShopHtml(r)}
-        ${(()=>{const L10=nbaAllG(nm).slice(-10),v10=L10.map(o=>nbaVal(o.x,k)),o10=v10.filter(v=>v>line).length;return L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>(o.x[3]==="H"?"":"@")+o.x[2]))}<div class="small mbs">Last ${L10.length}: <b class="${o10/L10.length>=.5?"up":"dn"}">${o10}/${L10.length} over</b> · avg <b>${nbaF(v10.reduce((a,b)=>a+b,0)/v10.length)}</b> vs line ${line}</div></div>`:""})()}
-        <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
-        <div class="plf"><b class="${ov/Math.max(1,l6.length)>=.5?"up":"dn"}">${ov}/${l6.length} over</b>${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
+        ${(()=>{const L10=nbaAllG(nm).slice(-10),v10=L10.map(o=>nbaVal(o.x,k)),o10=v10.filter(v=>pxHit(v,line)).length;return L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>(o.x[3]==="H"?"":"@")+o.x[2]))}<div class="small mbs">Last ${L10.length}: <b class="${o10/L10.length>=.5?"up":"dn"}">${o10}/${L10.length} ${pxSW()}</b> · avg <b>${nbaF(v10.reduce((a,b)=>a+b,0)/v10.length)}</b> vs line ${line}</div></div>`:""})()}
+        <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
+        <div class="plf">${(()=>{const h=vals.filter(v=>pxHit(v,line)).length;return `<b class="${h/Math.max(1,l6.length)>=.5?"up":"dn"}">${h}/${l6.length} ${pxSW()}</b>`})()}${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
         ${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}
       </div>`}
 
