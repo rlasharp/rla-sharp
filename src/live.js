@@ -28,12 +28,17 @@ async function liveFetch(sp){
     for(const e of j.events||[]){
       const c=(e.competitions||[])[0];if(!c)continue;
       const t=((c.status||e.status||{}).type)||{};let home=null,away=null;
-      for(const x of c.competitors||[]){const o={ab:liveTeam(sp,(x.team&&x.team.abbreviation)||""),sc:+x.score||0,id:x.team&&x.team.id};if(x.homeAway==="home")home=o;else away=o}
+      for(const x of c.competitors||[]){const o={ab:liveTeam(sp,(x.team&&x.team.abbreviation)||""),sc:+x.score||0,id:x.team&&x.team.id,
+          rec:((x.records||[])[0]||{}).summary||"",ls:(x.linescores||[]).map(l=>+l.value||0)};
+        const pl=(x.leaders||[]).find(l=>/^points/i.test(l.name||""));const ld=pl&&(pl.leaders||[])[0];
+        if(ld&&ld.athlete)o.ldr=[ld.athlete.shortName||ld.athlete.displayName||"",ld.displayValue||String(ld.value||"")];
+        if(x.homeAway==="home")home=o;else away=o}
       if(!home||!away)continue;
       const sit=c.situation||{};let poss=null;
       if(sit.possession)poss=[home,away].find(o=>String(o.id)===String(sit.possession));
       const g={id:String(e.id),a:away.ab,h:home.ab,as:away.sc,hs:home.sc,st:t.state||"pre",det:t.shortDetail||t.detail||"",
-        poss:poss?poss.ab:null,dd:sit.shortDownDistanceText||"",rz:!!sit.isRedZone};
+        poss:poss?poss.ab:null,dd:sit.shortDownDistanceText||"",rz:!!sit.isRedZone,date:e.date||"",
+        ar:away.rec,hr:home.rec,als:away.ls,hls:home.ls,ald:away.ldr||null,hld:home.ldr||null,tv:((c.broadcasts||[])[0]||{}).names?.[0]||""};
       m[g.id]=g;m[g.a+"@"+g.h]=g;
     }
     LIVE[sp]=m;LIVE.ok[sp]=1;
@@ -95,11 +100,8 @@ async function liveDecorate(){
   if(h.startsWith("nba-game-")){const g=NBA_SLATE.find(x=>String(x.id)===h.slice(9)),gh=document.querySelector("#v-nba .gh");
     if(g&&gh){const host=gh.parentElement,html=liveBar("nba",liveGet("nba",g.a,g.h,g.id));let el=host.querySelector(":scope > .livebar");
       if(!html){if(el)el.remove()}else if(el)el.outerHTML=html;else gh.insertAdjacentHTML("afterend",html)}}
-  /* NBA scores tab: live / today strip */
-  if(h==="nba-scores"){const v=document.getElementById("v-nba");let box=document.getElementById("liveToday");
-    const evs=Object.entries(LIVE.nba).filter(([k])=>!k.includes("@")).map(([,g])=>g).filter(g=>g.st!=="pre");
-    const html=evs.length?`<div class="card" id="liveToday" style="margin-bottom:14px"><h2 style="margin-bottom:8px">Today ${evs.some(g=>g.st==="in")?"· live":""}</h2>${evs.map(g=>liveBar("nba",g)).join("")}<div class="small" style="margin-top:6px">Live from ESPN, refreshes every 30 seconds. Box scores appear here after the morning update.</div></div>`:"";
-    if(box)box.outerHTML=html||"";else if(html&&v){const h1=v.querySelector("h1");(h1&&h1.nextElementSibling?h1.nextElementSibling:h1).insertAdjacentHTML("afterend",html)}}
+  /* NBA scores tab: Today / live board */
+  if(h==="nba-scores"){const host=document.getElementById("liveTodayHost");if(host&&typeof nbaTodayHtml!=="undefined"){const html=nbaTodayHtml();if(host.dataset.h!==html){host.innerHTML=html;host.dataset.h=html}}}
   /* NBA plays of the day: live progress vs the line */
   const pods=[...document.querySelectorAll("#v-nba .pod[data-nm]")];
   for(const pd of pods){
@@ -162,3 +164,35 @@ async function liveTick(){
 window.addEventListener("hashchange",()=>setTimeout(()=>{liveDecorate();liveTick()},60));
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveTick()});
 setTimeout(liveTick,300);
+
+/* ---------- NBA "Today" board (Scores tab): live first, then upcoming, then finals ---------- */
+function nbaTodayHtml(){
+  const L=LIVE.nba||{},seen=new Set(),G=[];
+  const etD=d=>{try{return new Intl.DateTimeFormat("en-CA",{timeZone:"America/Toronto"}).format(new Date(d))}catch(e){return ""}};
+  const today=etNow().d;
+  Object.entries(L).filter(([k])=>!k.includes("@")).forEach(([,g])=>{if(g.date&&etD(g.date)!==today&&g.st!=="in")return;seen.add(g.a+"@"+g.h);G.push({...g,sl:NBA_SLATE.find(x=>x.a===g.a&&x.h===g.h)})});
+  if(etNow().d===NBA_SLATE_DATE)NBA_SLATE.forEach(sl=>{if(!seen.has(sl.a+"@"+sl.h))G.push({id:sl.id,a:sl.a,h:sl.h,as:0,hs:0,st:nbaStarted(sl)?"in":"pre",det:"",sl,noLive:1})});
+  if(!G.length)return `<div class="card tdyw"><div class="tdyt"><h2 style="margin:0">Today</h2></div><div class="small" style="margin-top:6px">No NBA games today. Recent finals are below.</div></div>`;
+  const ord={in:0,pre:1,post:2};G.sort((x,y)=>ord[x.st]-ord[y.st]||(tipMin(x.sl&&x.sl.t)||0)-(tipMin(y.sl&&y.sl.t)||0));
+  const n={in:0,pre:0,post:0};G.forEach(g=>n[g.st]++);
+  const pills=[n.in?`<span class="tdyp on"><span class="lvdot"></span> ${n.in} live</span>`:"",n.pre?`<span class="tdyp">${n.pre} upcoming</span>`:"",n.post?`<span class="tdyp">${n.post} final</span>`:""].join("");
+  const card=g=>{const st=g.st,lead=st==="pre"||g.as===g.hs?"":g.as>g.hs?"a":"h";
+    const q=Math.max((g.als||[]).length,(g.hls||[]).length,st==="pre"?0:4),qs=[...Array(q)].map((_,i)=>i<4?"Q"+(i+1):(i===4?"OT":"OT"+(i-3)));
+    const cells=(ls)=>qs.map((_,i)=>`<span class="tdq">${ls&&ls[i]!=null?ls[i]:"–"}</span>`).join("");
+    const rec=t=>(t==="a"?g.ar:g.hr)||(typeof nbaRec!=="undefined"?nbaRec(t==="a"?g.a:g.h):"");
+    const row=t=>{const ab=t==="a"?g.a:g.h,sc=t==="a"?g.as:g.hs;return `<div class="tdr${lead===t?" lead":lead?" lose":""}">
+      <span class="tdn">${nbaBadge(ab)}<b>${esc(nbaShort(ab))}</b><span class="small">${esc(rec(t))}</span></span>
+      ${st==="pre"?"":cells(t==="a"?g.als:g.hls)}<span class="tds">${st==="pre"?"":sc}</span></div>`};
+    const head=st==="in"?`<span class="tdst on"><span class="lvdot"></span> LIVE · ${esc(g.det||"In progress")}</span>`
+      :st==="post"?`<span class="tdst">${/OT/.test(g.det||"")?esc(g.det).toUpperCase():"FINAL"}</span>`
+      :`<span class="tdst pre">${g.sl?esc(g.sl.t)+" ET":esc(g.det||"")}</span>${g.sl&&typeof cdChip!=="undefined"?cdChip("nba",g.sl):""}`;
+    const qh=st==="pre"?"":`<div class="tdr tdhd"><span class="tdn"></span>${qs.map(x=>`<span class="tdq">${x}</span>`).join("")}<span class="tds">T</span></div>`;
+    const Ln=NBA_LINES[g.a+"@"+g.h];
+    const foot=st==="pre"?(Ln?`<div class="tdf">Spread: <b>${esc(nbaShort(Ln.sp<=0?g.h:g.a))} ${Ln.sp<=0?Ln.sp:-Ln.sp}</b> · Total <b>${Ln.tot}</b>${g.sl?` · <span class="tdlk">Props & matchup ›</span>`:""}</div>`:"")
+      :(g.ald||g.hld)?`<div class="tdf">🔥 Top scorers: ${[g.ald&&`${esc(g.ald[0])} <b>${esc(g.ald[1])}</b>`,g.hld&&`${esc(g.hld[0])} <b>${esc(g.hld[1])}</b>`].filter(Boolean).join(" · ")}</div>`:"";
+    const tag=g.sl?"a":"div";
+    return `<${tag} class="card tdy ${st}"${g.sl?` href="#nba-game-${g.sl.id}"`:""}><div class="tdyh">${head}${g.tv?`<span class="small">📺 ${esc(g.tv)}</span>`:""}</div>${qh}${row("a")}${row("h")}${foot}</${tag}>`};
+  return `<div class="tdyw"><div class="tdyt"><h2 style="margin:0">Today</h2><span class="small">${typeof nbaDayS!=="undefined"?nbaDayS(today):today}</span><span style="flex:1"></span>${pills}</div>
+   <div class="grid g2">${G.map(card).join("")}</div>
+   <div class="small" style="margin-top:6px">${LIVE.ok.nba?"Live scores from ESPN · updates every 30 seconds.":"Live scores load when ESPN can be reached."} Full box scores appear below after the morning update.</div></div>`;
+}

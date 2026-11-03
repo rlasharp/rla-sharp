@@ -932,7 +932,9 @@ function nbaScores(el){
   const dates=[...new Set(NBA_RES.map(r=>r[1]))].sort().reverse();
   if(!NB.date||!dates.includes(NB.date))NB.date=dates[0];
   const games=NBA_RES.filter(r=>r[1]===NB.date);
-  el.innerHTML=`<h1>NBA Scores</h1><p class="sub">Tap a final score to see the full box score.</p>
+  el.innerHTML=`<h1>NBA Scores</h1>
+  <div id="liveTodayHost">${typeof nbaTodayHtml!=="undefined"?nbaTodayHtml():""}</div>
+  <h2 style="margin:18px 0 4px">Results</h2><p class="sub" style="margin-top:0">Tap a final score to see the full box score.</p>
   <div class="nbadates">${dates.map(d=>`<button class="btn${d===NB.date?" pri":""}" data-nd="${d}">${nbaDayS(d)}</button>`).join("")}</div>
   <div class="grid g2">${games.map(r=>{const aw=r[4]>r[5];return `<div class="card sbox click" data-nbx="${r[0]}" style="cursor:pointer">
     <div class="nbarow"><div style="${aw?"font-weight:800":""}">${nbaTm(r[2])} <span class="small">${nbaRec(r[2])}</span></div><div></div><div></div><div style="font-size:18px;${aw?"font-weight:800":"color:var(--muted)"}">${r[4]}</div></div>
