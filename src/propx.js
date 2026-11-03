@@ -308,9 +308,9 @@ function cdTxt(d,t,started,final){if(final)return "Final";if(started)return "�
   const n=etNow(),tm=tipMin(t);if(!d||tm==null)return "";const days=Math.round((new Date(d+"T12:00")-new Date(n.d+"T12:00"))/864e5),mins=days*1440+tm-n.m;
   if(mins<=0)return "🔴 Live · lines closed";const D=Math.floor(mins/1440),H=Math.floor(mins%1440/60),M=mins%60;
   return "⏱ "+(D?`${D}d ${H}h`:H?`${H}h ${M}m`:`${M}m`)}
-function cdChip(sp,g){if(sp==="nba")return `<span class="cdc" data-cd="nba|${g.id}">${cdTxt(NBA_SLATE_DATE,g.t,nbaStarted(g),false)}</span>`;
+function cdChip(sp,g){if(sp==="nba")return `<span class="cdc" data-cd="nba|${g.id}">${cdTxt(NBA_SLATE_DATE,g.t,nbaStarted(g),typeof nbaFinalHtml!=="undefined"&&!!nbaFinalHtml(g))}</span>`;
   return `<span class="cdc" data-cd="nfl|${g.id}">${cdTxt(nflDate(g),String(g.when||"").split("·")[1],nflStarted(g)&&!g.final,!!g.final)}</span>`}
-setInterval(()=>{document.querySelectorAll("[data-cd]").forEach(e=>{const [sp,id]=e.dataset.cd.split("|");if(sp==="nba"){const g=NBA_SLATE.find(x=>String(x.id)===id);if(g)e.textContent=cdTxt(NBA_SLATE_DATE,g.t,nbaStarted(g),false)}else{const g=SLATE.find(x=>String(x.id)===id);if(g)e.textContent=cdTxt(nflDate(g),String(g.when||"").split("·")[1],nflStarted(g)&&!g.final,!!g.final)}})},60000);
+setInterval(()=>{document.querySelectorAll("[data-cd]").forEach(e=>{const [sp,id]=e.dataset.cd.split("|");if(sp==="nba"){const g=NBA_SLATE.find(x=>String(x.id)===id);if(g)e.textContent=cdTxt(NBA_SLATE_DATE,g.t,nbaStarted(g),typeof nbaFinalHtml!=="undefined"&&!!nbaFinalHtml(g))}else{const g=SLATE.find(x=>String(x.id)===id);if(g)e.textContent=cdTxt(nflDate(g),String(g.when||"").split("·")[1],nflStarted(g)&&!g.final,!!g.final)}})},60000);
 
 /* ===== NBA game page: key matchups (offense strength vs the other defense) ===== */
 function nbaKeyMu(g){const out=[],N=30;

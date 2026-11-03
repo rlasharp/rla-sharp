@@ -5,6 +5,22 @@
   for(const [nm,tm,pos,row] of NBA_ESPN.logs||[]){if(!NBA_ESPN.added.has(row[0]))continue;const p=NBA_LOGS[nm]||(NBA_LOGS[nm]={tm,pos,id:0,g:[]});
     if(p.g.some(x=>x[0]===row[0]))continue;p.g.push(row);p.g.sort((a,b)=>a[1]<b[1]?-1:a[1]>b[1]?1:0)}
   NBA_ESPN.ls={};for(const g of NBA_ESPN.games||[])NBA_ESPN.ls[g[0]]=[g[6]||[],g[7]||[]];})();
+/* Records + standings always follow NBA_RES (hoopR + ESPN finals), so every final counts within ~2 hours */
+(function(){if(typeof NBA_TEAM==="undefined")return;const S={};
+  for(const [id,d,a,h,as,hs] of NBA_RES)for(const [t,me,op,ha] of [[a,as,hs,"A"],[h,hs,as,"H"]]){const x=S[t]||(S[t]={m:[],ha:[],pf:0,pa:0});x.m.push(me-op);x.ha.push(ha);x.pf+=me;x.pa+=op}
+  for(const [t,x] of Object.entries(S)){const T=NBA_TEAM[t];if(!T)continue;const g=x.m.length,l5=x.m.slice(-5),hm=x.m.filter((_,i)=>x.ha[i]==="H"),aw=x.m.filter((_,i)=>x.ha[i]==="A");
+    Object.assign(T,{w:x.m.filter(v=>v>0).length,l:x.m.filter(v=>v<0).length,g,ppg:+(x.pf/g).toFixed(1),opp:+(x.pa/g).toFixed(1),mar:+((x.pf-x.pa)/g).toFixed(1),
+      l5:l5.map(v=>v>0?"W":"L").join(""),l5m:+(l5.reduce((a,b)=>a+b,0)/l5.length).toFixed(1),
+      hm:hm.filter(v=>v>0).length+"-"+hm.filter(v=>v<0).length,aw:aw.filter(v=>v>0).length+"-"+aw.filter(v=>v<0).length})}
+  const rk=(k,desc)=>Object.keys(NBA_TEAM).sort((x,y)=>desc?NBA_TEAM[y][k]-NBA_TEAM[x][k]:NBA_TEAM[x][k]-NBA_TEAM[y][k]).forEach((t,i)=>NBA_TEAM[t][k+"R"]=i+1);
+  rk("ppg",true);rk("opp",false);rk("mar",true);
+  window.NBA_THRU=NBA_RES.length?NBA_RES[NBA_RES.length-1][1]:NBA_ASOF;})();
+function nbaFinalHtml(g){const r=NBA_RES.find(z=>z[0]===g.id||(z[1]===NBA_SLATE_DATE&&z[2]===g.a&&z[3]===g.h));if(!r)return "";
+  const L=NBA_LINES[g.a+"@"+g.h],as=r[4],hs=r[5],W=as>hs?g.a:g.h;let sp="",tot="";
+  if(L&&L.sp!=null){const m=hs-as+L.sp,fav=L.sp<=0?g.h:g.a;sp=m===0?"Spread: push":`Spread: <b>${nbaShort(m>0?g.h:g.a)}</b> covered (${nbaShort(fav)} ${-Math.abs(L.sp)})`}
+  if(L&&L.tot!=null){const t=as+hs;tot=t===L.tot?"Total: push":`Total: <b>${t>L.tot?"Over":"Under"}</b> ${L.tot} (${t})`}
+  return `<div class="nbfin"><div class="nbfs"><span class="rsfin">FINAL</span><span class="${as>hs?"w":""}">${nbaBadge(g.a)} <b>${as}</b></span><span class="small">–</span><span class="${hs>as?"w":""}"><b>${hs}</b> ${nbaBadge(g.h)}</span><span class="rsm" style="--cw:${nbaCol(W)}">${nbaShort(W)} by ${Math.abs(as-hs)}</span></div>${sp||tot?`<div class="small">${[sp,tot].filter(Boolean).join(" · ")}</div>`:""}</div>`}
+
 /* ---------- NBA section (separate from NFL; all globals prefixed nba / NB) ---------- */
 const NB={date:null,sel:null,team:"tonight",q:"",sort:"pts",ij:"tonight"};
 (()=>{const m=(typeof LS!=="undefined"&&LS.get("nbaMin"))||null;NB.mlo=m?m[0]:0;NB.mhi=m?m[1]:48;
@@ -163,6 +179,7 @@ function nbaGameCard(g){
   const fav=L?(L.sp<=0?g.h:g.a):null;
   return `<div class="card nbag nbg2" data-ng="${g.id}">
     <div class="when"><span><b style="color:var(--text)">${g.t}</b> ET</span><span>${typeof cdChip!=="undefined"?cdChip("nba",g):""} Details →</span></div>
+    ${nbaFinalHtml(g)}
     ${(()=>{const n=nbaGamePropCount(g);return n?`<a class="gpcnt" href="#nba-game-${g.id}-props" onclick="event.stopPropagation()">🎯 ${n} player props →</a>`:""})()}
     ${row(g.a,false)}${row(g.h,true)}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>
@@ -176,8 +193,8 @@ function nbaGameCard(g){
 }
 function nbaGames(el){
   el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nba",4):""}${nbaDayTabs("nba")}
-  <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
-  <div class="grid g2">${NBA_SLATE.map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
+  <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today${(()=>{const f=NBA_SLATE.filter(g=>nbaFinalHtml(g)).length;return f?`, ${f} final`:""})()}. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
+  <div class="grid g2">${[...NBA_SLATE.filter(g=>!nbaFinalHtml(g)),...NBA_SLATE.filter(g=>nbaFinalHtml(g))].map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
   <div style="margin-top:14px">${nbaPlaysCard()}</div>
   ${typeof loMovesCard!=="undefined"&&loMovesCard("nba",8)?`<div style="margin-top:14px">${loMovesCard("nba",8)}</div>`:""}
   <div style="margin-top:14px">${nbaRecordCard(0)}</div>
@@ -981,7 +998,7 @@ function nbaTeams(el){
   const tbl=conf=>`<div class="card"><h2 style="margin-bottom:6px">${conf}ern Conference</h2><div class="nbatbl"><table class="bxt stand" style="min-width:0"><thead><tr><th>#</th><th>Team</th><th>W-L</th><th>GB</th><th>L10</th><th>Strk</th><th>Home</th><th>Road</th><th>Net</th></tr></thead><tbody>
     ${nbaStandRows(conf).map(x=>{const A=NBA_TADV[x.t],net=A?A.o.rtg-A.d.rtg:x.mar;return `<tr class="${x.rk===6?"cut6":x.rk===10?"cut10":""}"><td>${x.rk}</td><td>${nbaBadge(x.t)} ${nbaTeamLink(x.t,nbaEsc(nbaShort(x.t)))}</td><td><b>${x.w}-${x.l}</b></td><td>${x.gb?x.gb.toFixed(1).replace(".0",""):"–"}</td><td>${x.l10}</td><td class="${/^W/.test(x.streak)?"up":"dn"}">${x.streak}</td><td>${x.hm}</td><td>${x.aw}</td><td class="${net>0?"up":net<0?"dn":""}">${nbaSg(+net.toFixed(1))}</td></tr>`}).join("")}</tbody></table></div>
     <div class="small" style="margin-top:6px">Top 6 make the playoffs; 7–10 go to the play-in. Net = points per 100 possessions scored minus allowed.</div></div>`;
-  el.innerHTML=`<h1>NBA Standings</h1><p class="sub">Through ${nbaDayS(NBA_ASOF)}. Tap a team for its schedule, roster, ratings and injuries.</p>
+  el.innerHTML=`<h1>NBA Standings</h1><p class="sub">Through ${nbaDayS(window.NBA_THRU||NBA_ASOF)} · updates after every night of games. Tap a team for its schedule, roster, ratings and injuries.</p>
   <div class="grid g2">${tbl("East")}${tbl("West")}</div>`;
 }
 function nbaSpotTags(t){
