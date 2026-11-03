@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-03 19:09Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-03 21:00Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|Out|Ankle|Dec 6
@@ -18,6 +18,7 @@ Cameron Williams|OL|IR|Ankle|Nov 8
 Beaux Collins|WR|IR|Hip|Nov 8
 Anterio Thompson|DT|Out|Undisclosed|Feb 15
 #BAL
+Tyler Huntley|QB|Doubtful|Toe|Nov 5
 Joe Fagnano|QB|Questionable|Ankle|Nov 5
 Olaivavega Ioane|G|Questionable|Knee - MCL|Nov 5
 Jaylinn Hawkins|S|Questionable|Knee|Nov 5
@@ -28,7 +29,6 @@ Roger Rosengarten|OT|Questionable|Ankle|Nov 5
 John Simpson|G|Questionable|Back|Nov 5
 John Jenkins|DT|Questionable|Knee|Nov 5
 Trey Hendrickson|LB|Questionable|Finger|Nov 5
-Tyler Huntley|QB|Doubtful|Toe|Nov 5
 Lamar Jackson|QB|Out|Thumb|Dec 13
 #BUF
 Greg Gaines|DT|Questionable|Calf|Nov 9
@@ -37,13 +37,13 @@ Spencer Brown|OT|Questionable|Back|Nov 9
 DJ Moore|WR|Questionable|Knee|Nov 9
 Joshua Palmer|WR|Questionable|Hamstring|Nov 9
 #CAR
+Jonathon Brooks|RB|IR|Abdomen|Nov 8
 Torricelli Simpkins III|G|Questionable|Ankle|Nov 8
 Damien Lewis|G|Questionable|Knee|Nov 8
 Bobby Brown III|DT|Questionable|Hand|Nov 8
 Will Lee III|CB|Questionable|Hamstring|Nov 8
 Jaelan Phillips|LB|Questionable|Hamstring|Nov 8
 Xavier Legette|WR|IR|Knee|Nov 8
-Jonathon Brooks|RB|IR|Abdomen|Nov 8
 Corey Bullock|C|Questionable|Quadriceps|Nov 8
 Akayleb Evans|CB|IR|Triceps|Nov 30
 #CHI
@@ -172,7 +172,7 @@ Greg Newsome II|CB|Questionable|Concussion|Nov 8
 Jevon Holland|S|Questionable|Concussion|Nov 8
 Tremaine Edmunds|LB|IR|Chest|Feb 15
 #NYJ
-Max Mitchell|OT|Questionable|Concussion|Nov 8
+Max Mitchell|OT|Out|Concussion|Dec 13
 Joseph Ossai|DE|Questionable|Ankle|Nov 8
 David Bailey|LB|Questionable|Groin|Nov 8
 Breece Hall|RB|Questionable|Quadriceps|Nov 8
