@@ -19,7 +19,7 @@ const MOVE={
  11:{open:{sp:-8.5,tot:46.5},now:{sp:-10,tot:51.5,ml:[410,-550]}},
  12:{open:{sp:-13.5,tot:45.5},now:{sp:-11.5,tot:44.5,ml:[490,-675]}},
  13:{open:{sp:-1.5,tot:46.5},now:{sp:-3,tot:46.5,ml:[130,-155]}},
- 14:{open:{sp:-3.5,tot:48.5},now:{sp:-6,tot:46.5,ml:[205,-250]}},
+ 14:{open:{sp:-3.5,tot:48.5},now:{sp:-6,tot:46.5,ml:[210,-258]}},
  15:{open:{sp:3,tot:48.5},now:{sp:3.5,tot:46.5,ml:[-185,154]}}};
 // [awayLine,price,book],[homeLine,price,book] · ml [price,book] x2 · tot [line,price,book] over/under
 const BEST={};

@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 05:29Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 05:35Z
 #Atlanta Hawks
 Jalen Johnson|F|Out|ankle|Nov 4
 Jock Landale|C|Out|hip|Nov 4
@@ -79,7 +79,7 @@ Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 Alex Caruso|G|Out|ankle|Nov 4
-Nikola Topic|G|Out|back|Nov 4
+Nikola Topic|G|Out|back|Nov 6
 #Orlando Magic
 Anthony Black|G|Out|rest|Nov 5
 Jonathan Isaac|F|Out|knee not specified|Nov 10
