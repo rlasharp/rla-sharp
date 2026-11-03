@@ -1,7 +1,7 @@
 {
  "auto": {
-  "at": "2026-11-03T05:29:40+00:00",
+  "at": "2026-11-03T05:35:53+00:00",
   "ok": true,
-  "summary": "NBA injuries refreshed\nNBA lines checked\nliveprops: 378 feed lines merged, 354 total, unmatched names: ['Max Strus']\nLocked 0 plays for 2026-11-03: \nNBA data: teams 30, results 92 (through 2026-11-01), players 442, slate 0, lines 15, props 354, inj teams 28, prev-season players 0, play log 3, adv 335, qtr games 92, h2h \nnfl-update: 15 lines refreshed, 1 new finals (weeks [8, 9])\n214 players, 32 teams\nnfl-inj: 214 players\nnfltgt: 309 players, 32 defenses, weeks 1-8, ftn plays 18374\nnfltgt: 121 games with spreads\nNFL targets/spreads/rest refreshed\nSite check OK \u2014 published\n"
+  "summary": "NBA injuries refreshed\nNBA lines checked\nliveprops: 378 feed lines merged, 354 total, unmatched names: ['Max Strus']\nFirst tip is Infinity min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 92 (through 2026-11-01), players 442, slate 0, lines 15, props 354, inj teams 28, prev-season players 0, play log 3, adv 335, qtr games 92, h2h \nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n214 players, 32 teams\nnfl-inj: 214 players\nnfltgt: 309 players, 32 defenses, weeks 1-8, ftn plays 18374\nnfltgt: 121 games with spreads\nNFL targets/spreads/rest refreshed\nSite check OK \u2014 published\n"
  }
 }
