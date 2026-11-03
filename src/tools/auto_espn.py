@@ -9,7 +9,7 @@ Run from the src/ folder:
 Real numbers only: anything ESPN doesn't list is left as it was."""
 import json, re, sys, os, subprocess, datetime, urllib.request
 
-UA = {"User-Agent": "Mozilla/5.0 (rla-sharp data bot)"}
+UA = {"User-Agent": "Mozilla/5.0"}
 B = "https://site.api.espn.com/apis/site/v2/sports/"
 MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 FIX_NFL = {"WSH": "WAS", "LA": "LAR"}
@@ -45,7 +45,7 @@ def fmt(x):
 # ---------------- NBA ----------------
 def nba_inj():
     d = get(B + "basketball/nba/injuries")
-    out = ["# ESPN NBA injuries (auto, ESPN JSON feed) " + datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%MZ")]
+    out = ["# ESPN NBA injuries (auto, ESPN JSON feed) " + datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None).strftime("%Y-%m-%d %H:%MZ")]
     n = 0
     for t in sorted(d.get("injuries", []), key=lambda t: t.get("displayName", "")):
         rows = []
@@ -107,7 +107,7 @@ def nba_lines(date):
         rows.append("|".join([k, ospo, otot, fmt(o["sp"]), fmt(o["spx"] or -110), fmt(o["tot"]), fmt(o["ox"] or -110), fmt(o["ux"] or -110), fmt(o["mla"]), fmt(o["mlh"])]))
         n += 1
     if not rows: print("nba-lines: no games / no lines today — keeping old file"); return
-    now = datetime.datetime.utcnow() - datetime.timedelta(hours=5)
+    now = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None) - datetime.timedelta(hours=5)
     hdr = ["# AWAY@HOME|open home spread|open total|home spread|spread price|total|over price|under price|away ML|home ML   (ESPN odds feed, DraftKings) — auto",
            "# asof: " + now.strftime("%a %b %-d, %-I:%M %p") + " ET"]
     open("data/nba_lines.txt", "w").write("\n".join(hdr + rows) + "\n")
@@ -125,7 +125,7 @@ def nfl_team_map():
 def nfl_inj(asof):
     d = get(B + "football/nfl/injuries"); M = nfl_team_map()
     stmap = {"Out": "Out", "Doubtful": "Doubtful", "Questionable": "Questionable", "Injured Reserve": "IR"}
-    out = ["# ESPN NFL injuries (auto, ESPN JSON feed) " + datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%MZ"),
+    out = ["# ESPN NFL injuries (auto, ESPN JSON feed) " + datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None).strftime("%Y-%m-%d %H:%MZ"),
            "# name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR"]
     n = 0
     for t in d.get("injuries", []):
@@ -178,7 +178,7 @@ def nfl_update():
                 mp = re.compile(r'(\n\s*%s:\{open:\{[^}]*\},now:)\{[^}]*\}' % re.escape(gid))
                 if mp.search(mk):
                     mk = mp.sub(lambda m: m.group(1) + f"{{sp:{fmt(o['sp'])},tot:{fmt(o['tot'])}" + (f",ml:{ml}" if ml else "") + "}", mk, count=1)
-    now = (datetime.datetime.utcnow() - datetime.timedelta(hours=5)).strftime("%a %b %-d, %-I %p ET")
+    now = (datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None) - datetime.timedelta(hours=5)).strftime("%a %b %-d, %-I %p ET")
     mk = re.sub(r'(MARKET_ASOF\s*=\s*)"[^"]*"', lambda m: m.group(1) + json.dumps(now), mk, count=1)
     open("engine.js", "w", encoding="utf-8").write(js); open("real.js", "w", encoding="utf-8").write(real); open("market.js", "w", encoding="utf-8").write(mk)
     print(f"nfl-update: {nl} lines refreshed, {nf} new finals (weeks {sorted(weeks)})")

@@ -3,7 +3,7 @@
 // Replaces today's (NBA_SLATE_DATE) entries. Refuses after the first game of the day has tipped unless --force.
 import fs from "fs"; import path from "path"; import vm from "vm"; import { fileURLToPath } from "url";
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
-const ctx = { window: {}, LS: { get() { return null; }, set() {} }, oddsFmt: x => (x > 0 ? "+" + x : "" + x), console,
+const ctx = { window: {}, document: { addEventListener() {}, querySelector() { return null; }, querySelectorAll() { return []; } }, setInterval() {}, setTimeout() {}, LS: { get() { return null; }, set() {} }, oddsFmt: x => (x > 0 ? "+" + x : "" + x), console,
   /* helpers that live in live.js on the site; pregame lock = nothing has started */ startedKey: () => "", nbaStarted: () => false, nflStarted: () => false, etNow: () => ({ d: "", m: 0 }) };
 vm.createContext(ctx);
 const src = fs.readFileSync(path.join(root, "nba_data.js"), "utf8") + "\n" + fs.readFileSync(path.join(root, "nba.js"), "utf8")
