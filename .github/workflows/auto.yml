@@ -26,6 +26,23 @@ jobs:
         run: |
           npm init -y >/dev/null && npm i --silent playwright@1 && npx playwright install --with-deps chromium >/dev/null
           echo "NODE_PATH=$PWD/node_modules" >> $GITHUB_ENV
+      - name: Check the live public site (what visitors see)
+        id: live
+        continue-on-error: true
+        run: |
+          U="https://rlasharp.github.io/rla-sharp/"; L="$RUNNER_TEMP/live.html"; ISSUE=""
+          CODE=$(curl -sS -L -A "Mozilla/5.0" -o "$L" -w '%{http_code}' --retry 3 --retry-delay 10 "$U?t=$(date +%s)" || echo 000)
+          SZ=$(stat -c %s "$L" 2>/dev/null || echo 0); RSZ=$(stat -c %s index.html)
+          if [ "$CODE" != 200 ]; then ISSUE="site returned HTTP $CODE"
+          elif [ "$SZ" -lt $((RSZ/2)) ]; then ISSUE="site page is too small ($SZ bytes vs $RSZ) — blank or broken"
+          elif ! grep -q "1-800-GAMBLER" "$L"; then ISSUE="site page is missing the footer — wrong or broken page"
+          elif ! node src/tools/check.js "$L" > "$RUNNER_TEMP/livecheck.txt" 2>&1; then ISSUE="live page fails the site check: $(head -c 400 "$RUNNER_TEMP/livecheck.txt" | tr '\n' ' ')"
+          elif ! cmp -s "$L" index.html; then
+            AGE=$(( $(date +%s) - $(git log -1 --format=%ct -- index.html) ))
+            [ "$AGE" -gt 1800 ] && ISSUE="site is stale: GitHub Pages has not deployed the last update ($((AGE/60)) min old)"
+          fi
+          echo "issue=$ISSUE" >> $GITHUB_OUTPUT
+          [ -z "$ISSUE" ] && echo "Live site OK ($SZ bytes)" || { echo "LIVE SITE PROBLEM: $ISSUE"; exit 1; }
       - name: Refresh data, rebuild, check
         id: run
         run: bash src/tools/auto_run.sh "${{ github.event.inputs.what || 'all' }}"
@@ -51,9 +68,12 @@ jobs:
           p="data/health.json"; h=json.load(open(p)) if os.path.exists(p) else {}
           h["auto"]={"at":datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),"ok":os.environ.get("RES")=="success",
                      "summary":open(os.path.join(os.environ["RUNNER_TEMP"],"rla","summary.txt")).read()[-1500:] if os.path.exists(os.path.join(os.environ["RUNNER_TEMP"],"rla","summary.txt")) else ""}
+          iss=os.environ.get("LIVE_ISSUE",""); h["site"]={"at":h["auto"]["at"],"ok":os.environ.get("LIVE")=="success" and not iss,"issue":iss or ("" if os.environ.get("LIVE")=="success" else "live check did not run")}
           json.dump(h,open(p,"w"),indent=1)
           PY
           git add data/health.json; git commit -qm "health" || exit 0
           for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0; sleep 7; done
         env:
           RES: ${{ steps.run.outcome }}
+          LIVE: ${{ steps.live.outcome }}
+          LIVE_ISSUE: ${{ steps.live.outputs.issue }}
