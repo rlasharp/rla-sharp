@@ -37,7 +37,7 @@ const SLATE = [
 // REAL lines: DraftKings current lines on ESPN's NFL odds page, Mon Nov 2 2026 (evening refresh). sp = HOME spread, ml = [away, home]
 const LINES = {
  mnf8:{sp:-3.5,ml:[145,-175],tot:46.5}, // Week 8 Monday night, DraftKings via ESPN odds page (Nov 2 evening)
- 1:{sp:9.5,ml:[-470,360],tot:42.5},
+ 1:{sp:8.5,ml:[-440,340],tot:42.5},
  2:{sp:3,ml:[-162,136],tot:52.5},
  3:{sp:-2.5,ml:[120,-142],tot:43.5},
  4:{sp:6,ml:[-270,220],tot:51.5},
