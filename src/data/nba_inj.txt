@@ -1,11 +1,11 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 06:02Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 07:27Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip|Nov 4
 Jalen Johnson|F|Day-To-Day|ankle|Nov 4
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
-Paul George|F|Out|rest|Nov 4
+Paul George|F|Day-To-Day|rest|Nov 4
 Devin Carter|G|Out|illness|Nov 8
 #Brooklyn Nets
 Egor Demin|G|Out|leg bruise|Nov 7
@@ -19,8 +19,8 @@ Nic Claxton|C|Out|hamstring|Nov 4
 Peyton Watson|G|Day-To-Day|hamstring soreness|Nov 4
 Jaylon Tyson|G|Day-To-Day|ankle sprain|Nov 4
 #Dallas Mavericks
+Kyrie Irving|G|Day-To-Day|knee|Nov 4
 Max Christie|G|Day-To-Day|hip not specified|Nov 4
-Kyrie Irving|G|Out|knee|Nov 4
 Santi Aldama|F|Out|knee surgery|Nov 4
 Tarik Biberovic|F|Out|heel inflammation|Nov 12
 Dereck Lively II|C|Out|foot surgery|Nov 12
@@ -32,9 +32,9 @@ Julian Strawther|G|Out|knee sprain|Nov 29
 Isaiah Joe|G|Out|hip bruise|Nov 4
 Jalen Duren|C|Out|hamstring strain|Nov 9
 #Golden State Warriors
-Brandon Williams|G|Out|quadriceps bruise|Nov 5
-Al Horford|C|Out|rest|Nov 5
-Gui Santos|F|Out|knee|Nov 5
+Brandon Williams|G|Day-To-Day|quadriceps bruise|Nov 5
+Gui Santos|F|Day-To-Day|knee|Nov 5
+Al Horford|C|Day-To-Day|rest|Nov 5
 Kristaps Porzingis|C|Out|illness|Dec 1
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
@@ -54,8 +54,8 @@ Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 #LA Clippers
-Rui Hachimura|F|Out|quadriceps bruise|Nov 4
-Derrick Jones Jr.|F|Out|knee soreness|Nov 4
+Derrick Jones Jr.|F|Day-To-Day|knee soreness|Nov 4
+Rui Hachimura|F|Day-To-Day|quadriceps bruise|Nov 4
 Yanic Konan Niederhauser|C|Out|foot surgery|Nov 8
 Brandon Ingram|F|Out|achilles surgery|Nov 8
 Bradley Beal|G|Out|knee inflammation|Nov 8
@@ -63,10 +63,10 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Adou Thiero|F|Out|knee inflammation|Nov 6
 #Memphis Grizzlies
-Scotty Pippen Jr.|G|Out|back soreness|Nov 4
-Quinten Post|C|Out|ankle not specified|Nov 4
+Quinten Post|C|Day-To-Day|ankle not specified|Nov 4
+Scotty Pippen Jr.|G|Day-To-Day|back soreness|Nov 4
 #Minnesota Timberwolves
-Terrence Shannon Jr.|G|Out|hip bruise|Nov 4
+Terrence Shannon Jr.|G|Day-To-Day|hip bruise|Nov 4
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
@@ -105,7 +105,7 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Nov 6
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Jakob Poeltl|C|Out|shoulder inflammation|Nov 4
+Jakob Poeltl|C|Day-To-Day|shoulder inflammation|Nov 4
 Nate Bittle|C|Out|foot fracture|Nov 9
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
