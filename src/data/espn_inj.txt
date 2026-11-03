@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-03 13:19Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-03 15:02Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Walter Nolen III|DT|Questionable|Ankle|Nov 8
@@ -83,7 +83,7 @@ Cade Mays|C|Questionable|Ankle|Nov 8
 Jack Campbell|LB|Doubtful|Neck|Nov 8
 Brian Branch|S|Questionable|Concussion|Nov 8
 DJ Wonnum|LB|Questionable|Concussion|Nov 8
-Kerby Joseph|S|Out|Knee|Nov 8
+Kerby Joseph|S|Out|Knee|Nov 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
 Sean Rhyan|G|Questionable|Ankle|Nov 25

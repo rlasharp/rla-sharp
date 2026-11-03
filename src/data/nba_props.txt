@@ -267,6 +267,14 @@ Matisse Thybulle|pr|10.5|-113|-117|DraftKings|-104|FanDuel||
 Matisse Thybulle|pts|7.5|-121|-106|DraftKings|-120|FanDuel|-105|BetMGM
 Matisse Thybulle|reb|2.5|-111|-119|DraftKings|102|Unibet|-113|FanDuel
 Matisse Thybulle|stl|1.5|101|-134|DraftKings|||-124|Unibet
+Max Strus|3pm|1.5|-140|105|Fanatics
+Max Strus|ast|1.5|-165|120|Fanatics
+Max Strus|pa|10.5|-110|-120|Fanatics
+Max Strus|pra|14.5|-115|-115|Fanatics
+Max Strus|pr|12.5|-115|-115|Fanatics
+Max Strus|pts|8.5|-105|-125|Fanatics
+Max Strus|ra|6.5|115|-150|Fanatics
+Max Strus|reb|3.5|-165|120|Fanatics
 Miles Bridges|3pm|1.5|-170|129|DraftKings|-135|BetMGM||
 Miles Bridges|ast|2.5|-145|110|DraftKings|-136|FanDuel|120|BetRivers
 Miles Bridges|blk|0.5|125|-175|Unibet
