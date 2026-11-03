@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-03 15:02Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-03 17:09Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Walter Nolen III|DT|Questionable|Ankle|Nov 8
@@ -21,14 +21,14 @@ Anterio Thompson|DT|Out|Undisclosed|Feb 15
 Olaivavega Ioane|G|Questionable|Knee - MCL|Nov 5
 Jaylinn Hawkins|S|Questionable|Knee|Nov 5
 Roquan Smith|LB|Questionable|Foot|Nov 5
+Tyler Loop|PK|Doubtful|Groin|Nov 5
 Justice Hill|RB|Questionable|Groin|Nov 5
 Joe Fagnano|QB|Questionable|Ankle|Nov 5
 Roger Rosengarten|OT|Questionable|Ankle|Nov 5
 John Simpson|G|Questionable|Back|Nov 5
 John Jenkins|DT|Questionable|Knee|Nov 5
 Trey Hendrickson|LB|Questionable|Finger|Nov 5
-Tyler Huntley|QB|Questionable|Toe|Nov 5
-Tyler Loop|PK|Questionable|Groin|Nov 5
+Tyler Huntley|QB|Doubtful|Toe|Nov 5
 Lamar Jackson|QB|Out|Thumb|Dec 13
 #BUF
 Greg Gaines|DT|Questionable|Calf|Nov 9
@@ -53,9 +53,9 @@ Grady Jarrett|DE|Questionable|Groin|Nov 8
 Malik Muhammad II|CB|Questionable|Toe|Nov 8
 Coby Bryant|S|IR|Knee|Dec 19
 #CIN
+Cashius Howell|DE|IR|Wrist|Dec 6
 Kyle Dugger|S|Questionable|Quadriceps|Nov 8
 DJ Turner II|CB|Questionable|Ankle|Nov 8
-Cashius Howell|DE|Questionable|Wrist|Nov 8
 Cedric Johnson|DE|Questionable|Ankle|Nov 8
 Andrei Iosivas|WR|IR|Thumb|Nov 8
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
@@ -150,10 +150,10 @@ Christian Darrisaw|OT|Questionable|Shoulder|Nov 9
 Kyler Murray|QB|Questionable|Hamstring|Nov 9
 Theo Jackson|S|Questionable|Quadriceps|Nov 9
 #NE
+Hunter Henry|TE|Questionable|Foot|Nov 8
 TreVeyon Henderson|RB|Questionable|Illness|Nov 8
 Mack Hollins|WR|IR|Calf|Nov 8
 A.J. Brown|WR|Questionable|Ankle|Nov 8
-Hunter Henry|TE|Questionable|Foot|Nov 8
 Gabe Jacas|LB|Questionable|Knee|Nov 8
 Marcus Bryant|OT|IR|Ankle|Nov 8
 #NO
@@ -208,7 +208,7 @@ Christian McCaffrey|RB|Questionable|Hamstring|Nov 8
 Rashid Shaheed|WR|Questionable|Knee|Nov 8
 Velus Jones Jr.|RB|Questionable|Hamstring|Nov 8
 Charles Cross|OT|Questionable|Ankle|Nov 8
-Leonard Williams|DT|Questionable|Shoulder|Nov 2
+Leonard Williams|DT|Questionable|Shoulder|Nov 8
 Brandon Pili|DT|Questionable|Back|Nov 8
 Uchenna Nwosu|LB|Questionable|Ankle|Nov 8
 Drew Lock|QB|Questionable|Elbow|Nov 8

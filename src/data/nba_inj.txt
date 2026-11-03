@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 15:02Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 17:09Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip|Nov 4
 Jalen Johnson|F|Day-To-Day|ankle|Nov 4
@@ -39,7 +39,7 @@ Kristaps Porzingis|C|Out|illness|Dec 1
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
-Clint Capela|C|Out|ankle sprain|Nov 4
+Clint Capela|C|Day-To-Day|ankle sprain|Nov 4
 Steven Adams|C|Out|calf strain|Nov 9
 #Indiana Pacers
 Pascal Siakam|F|Day-To-Day|rest|Nov 4
@@ -102,7 +102,7 @@ Maxime Raynaud|C|Out|knee dislocated|Nov 10
 Keegan Murray|F|Out|ankle|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-Tobias Harris|F|Out|calf strain|Nov 6
+Tobias Harris|F|Out|calf strain|Nov 9
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
 Jakob Poeltl|C|Day-To-Day|shoulder inflammation|Nov 4
