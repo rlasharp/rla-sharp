@@ -411,6 +411,8 @@ nav[hidden]{display:none!important}
 .cdc{font-size:11.5px;font-weight:700;color:#e9b949;background:rgba(233,185,73,.12);border-radius:999px;padding:2px 8px;white-space:nowrap}
 .kmu{background:var(--card2);border-radius:10px;padding:9px 10px;margin-top:8px;border-left:3px solid #3fb26b}.kmu.dn{border-left-color:#f05252}.kmh{font-size:14px;margin-bottom:6px}.kmr{display:grid;grid-template-columns:minmax(0,1.3fr) 1fr;gap:8px;align-items:center;font-size:12.5px;margin:3px 0}.kmr small{color:var(--text2)}.kmb{height:7px;border-radius:4px;background:rgba(127,127,127,.2);overflow:hidden}.kmb i{display:block;height:100%;background:#e9b949;border-radius:4px}.kmv{font-size:12px;color:var(--text2);margin-top:5px}
 .hrt button{line-height:1.15;padding:6px 0}.hrt button small{display:block;font-size:11px;font-weight:700}.hrt button small.up{color:#3fb26b}.hrt button small.dn{color:#f05252}.hrt button.on small.up{color:#178a43}.hrt button.on small.dn{color:#c62828}
+.fint td.fsc{font-size:24px;font-weight:800}.fint tr:not(.w) td{opacity:.6}.fint tr.w td.fsc{color:#e9b949}.nfin .ngt .tag{font-size:10px;vertical-align:3px;margin-left:6px}
+.isfin>.gchips,.isfin>.pubmini,.isfin>.nbout,.isfin>.ngt,.isfin>.ngtab,.isfin>.nbwp,.isfin>.nbwpl,.isfin>.nbsay,.isfin>.gpcnt,.isfin .cdc{display:none}
 .gchips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.gchips span{font-size:12px;background:var(--card2);border-radius:999px;padding:3px 9px;color:var(--text2)}.gchips b{color:var(--text)}
 .rcnt{margin:6px 0 14px}.rcnth{display:block;font-size:12px;color:var(--text2);margin-bottom:6px}.rcntl{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.rcntl::-webkit-scrollbar{display:none}.rchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid rgba(127,127,127,.25);border-radius:999px;padding:4px 10px 4px 4px;font-size:13px;font-weight:600;text-decoration:none;color:inherit}.rchip .ab,.rchip .nbbdg{transform:scale(.85)}
 .hr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
@@ -3492,9 +3494,9 @@ function pxNflTot(t){const o=oppOf(t);if(!o||typeof LINES==="undefined")return n
 function pxLast(n){const w=n.split(" ").filter(x=>!/^(Jr\.?|Sr\.?|II|III|IV|V)$/i.test(x));return w[w.length-1]||n}
 
 /* NFL: one card per prop — sample tabs + spread / total / snap sliders + bar chart (replaces the old "last N games" chart) */
-function nflPropHead(pl,k,line){const td=k==="anyTD",rp=realProp(pl.name,k),u=({passYds:"PASS YDS",comp:"COMP",passTD:"PASS TD",int:"INT",rushYds:"RUSH YDS",rushAtt:"RUSH ATT",rec:"REC",recYds:"REC YDS",rushRec:"RUSH+REC",anyTD:"ANY TD"})[k]||"";
+function nflPropHead(pl,k,line){const o0=oppOf(pl.team),closed=!!(o0&&nflStarted(o0.g)),td=k==="anyTD",rp=closed?null:realProp(pl.name,k),u=({passYds:"PASS YDS",comp:"COMP",passTD:"PASS TD",int:"INT",rushYds:"RUSH YDS",rushAtt:"RUSH ATT",rec:"REC",recYds:"REC YDS",rushRec:"RUSH+REC",anyTD:"ANY TD"})[k]||"";
   const own=S.lines[pl.name+"|"+k];
-  return `<div class="pcl noglo"><div class="pcv">${td?"TD":line}<small>${u}</small></div><div class="pcm"><b>${td?"Anytime touchdown":MARKETS[k].n}</b><div class="pco">${rp?`${rp[1]!=null?`<span class="o">${td?"Yes":"Over"} ${amTxt(rp[1])}</span>`:""}${rp[2]!=null?`<span class="u">Under ${amTxt(rp[2])}</span>`:""}${rp[3]?`<span class="bk">${esc(rp[3])}</span>`:""}`:`<span class="bk">${own?"Your line":"No book line yet · his season average"}</span>`}</div></div></div>
+  return `<div class="pcl noglo"><div class="pcv">${td?"TD":line}<small>${u}</small></div><div class="pcm"><b>${td?"Anytime touchdown":MARKETS[k].n}</b><div class="pco">${rp?`${rp[1]!=null?`<span class="o">${td?"Yes":"Over"} ${amTxt(rp[1])}</span>`:""}${rp[2]!=null?`<span class="u">Under ${amTxt(rp[2])}</span>`:""}${rp[3]?`<span class="bk">${esc(rp[3])}</span>`:""}`:`<span class="bk">${closed?"🔒 Game started — pregame lines closed":own?"Your line":"No book line yet · his season average"}</span>`}</div></div></div>
    ${rp&&typeof nflVerdict!=="undefined"?nflVerdict(pl.name,k):""}${rp?trackRow({pl,k}):""}`}
 function nflPropFilterCard(pl,k,line,CL){const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);
   const o9=oppOf(pl.team),rr=o9&&typeof NFL_RST!=="undefined"?NFL_RST[(o9.g.wk||PLAYS_WEEK)+"|"+pl.team]:null;
@@ -3620,6 +3622,14 @@ function nbaKeyMu(g){const out=[],N=30;
     <div class="kmr"><span>${nbaBadge(e.off)} offense <b>${nbaOrd(e.ro)}</b> <small>${e.ov}${e.u}</small></span>${bar(e.ro)}</div>
     <div class="kmr"><span>${nbaBadge(e.def)} defense <b>${nbaOrd(e.rd)}</b> <small>${e.dv}${e.u} allowed</small></span>${bar(e.rd)}</div>
     <div class="kmv noglo">${e.c==="up"?`Edge <b>${nbaEsc(nbaShort(e.off))}</b> — strength meets a weak spot`:`Tough spot for <b>${nbaEsc(nbaShort(e.off))}</b> — weakness meets a strong defense`}</div></div>`).join("")}</div>`}
+
+/* ===== NFL final score block (static finals + ESPN live finals) ===== */
+function nflFinalBlock(g,as,hs){const L=typeof LINES!=="undefined"?LINES[g.id]:null,aw=as>hs,tie=as===hs,tot=as+hs;
+  const row=(t,sc,win)=>`<tr class="${win?"w":""}"><td><div class="ngn">${badge(t)}<div><b>${esc(short(t))}</b><small>${recTxt(t)}</small></div></div></td><td class="fsc">${sc}${win?" ◂":""}</td></tr>`;
+  const ch=[];if(L&&L.sp!=null){const m=hs-as+L.sp;ch.push(m===0?`Spread: push`:m>0?`✅ ${esc(short(g.home))} covered ${L.sp>0?"+":""}${L.sp}`:`✅ ${esc(short(g.away))} covered ${-L.sp>0?"+":""}${-L.sp}`)}
+  if(L&&L.tot!=null)ch.push(tot>L.tot?`⬆️ Over ${L.tot} (${tot} pts)`:tot<L.tot?`⬇️ Under ${L.tot} (${tot} pts)`:`Total push (${tot})`);
+  return `<div class="nfin"><div class="ngt">${esc(short(g.away))} <span>@</span> ${esc(short(g.home))} <span class="tag real">Final</span></div>
+   <table class="ngtab fint"><tbody>${row(g.away,as,!tie&&aw)}${row(g.home,hs,!tie&&!aw)}</tbody></table>${ch.length?`<div class="gchips">${ch.map(x=>`<span>${x}</span>`).join("")}</div>`:""}</div>`}
 /* ---------- Live scores (NFL + NBA) from ESPN's public scoreboard feed ----------
    Runs in the visitor's browser, refreshes every 30 s while games are on. If the feed can't be
    reached (some hosts block outside requests), everything fails silently and the site shows its
@@ -3757,8 +3767,9 @@ async function liveDecorate(){
   }
   /* NFL game cards + game page */
   if(typeof SLATE!=="undefined"){
-    document.querySelectorAll("#v-games .game[data-g]").forEach(c=>{const g=SLATE.find(x=>String(x.id)===c.dataset.g);if(!g||g.final)return;
-      livePut(c,liveBar("nfl",liveGet("nfl",g.away,g.home)),c.querySelector(".when")&&c.querySelector(".when").nextSibling)});
+    document.querySelectorAll("#v-games .game[data-g]").forEach(c=>{const g=SLATE.find(x=>String(x.id)===c.dataset.g);if(!g||g.final)return;const lg=liveGet("nfl",g.away,g.home);
+      if(lg&&lg.st==="post"&&typeof nflFinalBlock!=="undefined"){livePut(c,"");let f=c.querySelector(":scope > .nfin");const html=nflFinalBlock(g,lg.as,lg.hs);if(f)f.outerHTML=html;else c.querySelector(".when").insertAdjacentHTML("afterend",html);c.classList.add("isfin");return}
+      livePut(c,liveBar("nfl",lg),c.querySelector(".when")&&c.querySelector(".when").nextSibling)});
     if(h.startsWith("game-")){const g=SLATE.find(x=>String(x.id)===h.slice(5)),sb=document.querySelector("#v-game .scoreboard");
       if(g&&!g.final&&sb){const host=sb.parentElement,html=liveBar("nfl",liveGet("nfl",g.away,g.home));let el=host.querySelector(":scope > .livebar");
         if(!html){if(el)el.remove()}else if(el)el.outerHTML=html;else sb.insertAdjacentHTML("beforebegin",html)}}
@@ -4668,16 +4679,15 @@ function nflGameCard(g,pj){
    <table class="ngtab"><thead><tr><th></th><th>Spread</th><th>Win</th><th>Team pts</th></tr></thead><tbody>${row(g.away,false)}${row(g.home,true)}</tbody></table>
    ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${col(g.away)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${col(g.home)}"></div></div>
    <div class="nbwpl"><span>${g.away} ${Math.round(W.a*100)}%</span><span class="small">chance to win (from the odds)</span><span>${g.home} ${Math.round(W.h*100)}%</span></div>`:""}
+   ${nflStarted(g)&&!g.final?`<div class="nbsay noglo">${nflDone(g)?"🏁 Game over — the final score shows here as soon as it's in":"🔴 In progress — player props are closed"}</div>`:""}
    ${L?`<div class="nbsay">${fav?`${esc(short(fav))} favored by <b>${Math.abs(L.sp)}</b> · `:""}total points line <b>${L.tot}</b></div>`:`<div class="nbsay">Lines not posted yet</div>`}
    <div class="gchips"><span>🔮 Our pick: <b>${esc(short(pj.win))} ${Math.max(pj.a,pj.h)}–${Math.min(pj.a,pj.h)}</b></span><span>📈 ATS <b>${g.away} ${ATS[g.away]||"–"}</b> · <b>${g.home} ${ATS[g.home]||"–"}</b></span></div>
    ${typeof moveMini!=="undefined"?moveMini(g):""}${typeof restMini!=="undefined"?restMini(g):""}${wxMini(g)}
    ${out.length?`<div class="nbout">Out: <b>${out.map(x=>esc(x[0])+" ("+x[1]+")").join(", ")}</b></div>`:""}</div>`}
 function viewGames(){
-  const order=[...SLATE.filter(g=>!g.final&&!(g.wk&&g.wk<PLAYS_WEEK&&nflDone(g))),...SLATE.filter(g=>g.final)];
+  const order=[...SLATE.filter(g=>!g.final),...SLATE.filter(g=>g.final)];
   const cards=order.map(g=>{
-    if(g.final){const aw=g.final[0]>g.final[1];return `<div class="card game" data-g="${g.id}"><div class="when"><span>${g.when}</span><span class="tag real">Final</span></div>
-      <div class="tm ${aw?"":"lose"}">${badge(g.away)}<span class="nm">${short(g.away)}<small>${recTxt(g.away)}</small></span><span class="sc">${g.final[0]}</span></div>
-      <div class="tm ${aw?"lose":""}">${badge(g.home)}<span class="nm">${short(g.home)}<small>${recTxt(g.home)}</small></span><span class="sc">${g.final[1]}</span></div></div>`}
+    if(g.final)return `<div class="card nbag nbg2 game" data-g="${g.id}"><div class="when"><span><b style="color:var(--text)">${esc(g.when)}</b></span><span>Box score →</span></div>${nflFinalBlock(g,g.final[0],g.final[1])}</div>`;
     const pj=projScore(g);return nflGameCard(g,pj)}).join("");
   const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:"";
   $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nfl",4):""}${typeof nfWeekTabs!=="undefined"?nfWeekTabs("games"):""}<p class="sub">${SLATE.filter(g=>!g.final).length} games to play, ${SLATE.filter(g=>g.final).length} final. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
