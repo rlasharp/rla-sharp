@@ -31,7 +31,10 @@ for l in lines:
     if not l or l.startswith("#"): continue
     x = l.split("|"); rows[(x[0], x[1])] = l
 v = lambda a: "" if a is None else str(a); added = 0; miss = set()
+evday = {str(e.get("id")): e.get("date") for e in nba.get("events", [])}
+stale = 0
 for r in nba.get("props", []):
+    if day and len(r) > 13 and evday.get(str(r[13])) and evday[str(r[13])] != day: stale += 1; continue   # yesterday's game still in the feed
     nm = find(r[0])
     if not nm: miss.add(r[0]); continue
     best = r[6:10]
@@ -39,4 +42,4 @@ for r in nba.get("props", []):
 note = f"# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of {nba.get('at', '?')} + covers.com/FanDuel pulls."
 hdr = [h for h in hdr if not h.startswith("# Only real")] + [note]
 open(f, "w", encoding="utf-8").write("\n".join(hdr + sorted(rows.values())) + "\n")
-print(f"liveprops: {added} feed lines merged, {len(rows)} total, unmatched names: {sorted(miss)}")
+print(f"liveprops: {added} feed lines merged ({stale} skipped from other days), {len(rows)} total, unmatched names: {sorted(miss)}")
