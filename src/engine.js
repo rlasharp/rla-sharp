@@ -17,7 +17,7 @@ const TEAMS = {
 const TEAM_IDS = Object.keys(TEAMS);
 // Week 9 slate (nflverse schedule; kickoff times ET from ESPN). wp = home win probability from feed (null = not provided)
 const SLATE = [
- {id:"mnf8",away:"CHI",home:"SEA",when:"Mon Nov 2 · 8:15 PM",wp:null,tv:"MNF",wk:8},
+ {id:"mnf8",away:"CHI",home:"SEA",final:[34,17],when:"Mon Nov 2 · 8:15 PM",wp:null,tv:"MNF",wk:8},
  {id:1,away:"JAX",home:"BAL",when:"Thu Nov 5 · 8:15 PM",wp:null,tv:"TNF"},
  {id:2,away:"CIN",home:"ATL",when:"Sun Nov 8 · 9:30 AM",wp:null},
  {id:3,away:"CLE",home:"NO",when:"Sun Nov 8 · 1:00 PM",wp:null},
@@ -37,21 +37,21 @@ const SLATE = [
 // REAL lines: DraftKings current lines on ESPN's NFL odds page, Mon Nov 2 2026 (evening refresh). sp = HOME spread, ml = [away, home]
 const LINES = {
  mnf8:{sp:-3.5,ml:[145,-175],tot:46.5}, // Week 8 Monday night, DraftKings via ESPN odds page (Nov 2 evening)
- 1:{sp:8.5,ml:[-410,320],tot:42.5},
- 2:{sp:3,ml:[-166,140],tot:51.5},
+ 1:{sp:8.5,ml:[-470,360],tot:42.5},
+ 2:{sp:3,ml:[-162,136],tot:52.5},
  3:{sp:-2.5,ml:[120,-142],tot:43.5},
- 4:{sp:6,ml:[-265,215],tot:51.5},
+ 4:{sp:6,ml:[-270,220],tot:51.5},
  5:{sp:3,ml:[-148,124],tot:43.5},
- 6:{sp:7,ml:[-375,295],tot:50.5},
- 7:{sp:5.5,ml:[-218,180],tot:47.5},
- 8:{sp:3.5,ml:[-170,142],tot:39.5},
- 9:{sp:-9.5,ml:[360,-470],tot:46.5},
- 10:{sp:4.5,ml:[-218,180],tot:40.5},
- 11:{sp:-9.5,ml:[380,-500],tot:51.5},
- 12:{sp:-11.5,ml:[500,-700],tot:44.5},
- 13:{sp:-3,ml:[130,-155],tot:47.5},
- 14:{sp:-5.5,ml:[195,-238],tot:47.5},
- 15:{sp:3.5,ml:[-180,150],tot:46.5}
+ 6:{sp:7,ml:[-360,285],tot:50.5},
+ 7:{sp:5.5,ml:[-238,195],tot:47.5},
+ 8:{sp:3.5,ml:[-175,145],tot:40.5},
+ 9:{sp:-9.5,ml:[370,-485],tot:46.5},
+ 10:{sp:4.5,ml:[-198,164],tot:40.5},
+ 11:{sp:-10,ml:[410,-550],tot:51.5},
+ 12:{sp:-11.5,ml:[490,-675],tot:44.5},
+ 13:{sp:-3,ml:[130,-155],tot:46.5},
+ 14:{sp:-6,ml:[205,-250],tot:46.5},
+ 15:{sp:3.5,ml:[-185,154],tot:46.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
 const SPLITS = {};
