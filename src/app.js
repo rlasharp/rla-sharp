@@ -162,7 +162,7 @@ function appAfterRoute(){tabbarRender();favDecorate();{const ms=document.getElem
 window.addEventListener("hashchange",()=>setTimeout(appAfterRoute,40));
 window.addEventListener("load",()=>{setTimeout(appAfterRoute,60);ageGate()});
 /* NFL player view re-renders on market tabs: watch for it */
-new MutationObserver(()=>{if((location.hash||"")==="#props")favDecorate()}).observe(document.documentElement,{childList:true,subtree:true});
+new MutationObserver(()=>{if(/^#props(\/|$)/.test(location.hash||""))favDecorate()}).observe(document.documentElement,{childList:true,subtree:true});
 
 /* ===== NBA role changes: minutes trend + lineup moves ===== */
 function nbaRole(nm){

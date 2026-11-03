@@ -560,7 +560,8 @@ function allGameRows(pl,CL,CLall,qmode,QM,k,ouTag,QA){
    :`<tr style="opacity:.6"><td class="small">Week ${r.w}</td><td>${r.g.home?"vs":"at"} ${r.g.opp}</td><td class="r small" colspan="2">${notes[r.w]?esc(notes[r.w]):"Did not play"}</td></tr>`).join("")}
 function viewPlayer(){
   if(S.prop&&S._lastPl!==S.prop.player){if(typeof PXS!=="undefined")for(const key in PXS)delete PXS[key];S.prop.xt=null;S._lastPl=S.prop.player}
-  const P=allPlayers();const pl=P.find(p=>p.name===S.prop.player);if(!pl){S.prop={};return viewProps()}
+  const P=allPlayers();const pl=P.find(p=>p.name===S.prop.player);if(!pl){S.prop={};try{history.replaceState(null,"","#props")}catch(e){}return viewProps()}
+  try{const want="#props/"+encodeURIComponent(pl.name)+(S.prop.market?"/"+S.prop.market:"");if(location.hash!==want)history.replaceState(null,"",want)}catch(e){} /* refresh keeps the player page */
   const L0=pLogs(pl.name);const MK=marketsFor(pl.pos).filter(m=>realProp(pl.name,m)||L0.length);
   if(!S.prop.market||!MK.includes(S.prop.market))S.prop.market=nflDefMk(pl,MK);
   const k=S.prop.market,o=oppOf(pl.team),opp=o?o.opp:null,L=pLogs(pl.name),line=lineFor(pl.name,k),dv=opp?dvpFor(opp,pl.pos,k):{rank:NaN,avg:NaN};
@@ -587,7 +588,7 @@ function viewPlayer(){
    <div class="section">
     ${v10.length?"":`<div class="card"><h2>Game log</h2><p class="note">No game log loaded for ${esc(pl.name)} yet.</p></div>`}</div>
    ${nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA)}`;
-  $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;if(location.hash!=="#props")location.hash="props";else viewProps()};
+  $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;try{history.replaceState(null,"","#props")}catch(x){}viewProps()};
   {const px=$("#pxNfl");if(px&&typeof pxFilterWire!=="undefined")pxFilterWire(px)}
   if(typeof pxSwipe!=="undefined")pxSwipe($("#pxNfl"),"#v-props [data-m]");
   if(typeof pxRecentAdd!=="undefined")pxRecentAdd("nfl",pl.name,k);
@@ -679,7 +680,8 @@ function route(){
     nbaRoute(h);window.scrollTo(0,0);return;
   }
   document.querySelectorAll("#nbaNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===h));
-  let v=h.startsWith("game-")?"game":h;
+  if(h.startsWith("props/")){const [,nm,mk]=h.split("/");if(nm&&(!S.prop||S.prop.player!==nm||!S.prop.open))S.prop={player:nm,market:mk||null,open:true};else if(S.prop&&mk)S.prop.market=mk}
+  let v=h.startsWith("game-")?"game":h.startsWith("props/")?"props":h;
   if(v==="slate")v="games";
   if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek"].includes(v))v="today";
   if(v!=="props"&&S.prop)S.prop.open=false;
