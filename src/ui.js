@@ -10,7 +10,7 @@ Object.assign(MARKETS.rushRec,{n:"Rush + rec yards",u:"rush+rec yds"});Object.as
 const POSNAME={QB:"quarterbacks",RB:"running backs",WR:"wide receivers",TE:"tight ends"};
 const short=t=>TEAMS[t][0].split(" ").slice(-1)[0];
 const badge=t=>`<span class="ab" style="background:${TEAMS[t][3]}">${t}</span>`;
-const recTxt=t=>TEAMS[t][1]+"-"+TEAMS[t][2];
+const recTxt=t=>TEAMS[t][1]+"-"+TEAMS[t][2]+(TEAMS[t].ties?"-"+TEAMS[t].ties:"");
 const ordinal=n=>{const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])};
 const sideLine=v=>(v>0?"+":"")+v;
 function confOf(p){return p>=.6?3:p>=.55?2:p>=.52?1:0}
@@ -107,12 +107,13 @@ function nflGameCard(g,pj){
    ${typeof moveMini!=="undefined"?moveMini(g):""}${typeof restMini!=="undefined"?restMini(g):""}${wxMini(g)}
    ${out.length?`<div class="nbout">Out: <b>${out.map(x=>esc(x[0])+" ("+x[1]+")").join(", ")}</b></div>`:""}</div>`}
 function viewGames(){
-  const order=[...SLATE.filter(g=>!g.final),...SLATE.filter(g=>g.final)];
+  const wk0=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:0,cur=SLATE.filter(g=>!(g.final&&g.wk&&g.wk<wk0)); /* last week's leftover game drops off once it's final */
+  const order=[...cur.filter(g=>!g.final),...cur.filter(g=>g.final)];
   const cards=order.map(g=>{
     if(g.final)return `<div class="card nbag nbg2 game" data-g="${g.id}"><div class="when"><span><b style="color:var(--text)">${esc(g.when)}</b></span><span>Box score →</span></div>${nflFinalBlock(g,g.final[0],g.final[1])}</div>`;
     const pj=projScore(g);return nflGameCard(g,pj)}).join("");
   const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:"";
-  $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nfl",4):""}${typeof nfWeekTabs!=="undefined"?nfWeekTabs("games"):""}<p class="sub">${SLATE.filter(g=>!g.final).length} games to play, ${SLATE.filter(g=>g.final).length} final. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
+  $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nfl",4):""}${typeof nfWeekTabs!=="undefined"?nfWeekTabs("games"):""}<p class="sub">${cur.filter(g=>!g.final).length} games to play${cur.some(g=>g.final)?`, ${cur.filter(g=>g.final).length} final`:""}. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
    <div class="games">${cards}</div>
    <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary>
    <p class="small" style="margin:8px 0 0"><b>Moneyline</b>: bet on who wins. <b>Spread</b>: the favorite must win by more than the number. <b>Total</b>: will both teams' points add up to more or less than the line? <b>🔮 Prediction</b>: our model's projected score and win chance — an estimate, not a sure thing. New to betting? See <a href="#guide" style="color:inherit">Betting 101</a>.</p></details>

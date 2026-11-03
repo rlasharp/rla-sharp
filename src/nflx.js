@@ -1,3 +1,16 @@
+/* Team records always follow RESULTS (real.js, updated with every final by the 2-hour job) — so a Monday-night
+   final shows up in every record right away instead of waiting for the weekly rebuild. */
+(function(){if(typeof RESULTS==="undefined"||typeof TEAMS==="undefined")return;
+  const conf={},div={};if(typeof NFL_DIV!=="undefined")for(const [d,T] of Object.entries(NFL_DIV))T.forEach(t=>{div[t]=d;conf[t]=d.split(" ")[0]});
+  const S={};Object.keys(TEAMS).forEach(t=>S[t]={w:0,l:0,t:0,pf:0,pa:0,hw:0,hl:0,aw:0,al:0,dw:0,dl:0,cw:0,cl:0,seq:[]});
+  [...RESULTS].sort((a,b)=>a[0]-b[0]).forEach(([w,a,ap,h,hp])=>{for(const [t,o,me,op,home] of [[a,h,ap,hp,0],[h,a,hp,ap,1]]){const x=S[t];if(!x)continue;
+    const r=me>op?"W":me<op?"L":"T";x.pf+=me;x.pa+=op;x.seq.push(r);if(r==="W")x.w++;else if(r==="L")x.l++;else x.t++;
+    if(r!=="T"){x[(home?"h":"a")+(r==="W"?"w":"l")]++;if(div[t]&&div[t]===div[o])x[r==="W"?"dw":"dl"]++;if(conf[t]&&conf[t]===conf[o])x[r==="W"?"cw":"cl"]++}}});
+  const n=Object.values(S).reduce((a,x)=>a+x.w+x.l+x.t,0),old=typeof NFL_STAND!=="undefined"?Object.values(NFL_STAND).reduce((a,x)=>a+x.w+x.l+(x.t||0),0):0;
+  for(const [t,x] of Object.entries(S)){if(!x.seq.length)continue;TEAMS[t][1]=x.w;TEAMS[t][2]=x.l;TEAMS[t].ties=x.t;
+    if(typeof NFL_STAND!=="undefined"&&n>=old){let k=x.seq.length-1;const c=x.seq[k];while(k>=0&&x.seq[k]===c)k--;
+      NFL_STAND[t]=Object.assign(NFL_STAND[t]||{},{w:x.w,l:x.l,t:x.t,pf:x.pf,pa:x.pa,hw:x.hw,hl:x.hl,aw:x.aw,al:x.al,dw:x.dw,dl:x.dl,cw:x.cw,cl:x.cl,
+        l5:x.seq.slice(-5).join(""),strk:c+(x.seq.length-1-k),pct:+((x.w+x.t/2)/(x.w+x.l+x.t)).toFixed(3)})}}})();
 /* ---------- NFL extras: standings + playoff picture, upcoming schedule, target/snap share, pass rush vs O-line ----------
    Data: nfl_extra.js (tools/nflgen.py, nflverse). */
 const NFX=typeof NFL_STAND!=="undefined";
