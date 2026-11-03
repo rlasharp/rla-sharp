@@ -17,7 +17,7 @@ if [ "$WHAT" = nba ] || [ "$WHAT" = all ]; then
     if node tools/nbagen.mjs "$WORK/nba" "$TODAY" > "$WORK/nd.js" 2> "$WORK/nbagen.log" && [ -s "$WORK/nd.js" ]; then cp "$WORK/nd.js" nba_data.js
       [ -f "$ROOT/data/live_odds.json" ] && python3 tools/liveprops.py "$ROOT/data/live_odds.json" "$TODAY" | tee -a "$WORK/summary.txt"
       node tools/nbagen.mjs "$WORK/nba" "$TODAY" > "$WORK/nd.js" 2>> "$WORK/nbagen.log" && cp "$WORK/nd.js" nba_data.js
-      grep -q "^$TODAY|" data/nba_plays.txt || { node tools/nbaplays.mjs >> "$WORK/summary.txt" 2>&1 && node tools/nbagen.mjs "$WORK/nba" "$TODAY" > "$WORK/nd.js" 2>> "$WORK/nbagen.log" && cp "$WORK/nd.js" nba_data.js; }
+      grep -q "^$TODAY|" data/nba_plays.txt || { node tools/nbaplays.mjs --window=360 >> "$WORK/summary.txt" 2>&1 && node tools/nbagen.mjs "$WORK/nba" "$TODAY" > "$WORK/nd.js" 2>> "$WORK/nbagen.log" && cp "$WORK/nd.js" nba_data.js; }
       log "NBA data: $(tail -1 "$WORK/nbagen.log")"
     else cp "$WORK/nba_data.bak" nba_data.js; log "NBA data generation FAILED — kept old (see nbagen.log)"; fi
   else log "hoopR download FAILED — NBA data kept as is"; fi

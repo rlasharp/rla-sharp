@@ -22,6 +22,11 @@ const head = "# NBA Plays of the day, locked before tip-off: date|player|market|
 const old = fs.existsSync(f) ? fs.readFileSync(f, "utf8").split("\n").filter(s => s && !s.startsWith("#")) : [];
 const already = old.filter(s => s.startsWith(date + "|"));
 if (started && !force) { console.error(`First game of ${date} has started — keeping ${already.length} locked plays (use --force to override).`); process.exit(0); }
+// --window=N: only lock when the first tip is at most N minutes away (props are mostly posted by then)
+const win = +((process.argv.find(a => a.startsWith("--window=")) || "").split("=")[1] || 0);
+const toTip = ymd === date ? tipMin - (nowET.getHours() * 60 + nowET.getMinutes()) : 9999;
+if (!force && win && toTip > win) { console.error(`First tip is ${toTip} min away — waiting to lock (window ${win} min).`); process.exit(0); }
+if (!force && !plays.length) { console.error(`No plays qualify yet for ${date} — not locking.`); process.exit(0); }
 const keep = old.filter(s => !s.startsWith(date + "|"));
 fs.writeFileSync(f, head + [...keep, ...plays.map(p => p.join("|"))].join("\n") + "\n");
 console.error(`Locked ${plays.length} plays for ${date}: ` + plays.map(p => `${p[1]} ${p[3] === "o" ? "O" : "U"}${p[4]} ${p[2]}`).join("; "));
