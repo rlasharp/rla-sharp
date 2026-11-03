@@ -27,19 +27,38 @@ function viewStandings(){
    <p class="note" style="margin-top:10px">Source: nflverse schedule & results (open data).</p>`;
   if(typeof viewTrends!=="undefined")viewTrends();
 }
+function nfTeamQb(t){const q=typeof QB1_STATUS!=="undefined"&&QB1_STATUS[t];if(q&&q.qb)return q.qb;const U=typeof USAGE_RAW!=="undefined"?USAGE_RAW:{};
+  const c=Object.entries(U).filter(([,u])=>u.tm===t&&u.pos==="QB").sort((a,b)=>(b[1].s.snap||0)*b[1].g-(a[1].s.snap||0)*a[1].g)[0];return c?c[0]:null}
+function nfOlHurt(t){return ((typeof INJ!=="undefined"&&INJ[t])||[]).filter(r=>/^(OT|T|G|C|OL|OG)$/.test(r[1])&&/out|doubt|quest/i.test(r[2]))}
+function nfQbLg(){if(nfQbLg.v)return nfQbLg.v;const Q=Object.values(typeof NFL_QBP!=="undefined"?NFL_QBP:{});let a=0,b=0,c=0,d=0;Q.forEach(q=>{a+=q.py*q.pdb;b+=q.pdb;c+=q.cy*(q.db-q.pdb);d+=q.db-q.pdb});return nfQbLg.v={py:b?a/b:0,cy:d?c/d:0}}
+function nfRushVerdict(off,def){const R=typeof NFL_RUSH!=="undefined"?NFL_RUSH:{};const O=R[off],D=R[def];if(!O||!D)return null;
+  const hurt=nfOlHurt(off).filter(r=>/out|doubt/i.test(r[2])).length,oR=Math.round((O.o.pR+O.o.p4R)/2)+(hurt>=2?6:hurt?3:0),dR=Math.round((D.d.pR+D.d.p4R)/2);
+  const sc=(oR-16.5)+(16.5-dR);return sc>=13?"bad":sc<=-13?"good":oR>=24?"leaky":dR<=5?"rush":oR<=6?"wall":"even"}
 function nfPressCard(g){
-  if(!NFX||!NFL_PRESS[g.away]||!NFL_PRESS[g.home])return "";
-  const side=(off,def)=>{const O=NFL_PRESS[off],D=NFL_PRESS[def];const gap=O.sackAR-D.sackDR; /* high allowed rank number = allows many sacks */
-    const w=O.sackAR>=22&&D.sackDR<=10?[`🔥 ${short(def)} pass rush vs a leaky ${short(off)} line — sacks/pressure likely; leans: ${short(off)} QB unders, ${short(def)} sacks overs.`,"dn"]
-      :O.sackAR<=8&&D.sackDR>=23?[`🛡️ ${short(off)}'s line should keep the QB clean — good for passing yards.`,"up"]:["Even matchup up front.",""];
-    return `<div class="card"><h3 style="margin:0 0 8px">${badge(off)} ${esc(short(off))} line <span class="small">vs</span> ${badge(def)} ${esc(short(def))} pass rush</h3>
-      <div class="ovd head"><div></div><div>${esc(short(off))} O-line allows</div><div>${esc(short(def))} defense gets</div></div>
-      <div class="ovd"><div class="ovl">Sack rate</div><div><b>${O.sackA}%</b> ${rankPill(O.sackAR)}${rkBar(O.sackAR)}</div><div><b>${D.sackD}%</b> ${rankPill(D.sackDR)}${rkBar(D.sackDR)}</div></div>
-      <div class="ovd"><div class="ovl">QB hit rate</div><div><b>${O.hitA}%</b> ${rankPill(O.hitAR)}${rkBar(O.hitAR)}</div><div><b>${D.hitD}%</b> ${rankPill(D.hitDR)}${rkBar(D.hitDR)}</div></div>
-      <div class="small ${w[1]}" style="margin-top:8px;font-weight:600">${w[0]}</div></div>`};
-  return `<div class="section"><h2>Pass rush vs offensive line</h2><p class="small" style="margin-top:-6px">Per dropback this season. Rank 1st = best (fewest allowed for a line, most created for a defense). Pressure drives sacks, rushed throws and interceptions. Source: nflverse play-by-play.</p>
+  const R=typeof NFL_RUSH!=="undefined"?NFL_RUSH:null,P=typeof NFL_PRESS!=="undefined"?NFL_PRESS:{};
+  if(!R||!R[g.away]||!R[g.home])return "";
+  const row=(lbl,a,ar,b,br)=>`<div class="ovd"><div class="ovl">${lbl}</div><div>${a==null?"—":`<b>${a}%</b> ${rankPill(ar)}${rkBar(ar)}`}</div><div>${b==null?"—":`<b>${b}%</b> ${rankPill(br)}${rkBar(br)}`}</div></div>`;
+  const side=(off,def)=>{const O=R[off].o,D=R[def].d,PO=P[off]||{},PD=P[def]||{},so=esc(short(off)),sd=esc(short(def));
+    const hurt=nfOlHurt(off),qb=nfTeamQb(off),q=qb&&typeof NFL_QBP!=="undefined"?NFL_QBP[qb]:null,lg=nfQbLg(),v=nfRushVerdict(off,def);
+    const w=v==="bad"?[`🔥 Edge: ${sd} pass rush. Lean ${so} QB yards/attempts unders and ${sd} sacks overs; long passes get harder.`,"dn"]
+      :v==="good"?[`🛡️ Edge: ${so} line. The QB should have time — good for passing yards and deep shots.`,"up"]
+      :v==="leaky"?[`⚠️ The ${so} line struggles to protect${hurt.some(r=>/out|doubt/i.test(r[2]))?" and is banged up":""}, but the ${sd} rush is only average — slight lean to ${so} QB unders.`,"dn"]
+      :v==="rush"?[`⚠️ The ${sd} pass rush is one of the best — even a decent line can get beat. Slight lean to ${so} QB unders.`,"dn"]
+      :v==="wall"?[`🛡️ The ${so} line is one of the best — the QB should mostly stay clean.`,"up"]:["Even matchup up front.",""];
+    const qbl=q?`<div class="small" style="margin-top:8px"><b>${esc(qb)}</b> is pressured on ${Math.round(100*q.pdb/q.db)}% of dropbacks. Under pressure: <b>${q.py}</b> yds per dropback <span class="${q.py>=lg.py+0.5?"up":q.py<=lg.py-0.5?"dn":""}">(NFL QBs ${lg.py.toFixed(1)})</span> vs <b>${q.cy}</b> when clean. INTs: ${q.pi}% of throws under pressure vs ${q.ci}% clean.${q.bdb>=25&&q.by!=null?` Vs the blitz: ${q.by} yds per dropback (${q.ny} without)${D.blzR<=8?` — ${sd} blitzes a lot (${ordinal(D.blzR)})`:""}.`:""}</div>`:"";
+    const ol=hurt.length?`<div class="small" style="margin-top:8px">🩹 <b>${so} O-line this week:</b> ${hurt.map(r=>`${esc(r[0])} (${esc(r[1])}, ${esc(r[2])})`).join(" · ")}</div>`:`<div class="small" style="margin-top:8px">✅ No ${so} offensive linemen on this week's injury report.</div>`;
+    return `<div class="card"><h3 style="margin:0 0 8px">${badge(off)} ${so} line <span class="small">vs</span> ${badge(def)} ${sd} pass rush</h3>
+      <div class="ovd head"><div></div><div>${so} line allows</div><div>${sd} defense gets</div></div>
+      ${row("Pressure",O.p,O.pR,D.p,D.pR)}${row("Pressure, last 4",O.p4,O.p4R,D.p4,D.p4R)}${PO.sackA!=null&&PD.sackD!=null?row("Sacks",PO.sackA,PO.sackAR,PD.sackD,PD.sackDR):""}
+      <div class="ovd"><div class="ovl">Blitz</div><div class="small">—</div><div><b>${D.blz}%</b> ${rankPill(D.blzR)}${rkBar(D.blzR)}</div></div>
+      ${ol}${qbl}<div class="small ${w[1]}" style="margin-top:8px;font-weight:600">${w[0]}</div></div>`};
+  return `<div class="section"><h2>Pass rush vs offensive line</h2><p class="small" style="margin-top:-6px">Per dropback this season (weeks 1–${typeof NFL_RUSH_WK!=="undefined"?NFL_RUSH_WK:""}). <b>Pressure</b> = the QB was sacked, hit or flushed into a scramble. <b>Blitz</b> = 5+ pass rushers. Rank 1st = best (least allowed for a line, most created for a defense). Pressure cuts QB yards and long passes. <span class="tag real">Real</span> nflverse play-by-play + FTN charting; injuries from ESPN.</p>
    <div class="grid g2">${side(g.away,g.home)}${side(g.home,g.away)}</div></div>`;
 }
+function nfRushChip(pl){if(!/^(QB|WR|TE)$/.test(pl.pos)||typeof NFL_RUSH==="undefined")return "";const o=oppOf(pl.team);if(!o)return "";
+  const v=nfRushVerdict(pl.team,o.opp),D=NFL_RUSH[o.opp];if(!v||!D)return "";
+  return v==="bad"?`<span class="qbc r" title="Pressure: ${esc(short(o.opp))} defense ${ordinal(D.d.pR)} · ${esc(short(pl.team))} line ${ordinal(NFL_RUSH[pl.team].o.pR)}">🔥 Tough pass rush (${esc(short(o.opp))} ${ordinal(D.d.pR)})</span>`
+    :v==="good"?`<span class="qbc g" title="Pressure: ${esc(short(pl.team))} line ${ordinal(NFL_RUSH[pl.team].o.pR)} · ${esc(short(o.opp))} defense ${ordinal(D.d.pR)}">🛡️ Clean pocket likely</span>`:""}
 function nfShareCard(g){
   if(!NFX)return "";
   const out=t=>{const R=(NFL_SHARE[t]||[]).filter(r=>!(typeof OUT!=="undefined"&&OUT[r[0]])).slice(0,6);if(!R.length)return "";

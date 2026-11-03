@@ -429,6 +429,8 @@ function snapBtn(sp,nm,k,label){return `<button class="obtn snapb" data-snap="${
 
 /* ===== ⓘ Glossary: tap a term for a one-line explanation ===== */
 const GLOSS=[
+ ["pressure","How often the QB is sacked, hit or flushed into a scramble on a dropback. More pressure = fewer passing yards and long throws.",1],
+ ["blitz","When the defense sends 5 or more pass rushers. More heat on the QB, but fewer players in coverage.",1],
  ["hit score","Our estimated chance this bet wins, built from his recent games, this season, the matchup and the minutes he's getting.",1],
  ["hit rate","How often he went over this line in past games — e.g. 7/10 means over in 7 of his last 10.",1],
  ["DvP","Defense vs Position: how much this opponent gives up to players at his position, ranked 1–30 (30 = softest).",0],
