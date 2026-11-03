@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-03T06:02:35+00:00",
+  "at": "2026-11-03T07:27:34+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 64 games kept (64 new), 1437 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 378 feed lines merged, 354 total, unmatched names: ['Max Strus']\nFirst tip is Infinity min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 92 (through 2026-11-01), players 442, slate 0, lines 15, props 354, inj teams 28, prev-season players 0, play log 3, adv 335, qtr games 92, h2h \nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n214 players, 32 teams\nnfl-inj: 214 players\nnfltgt: 309 players, 32 defenses, weeks 1-8, ftn plays 18374\nnfltgt: 121 games with spreads\nNFL targets/spreads/rest refreshed\nteams 32, QBs 35, weeks 1-8\nNFL pass rush vs O-line refreshed\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 64 games kept (0 new), 1437 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 378 feed lines merged, 354 total, unmatched names: ['Max Strus']\nFirst tip is Infinity min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 92 (through 2026-11-01), players 442, slate 0, lines 15, props 354, inj teams 28, prev-season players 0, play log 3, adv 335, qtr games 92, h2h \nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n214 players, 32 teams\nnfl-inj: 214 players\nnfltgt: 309 players, 32 defenses, weeks 1-8, ftn plays 18374\nnfltgt: 121 games with spreads\nNFL targets/spreads/rest refreshed\nteams 32, QBs 35, weeks 1-8\nNFL pass rush vs O-line refreshed\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-03T06:02:35+00:00",
+  "at": "2026-11-03T07:27:34+00:00",
   "ok": true,
   "issue": ""
  }
