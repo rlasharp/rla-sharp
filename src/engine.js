@@ -37,21 +37,21 @@ const SLATE = [
 // REAL lines: DraftKings current lines on ESPN's NFL odds page, Mon Nov 2 2026 (evening refresh). sp = HOME spread, ml = [away, home]
 const LINES = {
  mnf8:{sp:-3.5,ml:[145,-175],tot:46.5}, // Week 8 Monday night, DraftKings via ESPN odds page (Nov 2 evening)
- 1:{sp:9.5,ml:[-470,360],tot:41.5},
+ 1:{sp:9.5,ml:[-470,360],tot:40.5},
  2:{sp:3,ml:[-162,136],tot:52.5},
- 3:{sp:-2.5,ml:[120,-142],tot:43.5},
+ 3:{sp:-1.5,ml:[100,-120],tot:43.5},
  4:{sp:6,ml:[-278,225],tot:51.5},
  5:{sp:2.5,ml:[-142,120],tot:43.5},
- 6:{sp:7,ml:[-360,285],tot:50.5},
+ 6:{sp:7,ml:[-375,295],tot:50.5},
  7:{sp:5.5,ml:[-245,200],tot:47.5},
  8:{sp:3.5,ml:[-170,142],tot:39.5},
  9:{sp:-9.5,ml:[380,-500],tot:46.5},
  10:{sp:4.5,ml:[-205,170],tot:40.5},
  11:{sp:-10,ml:[410,-550],tot:51.5},
- 12:{sp:-10.5,ml:[440,-600],tot:42.5},
- 13:{sp:-2.5,ml:[124,-148],tot:46.5},
- 14:{sp:-6,ml:[220,-270],tot:46.5},
- 15:{sp:3.5,ml:[-185,154],tot:45.5}
+ 12:{sp:-10.5,ml:[440,-600],tot:41.5},
+ 13:{sp:-3,ml:[140,-166],tot:46.5},
+ 14:{sp:-6,ml:[230,-285],tot:46.5},
+ 15:{sp:3.5,ml:[-180,150],tot:45.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
 const SPLITS = {};
