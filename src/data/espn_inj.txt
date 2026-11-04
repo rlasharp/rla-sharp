@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 01:20Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 03:01Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 James Conner|RB|IR|Foot|Nov 15
@@ -10,6 +10,7 @@ Bam Knight|RB|Questionable|Concussion|Nov 8
 Michael Wilson|WR|Questionable|Ribs|Nov 8
 Jayden Williams|OT|Questionable|Knee|Nov 8
 #ATL
+Yasir Abdullah|LB|IR|Hamstring|Nov 8
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 Brian Robinson Jr.|RB|Questionable|Hamstring|Nov 8
 Divine Deablo|LB|Questionable|Forearm|Nov 8
@@ -32,8 +33,8 @@ Dee Alford|CB|Questionable|Ankle|Nov 9
 Spencer Brown|OT|Questionable|Back|Nov 9
 DJ Moore|WR|Questionable|Knee|Nov 9
 Joshua Palmer|WR|Questionable|Hamstring|Nov 9
-Tyrell Shavers|WR|Out|Knee - ACL|Nov 9
 #CAR
+Brady Christensen|G|IR|Hamstring|Nov 8
 Jonathon Brooks|RB|IR|Abdomen|Nov 8
 Torricelli Simpkins III|G|Questionable|Ankle|Nov 8
 Damien Lewis|G|Questionable|Knee|Nov 8
@@ -73,8 +74,8 @@ Brandon Jones|S|Questionable|Hamstring|Nov 8
 Kris Abrams-Draine|CB|Questionable|Ankle|Nov 8
 RJ Harvey|RB|IR|Knee|Dec 6
 #DET
-Kerby Joseph|S|Out|Knee|Nov 15
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
+Kerby Joseph|S|Out|Knee|Nov 15
 D.J. Reed|CB|Questionable|Hip|Nov 8
 Jacob Saylors|RB|Questionable|Neck|Nov 8
 Cade Mays|C|Questionable|Ankle|Nov 8
@@ -100,6 +101,7 @@ Anthony Gould|WR|Questionable|Concussion|Nov 8
 Bryce Boettcher|LB|Questionable|Groin|Nov 8
 Cam Taylor-Britt|CB|IR|Groin|Nov 29
 #JAX
+Travon Walker|DE|Questionable|Ribs|Nov 5
 Eric Murray|S|IR|Elbow|Feb 15
 DaVon Hamilton|DT|IR|Knee|Feb 15
 Jakobi Meyers|WR|Questionable|Hamstring|Nov 5
@@ -108,7 +110,6 @@ Bhayshul Tuten|RB|Questionable|Ankle|Nov 5
 Antonio Johnson|S|Questionable|Ankle|Nov 5
 Branson Combs|LB|Questionable|Shoulder|Nov 5
 Jarrian Jones|CB|Questionable|Ankle|Nov 5
-Travon Walker|DE|Questionable|Ribs|Nov 5
 Ezra Cleveland|G|Questionable|Knee|Nov 5
 #KC
 Mansoor Delane|CB|Questionable|Shoulder|Nov 8
@@ -129,9 +130,9 @@ David Njoku|TE|IR|Lower Leg|Nov 8
 Derwin James Jr.|S|IR|Hamstring|Nov 29
 Denzel Perryman|LB|IR|Undisclosed|Nov 8
 #LAR
+Dean Connors|RB|IR|Hand|Dec 13
 Colby Parkinson|TE|Questionable|Ribs|Nov 8
 Joe Cardona|LS|Questionable|Ankle|Nov 8
-Dean Connors|RB|IR|Hand|Dec 13
 Grant Stuard|LB|Questionable|Hamstring|Nov 8
 Matthew Stafford|QB|Questionable|Arm|Nov 8
 Terrance Ferguson|TE|IR|Ankle|Nov 8
@@ -168,7 +169,6 @@ Marcus Mbow|OT|Questionable|Knee|Nov 8
 Jevon Holland|S|Questionable|Concussion|Nov 8
 Tremaine Edmunds|LB|IR|Chest|Feb 15
 #NYJ
-Tre Brown|CB|Questionable|Finger|Nov 15
 Max Mitchell|OT|IR|Concussion|Dec 13
 Joseph Ossai|DE|Questionable|Ankle|Nov 8
 David Bailey|LB|Questionable|Groin|Nov 8
@@ -181,7 +181,6 @@ Jonathan Jones|CB|Questionable|Hamstring|Nov 8
 Jihaad Campbell|LB|Questionable|Hamstring|Nov 8
 Britain Covey|WR|Questionable|Knee|Nov 8
 Michael Carter II|CB|Questionable|Abdomen|Nov 8
-Dameon Pierce|RB|IR|Undisclosed|Dec 6
 #PIT
 Doneiko Slaughter|CB|Out|Hamstring|Nov 8
 Ben Skowronek|WR|Out|Calf|Nov 8
