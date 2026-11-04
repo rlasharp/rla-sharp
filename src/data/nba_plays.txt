@@ -3,3 +3,6 @@
 2026-11-02|Scoot Henderson|ra|u|5.5|118|FanDuel|POR|DEN
 2026-11-02|Ace Bailey|stl|u|0.5|118|Unibet|UTAH|SA
 2026-11-02|Jase Richardson|pra|u|16.5|-124|Unibet|ORL|WSH
+2026-11-04|Kenrich Williams|stl|u|0.5|104|Unibet|OKC|CLE
+2026-11-04|Scoot Henderson|ra|u|5.5|110|Unibet|POR|PHX
+2026-11-04|Brayden Burries|pra|u|19.5|-115|DraftKings|MIL|BOS
