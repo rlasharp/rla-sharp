@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 15:03Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 17:08Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 James Conner|RB|IR|Foot|Nov 15
@@ -10,11 +10,10 @@ Bam Knight|RB|Questionable|Concussion|Nov 8
 Michael Wilson|WR|Questionable|Ribs|Nov 8
 Jayden Williams|OT|Questionable|Knee|Nov 8
 #ATL
+Brian Robinson Jr.|RB|Questionable|Hamstring|Nov 8
 Yasir Abdullah|LB|IR|Hamstring|Nov 8
 Samson Ebukam|DE|IR|Hamstring|Dec 13
-Brian Robinson Jr.|RB|Questionable|Hamstring|Nov 8
 Divine Deablo|LB|Questionable|Forearm|Nov 8
-Billy Bowman Jr.|CB|Questionable|Hamstring|Nov 8
 Zachariah Branch|WR|Out|Hamstring|Nov 15
 Cameron Williams|OL|IR|Ankle|Nov 8
 Beaux Collins|WR|IR|Hip|Nov 8
@@ -50,11 +49,12 @@ Grady Jarrett|DE|Questionable|Groin|Nov 8
 Malik Muhammad II|CB|Questionable|Toe|Nov 8
 Coby Bryant|S|IR|Knee|Dec 19
 #CIN
+Jordan Battle|S|Questionable|Hamstring|Nov 8
 Cashius Howell|DE|IR|Wrist|Dec 6
 Kyle Dugger|S|Questionable|Quadriceps|Nov 8
-DJ Turner II|CB|Questionable|Ankle|Nov 8
+DJ Turner II|CB|Questionable|Heel|Nov 8
 Cedric Johnson|DE|Questionable|Ankle|Nov 8
-Andrei Iosivas|WR|IR|Thumb|Nov 8
+Andrei Iosivas|WR|IR|Thumb|Nov 15
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
 Deshaun Watson|QB|Questionable|Concussion|Nov 8
@@ -100,12 +100,12 @@ Justin Walley|CB|Questionable|Knee|Nov 8
 Anthony Gould|WR|Questionable|Concussion|Nov 8
 Bryce Boettcher|LB|Questionable|Groin|Nov 8
 #JAX
+Bhayshul Tuten|RB|Questionable|Ankle|Nov 5
 Travon Walker|DE|Questionable|Ribs|Nov 5
 Eric Murray|S|IR|Elbow|Feb 15
 DaVon Hamilton|DT|IR|Knee|Feb 15
 Jakobi Meyers|WR|Questionable|Hamstring|Nov 5
 Chris Rodriguez Jr.|RB|Questionable|Hand|Nov 5
-Bhayshul Tuten|RB|Questionable|Ankle|Nov 5
 Antonio Johnson|S|Questionable|Ankle|Nov 5
 Branson Combs|LB|Questionable|Shoulder|Nov 5
 Jarrian Jones|CB|Questionable|Ankle|Nov 5
@@ -153,8 +153,8 @@ TreVeyon Henderson|RB|Questionable|Illness|Nov 8
 A.J. Brown|WR|Questionable|Ankle|Nov 8
 Gabe Jacas|LB|Questionable|Knee|Nov 8
 #NO
-Travis Etienne Jr.|RB|IR|Hamstring|Nov 8
 Jordyn Tyson|WR|IR|Hamstring|Nov 8
+Travis Etienne Jr.|RB|IR|Hamstring|Nov 8
 Cesar Ruiz|G|Questionable|Knee|Nov 8
 Nathan Shepherd|DT|Questionable|Illness|Nov 8
 Justin Reid|S|Questionable|Concussion|Nov 8
@@ -222,9 +222,9 @@ James Williams Sr.|LB|Questionable|Groin|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 Dorian Mausi|LB|IR|Foot|Nov 15
 #WAS
+Javon Kinlaw|DT|IR|Knee - MCL|Feb 15
 Daron Payne|DT|IR|Foot|Feb 15
-Javon Kinlaw|DT|IR|Knee|Dec 6
-Jeremy McNichols|RB|IR|Foot|Dec 6
+Jeremy McNichols|RB|IR|Foot|Feb 15
 Jer'Zhan Newton|DT|IR|Pectoral|Nov 8
 Terry McLaurin|WR|IR|Knee|Feb 15
 Laremy Tunsil|OT|IR|Triceps|Dec 20
