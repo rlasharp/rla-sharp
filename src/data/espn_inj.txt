@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 13:22Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 15:03Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 James Conner|RB|IR|Foot|Nov 15
@@ -20,8 +20,8 @@ Cameron Williams|OL|IR|Ankle|Nov 8
 Beaux Collins|WR|IR|Hip|Nov 8
 Anterio Thompson|DT|Out|Undisclosed|Feb 15
 #BAL
+Tyler Huntley|QB|Out|Toe|Feb 15
 Tyler Loop|PK|IR|Groin|Dec 13
-Tyler Huntley|QB|Doubtful|Toe|Nov 5
 Jaylinn Hawkins|S|Questionable|Knee|Nov 5
 Roger Rosengarten|OT|Questionable|Ankle|Nov 5
 John Simpson|G|Questionable|Back|Nov 5
@@ -57,6 +57,7 @@ Cedric Johnson|DE|Questionable|Ankle|Nov 8
 Andrei Iosivas|WR|IR|Thumb|Nov 8
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
+Deshaun Watson|QB|Questionable|Concussion|Nov 8
 #DAL
 Dee Winters|LB|Questionable|Calf|Nov 8
 Luke Schoonmaker|TE|Questionable|Groin|Nov 8
@@ -146,9 +147,9 @@ Christian Darrisaw|OT|Questionable|Shoulder|Nov 9
 Kyler Murray|QB|Questionable|Hamstring|Nov 9
 Theo Jackson|S|Questionable|Quadriceps|Nov 9
 #NE
+Mack Hollins|WR|IR|Calf|Nov 8
 Hunter Henry|TE|Questionable|Foot|Nov 8
 TreVeyon Henderson|RB|Questionable|Illness|Nov 8
-Mack Hollins|WR|IR|Calf|Nov 8
 A.J. Brown|WR|Questionable|Ankle|Nov 8
 Gabe Jacas|LB|Questionable|Knee|Nov 8
 #NO
@@ -186,8 +187,8 @@ Brandin Echols|CB|Out|Hamstring|Nov 8
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
-De'Zhaun Stribling|WR|IR|Ankle|Dec 6
 Brandon Aiyuk|WR|Out|Personal|Feb 15
+De'Zhaun Stribling|WR|IR|Ankle|Dec 6
 Marques Sigle|S|Questionable|Ankle|Nov 8
 Garret Wallow|LB|Questionable|Hamstring|Nov 8
 Luke Gifford|LB|Questionable|Groin|Nov 8
