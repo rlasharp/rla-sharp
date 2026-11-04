@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-04 21:03Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-04 22:59Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip|Nov 6
 Jalen Johnson|F|Day-To-Day|ankle|Nov 4
@@ -15,8 +15,7 @@ Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
 Grant Williams|F|Out|hamstring|Nov 9
 Coby White|G|Day-To-Day|calf|Nov 4
 #Chicago Bulls
-Nic Claxton|C|Out|hamstring|Nov 4
-Jalen Smith|F|Day-To-Day|finger|Nov 4
+Nic Claxton|C|Out|hamstring strain|Nov 8
 #Cleveland Cavaliers
 Jaylon Tyson|G|Out|ankle sprain|Nov 6
 Peyton Watson|G|Out|hamstring soreness|Nov 6
@@ -27,7 +26,7 @@ Tarik Biberovic|F|Out|heel inflammation|Nov 12
 Dereck Lively II|C|Out|foot surgery|Nov 12
 Sergio de Larrea|F|Out|knee strain|Nov 6
 #Denver Nuggets
-Cameron Johnson|F|Day-To-Day|ankle|Nov 4
+Cameron Johnson|F|Day-To-Day|lower body|Nov 4
 Alpha Diallo|F|Day-To-Day|wrist|Nov 4
 Spencer Jones|F|Out|hamstring not specified|Nov 11
 Julian Strawther|G|Out|knee sprain|Nov 29
@@ -91,7 +90,7 @@ Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
-Dominick Barlow|F|Out|back fracture|Nov 12
+Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Rasheer Fleming|F|Out|ankle sprain|Nov 5
@@ -101,7 +100,7 @@ Mark Williams|C|Out|shoulder surgery|Feb 3
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 4
+Daeqwon Plowden|G|Out|illness|Nov 6
 Maxime Raynaud|C|Out|knee dislocated|Nov 10
 Keegan Murray|F|Out|ankle|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1
@@ -119,7 +118,6 @@ Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 Trey Alexander|G|Out|knee bruise|Nov 6
 #Washington Wizards
 Bilal Coulibaly|G|Day-To-Day|illness|Nov 4
-Anthony Gill|F|Day-To-Day|back spasms|Nov 4
 Alex Sarr|C|Day-To-Day|knee soreness|Nov 4
 Reece Beekman|G|Out|shoulder|Dec 3
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 9
