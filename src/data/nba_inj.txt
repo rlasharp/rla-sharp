@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-03 22:58Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-04 01:20Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip|Nov 6
 Jalen Johnson|F|Day-To-Day|ankle|Nov 4
@@ -28,7 +28,9 @@ Tarik Biberovic|F|Out|heel inflammation|Nov 12
 Dereck Lively II|C|Out|foot surgery|Nov 12
 Sergio de Larrea|F|Out|knee strain|Nov 6
 #Denver Nuggets
-Spencer Jones|F|Out|hamstring not specified|Nov 4
+Cameron Johnson|F|Day-To-Day|ankle|Nov 4
+Alpha Diallo|F|Day-To-Day|wrist|Nov 4
+Spencer Jones|F|Out|hamstring not specified|Nov 11
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
 Isaiah Joe|G|Out|hip bruise|Nov 8
@@ -44,20 +46,14 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Day-To-Day|ankle sprain|Nov 4
 Steven Adams|C|Out|calf strain|Nov 9
 #Indiana Pacers
-Pascal Siakam|F|Day-To-Day|rest|Nov 4
-Aaron Nesmith|G|Day-To-Day|rest|Nov 4
-Andrew Nembhard|G|Day-To-Day|neck|Nov 4
+Ivica Zubac|C|Out|ankle sprain|Nov 4
 Kelly Oubre Jr.|G|Day-To-Day|knee bruise|Nov 4
-Larry Nance Jr.|F|Day-To-Day|illness|Nov 4
-Obi Toppin|F|Out|coach's decision soreness|Nov 4
+Obi Toppin|F|Out|back soreness|Nov 4
 T.J. McConnell|G|Out|hamstring strain|Nov 9
-Ivica Zubac|C|Out|ankle sprain|Nov 9
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 #LA Clippers
-Derrick Jones Jr.|F|Day-To-Day|knee soreness|Nov 4
-Rui Hachimura|F|Day-To-Day|quadriceps bruise|Nov 4
 Yanic Konan Niederhauser|C|Out|foot surgery|Nov 8
 Brandon Ingram|F|Out|achilles surgery|Nov 8
 Bradley Beal|G|Out|knee inflammation|Nov 8
@@ -66,24 +62,27 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 Adou Thiero|F|Out|knee inflammation|Nov 6
 #Memphis Grizzlies
 Quinten Post|C|Day-To-Day|ankle not specified|Nov 4
-Scotty Pippen Jr.|G|Day-To-Day|back soreness|Nov 4
+Scotty Pippen Jr.|G|Out|back soreness|Nov 6
+#Miami Heat
+Myron Gardner|F|Day-To-Day|quadriceps bruise|Nov 4
+Giannis Antetokounmpo|F|Day-To-Day|wrist sprain|Nov 4
 #Minnesota Timberwolves
 Terrence Shannon Jr.|G|Day-To-Day|hip bruise|Nov 4
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Trey Murphy III|F|Day-To-Day|knee|Nov 4
 Jordan Poole|G|Out|ankle sprain|Nov 4
+Trey Murphy III|F|Day-To-Day|knee|Nov 4
 Yves Missi|C|Out|knee bruise|Nov 8
 #New York Knicks
 Josh Hart|G|Day-To-Day|ankle|Nov 4
 #Oklahoma City Thunder
-Jaylin Williams|F|Day-To-Day|back spasms|Nov 4
+Nikola Topic|G|Out|back|Nov 13
 Thomas Sorber|C|Out|knee|Nov 13
+Jaylin Williams|F|Day-To-Day|back spasms|Nov 4
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
-Nikola Topic|G|Out|back|Nov 13
 #Orlando Magic
 Anthony Black|G|Day-To-Day|rest|Nov 5
 Jonathan Isaac|F|Out|knee not specified|Nov 10
@@ -96,12 +95,13 @@ Dominick Barlow|F|Out|back fracture|Nov 12
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Jordan Goodwin|G|Day-To-Day|calf not specified|Nov 4
+Rasheer Fleming|F|Day-To-Day|ankle sprain|Nov 4
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Dylan Cardwell|C|Out|calf strain|Nov 4
+Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 4
 Maxime Raynaud|C|Out|knee dislocated|Nov 10
 Keegan Murray|F|Out|ankle|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1
@@ -109,13 +109,14 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Nov 9
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Jakob Poeltl|C|Day-To-Day|shoulder inflammation|Nov 4
 Nate Bittle|C|Out|foot fracture|Nov 9
-Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
+Jusuf Nurkic|C|Out|foot strain|Nov 13
+Mo Bamba|C|Day-To-Day|ankle|Nov 4
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 Trey Alexander|G|Out|knee bruise|Nov 6
-Jusuf Nurkic|C|Out|foot strain|Nov 4
 #Washington Wizards
 Anthony Gill|F|Day-To-Day|back spasms|Nov 4
 Alex Sarr|C|Day-To-Day|knee soreness|Nov 4
