@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-04T05:11:56+00:00",
+  "at": "2026-11-04T07:31:32+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 64 games kept (0 new), 1437 player lines\nNBA injuries refreshed\nNBA lines checked\nNBA props reset for 2026-11-04\nliveprops: 1195 feed lines merged (0 skipped from other days), 1141 total, unmatched names: ['Kon Knueppel']\nFirst tip is 1129 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 107 (through 2026-11-02), players 448, slate 14, lines 14, props 1141, inj teams 30, prev-season players 361, play log 3, adv 348, qtr games 107, h2h 4/4/4/3/4/2/3/2/3/2/4/4/4/2\nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n196 players, 32 teams\nnfl-inj: 196 players\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 64 games kept (0 new), 1437 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 1195 feed lines merged (0 skipped from other days), 1141 total, unmatched names: ['Kon Knueppel']\nFirst tip is 989 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 107 (through 2026-11-02), players 448, slate 14, lines 14, props 1141, inj teams 30, prev-season players 361, play log 3, adv 348, qtr games 107, h2h 4/4/4/3/4/2/3/2/3/2/4/4/4/2\nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n196 players, 32 teams\nnfl-inj: 196 players\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-04T05:11:56+00:00",
+  "at": "2026-11-04T07:31:32+00:00",
   "ok": true,
   "issue": ""
  }
