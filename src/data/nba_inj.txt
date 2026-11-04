@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-04 07:31Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-04 09:09Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip|Nov 6
 Jalen Johnson|F|Day-To-Day|ankle|Nov 4
