@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 19:13Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 21:03Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 James Conner|RB|IR|Foot|Nov 15
@@ -19,12 +19,10 @@ Cameron Williams|OL|IR|Ankle|Nov 8
 Beaux Collins|WR|IR|Hip|Nov 8
 Anterio Thompson|DT|Out|Undisclosed|Feb 15
 #BAL
+Nate Wiggins|CB|Questionable|Illness|Nov 5
+Jaylinn Hawkins|S|Out|Knee|Nov 16
 Tyler Huntley|QB|Out|Toe|Feb 15
 Tyler Loop|PK|IR|Groin|Dec 13
-Jaylinn Hawkins|S|Questionable|Knee|Nov 5
-Roger Rosengarten|OT|Questionable|Ankle|Nov 5
-John Simpson|G|Questionable|Back|Nov 5
-John Jenkins|DT|Questionable|Knee|Nov 5
 #BUF
 Greg Gaines|DT|Questionable|Calf|Nov 9
 Dee Alford|CB|Questionable|Ankle|Nov 9
@@ -85,33 +83,28 @@ Brian Branch|S|Questionable|Concussion|Nov 8
 DJ Wonnum|LB|Questionable|Concussion|Nov 8
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
+Zaire Franklin|LB|Questionable|Shin|Nov 8
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Sean Rhyan|G|Questionable|Ankle|Nov 25
-Zaire Franklin|LB|Questionable|Shin|Nov 8
 Travis Glover|OT|Questionable|Knee|Nov 8
 Christian Watson|WR|Questionable|Ribs|Nov 8
 #HOU
+David Montgomery|RB|Out|Groin|Nov 15
 Reed Blankenship|S|Questionable|Concussion|Nov 8
-David Montgomery|RB|Questionable|Groin|Nov 8
 Jaylin Noel|WR|IR|Toe|Feb 15
 Jalen Pitre|S|Questionable|Shoulder - AC Joint|Nov 8
 Blake Fisher|OT|Questionable|Thumb|Nov 8
 #IND
-Alec Pierce|WR|IR|Heel|Nov 8
+Drew Ogletree|TE|Questionable|Knee|Nov 8
+Akeem Davis-Gaither|LB|Questionable|Knee|Nov 8
+Alec Pierce|WR|IR|Heel|Nov 29
 Justin Walley|CB|Questionable|Knee|Nov 8
 Anthony Gould|WR|Questionable|Concussion|Nov 8
-Bryce Boettcher|LB|Questionable|Groin|Nov 8
 #JAX
 Bhayshul Tuten|RB|Questionable|Ankle|Nov 5
 Travon Walker|DE|Questionable|Ribs|Nov 5
 Eric Murray|S|IR|Elbow|Feb 15
 DaVon Hamilton|DT|IR|Knee|Feb 15
-Jakobi Meyers|WR|Questionable|Hamstring|Nov 5
-Chris Rodriguez Jr.|RB|Questionable|Hand|Nov 5
-Antonio Johnson|S|Questionable|Ankle|Nov 5
-Branson Combs|LB|Questionable|Shoulder|Nov 5
-Jarrian Jones|CB|Questionable|Ankle|Nov 5
-Ezra Cleveland|G|Questionable|Knee|Nov 5
 #KC
 Mansoor Delane|CB|Questionable|Shoulder|Nov 8
 Peter Woods|DT|Questionable|Neck|Nov 8
@@ -122,12 +115,12 @@ Darien Porter|CB|Questionable|Groin|Nov 8
 Patrick Johnson|DE|IR|Neck|Nov 29
 Carter Runyon|TE|IR|Foot|Nov 8
 #LAC
+Brenen Thompson|WR|Doubtful|Quadriceps|Nov 8
+David Njoku|TE|IR|Lower Leg|Nov 8
 Rodney Shelley|CB|Questionable|Hamstring|Nov 8
 Donte Jackson|CB|Questionable|Hamstring|Nov 8
 Deane Leonard|CB|Questionable|Concussion|Nov 8
 Kayode Awosika|G|Questionable|Lower Leg|Nov 8
-Brenen Thompson|WR|Questionable|Quadriceps|Nov 8
-David Njoku|TE|IR|Lower Leg|Nov 8
 Derwin James Jr.|S|IR|Hamstring|Nov 29
 Denzel Perryman|LB|IR|Undisclosed|Nov 8
 #LAR
@@ -149,10 +142,10 @@ Christian Darrisaw|OT|Questionable|Shoulder|Nov 9
 Kyler Murray|QB|Questionable|Hamstring|Nov 9
 Theo Jackson|S|Questionable|Quadriceps|Nov 9
 #NE
+Hunter Henry|TE|Questionable|Foot|Nov 8
 TreVeyon Henderson|RB|Questionable|Illness|Nov 8
 A.J. Brown|WR|Questionable|Ankle|Nov 8
 Mack Hollins|WR|IR|Calf|Nov 8
-Hunter Henry|TE|Questionable|Foot|Nov 8
 Gabe Jacas|LB|Questionable|Knee|Nov 8
 #NO
 Jordyn Tyson|WR|IR|Hamstring|Nov 8
@@ -170,11 +163,11 @@ Marcus Mbow|OT|Questionable|Knee|Nov 8
 Jevon Holland|S|Questionable|Concussion|Nov 8
 Tremaine Edmunds|LB|IR|Chest|Feb 15
 #NYJ
+David Bailey|LB|Questionable|Groin|Nov 8
 Breece Hall|RB|Questionable|Quadriceps|Nov 8
 Garrett Wilson|WR|Questionable|Concussion|Nov 8
 Max Mitchell|OT|IR|Concussion|Dec 13
 Joseph Ossai|DE|Questionable|Ankle|Nov 8
-David Bailey|LB|Questionable|Groin|Nov 8
 T'Vondre Sweat|DT|IR|Knee|Nov 29
 #PHI
 Dontayvion Wicks|WR|Questionable|Ankle|Nov 8
@@ -226,9 +219,9 @@ James Williams Sr.|LB|Questionable|Groin|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 Dorian Mausi|LB|IR|Foot|Nov 15
 #WAS
+Daron Payne|DT|IR|Foot|Feb 15
 Jeremy McNichols|RB|IR|Foot|Feb 15
 Javon Kinlaw|DT|IR|Knee - MCL|Feb 15
-Daron Payne|DT|IR|Foot|Feb 15
 Jer'Zhan Newton|DT|IR|Pectoral|Nov 8
 Terry McLaurin|WR|IR|Knee|Feb 15
 Laremy Tunsil|OT|IR|Triceps|Dec 20
