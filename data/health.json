@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-04T19:13:36+00:00",
+  "at": "2026-11-04T21:03:45+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 64 games kept (0 new), 1437 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 1698 feed lines merged (0 skipped from other days), 1614 total, unmatched names: ['Kon Knueppel']\nLocked 3 plays for 2026-11-04: Kenrich Williams U0.5 stl; Scoot Henderson U5.5 ra; Brayden Burries U19.5 pra\nNBA data: teams 30, results 107 (through 2026-11-02), players 448, slate 14, lines 14, props 1614, inj teams 31, prev-season players 361, play log 6, adv 348, qtr games 107, h2h 4/4/4/3/4/2/3/2/3/2/4/4/4/2\nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n201 players, 32 teams\nnfl-inj: 201 players\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 64 games kept (0 new), 1437 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 1727 feed lines merged (0 skipped from other days), 1653 total, unmatched names: ['Kon Knueppel']\nNBA data: teams 30, results 107 (through 2026-11-02), players 448, slate 14, lines 14, props 1653, inj teams 31, prev-season players 361, play log 6, adv 348, qtr games 107, h2h 4/4/4/3/4/2/3/2/3/2/4/4/4/2\nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n194 players, 32 teams\nnfl-inj: 194 players\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-04T19:13:36+00:00",
+  "at": "2026-11-04T21:03:45+00:00",
   "ok": true,
   "issue": ""
  }
