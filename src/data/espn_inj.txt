@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 09:09Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-04 11:26Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 James Conner|RB|IR|Foot|Nov 15
