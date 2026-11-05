@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 17:26Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 21:10Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip|Nov 6
 Jalen Johnson|F|Day-To-Day|ankle|Nov 6
@@ -15,7 +15,7 @@ Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
 Egor Demin|G|Out|leg bruise|Nov 11
 Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
 #Charlotte Hornets
-Kon Knueppel|G|Out|leg soreness|Nov 6
+Kon Knueppel|G|Day-To-Day|leg soreness|Nov 6
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
 Nic Claxton|C|Out|hamstring strain|Nov 8
@@ -70,8 +70,8 @@ Terrence Shannon Jr.|G|Day-To-Day|hip bruise|Nov 6
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Trey Murphy III|F|Day-To-Day|knee|Nov 6
 Yves Missi|C|Out|knee bruise|Nov 8
+Trey Murphy III|F|Day-To-Day|knee|Nov 6
 #New York Knicks
 Josh Hart|G|Day-To-Day|ankle|Nov 7
 #Oklahoma City Thunder
@@ -92,8 +92,8 @@ Adem Bona|C|Day-To-Day|head|Nov 6
 Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
-Jordan Goodwin|G|Day-To-Day|calf not specified|Nov 5
-Rasheer Fleming|F|Day-To-Day|ankle sprain|Nov 5
+Rasheer Fleming|F|Out|ankle sprain|Nov 7
+Jordan Goodwin|G|Out|calf not specified|Nov 7
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Vit Krejci|G|Out|ankle|Jan 2

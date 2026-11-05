@@ -1,9 +1,9 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 17:26Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 21:10Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
-Isaiah Adams|G|IR|Ankle|Nov 8
-Bam Knight|RB|Questionable|Concussion|Nov 8
 Michael Wilson|WR|Questionable|Ribs|Nov 8
+Bam Knight|RB|Questionable|Concussion|Nov 8
+Isaiah Adams|G|IR|Ankle|Nov 8
 James Conner|RB|IR|Foot|Nov 15
 Jeremiyah Love|RB|IR|Ankle|Dec 6
 Kendrick Bourne|WR|IR|Lower Leg|Feb 15
@@ -11,26 +11,27 @@ Walter Nolen III|DT|Questionable|Ankle|Nov 8
 Jon Gaines II|G|Questionable|Ankle|Nov 8
 Jayden Williams|OT|Questionable|Knee|Nov 8
 #ATL
+Beaux Collins|WR|IR|Hip|Nov 8
 Brian Robinson Jr.|RB|Questionable|Hamstring|Nov 8
 Divine Deablo|LB|Questionable|Forearm|Nov 8
 Yasir Abdullah|LB|IR|Hamstring|Nov 8
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 Zachariah Branch|WR|Out|Hamstring|Nov 15
 Cameron Williams|OL|IR|Ankle|Nov 8
-Beaux Collins|WR|IR|Hip|Nov 8
 Anterio Thompson|DT|Out|Undisclosed|Feb 15
 #BAL
+Tyler Huntley|QB|IR|Toe|Feb 15
+Lamar Jackson|QB|IR|Thumb|Dec 13
 Jaylinn Hawkins|S|Out|Knee|Nov 16
 Adam Randall|RB|IR|Neck|Nov 5
 Nate Wiggins|CB|Questionable|Illness|Nov 5
-Tyler Huntley|QB|Out|Toe|Feb 15
 Tyler Loop|PK|IR|Groin|Dec 13
 #BUF
+DJ Moore|WR|Questionable|Knee|Nov 9
 Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
 Dee Alford|CB|Questionable|Ankle|Nov 9
 Spencer Brown|OT|Questionable|Back|Nov 9
-DJ Moore|WR|Questionable|Knee|Nov 9
 Joshua Palmer|WR|Questionable|Hamstring|Nov 9
 #CAR
 Bobby Okereke|LB|Questionable|Foot|Nov 8
@@ -44,24 +45,24 @@ Xavier Legette|WR|IR|Knee|Nov 8
 Corey Bullock|C|Questionable|Quadriceps|Nov 8
 Akayleb Evans|CB|IR|Triceps|Nov 30
 #CHI
+D'Marco Jackson|LB|Questionable|Ankle|Nov 8
+Kyle Monangai|RB|Questionable|Toe|Nov 8
+Zavier Scott|RB|IR|Wrist|Dec 13
 Kentavius Street|DT|IR|Knee|Feb 15
 Braxton Jones|OT|IR|Knee|Feb 15
 Malik Muhammad II|CB|Questionable|Toe|Nov 8
-Zavier Scott|RB|Questionable|Wrist|Nov 8
 Theo Benedet|OT|Questionable|Shoulder|Nov 8
-Kyle Monangai|RB|Questionable|Toe|Nov 8
 Grady Jarrett|DE|Questionable|Groin|Nov 8
 #CIN
 Jordan Battle|S|Questionable|Hamstring|Nov 8
 Cashius Howell|DE|IR|Wrist|Dec 6
 Kyle Dugger|S|Questionable|Quadriceps|Nov 8
-DJ Turner II|CB|Questionable|Heel|Nov 8
 Cedric Johnson|DE|Questionable|Ankle|Nov 8
 Andrei Iosivas|WR|IR|Thumb|Nov 15
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
-Carson Schwesinger|LB|Questionable|Wrist|Nov 8
 Deshaun Watson|QB|Questionable|Concussion|Nov 8
+Carson Schwesinger|LB|Questionable|Wrist|Nov 8
 Denzel Boston|WR|Questionable|Calf|Nov 8
 Jared Verse|DE|Questionable|Knee|Nov 8
 Elgton Jenkins|C|Questionable|Knee|Nov 8
@@ -102,9 +103,9 @@ DJ Wonnum|LB|Questionable|Concussion|Nov 8
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
 Keisean Nixon|CB|Questionable|Groin|Nov 8
+Christian Watson|WR|Questionable|Ribs|Nov 8
 Chris Brooks|RB|IR|Ankle|Nov 8
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
-Christian Watson|WR|Questionable|Ribs|Nov 8
 Josh Whyle|TE|Questionable|Concussion|Nov 8
 Aaron Banks|G|Questionable|Knee|Nov 8
 Zaire Franklin|LB|Questionable|Shin|Nov 8
@@ -118,8 +119,8 @@ Brevin Jordan|TE|Questionable|Finger|Nov 8
 David Montgomery|RB|Out|Groin|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
-Drew Ogletree|TE|Questionable|Knee|Nov 8
 Akeem Davis-Gaither|LB|Questionable|Knee|Nov 8
+Drew Ogletree|TE|Questionable|Knee|Nov 8
 Alec Pierce|WR|IR|Heel|Nov 29
 Justin Walley|CB|Questionable|Knee|Nov 8
 Anthony Gould|WR|Questionable|Concussion|Nov 8
@@ -167,8 +168,8 @@ Myles Garrett|DE|IR|Knee|Nov 8
 Dean Connors|RB|IR|Hand|Dec 13
 Joe Cardona|LS|Questionable|Ankle|Nov 8
 Grant Stuard|LB|Questionable|Hamstring|Nov 8
-Davante Adams|WR|IR|Hamstring|Nov 25
 #MIA
+Jaylen Wright|RB|Questionable|Quadriceps|Nov 8
 Kadyn Proctor|OT|Questionable|Concussion|Nov 8
 Malik Herring|DE|Questionable|Neck|Nov 8
 Kaytron Allen|RB|Questionable|Quadriceps|Nov 8
@@ -179,58 +180,58 @@ Dante Trader Jr.|S|Questionable|Shoulder|Nov 8
 Zach Sieler|DT|Questionable|Shoulder|Nov 8
 Chop Robinson|LB|Questionable|Knee|Nov 8
 Tucker Addington|LS|Questionable|Shoulder|Nov 8
-Jaylen Wright|RB|Questionable|Quadriceps|Nov 8
 #MIN
-Christian Darrisaw|OT|Questionable|Shoulder|Nov 9
 Kyler Murray|QB|Questionable|Hamstring|Nov 9
+Christian Darrisaw|OT|Questionable|Shoulder|Nov 9
 Theo Jackson|S|Questionable|Quadriceps|Nov 9
 #NE
+TreVeyon Henderson|RB|Questionable|Illness|Nov 8
+Hunter Henry|TE|Questionable|Foot|Nov 8
+A.J. Brown|WR|Questionable|Knee|Nov 8
 Greg Van Roten|G|IR|Hamstring|Nov 8
 Dre'Mont Jones|DE|Questionable|Shoulder|Nov 8
 Morgan Moses|OT|Questionable|Foot|Nov 8
 Carlton Davis III|CB|Questionable|Neck|Nov 8
 Christian Barmore|DT|Questionable|Illness|Nov 8
 Kevin Byard|S|Questionable|Chest|Nov 8
-Hunter Henry|TE|Questionable|Foot|Nov 8
-TreVeyon Henderson|RB|Questionable|Illness|Nov 8
-A.J. Brown|WR|Questionable|Knee|Nov 8
 Mack Hollins|WR|IR|Calf|Nov 8
 Gabe Jacas|LB|Questionable|Knee|Nov 8
 #NO
+Alvin Kamara|RB|Questionable|Back|Nov 8
 Kelvin Banks Jr.|OT|IR|Ankle|Nov 8
 Justin Reid|S|Questionable|Concussion|Nov 8
 CJ Donaldson|RB|Questionable|Shoulder|Nov 8
-Alvin Kamara|RB|Questionable|Back|Nov 8
 Asim Richards|OT|Questionable|Thumb|Nov 8
 Martin Emerson Jr.|CB|Questionable|Shin|Nov 8
 Jordyn Tyson|WR|IR|Hamstring|Nov 8
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 8
 #NYG
 Jermaine Eluemunor|OT|Questionable|Calf|Nov 8
+Abdul Carter|LB|Questionable|Illness|Nov 8
+Malik Nabers|WR|Questionable|Undisclosed|Nov 8
 Cam Skattebo|RB|Questionable|Hamstring|Nov 8
 Andrew Thomas|OT|Questionable|Groin|Nov 8
 Malik Harrison|LB|Questionable|Groin|Nov 8
 Charlie Jones|WR|Questionable|Hand|Nov 8
 Colton Hood|CB|Questionable|Illness|Nov 8
-Abdul Carter|LB|Questionable|Illness|Nov 8
 Tyrone Tracy Jr.|RB|IR|Hamstring|Dec 6
 #NYJ
+Breece Hall|RB|Questionable|Quadriceps|Nov 8
+Garrett Wilson|WR|Questionable|Concussion|Nov 8
 VJ Payne|S|IR|Knee|Nov 8
 Joseph Ossai|DE|Questionable|Ankle|Nov 8
 Mason Taylor|TE|Questionable|Back|Nov 8
 Trevin Wallace|LB|Questionable|Groin|Nov 8
 Harrison Phillips|DT|Questionable|Ankle|Nov 8
 David Bailey|LB|Questionable|Groin|Nov 8
-Breece Hall|RB|Questionable|Quadriceps|Nov 8
-Garrett Wilson|WR|Questionable|Concussion|Nov 8
 Max Mitchell|OT|IR|Concussion|Dec 13
 T'Vondre Sweat|DT|IR|Knee|Nov 29
 #PHI
-Jihaad Campbell|LB|Questionable|Hamstring|Nov 8
-Jake Elliott|PK|Questionable|Ankle|Nov 8
 Dontayvion Wicks|WR|Questionable|Ankle|Nov 8
 DeVonta Smith|WR|Questionable|Hamstring|Nov 8
 Saquon Barkley|RB|Questionable|Hamstring|Nov 8
+Jihaad Campbell|LB|Questionable|Hamstring|Nov 8
+Jake Elliott|PK|Questionable|Ankle|Nov 8
 Jonathan Greenard|LB|Questionable|Ankle|Nov 8
 Jalyx Hunt|LB|Questionable|Knee|Nov 8
 Jonathan Jones|CB|Questionable|Hamstring|Nov 8
@@ -243,6 +244,7 @@ Brandin Echols|CB|Out|Hamstring|Nov 8
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Brandon Aiyuk|WR|Out|Personal|Nov 15
 Mike Evans|WR|Questionable|Achilles|Nov 8
 Deebo Samuel Sr.|WR|Questionable|Hamstring|Nov 8
 Marques Sigle|S|Questionable|Ankle|Nov 8
@@ -252,7 +254,6 @@ Christian Kirk|WR|Questionable|Knee|Nov 8
 Nick Bosa|DE|Questionable|Knee|Nov 8
 Siran Neal|S|Questionable|Knee|Nov 8
 Christian McCaffrey|RB|Questionable|Hamstring|Nov 8
-Brandon Aiyuk|WR|Out|Personal|Nov 15
 De'Zhaun Stribling|WR|IR|Ankle|Dec 6
 Garret Wallow|LB|Questionable|Hamstring|Nov 8
 Luke Gifford|LB|Questionable|Groin|Nov 8
@@ -270,10 +271,8 @@ Leonard Williams|DT|Questionable|Shoulder|Nov 8
 Brandon Pili|DT|Questionable|Back|Nov 8
 Uchenna Nwosu|LB|Questionable|Ankle|Nov 8
 #TB
-Emeka Egbuka|WR|Questionable|Foot|Nov 8
 Jalen McMillan|WR|IR|Knee - PCL|Nov 22
 Tykee Smith|S|Questionable|Ankle|Nov 8
-Kenny Gainwell|RB|Questionable|Hip|Nov 8
 Yaya Diaby|LB|Out|Knee - MCL|Nov 22
 Josh Hayes|CB|IR|Knee|Nov 22
 #TEN
