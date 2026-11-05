@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-05T17:26:38+00:00",
+  "at": "2026-11-05T21:11:11+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 78 games kept (0 new), 1751 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 201 feed lines merged (0 skipped from other days), 194 total, unmatched names: []\nFirst tip is 514 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 121 (through 2026-11-04), players 452, slate 2, lines 2, props 194, inj teams 30, prev-season players 53, play log 6, adv 355, qtr games 121, h2h 2/2\nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n265 players, 32 teams\nnfl-inj: 265 players\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 78 games kept (0 new), 1751 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 249 feed lines merged (0 skipped from other days), 242 total, unmatched names: []\nLocked 3 plays for 2026-11-05: Collin Gillespie O1.5 stl; Brandin Podziemski O16.5 pts; Jase Richardson U11.5 pr\nNBA data: teams 30, results 121 (through 2026-11-04), players 452, slate 2, lines 2, props 242, inj teams 30, prev-season players 53, play log 9, adv 355, qtr games 121, h2h 2/2\nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n264 players, 32 teams\nnfl-inj: 264 players\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-05T17:26:38+00:00",
+  "at": "2026-11-05T21:11:11+00:00",
   "ok": true,
   "issue": ""
  }
