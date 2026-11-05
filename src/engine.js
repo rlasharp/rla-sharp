@@ -38,7 +38,7 @@ const SLATE = [
 const LINES = {
  mnf8:{sp:-3.5,ml:[145,-175],tot:46.5}, // Week 8 Monday night, DraftKings via ESPN odds page (Nov 2 evening)
  1:{sp:10,ml:[-535,400],tot:39.5},
- 2:{sp:3,ml:[-155,130],tot:52.5},
+ 2:{sp:3,ml:[-166,140],tot:52.5},
  3:{sp:-3,ml:[136,-162],tot:42.5},
  4:{sp:5.5,ml:[-245,200],tot:51.5},
  5:{sp:2.5,ml:[-155,130],tot:44.5},

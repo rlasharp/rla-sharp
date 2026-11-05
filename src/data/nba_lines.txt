@@ -1,4 +1,4 @@
 # AWAY@HOME|open home spread|open total|home spread|spread price|total|over price|under price|away ML|home ML   (ESPN odds feed, DraftKings) — auto
-# asof: Thu Nov 5, 4:15 AM ET
-ORL@PHX|-1.5|224.5|-1.5|-110|223.5|-110|-110|100|-118
+# asof: Thu Nov 5, 6:16 AM ET
+ORL@PHX|-1.5|224.5|-1.5|-106|223.5|-110|-110|-104|-114
 MIA@GS|-4.5|238.5|-7.5|-106|235.5|-114|-106|230|-281

@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 09:15Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 11:16Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -193,7 +193,7 @@ Christian Barmore|DT|Questionable|Illness|Nov 8
 Kevin Byard|S|Questionable|Chest|Nov 8
 Hunter Henry|TE|Questionable|Foot|Nov 8
 TreVeyon Henderson|RB|Questionable|Illness|Nov 8
-A.J. Brown|WR|Questionable|Ankle|Nov 8
+A.J. Brown|WR|Questionable|Knee|Nov 8
 Mack Hollins|WR|IR|Calf|Nov 8
 Gabe Jacas|LB|Questionable|Knee|Nov 8
 #NO
