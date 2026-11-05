@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 13:27Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 15:12Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -143,9 +143,9 @@ Ian Thomas|TE|Questionable|Ankle|Nov 8
 Darien Porter|CB|Questionable|Groin|Nov 8
 Patrick Johnson|DE|IR|Neck|Nov 29
 #LAC
+Daiyan Henley|LB|Questionable|Shoulder|Nov 8
 Denzel Perryman|LB|IR|Undisclosed|Nov 8
 Bud Dupree|LB|Questionable|Illness|Nov 8
-Daiyan Henley|LB|Questionable|Shoulder|Nov 8
 Kendall Williamson|S|Questionable|Calf|Nov 8
 Brenen Thompson|WR|Doubtful|Quadriceps|Nov 8
 David Njoku|TE|IR|Lower Leg|Nov 8
