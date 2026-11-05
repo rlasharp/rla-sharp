@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 15:11Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 17:26Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip|Nov 6
 Jalen Johnson|F|Day-To-Day|ankle|Nov 6
@@ -18,14 +18,14 @@ Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
 Kon Knueppel|G|Out|leg soreness|Nov 6
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
+Nic Claxton|C|Out|hamstring strain|Nov 8
 Zach Collins|F|Day-To-Day|undisclosed|Nov 8
 Jalen Smith|F|Day-To-Day|hand|Nov 8
-Nic Claxton|C|Out|hamstring strain|Nov 8
 #Cleveland Cavaliers
+Peyton Watson|G|Day-To-Day|hamstring soreness|Nov 6
 Jarrett Allen|C|Day-To-Day|knee|Nov 6
 Tyrese Proctor|G|Day-To-Day|ankle|Nov 6
 Jaylon Tyson|G|Out|ankle sprain|Nov 6
-Peyton Watson|G|Out|hamstring soreness|Nov 6
 #Dallas Mavericks
 Max Christie|G|Day-To-Day|hip not specified|Nov 6
 Santi Aldama|F|Out|knee surgery|Nov 6
@@ -33,7 +33,7 @@ Tarik Biberovic|F|Out|heel inflammation|Nov 12
 Dereck Lively II|C|Out|foot surgery|Nov 12
 Sergio de Larrea|F|Out|knee strain|Nov 6
 #Denver Nuggets
-DeMar DeRozan|G|Out|back spasms|Nov 7
+DeMar DeRozan|G|Day-To-Day|back spasms|Nov 7
 Spencer Jones|F|Out|hamstring not specified|Nov 11
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
@@ -56,7 +56,7 @@ Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 #LA Clippers
 Yanic Konan Niederhauser|C|Out|foot surgery|Nov 8
 Brandon Ingram|F|Out|achilles surgery|Nov 8
-Bradley Beal|G|Out|knee inflammation|Nov 8
+Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Adou Thiero|F|Out|knee inflammation|Nov 6
@@ -75,7 +75,7 @@ Yves Missi|C|Out|knee bruise|Nov 8
 #New York Knicks
 Josh Hart|G|Day-To-Day|ankle|Nov 7
 #Oklahoma City Thunder
-Jaylin Williams|F|Out|back spasms|Nov 6
+Jaylin Williams|F|Day-To-Day|back spasms|Nov 6
 Nikola Topic|G|Out|back|Nov 13
 Thomas Sorber|C|Out|knee|Nov 13
 Cason Wallace|G|Out|shoulder surgery|Mar 2
@@ -100,7 +100,7 @@ Vit Krejci|G|Out|ankle|Jan 2
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Daeqwon Plowden|G|Out|illness|Nov 6
+Daeqwon Plowden|G|Day-To-Day|illness|Nov 6
 Maxime Raynaud|C|Out|knee dislocated|Nov 10
 Keegan Murray|F|Out|ankle|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1

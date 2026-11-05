@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 15:12Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 17:26Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -11,9 +11,9 @@ Walter Nolen III|DT|Questionable|Ankle|Nov 8
 Jon Gaines II|G|Questionable|Ankle|Nov 8
 Jayden Williams|OT|Questionable|Knee|Nov 8
 #ATL
+Brian Robinson Jr.|RB|Questionable|Hamstring|Nov 8
 Divine Deablo|LB|Questionable|Forearm|Nov 8
 Yasir Abdullah|LB|IR|Hamstring|Nov 8
-Brian Robinson Jr.|RB|Questionable|Hamstring|Nov 8
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 Zachariah Branch|WR|Out|Hamstring|Nov 15
 Cameron Williams|OL|IR|Ankle|Nov 8
@@ -60,9 +60,9 @@ Cedric Johnson|DE|Questionable|Ankle|Nov 8
 Andrei Iosivas|WR|IR|Thumb|Nov 15
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
+Carson Schwesinger|LB|Questionable|Wrist|Nov 8
 Deshaun Watson|QB|Questionable|Concussion|Nov 8
 Denzel Boston|WR|Questionable|Calf|Nov 8
-Carson Schwesinger|LB|Questionable|Wrist|Nov 8
 Jared Verse|DE|Questionable|Knee|Nov 8
 Elgton Jenkins|C|Questionable|Knee|Nov 8
 Myles Harden|CB|Questionable|Hamstring|Nov 8
@@ -243,14 +243,14 @@ Brandin Echols|CB|Out|Hamstring|Nov 8
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Mike Evans|WR|Questionable|Achilles|Nov 8
+Deebo Samuel Sr.|WR|Questionable|Hamstring|Nov 8
 Marques Sigle|S|Questionable|Ankle|Nov 8
 Nate Hobbs|CB|IR|Groin|Nov 8
 Demarcus Robinson|WR|IR|Ankle|Nov 8
 Christian Kirk|WR|Questionable|Knee|Nov 8
 Nick Bosa|DE|Questionable|Knee|Nov 8
 Siran Neal|S|Questionable|Knee|Nov 8
-Deebo Samuel Sr.|WR|Questionable|Hamstring|Nov 8
-Mike Evans|WR|Questionable|Achilles|Nov 8
 Christian McCaffrey|RB|Questionable|Hamstring|Nov 8
 Brandon Aiyuk|WR|Out|Personal|Nov 15
 De'Zhaun Stribling|WR|IR|Ankle|Dec 6
@@ -258,24 +258,24 @@ Garret Wallow|LB|Questionable|Hamstring|Nov 8
 Luke Gifford|LB|Questionable|Groin|Nov 8
 Upton Stout|CB|Questionable|Shoulder - AC Joint|Nov 8
 #SEA
+Sam Darnold|QB|Out|Quadriceps|Nov 15
 Rashid Shaheed|WR|Questionable|Knee|Nov 8
 Quenton Nelson|G|Questionable|Knee|Nov 8
 Anthony Bradford|G|Questionable|Knee|Nov 8
 Connor O'Toole|LB|Questionable|Foot|Nov 8
 Drew Lock|QB|Questionable|Elbow|Nov 8
-Sam Darnold|QB|Out|Quadriceps|Nov 15
 Velus Jones Jr.|RB|Questionable|Hamstring|Nov 8
 Charles Cross|OT|Questionable|Ankle|Nov 8
 Leonard Williams|DT|Questionable|Shoulder|Nov 8
 Brandon Pili|DT|Questionable|Back|Nov 8
 Uchenna Nwosu|LB|Questionable|Ankle|Nov 8
 #TB
+Emeka Egbuka|WR|Questionable|Foot|Nov 8
+Jalen McMillan|WR|IR|Knee - PCL|Nov 22
 Tykee Smith|S|Questionable|Ankle|Nov 8
 Kenny Gainwell|RB|Questionable|Hip|Nov 8
-Emeka Egbuka|WR|Questionable|Foot|Nov 8
 Yaya Diaby|LB|Out|Knee - MCL|Nov 22
 Josh Hayes|CB|IR|Knee|Nov 22
-Christian Rozeboom|LB|IR|Finger|Nov 30
 #TEN
 Tommy Townsend|P|Out|Knee|Nov 15
 Tyjae Spears|RB|Out|Knee|Nov 15
