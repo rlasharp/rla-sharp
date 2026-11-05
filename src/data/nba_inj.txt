@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 03:02Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 05:12Z
 #Atlanta Hawks
 Asa Newell|F|Day-To-Day|toe|Nov 6
 Jalen Johnson|F|Out|ankle|Nov 6
@@ -18,11 +18,12 @@ Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
 Kon Knueppel|G|Out|leg soreness|Nov 6
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
-Zach Collins|F|Day-To-Day|undisclosed|Nov 4
+Zach Collins|F|Day-To-Day|undisclosed|Nov 8
 Jalen Smith|F|Day-To-Day|hand|Nov 8
 Nic Claxton|C|Out|hamstring strain|Nov 8
 #Cleveland Cavaliers
-Jarrett Allen|C|Day-To-Day|knee|Nov 4
+Jarrett Allen|C|Day-To-Day|knee|Nov 6
+Tyrese Proctor|G|Day-To-Day|ankle|Nov 6
 Jaylon Tyson|G|Out|ankle sprain|Nov 6
 Peyton Watson|G|Out|hamstring soreness|Nov 6
 #Dallas Mavericks
@@ -60,7 +61,7 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Adou Thiero|F|Out|knee inflammation|Nov 6
 #Memphis Grizzlies
-Isaiah Stewart|C|Day-To-Day|knee|Nov 4
+Isaiah Stewart|C|Day-To-Day|knee|Nov 6
 Scotty Pippen Jr.|G|Out|back soreness|Nov 6
 #Milwaukee Bucks
 Kam Jones|G|Out|ankle|Nov 6
@@ -87,7 +88,7 @@ Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
-Adem Bona|C|Day-To-Day|head|Nov 4
+Adem Bona|C|Day-To-Day|head|Nov 6
 Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
@@ -95,6 +96,7 @@ Jordan Goodwin|G|Out|calf not specified|Nov 5
 Rasheer Fleming|F|Out|ankle sprain|Nov 5
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
+Vit Krejci|G|Out|ankle|Nov 6
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
