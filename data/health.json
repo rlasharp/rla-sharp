@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-05T01:23:16+00:00",
+  "at": "2026-11-05T03:03:09+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 64 games kept (0 new), 1437 player lines\nNBA injuries refreshed\nNBA lines checked\nlive feed is not from 2026-11-04 - nothing merged\nNBA data: teams 30, results 107 (through 2026-11-02), players 448, slate 14, lines 14, props 1657, inj teams 31, prev-season players 361, play log 6, adv 348, qtr games 107, h2h 4/4/4/3/4/2/3/2/3/2/4/4/4/2\nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n248 players, 32 teams\nnfl-inj: 248 players\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 68 games kept (4 new), 1529 player lines\nNBA injuries refreshed\nNBA lines checked\nlive feed is not from 2026-11-04 - nothing merged\nNBA data: teams 30, results 107 (through 2026-11-02), players 448, slate 14, lines 14, props 1657, inj teams 30, prev-season players 361, play log 6, adv 348, qtr games 107, h2h 4/4/4/3/4/2/3/2/3/2/4/4/4/2\nnfl-update: 15 lines refreshed, 0 new finals (weeks [8, 9])\n260 players, 32 teams\nnfl-inj: 260 players\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-05T01:23:16+00:00",
+  "at": "2026-11-05T03:03:09+00:00",
   "ok": true,
   "issue": ""
  }
