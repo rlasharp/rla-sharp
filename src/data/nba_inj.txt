@@ -1,12 +1,12 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 21:10Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 22:58Z
 #Atlanta Hawks
-Jock Landale|C|Day-To-Day|hip|Nov 6
+Keshon Gilbert|G|Out|knee inflammation|Nov 8
+Asa Newell|F|Out|toe|Nov 7
+Jock Landale|C|Out|hip|Nov 7
 Jalen Johnson|F|Day-To-Day|ankle|Nov 6
-Asa Newell|F|Day-To-Day|toe|Nov 6
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
-Jayson Tatum|F|Day-To-Day|rest|Nov 6
 Payton Pritchard|G|Day-To-Day|eye abrasion|Nov 6
 Devin Carter|G|Out|illness|Nov 8
 #Brooklyn Nets
@@ -15,23 +15,25 @@ Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
 Egor Demin|G|Out|leg bruise|Nov 11
 Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
 #Charlotte Hornets
-Kon Knueppel|G|Day-To-Day|leg soreness|Nov 6
+Dennis Schroder|G|Day-To-Day|thigh|Nov 6
+Moussa Diabate|F|Day-To-Day|quadriceps|Nov 6
+Kon Knueppel|G|Out|hamstring strain|Nov 9
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
 Nic Claxton|C|Out|hamstring strain|Nov 8
 Zach Collins|F|Day-To-Day|undisclosed|Nov 8
 Jalen Smith|F|Day-To-Day|hand|Nov 8
 #Cleveland Cavaliers
+Tyrese Proctor|G|Day-To-Day|ankle sprain|Nov 6
+Jaylon Tyson|G|Out|ankle sprain|Nov 7
 Peyton Watson|G|Day-To-Day|hamstring soreness|Nov 6
 Jarrett Allen|C|Day-To-Day|knee|Nov 6
-Tyrese Proctor|G|Day-To-Day|ankle|Nov 6
-Jaylon Tyson|G|Out|ankle sprain|Nov 6
 #Dallas Mavericks
-Max Christie|G|Day-To-Day|hip not specified|Nov 6
+Sergio de Larrea|F|Out|knee strain|Nov 12
 Santi Aldama|F|Out|knee surgery|Nov 6
+Max Christie|G|Day-To-Day|hip not specified|Nov 6
 Tarik Biberovic|F|Out|heel inflammation|Nov 12
 Dereck Lively II|C|Out|foot surgery|Nov 12
-Sergio de Larrea|F|Out|knee strain|Nov 6
 #Denver Nuggets
 DeMar DeRozan|G|Day-To-Day|back spasms|Nov 7
 Spencer Jones|F|Out|hamstring not specified|Nov 11
@@ -88,7 +90,7 @@ Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
-Adem Bona|C|Day-To-Day|head|Nov 6
+Adem Bona|C|Day-To-Day|back sprain|Nov 6
 Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
@@ -113,8 +115,9 @@ Nate Bittle|C|Out|foot fracture|Nov 9
 #Utah Jazz
 Jusuf Nurkic|C|Out|foot strain|Nov 13
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
-Trey Alexander|G|Out|knee bruise|Nov 6
+Trey Alexander|G|Out|knee bruise|Nov 8
 #Washington Wizards
+Anthony Davis|F|Day-To-Day|ankle sprain|Nov 6
 Reece Beekman|G|Out|shoulder|Dec 3
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 9
 Justin Champagnie|F|Out|foot not specified|Feb 25
