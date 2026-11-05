@@ -1,4 +1,41 @@
 # player|market|line|over price|under price|book[|bestOver|bestOverBook|bestUnder|bestUnderBook]
 # markets: pts reb ast 3pm 3pa pa(pts+ast) pra pr(pts+reb) ra(reb+ast) blk stl
 # day: 2026-11-05
-# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of 2026-11-05T04:32:49+00:00 + covers.com/FanDuel pulls.
+# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of 2026-11-05T05:35:41+00:00 + covers.com/FanDuel pulls.
+Anthony Black|3pm|1.5|-136|102|FanDuel
+Anthony Black|ast|3.5|-174|130|FanDuel
+Anthony Black|pa|18.5|-128|-104|FanDuel
+Anthony Black|pra|23.5|-106|-125|FanDuel
+Anthony Black|pr|18.5|-130|-102|FanDuel
+Anthony Black|pts|14.5|-120|-110|FanDuel
+Anthony Black|ra|8.5|100|-132|FanDuel
+Anthony Black|reb|4.5|118|-158|FanDuel
+Desmond Bane|3pm|3.5|134|-180|FanDuel
+Desmond Bane|ast|3.5|132|-178|FanDuel
+Desmond Bane|pa|23.5|-112|-118|FanDuel
+Desmond Bane|pra|27.5|-118|-112|FanDuel
+Desmond Bane|pr|24.5|-108|-122|FanDuel
+Desmond Bane|pts|20.5|-102|-130|FanDuel
+Desmond Bane|ra|7.5|-102|-130|FanDuel
+Desmond Bane|reb|4.5|120|-160|FanDuel
+Franz Wagner|3pm|1.5|110|-146|FanDuel
+Franz Wagner|ast|6.5|116|-154|FanDuel
+Franz Wagner|pa|29.5|-112|-118|FanDuel
+Franz Wagner|pra|35.5|-118|-112|FanDuel
+Franz Wagner|pr|29.5|-108|-122|FanDuel
+Franz Wagner|pts|22.5|-128|-102|FanDuel
+Franz Wagner|ra|12.5|-102|-130|FanDuel
+Franz Wagner|reb|5.5|-154|116|FanDuel
+Jase Richardson|ast|2.5|-104|-128|FanDuel
+Jase Richardson|pa|11.5|-120|-110|FanDuel
+Jase Richardson|pra|14.5|-110|-120|FanDuel
+Jase Richardson|pr|11.5|-125|-106|FanDuel
+Jase Richardson|pts|8.5|-136|102|FanDuel
+Jase Richardson|ra|5.5|110|-146|FanDuel
+Jase Richardson|reb|2.5|-118|-112|FanDuel
+Wendell Carter Jr.|pa|13.5|-104|-128|FanDuel
+Wendell Carter Jr.|pra|22.5|-102|-130|FanDuel
+Wendell Carter Jr.|pr|20.5|-112|-118|FanDuel
+Wendell Carter Jr.|pts|11.5|-114|-114|FanDuel
+Wendell Carter Jr.|ra|10.5|-108|-122|FanDuel
+Wendell Carter Jr.|reb|8.5|-120|-110|FanDuel

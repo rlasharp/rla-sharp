@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 05:12Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 07:32Z
 #Atlanta Hawks
 Asa Newell|F|Day-To-Day|toe|Nov 6
 Jalen Johnson|F|Out|ankle|Nov 6
@@ -10,8 +10,8 @@ Payton Pritchard|G|Day-To-Day|eye abrasion|Nov 6
 Devin Carter|G|Out|illness|Nov 8
 Jayson Tatum|F|Out|rest|Nov 6
 #Brooklyn Nets
-Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
 Noah Clowney|F|Day-To-Day|knee soreness|Nov 7
+Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
 Egor Demin|G|Out|leg bruise|Nov 7
 Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
 #Charlotte Hornets
@@ -96,7 +96,7 @@ Jordan Goodwin|G|Out|calf not specified|Nov 5
 Rasheer Fleming|F|Out|ankle sprain|Nov 5
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
-Vit Krejci|G|Out|ankle|Nov 6
+Vit Krejci|G|Out|ankle|Jan 2
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings

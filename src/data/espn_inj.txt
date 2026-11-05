@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 05:12Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-05 07:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -249,9 +249,9 @@ Demarcus Robinson|WR|IR|Ankle|Nov 8
 Christian Kirk|WR|Questionable|Knee|Nov 8
 Nick Bosa|DE|Questionable|Knee|Nov 8
 Siran Neal|S|Questionable|Knee|Nov 8
-Christian McCaffrey|RB|Questionable|Hamstring|Nov 8
 Deebo Samuel Sr.|WR|Questionable|Hamstring|Nov 8
 Mike Evans|WR|Questionable|Achilles|Nov 8
+Christian McCaffrey|RB|Questionable|Hamstring|Nov 8
 Brandon Aiyuk|WR|Out|Personal|Nov 15
 De'Zhaun Stribling|WR|IR|Ankle|Dec 6
 Garret Wallow|LB|Questionable|Hamstring|Nov 8
