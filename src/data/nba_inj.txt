@@ -1,15 +1,14 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 20:57Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 22:54Z
 #Atlanta Hawks
+Jalen Johnson|F|Out|ankle|Nov 7
 Keshon Gilbert|G|Out|knee inflammation|Nov 7
 Asa Newell|F|Out|toe|Nov 7
 Jock Landale|C|Out|hip|Nov 7
-Jalen Johnson|F|Day-To-Day|ankle|Nov 6
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
 Devin Carter|G|Out|illness|Nov 6
 #Brooklyn Nets
-Noah Clowney|F|Day-To-Day|knee soreness|Nov 7
 Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
 Egor Demin|G|Out|leg bruise|Nov 11
 Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
@@ -42,8 +41,10 @@ Julian Strawther|G|Out|knee sprain|Nov 29
 Isaiah Joe|G|Out|hip bruise|Nov 8
 Jalen Duren|C|Out|hamstring strain|Nov 9
 #Golden State Warriors
+Draymond Green|F|Day-To-Day|elbow inflammation|Nov 7
+Gary Payton II|G|Day-To-Day|calf|Nov 7
+Kristaps Porzingis|C|Out|illness|Jan 2
 Gui Santos|F|Day-To-Day|knee|Nov 7
-Kristaps Porzingis|C|Out|illness|Dec 1
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
@@ -60,8 +61,6 @@ Brandon Ingram|F|Out|achilles surgery|Nov 8
 Yanic Konan Niederhauser|C|Out|foot surgery|Nov 8
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
-#Los Angeles Lakers
-Sandro Mamukelashvili|F|Day-To-Day|illness|Nov 6
 #Memphis Grizzlies
 Isaiah Stewart|C|Out|knee bruise|Nov 9
 Scotty Pippen Jr.|G|Out|back soreness|Nov 9
@@ -74,7 +73,7 @@ Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
 Yves Missi|C|Out|knee bruise|Nov 9
 #New York Knicks
-Josh Hart|G|Day-To-Day|ankle|Nov 7
+Josh Hart|G|Out|ankle|Nov 10
 #Oklahoma City Thunder
 Jaylin Williams|F|Out|back spasms|Nov 7
 Nikola Topic|G|Out|back|Nov 13
@@ -101,6 +100,7 @@ Vit Krejci|G|Out|ankle|Jan 2
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
+De'Andre Hunter|F|Day-To-Day|illness|Nov 6
 Maxime Raynaud|C|Out|knee dislocated|Nov 10
 Keegan Murray|F|Out|ankle|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1
@@ -119,7 +119,7 @@ Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 Trey Alexander|G|Out|knee bruise|Nov 6
 #Washington Wizards
-Anthony Davis|F|Day-To-Day|ankle sprain|Nov 6
+Anthony Davis|F|Out|ankle sprain|Nov 7
 Reece Beekman|G|Out|shoulder|Dec 3
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 9
 Justin Champagnie|F|Out|foot not specified|Feb 25
