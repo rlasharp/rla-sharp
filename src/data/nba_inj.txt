@@ -1,6 +1,6 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-05 22:58Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 01:25Z
 #Atlanta Hawks
-Keshon Gilbert|G|Out|knee inflammation|Nov 8
+Keshon Gilbert|G|Out|knee inflammation|Nov 7
 Asa Newell|F|Out|toe|Nov 7
 Jock Landale|C|Out|hip|Nov 7
 Jalen Johnson|F|Day-To-Day|ankle|Nov 6
@@ -61,23 +61,23 @@ Brandon Ingram|F|Out|achilles surgery|Nov 8
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Adou Thiero|F|Out|knee inflammation|Nov 6
+Sandro Mamukelashvili|F|Day-To-Day|illness|Nov 6
 #Memphis Grizzlies
-Isaiah Stewart|C|Day-To-Day|knee|Nov 6
-Scotty Pippen Jr.|G|Out|back soreness|Nov 6
+Isaiah Stewart|C|Out|knee bruise|Nov 9
+Scotty Pippen Jr.|G|Out|back soreness|Nov 9
 #Milwaukee Bucks
-Kam Jones|G|Day-To-Day|ankle|Nov 6
+Kam Jones|G|Out|ankle|Nov 8
 #Minnesota Timberwolves
 Terrence Shannon Jr.|G|Day-To-Day|hip bruise|Nov 6
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Yves Missi|C|Out|knee bruise|Nov 8
+Yves Missi|C|Out|knee bruise|Nov 9
 Trey Murphy III|F|Day-To-Day|knee|Nov 6
 #New York Knicks
 Josh Hart|G|Day-To-Day|ankle|Nov 7
 #Oklahoma City Thunder
-Jaylin Williams|F|Day-To-Day|back spasms|Nov 6
+Jaylin Williams|F|Out|back spasms|Nov 7
 Nikola Topic|G|Out|back|Nov 13
 Thomas Sorber|C|Out|knee|Nov 13
 Cason Wallace|G|Out|shoulder surgery|Mar 2
@@ -102,7 +102,6 @@ Vit Krejci|G|Out|ankle|Jan 2
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Daeqwon Plowden|G|Day-To-Day|illness|Nov 6
 Maxime Raynaud|C|Out|knee dislocated|Nov 10
 Keegan Murray|F|Out|ankle|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1
@@ -110,6 +109,7 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Nov 9
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Scottie Barnes|F|Day-To-Day|groin soreness|Nov 6
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 9
 #Utah Jazz
