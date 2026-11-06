@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-06T17:20:15+00:00",
+  "at": "2026-11-06T19:07:51+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 71 games kept (2 new), 1593 player lines\nNBA injuries refreshed\nNBA lines checked\nNBA props reset for 2026-11-06\nliveprops: 973 feed lines merged (0 skipped from other days), 904 total, unmatched names: []\nFirst tip is 401 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 123 (through 2026-11-05), players 452, slate 9, lines 9, props 904, inj teams 30, prev-season players 231, play log 9, adv 356, qtr games 123, h2h 4/3/4/4/3/4/4/3/3\nnfl-update: 14 lines refreshed, 1 new finals (weeks [8, 9])\n269 players, 32 teams\nnfl-inj: 269 players\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1593 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 1069 feed lines merged (0 skipped from other days), 1017 total, unmatched names: []\nLocked 3 plays for 2026-11-06: Ryan Kalkbrenner U7.5 pts; Scoot Henderson U4.5 ra; Brayden Burries U13.5 pa\nNBA data: teams 30, results 123 (through 2026-11-05), players 452, slate 9, lines 9, props 1017, inj teams 30, prev-season players 231, play log 12, adv 356, qtr games 123, h2h 4/3/4/4/3/4/4/3/3\nnfl-update: 14 lines refreshed, 0 new finals (weeks [8, 9])\n269 players, 32 teams\nnfl-inj: 269 players\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-06T17:20:15+00:00",
+  "at": "2026-11-06T19:07:51+00:00",
   "ok": true,
   "issue": ""
  }
