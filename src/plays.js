@@ -21,12 +21,14 @@ function teamRec(t){let w=0,l=0,pf=0,pa=0,n=0;RESULTS.forEach(([wk,a,ap,h,hp])=>
 function rankOf(stat,team,low){const arr=Object.entries(TEAM_STATS).sort((a,b)=>low?a[1][stat]-b[1][stat]:b[1][stat]-a[1][stat]);return arr.findIndex(e=>e[0]===team)+1}
 function fmtOdds(o){return o==null?"":oddsFmt(o)}
 
+/* this week's game for a team even after it is final (oppOf skips finished games) */
+function oppAnyWk(team){const g=SLATE.find(g=>(g.home===team||g.away===team)&&!(g.wk&&g.wk<PLAYS_WEEK));return g?(g.home===team?{opp:g.away,home:1,g}:{opp:g.home,home:0,g}):null}
 function playData(pl){
   if(pl.type==="prop"){const P=PINFO[pl.player];const rp=REAL_PROPS[pl.player+"|"+pl.market];if(!P||!rp)return null;
     const vals=pLogs(pl.player).filter(l=>l.season===CUR).map(l=>stat(l,pl.market)).filter(Number.isFinite);
     const line=rp[0],n=vals.length,ov=vals.filter(v=>pl.side==="over"?v>line:v<line).length;
     const avg=n?+(vals.reduce((a,b)=>a+b,0)/n).toFixed(1):0;const med=n?[...vals].sort((a,b)=>a-b)[Math.floor(n/2)]:0;
-    const o=oppOf(P.team);const dv=o?dvpFor(o.opp,P.pos,pl.market):{rank:NaN};
+    const o=oppOf(P.team)||oppAnyWk(P.team);const dv=o?dvpFor(o.opp,P.pos,pl.market):{rank:NaN};
     const unit=MARKETS[pl.market].u;
     return {P,o,line,odds:pl.side==="over"?rp[1]:rp[2],src:rp[3],n,ov,avg,med,vals,last:vals[vals.length-1],
       rankTxt:Number.isFinite(dv.rank)?`${ordinal(dv.rank)} most`:"—",dv,unit,
@@ -84,7 +86,7 @@ function viewPlays(){
         <div class="small" style="margin-top:8px">Game log: ${d.vals.join(" · ")}</div>`
       :`<div class="pgrid" style="margin-top:10px"><div><small>Model score</small><b>${short(g.away)} ${d.x.a} – ${short(g.home)} ${d.x.h}</b><small>${short(d.x.win)} ${d.x.winP}% to win</small></div><div><small>Line</small><b>${short(d.L.sp<0?g.home:g.away)} −${Math.abs(d.L.sp)} · O/U ${d.L.tot}</b><small>ML ${short(g.away)} ${fmtOdds(d.L.ml[0])} / ${short(g.home)} ${fmtOdds(d.L.ml[1])}</small></div></div>`;
     return `<div class="card play">
-      <div class="row" style="gap:8px;align-items:center;flex-wrap:wrap"><span class="ptag" style="background:${tc}22;color:${tc}">${tn}</span>${(()=>{const gr=gradeOne(pl,PLAYS_WEEK,d);return `<span class="ptag" title="${esc(gr.why||"")}" style="background:${RES_COL[gr.r]}22;color:${RES_COL[gr.r]}">${RES_TXT[gr.r]}</span>`})()}<span class="small">#${i+1} · ${badge(g.away)} @ ${badge(g.home)} · ${esc(g.when)}</span></div>
+      <div class="row" style="gap:8px;align-items:center;flex-wrap:wrap"><span class="ptag" style="background:${tc}22;color:${tc}">${tn}</span>${(()=>{const gr=gradeOne(pl,PLAYS_WEEK,d);return `<span class="ptag" title="${esc(gr.why||"")}" style="background:${RES_COL[gr.r]}22;color:${RES_COL[gr.r]}">${RES_TXT[gr.r]}</span>`})()}<span class="small">#${i+1}${g?` · ${badge(g.away)} @ ${badge(g.home)} · ${esc(g.when)}`:""}</span></div>
       <h2 style="margin:10px 0 2px">${esc(d.title)}</h2>
       ${(()=>{const gr=gradeOne(pl,PLAYS_WEEK,d);return gr.why?`<div class="small" style="color:${RES_COL[gr.r]};font-weight:700">${esc(gr.why)}</div>`:""})()}
       <div class="small">${d.odds!=null?`Odds ${fmtOdds(d.odds)}`:"Odds not listed publicly"}${d.src?` · ${esc(d.src)}`:pl.type!=="prop"?" · consensus line":""}</div>
