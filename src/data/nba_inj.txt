@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 19:07Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 20:57Z
 #Atlanta Hawks
 Keshon Gilbert|G|Out|knee inflammation|Nov 7
 Asa Newell|F|Out|toe|Nov 7
@@ -19,8 +19,8 @@ Moussa Diabate|F|Out|quadriceps|Nov 9
 Kon Knueppel|G|Out|hamstring strain|Nov 9
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
+Zach Collins|F|Day-To-Day|illness|Nov 8
 Nic Claxton|C|Out|hamstring strain|Nov 8
-Zach Collins|F|Day-To-Day|undisclosed|Nov 8
 Jalen Smith|F|Day-To-Day|hand|Nov 8
 #Cleveland Cavaliers
 Tyrese Proctor|G|Day-To-Day|ankle sprain|Nov 6
@@ -28,6 +28,7 @@ Jaylon Tyson|G|Out|ankle sprain|Nov 7
 Peyton Watson|G|Day-To-Day|hamstring soreness|Nov 6
 Jarrett Allen|C|Day-To-Day|knee|Nov 6
 #Dallas Mavericks
+Kyrie Irving|G|Day-To-Day|illness|Nov 6
 Sergio de Larrea|F|Out|knee strain|Nov 12
 Santi Aldama|F|Out|knee surgery|Nov 6
 Max Christie|G|Day-To-Day|hip not specified|Nov 6
@@ -46,7 +47,7 @@ Kristaps Porzingis|C|Out|illness|Dec 1
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
-Clint Capela|C|Day-To-Day|ankle sprain|Nov 7
+Clint Capela|C|Out|ankle sprain|Nov 9
 Steven Adams|C|Out|calf strain|Nov 9
 #Indiana Pacers
 Kelly Oubre Jr.|G|Day-To-Day|calf bruise|Nov 7
@@ -55,8 +56,8 @@ Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 #LA Clippers
-Yanic Konan Niederhauser|C|Out|foot surgery|Nov 8
 Brandon Ingram|F|Out|achilles surgery|Nov 8
+Yanic Konan Niederhauser|C|Out|foot surgery|Nov 8
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
