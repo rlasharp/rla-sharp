@@ -42,15 +42,15 @@ const LINES = {
  3:{sp:-3,ml:[136,-162],tot:42.5},
  4:{sp:5.5,ml:[-230,190],tot:51.5},
  5:{sp:2.5,ml:[-155,130],tot:44.5},
- 6:{sp:7,ml:[-340,270],tot:50.5},
- 7:{sp:4.5,ml:[-218,180],tot:48.5},
+ 6:{sp:6.5,ml:[-325,260],tot:50.5},
+ 7:{sp:4.5,ml:[-218,180],tot:47.5},
  8:{sp:3.5,ml:[-162,136],tot:38.5},
  9:{sp:-9.5,ml:[410,-550],tot:48.5},
  10:{sp:6,ml:[-238,195],tot:40.5},
  11:{sp:-10,ml:[370,-485],tot:51.5},
- 12:{sp:-8.5,ml:[360,-470],tot:39.5},
+ 12:{sp:-8.5,ml:[350,-455],tot:39.5},
  13:{sp:-3,ml:[140,-166],tot:44.5},
- 14:{sp:-6,ml:[235,-290],tot:47.5},
+ 14:{sp:-6,ml:[230,-285],tot:47.5},
  15:{sp:3,ml:[-175,145],tot:44.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).

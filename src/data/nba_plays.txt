@@ -9,3 +9,6 @@
 2026-11-05|Collin Gillespie|stl|o|1.5|140|FanDuel|PHX|ORL
 2026-11-05|Brandin Podziemski|pts|o|16.5|-102|DraftKings|GS|MIA
 2026-11-05|Jase Richardson|pr|u|11.5|-124|Unibet|ORL|PHX
+2026-11-06|Ryan Kalkbrenner|pts|u|7.5|-104|FanDuel|CHA|BOS
+2026-11-06|Scoot Henderson|ra|u|4.5|112|FanDuel|POR|LAL
+2026-11-06|Brayden Burries|pa|u|13.5|-113|Unibet|MIL|TOR

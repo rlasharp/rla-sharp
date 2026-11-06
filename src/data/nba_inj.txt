@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 17:19Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 19:07Z
 #Atlanta Hawks
 Keshon Gilbert|G|Out|knee inflammation|Nov 7
 Asa Newell|F|Out|toe|Nov 7
@@ -7,7 +7,6 @@ Jalen Johnson|F|Day-To-Day|ankle|Nov 6
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
-Payton Pritchard|G|Day-To-Day|eye abrasion|Nov 6
 Devin Carter|G|Out|illness|Nov 6
 #Brooklyn Nets
 Noah Clowney|F|Day-To-Day|knee soreness|Nov 7
@@ -15,8 +14,8 @@ Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
 Egor Demin|G|Out|leg bruise|Nov 11
 Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
 #Charlotte Hornets
-Dennis Schroder|G|Day-To-Day|thigh|Nov 6
-Moussa Diabate|F|Day-To-Day|quadriceps|Nov 6
+Dennis Schroder|G|Out|thigh|Nov 9
+Moussa Diabate|F|Out|quadriceps|Nov 9
 Kon Knueppel|G|Out|hamstring strain|Nov 9
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
@@ -68,12 +67,11 @@ Scotty Pippen Jr.|G|Out|back soreness|Nov 9
 #Milwaukee Bucks
 Kam Jones|G|Day-To-Day|ankle|Nov 6
 #Minnesota Timberwolves
-Terrence Shannon Jr.|G|Day-To-Day|hip bruise|Nov 6
+Terrence Shannon Jr.|G|Out|hip bruise|Nov 8
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
 Yves Missi|C|Out|knee bruise|Nov 9
-Trey Murphy III|F|Day-To-Day|knee|Nov 6
 #New York Knicks
 Josh Hart|G|Day-To-Day|ankle|Nov 7
 #Oklahoma City Thunder
@@ -109,12 +107,14 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Nov 9
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Kyle Anderson|F|Day-To-Day|illness|Nov 6
+Jakob Poeltl|C|Day-To-Day|shoulder|Nov 6
+Immanuel Quickley|G|Day-To-Day|hamstring|Nov 6
 Scottie Barnes|F|Day-To-Day|groin soreness|Nov 6
+Kyle Anderson|F|Day-To-Day|illness|Nov 6
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 9
 #Utah Jazz
-Jusuf Nurkic|C|Out|foot strain|Nov 13
+Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 Trey Alexander|G|Out|knee bruise|Nov 6
 #Washington Wizards
