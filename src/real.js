@@ -19,7 +19,7 @@ const RESULTS=[
  [7,"NE",24,"CHI",30],[7,"PIT",16,"NO",10],[7,"CLE",27,"TEN",24],[7,"CIN",35,"BAL",13],[7,"IND",10,"MIN",16],[7,"MIA",28,"NYJ",25],[7,"NYG",27,"HOU",21],[7,"SF",20,"ATL",29],
  [7,"TB",43,"CAR",13],[7,"DEN",30,"ARI",16],[7,"GB",17,"DET",20],[7,"LAR",35,"LV",21],[7,"KC",3,"SEA",20],[7,"DAL",38,"PHI",21],
  [8,"CAR",19,"GB",27],[8,"BAL",10,"BUF",36],[8,"TEN",36,"CIN",43],[8,"ARI",33,"DAL",30],[8,"MIN",15,"DET",19],[8,"IND",7,"JAX",42],[8,"LV",38,"NYJ",33],
- [8,"CLE",6,"PIT",27],[8,"ATL",0,"TB",16],[8,"LAC",9,"LAR",24],[8,"KC",24,"DEN",28],[8,"NE",24,"MIA",19],[8,"PHI",10,"WAS",27],[8,"CHI",34,"SEA",17]
+ [8,"CLE",6,"PIT",27],[8,"ATL",0,"TB",16],[8,"LAC",9,"LAR",24],[8,"KC",24,"DEN",28],[8,"NE",24,"MIA",19],[8,"PHI",10,"WAS",27],[8,"CHI",34,"SEA",17],[9,"JAX",33,"BAL",10]
 ];
 // CBS "Points Allowed vs Position" – per-game averages allowed, 2026 YTD
 const DVP_RAW={

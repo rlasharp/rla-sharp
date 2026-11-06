@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 03:01Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-06 17:19Z
 #Atlanta Hawks
 Keshon Gilbert|G|Out|knee inflammation|Nov 7
 Asa Newell|F|Out|toe|Nov 7
@@ -8,7 +8,7 @@ Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
 Payton Pritchard|G|Day-To-Day|eye abrasion|Nov 6
-Devin Carter|G|Out|illness|Nov 8
+Devin Carter|G|Out|illness|Nov 6
 #Brooklyn Nets
 Noah Clowney|F|Day-To-Day|knee soreness|Nov 7
 Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
@@ -42,7 +42,7 @@ Julian Strawther|G|Out|knee sprain|Nov 29
 Isaiah Joe|G|Out|hip bruise|Nov 8
 Jalen Duren|C|Out|hamstring strain|Nov 9
 #Golden State Warriors
-Gui Santos|F|Out|knee|Nov 7
+Gui Santos|F|Day-To-Day|knee|Nov 7
 Kristaps Porzingis|C|Out|illness|Dec 1
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
@@ -66,7 +66,7 @@ Sandro Mamukelashvili|F|Day-To-Day|illness|Nov 6
 Isaiah Stewart|C|Out|knee bruise|Nov 9
 Scotty Pippen Jr.|G|Out|back soreness|Nov 9
 #Milwaukee Bucks
-Kam Jones|G|Out|ankle|Nov 8
+Kam Jones|G|Day-To-Day|ankle|Nov 6
 #Minnesota Timberwolves
 Terrence Shannon Jr.|G|Day-To-Day|hip bruise|Nov 6
 Anthony Edwards|G|Out|knee surgery|Dec 21
@@ -94,8 +94,8 @@ Adem Bona|C|Day-To-Day|back sprain|Nov 6
 Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
-Rasheer Fleming|F|Out|ankle sprain|Nov 7
-Jordan Goodwin|G|Out|calf not specified|Nov 7
+Jordan Goodwin|G|Day-To-Day|calf not specified|Nov 7
+Rasheer Fleming|F|Day-To-Day|ankle sprain|Nov 7
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Vit Krejci|G|Out|ankle|Jan 2
@@ -109,13 +109,14 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Nov 9
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Kyle Anderson|F|Day-To-Day|illness|Nov 6
 Scottie Barnes|F|Day-To-Day|groin soreness|Nov 6
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 9
 #Utah Jazz
 Jusuf Nurkic|C|Out|foot strain|Nov 13
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
-Trey Alexander|G|Out|knee bruise|Nov 8
+Trey Alexander|G|Out|knee bruise|Nov 6
 #Washington Wizards
 Anthony Davis|F|Day-To-Day|ankle sprain|Nov 6
 Reece Beekman|G|Out|shoulder|Dec 3
