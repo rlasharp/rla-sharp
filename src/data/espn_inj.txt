@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 20:51Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 21:17Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -11,10 +11,10 @@ James Conner|RB|IR|Foot|Nov 15
 Jeremiyah Love|RB|IR|Ankle|Dec 6
 Kendrick Bourne|WR|IR|Lower Leg|Feb 15
 #ATL
+Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
 Beaux Collins|WR|IR|Hip|Nov 8
 James Pearce Jr.|LB|Questionable|Back|Nov 8
 Divine Deablo|LB|Questionable|Forearm|Nov 8
-Brian Robinson Jr.|RB|Out|Hamstring|Nov 15
 Yasir Abdullah|LB|IR|Hamstring|Nov 8
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 Zachariah Branch|WR|Out|Hamstring|Nov 15
@@ -33,6 +33,7 @@ Tyler Huntley|QB|IR|Toe|Feb 15
 Jaylinn Hawkins|S|Out|Knee|Nov 16
 Adam Randall|RB|IR|Neck|Nov 16
 #BUF
+Tyrell Shavers|WR|Out|Knee - ACL|Nov 9
 Joshua Palmer|WR|Out|Hamstring|Nov 15
 Dion Dawkins|OT|Questionable|Ribs|Nov 9
 Alec Anderson|OT|Questionable|Ankle|Nov 9
@@ -107,8 +108,8 @@ Reed Blankenship|S|Out|Concussion|Nov 15
 David Montgomery|RB|Out|Groin|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
-Justin Walley|CB|Out|Knee|Nov 15
 A.J. Haulcy|S|Out|Ankle|Nov 15
+Justin Walley|CB|Out|Knee|Nov 15
 Jalen Travis|OT|Questionable|Thumb|Nov 8
 Akeem Davis-Gaither|LB|Out|Knee|Nov 15
 Alec Pierce|WR|IR|Heel|Nov 29
@@ -164,7 +165,7 @@ Brenden Schooler|S|Questionable|Hamstring|Nov 8
 Greg Van Roten|G|IR|Hamstring|Nov 8
 Morgan Moses|OT|Questionable|Foot|Nov 8
 #NO
-Jordyn Tyson|WR|IR|Hamstring|Nov 8
+Jordyn Tyson|WR|Questionable|Hamstring|Nov 8
 Kelvin Banks Jr.|OT|IR|Ankle|Nov 8
 Martin Emerson Jr.|CB|Questionable|Shin|Nov 8
 CJ Donaldson|RB|Out|Shoulder|Nov 15

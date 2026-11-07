@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 20:51Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 21:17Z
 #Atlanta Hawks
 Keshon Gilbert|G|Out|knee inflammation|Nov 9
 Asa Newell|F|Out|toe|Nov 9
@@ -29,7 +29,6 @@ Sergio de Larrea|F|Out|knee strain|Nov 12
 Tarik Biberovic|F|Out|heel inflammation|Nov 12
 Dereck Lively II|C|Out|foot surgery|Nov 12
 #Denver Nuggets
-DeMar DeRozan|G|Day-To-Day|back spasms|Nov 7
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
 Isaiah Joe|G|Out|hip bruise|Nov 8
@@ -45,9 +44,9 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 9
 Steven Adams|C|Out|calf strain|Nov 9
 #Indiana Pacers
+Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
-Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 #LA Clippers
 Brandon Ingram|F|Out|achilles surgery|Nov 8
 Yanic Konan Niederhauser|C|Out|foot surgery|Nov 8
@@ -88,6 +87,7 @@ Rasheer Fleming|F|Day-To-Day|ankle sprain|Nov 7
 Jordan Goodwin|G|Day-To-Day|calf not specified|Nov 7
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
+Robert Williams III|C|Out|rest|Nov 10
 Vit Krejci|G|Out|ankle|Jan 2
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
