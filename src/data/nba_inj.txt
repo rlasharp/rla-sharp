@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 01:16Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 03:00Z
 #Atlanta Hawks
 Jalen Johnson|F|Out|ankle|Nov 7
 Keshon Gilbert|G|Out|knee inflammation|Nov 7
@@ -13,7 +13,7 @@ Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
 Egor Demin|G|Out|leg bruise|Nov 11
 Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
 #Charlotte Hornets
-Brandon Miller|F|Day-To-Day|undisclosed|Nov 9
+Brandon Miller|F|Day-To-Day|groin soreness|Nov 9
 Dennis Schroder|G|Out|thigh|Nov 9
 Moussa Diabate|F|Out|quadriceps|Nov 9
 Kon Knueppel|G|Out|hamstring strain|Nov 9
@@ -23,6 +23,7 @@ Zach Collins|F|Day-To-Day|illness|Nov 8
 Nic Claxton|C|Out|hamstring strain|Nov 8
 Jalen Smith|F|Day-To-Day|hand|Nov 8
 #Cleveland Cavaliers
+Sam Merrill|G|Out|elbow|Nov 7
 Jarrett Allen|C|Out|knee|Nov 7
 Jaylon Tyson|G|Out|ankle sprain|Nov 7
 #Dallas Mavericks
@@ -62,6 +63,7 @@ Scotty Pippen Jr.|G|Out|back soreness|Nov 9
 #Milwaukee Bucks
 Kam Jones|G|Day-To-Day|ankle|Nov 6
 #Minnesota Timberwolves
+Joan Beringer|F|Out|fracture|Nov 8
 Terrence Shannon Jr.|G|Out|hip bruise|Nov 8
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
