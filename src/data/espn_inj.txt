@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 05:01Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 07:16Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -89,7 +89,7 @@ Pat Bryant|WR|IR|Ankle|Nov 8
 #DET
 Cade Mays|C|Out|Ankle|Nov 15
 DJ Wonnum|LB|Out|Concussion|Nov 15
-D.J. Reed|CB|Out|Hip|Nov 8
+D.J. Reed|CB|Out|Hip|Nov 15
 Kerby Joseph|S|Out|Knee|Nov 15
 Jack Campbell|LB|Out|Neck|Nov 15
 Jacob Saylors|RB|Questionable|Neck|Nov 8
@@ -240,8 +240,8 @@ Marcus Harris|CB|Questionable|Ankle|Nov 15
 Dorian Mausi|LB|IR|Foot|Nov 15
 #WAS
 Jer'Zhan Newton|DT|IR|Pectoral|Nov 8
-Dyami Brown|WR|Out|Calf|Nov 12
 Treylon Burks|WR|Out|Foot|Nov 12
+Dyami Brown|WR|Out|Calf|Nov 12
 Daron Payne|DT|IR|Foot|Feb 15
 Jeremy McNichols|RB|IR|Foot|Feb 15
 Javon Kinlaw|DT|IR|Knee - MCL|Feb 15
