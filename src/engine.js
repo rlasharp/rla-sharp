@@ -39,7 +39,7 @@ const LINES = {
  mnf8:{sp:-3.5,ml:[145,-175],tot:46.5}, // Week 8 Monday night, DraftKings via ESPN odds page (Nov 2 evening)
  1:{sp:10,ml:[-535,400],tot:39.5},
  2:{sp:3,ml:[-175,145],tot:52.5},
- 3:{sp:-3,ml:[142,-170],tot:42.5},
+ 3:{sp:-3,ml:[140,-166],tot:42.5},
  4:{sp:4.5,ml:[-225,185],tot:51.5},
  5:{sp:2.5,ml:[-142,120],tot:44.5},
  6:{sp:6.5,ml:[-310,250],tot:49.5},
@@ -50,7 +50,7 @@ const LINES = {
  11:{sp:-9.5,ml:[370,-485],tot:51.5},
  12:{sp:-8.5,ml:[350,-455],tot:39.5},
  13:{sp:-3,ml:[142,-170],tot:44.5},
- 14:{sp:-6,ml:[220,-270],tot:47.5},
+ 14:{sp:-6,ml:[225,-278],tot:47.5},
  15:{sp:3,ml:[-170,142],tot:43.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).

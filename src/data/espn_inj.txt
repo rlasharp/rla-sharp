@@ -1,7 +1,7 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 21:31Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 22:50Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
-Isaiah Adams|G|IR|Ankle|Nov 8
+Isaiah Adams|G|Questionable|Ankle|Nov 8
 Jon Gaines II|G|Out|Ankle|Nov 15
 Jayden Williams|OT|Out|Knee|Nov 15
 Walter Nolen III|DT|Questionable|Ankle|Nov 8
@@ -11,14 +11,14 @@ James Conner|RB|IR|Foot|Nov 15
 Jeremiyah Love|RB|IR|Ankle|Dec 6
 Kendrick Bourne|WR|IR|Lower Leg|Feb 15
 #ATL
+Yasir Abdullah|LB|Questionable|Hamstring|Nov 8
 Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
-Beaux Collins|WR|IR|Hip|Nov 8
+Beaux Collins|WR|Questionable|Hip|Nov 8
 James Pearce Jr.|LB|Questionable|Back|Nov 8
 Divine Deablo|LB|Questionable|Forearm|Nov 8
-Yasir Abdullah|LB|IR|Hamstring|Nov 8
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 Zachariah Branch|WR|Out|Hamstring|Nov 15
-Cameron Williams|OL|IR|Ankle|Nov 8
+Cameron Williams|OL|IR|Ankle|Nov 15
 Anterio Thompson|DT|Out|Undisclosed|Feb 15
 #BAL
 Lamar Jackson|QB|IR|Thumb|Dec 13
@@ -40,7 +40,7 @@ Alec Anderson|OT|Questionable|Ankle|Nov 9
 Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
 #CAR
-Brady Christensen|G|IR|Hamstring|Nov 8
+Brady Christensen|G|IR|Hamstring|Nov 15
 Damien Lewis|G|Out|Knee|Nov 15
 Will Lee III|CB|Out|Hamstring|Nov 15
 Jaelan Phillips|LB|Out|Hamstring|Nov 15
@@ -67,28 +67,28 @@ Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 Deshaun Watson|QB|Questionable|Concussion|Nov 8
 Maliek Collins|DT|Out|Elbow|Nov 15
 #DAL
+Malachi Lawrence|LB|IR|Ankle|Dec 7
 Marist Liufau|LB|Questionable|Forearm|Nov 8
 Joey Porter Jr.|CB|Questionable|Ankle|Nov 8
 DeMarvion Overshown|LB|Questionable|Hamstring|Nov 8
-Malachi Lawrence|LB|IR|Ankle|Dec 7
 KaVontae Turpin|WR|Out|Ribs|Nov 15
 Jake Ferguson|TE|Questionable|Ankle|Nov 8
 George Pickens|WR|Questionable|Hamstring|Nov 8
 Jalen Thompson|S|IR|Hamstring|Nov 8
 Luke Schoonmaker|TE|Questionable|Groin|Nov 8
 #DEN
+Pat Bryant|WR|Questionable|Ankle|Nov 8
 Kris Abrams-Draine|CB|Out|Ankle|Nov 22
-Eyioma Uwazurike|DE|Out|Shoulder|Nov 22
+Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 Brandon Jones|S|Out|Hamstring|Nov 22
 Talanoa Hufanga|S|Questionable|Ankle|Nov 8
 Dondrea Tillman|LB|Questionable|Hip|Nov 8
-Pat Bryant|WR|Questionable|Ankle|Nov 8
 #DET
+Jack Campbell|LB|IR|Neck|Dec 6
 Cade Mays|C|Out|Ankle|Nov 15
 DJ Wonnum|LB|Out|Concussion|Nov 15
 D.J. Reed|CB|Out|Hip|Nov 15
 Kerby Joseph|S|Out|Knee|Nov 15
-Jack Campbell|LB|Out|Neck|Nov 15
 Jacob Saylors|RB|Questionable|Neck|Nov 8
 Sione Vaki|RB|Questionable|Ankle|Nov 8
 Amon-Ra St. Brown|WR|Questionable|Ribs|Nov 8
@@ -199,11 +199,10 @@ Brandin Echols|CB|Out|Hamstring|Nov 8
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
 Brandon Aiyuk|WR|Out|Personal|Nov 15
 Nate Hobbs|CB|IR|Groin|Nov 8
-Demarcus Robinson|WR|IR|Ankle|Nov 8
 Mike Evans|WR|Out|Achilles|Nov 15
-Christian Kirk|WR|Out|Knee - Meniscus|Nov 15
 Deebo Samuel Sr.|WR|Out|Hamstring|Nov 15
 Siran Neal|S|Questionable|Knee|Nov 8
 De'Zhaun Stribling|WR|IR|Ankle|Dec 6
@@ -233,8 +232,8 @@ James Williams Sr.|LB|Questionable|Groin|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 Dorian Mausi|LB|IR|Foot|Nov 15
 #WAS
+Dyami Brown|WR|IR|Calf|Dec 6
 Jer'Zhan Newton|DT|Questionable|Pectoral|Nov 8
-Dyami Brown|WR|Out|Calf|Nov 12
 Treylon Burks|WR|Out|Foot|Nov 12
 Daron Payne|DT|IR|Foot|Feb 15
 Jeremy McNichols|RB|IR|Foot|Feb 15
