@@ -219,7 +219,7 @@ const zoneOf = (x, y, pts) => {
   if (Math.abs(dx) < 8 && y < 14.5) return 1;
   const ang = Math.atan2(dx, dy) * 180 / Math.PI; return ang < -30 ? 2 : ang > 30 ? 4 : 3;
 };
-const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const QTR = {}; const DZONE = {}; const DZG = {};
+const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const CHANCE = {}; const QTR = {}; const DZONE = {}; const DZG = {};
 const pbpFile = path.join(dir, "pbp_2027.json");
 if (fs.existsSync(pbpFile)) {
   const pbp = JSON.parse(fs.readFileSync(pbpFile));
@@ -253,6 +253,51 @@ if (fs.existsSync(pbpFile)) {
     if (qa.some(v => v < 0 || v > 70) || qh.some(v => v < 0 || v > 70)) continue;
     (QTR[g[2]] = QTR[g[2]] || []).push([g[0], g[1], g[3], "A", qa, qh]);
     (QTR[g[3]] = QTR[g[3]] || []).push([g[0], g[1], g[2], "H", qh, qa]); }
+
+  // ---------- Rebound + assist chances from on-court lineups (rebuilt from substitutions) ----------
+  // per player per game: [date, ownMiss, oppMiss, oreb, dreb, teammateFGM, ast, min]
+  // ownMiss/oppMiss = missed shots (and last missed free throws) by his team / the other team while he was on the floor;
+  // teammateFGM = field goals his teammates made while he was on the floor (the shots he could have assisted).
+  const byG = {}; for (const r of pbp) (byG[r.game_id] || (byG[r.game_id] = [])).push(r);
+  const boxG = {}; for (const b of box) { if (b.did_not_play) continue; (boxG[b.game_id] || (boxG[b.game_id] = {}))[String(b.athlete_id)] = b; }
+  const clk = r => { const m = /^(\d+):(\d+(?:\.\d+)?)$/.exec(String(r.clock_display_value || "")); return m ? +m[1] * 60 + +m[2] : NaN; };
+  const PG = {}; let chkN = 0, chkBad = 0;
+  for (const [gid, ev0] of Object.entries(byG)) {
+    const B = boxG[gid]; if (!B) continue; const ev = ev0.slice().sort((a, b) => (+a.sequence_number) - (+b.sequence_number));
+    const teamOf = {}; for (const id in B) teamOf[id] = String(B[id].team_id);
+    const acc = {}, A = id => acc[id] || (acc[id] = [0, 0, 0, 0]); let prevEnd = null;
+    for (const q of [...new Set(ev.map(r => +r.period_number))].sort((a, b) => a - b)) {
+      const E = ev.filter(r => +r.period_number === q), seenIn = new Set(), start = new Set();
+      for (const r of E) {
+        if (/Substitution/i.test(r.type_text)) { const i = String(r.athlete_id_1), o = String(r.athlete_id_2); if (!seenIn.has(o)) start.add(o); seenIn.add(i); continue; }
+        if (/Technical|Ejection|Timeout/i.test(r.type_text)) continue;
+        for (const id of [r.athlete_id_1, r.athlete_id_2, r.athlete_id_3]) { if (id == null) continue; const k = String(id); if (teamOf[k] && !seenIn.has(k)) start.add(k); }
+      }
+      if (q === 1) for (const id in B) if (B[id].starter) start.add(id);
+      const on = {}; for (const k of start) { const t = teamOf[k]; if (t) (on[t] || (on[t] = new Set())).add(k); }
+      for (const t of Object.keys(on)) if (on[t].size < 5 && prevEnd && prevEnd[t]) for (const k of prevEnd[t]) { if (on[t].size >= 5) break; on[t].add(k); }
+      let last = q <= 4 ? 720 : 300;
+      for (const r of E) {
+        const sc = clk(r); if (Number.isFinite(sc) && sc < last) { const d = last - sc; for (const t in on) for (const k of on[t]) A(k)[3] += d; last = sc; }
+        if (/Substitution/i.test(r.type_text)) { const i = String(r.athlete_id_1), o = String(r.athlete_id_2), t = teamOf[i] || teamOf[o]; if (t) { (on[t] || (on[t] = new Set())).delete(o); on[t].add(i); } continue; }
+        const tm = String(r.team_id);
+        const missFG = r.shooting_play && !r.scoring_play && r.points_attempted >= 2;
+        const missFT = !r.scoring_play && /^Free Throw - (1 of 1|2 of 2|3 of 3)$/.test(String(r.type_text || ""));
+        if (missFG || missFT) { let n = 0; for (const t in on) for (const k of on[t]) { n++; A(k)[t === tm ? 0 : 1]++; } chkN++; if (n !== 10) chkBad++; }
+        if (r.shooting_play && r.scoring_play && r.points_attempted >= 2 && on[tm]) for (const k of on[tm]) if (k !== String(r.athlete_id_1)) A(k)[2]++;
+      }
+      if (last > 0) for (const t in on) for (const k of on[t]) A(k)[3] += last;
+      prevEnd = on;
+    }
+    for (const id in acc) { const b = B[id], n = idToName[id]; if (!b || !n) continue;
+      // skip games where the rebuilt minutes are far off the box score (lineup data incomplete)
+      if (Math.abs(acc[id][3] / 60 - (+b.minutes || 0)) > 4) continue;
+      (PG[n] || (PG[n] = [])).push([String(b.game_date).slice(0, 10), acc[id][0], acc[id][1], +b.offensive_rebounds || 0, +b.defensive_rebounds || 0, acc[id][2], +b.assists || 0, +b.minutes || 0]); }
+  }
+  // season / last 10 / last 5 sums: [games, ownMiss, oppMiss, oreb, dreb, teammateFGM, ast, min]
+  const sum = a => a.reduce((s, r) => s.map((v, i) => v + r[i + 1]), [0, 0, 0, 0, 0, 0, 0]).map(v => +v.toFixed(0));
+  for (const [n, g] of Object.entries(PG)) { g.sort((a, b) => a[0] < b[0] ? -1 : 1); CHANCE[n] = { s: [g.length, ...sum(g)], l10: [Math.min(10, g.length), ...sum(g.slice(-10))], l5: [Math.min(5, g.length), ...sum(g.slice(-5))], last: g.slice(-10).map(r => [r[0], r[1] + r[2], r[3] + r[4], r[5], r[6], r[7]]) }; }
+  console.error(`chances: ${Object.keys(CHANCE).length} players, ${chkN} misses, ${(chkBad / Math.max(1, chkN) * 100).toFixed(1)}% without exactly 10 on court`);
 }
 
 // ---------- Height / weight / age from rosters ----------
@@ -370,6 +415,7 @@ const NBA_LGZ=${JSON.stringify(LGZ)};
 const NBA_SHOT=${JSON.stringify(SHOT)};
 const NBA_STYPE=${JSON.stringify(STYPE)}; /* [catch&shoot, pull-up, <10 ft, other 10+ ft] each [FGA, FGM, 3PA, 3PM], this season, ESPN play-by-play */
 const NBA_LGST=${JSON.stringify(LGST)};
+const NBA_CHANCE=${JSON.stringify(CHANCE)}; /* rebound + assist chances rebuilt from ESPN play-by-play lineups: s/l10/l5 = [games, ownMiss, oppMiss, oreb, dreb, teammateFGM, ast, min] */
 const NBA_DZONE=${JSON.stringify(DZONE)};
 const NBA_DZG=${JSON.stringify(Object.fromEntries(Object.entries(DZG).map(([t, g]) => [t, g.size])))};
 const NBA_BIO=${JSON.stringify(BIO)};

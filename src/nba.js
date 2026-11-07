@@ -493,6 +493,7 @@ function nbaPropCard(r,idx){
   <div class="pcl noglo"><div class="pcv">${line}<small>${NBA_MK[k]?NBA_MK[k][2]:""}</small>${typeof loStep!=="undefined"?loStep(nm,k,main):""}</div>
     <div class="pcm"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)}</b>${alt&&typeof loAltChip!=="undefined"?loAltChip(nm,k):""}<div class="pco">${op!=null?`<span class="o">Over ${oddsFmt(op)}</span>`:""}${up!=null?`<span class="u">Under ${oddsFmt(up)}</span>`:""}${book?`<span class="bk">${nbaEsc(book)}</span>`:""}</div></div></div>
   ${alt?"":nbaShopHtml(r)}${typeof loAltHtml!=="undefined"?loAltHtml(nm,k,main,nbaAllG(nm).slice(-10).map(o=>nbaVal(o.x,k))):""}
+  ${nbaChanceHtml(nm,k)}
   ${alt?"":`${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}`}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${(idx||0)<100?nbaMateSel(nm):""}
   ${pxSideTg()}<div class="nbtabs hrt">${tab("l5","L5",rate(S.l5))}${tab("l10","L10",rate(S.l10))}${tab("season","Season",rate(S.season))}${tab("h2h","H2H",rate(S.h2h))}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
@@ -811,6 +812,23 @@ function nbaCourtFor(S,when,who){
   ${worst.length?`<div class="small" style="margin-top:2px"><b style="color:#8cc0ff">Cold:</b> ${worst.map(z=>`${NBA_ZONES[z.i]} ${Math.round(z.pc)}% (NBA ${Math.round(z.lg)}%)`).join(" · ")}</div>`:""}`;
 }
 
+/* ---------- Rebound chances / assist chances per game (rebuilt from ESPN play-by-play lineups, NBA_CHANCE) ---------- */
+function nbaChanceHtml(nm,k){
+  if(typeof NBA_CHANCE==="undefined"||!NBA_CHANCE[nm])return "";const C=NBA_CHANCE[nm],rb=["reb","ra","pr","pra"].includes(k),as=["ast","ra","pa","pra"].includes(k);if(!rb&&!as)return "";
+  const pg=(a,i)=>a[0]?a[i]/a[0]:0,f=v=>v.toFixed(1),pc=(a,b)=>b?Math.round(a/b*100):0,p=NBA_LOGS[nm];
+  const opp=d=>{const g=p&&p.g.find(x=>x[1]===d);return g?(g[3]==="H"?"":"@")+g[2]:d.slice(5)};
+  const per=[["s","Season"],["l10","L10"],["l5","L5"]].filter(([w],i)=>i===0||C[w][0]<C.s[0]||w==="l5");
+  const trend=(i,j)=>{const s=pg(C.s,i)+(j?pg(C.s,j):0),l=pg(C.l5,i)+(j?pg(C.l5,j):0);return C.l5[0]<C.s[0]&&s?(l>=s*1.06?` <span class="up">▲ more lately</span>`:l<=s*.94?` <span class="dn">▼ fewer lately</span>`:""):""};
+  const L=C.last||[];let h="";
+  if(rb)h+=`<div class="chb"><div class="chh">🏀 <b>Rebound chances</b> <span class="small">per game · missed shots while he's on the floor</span>${trend(1,2)}</div>
+    <div class="chg">${per.map(([w,l])=>{const a=C[w];return `<div><span class="small">${l}${w!=="s"?"":` (${a[0]} g)`}</span><b>${f(pg(a,1)+pg(a,2))}</b><span class="small">${f(pg(a,3)+pg(a,4))} reb · ${pc(a[3]+a[4],a[1]+a[2])}%</span></div>`}).join("")}</div>
+    <div class="small">His team's misses ${f(pg(C.s,1))} (he gets ${pc(C.s[3],C.s[1])}% → ${f(pg(C.s,3))} off. reb) · opponent misses ${f(pg(C.s,2))} (he gets ${pc(C.s[4],C.s[2])}% → ${f(pg(C.s,4))} def. reb)</div>
+    ${L.length?`<div class="chl">${L.slice().reverse().map(r=>`<div title="${nbaEsc(r[0])} · ${r[5]} min"><b>${r[1]}</b><span>${r[2]} reb</span><em>${opp(r[0])}</em></div>`).join("")}</div>`:""}</div>`;
+  if(as)h+=`<div class="chb"><div class="chh">🎯 <b>Assist chances</b> <span class="small">per game · baskets his teammates made while he was on the floor</span>${trend(5)}</div>
+    <div class="chg">${per.map(([w,l])=>{const a=C[w];return `<div><span class="small">${l}${w!=="s"?"":` (${a[0]} g)`}</span><b>${f(pg(a,5))}</b><span class="small">${f(pg(a,6))} ast · ${pc(a[6],a[5])}%</span></div>`}).join("")}</div>
+    <div class="small">He assisted ${pc(C.s[6],C.s[5])}% of his teammates' baskets while he played (assist rate).</div>
+    ${L.length?`<div class="chl">${L.slice().reverse().map(r=>`<div title="${nbaEsc(r[0])} · ${r[5]} min"><b>${r[3]}</b><span>${r[4]} ast</span><em>${opp(r[0])}</em></div>`).join("")}</div>`:""}</div>`;
+  return `<div class="chw">${h}<div class="small" style="margin-top:4px">Last ${L.length} games, newest first. Our count from ESPN play-by-play (who was on the floor for each shot) — not NBA.com's player-tracking "chances".</div></div>`}
 /* ---------- Shot types this season: catch & shoot / pull-up / under 10 ft / other (ESPN play-by-play) ---------- */
 function nbaShotTypes(nm){
   if(typeof NBA_STYPE==="undefined"||!NBA_STYPE[nm])return "";const T=NBA_STYPE[nm],L=NBA_LGST,tot=T.reduce((a,r)=>a+r[0],0);if(tot<10)return "";
@@ -886,6 +904,7 @@ function nbaLineRow(nm,r){
           <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${alt?"":(typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):"")+nbaShopHtml(r)}
         ${(()=>{const L10=nbaAllG(nm).slice(-10),v10=L10.map(o=>nbaVal(o.x,k)),o10=v10.filter(v=>pxHit(v,line)).length;return L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>(o.x[3]==="H"?"":"@")+o.x[2]))}<div class="small mbs">Last ${L10.length}: <b class="${o10/L10.length>=.5?"up":"dn"}">${o10}/${L10.length} ${pxSW()}</b> · avg <b>${nbaF(v10.reduce((a,b)=>a+b,0)/v10.length)}</b> vs line ${line}</div></div>`:""})()}
         ${typeof loAltHtml!=="undefined"?loAltHtml(nm,k,main,nbaAllG(nm).slice(-10).map(o=>nbaVal(o.x,k))):""}
+        ${nbaChanceHtml(nm,k)}
         <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
         <div class="plf">${(()=>{const h=vals.filter(v=>pxHit(v,line)).length;return `<b class="${h/Math.max(1,l6.length)>=.5?"up":"dn"}">${h}/${l6.length} ${pxSW()}</b>`})()}${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
         ${!alt&&typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}
