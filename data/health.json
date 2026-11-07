@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-07T16:53:01+00:00",
+  "at": "2026-11-07T18:58:35+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 76 games kept (0 new), 1700 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 698 feed lines merged (0 skipped from other days), 654 total, unmatched names: ['Spencer Jones']\nLocked 3 plays for 2026-11-07: Jase Richardson U2.5 reb; Scoot Henderson U3.5 ast; Obi Toppin O11.5 pts\nNBA data: teams 30, results 132 (through 2026-11-06), players 457, slate 7, lines 7, props 654, inj teams 29, prev-season players 185, play log 15, adv 366, qtr games 132, h2h 2/4/7/2/2/4/8\nnfl-update: 14 lines refreshed, 0 new finals (weeks [8, 9])\n215 players, 32 teams\nnfl-inj: 215 players\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 76 games kept (0 new), 1700 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 805 feed lines merged (0 skipped from other days), 760 total, unmatched names: ['Spencer Jones']\nNBA data: teams 30, results 132 (through 2026-11-06), players 457, slate 7, lines 7, props 760, inj teams 29, prev-season players 185, play log 15, adv 366, qtr games 132, h2h 2/4/7/2/2/4/8\nnfl-update: 14 lines refreshed, 0 new finals (weeks [8, 9])\n213 players, 32 teams\nnfl-inj: 213 players\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-07T16:53:01+00:00",
+  "at": "2026-11-07T18:58:35+00:00",
   "ok": true,
   "issue": ""
  }
