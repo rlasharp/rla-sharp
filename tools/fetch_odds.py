@@ -69,10 +69,10 @@ def pick(book_rows):
         return ln, o, u, b, bo, bob, bu, bub
     return None
 
-DIAG, DIAG_EX = {}, []  # line_type counts, for the run log
-ALT_MAX = 8  # alternate lines kept per prop (the ones closest to the main line)
+DIAG = {}  # line_type counts, for the run log
+ALT_MAX = 10  # alternate lines kept per prop (the ones closest to the main line)
 
-def alts(book_rows, main_ln):
+def alts(book_rows, main_ln, milestones=None):
     """Alternate lines: every other line any real book posts for this player+market (PropLine returns
     alt lines as extra points under the same market key, so this costs no extra requests).
     -> [[line, bestOver, overBook, bestUnder, underBook], ...] sorted by line. Prices outside
@@ -86,6 +86,11 @@ def alts(book_rows, main_ln):
                 p = s.get(side)
                 if p is None or p < -2000 or p > 2000: continue
                 if cur[i] is None or p > cur[i]: cur[i], cur[i + 1] = p, BOOK_NAME[b]
+    for b, lines in (milestones or {}).items():
+        for ln, p in lines.items():
+            if ln == main_ln or p < -2000 or p > 2000: continue
+            cur = best.setdefault(ln, [None, None, None, None])
+            if cur[0] is None or p > cur[0]: cur[0], cur[1] = p, BOOK_NAME[b]
     rungs = [[ln] + v for ln, v in best.items() if v[0] is not None or v[2] is not None]
     rungs.sort(key=lambda r: abs(r[0] - main_ln))
     rungs = sorted(rungs[:ALT_MAX], key=lambda r: r[0])
@@ -131,6 +136,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
             print(f"{sport} {eid}: odds failed: {e}"); continue
         used += 1
         props = {}  # (player, mk) -> {book: {line: {Over/Under: price}}}
+        ms = {}     # (player, mk) -> {book: {line: overPrice}}  milestone ("N+") rungs
         for bk in g(odds, "bookmakers", []) or []:
             b = str(g(bk, "key", "")).lower()
             if b in NOT_BOOKS or b not in BOOK_NAME: continue
@@ -139,13 +145,18 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
                 if not mk: continue
                 lt = str(g(m, "line_type", "") or "")
                 DIAG[lt] = DIAG.get(lt, 0) + 1
-                if lt != "main" and len(DIAG_EX) < 4: DIAG_EX.append([b, g(m, "key"), lt, [{k: g(oc, k) for k in ("name", "description", "point", "price", "payout_multiplier")} for oc in (g(m, "outcomes", []) or [])[:3]]])
                 for oc in g(m, "outcomes", []) or []:
                     if g(oc, "payout_multiplier") not in (None, 1, 1.0): continue
                     name = str(g(oc, "name", "")); player = g(oc, "description")
                     side = "Over" if name.lower() in ("over", "yes") else "Under" if name.lower() in ("under", "no") else None
                     price, point = g(oc, "price"), g(oc, "point")
                     if player: player = re.sub(r"\s*\([A-Z]{2,4}\)\s*$", "", str(player)).strip()
+                    mm = re.match(r"^\s*(\d+(?:\.\d+)?)\s*\+", name)
+                    if mm and side is None and mk != "anyTD" and player and price is not None:
+                        # milestone rung "25+ Points" = Over 24.5 (one-sided); kept apart so it never touches the main line
+                        try: ms.setdefault((player, mk), {}).setdefault(b, {})[float(mm.group(1)) - 0.5] = int(round(float(price)))
+                        except Exception: pass
+                        continue
                     if not player or not side or price is None: continue
                     if point is None: point = 0.5
                     try: price = int(round(float(price))); point = float(point)
@@ -160,7 +171,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
             rows.append([player, mk, ln, o, u, BOOK_NAME[b],
                          bo if bob != b else None, BOOK_NAME.get(bob) if bob != b else None,
                          bu if (bub and bub != b) else None, BOOK_NAME.get(bub) if (bub and bub != b) else None,
-                         op[0], op[1], op[2], eid] + ([] if mk == "anyTD" else [alts(br, ln) or None]))
+                         op[0], op[1], op[2], eid] + ([] if mk == "anyTD" else [alts(br, ln, ms.get((player, mk))) or None]))
             prev_open[key] = op
     return evs, rows, used
 
@@ -218,7 +229,7 @@ def main():
     print(f"NBA {len(out['nba'].get('props') or [])} props / {len(out['nba'].get('events') or [])} games; "
           f"NFL {len(out['nfl'].get('props') or [])} props / {len(out['nfl'].get('events') or [])} games; "
           f"requests today {used}")
-    print("line_type counts:", DIAG); [print("  non-main sample:", json.dumps(x, default=str)) for x in DIAG_EX]
+    print("line_type counts:", DIAG)
 
 if __name__ == "__main__":
     main()
