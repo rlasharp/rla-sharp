@@ -12,3 +12,6 @@
 2026-11-06|Ryan Kalkbrenner|pts|u|7.5|-104|FanDuel|CHA|BOS
 2026-11-06|Scoot Henderson|ra|u|4.5|112|FanDuel|POR|LAL
 2026-11-06|Brayden Burries|pa|u|13.5|-113|Unibet|MIL|TOR
+2026-11-07|Jase Richardson|reb|u|2.5|-103|BetRivers|ORL|GS
+2026-11-07|Scoot Henderson|ast|u|3.5|-130|Fanatics|POR|SA
+2026-11-07|Obi Toppin|pts|o|11.5|-105|Fanatics|IND|DEN

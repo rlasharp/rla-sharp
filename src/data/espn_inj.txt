@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 14:53Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 16:52Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -157,11 +157,11 @@ Kaytron Allen|RB|Questionable|Quadriceps|Nov 8
 Jaylen Wright|RB|Questionable|Quadriceps|Nov 8
 Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
 #MIN
+Kyler Murray|QB|Questionable|Hamstring|Nov 9
 Demond Claiborne|RB|Questionable|Knee|Nov 9
 Jauan Jennings|WR|Questionable|Calf|Nov 9
 Andrew Van Ginkel|LB|Questionable|Chest|Nov 9
 Jay Ward|S|Questionable|Knee|Nov 9
-Kyler Murray|QB|Questionable|Hamstring|Nov 9
 #NE
 Mack Hollins|WR|IR|Calf|Nov 8
 TreVeyon Henderson|RB|Out|Illness|Nov 15

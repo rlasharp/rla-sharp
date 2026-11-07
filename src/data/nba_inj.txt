@@ -1,17 +1,18 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 14:53Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 16:52Z
 #Atlanta Hawks
+Keshon Gilbert|G|Day-To-Day|knee inflammation|Nov 7
+Asa Newell|F|Day-To-Day|toe|Nov 7
 Jalen Johnson|F|Out|ankle|Nov 7
-Keshon Gilbert|G|Out|knee inflammation|Nov 7
-Asa Newell|F|Out|toe|Nov 7
 Jock Landale|C|Out|hip|Nov 7
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
 Devin Carter|G|Out|illness|Nov 6
 #Brooklyn Nets
+Noah Clowney|F|Day-To-Day|illness|Nov 7
 Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
 Egor Demin|G|Out|leg bruise|Nov 11
-Tyler Bilodeau|F|Out|shoulder sprain|Nov 6
+Tyler Bilodeau|F|Out|shoulder sprain|Nov 7
 #Charlotte Hornets
 Brandon Miller|F|Day-To-Day|groin soreness|Nov 9
 Dennis Schroder|G|Out|thigh|Nov 9
@@ -23,8 +24,8 @@ Zach Collins|F|Day-To-Day|illness|Nov 8
 Nic Claxton|C|Out|hamstring strain|Nov 8
 Jalen Smith|F|Day-To-Day|hand|Nov 8
 #Cleveland Cavaliers
-Sam Merrill|G|Out|elbow|Nov 7
-Jarrett Allen|C|Out|knee|Nov 7
+Sam Merrill|G|Day-To-Day|elbow|Nov 7
+Jarrett Allen|C|Day-To-Day|knee|Nov 7
 Jaylon Tyson|G|Out|ankle sprain|Nov 7
 #Dallas Mavericks
 Sergio de Larrea|F|Out|knee strain|Nov 12
@@ -63,7 +64,7 @@ Scotty Pippen Jr.|G|Out|back soreness|Nov 9
 #Milwaukee Bucks
 Kam Jones|G|Day-To-Day|ankle|Nov 6
 #Minnesota Timberwolves
-Joan Beringer|F|Out|fracture|Nov 8
+Joan Beringer|F|Day-To-Day|fracture|Nov 8
 Terrence Shannon Jr.|G|Out|hip bruise|Nov 8
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
@@ -72,8 +73,7 @@ Yves Missi|C|Out|knee bruise|Nov 9
 #New York Knicks
 Josh Hart|G|Out|ankle|Nov 10
 #Oklahoma City Thunder
-Jaylin Williams|F|Out|back spasms|Nov 7
-Nikola Topic|G|Out|back|Nov 13
+Jaylin Williams|F|Day-To-Day|back spasms|Nov 7
 Thomas Sorber|C|Out|knee|Nov 13
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
@@ -97,7 +97,7 @@ Vit Krejci|G|Out|ankle|Jan 2
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-De'Andre Hunter|F|Out|illness|Nov 8
+De'Andre Hunter|F|Day-To-Day|illness|Nov 8
 Maxime Raynaud|C|Out|knee dislocated|Nov 10
 Keegan Murray|F|Out|ankle|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1
@@ -114,7 +114,7 @@ Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 Trey Alexander|G|Out|knee bruise|Nov 6
 #Washington Wizards
-Anthony Davis|F|Out|ankle sprain|Nov 7
+Anthony Davis|F|Day-To-Day|ankle sprain|Nov 7
 Reece Beekman|G|Out|shoulder|Dec 3
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 9
 Justin Champagnie|F|Out|foot not specified|Feb 25
