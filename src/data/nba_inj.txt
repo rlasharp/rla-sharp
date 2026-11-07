@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 18:58Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 20:51Z
 #Atlanta Hawks
 Keshon Gilbert|G|Out|knee inflammation|Nov 9
 Asa Newell|F|Out|toe|Nov 9
@@ -6,8 +6,6 @@ Jock Landale|C|Out|hip|Nov 9
 Jalen Johnson|F|Out|ankle|Nov 7
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
-#Boston Celtics
-Devin Carter|G|Out|illness|Nov 6
 #Brooklyn Nets
 Noah Clowney|F|Day-To-Day|illness|Nov 7
 Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
@@ -47,8 +45,6 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 9
 Steven Adams|C|Out|calf strain|Nov 9
 #Indiana Pacers
-T.J. McConnell|G|Out|hamstring strain|Nov 7
-Kelly Oubre Jr.|G|Day-To-Day|calf bruise|Nov 7
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 Tyrese Haliburton|G|Out|hamstring strain|Nov 13
@@ -61,8 +57,6 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 Richie Saunders|G|Out|knee surgery|Dec 1
 Isaiah Stewart|C|Out|knee bruise|Nov 9
 Scotty Pippen Jr.|G|Out|back soreness|Nov 9
-#Milwaukee Bucks
-Kam Jones|G|Day-To-Day|ankle|Nov 6
 #Minnesota Timberwolves
 Joan Beringer|F|Day-To-Day|fracture|Nov 8
 Terrence Shannon Jr.|G|Out|hip bruise|Nov 8
@@ -73,12 +67,13 @@ Yves Missi|C|Out|knee bruise|Nov 9
 #New York Knicks
 Josh Hart|G|Out|ankle|Nov 10
 #Oklahoma City Thunder
-Jaylin Williams|F|Day-To-Day|back spasms|Nov 7
+Jaylin Williams|F|Out|back spasms|Nov 10
 Thomas Sorber|C|Out|knee|Nov 13
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
+Desmond Bane|G|Out|illness|Nov 10
 Jonathan Isaac|F|Out|knee not specified|Nov 10
 Jalen Suggs|G|Out|knee|Nov 10
 Paolo Banchero|F|Out|ankle sprain|Nov 22
@@ -112,7 +107,6 @@ Nate Bittle|C|Out|foot fracture|Nov 9
 #Utah Jazz
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
-Trey Alexander|G|Out|knee bruise|Nov 6
 #Washington Wizards
 Anthony Davis|F|Day-To-Day|ankle sprain|Nov 7
 Reece Beekman|G|Out|shoulder|Dec 3

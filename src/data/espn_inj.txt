@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 18:58Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 20:51Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -34,14 +34,10 @@ Jaylinn Hawkins|S|Out|Knee|Nov 16
 Adam Randall|RB|IR|Neck|Nov 16
 #BUF
 Joshua Palmer|WR|Out|Hamstring|Nov 15
-DJ Moore|WR|Questionable|Shoulder|Nov 9
-Keon Coleman|WR|Questionable|Shoulder|Nov 9
-Sam Franklin Jr.|S|Questionable|Illness|Nov 9
 Dion Dawkins|OT|Questionable|Ribs|Nov 9
 Alec Anderson|OT|Questionable|Ankle|Nov 9
 Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
-Spencer Brown|OT|Questionable|Back|Nov 9
 #CAR
 Brady Christensen|G|IR|Hamstring|Nov 8
 Damien Lewis|G|Out|Knee|Nov 15
@@ -70,15 +66,15 @@ Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 Deshaun Watson|QB|Questionable|Concussion|Nov 8
 Maliek Collins|DT|Out|Elbow|Nov 15
 #DAL
+Marist Liufau|LB|Questionable|Forearm|Nov 8
 Joey Porter Jr.|CB|Questionable|Ankle|Nov 8
 DeMarvion Overshown|LB|Questionable|Hamstring|Nov 8
-Malachi Lawrence|LB|Out|Ankle|Nov 8
+Malachi Lawrence|LB|IR|Ankle|Dec 7
 KaVontae Turpin|WR|Out|Ribs|Nov 15
 Jake Ferguson|TE|Questionable|Ankle|Nov 8
 George Pickens|WR|Questionable|Hamstring|Nov 8
 Jalen Thompson|S|IR|Hamstring|Nov 8
 Luke Schoonmaker|TE|Questionable|Groin|Nov 8
-Jonathan Bullard|DT|IR|Calf|Nov 8
 #DEN
 Kris Abrams-Draine|CB|Out|Ankle|Nov 22
 Eyioma Uwazurike|DE|Out|Shoulder|Nov 22
@@ -155,10 +151,9 @@ Kaytron Allen|RB|Questionable|Quadriceps|Nov 8
 Jaylen Wright|RB|Questionable|Quadriceps|Nov 8
 Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
 #MIN
-Kyler Murray|QB|Questionable|Hamstring|Nov 9
-Demond Claiborne|RB|Questionable|Knee|Nov 9
-Jauan Jennings|WR|Questionable|Calf|Nov 9
-Andrew Van Ginkel|LB|Questionable|Chest|Nov 9
+Jauan Jennings|WR|Out|Calf|Nov 15
+Kyler Murray|QB|Out|Hamstring|Nov 15
+Demond Claiborne|RB|Out|Knee|Nov 15
 Jay Ward|S|Questionable|Knee|Nov 9
 #NE
 Mack Hollins|WR|IR|Calf|Nov 8
