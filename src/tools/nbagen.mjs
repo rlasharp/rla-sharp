@@ -219,7 +219,7 @@ const zoneOf = (x, y, pts) => {
   if (Math.abs(dx) < 8 && y < 14.5) return 1;
   const ang = Math.atan2(dx, dy) * 180 / Math.PI; return ang < -30 ? 2 : ang > 30 ? 4 : 3;
 };
-const SHOT = {}; let LGZ = null; const QTR = {}; const DZONE = {}; const DZG = {};
+const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const QTR = {}; const DZONE = {}; const DZG = {};
 const pbpFile = path.join(dir, "pbp_2027.json");
 if (fs.existsSync(pbpFile)) {
   const pbp = JSON.parse(fs.readFileSync(pbpFile));
@@ -233,8 +233,14 @@ if (fs.existsSync(pbpFile)) {
     // defense = the team that did NOT shoot; used for "what the opponent allows" shot maps
     const def = String(r.team_id) === String(r.home_team_id) ? r.away_team_abbrev : r.home_team_abbrev;
     if (def) { const dz = DZONE[def] || (DZONE[def] = ZONES.map(() => [0, 0])); dz[z][0]++; dz[z][1] += made; (DZG[def] || (DZG[def] = new Set())).add(r.game_id); }
+    // shot type (ESPN play-by-play wording): 0 catch & shoot (plain "Jump Shot" from 10+ ft, no dribble move named),
+    // 1 pull-up (Pullup / Step Back jumpers), 2 under 10 ft (any shot), 3 other jumpers 10+ ft (fadeaways, turnarounds, floaters, hooks, running)
+    const fm = /(\d+)-foot/.exec(r.text || ""), dist = fm ? +fm[1] : Math.sqrt((x - 25) ** 2 + (y - 0.75) ** 2);
+    const tt = String(r.type_text || ""), st = dist < 10 ? 2 : /Pullup|Step Back/i.test(tt) ? 1 : /^Jump Shot( Bank)?$/i.test(tt) ? 0 : 3, th = r.points_attempted === 3 ? 1 : 0;
+    const LT = LGST || (LGST = [0, 1, 2, 3].map(() => [0, 0, 0, 0])); LT[st][0]++; LT[st][1] += made; LT[st][2] += th; LT[st][3] += th && made;
     const n = idToName[r.athlete_id_1]; if (!n) continue;
     const s = SHOT[n] || (SHOT[n] = ZONES.map(() => [0, 0])); s[z][0]++; s[z][1] += made;
+    const t = STYPE[n] || (STYPE[n] = [0, 1, 2, 3].map(() => [0, 0, 0, 0])); t[st][0]++; t[st][1] += made; t[st][2] += th; t[st][3] += th && made;
   }
   LGZ = lg;
   // ---------- Quarter scoring: end-of-quarter score per game -> points by quarter ----------
@@ -362,6 +368,8 @@ const NBA_REST=${JSON.stringify(REST)};
 const NBA_ZONES=${JSON.stringify(ZONES)};
 const NBA_LGZ=${JSON.stringify(LGZ)};
 const NBA_SHOT=${JSON.stringify(SHOT)};
+const NBA_STYPE=${JSON.stringify(STYPE)}; /* [catch&shoot, pull-up, <10 ft, other 10+ ft] each [FGA, FGM, 3PA, 3PM], this season, ESPN play-by-play */
+const NBA_LGST=${JSON.stringify(LGST)};
 const NBA_DZONE=${JSON.stringify(DZONE)};
 const NBA_DZG=${JSON.stringify(Object.fromEntries(Object.entries(DZG).map(([t, g]) => [t, g.size])))};
 const NBA_BIO=${JSON.stringify(BIO)};

@@ -811,6 +811,18 @@ function nbaCourtFor(S,when,who){
   ${worst.length?`<div class="small" style="margin-top:2px"><b style="color:#8cc0ff">Cold:</b> ${worst.map(z=>`${NBA_ZONES[z.i]} ${Math.round(z.pc)}% (NBA ${Math.round(z.lg)}%)`).join(" · ")}</div>`:""}`;
 }
 
+/* ---------- Shot types this season: catch & shoot / pull-up / under 10 ft / other (ESPN play-by-play) ---------- */
+function nbaShotTypes(nm){
+  if(typeof NBA_STYPE==="undefined"||!NBA_STYPE[nm])return "";const T=NBA_STYPE[nm],L=NBA_LGST,tot=T.reduce((a,r)=>a+r[0],0);if(tot<10)return "";
+  const lt=L?L.reduce((a,r)=>a+r[0],0):0,pc=(m,a)=>a?Math.round(m/a*1000)/10:null,f=v=>v==null?"–":v.toFixed(1)+"%";
+  const N=[["🎯","Catch & shoot","Jumper from 10+ ft with no dribble move in the play-by-play"],["⛹️","Pull-up","Off-the-dribble jumper (pull-ups and step-backs)"],["🏀","Under 10 ft","Layups, dunks, floaters, hooks and tip-ins inside 10 feet"],["🌀","Other jumpers","10+ ft fadeaways, turnarounds, runners and floaters"]];
+  const rows=T.map((r,i)=>{const sh=r[0]/tot*100,lsh=lt?L[i][0]/lt*100:null,fg=pc(r[1],r[0]),lfg=L?pc(L[i][1],L[i][0]):null,tp=pc(r[3],r[2]),ltp=L?pc(L[i][3],L[i][2]):null;
+    const c=(v,a,n)=>v==null||a==null||n<8?"":v>=a+3?"up":v<=a-3?"dn":"";
+    return `<div class="stp"><div class="stph"><span title="${N[i][2]}">${N[i][0]} <b>${N[i][1]}</b></span><span><b>${sh.toFixed(0)}%</b> <span class="small">of his shots${lsh!=null?` · NBA ${lsh.toFixed(0)}%`:""}</span></span></div>
+     <div class="stpb"><i style="width:${Math.min(100,sh).toFixed(1)}%"></i>${lsh!=null?`<em style="left:${Math.min(100,lsh).toFixed(1)}%" title="NBA average share"></em>`:""}</div>
+     <div class="small stpf">FG <b class="${c(fg,lfg,r[0])}">${f(fg)}</b> (${r[1]}/${r[0]})${lfg!=null?` vs NBA ${f(lfg)}`:""}${r[2]?` · 3PT <b class="${c(tp,ltp,r[2])}">${f(tp)}</b> (${r[3]}/${r[2]})${ltp!=null&&i<2?` vs NBA ${f(ltp)}`:""}`:""}</div></div>`}).join("");
+  return `<div class="card"><h2 style="margin-bottom:2px">How he shoots · this season</h2><div class="small" style="margin-bottom:8px">${tot} field-goal attempts. Bar = share of his shots; the tick = NBA average share. <span class="up">Green</span> / <span class="dn">red</span> FG% = 3+ points above / below the NBA average.</div>
+   ${rows}<div class="small" style="margin-top:6px">From ESPN play-by-play shot descriptions — "catch &amp; shoot" is our estimate (a plain jump shot with no dribble move), not NBA.com tracking data.</div></div>`}
 /* ---------- Shot matchup: where he shoots vs where tonight's opponent allows shots (NBA_DZONE) ---------- */
 function nbaShotMatchup(nm,opp){
   const S=typeof NBA_SHOT!=="undefined"&&NBA_SHOT[nm],D=opp&&typeof NBA_DZONE!=="undefined"&&NBA_DZONE[opp];
@@ -938,6 +950,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
   <div class="pbio" style="margin-top:10px"><div><b>${pct(tot(10),tot(11))}</b>Field goal %</div><div><b>${pct(tot(8),tot(15))}</b>3-point %</div><div><b>${pct(tot(16),tot(17))}</b>Free throw %</div><div><b>${nbaF(nbaAvg(p,"stl"))}</b>Steals</div><div><b>${nbaF(nbaAvg(p,"blk"))}</b>Blocks</div></div>
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${opp?`Where he scores vs where ${nbaEsc(nbaShort(opp))} allow`:"Where he scores"}</h2>${opp?nbaShotMatchup(nm,opp):nbaCourt(nm)}</div>
+    ${nbaShotTypes(nm)}
     <div class="card"><h2>Last ${Math.min(10,p.g.length)} games</h2>
       <div class="nbtabs">${[["pts","PTS"],["reb","REB"],["ast","AST"],["3pm","3PM"],["min","MIN"]].map(([k,l])=>`<button data-ptk="${k}" class="${k===tk?"on":""}">${l}</button>`).join("")}</div>
       <div id="ptrend">${nbaTrend(p,tk)}</div>
