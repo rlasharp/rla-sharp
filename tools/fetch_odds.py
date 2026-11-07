@@ -69,6 +69,7 @@ def pick(book_rows):
         return ln, o, u, b, bo, bob, bu, bub
     return None
 
+DIAG, DIAG_EX = {}, []  # line_type counts, for the run log
 ALT_MAX = 8  # alternate lines kept per prop (the ones closest to the main line)
 
 def alts(book_rows, main_ln):
@@ -136,6 +137,9 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
             for m in g(bk, "markets", []) or []:
                 mk = mk_map.get(g(m, "key"))
                 if not mk: continue
+                lt = str(g(m, "line_type", "") or "")
+                DIAG[lt] = DIAG.get(lt, 0) + 1
+                if lt != "main" and len(DIAG_EX) < 4: DIAG_EX.append([b, g(m, "key"), lt, [{k: g(oc, k) for k in ("name", "description", "point", "price", "payout_multiplier")} for oc in (g(m, "outcomes", []) or [])[:3]]])
                 for oc in g(m, "outcomes", []) or []:
                     if g(oc, "payout_multiplier") not in (None, 1, 1.0): continue
                     name = str(g(oc, "name", "")); player = g(oc, "description")
@@ -214,6 +218,7 @@ def main():
     print(f"NBA {len(out['nba'].get('props') or [])} props / {len(out['nba'].get('events') or [])} games; "
           f"NFL {len(out['nfl'].get('props') or [])} props / {len(out['nfl'].get('events') or [])} games; "
           f"requests today {used}")
+    print("line_type counts:", DIAG); [print("  non-main sample:", json.dumps(x, default=str)) for x in DIAG_EX]
 
 if __name__ == "__main__":
     main()
