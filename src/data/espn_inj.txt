@@ -1,12 +1,12 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 03:00Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 05:01Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Isaiah Adams|G|IR|Ankle|Nov 8
+Jon Gaines II|G|Out|Ankle|Nov 15
+Jayden Williams|OT|Out|Knee|Nov 15
 Walter Nolen III|DT|Questionable|Ankle|Nov 8
 Max Melton|CB|Questionable|Knee|Nov 8
 Bam Knight|RB|Out|Concussion|Nov 15
-Jayden Williams|OT|Out|Knee|Nov 15
-Jon Gaines II|G|Out|Ankle|Nov 15
-Isaiah Adams|G|IR|Ankle|Nov 8
 James Conner|RB|IR|Foot|Nov 15
 Jeremiyah Love|RB|IR|Ankle|Dec 6
 Kendrick Bourne|WR|IR|Lower Leg|Feb 15
@@ -43,13 +43,13 @@ Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
 Spencer Brown|OT|Questionable|Back|Nov 9
 #CAR
+Brady Christensen|G|IR|Hamstring|Nov 8
+Damien Lewis|G|Out|Knee|Nov 15
 Will Lee III|CB|Out|Hamstring|Nov 15
 Jaelan Phillips|LB|Out|Hamstring|Nov 15
 Bobby Okereke|LB|Out|Foot|Nov 15
 Torricelli Simpkins III|G|Questionable|Ankle|Nov 8
 Corey Bullock|C|Questionable|Quadriceps|Nov 8
-Brady Christensen|G|IR|Hamstring|Nov 8
-Damien Lewis|G|Out|Knee|Nov 15
 Jonathon Brooks|RB|IR|Abdomen|Nov 8
 Xavier Legette|WR|IR|Knee|Nov 8
 Akayleb Evans|CB|IR|Triceps|Nov 30
@@ -61,9 +61,9 @@ Zavier Scott|RB|IR|Wrist|Dec 13
 Kentavius Street|DT|IR|Knee|Feb 15
 Braxton Jones|OT|IR|Knee|Feb 15
 #CIN
+Cedric Johnson|DE|Questionable|Ankle|Nov 8
 Kyle Dugger|S|Out|Quadriceps|Nov 15
 Cashius Howell|DE|IR|Wrist|Dec 6
-Cedric Johnson|DE|Questionable|Ankle|Nov 8
 Andrei Iosivas|WR|IR|Thumb|Nov 15
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
@@ -80,41 +80,41 @@ Jalen Thompson|S|IR|Hamstring|Nov 8
 Luke Schoonmaker|TE|Questionable|Groin|Nov 8
 Jonathan Bullard|DT|IR|Calf|Nov 8
 #DEN
+Kris Abrams-Draine|CB|Out|Ankle|Nov 22
 Eyioma Uwazurike|DE|Out|Shoulder|Nov 22
 Brandon Jones|S|Out|Hamstring|Nov 22
 Talanoa Hufanga|S|Questionable|Ankle|Nov 8
-Kris Abrams-Draine|CB|Out|Ankle|Nov 22
 Dondrea Tillman|LB|Questionable|Hip|Nov 8
 Pat Bryant|WR|IR|Ankle|Nov 8
 #DET
+Cade Mays|C|Out|Ankle|Nov 15
 DJ Wonnum|LB|Out|Concussion|Nov 15
 D.J. Reed|CB|Out|Hip|Nov 8
 Kerby Joseph|S|Out|Knee|Nov 15
 Jack Campbell|LB|Out|Neck|Nov 15
 Jacob Saylors|RB|Questionable|Neck|Nov 8
 Sione Vaki|RB|Questionable|Ankle|Nov 8
-Cade Mays|C|Out|Ankle|Nov 15
 Amon-Ra St. Brown|WR|Questionable|Ribs|Nov 8
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
+Travis Glover|OT|Out|Knee|Nov 15
+Sean Rhyan|G|Out|Ankle|Nov 15
 Keisean Nixon|CB|Questionable|Groin|Nov 8
 Zaire Franklin|LB|Out|Shin|Nov 15
 Josh Whyle|TE|Out|Concussion|Nov 15
 Chris Brooks|RB|IR|Ankle|Nov 8
-Sean Rhyan|G|Out|Ankle|Nov 15
 MarShawn Lloyd|RB|Questionable|Knee|Nov 8
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
-Travis Glover|OT|Out|Knee|Nov 15
 #HOU
 Reed Blankenship|S|Out|Concussion|Nov 15
 David Montgomery|RB|Out|Groin|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
+Justin Walley|CB|Out|Knee|Nov 15
 A.J. Haulcy|S|Questionable|Ankle|Nov 8
 Jalen Travis|OT|Questionable|Thumb|Nov 8
 Akeem Davis-Gaither|LB|Out|Knee|Nov 15
-Justin Walley|CB|Out|Knee|Nov 15
 Alec Pierce|WR|IR|Heel|Nov 29
 #JAX
 Wesley Williams|DE|Out|Coach's Decision|Nov 15
@@ -122,23 +122,22 @@ CJ Williams|WR|Out|Coach's Decision|Nov 15
 Cam'Ron Silmon-Craig|S|Out|Coach's Decision|Nov 15
 Alijah Huzzie|CB|Out|Coach's Decision|Nov 15
 Eric Murray|S|IR|Elbow|Feb 15
-DaVon Hamilton|DT|IR|Knee|Feb 15
 #KC
+Peter Woods|DT|Out|Neck|Nov 15
 Nikko Remigio|WR|Questionable|Hip|Nov 8
 Mansoor Delane|CB|Out|Shoulder|Nov 15
-Peter Woods|DT|Out|Neck|Nov 15
 L'Jarius Sneed|CB|IR|Knee|Nov 26
 Omarr Norman-Lott|DT|Out|Knee - ACL|Nov 15
 #LV
-Darien Porter|CB|Questionable|Groin|Nov 8
 Thomas Booker IV|DT|Out|Ankle|Nov 15
+Darien Porter|CB|Questionable|Groin|Nov 8
 #LAC
+Denzel Perryman|LB|IR|Undisclosed|Nov 8
+Kendall Williamson|S|Out|Calf|Nov 16
+Deane Leonard|CB|Out|Concussion|Nov 16
 Brenen Thompson|WR|Doubtful|Quadriceps|Nov 8
 David Njoku|TE|IR|Lower Leg|Nov 8
 Kayode Awosika|G|Doubtful|Lower Leg|Nov 8
-Kendall Williamson|S|Out|Calf|Nov 16
-Deane Leonard|CB|Out|Concussion|Nov 16
-Denzel Perryman|LB|IR|Undisclosed|Nov 8
 Derwin James Jr.|S|IR|Hamstring|Nov 29
 #LAR
 Ronnie Rivers|RB|IR|Calf|Nov 8
@@ -153,9 +152,9 @@ Jaylen Watson|CB|Out|Shoulder|Feb 15
 Dean Connors|RB|IR|Hand|Dec 13
 Grant Stuard|LB|Questionable|Hamstring|Nov 8
 #MIA
+Malik Herring|DE|Questionable|Neck|Nov 8
 Kaytron Allen|RB|Questionable|Quadriceps|Nov 8
 Jaylen Wright|RB|Questionable|Quadriceps|Nov 8
-Malik Herring|DE|Questionable|Neck|Nov 8
 Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
 #MIN
 Demond Claiborne|RB|Questionable|Knee|Nov 9
@@ -171,12 +170,11 @@ A.J. Brown|WR|Out|Knee|Nov 15
 Brenden Schooler|S|Questionable|Hamstring|Nov 8
 Greg Van Roten|G|IR|Hamstring|Nov 8
 Morgan Moses|OT|Questionable|Foot|Nov 8
-Gabe Jacas|LB|Questionable|Knee|Nov 8
 #NO
+Kelvin Banks Jr.|OT|IR|Ankle|Nov 8
 Martin Emerson Jr.|CB|Questionable|Shin|Nov 8
 CJ Donaldson|RB|Out|Shoulder|Nov 15
 Jordyn Tyson|WR|IR|Hamstring|Nov 8
-Kelvin Banks Jr.|OT|IR|Ankle|Nov 8
 Asim Richards|OT|Questionable|Thumb|Nov 8
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 8
 #NYG
@@ -184,20 +182,20 @@ Cam Skattebo|RB|Doubtful|Hamstring|Nov 8
 Charlie Jones|WR|Questionable|Hand|Nov 8
 Tyrone Tracy Jr.|RB|IR|Hamstring|Dec 6
 #NYJ
+Joseph Ossai|DE|Questionable|Ankle|Nov 8
 Trevin Wallace|LB|Out|Groin|Nov 15
 Nahshon Wright|CB|Questionable|Back|Nov 8
 Garrett Wilson|WR|Out|Concussion|Nov 15
 VJ Payne|S|IR|Knee|Nov 8
-Joseph Ossai|DE|Questionable|Ankle|Nov 8
 Harrison Phillips|DT|Questionable|Ankle|Nov 8
 Max Mitchell|OT|IR|Concussion|Dec 13
 T'Vondre Sweat|DT|IR|Knee|Nov 29
 #PHI
+Jonathan Jones|CB|Out|Hamstring|Nov 22
+Michael Carter II|CB|Out|Abdomen|Nov 22
 Jihaad Campbell|LB|Out|Hamstring|Nov 22
 Britain Covey|WR|Out|Knee|Nov 22
 Tanner McKee|QB|Questionable|Ribs|Nov 8
-Jonathan Jones|CB|Out|Hamstring|Nov 22
-Michael Carter II|CB|Out|Abdomen|Nov 22
 DeVonta Smith|WR|Out|Hamstring|Nov 22
 Dontayvion Wicks|WR|Out|Ankle|Nov 22
 #PIT
@@ -217,12 +215,12 @@ Siran Neal|S|Questionable|Knee|Nov 8
 De'Zhaun Stribling|WR|IR|Ankle|Dec 6
 Upton Stout|CB|Questionable|Shoulder - AC Joint|Nov 8
 #SEA
+Charles Cross|OT|Out|Ankle|Nov 15
+Brandon Pili|DT|Out|Back|Nov 15
 Uchenna Nwosu|LB|Out|Ankle|Nov 15
 Leonard Williams|DT|Out|Shoulder|Nov 15
 Quenton Nelson|G|Out|Knee|Nov 15
-Brandon Pili|DT|Out|Back|Nov 15
 Rashid Shaheed|WR|Out|Knee|Nov 15
-Charles Cross|OT|Out|Ankle|Nov 15
 Sam Darnold|QB|Out|Quadriceps|Nov 15
 Connor O'Toole|LB|Questionable|Foot|Nov 8
 #TB
