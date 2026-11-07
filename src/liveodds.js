@@ -1,14 +1,14 @@
 /* ---------- ⚡ Live odds from data/live_odds.json (GitHub Action + PropLine, every ~30 min) ----------
    Merges real sportsbook lines into NBA_PROPS / REAL_PROPS, keeps the open line to show ▲▼ moves.
    The bundled daily data stays as the fallback when the file is missing (e.g. the private copy). */
-const LO={data:null,move:{},alt:{},applied:0,nba:0,nfl:0};
+const LO={data:null,move:{},alt:{},pick:{},openAlt:null,applied:0,nba:0,nfl:0};
 function loNorm(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g,"").replace(/[^a-z]/g,"")}
 let LO_IDX=null;
 function loIdx(){if(LO_IDX)return LO_IDX;const nba={},nfl={};
   if(typeof NBA_LOGS!=="undefined")for(const nm in NBA_LOGS)nba[loNorm(nm)]=nm;
   if(typeof PINFO!=="undefined")for(const nm in PINFO)nfl[loNorm(nm)]=nm;
   return LO_IDX={nba,nfl}}
-function loMoveTag(nm,k,line){const m=LO.move[nm+"|"+k];if(!m)return "";
+function loMoveTag(nm,k,line){if(LO.pick[nm+"|"+k]!=null)return loAltChip(nm,k);const m=LO.move[nm+"|"+k];if(!m)return "";
   if(m.l!=null&&m.l!==line)return `<span class="lmv ${line>m.l?"up":"dn"}" title="Opened at ${m.l} today">${line>m.l?"▲":"▼"} from ${m.l}</span>`;
   if(m.o!=null&&m.oNow!=null&&Math.abs(m.oNow-m.o)>=10)return `<span class="lmv fl" title="Over price opened ${m.o>0?"+":""}${m.o}">price ${m.oNow>m.o?"↑":"↓"} ${m.o>0?"+":""}${m.o}→${m.oNow>0?"+":""}${m.oNow}</span>`;
   return ""}
@@ -54,18 +54,41 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden)loFetch(fa
 
 /* ---------- 🪜 Alternate lines (other lines books post for the same prop; best price per line across books) ----------
    vals = his recent results for this stat (oldest→newest) so each rung shows how often it would have hit. */
+/* picked alt line (tap a row): the charts, hit rates and odds on that prop switch to it; tap main to go back */
+function loAltOdds(nm,k){const key=nm+"|"+k,p=LO.pick[key];if(p==null)return null;const r=(LO.alt[key]||[]).find(x=>x[0]===p);
+  return r?{line:p,o:r[1],ob:r[2],u:r[3],ub:r[4]}:{line:p,o:null,ob:null,u:null,ub:null}}
+function loLine(nm,k,line){const a=loAltOdds(nm,k);return a?a.line:line}
+/* − / + stepper: walks the real alt ladder when books post one, otherwise moves the line by 1 (5 for yards; no odds for those) */
+function loStep(nm,k,main){if(main==null||!Number.isFinite(+main))return "";const key=esc(nm+"|"+k),cur=loLine(nm,k,main);
+  const b=(d,t)=>`<button class="alsb" data-altkey="${key}" data-main="${main}" onclick="event.stopPropagation();loAltStep(this.dataset.altkey,${d},+this.dataset.main)" title="${t}" aria-label="${t}">${d<0?"−":"+"}</button>`;
+  return `<span class="alst">${b(-1,"Lower the line")}${b(1,"Raise the line")}</span>`}
+function loAltStep(key,d,main){const cur=LO.pick[key]!=null?LO.pick[key]:main,k=key.split("|").pop();d=d*(/Yds$|^rushRec$/.test(k)?5:1);
+  const L=[...new Set([main,...(LO.alt[key]||[]).map(r=>r[0])])].sort((a,b)=>a-b);let nx;
+  if(L.length>1){const i=L.findIndex(x=>x===cur);nx=i<0?(d>0?L.find(x=>x>cur):[...L].reverse().find(x=>x<cur)):L[i+Math.sign(d)];
+    if(nx==null)nx=cur+d}
+  else nx=cur+d;
+  nx=Math.round(nx*2)/2;if(nx<0)return;loAltPick(key,nx===main?null:nx,1)}
+function loAltChip(nm,k){const a=loAltOdds(nm,k);if(!a)return "";
+  return `<span class="altc">🪜 Alt line${a.o==null&&a.u==null?" · no book odds":""}<button class="altx" data-altkey="${esc(nm+"|"+k)}" onclick="event.stopPropagation();loAltPick(this.dataset.altkey,null)" title="Back to the main line">✕ main</button></span>`}
+function loAltPick(key,line,keepClosed){if(line==null)delete LO.pick[key];else LO.pick[key]=line;LO.openAlt=keepClosed?LO.openAlt:key;loRerender()}
+/* every new page starts from the normal (main) line */
+window.addEventListener("hashchange",()=>{LO.pick={};LO.openAlt=null});
+function loAltClick(e){e.stopPropagation();const tr=e.target.closest("[data-alt]");if(!tr)return;
+  const key=tr.dataset.alt,l=tr.dataset.l===""?null:+tr.dataset.l;loAltPick(key,LO.pick[key]===l?null:l)}
 function loAltHtml(nm,k,line,vals){
-  const A=LO.alt[nm+"|"+k];if(!A||!A.length)return "";
+  const key=nm+"|"+k,A=LO.alt[key];if(!A||!A.length)return "";
   const pr=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
-  const V=(vals||[]).filter(Number.isFinite),R=[...A,[line,null,null,null,null,1]].sort((a,b)=>a[0]-b[0]);
-  const hit=l=>{if(!V.length)return "";const o=V.filter(v=>v>l).length,p=o/V.length;return `<span class="${p>=.5?"up":"dn"}">${o}/${V.length}</span>`};
   const AB={DraftKings:"DK",FanDuel:"FD",BetMGM:"MGM",Caesars:"CZR",Fanatics:"FAN","ESPN BET":"ESPN",BetRivers:"BR","Hard Rock Bet":"HR",Unibet:"UNI"};
-  const bk=b=>b?`<span class="alb" title="${esc(b)}">${esc(AB[b]||b)}</span>`:"",mv=LO.move[nm+"|"+k]||{};
-  return `<details class="alt" onclick="event.stopPropagation()"><summary>🪜 Alt lines (${A.length})</summary>
+  const bk=b=>b?`<span class="alb" title="${esc(b)}">${esc(AB[b]||b)}</span>`:"",mv=LO.move[key]||{},main=mv.now!=null?mv.now:line,pick=LO.pick[key];
+  const V=(vals||[]).filter(Number.isFinite),R=[...A,[main,mv.oNow,null,mv.uNow,null,1]].sort((a,b)=>a[0]-b[0]);
+  const hit=l=>{if(!V.length)return "";const o=V.filter(v=>v>l).length,p=o/V.length;return `<span class="${p>=.5?"up":"dn"}">${o}/${V.length}</span>`};
+  const ak=esc(key),open=LO.openAlt===key;
+  return `<details class="alt"${open?" open":""} onclick="loAltClick(event)"><summary>🪜 Alt lines (${A.length})${pick!=null?` · <span class="altn">showing ${pick}</span>`:""}</summary>
+   <div class="small" style="margin:4px 0 2px">👆 Tap a line (or use − / + next to the line) to see it in the charts and hit rates. Leaving the page puts it back to the normal line.</div>
    <div class="alw"><table class="altt"><thead><tr><th>Line</th><th>Over</th><th>Under</th>${V.length?`<th title="Last ${V.length} games over this line">L${V.length} over</th>`:""}</tr></thead><tbody>
-   ${R.map(r=>r[5]?`<tr class="alm"><td><b>${r[0]}</b> <span class="small">main</span></td><td>${pr(mv.oNow)}</td><td>${pr(mv.uNow)}</td>${V.length?`<td>${hit(r[0])}</td>`:""}</tr>`
-     :`<tr><td><b>${r[0]}</b></td><td>${pr(r[1])}${bk(r[2])}</td><td>${pr(r[3])}${bk(r[4])}</td>${V.length?`<td>${hit(r[0])}</td>`:""}</tr>`).join("")}
-   </tbody></table></div><div class="small" style="margin-top:4px">Lower and higher lines than the main one, best price per line across licensed US books. Gold = main line. Longer odds = less likely — alt lines are fun but riskier; bet small.</div></details>`}
+   ${R.map(r=>{const isM=!!r[5],on=isM?pick==null:pick===r[0];
+     return `<tr class="alr${isM?" alm":""}${on?" on":""}" data-alt="${ak}" data-l="${isM?"":r[0]}"><td><b>${r[0]}</b>${isM?' <span class="small">main</span>':""}</td><td>${pr(r[1])}${bk(r[2])}</td><td>${pr(r[3])}${bk(r[4])}</td>${V.length?`<td>${hit(r[0])}</td>`:""}</tr>`}).join("")}
+   </tbody></table></div><div class="small" style="margin-top:4px">Lower and higher lines than the main one, best price per line across licensed US books. Longer odds = less likely — alt lines are fun but riskier; bet small.</div></details>`}
 
 /* ---------- 📈 Biggest line moves today (open = first line the feed saw today) ---------- */
 function loMoves(sp,n){
