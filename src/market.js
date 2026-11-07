@@ -8,7 +8,7 @@ const MARKET_ASOF="Sat Nov 7, 4 PM ET";
 const MOVE={
  1:{open:{sp:-4.5,tot:49.5},now:{sp:10,tot:39.5,ml:[-535,400]}},
  2:{open:{sp:4.5,tot:48.5},now:{sp:3,tot:52.5,ml:[-175,145]}},
- 3:{open:{sp:-3.5,tot:41.5},now:{sp:-3,tot:42.5,ml:[140,-166]}},
+ 3:{open:{sp:-3.5,tot:41.5},now:{sp:-3,tot:42.5,ml:[142,-170]}},
  4:{open:{sp:1.5,tot:52.5},now:{sp:4.5,tot:51.5,ml:[-225,185]}},
  5:{open:{sp:3,tot:42.5},now:{sp:2.5,tot:44.5,ml:[-142,120]}},
  6:{open:{sp:6.5,tot:47.5},now:{sp:6.5,tot:49.5,ml:[-310,250]}},
@@ -16,7 +16,7 @@ const MOVE={
  8:{open:{sp:-5.5,tot:44.5},now:{sp:3,tot:38.5,ml:[-162,136]}},
  9:{open:{sp:-9.5,tot:41.5},now:{sp:-9.5,tot:48.5,ml:[400,-535]}},
  10:{open:{sp:-1.5,tot:43.5},now:{sp:6,tot:40.5,ml:[-245,200]}},
- 11:{open:{sp:-8.5,tot:46.5},now:{sp:-10,tot:51.5,ml:[370,-485]}},
+ 11:{open:{sp:-8.5,tot:46.5},now:{sp:-9.5,tot:51.5,ml:[370,-485]}},
  12:{open:{sp:-13.5,tot:45.5},now:{sp:-8.5,tot:39.5,ml:[350,-455]}},
  13:{open:{sp:-1.5,tot:46.5},now:{sp:-3,tot:44.5,ml:[142,-170]}},
  14:{open:{sp:-3.5,tot:48.5},now:{sp:-6,tot:47.5,ml:[220,-270]}},

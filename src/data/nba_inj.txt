@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 21:17Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 21:31Z
 #Atlanta Hawks
 Keshon Gilbert|G|Out|knee inflammation|Nov 9
 Asa Newell|F|Out|toe|Nov 9
@@ -17,9 +17,9 @@ Dennis Schroder|G|Out|thigh|Nov 9
 Kon Knueppel|G|Out|hamstring strain|Nov 9
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
-Zach Collins|F|Day-To-Day|illness|Nov 8
+Zach Collins|F|Day-To-Day|illness|Nov 11
 Nic Claxton|C|Out|hamstring strain|Nov 8
-Jalen Smith|F|Day-To-Day|hand|Nov 8
+Jalen Smith|F|Day-To-Day|finger sprain|Nov 8
 #Cleveland Cavaliers
 Jaylon Tyson|G|Out|ankle sprain|Nov 9
 Sam Merrill|G|Out|elbow|Nov 9
