@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-07T07:16:46+00:00",
+  "at": "2026-11-07T09:01:14+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 76 games kept (2 new), 1700 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 243 feed lines merged (0 skipped from other days), 221 total, unmatched names: ['Spencer Jones']\nFirst tip is 884 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 123 (through 2026-11-05), players 452, slate 7, lines 7, props 221, inj teams 29, prev-season players 183, play log 12, adv 356, qtr games 123, h2h 2/4/7/2/2/4/8\nnfl-update: 14 lines refreshed, 0 new finals (weeks [8, 9])\n215 players, 32 teams\nnfl-inj: 215 players\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 76 games kept (0 new), 1700 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 243 feed lines merged (0 skipped from other days), 221 total, unmatched names: ['Spencer Jones']\nFirst tip is 780 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 123 (through 2026-11-05), players 452, slate 7, lines 7, props 221, inj teams 29, prev-season players 183, play log 12, adv 356, qtr games 123, h2h 2/4/7/2/2/4/8\nnfl-update: 14 lines refreshed, 0 new finals (weeks [8, 9])\n215 players, 32 teams\nnfl-inj: 215 players\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-07T07:16:46+00:00",
+  "at": "2026-11-07T09:01:14+00:00",
   "ok": true,
   "issue": ""
  }
