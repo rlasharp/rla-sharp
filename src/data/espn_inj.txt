@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 10:54Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 13:06Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
@@ -240,8 +240,8 @@ Marcus Harris|CB|Questionable|Ankle|Nov 15
 Dorian Mausi|LB|IR|Foot|Nov 15
 #WAS
 Jer'Zhan Newton|DT|IR|Pectoral|Nov 8
-Treylon Burks|WR|Out|Foot|Nov 12
 Dyami Brown|WR|Out|Calf|Nov 12
+Treylon Burks|WR|Out|Foot|Nov 12
 Daron Payne|DT|IR|Foot|Feb 15
 Jeremy McNichols|RB|IR|Foot|Feb 15
 Javon Kinlaw|DT|IR|Knee - MCL|Feb 15
