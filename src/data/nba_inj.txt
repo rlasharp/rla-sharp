@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 09:00Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-07 10:54Z
 #Atlanta Hawks
 Jalen Johnson|F|Out|ankle|Nov 7
 Keshon Gilbert|G|Out|knee inflammation|Nov 7

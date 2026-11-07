@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 09:00Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 10:54Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|IR|Ankle|Nov 8
