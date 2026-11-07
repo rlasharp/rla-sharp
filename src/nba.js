@@ -491,7 +491,7 @@ function nbaPropCard(r,idx){
     <div class="small">${p.p5||p.pos} · ${opp?(g.a===p.tm?"@ ":"vs ")+nbaEsc(nbaShort(opp)):"no game"} · ${nbaF(nbaAvg(p,"min"))} min/game</div></div></div>
   <div class="pcl noglo"><div class="pcv">${line}<small>${NBA_MK[k]?NBA_MK[k][2]:""}</small></div>
     <div class="pcm"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)}</b><div class="pco">${op!=null?`<span class="o">Over ${oddsFmt(op)}</span>`:""}${up!=null?`<span class="u">Under ${oddsFmt(up)}</span>`:""}${book?`<span class="bk">${nbaEsc(book)}</span>`:""}</div></div></div>
-  ${nbaShopHtml(r)}
+  ${nbaShopHtml(r)}${typeof loAltHtml!=="undefined"?loAltHtml(nm,k,line,nbaAllG(nm).slice(-10).map(o=>nbaVal(o.x,k))):""}
   ${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${(idx||0)<100?nbaMateSel(nm):""}
   ${pxSideTg()}<div class="nbtabs hrt">${tab("l5","L5",rate(S.l5))}${tab("l10","L10",rate(S.l10))}${tab("season","Season",rate(S.season))}${tab("h2h","H2H",rate(S.h2h))}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
@@ -871,6 +871,7 @@ function nbaLineRow(nm,r){
         <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span>${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
           <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):""}${nbaShopHtml(r)}
         ${(()=>{const L10=nbaAllG(nm).slice(-10),v10=L10.map(o=>nbaVal(o.x,k)),o10=v10.filter(v=>pxHit(v,line)).length;return L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>(o.x[3]==="H"?"":"@")+o.x[2]))}<div class="small mbs">Last ${L10.length}: <b class="${o10/L10.length>=.5?"up":"dn"}">${o10}/${L10.length} ${pxSW()}</b> · avg <b>${nbaF(v10.reduce((a,b)=>a+b,0)/v10.length)}</b> vs line ${line}</div></div>`:""})()}
+        ${typeof loAltHtml!=="undefined"?loAltHtml(nm,k,line,nbaAllG(nm).slice(-10).map(o=>nbaVal(o.x,k))):""}
         <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
         <div class="plf">${(()=>{const h=vals.filter(v=>pxHit(v,line)).length;return `<b class="${h/Math.max(1,l6.length)>=.5?"up":"dn"}">${h}/${l6.length} ${pxSW()}</b>`})()}${lean[1]?` <span class="pll ${lean[0]}">${lean[1]}</span>`:""}</div>
         ${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}

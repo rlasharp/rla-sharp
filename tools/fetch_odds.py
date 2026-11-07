@@ -4,7 +4,8 @@ Runs on GitHub Actions (key in the PROPLINE_API_KEY secret). Real sportsbooks on
 DFS apps and prediction markets are dropped. Main line = first book (in BOOK_PREF order)
 that has BOTH over and under at the same line; best over/under = best price among books
 at that same line. Keeps the first-seen ("open") line of the day for each prop so the
-site can show line moves. Budget-aware for the free plan (1,000 requests/day)."""
+site can show line moves. Row index 14 = alternate lines [[line, over, overBook, under, underBook], ...]
+(or null). Budget-aware for the free plan (1,000 requests/day)."""
 import json, os, re, sys, time, datetime as dt
 from zoneinfo import ZoneInfo
 try:
@@ -68,6 +69,34 @@ def pick(book_rows):
         return ln, o, u, b, bo, bob, bu, bub
     return None
 
+ALT_MAX = 8  # alternate lines kept per prop (the ones closest to the main line)
+
+def alts(book_rows, main_ln):
+    """Alternate lines: every other line any real book posts for this player+market (PropLine returns
+    alt lines as extra points under the same market key, so this costs no extra requests).
+    -> [[line, bestOver, overBook, bestUnder, underBook], ...] sorted by line. Prices outside
+    -2000..+2000 are dropped (near-certain / lottery rungs and stale relists)."""
+    best = {}
+    for b, lines in book_rows.items():
+        for ln, s in lines.items():
+            if ln == main_ln: continue
+            cur = best.setdefault(ln, [None, None, None, None])
+            for i, side in ((0, "Over"), (2, "Under")):
+                p = s.get(side)
+                if p is None or p < -2000 or p > 2000: continue
+                if cur[i] is None or p > cur[i]: cur[i], cur[i + 1] = p, BOOK_NAME[b]
+    rungs = [[ln] + v for ln, v in best.items() if v[0] is not None or v[2] is not None]
+    rungs.sort(key=lambda r: abs(r[0] - main_ln))
+    rungs = sorted(rungs[:ALT_MAX], key=lambda r: r[0])
+    # a higher line can't have a shorter over price than a lower one at the same book quality — drop
+    # rungs that break that order badly (stale relists)
+    out = []
+    for r in rungs:
+        if r[1] is not None and out and out[-1][1] is not None and r[1] < out[-1][1] - 60: r[1] = r[2] = None
+        if r[1] is None and r[3] is None: continue
+        out.append(r)
+    return out
+
 def pick_yes(book_rows):
     """anytime TD: Yes/Over price only."""
     for b in BOOK_PREF:
@@ -127,7 +156,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
             rows.append([player, mk, ln, o, u, BOOK_NAME[b],
                          bo if bob != b else None, BOOK_NAME.get(bob) if bob != b else None,
                          bu if (bub and bub != b) else None, BOOK_NAME.get(bub) if (bub and bub != b) else None,
-                         op[0], op[1], op[2], eid])
+                         op[0], op[1], op[2], eid] + ([] if mk == "anyTD" else [alts(br, ln) or None]))
             prev_open[key] = op
     return evs, rows, used
 

@@ -1,7 +1,7 @@
 /* ---------- ⚡ Live odds from data/live_odds.json (GitHub Action + PropLine, every ~30 min) ----------
    Merges real sportsbook lines into NBA_PROPS / REAL_PROPS, keeps the open line to show ▲▼ moves.
    The bundled daily data stays as the fallback when the file is missing (e.g. the private copy). */
-const LO={data:null,move:{},applied:0,nba:0,nfl:0};
+const LO={data:null,move:{},alt:{},applied:0,nba:0,nfl:0};
 function loNorm(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g,"").replace(/[^a-z]/g,"")}
 let LO_IDX=null;
 function loIdx(){if(LO_IDX)return LO_IDX;const nba={},nfl={};
@@ -13,7 +13,7 @@ function loMoveTag(nm,k,line){const m=LO.move[nm+"|"+k];if(!m)return "";
   if(m.o!=null&&m.oNow!=null&&Math.abs(m.oNow-m.o)>=10)return `<span class="lmv fl" title="Over price opened ${m.o>0?"+":""}${m.o}">price ${m.oNow>m.o?"↑":"↓"} ${m.o>0?"+":""}${m.o}→${m.oNow>0?"+":""}${m.oNow}</span>`;
   return ""}
 function loApply(d){
-  const I=loIdx();let nNba=0,nNfl=0;LO.move={};
+  const I=loIdx();let nNba=0,nNfl=0;LO.move={};LO.alt={};
   const nb=d.nba||{},nf=d.nfl||{};
   if(typeof NBA_PROPS!=="undefined"&&nb.props&&typeof NBA_SLATE_DATE!=="undefined"){
     const today=new Set((nb.events||[]).filter(e=>e.date===NBA_SLATE_DATE).map(e=>String(e.id)));
@@ -21,7 +21,7 @@ function loApply(d){
     for(const r of nb.props){if(!today.has(String(r[13])))continue;const nm=I.nba[loNorm(r[0])];if(!nm||!NBA_MK[r[1]])continue;
       const row=[nm,r[1],r[2],r[3],r[4],r[5],r[6],r[7],r[8],r[9]];while(row.length&&row[row.length-1]==null&&row.length>6)row.pop();
       const k=nm+"|"+r[1];if(k in pos)NBA_PROPS[pos[k]]=row;else{pos[k]=NBA_PROPS.length;NBA_PROPS.push(row)}
-      LO.move[k]={l:r[10],o:r[11],u:r[12],oNow:r[3],uNow:r[4],now:r[2],sp:"nba",nm,k:r[1]};nNba++}
+      LO.move[k]={l:r[10],o:r[11],u:r[12],oNow:r[3],uNow:r[4],now:r[2],sp:"nba",nm,k:r[1]};if(Array.isArray(r[14])&&r[14].length)LO.alt[k]=r[14];nNba++}
     if(typeof NB!=="undefined"){NB._best=null}
   }
   if(typeof REAL_PROPS!=="undefined"&&nf.props&&typeof SLATE!=="undefined"){
@@ -33,7 +33,7 @@ function loApply(d){
     for(const r of nf.props){const nm=I.nfl[loNorm(r[0])];if(!nm||!MARKETS[r[1]])continue;const P=PINFO[nm];if(!P||!teams.has(P.team))continue;
       const ev=evOK[String(r[13])],ce=curEv(nm);if(ev&&ce&&!(ev[0]===ce[0]&&ev[1]===ce[1]))continue;
       if(typeof pLogs!=="undefined"&&!pLogs(nm).length)continue;
-      REAL_PROPS[nm+"|"+r[1]]=[r[2],r[3],r[4],r[5]];LO.move[nm+"|"+r[1]]={l:r[10],o:r[11],u:r[12],oNow:r[3],uNow:r[4],now:r[2],sp:"nfl",nm,k:r[1]};nNfl++}
+      REAL_PROPS[nm+"|"+r[1]]=[r[2],r[3],r[4],r[5]];LO.move[nm+"|"+r[1]]={l:r[10],o:r[11],u:r[12],oNow:r[3],uNow:r[4],now:r[2],sp:"nfl",nm,k:r[1]};if(Array.isArray(r[14])&&r[14].length)LO.alt[nm+"|"+r[1]]=r[14];nNfl++}
     if(typeof NFL_BEST_C!=="undefined")NFL_BEST_C=null;
   }
   LO.nba=nNba;LO.nfl=nNfl;return nNba+nNfl}
@@ -51,6 +51,21 @@ async function loFetch(first){
   }catch(e){}}
 window.addEventListener("load",()=>{setTimeout(()=>loFetch(true),300);setInterval(()=>loFetch(false),5*60*1000)});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)loFetch(false)});
+
+/* ---------- 🪜 Alternate lines (other lines books post for the same prop; best price per line across books) ----------
+   vals = his recent results for this stat (oldest→newest) so each rung shows how often it would have hit. */
+function loAltHtml(nm,k,line,vals){
+  const A=LO.alt[nm+"|"+k];if(!A||!A.length)return "";
+  const pr=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
+  const V=(vals||[]).filter(Number.isFinite),R=[...A,[line,null,null,null,null,1]].sort((a,b)=>a[0]-b[0]);
+  const hit=l=>{if(!V.length)return "";const o=V.filter(v=>v>l).length,p=o/V.length;return `<span class="${p>=.5?"up":"dn"}">${o}/${V.length}</span>`};
+  const AB={DraftKings:"DK",FanDuel:"FD",BetMGM:"MGM",Caesars:"CZR",Fanatics:"FAN","ESPN BET":"ESPN",BetRivers:"BR","Hard Rock Bet":"HR",Unibet:"UNI"};
+  const bk=b=>b?`<span class="alb" title="${esc(b)}">${esc(AB[b]||b)}</span>`:"",mv=LO.move[nm+"|"+k]||{};
+  return `<details class="alt" onclick="event.stopPropagation()"><summary>🪜 Alt lines (${A.length})</summary>
+   <div class="alw"><table class="altt"><thead><tr><th>Line</th><th>Over</th><th>Under</th>${V.length?`<th title="Last ${V.length} games over this line">L${V.length} over</th>`:""}</tr></thead><tbody>
+   ${R.map(r=>r[5]?`<tr class="alm"><td><b>${r[0]}</b> <span class="small">main</span></td><td>${pr(mv.oNow)}</td><td>${pr(mv.uNow)}</td>${V.length?`<td>${hit(r[0])}</td>`:""}</tr>`
+     :`<tr><td><b>${r[0]}</b></td><td>${pr(r[1])}${bk(r[2])}</td><td>${pr(r[3])}${bk(r[4])}</td>${V.length?`<td>${hit(r[0])}</td>`:""}</tr>`).join("")}
+   </tbody></table></div><div class="small" style="margin-top:4px">Lower and higher lines than the main one, best price per line across licensed US books. Gold = main line. Longer odds = less likely — alt lines are fun but riskier; bet small.</div></details>`}
 
 /* ---------- 📈 Biggest line moves today (open = first line the feed saw today) ---------- */
 function loMoves(sp,n){
