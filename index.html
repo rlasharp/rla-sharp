@@ -3532,7 +3532,7 @@ function nhLineRow(nm,r){
   const V=nhVals(nm,k),L10=V.slice(-10),v10=L10.map(o=>o.v),hit=a=>a.filter(o=>pxHit(o.v,line)).length,w=nhWho(nm),g=nhGameOf(w.tm),opp=g?(g.a===w.tm?g.h:g.a):null,vs=opp?V.filter(o=>o.x[1]===opp):[];
   const avg=a=>a.length?(a.reduce((s,o)=>s+o.v,0)/a.length).toFixed(1):"–";
   return `<div class="pl"><div class="plh"><div><b>${m[1]}</b> ${yes?"":`<span class="plv">${line}</span>${typeof loStep!=="undefined"&&m[3]?loStep(nm,k,main):""}`}${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
-    <div class="small">${yes?"Yes ":"O "}${nhOdds(op)}${up!=null?" · U "+nhOdds(up):""}${book?" · "+nhE(book):""}</div></div>
+    <div class="small">${op==null&&up==null&&!book?"no sportsbook line — his season average":`${yes?"Yes ":"O "}${nhOdds(op)}${up!=null?" · U "+nhOdds(up):""}${book?" · "+nhE(book):""}`}</div></div>
    ${m[3]&&!yes&&typeof loAltHtml!=="undefined"?loAltHtml(nm,k,main,v10):""}
    ${m[3]?(L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>nhLab(o.x)))}<div class="small mbs">Last ${L10.length}: <b class="${hit(L10)/L10.length>=.5?"up":"dn"}">${hit(L10)}/${L10.length} ${yes?(PXSIDE==="u"?"no goal":"scored"):pxSW()}</b> · season <b>${hit(V)}/${V.length}</b> · avg <b>${avg(V)}</b> (L5 ${avg(V.slice(-5))})${vs.length?` · vs ${nhE(opp)} <b>${hit(vs)}/${vs.length}</b>`:""}</div></div>`:`<div class="small">No games logged this season.</div>`):`<div class="small">Game-by-game power-play points aren't in our box-score data — season PP goals: ${w.s?w.s[7]:"–"}.</div>`}
    ${nhCtx(nm,k,line,V)}
@@ -3566,6 +3566,9 @@ function nhlPlayer(el,nm){
    <div class="card" style="margin-top:10px"><b>This season</b><div class="small">${head}</div></div>
    ${typeof pxSideTg!=="undefined"?pxSideTg():""}
    ${rows.length?nhPlayerLines(nm,rows,false):`<div class="card small" style="margin-top:12px">No props posted for him yet.</div>`}
+   ${(()=>{if(isG)return "";const have=new Set(rows.map(r=>r[1])),R=[];for(const k of ["hhit","hfow","hblk","hsog","hpts"]){if(have.has(k))continue;const V=nhVals(nm,k).map(o=>o.v);if(V.length<3)continue;const a=V.reduce((x,y)=>x+y,0)/V.length;
+       if(k==="hfow"&&a<1.5)continue;if(k!=="hfow"&&a<.3)continue;R.push([nm,k,Math.max(.5,Math.floor(a)+.5),null,null,""])}
+     return R.length?`<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">📊 More stats to check</h2><div class="small" style="margin-bottom:6px">No sportsbook line in our feed for these, so the line shown is his season average. Use − / + to set the line your book offers and the chart and hit rates follow.</div>${R.map(r=>nhLineRow(nm,r)).join("")}</div>`:""})()}
    <div class="card" style="margin-top:12px"><h2>Game log</h2><div class="alw"><table class="altt nhlog"><thead><tr>${isG?"<th>Date</th><th>Opp</th><th>Start</th><th>SA</th><th>SV</th><th>GA</th><th>SV%</th><th>Min</th>":"<th>Date</th><th>Opp</th><th>G</th><th>A</th><th>PTS</th><th>SOG</th><th>BLK</th><th>HIT</th><th>PPG</th><th>FO</th><th>TOI</th>"}</tr></thead><tbody>${lg}</tbody></table></div></div>${nhFoot()}`;
   nhWire(el,()=>nhlPlayer(el,nm))}
 
