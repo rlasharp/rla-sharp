@@ -32,7 +32,7 @@ if [ "$WHAT" = nfl ] || [ "$WHAT" = all ]; then
     python3 tools/nflrush.py "$WORK/nflv" > "$WORK/rush.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/rush.js" ] && cp "$WORK/rush.js" nfl_rush.js && log "NFL pass rush vs O-line refreshed"; fi
 fi
 if [ "$WHAT" = nhl ] || [ "$WHAT" = all ]; then   # NHL: official NHL API + PropLine feed (box scores cached in data/nhl_box.json)
-  if python3 tools/nhlfetch.py "$ROOT" "$TODAY" > "$WORK/nhl.js" 2> "$WORK/nhl.log" && grep -q "^const NHL_PROPS" "$WORK/nhl.js"; then
+  if python3 tools/nhlfetch.py "$ROOT" "$TODAY" > "$WORK/nhl.js" 2> "$WORK/nhl.log" && grep -q "^var NHL_PROPS" "$WORK/nhl.js"; then
     cp "$WORK/nhl.js" nhl_data.js; log "$(tail -1 "$WORK/nhl.log")"
   else log "NHL data FAILED — kept old: $(tail -3 "$WORK/nhl.log" | tr '\n' ' ')"; fi
 fi
