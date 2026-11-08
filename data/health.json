@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-08T10:56:54+00:00",
+  "at": "2026-11-08T13:06:40+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1596 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 560 feed lines merged (0 skipped from other days), 546 total, unmatched names: []\nFirst tip is 574 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 132 (through 2026-11-06), players 457, slate 7, lines 7, props 546, inj teams 28, prev-season players 184, play log 15, adv 366, qtr games 132, h2h 3/2/4/3/4/4/2\nnfl-update: 14 lines refreshed, 0 new finals (weeks [8, 9])\n208 players, 32 teams\nnfl-inj: 208 players\nNHL data: 6 games today, 3 tomorrow, 32 teams, 371 skaters, 62 goalies, 480 props, 268 finals, 34 requests\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1596 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 560 feed lines merged (0 skipped from other days), 546 total, unmatched names: []\nFirst tip is 444 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 7, lines 7, props 546, inj teams 28, prev-season players 184, play log 15, adv 371, qtr games 139, h2h 3/2/4/3/4/4/2\nnfl-update: 14 lines refreshed, 0 new finals (weeks [8, 9])\n208 players, 32 teams\nnfl-inj: 208 players\nNHL data: 6 games today, 3 tomorrow, 32 teams, 371 skaters, 62 goalies, 480 props, 268 finals, 34 requests\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-08T10:56:54+00:00",
+  "at": "2026-11-08T13:06:40+00:00",
   "ok": true,
   "issue": ""
  }
