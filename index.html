@@ -3768,13 +3768,14 @@ function nhShotMap(nm){const w=NHL_P[nm];if(!w||!w.sz||typeof NHL_LZ==="undefine
   const svg=`<svg viewBox="0 0 200 150" class="nhrink" role="img" aria-label="Shot zones">
    <rect x="2" y="2" width="196" height="146" rx="28" fill="none" stroke="currentColor" stroke-opacity=".25"/>
    <line x1="2" y1="22" x2="198" y2="22" stroke="#d9483b" stroke-opacity=".5"/><rect x="92" y="14" width="16" height="8" fill="none" stroke="currentColor" stroke-opacity=".6"/>
-   <path d="M100 22 m-50 0 a50 50 0 0 0 100 0 Z" fill="${col(0)}" fill-opacity=".85"/>
-   <path d="M50 22 a50 50 0 0 0 100 0 L150 22 L150 22 M62 60 L138 60 L132 100 L68 100 Z" fill="${col(1)}" fill-opacity=".8"/>
-   <path d="M4 22 L50 22 A50 50 0 0 0 66 58 L60 112 L4 112 Z M196 22 L150 22 A50 50 0 0 1 134 58 L140 112 L196 112 Z" fill="${col(2)}" fill-opacity=".7"/>
-   <rect x="4" y="112" width="192" height="34" rx="20" fill="${col(3)}" fill-opacity=".6"/>
-   ${[[100,40],[100,82],[28,70],[100,130]].map(([x,y],i)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${Math.round(Z[i][0]/tot*100)}%</text>`).join("")}</svg>`;
+   <rect x="4" y="108" width="192" height="38" rx="22" fill="${col(3)}" fill-opacity=".75"/>
+   <rect x="4" y="22" width="58" height="86" fill="${col(2)}" fill-opacity=".75"/><rect x="138" y="22" width="58" height="86" fill="${col(2)}" fill-opacity=".75"/>
+   <rect x="62" y="22" width="76" height="86" fill="${col(1)}" fill-opacity=".8"/>
+   <path d="M55 22 A45 45 0 0 0 145 22 Z" fill="${col(0)}" stroke="#111" stroke-opacity=".35"/>
+   <rect x="92" y="14" width="16" height="8" fill="none" stroke="currentColor" stroke-opacity=".7"/>
+   ${[[100,44],[100,92],[33,70],[100,131],[167,70]].map(([x,y],j)=>{const i=j===4?2:j;return `<text x="${x}" y="${y}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${Math.round(Z[i][0]/tot*100)}%</text>`}).join("")}</svg>`;
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🎯 Where he shoots from</h2><div class="small" style="margin-bottom:8px">${tot} unblocked shot attempts this season. Colour = more (red) or fewer (blue) than the average NHL skater from that spot.</div>
-   <div class="nhsm">${svg}<table class="altt"><thead><tr><th>Zone</th><th>Share</th><th>NHL</th><th>Goals / SOG</th></tr></thead><tbody>${Z.map((z,i)=>`<tr><td><span class="nhdot" style="background:${col(i)}"></span>${N[i]}</td><td><b>${Math.round(z[0]/tot*100)}%</b></td><td class="small">${lt?Math.round(NHL_LZ[i][0]/lt*100):"–"}%</td><td>${z[2]}/${z[1]} <span class="small">${sh(z).toFixed(0)}% (NHL ${sh(NHL_LZ[i]).toFixed(0)}%)</span></td></tr>`).join("")}</tbody></table></div>
+   <div class="nhsm">${svg}<div class="alw"><table class="altt"><thead><tr><th>Zone</th><th>Share</th><th>NHL</th><th>Goals/SOG</th></tr></thead><tbody>${Z.map((z,i)=>`<tr><td><span class="nhdot" style="background:${col(i)}"></span>${N[i]}</td><td><b>${Math.round(z[0]/tot*100)}%</b></td><td class="small">${lt?Math.round(NHL_LZ[i][0]/lt*100):"–"}%</td><td>${z[2]}/${z[1]} <span class="small">${sh(z).toFixed(0)}% <span style="opacity:.7">(${sh(NHL_LZ[i]).toFixed(0)}%)</span></span></td></tr>`).join("")}</tbody></table></div></div>
    <div class="small" style="margin-top:6px">Lots of slot shots = more goals and steadier shots-on-goal; mostly long range = more shots but fewer goals.</div></div>`}
 
 /* ---------- 📈 biggest NHL line moves (props + moneylines / totals since morning) ---------- */
