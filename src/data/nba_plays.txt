@@ -15,3 +15,6 @@
 2026-11-07|Jase Richardson|reb|u|2.5|-103|BetRivers|ORL|GS
 2026-11-07|Scoot Henderson|ast|u|3.5|-130|Fanatics|POR|SA
 2026-11-07|Obi Toppin|pts|o|11.5|-105|Fanatics|IND|DEN
+2026-11-08|LaMelo Ball|ra|u|11.5|102|Unibet|MIN|UTAH
+2026-11-08|Bam Adebayo|ra|u|13.5|-137|DraftKings|MIA|SAC
+2026-11-08|Tyrese Maxey|pts|o|25.5|-104|DraftKings|PHI|CHI
