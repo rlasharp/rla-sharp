@@ -528,6 +528,169 @@ for g in SLATE + NEXT + LATER:
     L = LINES.get(f"{g['a']}@{g['h']}|{g['d']}")
     if L: g.update(L)
 
+# ======================= our game model (same numbers the site shows) =======================
+import math
+def pois(l, k): return math.exp(-l) * l ** k / math.factorial(k)
+LG_GF = sum(t["gf"] for t in TEAM.values() if t.get("gf") is not None) / max(1, sum(1 for t in TEAM.values() if t.get("gf") is not None))
+def lg_rate(f):
+    v = [f(t) for t in TEAM.values()]; v = [x for x in v if x is not None]
+    return sum(v) / len(v) if v else None
+LHD = lg_rate(lambda t: (t.get("fa") or {}).get("hd", [None])[0]); LSF = lg_rate(lambda t: t.get("sf")); LPP = lg_rate(lambda t: t.get("pp")); LPK = lg_rate(lambda t: t.get("pk"))
+_sa = _sv = 0
+for gl_ in GO.values():
+    for x in gl_:
+        if x[7]: _sa += x[3]; _sv += x[4]
+LSV = _sv / _sa if _sa else .9
+def played_on(t, d): return any(r[0] == d and t in (r[1], r[3]) for r in RES) or any(g["d"] == d and t in (g["a"], g["h"]) for g in SLATE + NEXT + LATER)
+def b2b(t, d): return played_on(t, (dt.date.fromisoformat(d) - dt.timedelta(days=1)).isoformat())
+def out_inj(nm):
+    for L_ in INJ.values():
+        for r in L_:
+            if norm(r[0]) == norm(nm) and re.search(r"out|reserve|\bir\b|suspen", r[2], re.I): return True
+    return False
+def probable(t, d):
+    L_ = [(nm, g_) for nm, g_ in G.items() if g_["tm"] == t and not out_inj(nm)]
+    if not L_: return None
+    lined = next((nm for nm, _ in L_ if any(r[0] == nm and r[1] == "hsaves" for r in PROPS)), None)
+    st = sorted([(x[0], nm) for nm, g_ in L_ for x in g_["g"] if x[7] and x[9] != 1], reverse=True)[:5]
+    cnt = {}
+    for _, nm in st: cnt[nm] = cnt.get(nm, 0) + 1
+    if lined: return lined, f"books posted a saves line for him · started {cnt.get(lined, 0)} of the team's last {len(st)}"
+    best = sorted(L_, key=lambda z: (-cnt.get(z[0], 0), -(max([x[0] for x in z[1]["g"] if x[7] and x[9] != 1] or [""]) > "")))[0][0]
+    if b2b(t, d):
+        y = (dt.date.fromisoformat(d) - dt.timedelta(days=1)).isoformat()
+        ys = next((nm for nm, g_ in L_ if any(x[0] == y and x[7] for x in g_["g"])), None)
+        alt = next((nm for nm, g_ in L_ if nm != ys and g_["gs"] >= 2), None)
+        if ys == best and alt: return alt, f"{best} started last night — teams usually start the other goalie on a back-to-back"
+    last = st[0][1] if st else None
+    return best, f"started {cnt.get(best, 0)} of the team's last {len(st)}" + (", including the last game" if last == best else (f" — {last} started the last game" if last else ""))
+def project(g):
+    A, H = TEAM.get(g["a"]), TEAM.get(g["h"])
+    if not A or not H or A.get("gf") is None or H.get("gf") is None: return None
+    lg = LG_GF or 3.0
+    k = lambda T: min(.75, (T.get("gp") or 0) / 40 + .3); rg = lambda r, T: 1 + (r - 1) * k(T)
+    hd = lambda T, i: ((T.get("fa") or {}).get("hd") or [None, None])[i]
+    att = lambda T: rg(.5 * (T["gf"] / lg) + .3 * (hd(T, 0) / LHD if hd(T, 0) and LHD else T["gf"] / lg) + .2 * (T["sf"] / LSF if T.get("sf") and LSF else 1), T)
+    dfn = lambda T: rg(.5 * (T["ga"] / lg) + .3 * (hd(T, 1) / LHD if hd(T, 1) and LHD else T["ga"] / lg) + .2 * (T["sa"] / LSF if T.get("sa") and LSF else 1), T)
+    st_ = lambda O, D: 1 + .15 * ((O["pp"] / LPP) * ((100 - D["pk"]) / (100 - LPK)) - 1) if O.get("pp") and D.get("pk") and LPP and LPK else 1
+    def gk(t):
+        p_ = probable(t, g["d"])
+        if not p_: return 1, None, None
+        G_ = G[p_[0]]
+        if not G_.get("svp") or G_["gs"] < 3: return 1, p_[0], p_[1]
+        w = min(1, G_["gs"] / 20) * .3
+        return 1 + ((1 - G_["svp"] / 100) / (1 - LSV) - 1) * w, p_[0], p_[1]
+    gH, nH, wH = gk(g["h"]); gA, nA, wA = gk(g["a"])
+    la = lg * att(A) * dfn(H) * st_(A, H) * .985 * gH; lh = lg * att(H) * dfn(A) * st_(H, A) * 1.015 * gA
+    if b2b(g["a"], g["d"]): la *= .98; lh *= 1.02
+    if b2b(g["h"], g["d"]): lh *= .98; la *= 1.02
+    p1s = lambda T: max(.22, min(.42, T["per"][0][0] / max(.1, sum(x[0] for x in T["per"])))) if T.get("per") else .31
+    f1 = (p1s(A) + p1s(H)) / 2
+    return {"la": round(la, 3), "lh": round(lh, 3), "l1a": round(la * f1, 3), "l1h": round(lh * f1, 3), "ga": nA, "gh": nH, "wa": wA, "wh": wH,
+            "fa": [round(att(A) * dfn(H), 3), round(att(H) * dfn(A), 3)]}
+def probs(la, lh, line=None, l1=None):
+    hw = dr = h2 = a2 = ov = 0.0
+    for i in range(14):
+        for j in range(14):
+            p_ = pois(la, i) * pois(lh, j)
+            if j > i: hw += p_
+            elif i == j: dr += p_
+            if j - i >= 2: h2 += p_
+            if i - j >= 2: a2 += p_
+            if line is not None and i + j > line: ov += p_
+    return {"hwin": hw + dr * (lh / (la + lh)), "h2": h2, "a2": a2, "over": ov}
+for g in SLATE + NEXT + LATER:
+    pr_ = project(g)
+    if pr_: g["proj"] = pr_
+# ---- save each game's last pre-game numbers, grade them once final -> model scorecard ----
+C.setdefault("pred", {})
+for g in SLATE + NEXT:
+    if g.get("proj") and g.get("st") in ("FUT", "PRE") and str(g["id"]) not in C["games"]:
+        C["pred"][str(g["id"])] = {"d": g["d"], "a": g["a"], "h": g["h"], **{k: g["proj"][k] for k in ("la", "lh", "l1a", "l1h")},
+                                   **{k: g[k] for k in ("ml", "tot", "pl") if k in g}, "p1tot": (g.get("p1") or {}).get("tot")}
+def novig(a, b):
+    ia = (-a / (-a + 100) if a < 0 else 100 / (a + 100)) if a is not None else None; ib = (-b / (-b + 100) if b < 0 else 100 / (b + 100)) if b is not None else None
+    return (ia / (ia + ib), ib / (ia + ib)) if ia and ib else None
+def pay(o): return o / 100 if o > 0 else 100 / -o
+MODEL = {"n": 0, "win": [0, 0], "tot": [0, 0], "edge": {}, "recent": []}
+for gid, pd_ in sorted(C["pred"].items(), key=lambda kv: kv[1]["d"]):
+    r = C["games"].get(gid)
+    if not r or r.get("as") is None: continue
+    A_, H_ = r["as"], r["hs"]; MODEL["n"] += 1
+    pr_ = probs(pd_["la"], pd_["lh"], (pd_.get("tot") or [None])[0])
+    pick_h = pr_["hwin"] >= .5; won_h = H_ > A_
+    MODEL["win"][0 if pick_h == won_h else 1] += 1
+    res = {"d": pd_["d"], "a": pd_["a"], "h": pd_["h"], "as": A_, "hs": H_, "pick": pd_["h"] if pick_h else pd_["a"], "p": round(max(pr_["hwin"], 1 - pr_["hwin"]), 3), "ok": pick_h == won_h, "bets": []}
+    if pd_.get("tot"):
+        L_ = pd_["tot"][0]; tg = A_ + H_
+        if tg != L_: MODEL["tot"][0 if (pr_["over"] >= .5) == (tg > L_) else 1] += 1
+    bets = []
+    if pd_.get("ml"):
+        nv = novig(pd_["ml"][0], pd_["ml"][1])
+        if nv: bets += [("Moneyline", pd_["h"], pd_["ml"][1], pr_["hwin"] - nv[1], won_h), ("Moneyline", pd_["a"], pd_["ml"][0], (1 - pr_["hwin"]) - nv[0], not won_h)]
+    if pd_.get("pl"):
+        hp = pd_["pl"][0]; nv = novig(pd_["pl"][2], pd_["pl"][1])
+        if nv:
+            hc = pr_["h2"] if hp < 0 else 1 - pr_["a2"]; cov = (H_ - A_) + hp > 0
+            bets += [("Puck line", f"{pd_['h']} {hp:+g}", pd_["pl"][2], hc - nv[0], cov), ("Puck line", f"{pd_['a']} {-hp:+g}", pd_["pl"][1], (1 - hc) - nv[1], not cov)]
+    if pd_.get("tot"):
+        L_ = pd_["tot"][0]; nv = novig(pd_["tot"][1], pd_["tot"][2]); tg = A_ + H_
+        if nv and tg != L_: bets += [("Total", f"Over {L_:g}", pd_["tot"][1], pr_["over"] - nv[0], tg > L_), ("Total", f"Under {L_:g}", pd_["tot"][2], (1 - pr_["over"]) - nv[1], tg < L_)]
+    if pd_.get("p1tot") and r.get("tm"):
+        L_ = pd_["p1tot"][0]; nv = novig(pd_["p1tot"][1], pd_["p1tot"][2]); g1 = r["tm"][pd_["a"]][2] + r["tm"][pd_["h"]][2]
+        o1 = probs(pd_["l1a"], pd_["l1h"], L_)["over"]
+        if nv and g1 != L_: bets += [("1st period total", f"Over {L_:g}", pd_["p1tot"][1], o1 - nv[0], g1 > L_), ("1st period total", f"Under {L_:g}", pd_["p1tot"][2], (1 - o1) - nv[1], g1 < L_)]
+    for mk, pick, odds, edge, won in bets:
+        if edge < .04 or edge > .2 or odds is None: continue
+        E = MODEL["edge"].setdefault(mk, [0, 0, 0.0]); E[0 if won else 1] += 1; E[2] += pay(odds) if won else -1
+        res["bets"].append([mk, pick, odds, round(edge, 3), 1 if won else 0])
+    MODEL["recent"].append(res)
+MODEL["recent"] = MODEL["recent"][-12:][::-1]
+for E in MODEL["edge"].values(): E[2] = round(E[2], 2)
+
+# ---------- yesterday's props graded (closing lines saved by the odds job) ----------
+PRES, PRES_D = [], None
+try:
+    days_ = sorted({g["d"] for _, g in games if g["d"] < TODAY})
+    for dd in reversed(days_[-3:]):
+        fn = os.path.join(ROOT, "data", "close", f"{dd}.json")
+        if not os.path.exists(fn): continue
+        with open(fn) as f: cl = json.load(f)
+        nm2pid = {norm(v): k for k, v in C["names"].items()}
+        rows_ = {}
+        for _, g in games:
+            if g["d"] != dd: continue
+            for r in g["p"]: rows_[r[0]] = ("s", r)
+            for r in g["gl"]: rows_[r[0]] = ("g", r)
+        idx = {"hpts": 4, "hgoals": 2, "hast": 3, "hsog": 5, "hblk": 6, "hhit": 7}
+        for key, v in cl.items():
+            sp_, nm, mk = key.split("|", 2)
+            if sp_ != "nhl": continue
+            pid = nm2pid.get(norm(nm)); hit = rows_.get(pid)
+            if not hit: continue
+            kind, r = hit
+            if mk == "hsaves": val = r[3] if kind == "g" else None
+            elif mk == "hanyG": val = r[2] if kind == "s" else None
+            elif kind == "s" and mk in idx: val = r[idx[mk]]
+            else: val = None
+            if val is None: continue
+            line = 0.5 if mk == "hanyG" else v[0]
+            res_ = "push" if val == line else ("over" if val > line else "under")
+            PRES.append([C["names"].get(pid, nm), r[1], mk, line, v[1], v[2], v[3], val, res_])
+        if PRES: PRES_D = dd; break
+except Exception as e:
+    log("NHL prop results failed:", e)
+RECENT = []
+LAST_D = games[-1][1]["d"] if games else None
+for gid, g in games[-40:]:
+    if g["d"] != LAST_D and g["d"] != PRES_D: continue
+    top = sorted(g["p"], key=lambda r: (-(r[4]), -r[2], -r[5]))[:3]
+    gk_ = sorted(g["gl"], key=lambda r: -r[5])
+    RECENT.append({"id": int(gid), "d": g["d"], "a": g["a"], "h": g["h"], "as": g["as"], "hs": g["hs"], "ot": g["ot"], "asog": g.get("asog"), "hsog": g.get("hsog"),
+                   "stars": [[C["names"].get(r[0], r[0]), r[1], r[2], r[3], r[5]] for r in top],
+                   "gk": [[C["names"].get(r[0], r[0]), r[1], r[3], r[2]] for r in gk_[:2]]})
+with open(CACHE, "w") as f: json.dump(C, f, separators=(",", ":"), ensure_ascii=False)
+
 now = dt.datetime.now(ET)
 J = lambda o: json.dumps(o, separators=(",", ":"), ensure_ascii=False)
 print(f"/* NHL data — official NHL API (api-web.nhle.com) + PropLine sportsbook feed. Generated {now:%Y-%m-%d %H:%M} ET by tools/nhlfetch.py */")
@@ -553,5 +716,8 @@ for _, g in games:
         for zi, zz in enumerate(zl):
             for j in range(3): LZ[zi][j] += zz[j]
 print(f"const NHL_LZ={J(LZ)}; /* league shot zones [unblocked attempts, SOG, goals]: slot, high slot, wide, long */")
+print(f"const NHL_MODEL={J(MODEL)}; /* our estimate graded vs finals: win pick, total pick, edges >= 4% by market [W, L, units] */")
+print(f"const NHL_PRES={J(PRES)},NHL_PRES_D={J(PRES_D)}; /* props of {PRES_D} graded at the closing line: [name, team, mk, line, over, under, book, result value, over/under/push] */")
+print(f"const NHL_RECENT={J(RECENT)};")
 print(f"const NHL_PROPS={J(PROPS)}; /* [name, market, line, over, under, book] */")
 log(f"NHL data: {len(SLATE)} games today, {len(NEXT)} tomorrow, {len(TEAM)} teams, {len(P)} skaters, {len(G)} goalies, {len(PROPS)} props, {len(RES)} finals, {NREQ[0]} requests")

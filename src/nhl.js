@@ -59,7 +59,8 @@ function nhBestRow(b){const m=NH_MK[b.k];return `<a class="bprow" href="#nhl-pla
 /* ---------- goalies: probable starter ---------- */
 function nhGoalies(tm){return Object.entries(NHL_G).filter(([,g])=>g.tm===tm).map(([nm,g])=>({nm,...g,last:(g.g.filter(x=>x[7]&&nhCurG(x)).slice(-1)[0]||[])[0]||""}))
   .sort((a,b)=>(b.last>a.last?1:b.last<a.last?-1:0)||b.gs-a.gs)}
-function nhProbable(tm){const L=nhGoalies(tm).filter(x=>{const r=nhInjOf(x.nm);return !r||!/out|reserve|ir/i.test(r[2])});if(!L.length)return null;const lined=L.find(x=>(NHL_PROPS||[]).some(r=>r[0]===x.nm&&r[1]==="hsaves"));
+function nhProbable(tm){{const gg=nhGameOf(tm),q=gg&&gg.proj,nm=q&&(gg.a===tm?q.ga:q.gh);if(nm&&NHL_G[nm]){const x=nhGoalies(tm).find(z=>z.nm===nm);if(x)return {...x,why:(gg.a===tm?q.wa:q.wh)||""}}}
+  const L=nhGoalies(tm).filter(x=>{const r=nhInjOf(x.nm);return !r||!/out|reserve|ir/i.test(r[2])});if(!L.length)return null;const lined=L.find(x=>(NHL_PROPS||[]).some(r=>r[0]===x.nm&&r[1]==="hsaves"));
   /* who started the team's last 5 games */
   const st=[];for(const x of L)for(const z of x.g)if(z[7]&&nhCurG(z))st.push([z[0],x.nm]);st.sort((a,b)=>a[0]<b[0]?1:-1);const l5=st.slice(0,5),cnt={};l5.forEach(([,n])=>cnt[n]=(cnt[n]||0)+1);
   const n5=x=>cnt[x.nm]||0;
@@ -92,7 +93,7 @@ function nhlGames0(el){
   const today=NHL_SLATE||[],best=nhBest().slice(0,6);
   el.innerHTML=`<h1>🏒 NHL · ${nhE(nhDayS(NHL_DATE))}</h1>${nhDayTabs("nhl")}<p class="sub">${nhE(NHL_GEN?`Updated ${NHL_GEN}`:"")} · official NHL stats + live sportsbook lines. Tap a game for the matchup, goalies and every player prop.</p>
    ${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best NHL props</h2><div class="small" style="margin-bottom:8px">How often the line would have hit (last 10 games 60%, season 40%) vs what the odds need.</div><div class="nhbp">${best.map(nhBestRow).join("")}</div><a href="#nhl-props" class="small" style="display:block;margin-top:8px">All NHL props →</a></div>`:""}
-   ${nhEdgesCard()}${nhAnglesCard()}${nhMovesCard()}
+   ${nhEdgesCard()}${nhModelCard(false)}${nhAnglesCard()}${nhMovesCard()}
    <h2 style="margin:16px 0 8px">Today${today.length?` · ${today.length} game${today.length>1?"s":""}`:""}</h2>
    ${today.length?`<div class="grid g2">${today.map(nhCard).join("")}</div>`:`<div class="card small">No NHL games today — see the next days above.</div>`}
    ${nhFoot()}`}
@@ -213,15 +214,21 @@ function nhlPlayer(el,nm){
     :w.g.slice().reverse().map(x=>`<tr class="${x[16]===1?"nhprev":""}"><td>${x[16]===1?"'25 ":""}${nhE(x[0].slice(5))}</td><td>${nhLab(x)}</td><td>${x[3]}</td><td>${x[4]}</td><td>${x[5]}</td><td>${x[6]}</td><td>${x[7]}</td><td>${x[8]}</td><td>${x[11]}</td><td>${x[13]!=null&&(x[13]+x[14])?x[13]+"/"+(x[13]+x[14]):"–"}</td><td>${(x[10]/60).toFixed(1)}</td></tr>`).join("");
   el.innerHTML=`<p class="small"><a href="${g?"#nhl-game-"+g.id:"#nhl"}">← ${g?"Game":"NHL"}</a></p>
    <div class="phead"><div>${nhBadge(w.tm)}</div><div><h1 style="margin:0">${nhE(nm)}${nhInjChip(nm)}</h1><div class="small">${nhE(nhTm(w.tm))} · ${nhE(isG?"G":w.pos)}${g?` · next: ${g.a===w.tm?"@":"vs"} ${nhE(nhTm(opp))} ${g.d===NHL_DATE?"today":"tomorrow"} ${nhE(g.t)}`:""}</div></div></div>
-   <div class="card" style="margin-top:10px"><b>This season</b><div class="small">${head}</div></div>
-   ${isG?"":nhShotMap(nm)}
    ${typeof pxSideTg!=="undefined"?pxSideTg():""}
-   ${rows.length?nhPlayerLines(nm,rows,false):`<div class="card small" style="margin-top:12px">No props posted for him yet.</div>`}
-   ${(()=>{if(isG)return "";const have=new Set(rows.map(r=>r[1])),R=[];for(const k of ["hhit","hfow","hblk","hsog","hpts"]){if(have.has(k))continue;const V=nhVals(nm,k).map(o=>o.v);if(V.length<3)continue;const a=V.reduce((x,y)=>x+y,0)/V.length;
-       if(k==="hfow"&&a<1.5)continue;if(k!=="hfow"&&a<.3)continue;R.push([nm,k,Math.max(.5,Math.floor(a)+.5),null,null,""])}
-     return R.length?`<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">📊 More stats to check</h2><div class="small" style="margin-bottom:6px">No sportsbook line in our feed for these, so the line shown is his season average. Use − / + to set the line your book offers and the chart and hit rates follow.</div>${R.map(r=>nhLineRow(nm,r)).join("")}</div>`:""})()}
+   ${(()=>{const M=nhPMarkets(nm,rows,isG);if(!M.length)return `<div class="card small" style="margin-top:12px">No props or stats to chart yet.</div>`;const cur=M.find(x=>x.k===NH.pm)||M[0];
+     return `<div class="nbtabs pmk nhpmk" style="margin-top:12px">${M.map(x=>`<button data-nhpm="${x.k}" class="${x.k===cur.k?"on":""}">${NH_MK[x.k][0]==="Goal"?"Goal":NH_MK[x.k][1].replace("Shots on goal","Shots").replace("Blocked shots","Blocks").replace("Faceoffs won","Faceoffs").replace("Anytime goal","Goal").replace("Power-play points","PP pts")}<small>${x.r?(x.k==="hanyG"?nhOdds(x.r[3]):x.r[2]):"avg"}</small></button>`).join("")}</div>
+      <div class="card plines" style="margin-top:8px">${cur.r?"":`<div class="small" style="margin-bottom:4px">No sportsbook line in our feed for this one — the line starts at his season average. Use − / + to set your book's line.</div>`}${nhLineRow(nm,cur.r||cur.syn)}</div>`})()}
+   <div class="card" style="margin-top:12px"><b>This season</b><div class="small">${head}</div></div>
+   ${isG?"":nhShotMap(nm)}
    <div class="card" style="margin-top:12px"><h2>Game log</h2><div class="alw"><table class="altt nhlog"><thead><tr>${isG?"<th>Date</th><th>Opp</th><th>Start</th><th>SA</th><th>SV</th><th>GA</th><th>SV%</th><th>Min</th>":"<th>Date</th><th>Opp</th><th>G</th><th>A</th><th>PTS</th><th>SOG</th><th>BLK</th><th>HIT</th><th>PPG</th><th>FO</th><th>TOI</th>"}</tr></thead><tbody>${lg}</tbody></table></div></div>${nhFoot()}`;
+  el.querySelectorAll("[data-nhpm]").forEach(b=>b.onclick=()=>{NH.pm=b.dataset.nhpm;const y=scrollY;nhlPlayer(el,nm);scrollTo(0,y)});
   nhWire(el,()=>nhlPlayer(el,nm))}
+/* market tabs for a player page: posted props first, then stats we can chart without a line */
+function nhPMarkets(nm,rows,isG){const out=[],seen=new Set();for(const r of rows){if(seen.has(r[1]))continue;seen.add(r[1]);out.push({k:r[1],r})}
+  const extra=isG?["hsaves"]:["hpts","hgoals","hast","hsog","hblk","hhit","hfow"];
+  for(const k of extra){if(seen.has(k))continue;const V=nhVals(nm,k).filter(o=>!o.prev).map(o=>o.v);if(V.length<3)continue;const a=V.reduce((x,y)=>x+y,0)/V.length;if(k==="hfow"&&a<1.5)continue;if(k!=="hfow"&&k!=="hsaves"&&a<.15)continue;
+    out.push({k,syn:[nm,k,Math.max(.5,Math.floor(a)+.5),null,null,""]})}
+  return out}
 
 /* ---------- Standings ---------- */
 function nhlStandings(el){const T=Object.entries(NHL_TEAM).sort((a,b)=>(a[1].rk||99)-(b[1].rk||99));const divs=[...new Set(T.map(([,t])=>t.div))].filter(Boolean);
@@ -239,7 +246,7 @@ function nhlRoute(h){const el=document.getElementById("v-nhl");if(!el)return;
   if(h.startsWith("nhl-player-"))return nhlPlayer(el,h.slice(11));
   if(h.startsWith("nhl-team-"))return nhlTeam(el,h.slice(9));
   if(h.startsWith("nhl-tomorrow"))return nhlUpcoming(el,h);
-  ({"nhl-props":nhlProps,"nhl-standings":nhlStandings,"nhl-injuries":nhlInjuries}[h]||nhlGamesW)(el)}
+  ({"nhl-props":nhlProps,"nhl-standings":nhlStandings,"nhl-injuries":nhlInjuries,"nhl-scores":nhlScores}[h]||nhlGamesW)(el)}
 /* Today page snippet */
 function nhlTodayCard(){const L=(NHL_SLATE||[]).filter(g=>!nhStarted(g));if(!L.length)return "";
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:6px">🏒 NHL today</h2>${L.map(g=>`<a class="tgame" href="#nhl-game-${g.id}"><span class="small">${nhE(g.t)}</span><span>${nhBadge(g.a)} ${nhE(g.a)} <span class="small">@</span> ${nhBadge(g.h)} ${nhE(g.h)}</span><span class="small">${g.ml?`${nhOdds(g.ml[0])} / ${nhOdds(g.ml[1])}`:""}${g.tot?` · ${g.tot[0]}`:""}</span></a>`).join("")}
@@ -255,7 +262,7 @@ function nhLgAvg(k){const v=Object.values(NHL_TEAM).map(t=>t[k]).filter(x=>x!=nu
 /* our estimate (v2): expected goals = league avg x attack x defence, where attack/defence blend goals (50%),
    chances near the net (30%) and shots (20%); then special teams, home ice, rest and the probable goalie. Poisson for the rest. */
 function nhLgRate(f){let n=0,s=0;for(const t of Object.values(NHL_TEAM)){const v=f(t);if(v!=null&&isFinite(v)){s+=v;n++}}return n?s/n:null}
-function nhProject(g){const A=NHL_TEAM[g.a],H=NHL_TEAM[g.h];if(!A||!H||A.gf==null||H.gf==null)return null;const lg=nhLgAvg("gf")||3.0,lsv=NH_LGSV();
+function nhProject(g){const A=NHL_TEAM[g.a],H=NHL_TEAM[g.h];if(!A||!H||A.gf==null||H.gf==null)return null;if(g.proj)return nhProjFrom(g,g.proj);const lg=nhLgAvg("gf")||3.0,lsv=NH_LGSV();
   const lhd=nhLgRate(t=>t.fa&&t.fa.hd&&t.fa.hd[0]),lsf=nhLgRate(t=>t.sf),lpp=nhLgRate(t=>t.pp),lpk=nhLgRate(t=>t.pk);
   const k=T=>Math.min(.75,(T.gp||0)/40+.3),rg=(r,T)=>1+(r-1)*k(T);
   const att=T=>rg(.5*(T.gf/lg)+.3*(T.fa&&T.fa.hd&&lhd?T.fa.hd[0]/lhd:T.gf/lg)+.2*(T.sf&&lsf?T.sf/lsf:1),T);
@@ -436,6 +443,12 @@ function nhlTeam(el,t){const T=NHL_TEAM[t];if(!T){el.innerHTML=`<h1>Team not fou
    <div class="card" style="margin-top:12px"><h2>Every game this season</h2>${R.slice().reverse().map(r=>nhResRow(r,t)).join("")||`<div class="small">No games yet.</div>`}</div>${nhFoot()}`}
 
 /* ---------- 💰 game edges: our estimate vs the odds (no-vig) ---------- */
+/* probabilities from the expected goals the data job computed (so the site and the model scorecard agree) */
+function nhProjFrom(g,q){const la=q.la,lh=q.lh,P=(l,k)=>{let p=Math.exp(-l);for(let i=1;i<=k;i++)p*=l/i;return p};let hw=0,dr=0,h2=0,a2=0;
+  for(let i=0;i<13;i++)for(let j=0;j<13;j++){const p=P(la,i)*P(lh,j);if(j>i)hw+=p;else if(i===j)dr+=p;if(j-i>=2)h2+=p;if(i-j>=2)a2+=p}
+  const hwin=hw+dr*(lh/(la+lh)),tot=la+lh,line=g.tot?g.tot[0]:Math.round(tot*2)/2-.5,overL=L=>{let o=0;for(let i=0;i<15;i++)for(let j=0;j<15;j++)if(i+j>L)o+=P(la,i)*P(lh,j);return o};
+  const over1=L=>{let o=0;for(let i=0;i<8;i++)for(let j=0;j<8;j++)if(i+j>L)o+=P(q.l1a,i)*P(q.l1h,j);return o};
+  return {la,lh,hwin,tot,line,over:overL(line),overL,h2,a2,l1a:q.l1a,l1h:q.l1h,over1,fa:q.fa?{aA:q.fa[0],dH:1,aH:q.fa[1],dA:1}:null}}
 function nhNoVig(a,b){const x=nhImpP(a),y=nhImpP(b);return x!=null&&y!=null?[x/(x+y),y/(x+y)]:null}
 function nhEdges(g){const pr=nhProject(g);if(!pr)return [];const out=[],add=(mk,pick,odds,me,bk,txt)=>{if(odds==null||bk==null)return;out.push({g,mk,pick,odds,me,bk,edge:me-bk,txt})};
   if(g.ml){const nv=nhNoVig(g.ml[0],g.ml[1]);if(nv){add("Moneyline",g.h,g.ml[1],pr.hwin,nv[1]);add("Moneyline",g.a,g.ml[0],1-pr.hwin,nv[0])}}
@@ -485,3 +498,29 @@ function nhGoalieLoad(x,g){const st=x.g.filter(z=>z[7]&&nhCurG(z)),d=g?g.d:NHL_D
   const top=new Set(Object.entries(NHL_TEAM).filter(([,t])=>t.sfR&&t.sfR<=10).map(([a])=>a)),hs=st.filter(z=>top.has(z[1])),sv=a=>{const sa=a.reduce((s,z)=>s+z[3],0);return sa?(a.reduce((s,z)=>s+z[4],0)/sa).toFixed(3).slice(1):"–"};
   const b2b=st.filter(z=>{const p=nhAddDays(z[0],-1);return (NHL_RES||[]).some(r=>r[0]===p&&(r[1]===x.tm||r[3]===x.tm))});
   return {s7:days(7),s14:days(14),rest,run,hs:hs.length,hsv:sv(hs),b2b:b2b.length,b2bsv:sv(b2b)}}
+
+/* ---------- 🧾 scores + prop results + model scorecard ---------- */
+const NH_MKS={hpts:"Points",hgoals:"Goals",hast:"Assists",hsog:"Shots on goal",hblk:"Blocked shots",hhit:"Hits",hsaves:"Saves",hanyG:"Anytime goal",hfow:"Faceoffs won",hppp:"PP points"};
+function nhModelCard(full){const M=typeof NHL_MODEL!=="undefined"&&NHL_MODEL;if(!M)return "";const pc=a=>a[0]+a[1]?Math.round(a[0]/(a[0]+a[1])*100)+"%":"–";
+  const E=Object.entries(M.edge||{}),EW=E.reduce((s,[,e])=>s+e[0],0),EL=E.reduce((s,[,e])=>s+e[1],0),EU=E.reduce((s,[,e])=>s+e[2],0);
+  return `<div class="card" style="margin-bottom:12px"><h2 style="margin-bottom:2px">📊 How our estimate is doing</h2><div class="small" style="margin-bottom:8px">${M.n?`Graded on ${M.n} finished game${M.n>1?"s":""}, using the numbers we showed before puck drop.`:"Tracking started today — the first games grade after tonight's finals."}</div>
+   <div class="nhtiles">${nhTile("Winner picked",`${M.win[0]}-${M.win[1]}`,pc(M.win))}${nhTile("Total over/under",`${M.tot[0]}-${M.tot[1]}`,pc(M.tot))}${nhTile("Edges ≥ 4%",`${EW}-${EL}`,`${EU>0?"+":""}${EU.toFixed(2)} units`,EU>0?"up":EU<0?"dn":"")}</div>
+   ${E.length?`<div class="small" style="margin-top:6px">${E.map(([k,e])=>`${nhE(k)} ${e[0]}-${e[1]} (${e[2]>0?"+":""}${e[2]}u)`).join(" · ")}</div>`:""}
+   ${full&&M.recent&&M.recent.length?`<h3 class="nhh3">Recent games</h3>${M.recent.map(r=>`<div class="nhrr"><span class="nhwl ${r.ok?"w":"l"}">${r.ok?"✓":"✗"}</span><span>${nhE(r.a)} ${r.as} @ ${nhE(r.h)} ${r.hs} <span class="small">· picked ${nhE(r.pick)} ${Math.round(r.p*100)}%</span></span><span class="small">${nhE(r.d.slice(5))}</span>${r.bets.map(b=>`<span class="nhtag ${b[4]?"up":"dn"}">${b[4]?"✓":"✗"} ${nhE(b[1])} ${nhOdds(b[2])}</span>`).join("")}</div>`).join("")}`:""}
+   <div class="small" style="margin-top:6px">1 unit per edge bet at the posted odds. Small samples swing a lot — judge it after a few weeks.</div></div>`}
+function nhlScores(el){const R=(typeof NHL_RECENT!=="undefined"&&NHL_RECENT)||[],P=(typeof NHL_PRES!=="undefined"&&NHL_PRES)||[];
+  const byMk={};for(const r of P){const m=byMk[r[2]]||(byMk[r[2]]={o:0,u:0,p:0});m[r[8]==="over"?"o":r[8]==="under"?"u":"p"]++}
+  const mf=NH.sm&&byMk[NH.sm]?NH.sm:"all",PL=P.filter(r=>mf==="all"||r[2]===mf).sort((a,b)=>a[2]<b[2]?-1:a[2]>b[2]?1:a[0].localeCompare(b[0]));
+  el.innerHTML=`<h1>🧾 NHL scores</h1><p class="sub">${R.length?nhE(nhDayS(R[0].d)):""} · finals, who starred, and how every posted prop finished.</p>
+   ${nhModelCard(true)}
+   <div class="grid g2">${R.map(g=>`<div class="card"><div class="nhgh"><span class="small">${nhE(nhDayS(g.d))}</span><b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b></div>
+     ${[[g.a,g.as,g.asog],[g.h,g.hs,g.hsog]].map(([t,sc,sg])=>`<div class="nhrow" style="flex-direction:row;justify-content:space-between"><span><a href="#nhl-team-${t}" style="color:inherit">${nhBadge(t)} <b>${nhE(nhTm(t))}</b></a> <span class="small">${sg??"–"} shots</span></span><b style="font-size:20px">${sc}</b></div>`).join("")}
+     <div class="small" style="margin-top:6px">⭐ ${g.stars.map(x=>`<b>${nhE(x[0])}</b> ${x[2]}G ${x[3]}A`).join(" · ")}</div>
+     <div class="small">🥅 ${g.gk.map(x=>`${nhE(x[0])} ${x[2]}/${x[3]} saves`).join(" · ")}</div></div>`).join("")||`<div class="card small">No finals yet.</div>`}</div>
+   <div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🎯 How the props finished${typeof NHL_PRES_D!=="undefined"&&NHL_PRES_D?" · "+nhE(nhDayS(NHL_PRES_D)):""}</h2>
+    ${P.length?`<div class="small" style="margin-bottom:8px">Every line we had at puck drop (closing line), graded from the box score.</div>
+     <div class="nhtiles" style="margin-bottom:8px">${Object.entries(byMk).map(([k,m])=>nhTile(NH_MKS[k]||k,`${m.o} over · ${m.u} under`,`${Math.round(m.o/Math.max(1,m.o+m.u)*100)}% overs`,m.o>m.u?"up":"dn")).join("")}</div>
+     <div class="seg" style="margin-bottom:8px">${[["all","All"],...Object.keys(byMk).map(k=>[k,NH_MKS[k]||k])].map(([v,l])=>`<button class="btn${mf===v?" on":""}" data-nhsm="${v}">${l}</button>`).join("")}</div>
+     ${PL.map(r=>`<div class="nhrr"><span class="nhwl ${r[8]==="over"?"w":r[8]==="under"?"l":""}">${r[8]==="over"?"OVER":r[8]==="under"?"UNDER":"PUSH"}</span><span><b>${nhE(r[0])}</b> <span class="small">${nhE(r[1])} · ${nhE(NH_MKS[r[2]]||r[2])} ${r[2]==="hanyG"?"":r[3]}</span></span><span><b>${r[7]}</b></span></div>`).join("")}`
+     :`<div class="small">Prop results appear the morning after games we had lines for (the first ones after tonight).</div>`}</div>${nhFoot()}`;
+  el.querySelectorAll("[data-nhsm]").forEach(b=>b.onclick=()=>{NH.sm=b.dataset.nhsm;const y=scrollY;nhlScores(el);scrollTo(0,y)})}

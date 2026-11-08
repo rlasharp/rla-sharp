@@ -84,6 +84,7 @@ function viewBets(){
     return `<div class="card betrow"><div class="row" style="gap:8px;align-items:center;flex-wrap:wrap">
       <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="nhlprop"||b.k==="parlay"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
      <h3 style="margin:8px 0 2px">${esc(betTitle(b))}</h3>
+     <div data-clv="${b.id}" style="margin-top:4px"></div>
      <div class="small">Odds ${amTxt(b.odds)}${b.est?" (assumed — exact price not published)":""}${b.book?" · "+esc(b.book):""}${g.why?` · <b style="color:${c}">${esc(g.why)}</b>`:""}</div>
      <div class="row" style="gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">
       <label class="small">Stake $ <input type="number" min="0" step="1" value="${b.stake}" data-stake="${b.id}" style="width:80px"></label>
@@ -91,6 +92,7 @@ function viewBets(){
       ${shareBtn(b)}<button class="btn" data-rm="${b.id}">Remove</button></div></div>`};
   el.innerHTML=`<h1>My Bets</h1>
    <p class="sub">Tap <b>＋ My Bets</b> on any play, prop or game line to track it here. Bets grade themselves after the game. Saved on this device only — nobody else can see them.</p>
+   <div id="clvSum"></div>
    <div class="grid g4" style="margin:6px 0 14px">
     <div class="card" style="padding:12px"><small class="small">Record</small><b style="display:block;font-size:22px">${W}–${Lo}${P?"–"+P:""}</b></div>
     <div class="card" style="padding:12px"><small class="small">Profit</small><b style="display:block;font-size:22px;color:${prof>0?"#22c55e":prof<0?"#f05252":"inherit"}">${money(prof)}</b></div>
@@ -106,7 +108,7 @@ function viewBets(){
   el.querySelectorAll("[data-stake]").forEach(i=>i.onchange=()=>{const a=betsLoad(),b=a.find(x=>x.id===i.dataset.stake);if(b){b.stake=Math.max(0,+i.value||0);betsSave(a);viewBets()}});
   el.querySelectorAll("[data-rm]").forEach(x=>x.onclick=()=>{betsSave(betsLoad().filter(b=>b.id!==x.dataset.rm));updateBetsBadge();viewBets()});
   const cl=$("#betClear");if(cl)cl.onclick=()=>{if(cl.dataset.sure){betsSave([]);updateBetsBadge();viewBets()}else{cl.dataset.sure=1;cl.textContent="Tap again to clear all"}};
-}
+;if(typeof xClvDecorate!=="undefined")setTimeout(xClvDecorate,50)}
 
 /* ---------- Share a pick as an image (drawn on a canvas, nothing uploaded) ---------- */
 function shareInfo(s){

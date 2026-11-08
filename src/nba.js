@@ -206,6 +206,7 @@ function nbaGameCard(g){
 function nbaGames(el){
   el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nba",4):""}${nbaDayTabs("nba")}
   <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today${(()=>{const f=NBA_SLATE.filter(g=>nbaFinalHtml(g)).length;return f?`, ${f} final`:""})()}. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
+  ${typeof xEdgesCard!=="undefined"?xEdgesCard("nba"):""}${typeof nbaAnglesCard!=="undefined"?nbaAnglesCard():""}
   <div class="grid g2">${[...NBA_SLATE.filter(g=>!nbaFinalHtml(g)),...NBA_SLATE.filter(g=>nbaFinalHtml(g))].map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
   <div style="margin-top:14px">${nbaPlaysCard()}</div>
   ${typeof loMovesCard!=="undefined"&&loMovesCard("nba",8)?`<div style="margin-top:14px">${loMovesCard("nba",8)}</div>`:""}
@@ -290,6 +291,7 @@ function nbaGame(el,id){
     <div class="ght">${nbaBadge(g.h)}<b>${nbaTeamLink(g.h,nbaEsc(nbaShort(g.h)))}</b><span class="small">${nbaRec(g.h)}</span></div>
   </div>
   ${nbaGameTabs(g,tabP)}
+  ${tabP?"":(typeof nbaQuick!=="undefined"?nbaQuick(g):"")}
   ${tabP?`<div id="gpBody">${nbaGameProps(g)}</div>`:`<div class="card">
     ${L?`<div class="nbl" style="justify-content:center"><span>Spread <b>${L.sp<=0?g.h:g.a} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`:`<div class="small">Lines not posted yet.</div>`}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>

@@ -114,6 +114,7 @@ function viewGames(){
     const pj=projScore(g);return nflGameCard(g,pj)}).join("");
   const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:"";
   $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nfl",4):""}${typeof nfWeekTabs!=="undefined"?nfWeekTabs("games"):""}<p class="sub">${cur.filter(g=>!g.final).length} games to play${cur.some(g=>g.final)?`, ${cur.filter(g=>g.final).length} final`:""}. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
+   ${typeof xEdgesCard!=="undefined"?xEdgesCard("nfl"):""}
    <div class="games">${cards}</div>
    <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary>
    <p class="small" style="margin:8px 0 0"><b>Moneyline</b>: bet on who wins. <b>Spread</b>: the favorite must win by more than the number. <b>Total</b>: will both teams' points add up to more or less than the line? <b>🔮 Prediction</b>: our model's projected score and win chance — an estimate, not a sure thing. New to betting? See <a href="#guide" style="color:inherit">Betting 101</a>.</p></details>
@@ -141,6 +142,7 @@ function viewGame(id){
     </div></div>
    ${nflGameTabs(g,tabP)}
    ${tabP?`<div id="gpBody">${nflGameProps(g)}</div>`:`
+   ${typeof nflQuick!=="undefined"?nflQuick(g):""}
    <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
     <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p></div>
    ${nflEdgesCard(g)}
@@ -675,7 +677,7 @@ function route(){
   document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===(isNhl?"nhl":isNba?"nba":"nfl")));
   if(h.startsWith("nhl")&&typeof nhlRoute!=="undefined"){
     document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-nhl"));
-    const nv=h.startsWith("nhl-props")?"nhl-props":h.startsWith("nhl-standings")?"nhl-standings":h.startsWith("nhl-injuries")?"nhl-injuries":"nhl";
+    const nv=h.startsWith("nhl-props")?"nhl-props":h.startsWith("nhl-standings")?"nhl-standings":h.startsWith("nhl-injuries")?"nhl-injuries":h.startsWith("nhl-scores")?"nhl-scores":"nhl";
     document.querySelectorAll("#nhlNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
     document.getElementById("banner").innerHTML="";nhlRoute(h);window.scrollTo(0,0);return;
   }
