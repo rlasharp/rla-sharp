@@ -203,6 +203,8 @@ try:
     st0 = get("https://api-web.nhle.com/v1/standings/now")
     for x in st0.get("standings") or []: byn0[norm(dflt(x.get("teamName")))] = dflt(x.get("teamAbbrev"))
 except Exception as e: log("standings (names) failed", e)
+DBG = []
+if not C["glines"]: C["gl_days"] = []   # earlier runs found no lines: rescan
 done_days = set(C["gl_days"]); gdays = sorted({g["d"] for g in C["games"].values()}); nl = 0
 for day in gdays:
     if day in done_days or day >= TODAY: continue
@@ -212,15 +214,27 @@ for day in gdays:
         time.sleep(0.15)
     except Exception as e:
         log("ESPN scoreboard failed", day, e); continue
-    ok = True
+    ok, got = True, 0
     for e in sb.get("events") or []:
         c = (e.get("competitions") or [{}])[0]; tm = {x.get("homeAway"): x for x in c.get("competitors") or []}
         if "home" not in tm or "away" not in tm: continue
         if not ((c.get("status") or {}).get("type") or {}).get("completed"): ok = False; continue
         a, h = byn0.get(norm(tm["away"]["team"].get("displayName"))), byn0.get(norm(tm["home"]["team"].get("displayName")))
+        if not (a and h): log("ESPN team not matched", tm["away"]["team"].get("displayName"), tm["home"]["team"].get("displayName")); continue
         o = espn_odds(c)
-        if a and h and o and (o[0] is not None or o[1] is not None): C["glines"][f"{day}|{a}|{h}"] = o; nl += 1
-    if ok: C["gl_days"].append(day)
+        if not o or (o[0] is None and o[1] is None):
+            # finished games often drop the odds from the scoreboard: the game summary keeps them (pickcenter)
+            try:
+                req = urllib.request.Request("https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=" + str(e.get("id")), headers=UA)
+                with urllib.request.urlopen(req, timeout=30) as r: sm = json.load(r)
+                time.sleep(0.15)
+                pc = sm.get("pickcenter") or []
+                if not DBG and pc: log("ESPN pickcenter keys:", sorted(pc[0].keys())[:30]); DBG.append(1)
+                o = espn_odds({"odds": pc[:1], "competitors": c.get("competitors")}) if pc else None
+            except Exception as ex:
+                log("ESPN summary failed", e.get("id"), ex); o = None
+        if o and (o[0] is not None or o[1] is not None): C["glines"][f"{day}|{a}|{h}"] = o; nl += 1; got += 1
+    if ok and got: C["gl_days"].append(day)
 log(f"NHL closing lines: {nl} new games, {len(C['glines'])} total")
 with open(CACHE, "w") as f: json.dump(C, f, separators=(",", ":"), ensure_ascii=False)
 
