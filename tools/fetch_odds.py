@@ -138,6 +138,21 @@ def alts(book_rows, main_ln, milestones=None):
         out.append(r)
     return out
 
+MS_MAIN = {"hgoals", "hpts", "hast", "hppp", "hsog", "hblk", "hsaves"}
+def pick_ms(rungs, mk):
+    """main line from milestone rungs only {book: {line: overPrice}}: the "1+" rung for goals/points/assists/PPP,
+    otherwise the rung priced closest to even. Over price only (books post no under for these)."""
+    lines = sorted({ln for v in rungs.values() for ln in v})
+    if not lines: return None
+    ln = lines[0] if mk in ("hgoals", "hpts", "hast", "hppp") else min(lines, key=lambda x: min(abs(abs(v[x]) - 100) for v in rungs.values() if x in v))
+    for b in BOOK_PREF:
+        if ln in (rungs.get(b) or {}):
+            o = rungs[b][ln]; bo, bob = o, b
+            for b2, v in rungs.items():
+                if ln in v and v[ln] > bo: bo, bob = v[ln], b2
+            return ln, o, None, b, bo, bob, None, None
+    return None
+
 def pick_yes(book_rows):
     """anytime TD: Yes/Over price only."""
     for b in BOOK_PREF:
@@ -206,8 +221,11 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
                     try: price = int(round(float(price))); point = float(point)
                     except Exception: continue
                     props.setdefault((player, mk), {}).setdefault(b, {}).setdefault(point, {})[side] = price
-        for (player, mk), br in props.items():
-            r = pick_yes(br) if mk in YES_MK else pick(br)
+        for (player, mk) in list(props) + [k for k in ms if k not in props]:
+            br = props.get((player, mk)) or {}
+            r = (pick_yes(br) if mk in YES_MK else pick(br)) if br else None
+            if not r and mk in MS_MAIN and ms.get((player, mk)):
+                r = pick_ms(ms[(player, mk)], mk)  # only "N+" rungs posted (e.g. NHL goals / points): one-sided main line
             if not r: continue
             ln, o, u, b, bo, bob, bu, bub = r
             key = f"{eid}|{player}|{mk}"
