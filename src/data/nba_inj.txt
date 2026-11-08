@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 18:58Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 20:50Z
 #Atlanta Hawks
 Asa Newell|F|Day-To-Day|toe|Nov 9
 Keshon Gilbert|G|Day-To-Day|knee inflammation|Nov 9
@@ -19,8 +19,6 @@ Kon Knueppel|G|Out|hamstring strain|Nov 9
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
 Norman Powell|G|Out|shoulder inflammation|Nov 11
-Tobe Awaka|F|Day-To-Day|knee sprain|Nov 8
-Jalen Smith|F|Day-To-Day|finger sprain|Nov 8
 Zach Collins|F|Out|illness|Nov 11
 #Cleveland Cavaliers
 Sam Merrill|G|Day-To-Day|elbow|Nov 9
@@ -81,7 +79,6 @@ Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
-Joel Embiid|C|Day-To-Day|foot plantar fasciitis|Nov 8
 Adem Bona|C|Out|back sprain|Nov 10
 Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
@@ -94,7 +91,6 @@ Ja Morant|G|Out|hamstring not specified|Dec 1
 Vit Krejci|G|Out|ankle|Jan 2
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Keegan Murray|F|Out|ankle|Nov 8
 Maxime Raynaud|C|Out|knee dislocated|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
