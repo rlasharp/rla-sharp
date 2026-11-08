@@ -63,17 +63,24 @@ def game_lines(odds, home, away, period=None):
             oc = {}
             for o in g(m, "outcomes", []) or []:
                 oc[str(g(o, "name", ""))] = (g(o, "price"), g(o, "point"))
-            by.setdefault(k, {}).setdefault(b, oc)
+            by.setdefault(k, {}).setdefault(b, []).append(oc)
+    even = lambda oc, a, b_: abs(abs(oc[a][0] or 0) - abs(oc[b_][0] or 0))
+    def best(k, b, a, b_, want=None):
+        L = [oc for oc in (by.get(k) or {}).get(b) or [] if a in oc and b_ in oc and oc[a][0] is not None and oc[b_][0] is not None]
+        if want is not None:
+            W = [oc for oc in L if oc[b_][1] is not None and abs(oc[b_][1]) == want]
+            if W: L = W
+        return min(L, key=lambda oc: even(oc, a, b_)) if L else None
     out = {}
     for b in BOOK_PREF:
-        oc = (by.get("h2h") or {}).get(b)
-        if oc and home in oc and away in oc and "ml" not in out:
+        oc = best("h2h", b, home, away)
+        if oc and "ml" not in out:
             out["ml"] = [oc[away][0], oc[home][0], BOOK_NAME[b]] + ([oc["Draw"][0]] if "Draw" in oc else [])
-        oc = (by.get("totals") or {}).get(b)
-        if oc and "Over" in oc and "Under" in oc and "tot" not in out:
+        oc = best("totals", b, "Over", "Under")
+        if oc and "tot" not in out:
             out["tot"] = [oc["Over"][1], oc["Over"][0], oc["Under"][0], BOOK_NAME[b]]
-        oc = (by.get("spreads") or {}).get(b)
-        if oc and home in oc and away in oc and "pl" not in out:
+        oc = best("spreads", b, away, home, 1.5 if period is None else None)
+        if oc and "pl" not in out:
             out["pl"] = [oc[home][1], oc[away][0], oc[home][0], BOOK_NAME[b]]
     return out
 
