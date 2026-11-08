@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 04:43Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 04:56Z
 #Atlanta Hawks
 Keshon Gilbert|G|Out|knee inflammation|Nov 9
 Asa Newell|F|Out|toe|Nov 9
