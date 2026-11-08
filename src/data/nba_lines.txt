@@ -1,8 +1,8 @@
 # AWAY@HOME|open home spread|open total|home spread|spread price|total|over price|under price|away ML|home ML   (ESPN odds feed, DraftKings) — auto
-# asof: Sun Nov 8, 1:53 AM ET
+# asof: Sun Nov 8, 2:17 AM ET
 PHI@CHI|9.5|238.5|9.5|-115|238.5|-110|-110|-395|312
 LAL@DET|-2.5|223.5|-4.5|-110|222.5|-106|-114|155|-185
-UTAH@MIN|-10.5|222.5|-11.5|-110|224.5|-107|-113|443|-597
+UTAH@MIN|-10.5|222.5|-11.5|-106|225.5|-106|-114|443|-597
 BKN@DAL|-8.5|219.5|-9.5|-110|219.5|-110|-110|320|-408
 BOS@MIL|12.5|222.5|12.5|-110|222.5|-110|-110|-650|473
 NO@LAC|1.5|225.5|1.5|-110|228.5|-112|-108|-119|100
