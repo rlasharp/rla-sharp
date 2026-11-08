@@ -299,18 +299,9 @@ function nbaGame(el,id){
     ${nbaMoveHtml(g,1)}
     ${nbaPickTxt(g)}${say?`<p style="margin:10px 0 0;font-size:14px;color:var(--text2)">${say}</p>`:""}
   </div>
-  ${A&&H?`<div class="grid g4" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-top:14px">
-    ${tile("Expected pace",nbaF(pace),"possessions per team · "+(pace>=102?"fast game":pace<=98?"slow game":"average speed"))}
-    ${tile(nbaShort(g.a)+" offense",nbaF(A.o.rtg),nbaOrd(A.oR.rtg)+" of 30 · pts/100 poss")}
-    ${tile(nbaShort(g.h)+" offense",nbaF(H.o.rtg),nbaOrd(H.oR.rtg)+" of 30 · pts/100 poss")}
-    ${tile(nbaShort(g.a)+" defense",nbaF(A.d.rtg),nbaOrd(A.dR.rtg)+" of 30 · allowed/100")}
-    ${tile(nbaShort(g.h)+" defense",nbaF(H.d.rtg),nbaOrd(H.dR.rtg)+" of 30 · allowed/100")}
-  </div>`:""}
-  <div style="margin-top:14px">${nbaGsHtml(g)}</div>
-  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}
-  <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.a)} have the ball</h2>${nbaMatchup(g.a,g.h)}</div>
-  <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>
-  <p class="note" style="margin-top:6px">Longer bar = better rank (1st of 30). <span class="rkg">Green</span> = top 8, <span class="rkb">red</span> = bottom 8. Highlighted rows are mismatches. Season to date.</p>
+  ${(()=>{const T=NB.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["inj","🚑 Injuries"]];
+    const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nbgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#nba-game-${g.id}-props">🎯 Props</a></div>`;
+    if(T==="tr")return nav+`  <div style="margin-top:14px">${nbaGsHtml(g)}</div>
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${nbaShort(g.a)} last 5</h2>${nbaLast5(g.a)}<div class="small" style="margin-top:8px">${restTxt(g.a)}</div>${nbaSpotHtml(g.a)}</div>
     <div class="card"><h2>${nbaShort(g.h)} last 5</h2>${nbaLast5(g.h)}<div class="small" style="margin-top:8px">${restTxt(g.h)}</div>${nbaSpotHtml(g.h)}</div>
@@ -318,14 +309,28 @@ function nbaGame(el,id){
   ${nbaQtrCard(g)}
   ${nbaH2HCard(g)}
 
+`;
+    if(T==="inj")return nav+`  <div class="grid g2" style="margin-top:8px">
+    <div class="card"><h2>${nbaShort(g.a)} injuries</h2>${nbaInjTable(g.a)}</div>
+    <div class="card"><h2>${nbaShort(g.h)} injuries</h2>${nbaInjTable(g.h)}</div></div>`;
+    return nav+`  ${A&&H?`<div class="grid g4" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-top:14px">
+    ${tile("Expected pace",nbaF(pace),"possessions per team · "+(pace>=102?"fast game":pace<=98?"slow game":"average speed"))}
+    ${tile(nbaShort(g.a)+" offense",nbaF(A.o.rtg),nbaOrd(A.oR.rtg)+" of 30 · pts/100 poss")}
+    ${tile(nbaShort(g.h)+" offense",nbaF(H.o.rtg),nbaOrd(H.oR.rtg)+" of 30 · pts/100 poss")}
+    ${tile(nbaShort(g.a)+" defense",nbaF(A.d.rtg),nbaOrd(A.dR.rtg)+" of 30 · allowed/100")}
+    ${tile(nbaShort(g.h)+" defense",nbaF(H.d.rtg),nbaOrd(H.dR.rtg)+" of 30 · allowed/100")}
+  </div>`:""}
+  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}
+  <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.a)} have the ball</h2>${nbaMatchup(g.a,g.h)}</div>
+  <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>
+  <p class="note" style="margin-top:6px">Longer bar = better rank (1st of 30). <span class="rkg">Green</span> = top 8, <span class="rkb">red</span> = bottom 8. Highlighted rows are mismatches. Season to date.</p>
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${nbaShort(g.a)} players</h2>${nbaPlayerTable(nbaTopPlayers(g.a,7),{no3:1,nonote:1})}</div>
     <div class="card"><h2>${nbaShort(g.h)} players</h2>${nbaPlayerTable(nbaTopPlayers(g.h,7),{no3:1,nonote:1})}</div>
   </div><p class="note" style="margin-top:8px">Per-game averages this season. ▲▼ = much hotter or colder over the last 5 games.</p>
-  <details class="drawer nodz injdz" style="margin-top:14px"><summary><span>🩹 Injuries</span><b>›</b></summary><div class="grid g2" style="margin-top:8px">
-    <div class="card"><h2>${nbaShort(g.a)} injuries</h2>${nbaInjTable(g.a)}</div>
-    <div class="card"><h2>${nbaShort(g.h)} injuries</h2>${nbaInjTable(g.h)}</div></div></details>`}`;
+`})()}`}`;
   if(tabP)nbaWireGameProps(el,g);else nbaGsWire(el,g);
+  el.querySelectorAll("[data-nbgt]").forEach(a=>a.onclick=e=>{e.preventDefault();const y=scrollY;NB.gtab=a.dataset.nbgt;nbaGame(el,id);scrollTo(0,y)});
 }
 function nbaGsHtml(g){const L=NBA_LINES[g.a+"@"+g.h];return gsCard("nba|"+g.id,"nba",[g.a,g.h],gsRowsNba,t=>gsRowsNba(t).filter(r=>r.opp===(t===g.a?g.h:g.a)),{sp:L?L.sp:null,tot:L?L.tot:null},[195,255,5])}
 function nbaGsWire(el,g){gsWire(el,()=>{const c=el.querySelector(".gsc");if(!c)return;const y=scrollY;c.outerHTML=nbaGsHtml(g);nbaGsWire(el,g);scrollTo(0,y)})}
