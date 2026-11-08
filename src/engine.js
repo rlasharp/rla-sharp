@@ -20,13 +20,13 @@ const SLATE = [
  {id:"mnf8",away:"CHI",home:"SEA",final:[34,17],when:"Mon Nov 2 · 8:15 PM",wp:null,tv:"MNF",wk:8},
  {id:1,away:"JAX",home:"BAL",final:[33,10],when:"Thu Nov 5 · 8:15 PM",wp:null,tv:"TNF"},
  {id:2,away:"CIN",home:"ATL",final:[34,17],when:"Sun Nov 8 · 9:30 AM",wp:null},
- {id:3,away:"CLE",home:"NO",when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:4,away:"DAL",home:"IND",when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:5,away:"DEN",home:"CAR",when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:6,away:"DET",home:"MIA",when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:7,away:"LAR",home:"WAS",when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:8,away:"NYG",home:"PHI",when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:9,away:"NYJ",home:"KC",when:"Sun Nov 8 · 1:00 PM",wp:null},
+ {id:3,away:"CLE",home:"NO",final:[22,23],when:"Sun Nov 8 · 1:00 PM",wp:null},
+ {id:4,away:"DAL",home:"IND",final:[27,23],when:"Sun Nov 8 · 1:00 PM",wp:null},
+ {id:5,away:"DEN",home:"CAR",final:[26,21],when:"Sun Nov 8 · 1:00 PM",wp:null},
+ {id:6,away:"DET",home:"MIA",final:[19,9],when:"Sun Nov 8 · 1:00 PM",wp:null},
+ {id:7,away:"LAR",home:"WAS",final:[20,13],when:"Sun Nov 8 · 1:00 PM",wp:null},
+ {id:8,away:"NYG",home:"PHI",final:[19,11],when:"Sun Nov 8 · 1:00 PM",wp:null},
+ {id:9,away:"NYJ",home:"KC",final:[12,35],when:"Sun Nov 8 · 1:00 PM",wp:null},
  {id:10,away:"HOU",home:"LAC",when:"Sun Nov 8 · 4:05 PM",wp:null},
  {id:11,away:"LV",home:"SF",when:"Sun Nov 8 · 4:25 PM",wp:null},
  {id:12,away:"ARI",home:"SEA",when:"Sun Nov 8 · 4:25 PM",wp:null},
@@ -51,7 +51,7 @@ const LINES = {
  12:{sp:-8.5,ml:[350,-455],tot:39.5},
  13:{sp:-3,ml:[154,-185],tot:44.5},
  14:{sp:-6,ml:[220,-270],tot:47.5},
- 15:{sp:3,ml:[-175,145],tot:43.5}
+ 15:{sp:3,ml:[-170,142],tot:43.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
 const SPLITS = {};
