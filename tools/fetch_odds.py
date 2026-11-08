@@ -43,6 +43,7 @@ NHL_MK = {"player_points": "hpts", "player_goals": "hgoals", "player_assists": "
 NHL_CORE = ["player_points", "player_goals", "player_assists", "player_shots_on_goal", "player_blocked_shots", "player_total_saves"]
 GAME_MK = ["h2h", "spreads", "totals"]
 YES_MK = {"anyTD", "hanyG"}  # one-sided Yes markets (no under, no alt ladder)
+MKSAMPLE = {}
 MKSEEN = {}  # market keys the feed returned, per sport (run log)
 
 def game_lines(odds, home, away):
@@ -205,6 +206,8 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
             if b in NOT_BOOKS or b not in BOOK_NAME: continue
             for m in g(bk, "markets", []) or []:
                 MKSEEN.setdefault(sport, {}); MKSEEN[sport][g(m, "key")] = MKSEEN[sport].get(g(m, "key"), 0) + 1
+                if sport == "icehockey_nhl" and g(m, "key") not in MKSAMPLE:
+                    MKSAMPLE[g(m, "key")] = [b, str(g(m, "line_type", "")), [{k_: g(o, k_) for k_ in ("name", "description", "point", "price", "payout_multiplier")} for o in (g(m, "outcomes", []) or [])[:2]]]
                 mk = mk_map.get(g(m, "key"))
                 if not mk: continue
                 lt = str(g(m, "line_type", "") or "")
@@ -229,8 +232,13 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
         for (player, mk) in list(props) + [k for k in ms if k not in props]:
             br = props.get((player, mk)) or {}
             r = (pick_yes(br) if mk in YES_MK else pick(br)) if br else None
-            if not r and mk in MS_MAIN and ms.get((player, mk)):
-                r = pick_ms(ms[(player, mk)], mk)  # only "N+" rungs posted (e.g. NHL goals / points): one-sided main line
+            if not r and mk in MS_MAIN:
+                # only one-sided prices posted (e.g. NHL goals / points: "N+" rungs or Over/Yes with no Under)
+                rungs = {b: dict(v) for b, v in (ms.get((player, mk)) or {}).items()}
+                for b, lines in br.items():
+                    for ln, sd in lines.items():
+                        if "Over" in sd and "Under" not in sd: rungs.setdefault(b, {}).setdefault(ln, sd["Over"])
+                if rungs: r = pick_ms(rungs, mk)
             if not r: continue
             ln, o, u, b, bo, bob, bu, bub = r
             key = f"{eid}|{player}|{mk}"
@@ -308,6 +316,7 @@ def main():
           f"NFL {len(out['nfl'].get('props') or [])} props / {len(out['nfl'].get('events') or [])} games; "
           f"NHL {len(out['nhl'].get('props') or [])} props / {len(out['nhl'].get('events') or [])} games; requests today {used}")
     print("markets seen:", json.dumps(MKSEEN))
+    for k_, v_ in MKSAMPLE.items(): print("  NHL sample", k_, json.dumps(v_, default=str))
     print("line_type counts:", DIAG)
 
 if __name__ == "__main__":
