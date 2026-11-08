@@ -11,7 +11,7 @@ const MOVE={
  3:{open:{sp:-3.5,tot:41.5},now:{sp:-3,tot:42.5,ml:[142,-170]}},
  4:{open:{sp:1.5,tot:52.5},now:{sp:5.5,tot:51.5,ml:[-230,190]}},
  5:{open:{sp:3,tot:42.5},now:{sp:2.5,tot:44.5,ml:[-142,120]}},
- 6:{open:{sp:6.5,tot:47.5},now:{sp:6.5,tot:49.5,ml:[-290,235]}},
+ 6:{open:{sp:6.5,tot:47.5},now:{sp:6,tot:49.5,ml:[-285,230]}},
  7:{open:{sp:4.5,tot:50.5},now:{sp:4.5,tot:47.5,ml:[-238,195]}},
  8:{open:{sp:-5.5,tot:44.5},now:{sp:3,tot:38.5,ml:[-155,130]}},
  9:{open:{sp:-9.5,tot:41.5},now:{sp:-9.5,tot:48.5,ml:[400,-535]}},
