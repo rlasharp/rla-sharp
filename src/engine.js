@@ -39,8 +39,8 @@ const LINES = {
  mnf8:{sp:-3.5,ml:[145,-175],tot:46.5}, // Week 8 Monday night, DraftKings via ESPN odds page (Nov 2 evening)
  1:{sp:10,ml:[-535,400],tot:39.5},
  2:{sp:3,ml:[-175,145],tot:52.5},
- 3:{sp:-3,ml:[140,-166],tot:42.5},
- 4:{sp:4.5,ml:[-230,190],tot:51.5},
+ 3:{sp:-3,ml:[142,-170],tot:42.5},
+ 4:{sp:5.5,ml:[-230,190],tot:51.5},
  5:{sp:2.5,ml:[-142,120],tot:44.5},
  6:{sp:6.5,ml:[-290,235],tot:49.5},
  7:{sp:4.5,ml:[-238,195],tot:47.5},

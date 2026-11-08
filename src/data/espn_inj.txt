@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-08 01:21Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-08 03:01Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|Questionable|Ankle|Nov 8
@@ -33,10 +33,10 @@ Tyler Huntley|QB|IR|Toe|Feb 15
 Jaylinn Hawkins|S|Out|Knee|Nov 16
 Adam Randall|RB|IR|Neck|Nov 16
 #BUF
+Alec Anderson|OT|Questionable|Ankle|Nov 9
+Dion Dawkins|OT|Questionable|Ribs|Nov 9
 Tyrell Shavers|WR|Out|Knee - ACL|Nov 9
 Joshua Palmer|WR|Out|Hamstring|Nov 15
-Dion Dawkins|OT|Questionable|Ribs|Nov 9
-Alec Anderson|OT|Questionable|Ankle|Nov 9
 Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
 #CAR
@@ -67,8 +67,9 @@ Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 Deshaun Watson|QB|Questionable|Concussion|Nov 8
 Maliek Collins|DT|Out|Elbow|Nov 15
 #DAL
-Malachi Lawrence|LB|IR|Ankle|Dec 7
+Jonathan Bullard|DT|IR|Calf|Nov 15
 Marist Liufau|LB|Questionable|Forearm|Nov 8
+Malachi Lawrence|LB|IR|Ankle|Dec 7
 Joey Porter Jr.|CB|Questionable|Ankle|Nov 8
 DeMarvion Overshown|LB|Questionable|Hamstring|Nov 8
 KaVontae Turpin|WR|Out|Ribs|Nov 15
@@ -95,12 +96,12 @@ Amon-Ra St. Brown|WR|Questionable|Ribs|Nov 8
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
+Chris Brooks|RB|IR|Ankle|Nov 15
 Travis Glover|OT|Out|Knee|Nov 15
 Sean Rhyan|G|Out|Ankle|Nov 15
 Keisean Nixon|CB|Questionable|Groin|Nov 8
 Zaire Franklin|LB|Out|Shin|Nov 15
 Josh Whyle|TE|Out|Concussion|Nov 15
-Chris Brooks|RB|IR|Ankle|Nov 8
 MarShawn Lloyd|RB|Questionable|Knee|Nov 8
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 #HOU
@@ -176,11 +177,11 @@ Cam Skattebo|RB|Doubtful|Hamstring|Nov 8
 Charlie Jones|WR|Questionable|Hand|Nov 8
 Tyrone Tracy Jr.|RB|IR|Hamstring|Dec 6
 #NYJ
+VJ Payne|S|IR|Knee|Nov 15
 Nahshon Wright|CB|Out|Back|Nov 15
 Joseph Ossai|DE|Out|Ankle|Nov 15
 Trevin Wallace|LB|Out|Groin|Nov 15
 Garrett Wilson|WR|Out|Concussion|Nov 15
-VJ Payne|S|IR|Knee|Nov 15
 Harrison Phillips|DT|Questionable|Ankle|Nov 8
 Max Mitchell|OT|IR|Concussion|Dec 13
 T'Vondre Sweat|DT|IR|Knee|Nov 29
@@ -199,9 +200,9 @@ Brandin Echols|CB|Out|Hamstring|Nov 8
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Nate Hobbs|CB|IR|Groin|Nov 15
 Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
 Brandon Aiyuk|WR|Out|Personal|Nov 15
-Nate Hobbs|CB|IR|Groin|Nov 15
 Mike Evans|WR|Out|Achilles|Nov 15
 Deebo Samuel Sr.|WR|Out|Hamstring|Nov 15
 Siran Neal|S|Questionable|Knee|Nov 8
