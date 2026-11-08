@@ -37,6 +37,9 @@ if [ "$WHAT" = nhl ] || [ "$WHAT" = all ]; then   # NHL: official NHL API + Prop
   else log "NHL data FAILED — kept old: $(tail -3 "$WORK/nhl.log" | tr '\n' ' ')"; fi
 fi
 bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
+# tracker: snapshot best props / game numbers / NHL plays before games, grade after (uses the site's own functions)
+if node tools/track.js "$ROOT/src/index.html" > "$WORK/track.log" 2>&1; then log "$(tail -1 "$WORK/track.log")"; bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
+else log "tracker FAILED (kept old): $(tail -2 "$WORK/track.log" | tr '\n' ' ')"; fi
 if node tools/check.js "$ROOT/src/index.html" > "$WORK/check.log" 2>&1; then
   cp index.html "$ROOT/index.html"; cp nhl_data.js "$ROOT/nhl_data.js"; log "Site check OK — published"
 else
