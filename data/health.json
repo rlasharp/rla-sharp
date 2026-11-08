@@ -1,16 +1,16 @@
 {
  "auto": {
-  "at": "2026-11-08T17:07:52+00:00",
+  "at": "2026-11-08T17:09:43+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1596 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 801 feed lines merged (0 skipped from other days), 747 total, unmatched names: []\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 7, lines 7, props 747, inj teams 28, prev-season players 184, play log 18, adv 371, qtr games 139, h2h 3/2/4/3/4/4/2\nnfl-update: 13 lines refreshed, 0 new finals (weeks [8, 9])\n241 players, 32 teams\nnfl-inj: 241 players\nNHL data FAILED \u2014 kept old: NHL timeonice keys: ['evTimeOnIcePerGame', 'gamesPlayed', 'otTimeOnIcePerOtGame', 'ppTimeOnIce', 'ppTimeOnIcePerGame', 'shTimeOnIcePerGame', 'shiftsPerGame', 'timeOnIcePerGame'] -> ppTimeOnIcePerGame NHL props: 12 names not matched, e.g. ['Arseni Gritsyuk', 'Benjamin Kindel', \"Charles-Edouard D'Astous\", 'Dmitri Kulikov', 'Janis J\u00e9r\u00f4me Moser', 'John-Jason Peterka'] NHL data: 6 games today, 3 tomorrow, 32 teams, 370 skaters, 60 goalies, 623 props, 268 finals, 34 requests \nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1596 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 801 feed lines merged (0 skipped from other days), 747 total, unmatched names: []\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 7, lines 7, props 747, inj teams 28, prev-season players 184, play log 18, adv 371, qtr games 139, h2h 3/2/4/3/4/4/2\nnfl-update: 13 lines refreshed, 0 new finals (weeks [8, 9])\n241 players, 32 teams\nnfl-inj: 241 players\nNHL data FAILED \u2014 kept old: NHL timeonice keys: ['evTimeOnIcePerGame', 'gamesPlayed', 'otTimeOnIcePerOtGame', 'ppTimeOnIce', 'ppTimeOnIcePerGame', 'shTimeOnIcePerGame', 'shiftsPerGame', 'timeOnIcePerGame'] -> ppTimeOnIcePerGame NHL props: 12 names not matched, e.g. ['Arseni Gritsyuk', 'Benjamin Kindel', \"Charles-Edouard D'Astous\", 'Dmitri Kulikov', 'Janis J\u00e9r\u00f4me Moser', 'John-Jason Peterka'] NHL data: 6 games today, 3 tomorrow, 32 teams, 370 skaters, 60 goalies, 623 props, 268 finals, 34 requests \ntrack: nba 2026-11-08: snapshot 10 props, 7 games; nhl 2026-11-08: locked 5 plays \u00b7 graded: NHL plays 0-0, best props NBA 0-0 NFL 0-0 NHL 0-0\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-08T17:07:52+00:00",
+  "at": "2026-11-08T17:09:43+00:00",
   "ok": false,
   "issue": "live page fails the site check: node:internal/process/promises:394     triggerUncaughtException(err, true /* fromPromise */);     ^  page.goto: Timeout 30000ms exceeded. Call log:   - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting until \"load\"      at /home/runner/work/rla-sharp/rla-sharp/src/tools/check.js:8:10 {   log: [     '  - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting u"
  },
  "nhl": {
-  "at": "2026-11-08T17:07:52+00:00",
+  "at": "2026-11-08T17:09:43+00:00",
   "ok": false,
   "issue": "NHL data step failed",
   "gen": "Sun Nov 8 11:51 AM ET",
