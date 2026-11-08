@@ -191,7 +191,12 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
             except Exception as e2: print(f"{sport} {eid}: odds failed: {e2}"); continue
         used += 1
         if with_game:
-            try: evs[-1].update(game_lines(odds, evs[-1]["home"], evs[-1]["away"]))
+            try:
+                gl = game_lines(odds, evs[-1]["home"], evs[-1]["away"]); evs[-1].update(gl)
+                ok_ = f"{eid}|game"; op_ = prev_open.get(ok_) or {}
+                for k_ in ("ml", "tot", "pl"):
+                    if k_ in gl and k_ not in op_: op_[k_] = gl[k_]
+                prev_open[ok_] = op_; evs[-1]["open"] = op_   # first lines seen today -> line movement
             except Exception as e: print(f"{sport} {eid}: game lines failed: {e}")
         props = {}  # (player, mk) -> {book: {line: {Over/Under: price}}}
         ms = {}     # (player, mk) -> {book: {line: overPrice}}  milestone ("N+") rungs

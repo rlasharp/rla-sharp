@@ -96,22 +96,45 @@ for gid, g in sorted(SCHED.items()):
             # [pid, team, shotsAgainst, saves, goalsAgainst, toiSec]
             rec["gl"].append([pid, tm, x.get("shotsAgainst", 0), x.get("saves", 0), x.get("goalsAgainst", 0), t])
     C["games"][gid] = rec; new += 1
-# faceoffs won / lost per player (box scores only carry a win %; the play-by-play has every faceoff)
+# play-by-play pass (box scores lack these): faceoffs won/lost, shot attempts (SAT = goals + shots on goal + missed + blocked),
+# goals by period, who scored first, and high-danger attempts (unblocked attempts from within 20 ft of the net)
+PBP_V = 2
 nfo = 0
 for gid, rec in sorted(C["games"].items()):
-    if "fo" in rec: continue
-    if nfo >= 400: break  # spread a big backfill over runs
+    if rec.get("xv") == PBP_V: continue
+    if nfo >= 450: break  # spread a big backfill over runs
     try: pbp = get(f"https://api-web.nhle.com/v1/gamecenter/{gid}/play-by-play")
     except Exception as e: log("play-by-play failed", gid, e); continue
-    fo = {}
+    team_of = {r[0]: r[1] for r in rec["p"]}; team_of.update({r[0]: r[1] for r in rec["gl"]})
+    tid = {}
+    for side in ("awayTeam", "homeTeam"):
+        t = pbp.get(side) or {}
+        if t.get("id") is not None: tid[str(t["id"])] = t.get("abbrev")
+    fo, sat = {}, {}
+    tm = {rec["a"]: [0, 0, 0, 0, 0, 0], rec["h"]: [0, 0, 0, 0, 0, 0]}   # [SAT, HD attempts, goals P1, P2, P3, scored first]
+    first = None
     for pl in pbp.get("plays") or []:
-        if pl.get("typeDescKey") != "faceoff": continue
-        dd = pl.get("details") or {}
-        w, l_ = dd.get("winningPlayerId"), dd.get("losingPlayerId")
-        if w: fo.setdefault(str(w), [0, 0])[0] += 1
-        if l_: fo.setdefault(str(l_), [0, 0])[1] += 1
-    if fo: rec["fo"] = fo; nfo += 1
-log(f"NHL: {new} new box scores, {nfo} faceoff logs, {len(C['games'])} cached, {NREQ[0]} requests so far")
+        k = pl.get("typeDescKey"); dd = pl.get("details") or {}
+        if k == "faceoff":
+            w, l_ = dd.get("winningPlayerId"), dd.get("losingPlayerId")
+            if w: fo.setdefault(str(w), [0, 0])[0] += 1
+            if l_: fo.setdefault(str(l_), [0, 0])[1] += 1
+            continue
+        if k not in ("goal", "shot-on-goal", "missed-shot", "blocked-shot"): continue
+        shooter = dd.get("scoringPlayerId") if k == "goal" else dd.get("shootingPlayerId")
+        t = team_of.get(str(shooter)) if shooter else None
+        if not t and k != "blocked-shot": t = tid.get(str(dd.get("eventOwnerTeamId")))
+        if t not in tm: continue
+        if shooter: sat[str(shooter)] = sat.get(str(shooter), 0) + 1
+        tm[t][0] += 1
+        x, y = dd.get("xCoord"), dd.get("yCoord")
+        if k != "blocked-shot" and x is not None and y is not None and ((89 - abs(x)) ** 2 + y ** 2) ** .5 <= 20: tm[t][1] += 1
+        if k == "goal":
+            per = ((pl.get("periodDescriptor") or {}).get("number")) or 0
+            if 1 <= per <= 3: tm[t][1 + per] += 1
+            if first is None: first = t; tm[t][5] = 1
+    rec["fo"] = fo; rec["sat"] = sat; rec["tm"] = tm; rec["xv"] = PBP_V; nfo += 1
+log(f"NHL: {new} new box scores, {nfo} play-by-play logs, {len(C['games'])} cached, {NREQ[0]} requests so far")
 # next run: rescan from a week before today (late finals, postponements)
 C["scan_from"] = max(SEASON_START, (today - dt.timedelta(days=7)).isoformat())
 
@@ -262,6 +285,23 @@ try:
 except Exception as e:
     log("NHL injuries failed (kept none):", e)
 
+# ---------- power-play time on ice per game (NHL stats REST "timeonice" report) -> PP unit ----------
+PPT = {}
+try:
+    y = int(TODAY[:4]) if int(TODAY[5:7]) >= 9 else int(TODAY[:4]) - 1
+    tr = get(f"https://api.nhle.com/stats/rest/en/skater/timeonice?limit=-1&cayenneExp=seasonId={y}{y + 1}%20and%20gameTypeId=2")
+    rows_ = tr.get("data") or []
+    if rows_:
+        ks = sorted(rows_[0].keys()); kp = next((k for k in ks if k.lower() in ("pptimeonicepergame", "pptimeonicepergamepergame")), None) or next((k for k in ks if k.lower().startswith("pptimeonice") and "game" in k.lower()), None)
+        log("NHL timeonice keys:", [k for k in ks if "pp" in k.lower() or "game" in k.lower()][:12], "->", kp)
+        if kp:
+            for r in rows_:
+                v = r.get(kp)
+                if isinstance(v, str) and ":" in v: v = secs(v)
+                if v is not None and r.get("playerId") is not None: PPT[str(r["playerId"])] = round(float(v))
+except Exception as e:
+    log("NHL PP time failed:", e)
+
 # ---------- per-player logs from the cached box scores ----------
 games = sorted(C["games"].items(), key=lambda kv: (kv[1]["d"], kv[0]))
 RES = [[g["d"], g["a"], g["as"], g["h"], g["hs"], g["ot"], g.get("asog"), g.get("hsog")] + (C["glines"].get(f"{g['d']}|{g['a']}|{g['h']}") or [None, None])[:2] for _, g in games]
@@ -283,10 +323,59 @@ for t, A_ in acc.items():
     fa["pp"] = [TEAM[t].get("pp"), round(100 - TEAM[t]["pk"], 1) if TEAM[t].get("pk") is not None else None]
     fa["fo"] = [TEAM[t].get("fo"), round(100 - TEAM[t]["fo"], 1) if TEAM[t].get("fo") is not None else None]
     TEAM[t]["fa"] = fa
+# ---- from the play-by-play pass: shot attempts (SAT / CF%), high-danger attempts, period splits, scoring first ----
+X = {}
+for _, g in games:
+    tmx = g.get("tm")
+    if not tmx: continue
+    for t, o in ((g["a"], g["h"]), (g["h"], g["a"])):
+        if t not in tmx or o not in tmx: continue
+        me, op = tmx[t], tmx[o]; gf = g["as"] if t == g["a"] else g["hs"]; ga = g["hs"] if t == g["a"] else g["as"]
+        Z = X.setdefault(t, {"n": 0, "sat": [0, 0], "hd": [0, 0], "p": [[0, 0], [0, 0], [0, 0]], "p1o": [0, 0], "first": [0, 0, 0], "firstA": [0, 0, 0], "sf": 0})
+        Z["n"] += 1; Z["sat"][0] += me[0]; Z["sat"][1] += op[0]; Z["hd"][0] += me[1]; Z["hd"][1] += op[1]
+        for i in range(3): Z["p"][i][0] += me[2 + i]; Z["p"][i][1] += op[2 + i]
+        Z["p1o"][0 if me[2] + op[2] > 1.5 else 1] += 1          # 1st period over/under 1.5
+        res = 0 if gf > ga else (2 if g["ot"] else 1)            # 0 win, 1 reg loss, 2 OT/SO loss
+        if me[5]: Z["sf"] += 1; Z["first"][res] += 1
+        elif op[5]: Z["firstA"][res] += 1
+for t, Z in X.items():
+    if t not in TEAM or not Z["n"]: continue
+    n = Z["n"]; fa = TEAM[t].setdefault("fa", {})
+    fa["sat"] = [round(Z["sat"][0] / n, 1), round(Z["sat"][1] / n, 1)]
+    cf = Z["sat"][0] / (Z["sat"][0] + Z["sat"][1]) * 100 if Z["sat"][0] + Z["sat"][1] else None
+    fa["cf"] = [round(cf, 1) if cf is not None else None, round(100 - cf, 1) if cf is not None else None]
+    fa["hd"] = [round(Z["hd"][0] / n, 1), round(Z["hd"][1] / n, 1)]
+    TEAM[t]["per"] = [[round(Z["p"][i][0] / n, 2), round(Z["p"][i][1] / n, 2)] for i in range(3)]   # goals for/against per game, P1..P3
+    TEAM[t]["p1o"] = Z["p1o"]; TEAM[t]["sfp"] = round(Z["sf"] / n * 100); TEAM[t]["recF"] = Z["first"]; TEAM[t]["recFA"] = Z["firstA"]; TEAM[t]["pbpn"] = n
+# ---- close games: OT/SO rate, one-goal games, regulation record ----
+for t in TEAM:
+    R_ = [r for _, r in games if t in (r["a"], r["h"])]
+    if not R_: continue
+    ot = [r for r in R_ if r["ot"]]; one = [r for r in R_ if abs((r["as"] or 0) - (r["hs"] or 0)) == 1]
+    won = lambda r: (r["as"] > r["hs"]) == (t == r["a"])
+    reg = [r for r in R_ if not r["ot"]]
+    TEAM[t]["otp"] = round(len(ot) / len(R_) * 100); TEAM[t]["otr"] = [sum(1 for r in ot if won(r)), sum(1 for r in ot if not won(r))]
+    TEAM[t]["one"] = [sum(1 for r in one if won(r)), sum(1 for r in one if not won(r))]
+    TEAM[t]["reg"] = [sum(1 for r in reg if won(r)), sum(1 for r in reg if not won(r))]
+# ---- opponent vs position: what each team allows per opposing forward / defenseman game ----
+VP_K = {"g": 2, "a": 3, "pts": 4, "sog": 5, "blk": 6, "hit": 7}
+vp = {}
+for _, g in games:
+    for r in g["p"]:
+        pos = "D" if (C["pos"].get(r[0]) or "") == "D" else "F"
+        opp = g["h"] if r[1] == g["a"] else g["a"]
+        Z = vp.setdefault(opp, {}).setdefault(pos, {"n": 0, **{k: 0 for k in VP_K}}); Z["n"] += 1
+        for k, i in VP_K.items(): Z[k] += r[i]
+for t, P_ in vp.items():
+    if t in TEAM: TEAM[t]["vp"] = {pos: {k: round(Z[k] / Z["n"], 3) for k in VP_K} for pos, Z in P_.items() if Z["n"]}
+for pos in ("F", "D"):
+    for k in VP_K:
+        v = sorted([(t, TEAM[t]["vp"][pos][k]) for t in TEAM if TEAM[t].get("vp", {}).get(pos)], key=lambda z: -z[1])
+        for i, (t, _) in enumerate(v): TEAM[t].setdefault("vpr", {}).setdefault(pos, {})[k] = i + 1   # 1 = allows the most (best for overs)
 # ranks: FOR — more is better (fewer for PIM); AGAINST — less is better (more for PIM = opponent penalties drawn)
-for k in ["g", "sog", "ppg", "sh", "blk", "hit", "pim", "pp", "fo"]:
+for k in ["g", "sog", "ppg", "sh", "blk", "hit", "pim", "pp", "fo", "sat", "cf", "hd"]:
     for side in (0, 1):
-        v = [(t, TEAM[t]["fa"][k][side]) for t in TEAM if TEAM[t].get("fa") and TEAM[t]["fa"][k][side] is not None]
+        v = [(t, TEAM[t]["fa"][k][side]) for t in TEAM if TEAM[t].get("fa") and TEAM[t]["fa"].get(k) and TEAM[t]["fa"][k][side] is not None]
         hi = (side == 0) if k != "pim" else (side == 1)
         v.sort(key=lambda z: -z[1] if hi else z[1])
         for i, (t, _) in enumerate(v): TEAM[t].setdefault("far", {}).setdefault(k, [None, None])[side] = i + 1
@@ -312,7 +401,8 @@ for gid, g in games:
         pid, tm = r[0], r[1]; opp = g["h"] if tm == g["a"] else g["a"]; ha = "A" if tm == g["a"] else "H"
         # [date, opp, H/A, goals, assists, points, sog, blocked, hits, pim, toiSec, ppg, +/-, faceoffs won, faceoffs lost]
         fo = (g.get("fo") or {}).get(pid) or ([None, None] if "fo" not in g else [0, 0])
-        SK.setdefault(pid, []).append([g["d"], opp, ha] + r[2:] + fo)
+        sa_ = (g.get("sat") or {}).get(pid, 0) if "sat" in g else None
+        SK.setdefault(pid, []).append([g["d"], opp, ha] + r[2:] + fo + [sa_])
     starters = {}
     for r in g["gl"]:
         if r[5] > starters.get(r[1], (0, None))[0]: starters[r[1]] = (r[5], r[0])
@@ -334,7 +424,13 @@ for pid, L in SK.items():
     fw = sum(x[13] or 0 for x in L); fl = sum(x[14] or 0 for x in L)
     P[nm] = {"id": int(pid), "tm": tm, "pos": C["pos"].get(pid) or "", "gp": n,
              "s": [n, tot[0], tot[1], tot[2], tot[3], tot[4], tot[5], tot[8], round(tot[7] / n / 60, 1), fw, fl],  # gp,g,a,pts,sog,blk,hits,ppg,toi min,fow,fol
-             "g": L[-25:]}
+             "g": L[-25:], "ppt": PPT.get(pid)}
+# PP unit: rank by PP time per game within each team (top 5 = PP1, next 5 = PP2)
+by_t = {}
+for nm, v in P.items():
+    if v.get("ppt"): by_t.setdefault(v["tm"], []).append((v["ppt"], nm))
+for t, L_ in by_t.items():
+    for i, (_, nm) in enumerate(sorted(L_, reverse=True)): P[nm]["pu"] = 1 if i < 5 else 2 if i < 10 else 0
 for pid, L in GO.items():
     tm = cur_team(pid, L)
     if tm not in teams4: continue
@@ -352,7 +448,7 @@ try:
     evday = {str(e["id"]): e.get("date") for e in lo.get("events") or []}
     for e in lo.get("events") or []:
         a, h = full.get(e.get("away")), full.get(e.get("home"))
-        if a and h: LINES[f"{a}@{h}|{e.get('date')}"] = {k: e[k] for k in ("ml", "tot", "pl") if k in e}
+        if a and h: LINES[f"{a}@{h}|{e.get('date')}"] = {k: e[k] for k in ("ml", "tot", "pl", "open") if k in e}
     miss = set()
     for r in lo.get("props") or []:
         if evday.get(str(r[13])) not in (TODAY, tom): continue
@@ -376,7 +472,7 @@ print(f"const NHL_NEXT={J(NEXT)};")
 print(f"const NHL_LATER={J(LATER)}; /* games 2 and 3 days out */")
 print(f"const NHL_TEAM={J(TEAM)};")
 print(f"const NHL_RES={J(RES)}; /* [date, away, aGoals, home, hGoals, 0 reg / 1 OT / 2 SO, aSOG, hSOG, home puck line (close), total (close)] */")
-print(f"const NHL_P={J(P)}; /* skaters on teams playing today/tomorrow. g: [date, opp, H/A, G, A, PTS, SOG, BLK, HIT, PIM, TOIsec, PPG, +/-, FOW, FOL] */")
+print(f"const NHL_P={J(P)}; /* skaters on teams playing today/tomorrow. g: [date, opp, H/A, G, A, PTS, SOG, BLK, HIT, PIM, TOIsec, PPG, +/-, FOW, FOL, shot attempts] */")
 print(f"const NHL_G={J(G)}; /* goalies. g: [date, opp, H/A, SA, SV, GA, TOIsec, started, teamWon] */")
 print(f"const NHL_INJ={J(INJ)}; /* ESPN injury report: team -> [name, pos, status, injury, est. return] */")
 print(f"const NHL_PROPS={J(PROPS)}; /* [name, market, line, over, under, book] */")
