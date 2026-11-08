@@ -37,6 +37,41 @@ NFL_MK = {"player_pass_yds": "passYds", "player_pass_tds": "passTD", "player_rus
           "player_rush_attempts": "rushAtt", "player_rush_reception_yds": "rushRec",
           "player_pass_completions": "comp", "player_pass_interceptions": "int"}
 
+NHL_MK = {"player_points": "hpts", "player_goals": "hgoals", "player_assists": "hast", "player_shots_on_goal": "hsog",
+          "player_blocked_shots": "hblk", "player_total_saves": "hsaves", "player_power_play_points": "hppp",
+          "player_goal_scorer_anytime": "hanyG"}
+NHL_CORE = ["player_points", "player_goals", "player_assists", "player_shots_on_goal", "player_blocked_shots", "player_total_saves"]
+GAME_MK = ["h2h", "spreads", "totals"]
+YES_MK = {"anyTD", "hanyG"}  # one-sided Yes markets (no under, no alt ladder)
+MKSEEN = {}  # market keys the feed returned, per sport (run log)
+
+def game_lines(odds, home, away):
+    """moneyline / total / puck line (spread) from the first preferred book that has each market."""
+    by = {}
+    for bk in g(odds, "bookmakers", []) or []:
+        b = str(g(bk, "key", "")).lower()
+        if b in NOT_BOOKS or b not in BOOK_NAME: continue
+        for m in g(bk, "markets", []) or []:
+            k = g(m, "key")
+            if k not in GAME_MK: continue
+            if str(g(m, "line_type", "main") or "main") not in ("main", ""): continue
+            oc = {}
+            for o in g(m, "outcomes", []) or []:
+                oc[str(g(o, "name", ""))] = (g(o, "price"), g(o, "point"))
+            by.setdefault(k, {}).setdefault(b, oc)
+    out = {}
+    for b in BOOK_PREF:
+        oc = (by.get("h2h") or {}).get(b)
+        if oc and home in oc and away in oc and "ml" not in out:
+            out["ml"] = [oc[away][0], oc[home][0], BOOK_NAME[b]]
+        oc = (by.get("totals") or {}).get(b)
+        if oc and "Over" in oc and "Under" in oc and "tot" not in out:
+            out["tot"] = [oc["Over"][1], oc["Over"][0], oc["Under"][0], BOOK_NAME[b]]
+        oc = (by.get("spreads") or {}).get(b)
+        if oc and home in oc and away in oc and "pl" not in out:
+            out["pl"] = [oc[home][1], oc[away][0], oc[home][0], BOOK_NAME[b]]
+    return out
+
 def g(o, k, d=None):
     return o.get(k, d) if isinstance(o, dict) else getattr(o, k, d)
 
@@ -115,7 +150,7 @@ def pick_yes(book_rows):
                 return ln, s["Over"], None, b, best, bb, None, None
     return None
 
-def fetch_sport(sport, mk_map, window_h, prev_open, used):
+def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=None):
     try:
         events = client.get_events(sport)
     except Exception as e:
@@ -130,17 +165,26 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
             continue  # started already, or too far out
         eid = g(ev, "id")
         evs.append({"id": eid, "home": g(ev, "home_team"), "away": g(ev, "away_team"), "start": start, "date": d})
+        mks = list(mk_map) + (GAME_MK if with_game else [])
         try:
-            odds = client.get_odds(sport, event_id=eid, markets=list(mk_map))
+            odds = client.get_odds(sport, event_id=eid, markets=mks)
         except Exception as e:
-            print(f"{sport} {eid}: odds failed: {e}"); continue
+            used += 1
+            if not core: print(f"{sport} {eid}: odds failed: {e}"); continue
+            print(f"{sport} {eid}: odds failed with {len(mks)} markets ({e}) — retrying with the core list")
+            try: odds = client.get_odds(sport, event_id=eid, markets=core)
+            except Exception as e2: print(f"{sport} {eid}: odds failed: {e2}"); continue
         used += 1
+        if with_game:
+            try: evs[-1].update(game_lines(odds, evs[-1]["home"], evs[-1]["away"]))
+            except Exception as e: print(f"{sport} {eid}: game lines failed: {e}")
         props = {}  # (player, mk) -> {book: {line: {Over/Under: price}}}
         ms = {}     # (player, mk) -> {book: {line: overPrice}}  milestone ("N+") rungs
         for bk in g(odds, "bookmakers", []) or []:
             b = str(g(bk, "key", "")).lower()
             if b in NOT_BOOKS or b not in BOOK_NAME: continue
             for m in g(bk, "markets", []) or []:
+                MKSEEN.setdefault(sport, {}); MKSEEN[sport][g(m, "key")] = MKSEEN[sport].get(g(m, "key"), 0) + 1
                 mk = mk_map.get(g(m, "key"))
                 if not mk: continue
                 lt = str(g(m, "line_type", "") or "")
@@ -152,7 +196,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
                     price, point = g(oc, "price"), g(oc, "point")
                     if player: player = re.sub(r"\s*\([A-Z]{2,4}\)\s*$", "", str(player)).strip()
                     mm = re.match(r"^\s*(\d+(?:\.\d+)?)\s*\+", name)
-                    if mm and side is None and mk != "anyTD" and player and price is not None:
+                    if mm and side is None and mk not in YES_MK and player and price is not None:
                         # milestone rung "25+ Points" = Over 24.5 (one-sided); kept apart so it never touches the main line
                         try: ms.setdefault((player, mk), {}).setdefault(b, {})[float(mm.group(1)) - 0.5] = int(round(float(price)))
                         except Exception: pass
@@ -163,7 +207,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
                     except Exception: continue
                     props.setdefault((player, mk), {}).setdefault(b, {}).setdefault(point, {})[side] = price
         for (player, mk), br in props.items():
-            r = pick_yes(br) if mk == "anyTD" else pick(br)
+            r = pick_yes(br) if mk in YES_MK else pick(br)
             if not r: continue
             ln, o, u, b, bo, bob, bu, bub = r
             key = f"{eid}|{player}|{mk}"
@@ -171,7 +215,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used):
             rows.append([player, mk, ln, o, u, BOOK_NAME[b],
                          bo if bob != b else None, BOOK_NAME.get(bob) if bob != b else None,
                          bu if (bub and bub != b) else None, BOOK_NAME.get(bub) if (bub and bub != b) else None,
-                         op[0], op[1], op[2], eid] + ([] if mk == "anyTD" else [alts(br, ln, ms.get((player, mk))) or None]))
+                         op[0], op[1], op[2], eid] + ([] if mk in YES_MK else [alts(br, ln, ms.get((player, mk))) or None]))
             prev_open[key] = op
     return evs, rows, used
 
@@ -203,7 +247,7 @@ def main():
     if budget.get("day") != today: budget = {"day": today, "used": 0}
     opens = prev.get("open") or {}
     out = {"updated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "source": "PropLine",
-           "nba": prev.get("nba") or {}, "nfl": prev.get("nfl") or {}}
+           "nba": prev.get("nba") or {}, "nfl": prev.get("nfl") or {}, "nhl": prev.get("nhl") or {}}
     used = budget["used"]
     # NBA: every run (games in the next 30 hours). NFL: at most every 3 hours (games in the next 8 days).
     if used < 900:
@@ -221,14 +265,25 @@ def main():
         if evs or rows: out["nfl"] = {"at": out["updated"], "events": evs, "props": rows}
         try: save_close("nfl", evs, rows, out["updated"])
         except Exception as e: print("close (nfl) failed:", e)
-    keep = {e["id"] for s in ("nba", "nfl") for e in (out[s].get("events") or [])}
+    # NHL: at most every 2 hours (games in the next 30 hours), props + moneyline / total / puck line
+    last_nhl = (prev.get("nhl") or {}).get("at"); stale = True
+    if last_nhl:
+        try: stale = (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_nhl)).total_seconds() > 2 * 3600 - 300
+        except Exception: stale = True
+    if stale and used < 850:
+        evs, rows, used = fetch_sport("icehockey_nhl", NHL_MK, 30, opens, used, with_game=True, core=NHL_CORE)
+        if evs or rows: out["nhl"] = {"at": out["updated"], "events": evs, "props": rows}
+        try: save_close("nhl", evs, rows, out["updated"])
+        except Exception as e: print("close (nhl) failed:", e)
+    keep = {e["id"] for s in ("nba", "nfl", "nhl") for e in (out[s].get("events") or [])}
     out["open"] = {k: v for k, v in opens.items() if k.split("|")[0] in {str(x) for x in keep}}
     out["budget"] = {"day": today, "used": used}
     os.makedirs("data", exist_ok=True)
     with open(OUT, "w") as f: json.dump(out, f, separators=(",", ":"), ensure_ascii=False)
     print(f"NBA {len(out['nba'].get('props') or [])} props / {len(out['nba'].get('events') or [])} games; "
           f"NFL {len(out['nfl'].get('props') or [])} props / {len(out['nfl'].get('events') or [])} games; "
-          f"requests today {used}")
+          f"NHL {len(out['nhl'].get('props') or [])} props / {len(out['nhl'].get('events') or [])} games; requests today {used}")
+    print("markets seen:", json.dumps(MKSEEN))
     print("line_type counts:", DIAG)
 
 if __name__ == "__main__":
