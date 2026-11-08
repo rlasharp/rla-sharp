@@ -22,7 +22,7 @@
 <style>
 :root{
   --bg:#0f1012; --card:#181a1d; --card2:#202327; --line:#2a2d32;
-  --text:#f2f3f5; --text2:#b9bdc4; --muted:#7f858e;
+  --text:#f2f3f5; --text2:#c3c7cd; --muted:#99a0aa;
   --away:#3987e5; --home:#e8913a;
   --good:#22c55e; --good-bg:#11301d; --bad:#f05252; --bad-bg:#3a1618; --neutral-bg:#24272c;
   --warn:#fab219;
@@ -51,7 +51,7 @@ h1{font-size:28px;margin:0 0 4px;letter-spacing:-.025em}
 h2{font-size:19px;margin:0 0 12px;letter-spacing:-.015em}
 h3{font-size:15px;margin:0 0 8px}
 .sub{color:var(--text2);margin:0 0 20px}
-.small{font-size:12.5px;color:var(--muted)}
+.small{font-size:13px;color:var(--muted);line-height:1.45}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
 .grid{display:grid;gap:14px}
 .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -250,7 +250,13 @@ a.tdy{display:block;color:inherit;text-decoration:none}.tdy{padding:12px 12px 10
 .nhtabs{flex-wrap:wrap;gap:4px}.nhtabs a{white-space:nowrap;flex:1 1 auto;text-align:center}.nhgrp h3{margin:14px 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2)}.nhcr{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:center;gap:4px 8px;padding:7px 0;border-top:1px solid var(--line)}.nhch{border-top:0;padding-bottom:2px}.nhcv{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}.nhcv.r{justify-content:flex-end}.nhcv b{font-size:15px}.nhcv.win b{color:#7ee2a0}.nhcl{text-align:center;font-size:12.5px;color:var(--text2);font-weight:600}.nhcb{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:6px}.nhcb>div{height:6px;background:var(--card2);border-radius:99px;display:flex}.nhcb .l{justify-content:flex-end}.nhcb i{display:block;height:100%;border-radius:99px;background:#5a5f68}.nhcb i.win{background:#3fbf6f}.nhpill{font-size:11px;font-weight:700;padding:1px 6px;border-radius:99px;background:var(--card2);color:var(--text2)}.nhpill.up{background:#173323;color:#7ee2a0}.nhpill.dn{background:#3a1d1e;color:#ff9a9d}
 .nhh3{margin:14px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2)}.nhtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:6px}.nhtile{background:var(--card2);border-radius:10px;padding:7px 9px;display:flex;flex-direction:column;gap:1px}.nhtile b{font-size:16px}.nhper{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.nhper>div{background:var(--card2);border-radius:10px;padding:7px 9px}.nhper b{display:block;font-size:15px;margin:2px 0 4px}.nhpb{height:5px;background:var(--card);border-radius:99px;margin-top:3px}.nhpb i{display:block;height:100%;border-radius:99px}.nhpb i.up{background:#3fbf6f}.nhpb i.dn{background:#e0565b}
 .nhrr{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13.5px}.nhrr .nhtag{grid-column:auto}.nhrr>.nhtag:nth-of-type(1){grid-column:2}.nhwl{font-weight:800;font-size:12px;padding:3px 7px;border-radius:7px;min-width:34px;text-align:center}.nhwl.w{background:#173323;color:#7ee2a0}.nhwl.l{background:#3a1d1e;color:#ff9a9d}.nhtag{font-size:11.5px;padding:2px 7px;border-radius:99px;background:var(--card2);color:var(--text2);justify-self:start}.nhtag.up{color:#7ee2a0}.nhtag.dn{color:#ff9a9d}.nhgk{padding:9px 0;border-top:1px solid var(--line)}.nhgk.on{background:rgba(243,199,90,.06);border-radius:10px;padding:9px 8px}.nhgk .nhtiles{margin-top:6px}.nhprob{padding:8px 10px;border-radius:10px;background:rgba(243,199,90,.08);margin-bottom:6px}
-.nhprev td{opacity:.55}.nhsm{display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:10px;align-items:center}@media(max-width:560px){.nhsm{grid-template-columns:1fr}.nhrink{max-width:240px;margin:0 auto}}.nhrink{width:100%;color:var(--text)}.nhdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.nher{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line);color:inherit;text-decoration:none}.nher>span:first-child{display:flex;flex-direction:column;min-width:0}.nhedv{display:flex;flex-direction:column;align-items:flex-end;text-align:right}.nhedv b{font-size:16px}.nhedges{margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--card2)}.nhedges .nher:first-of-type{border-top:0}.nhpmk{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0;overflow-x:auto;flex-wrap:nowrap}.nhpmk button{white-space:nowrap}.altbest{margin:6px 0 2px;font-size:12.5px;padding:6px 8px;border-radius:8px;background:rgba(243,199,90,.1);color:var(--text)}.albest td:first-child::after{content:" ⭐"}.xsp{display:inline-block;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;margin-right:4px;vertical-align:1px}.xsp.nba{background:#3a2412;color:#ffb36b}.xsp.nhl{background:#12283a;color:#7cc4ff}.xsp.nfl{background:#173323;color:#7ee2a0}.nhcxs{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.nhcx{font-size:12px;padding:3px 8px;border-radius:8px;background:var(--card2);color:var(--text2);line-height:1.35}.nhcx b{color:var(--text)}.nhcx.up{box-shadow:inset 3px 0 0 #3fbf6f}.nhcx.dn{box-shadow:inset 3px 0 0 #e0565b}
+.nhprev td{opacity:.55}.nhsm{display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:10px;align-items:center}@media(max-width:560px){.nhsm{grid-template-columns:1fr}.nhrink{max-width:240px;margin:0 auto}}.nhrink{width:100%;color:var(--text)}.nhdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.nher{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line);color:inherit;text-decoration:none}.nher>span:first-child{display:flex;flex-direction:column;min-width:0}.nhedv{display:flex;flex-direction:column;align-items:flex-end;text-align:right}.nhedv b{font-size:16px}.nhedges{margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--card2)}.nhedges .nher:first-of-type{border-top:0}.nhpmk{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0;overflow-x:auto;flex-wrap:nowrap}.nhpmk button{white-space:nowrap}.altbest{margin:6px 0 2px;font-size:12.5px;padding:6px 8px;border-radius:8px;background:rgba(243,199,90,.1);color:var(--text)}.albest td:first-child::after{content:" ⭐"}.xsp{display:inline-block;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;margin-right:4px;vertical-align:1px}.xsp.nba{background:#3a2412;color:#ffb36b}.xsp.nhl{background:#12283a;color:#7cc4ff}.xsp.nfl{background:#173323;color:#7ee2a0}.nhcrow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--line)}.nhcrow:first-of-type{border-top:0}.nhct{display:flex;align-items:center;gap:7px;min-width:0;flex-wrap:wrap}.nhct b{font-size:15.5px}.nhcg{white-space:nowrap}.nhln2{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:13.5px}.nhcxs{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.nhcx{font-size:12px;padding:3px 8px;border-radius:8px;background:var(--card2);color:var(--text2);line-height:1.35}.nhcx b{color:var(--text)}.nhcx.up{box-shadow:inset 3px 0 0 #3fbf6f}.nhcx.dn{box-shadow:inset 3px 0 0 #e0565b}
+.tsum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 4px}.tsum a{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:center;color:inherit;text-decoration:none;display:flex;flex-direction:column;gap:2px}.tsum b{font-size:20px;line-height:1.1}.tsum span{font-size:11.5px;color:var(--muted)}
+.tsh{margin:22px 0 8px;font-size:19px}.tsec{margin-top:8px}.ttabs{margin:0 0 4px}.ttabs .btn small{opacity:.7;margin-left:3px}
+.tgr{display:grid;grid-template-columns:62px 1fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);color:inherit;text-decoration:none;font-size:14.5px}.tgr:last-of-type{border-bottom:0}.tgr .tt{font-size:12.5px;color:var(--muted);white-space:nowrap}.tgr .tm{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}.tgr .tm b{font-size:11px}.tgr .tl{font-size:12.5px;color:var(--text2);white-space:nowrap;text-align:right}
+.tmore{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}.tmore>summary{cursor:pointer;font-weight:700;list-style:none}.tmore>summary::-webkit-details-marker{display:none}.tmore[open]>summary{margin-bottom:4px}
+@media(max-width:700px){.tsum{grid-template-columns:repeat(2,1fr)}.card{padding:14px}h1{font-size:25px}}
+@media(max-width:430px){.bname{display:none}.sportsw a{padding:6px 10px}}
 .lmv{font-size:11.5px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:999px;white-space:nowrap}.lmv.up{background:#173323;color:#7ee2a0}.lmv.dn{background:#3a1d1e;color:#ff9a9d}.lmv.fl{background:var(--card2);color:var(--text2)}
 .upd.lo{color:#f3c75a}#loPill{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:60;background:#f3c75a;color:#1a1505;border:0;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;box-shadow:0 6px 20px #0008;cursor:pointer}@media(min-width:900px){#loPill{bottom:24px}}
 .pxrw{display:flex;justify-content:flex-end;margin:8px 0 2px}.pxrst{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid #5a4a1c;background:#2b2412;color:#f3c75a;cursor:pointer}.fchip.frst{background:#2b2412!important;border-color:#5a4a1c!important;color:#f3c75a!important;font-weight:800}
@@ -560,7 +566,7 @@ nav[hidden]{display:none!important}
 </head>
 <body>
 <header><div class="hwrap">
-  <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div>Sharp</a><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
+  <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div><span class="bname">Sharp</span></a><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
   <div class="psearch"><input id="plSearch" type="search" placeholder="🔍 Search player" autocomplete="off" aria-label="Search player"><div id="plRes" class="psres" hidden></div></div>
   <div id="sport" class="sportsw"><a href="#games" data-s="nfl">🏈 NFL</a><a href="#nba" data-s="nba">🏀 NBA</a><a href="#nhl" data-s="nhl">🏒 NHL</a></div>
   <nav id="nav">
@@ -2412,8 +2418,8 @@ function nbaGameCard(g){
 function nbaGames(el){
   el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nba",4):""}${nbaDayTabs("nba")}
   <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today${(()=>{const f=NBA_SLATE.filter(g=>nbaFinalHtml(g)).length;return f?`, ${f} final`:""})()}. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
-  ${typeof xEdgesCard!=="undefined"?xEdgesCard("nba"):""}${typeof nbaAnglesCard!=="undefined"?nbaAnglesCard():""}
   <div class="grid g2">${[...NBA_SLATE.filter(g=>!nbaFinalHtml(g)),...NBA_SLATE.filter(g=>nbaFinalHtml(g))].map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
+  ${typeof xInsights!=="undefined"?xInsights("nba","🧠 Tonight's insights",[["edges","💰 Odds gaps",xEdgesCard("nba")],["ang","🧭 Player angles",typeof nbaAnglesCard!=="undefined"?nbaAnglesCard():""],["moves","📈 Line moves",typeof loMovesCard!=="undefined"?loMovesCard("nba",8):""]]):""}
   <div style="margin-top:14px">${nbaPlaysCard()}</div>
   ${typeof loMovesCard!=="undefined"&&loMovesCard("nba",8)?`<div style="margin-top:14px">${loMovesCard("nba",8)}</div>`:""}
   <div style="margin-top:14px">${nbaRecordCard(0)}</div>
@@ -3467,21 +3473,23 @@ function nhLinesHtml(g){const p=[];
 
 /* ---------- Games page: today + the next 3 days (same tabs as NBA) ---------- */
 function nhCard(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},pa=nhProbable(g.a),ph=nhProbable(g.h),fin=g.as!=null&&g.st&&["OFF","FINAL"].includes(g.st);
-  return `<a class="card nhg" href="#nhl-game-${g.id}" data-nhg="${g.id}"><div class="nhgh"><span class="small"><b style="color:var(--text)">${nhE(g.t)}</b> ET${g.tv?" · "+nhE(g.tv):""}</span>${fin?`<b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b>`:nhStarted(g)?`<b class="up">LIVE</b>`:`<span class="small">${nhDayS(g.d)}</span>`}</div>
-   <div class="nhgt">${[["a",g.a,A,pa],["h",g.h,H,ph]].map(([s,t,T,pg])=>`<div class="nhrow"><span>${nhBadge(t)} <b>${nhE(nhTm(t))}</b> <span class="small">${nhRec(t)} · ${s==="a"?"road "+nhRecA(T.road):"home "+nhRecA(T.home)}</span>${!fin&&nhB2B(t,g.d)?` <span class="pll u" style="white-space:nowrap">2nd night of back-to-back</span>`:""}</span>${fin?`<b class="nhsc">${s==="a"?g.as:g.hs}</b>`:""}
-     <span class="small">GF ${T.gf!=null?(+T.gf).toFixed(2):"–"} · GA ${T.ga!=null?(+T.ga).toFixed(2):"–"} · L10 ${nhRecA(T.l10)}${T.stk?" · "+nhE(T.stk):""}</span>
-     <span class="small nhrkl">PP ${T.pp??"–"}% <b class="${nhRkC(T.ppR)}">${nhOrd(T.ppR)}</b> · PK ${T.pk??"–"}% <b class="${nhRkC(T.pkR)}">${nhOrd(T.pkR)}</b> · PPG <b class="${nhRkC(T.far&&T.far.ppg[0])}">${nhOrd(T.far&&T.far.ppg[0])}</b> · FO ${T.fo??"–"}% <b class="${nhRkC(T.foR)}">${nhOrd(T.foR)}</b></span>
-     ${fin?"":`<span class="small">🥅 ${pg?nhE(pg.nm)+` (SV% ${pg.svp!=null?(pg.svp/100).toFixed(3).slice(1):"–"}) <span class="small">probable</span>`:"–"}</span>`}</div>`).join("")}</div>
-   ${fin?"":(()=>{const o=[g.a,g.h].flatMap(t=>nhInjList(t,3).filter(r=>/out|reserve|ir/i.test(r[2])).map(r=>`${nhE(r[0])} (${t})`));return o.length?`<div class="nbout">Out: ${o.join(", ")}</div>`:""})()}
-   ${fin?"":nhLinesHtml(g)}</a>`}
+  const sv=p=>p&&p.svp!=null?(p.svp/100).toFixed(3).slice(1):"–";
+  const outN=t=>nhInjList(t).filter(r=>/out|reserve|ir/i.test(r[2])&&NHL_P[r[0]]&&NHL_P[r[0]].s[3]>=5).map(r=>r[0].split(" ").slice(-1)[0]);
+  const row=(s,t,T,pg)=>`<div class="nhcrow"><span class="nhct">${nhBadge(t)}<b>${nhE(nhTm(t))}</b><span class="small">${nhRec(t)}</span>${!fin&&nhB2B(t,g.d)?`<span class="pll u" style="white-space:nowrap">B2B</span>`:""}</span>${fin?`<b class="nhsc">${s==="a"?g.as:g.hs}</b>`:`<span class="small nhcg">🥅 ${pg?nhE(pg.nm.split(" ").slice(-1)[0])+" "+sv(pg):"–"}</span>`}</div>`;
+  const out=fin?[]:[...outN(g.a).map(n=>n+" ("+g.a+")"),...outN(g.h).map(n=>n+" ("+g.h+")")];
+  const ln=[g.ml?`<span><span class="small">ML</span> <b>${nhOdds(g.ml[0])}</b> / <b>${nhOdds(g.ml[1])}</b></span>`:"",g.pl?`<span><span class="small">PL</span> <b>${nhE(g.h)} ${g.pl[0]>0?"+":""}${g.pl[0]}</b> ${nhOdds(g.pl[2])}</span>`:"",g.tot?`<span><span class="small">O/U</span> <b>${g.tot[0]}</b></span>`:""].filter(Boolean).join("");
+  return `<a class="card nhg" href="#nhl-game-${g.id}" data-nhg="${g.id}"><div class="nhgh"><span><b>${nhE(g.t)}</b> <span class="small">ET${g.tv?" · "+nhE(g.tv.split(", ").slice(0,2).join(", ")):""}</span></span>${fin?`<b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b>`:nhStarted(g)?`<b class="up">LIVE</b>`:`<span class="small">${g.d===NHL_DATE?"":nhE(nhDayS(g.d).split(",")[0])}</span>`}</div>
+   ${row("a",g.a,A,pa)}${row("h",g.h,H,ph)}
+   ${fin?"":`${ln?`<div class="nhln2">${ln}</div>`:`<div class="small" style="margin-top:6px">Lines not posted yet.</div>`}${out.length?`<div class="small" style="margin-top:4px">🚑 Out: ${nhE(out.slice(0,4).join(", "))}</div>`:""}`}</a>`}
 function nhlGamesW(el){nhlGames0(el);el.querySelectorAll("[data-nhang]").forEach(b=>b.onclick=()=>{const y=scrollY;NH.ang=b.dataset.nhang;nhlGamesW(el);scrollTo(0,y)})}
 function nhlGames0(el){
   const today=NHL_SLATE||[],best=nhBest().slice(0,6);
   el.innerHTML=`<h1>🏒 NHL · ${nhE(nhDayS(NHL_DATE))}</h1>${nhDayTabs("nhl")}<p class="sub">${nhE(NHL_GEN?`Updated ${NHL_GEN}`:"")} · official NHL stats + live sportsbook lines. Tap a game for the matchup, goalies and every player prop.</p>
-   ${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best NHL props</h2><div class="small" style="margin-bottom:8px">How often the line would have hit (last 10 games 60%, season 40%) vs what the odds need.</div><div class="nhbp">${best.map(nhBestRow).join("")}</div><a href="#nhl-props" class="small" style="display:block;margin-top:8px">All NHL props →</a></div>`:""}
-   ${typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():""}${nhEdgesCard()}${nhModelCard(false)}${nhAnglesCard()}${nhMovesCard()}
+
+   ${typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():""}
    <h2 style="margin:16px 0 8px">Today${today.length?` · ${today.length} game${today.length>1?"s":""}`:""}</h2>
    ${today.length?`<div class="grid g2">${today.map(nhCard).join("")}</div>`:`<div class="card small">No NHL games today — see the next days above.</div>`}
+   ${typeof xInsights!=="undefined"?xInsights("nhl","🧠 Tonight's insights",[["best","🔥 Best props",best.length?`<div class="card"><h2></h2><div class="nhbp">${best.map(nhBestRow).join("")}</div><a href="#nhl-props" class="small" style="display:block;margin-top:8px">All NHL props →</a></div>`:""],["edges","💰 Odds gaps",nhEdgesCard()],["ang","🧭 Player angles",nhAnglesCard()],["moves","📈 Line moves",nhMovesCard()],["model","📊 Our record",nhModelCard(false)]]):""}
    ${nhFoot()}`}
 function nhlUpcoming(el,h){const n=h==="nhl-tomorrow"?1:+(h.split("-")[2]||1),d=nhAddDays(NHL_DATE,n),G=nhGamesOn(d);
   el.innerHTML=`<h1>🏒 NHL · ${nhE(nhDayS(d))}</h1>${nhDayTabs(h)}
@@ -4057,6 +4065,15 @@ function nhlParlayLegs(g){if(typeof nhBest==="undefined"||typeof nhlSpec==="unde
   for(const b of L){const s=nhlSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NH_MK[b.k][0]}`})}return out}
 function nbaParlayLegs(g){if(typeof nbaBest==="undefined"||typeof nbaSpec==="undefined")return [];const L=nbaBest().filter(b=>b.g&&b.g.id===g.id&&b.sc>=.6).slice(0,12),out=[];
   for(const b of L){const s=nbaSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NBA_MK[b.k]?NBA_MK[b.k][2]:b.k}`})}return out}
+
+/* ---------- one tabbed "insights" card instead of a stack of cards ---------- */
+const XINS={};
+function xInsights(id,title,tabs){tabs=tabs.filter(t=>t[2]);if(!tabs.length)return "";const cur=tabs.some(t=>t[0]===XINS[id])?XINS[id]:tabs[0][0];
+  const strip=h=>h.replace(/^\s*<div class="card[^"]*"[^>]*>/,"").replace(/<\/div>\s*$/,"").replace(/<h2[^>]*>[\s\S]*?<\/h2>/,"");
+  return `<div class="card xins" data-xins="${id}" style="margin-top:14px"><h2 style="margin-bottom:8px">${title}</h2><div class="seg ttabs">${tabs.map(([k,l])=>`<button class="btn${k===cur?" on":""}" data-xinst="${id}|${k}">${l}</button>`).join("")}</div>
+   ${tabs.map(([k,,h])=>`<div class="xinsp" data-xinsp="${k}"${k===cur?"":" hidden"}>${strip(h)}</div>`).join("")}</div>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-xinst]");if(!b)return;const [id,k]=b.dataset.xinst.split("|");XINS[id]=k;const c=b.closest(".xins");
+  c.querySelectorAll("[data-xinst]").forEach(x=>x.classList.toggle("on",x===b));c.querySelectorAll("[data-xinsp]").forEach(p=>p.hidden=p.dataset.xinsp!==k)});
 /* tracker summaries — tools/track.js */
 var TRACK={"sum":{"nba":{"best":{"w":0,"l":0,"u":0,"n":0},"win":[0,0],"tot":[0,0],"edge":{},"plays":{"w":0,"l":0,"p":0,"u":0},"recent":[]},"nfl":{"best":{"w":0,"l":0,"u":0,"n":0},"win":[0,0],"tot":[0,0],"edge":{},"plays":{"w":0,"l":0,"p":0,"u":0},"recent":[]},"nhl":{"best":{"w":0,"l":0,"u":0,"n":0},"win":[0,0],"tot":[0,0],"edge":{},"plays":{"w":0,"l":0,"p":0,"u":0},"recent":[{"d":"2026-11-08","type":"game","mk":"Moneyline","pick":"VGK","a":"VGK","h":"BUF","odds":-113,"line":null,"why":"our estimate 63% vs 51% from the odds"},{"d":"2026-11-08","type":"game","mk":"Puck line","pick":"TOR +1.5","a":"NJD","h":"TOR","odds":-184,"line":1.5,"why":"our estimate 74% vs 62% from the odds"},{"d":"2026-11-08","type":"prop","nm":"Nikita Zadorov","tm":"BOS","k":"hsog","side":"u","line":1.5,"odds":-186,"why":"hit 10/10 last 10 · 13/15 this season · 95% vs 65% the odds need"},{"d":"2026-11-08","type":"prop","nm":"Mitch Marner","tm":"VGK","k":"hast","side":"o","line":0.5,"odds":-125,"why":"hit 9/10 last 10 · 12/15 this season · 86% vs 56% the odds need"},{"d":"2026-11-08","type":"prop","nm":"Neal Pionk","tm":"WPG","k":"hsog","side":"o","line":1.5,"odds":-115,"why":"hit 9/10 last 10 · 13/17 this season · 85% vs 53% the odds need"}]}},"nhlPlays":[{"type":"prop","nm":"Neal Pionk","tm":"WPG","k":"hsog","side":"o","line":1.5,"odds":-115,"why":"hit 9/10 last 10 · 13/17 this season · 85% vs 53% the odds need"},{"type":"prop","nm":"Mitch Marner","tm":"VGK","k":"hast","side":"o","line":0.5,"odds":-125,"why":"hit 9/10 last 10 · 12/15 this season · 86% vs 56% the odds need"},{"type":"prop","nm":"Nikita Zadorov","tm":"BOS","k":"hsog","side":"u","line":1.5,"odds":-186,"why":"hit 10/10 last 10 · 13/15 this season · 95% vs 65% the odds need"},{"type":"game","mk":"Puck line","pick":"TOR +1.5","a":"NJD","h":"TOR","odds":-184,"line":1.5,"why":"our estimate 74% vs 62% from the odds"},{"type":"game","mk":"Moneyline","pick":"VGK","a":"VGK","h":"BUF","odds":-113,"line":null,"why":"our estimate 63% vs 51% from the odds"}],"at":"2026-11-08T17:14:29.879Z"};
 /* Team records always follow RESULTS (real.js, updated with every final by the 2-hour job) — so a Monday-night
@@ -5193,37 +5210,42 @@ function favListHtml(full){
 function viewFavs(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&favs().some(f=>f.t==="nhlp"||f.t==="nhlt")){nhlEnsure(()=>viewFavs())}const host=document.getElementById("v-favs");if(!host)return;const n=favs().length;
   host.innerHTML=`<h1>⭐ Favorites</h1><p class="sub">${n?`${n} saved · `:""}Saved on this phone/browser only. Tap a name for today's lines and stats.</p>${favListHtml(true)}`;
   host.querySelectorAll("[data-nflfav]").forEach(el=>el.onclick=e=>{e.preventDefault();if(typeof goPlayer!=="undefined")goPlayer(el.dataset.nflfav.replace(/&amp;/g,"&"))});}
+/* ===== Today: one clean screen — summary, plays, best of tonight, games, then extras folded away ===== */
+let TODAY_T={plays:"",games:""};
+function todayRowsNba(){const G=(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]);return G.map(g=>{const L=NBA_LINES[g.a+"@"+g.h],fav=L?(L.sp<=0?g.h:g.a):null,st=nbaStarted(g);
+  return `<a class="tgr" href="#nba-game-${g.id}"><span class="tt">${st?"<b class='up'>LIVE</b>":esc(g.t)}</span><span class="tm">${nbaBadge(g.a)} <span class="small">@</span> ${nbaBadge(g.h)}</span><span class="tl">${L?`${esc(fav)} −${Math.abs(L.sp)} · ${L.tot}`:""}</span></a>`}).join("")}
+function todayRowsNhl(){if(typeof NHL_SLATE==="undefined"||!NHL_DATE)return `<div class="small">Loading NHL…</div>`;return NHL_SLATE.map(g=>{const st=nhStarted(g),fin=g.as!=null&&["OFF","FINAL"].includes(g.st);
+  return `<a class="tgr" href="#nhl-game-${g.id}"><span class="tt">${fin?"FINAL":st?"<b class='up'>LIVE</b>":esc(g.t)}</span><span class="tm">${nhBadge(g.a)} <span class="small">@</span> ${nhBadge(g.h)}</span><span class="tl">${fin?`${g.as}-${g.hs}`:g.ml?`${nhOdds(g.ml[0])} / ${nhOdds(g.ml[1])}${g.tot?" · "+g.tot[0]:""}`:""}</span></a>`}).join("")||`<div class="small">No NHL games today.</div>`}
+function todayRowsNfl(){const G=(typeof SLATE!=="undefined"?SLATE.filter(g=>!g.final):[]);return G.slice(0,10).map(g=>{const L=LINES[g.id];
+  return `<a class="tgr" href="#game-${g.id}"><span class="tt">${esc(String(g.when).split("·")[0].replace(/^\w+\s/,""))}</span><span class="tm">${badge(g.away)} <span class="small">@</span> ${badge(g.home)}</span><span class="tl">${L?`${esc(L.sp<=0?g.home:g.away)} −${Math.abs(L.sp)} · ${L.tot}`:esc((String(g.when).split("·")[1]||"").trim())}</span></a>`}).join("")||`<div class="small">No NFL games left this week.</div>`}
+function todayTabs(key,T,cur){return `<div class="seg ttabs">${T.map(([k,l])=>`<button class="btn${k===cur?" on":""}" data-tt="${key}|${k}">${l}</button>`).join("")}</div>`}
 function viewToday(){
   const host=document.getElementById("v-today");if(!host)return;
-  const nbaGames=(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]),nbaOpen=nbaGames.filter(g=>!nbaStarted(g));
-  const nflUp=(typeof SLATE!=="undefined"?SLATE.filter(g=>!g.final&&!nflStarted(g)):[]);
-  const gameRow=g=>{const L=NBA_LINES[g.a+"@"+g.h],fav=L?(L.sp<=0?g.h:g.a):null;
-    return `<a class="tgame" href="#nba-game-${g.id}"><span class="small">${g.t}</span><span>${nbaBadge(g.a)} ${nbaShort(g.a)} <span class="small">@</span> ${nbaBadge(g.h)} ${nbaShort(g.h)}</span><span class="small">${L?`${nbaShort(fav)} −${Math.abs(L.sp)} · ${L.tot}`:""}</span></a>`};
-  const nflRow=g=>`<a class="tgame" href="#game-${g.id}"><span class="small">${esc(String(g.when).split("·")[0])}</span><span>${badge(g.away)} ${esc(short(g.away))} <span class="small">@</span> ${badge(g.home)} ${esc(short(g.home))}</span><span class="small">${esc((String(g.when).split("·")[1]||"").trim())}</span></a>`;
-  const favHtml=favListHtml(false);
-  const nbaTop=(typeof nbaBest!=="undefined"?nbaBest().slice(0,5):[]),nflTop=(typeof nflBest!=="undefined"?nflBest().slice(0,3):[]);
+  if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE)nhlEnsure(()=>{if(((location.hash||"#today").slice(1)||"today")==="today")viewToday()});
+  const nbaGames=(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]),nhlGames=(typeof NHL_SLATE!=="undefined"?NHL_SLATE:[]),nflUp=(typeof SLATE!=="undefined"?SLATE.filter(g=>!g.final):[]);
   const today=new Date().toLocaleDateString("en-US",{timeZone:"America/Toronto",weekday:"long",month:"long",day:"numeric"});
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA, NHL and NFL on one screen.</p>${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
-  <div id="todayLive">${todayLive()}</div><div id="xTonight">${typeof xTonightCard!=="undefined"?xTonightCard():""}</div><div id="nhlTodayHost">${typeof nhlTodayCard!=="undefined"?nhlTodayCard():""}</div>
-  ${favs().length?`<div style="margin-top:12px">${favHtml}</div>`:""}
-  <div class="grid g2" style="margin-top:12px">
-    <div>${typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():""}</div>
-    <div class="card"><h2 style="margin-bottom:6px">🏈 NFL Plays of the Week</h2>${typeof PLAYS!=="undefined"?PLAYS.map((pl,i)=>{const d=playData(pl);if(!d)return "";const g=gradeOne(pl,PLAYS_WEEK,d);return `<a class="fv" href="#plays"><b>${i+1}. ${esc(d.title)}</b><span class="small">${d.odds!=null?oddsFmt(d.odds)+" · ":""}<span style="color:${RES_COL[g.r]}">${RES_TXT[g.r]}</span></span></a>`}).join(""):""}
-      <a href="#plays" class="small" style="display:block;margin-top:8px;color:var(--text2)">Why we like them →</a></div>
-  </div>
-  ${favs().length?"":`<div style="margin-top:14px">${favHtml}</div>`}
-  ${typeof loMovesCard!=="undefined"?(()=>{const a=loMovesCard("nba",6),b=loMovesCard("nfl",4);return a||b?`<div class="grid g2" style="margin-top:14px">${a?`<div>${a}</div>`:""}${b?`<div>${b}</div>`:""}</div>`:""})():""}
-  ${nbaOpen.length&&typeof nbaRoleCard!=="undefined"?`<div style="margin-top:14px">${nbaRoleCard(5)}</div>`:""}
-  <div class="grid g2" style="margin-top:14px">
-    <div class="card"><h2 style="margin-bottom:6px">🔥 Top NBA props</h2>${nbaTop.length?nbaTop.map(nbaBestRow).join(""):`<div class="small">${nbaGames.length&&!nbaOpen.length?"Tonight's games have started — new lines tomorrow morning.":"Lines usually post by late morning ET."}</div>`}<a href="#nba-best" class="small" style="display:block;margin-top:8px;color:var(--text2)">All ranked props →</a></div>
-    <div class="card"><h2 style="margin-bottom:6px">🔥 Top NFL props</h2>${nflTop.length?nflTop.map(nflBestRow).join(""):`<div class="small">No open NFL lines with an edge right now.</div>`}<a href="#props" class="small" style="display:block;margin-top:8px;color:var(--text2)">All NFL props →</a></div>
-  </div>
-  <div class="grid g2" style="margin-top:14px">
-    <div class="card"><h2 style="margin-bottom:6px">🏀 NBA ${nbaGames.length?`· ${nbaDayS(NBA_SLATE_DATE)}`:""}</h2>${nbaGames.length?nbaGames.map(gameRow).join(""):`<div class="small">No NBA games today.</div>`}<a href="#nba-tomorrow" class="small" style="display:block;margin-top:8px;color:var(--text2)">Tomorrow's games →</a></div>
-    <div class="card"><h2 style="margin-bottom:6px">🏈 NFL · coming up</h2>${nflUp.length?nflUp.slice(0,8).map(nflRow).join(""):`<div class="small">No NFL games left this week — next week's slate posts Sunday night.</div>`}<a href="#nextweek" class="small" style="display:block;margin-top:8px;color:var(--text2)">Next week's schedule →</a></div>
-  </div>
-  <div style="margin-top:14px">${typeof recAll!=="undefined"?(()=>{const T=recSum(recAll());return `<a class="card recmini" href="#record"><span>📒 Our record</span><b>${recLine(T)}</b><span class="${T.u>0?"up":T.u<0?"dn":""}">${(T.u>0?"+":"")+T.u.toFixed(2)}u</span><span class="small">${T.pending?T.pending+" pending · ":""}see every play →</span></a>`})():""}</div>
-  ${updatedHtml("nba")}${updatedHtml("nfl")}`;
+  const T=typeof recAll!=="undefined"?recSum(recAll()):null;
+  /* plays: one card, a tab per sport */
+  const nflPlays=typeof PLAYS!=="undefined"&&PLAYS.length?`<div class="card potd"><h2 style="margin-bottom:6px">🏈 NFL Plays of the Week</h2>${PLAYS.map((pl,i)=>{const d=playData(pl);if(!d)return "";const g=gradeOne(pl,PLAYS_WEEK,d);return `<a class="fv" href="#plays"><b>${i+1}. ${esc(d.title)}</b><span class="small">${d.odds!=null?oddsFmt(d.odds)+" · ":""}${g.r==="win"?"✅ Win":g.r==="loss"?"❌ Loss":g.r==="pending"?"Pending":esc(g.r)}</span></a>`}).join("")}<a href="#plays" class="small" style="display:block;margin-top:8px">Why we like them →</a></div>`:"";
+  const PT=[["nba","🏀 NBA",typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():""],["nhl","🏒 NHL",typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():""],["nfl","🏈 NFL",nflPlays]].filter(x=>x[2]);
+  const pc=PT.some(x=>x[0]===TODAY_T.plays)?TODAY_T.plays:(PT[0]||[])[0];
+  const GT=[["nba",`🏀 NBA <small>${nbaGames.length}</small>`,todayRowsNba],["nhl",`🏒 NHL <small>${nhlGames.length||""}</small>`,todayRowsNhl],["nfl",`🏈 NFL <small>${nflUp.length}</small>`,todayRowsNfl]];
+  const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
+  const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].map(sp=>loMovesCard(sp,5)).join(""):"";
+  const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today}</p>
+  <div class="tsum"><a href="#nba"><b>${nbaGames.length}</b><span>NBA games</span></a><a href="#nhl"><b>${nhlGames.length||"–"}</b><span>NHL games</span></a><a href="#games"><b>${nflUp.length}</b><span>NFL games left</span></a>${T?`<a href="#record"><b class="${T.u>0?"up":T.u<0?"dn":""}">${recLine(T)}</b><span>our record · ${(T.u>0?"+":"")+T.u.toFixed(1)}u</span></a>`:""}</div>
+  ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
+  <div id="todayLive">${todayLive()}</div>
+  ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}
+  ${PT.length?`<h2 class="tsh">⭐ Today's plays</h2>${PT.length>1?todayTabs("plays",PT,pc):""}<div class="tsec">${(PT.find(x=>x[0]===pc)||PT[0])[2]}</div>`:""}
+  <h2 class="tsh">🔥 Best of tonight</h2><div id="xTonight" class="tsec">${typeof xTonightCard!=="undefined"?xTonightCard().replace(/<h2[^>]*>.*?<\/h2>/,""):""}</div>
+  <h2 class="tsh">🗓️ Games</h2>${todayTabs("games",GT,gc)}<div class="card tsec">${(GT.find(x=>x[0]===gc)||GT[0])[2]()}
+   <a href="${gc==="nba"?"#nba":gc==="nhl"?"#nhl":"#games"}" class="small" style="display:block;margin-top:8px">All ${gc.toUpperCase()} games, matchups &amp; props →</a></div>
+  ${moves||role?`<details class="tmore"><summary>📈 Line moves${role?" &amp; role changes":""} <span class="small">— tap to open</span></summary><div class="grid g2" style="margin-top:10px">${moves}${role}</div></details>`:""}
+  ${favs().length?"":`<p class="small" style="margin-top:14px">⭐ Tip: tap ☆ Save on any player or team page to pin them here every day.</p>`}
+  <details class="tmore"><summary>🕒 When the data was updated</summary><div style="margin-top:8px">${updatedHtml("nba")}${updatedHtml("nfl")}</div></details>`;
+  host.querySelectorAll("[data-tt]").forEach(b=>b.onclick=()=>{const [k,v]=b.dataset.tt.split("|");TODAY_T[k]=v;const y=scrollY;viewToday();scrollTo(0,y)});
   host.querySelectorAll("[data-bp]").forEach(b=>b.onclick=e=>{if(e.target.closest("[data-act]"))return;nbaGoPlayer(nbaUnesc(b.dataset.nm),b.dataset.bp.split("|")[0])});
   host.querySelectorAll("[data-shimg=nba]").forEach(b=>b.onclick=e=>{e.stopPropagation();shareNbaPlays()});
   host.querySelectorAll("[data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};location.hash="props"});
@@ -5725,8 +5747,8 @@ function viewGames(){
     const pj=projScore(g);return nflGameCard(g,pj)}).join("");
   const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:"";
   $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nfl",4):""}${typeof nfWeekTabs!=="undefined"?nfWeekTabs("games"):""}<p class="sub">${cur.filter(g=>!g.final).length} games to play${cur.some(g=>g.final)?`, ${cur.filter(g=>g.final).length} final`:""}. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
-   ${typeof xEdgesCard!=="undefined"?xEdgesCard("nfl"):""}
    <div class="games">${cards}</div>
+   ${typeof xInsights!=="undefined"?xInsights("nfl","🧠 This week's insights",[["edges","💰 Odds gaps",xEdgesCard("nfl")],["moves","📈 Line moves",typeof loMovesCard!=="undefined"?loMovesCard("nfl",8):""]]):""}
    <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary>
    <p class="small" style="margin:8px 0 0"><b>Moneyline</b>: bet on who wins. <b>Spread</b>: the favorite must win by more than the number. <b>Total</b>: will both teams' points add up to more or less than the line? <b>🔮 Prediction</b>: our model's projected score and win chance — an estimate, not a sure thing. New to betting? See <a href="#guide" style="color:inherit">Betting 101</a>.</p></details>
    <p class="note" style="margin-top:12px">Lines: DraftKings via ESPN, Nov 2. Lines move until kickoff.</p>`;

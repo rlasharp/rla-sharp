@@ -144,3 +144,12 @@ function nhlParlayLegs(g){if(typeof nhBest==="undefined"||typeof nhlSpec==="unde
   for(const b of L){const s=nhlSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NH_MK[b.k][0]}`})}return out}
 function nbaParlayLegs(g){if(typeof nbaBest==="undefined"||typeof nbaSpec==="undefined")return [];const L=nbaBest().filter(b=>b.g&&b.g.id===g.id&&b.sc>=.6).slice(0,12),out=[];
   for(const b of L){const s=nbaSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NBA_MK[b.k]?NBA_MK[b.k][2]:b.k}`})}return out}
+
+/* ---------- one tabbed "insights" card instead of a stack of cards ---------- */
+const XINS={};
+function xInsights(id,title,tabs){tabs=tabs.filter(t=>t[2]);if(!tabs.length)return "";const cur=tabs.some(t=>t[0]===XINS[id])?XINS[id]:tabs[0][0];
+  const strip=h=>h.replace(/^\s*<div class="card[^"]*"[^>]*>/,"").replace(/<\/div>\s*$/,"").replace(/<h2[^>]*>[\s\S]*?<\/h2>/,"");
+  return `<div class="card xins" data-xins="${id}" style="margin-top:14px"><h2 style="margin-bottom:8px">${title}</h2><div class="seg ttabs">${tabs.map(([k,l])=>`<button class="btn${k===cur?" on":""}" data-xinst="${id}|${k}">${l}</button>`).join("")}</div>
+   ${tabs.map(([k,,h])=>`<div class="xinsp" data-xinsp="${k}"${k===cur?"":" hidden"}>${strip(h)}</div>`).join("")}</div>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-xinst]");if(!b)return;const [id,k]=b.dataset.xinst.split("|");XINS[id]=k;const c=b.closest(".xins");
+  c.querySelectorAll("[data-xinst]").forEach(x=>x.classList.toggle("on",x===b));c.querySelectorAll("[data-xinsp]").forEach(p=>p.hidden=p.dataset.xinsp!==k)});

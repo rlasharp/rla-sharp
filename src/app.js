@@ -115,37 +115,42 @@ function favListHtml(full){
 function viewFavs(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&favs().some(f=>f.t==="nhlp"||f.t==="nhlt")){nhlEnsure(()=>viewFavs())}const host=document.getElementById("v-favs");if(!host)return;const n=favs().length;
   host.innerHTML=`<h1>⭐ Favorites</h1><p class="sub">${n?`${n} saved · `:""}Saved on this phone/browser only. Tap a name for today's lines and stats.</p>${favListHtml(true)}`;
   host.querySelectorAll("[data-nflfav]").forEach(el=>el.onclick=e=>{e.preventDefault();if(typeof goPlayer!=="undefined")goPlayer(el.dataset.nflfav.replace(/&amp;/g,"&"))});}
+/* ===== Today: one clean screen — summary, plays, best of tonight, games, then extras folded away ===== */
+let TODAY_T={plays:"",games:""};
+function todayRowsNba(){const G=(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]);return G.map(g=>{const L=NBA_LINES[g.a+"@"+g.h],fav=L?(L.sp<=0?g.h:g.a):null,st=nbaStarted(g);
+  return `<a class="tgr" href="#nba-game-${g.id}"><span class="tt">${st?"<b class='up'>LIVE</b>":esc(g.t)}</span><span class="tm">${nbaBadge(g.a)} <span class="small">@</span> ${nbaBadge(g.h)}</span><span class="tl">${L?`${esc(fav)} −${Math.abs(L.sp)} · ${L.tot}`:""}</span></a>`}).join("")}
+function todayRowsNhl(){if(typeof NHL_SLATE==="undefined"||!NHL_DATE)return `<div class="small">Loading NHL…</div>`;return NHL_SLATE.map(g=>{const st=nhStarted(g),fin=g.as!=null&&["OFF","FINAL"].includes(g.st);
+  return `<a class="tgr" href="#nhl-game-${g.id}"><span class="tt">${fin?"FINAL":st?"<b class='up'>LIVE</b>":esc(g.t)}</span><span class="tm">${nhBadge(g.a)} <span class="small">@</span> ${nhBadge(g.h)}</span><span class="tl">${fin?`${g.as}-${g.hs}`:g.ml?`${nhOdds(g.ml[0])} / ${nhOdds(g.ml[1])}${g.tot?" · "+g.tot[0]:""}`:""}</span></a>`}).join("")||`<div class="small">No NHL games today.</div>`}
+function todayRowsNfl(){const G=(typeof SLATE!=="undefined"?SLATE.filter(g=>!g.final):[]);return G.slice(0,10).map(g=>{const L=LINES[g.id];
+  return `<a class="tgr" href="#game-${g.id}"><span class="tt">${esc(String(g.when).split("·")[0].replace(/^\w+\s/,""))}</span><span class="tm">${badge(g.away)} <span class="small">@</span> ${badge(g.home)}</span><span class="tl">${L?`${esc(L.sp<=0?g.home:g.away)} −${Math.abs(L.sp)} · ${L.tot}`:esc((String(g.when).split("·")[1]||"").trim())}</span></a>`}).join("")||`<div class="small">No NFL games left this week.</div>`}
+function todayTabs(key,T,cur){return `<div class="seg ttabs">${T.map(([k,l])=>`<button class="btn${k===cur?" on":""}" data-tt="${key}|${k}">${l}</button>`).join("")}</div>`}
 function viewToday(){
   const host=document.getElementById("v-today");if(!host)return;
-  const nbaGames=(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]),nbaOpen=nbaGames.filter(g=>!nbaStarted(g));
-  const nflUp=(typeof SLATE!=="undefined"?SLATE.filter(g=>!g.final&&!nflStarted(g)):[]);
-  const gameRow=g=>{const L=NBA_LINES[g.a+"@"+g.h],fav=L?(L.sp<=0?g.h:g.a):null;
-    return `<a class="tgame" href="#nba-game-${g.id}"><span class="small">${g.t}</span><span>${nbaBadge(g.a)} ${nbaShort(g.a)} <span class="small">@</span> ${nbaBadge(g.h)} ${nbaShort(g.h)}</span><span class="small">${L?`${nbaShort(fav)} −${Math.abs(L.sp)} · ${L.tot}`:""}</span></a>`};
-  const nflRow=g=>`<a class="tgame" href="#game-${g.id}"><span class="small">${esc(String(g.when).split("·")[0])}</span><span>${badge(g.away)} ${esc(short(g.away))} <span class="small">@</span> ${badge(g.home)} ${esc(short(g.home))}</span><span class="small">${esc((String(g.when).split("·")[1]||"").trim())}</span></a>`;
-  const favHtml=favListHtml(false);
-  const nbaTop=(typeof nbaBest!=="undefined"?nbaBest().slice(0,5):[]),nflTop=(typeof nflBest!=="undefined"?nflBest().slice(0,3):[]);
+  if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE)nhlEnsure(()=>{if(((location.hash||"#today").slice(1)||"today")==="today")viewToday()});
+  const nbaGames=(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]),nhlGames=(typeof NHL_SLATE!=="undefined"?NHL_SLATE:[]),nflUp=(typeof SLATE!=="undefined"?SLATE.filter(g=>!g.final):[]);
   const today=new Date().toLocaleDateString("en-US",{timeZone:"America/Toronto",weekday:"long",month:"long",day:"numeric"});
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA, NHL and NFL on one screen.</p>${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
-  <div id="todayLive">${todayLive()}</div><div id="xTonight">${typeof xTonightCard!=="undefined"?xTonightCard():""}</div><div id="nhlTodayHost">${typeof nhlTodayCard!=="undefined"?nhlTodayCard():""}</div>
-  ${favs().length?`<div style="margin-top:12px">${favHtml}</div>`:""}
-  <div class="grid g2" style="margin-top:12px">
-    <div>${typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():""}</div>
-    <div class="card"><h2 style="margin-bottom:6px">🏈 NFL Plays of the Week</h2>${typeof PLAYS!=="undefined"?PLAYS.map((pl,i)=>{const d=playData(pl);if(!d)return "";const g=gradeOne(pl,PLAYS_WEEK,d);return `<a class="fv" href="#plays"><b>${i+1}. ${esc(d.title)}</b><span class="small">${d.odds!=null?oddsFmt(d.odds)+" · ":""}<span style="color:${RES_COL[g.r]}">${RES_TXT[g.r]}</span></span></a>`}).join(""):""}
-      <a href="#plays" class="small" style="display:block;margin-top:8px;color:var(--text2)">Why we like them →</a></div>
-  </div>
-  ${favs().length?"":`<div style="margin-top:14px">${favHtml}</div>`}
-  ${typeof loMovesCard!=="undefined"?(()=>{const a=loMovesCard("nba",6),b=loMovesCard("nfl",4);return a||b?`<div class="grid g2" style="margin-top:14px">${a?`<div>${a}</div>`:""}${b?`<div>${b}</div>`:""}</div>`:""})():""}
-  ${nbaOpen.length&&typeof nbaRoleCard!=="undefined"?`<div style="margin-top:14px">${nbaRoleCard(5)}</div>`:""}
-  <div class="grid g2" style="margin-top:14px">
-    <div class="card"><h2 style="margin-bottom:6px">🔥 Top NBA props</h2>${nbaTop.length?nbaTop.map(nbaBestRow).join(""):`<div class="small">${nbaGames.length&&!nbaOpen.length?"Tonight's games have started — new lines tomorrow morning.":"Lines usually post by late morning ET."}</div>`}<a href="#nba-best" class="small" style="display:block;margin-top:8px;color:var(--text2)">All ranked props →</a></div>
-    <div class="card"><h2 style="margin-bottom:6px">🔥 Top NFL props</h2>${nflTop.length?nflTop.map(nflBestRow).join(""):`<div class="small">No open NFL lines with an edge right now.</div>`}<a href="#props" class="small" style="display:block;margin-top:8px;color:var(--text2)">All NFL props →</a></div>
-  </div>
-  <div class="grid g2" style="margin-top:14px">
-    <div class="card"><h2 style="margin-bottom:6px">🏀 NBA ${nbaGames.length?`· ${nbaDayS(NBA_SLATE_DATE)}`:""}</h2>${nbaGames.length?nbaGames.map(gameRow).join(""):`<div class="small">No NBA games today.</div>`}<a href="#nba-tomorrow" class="small" style="display:block;margin-top:8px;color:var(--text2)">Tomorrow's games →</a></div>
-    <div class="card"><h2 style="margin-bottom:6px">🏈 NFL · coming up</h2>${nflUp.length?nflUp.slice(0,8).map(nflRow).join(""):`<div class="small">No NFL games left this week — next week's slate posts Sunday night.</div>`}<a href="#nextweek" class="small" style="display:block;margin-top:8px;color:var(--text2)">Next week's schedule →</a></div>
-  </div>
-  <div style="margin-top:14px">${typeof recAll!=="undefined"?(()=>{const T=recSum(recAll());return `<a class="card recmini" href="#record"><span>📒 Our record</span><b>${recLine(T)}</b><span class="${T.u>0?"up":T.u<0?"dn":""}">${(T.u>0?"+":"")+T.u.toFixed(2)}u</span><span class="small">${T.pending?T.pending+" pending · ":""}see every play →</span></a>`})():""}</div>
-  ${updatedHtml("nba")}${updatedHtml("nfl")}`;
+  const T=typeof recAll!=="undefined"?recSum(recAll()):null;
+  /* plays: one card, a tab per sport */
+  const nflPlays=typeof PLAYS!=="undefined"&&PLAYS.length?`<div class="card potd"><h2 style="margin-bottom:6px">🏈 NFL Plays of the Week</h2>${PLAYS.map((pl,i)=>{const d=playData(pl);if(!d)return "";const g=gradeOne(pl,PLAYS_WEEK,d);return `<a class="fv" href="#plays"><b>${i+1}. ${esc(d.title)}</b><span class="small">${d.odds!=null?oddsFmt(d.odds)+" · ":""}${g.r==="win"?"✅ Win":g.r==="loss"?"❌ Loss":g.r==="pending"?"Pending":esc(g.r)}</span></a>`}).join("")}<a href="#plays" class="small" style="display:block;margin-top:8px">Why we like them →</a></div>`:"";
+  const PT=[["nba","🏀 NBA",typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():""],["nhl","🏒 NHL",typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():""],["nfl","🏈 NFL",nflPlays]].filter(x=>x[2]);
+  const pc=PT.some(x=>x[0]===TODAY_T.plays)?TODAY_T.plays:(PT[0]||[])[0];
+  const GT=[["nba",`🏀 NBA <small>${nbaGames.length}</small>`,todayRowsNba],["nhl",`🏒 NHL <small>${nhlGames.length||""}</small>`,todayRowsNhl],["nfl",`🏈 NFL <small>${nflUp.length}</small>`,todayRowsNfl]];
+  const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
+  const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].map(sp=>loMovesCard(sp,5)).join(""):"";
+  const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today}</p>
+  <div class="tsum"><a href="#nba"><b>${nbaGames.length}</b><span>NBA games</span></a><a href="#nhl"><b>${nhlGames.length||"–"}</b><span>NHL games</span></a><a href="#games"><b>${nflUp.length}</b><span>NFL games left</span></a>${T?`<a href="#record"><b class="${T.u>0?"up":T.u<0?"dn":""}">${recLine(T)}</b><span>our record · ${(T.u>0?"+":"")+T.u.toFixed(1)}u</span></a>`:""}</div>
+  ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
+  <div id="todayLive">${todayLive()}</div>
+  ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}
+  ${PT.length?`<h2 class="tsh">⭐ Today's plays</h2>${PT.length>1?todayTabs("plays",PT,pc):""}<div class="tsec">${(PT.find(x=>x[0]===pc)||PT[0])[2]}</div>`:""}
+  <h2 class="tsh">🔥 Best of tonight</h2><div id="xTonight" class="tsec">${typeof xTonightCard!=="undefined"?xTonightCard().replace(/<h2[^>]*>.*?<\/h2>/,""):""}</div>
+  <h2 class="tsh">🗓️ Games</h2>${todayTabs("games",GT,gc)}<div class="card tsec">${(GT.find(x=>x[0]===gc)||GT[0])[2]()}
+   <a href="${gc==="nba"?"#nba":gc==="nhl"?"#nhl":"#games"}" class="small" style="display:block;margin-top:8px">All ${gc.toUpperCase()} games, matchups &amp; props →</a></div>
+  ${moves||role?`<details class="tmore"><summary>📈 Line moves${role?" &amp; role changes":""} <span class="small">— tap to open</span></summary><div class="grid g2" style="margin-top:10px">${moves}${role}</div></details>`:""}
+  ${favs().length?"":`<p class="small" style="margin-top:14px">⭐ Tip: tap ☆ Save on any player or team page to pin them here every day.</p>`}
+  <details class="tmore"><summary>🕒 When the data was updated</summary><div style="margin-top:8px">${updatedHtml("nba")}${updatedHtml("nfl")}</div></details>`;
+  host.querySelectorAll("[data-tt]").forEach(b=>b.onclick=()=>{const [k,v]=b.dataset.tt.split("|");TODAY_T[k]=v;const y=scrollY;viewToday();scrollTo(0,y)});
   host.querySelectorAll("[data-bp]").forEach(b=>b.onclick=e=>{if(e.target.closest("[data-act]"))return;nbaGoPlayer(nbaUnesc(b.dataset.nm),b.dataset.bp.split("|")[0])});
   host.querySelectorAll("[data-shimg=nba]").forEach(b=>b.onclick=e=>{e.stopPropagation();shareNbaPlays()});
   host.querySelectorAll("[data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};location.hash="props"});

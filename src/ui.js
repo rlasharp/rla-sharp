@@ -114,8 +114,8 @@ function viewGames(){
     const pj=projScore(g);return nflGameCard(g,pj)}).join("");
   const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:"";
   $("#v-games").innerHTML=`<h1>NFL · Week ${wk}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nfl",4):""}${typeof nfWeekTabs!=="undefined"?nfWeekTabs("games"):""}<p class="sub">${cur.filter(g=>!g.final).length} games to play${cur.some(g=>g.final)?`, ${cur.filter(g=>g.final).length} final`:""}. Tap a game for matchups, injuries and weather, or <b>🎯 player props</b> for every prop in that game.</p>
-   ${typeof xEdgesCard!=="undefined"?xEdgesCard("nfl"):""}
    <div class="games">${cards}</div>
+   ${typeof xInsights!=="undefined"?xInsights("nfl","🧠 This week's insights",[["edges","💰 Odds gaps",xEdgesCard("nfl")],["moves","📈 Line moves",typeof loMovesCard!=="undefined"?loMovesCard("nfl",8):""]]):""}
    <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary>
    <p class="small" style="margin:8px 0 0"><b>Moneyline</b>: bet on who wins. <b>Spread</b>: the favorite must win by more than the number. <b>Total</b>: will both teams' points add up to more or less than the line? <b>🔮 Prediction</b>: our model's projected score and win chance — an estimate, not a sure thing. New to betting? See <a href="#guide" style="color:inherit">Betting 101</a>.</p></details>
    <p class="note" style="margin-top:12px">Lines: DraftKings via ESPN, Nov 2. Lines move until kickoff.</p>`;
