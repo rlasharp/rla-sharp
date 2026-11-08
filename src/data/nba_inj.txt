@@ -1,10 +1,12 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 17:14Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 18:58Z
 #Atlanta Hawks
 Asa Newell|F|Day-To-Day|toe|Nov 9
 Keshon Gilbert|G|Day-To-Day|knee inflammation|Nov 9
 Jock Landale|C|Out|hip|Nov 9
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
+#Boston Celtics
+Mitchell Robinson|C|Day-To-Day|illness|Nov 8
 #Brooklyn Nets
 Grant Nelson|F|Day-To-Day|knee|Nov 10
 Mikel Brown Jr.|G|Out|rest|Nov 11
@@ -16,10 +18,9 @@ Dennis Schroder|G|Out|thigh|Nov 9
 Kon Knueppel|G|Out|hamstring strain|Nov 9
 Grant Williams|F|Out|hamstring|Nov 9
 #Chicago Bulls
-Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 8
+Norman Powell|G|Out|shoulder inflammation|Nov 11
 Tobe Awaka|F|Day-To-Day|knee sprain|Nov 8
 Jalen Smith|F|Day-To-Day|finger sprain|Nov 8
-Nic Claxton|C|Out|hamstring strain|Nov 8
 Zach Collins|F|Out|illness|Nov 11
 #Cleveland Cavaliers
 Sam Merrill|G|Day-To-Day|elbow|Nov 9
@@ -52,13 +53,14 @@ Yanic Konan Niederhauser|C|Out|foot surgery|Nov 10
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Luka Doncic|G|Day-To-Day|back|Nov 8
+Luka Doncic|G|Out|back soreness|Nov 9
 #Memphis Grizzlies
 Richie Saunders|G|Out|knee surgery|Dec 1
 Isaiah Stewart|C|Out|knee bruise|Nov 9
 Scotty Pippen Jr.|G|Out|back soreness|Nov 9
+#Milwaukee Bucks
+Gary Trent Jr.|G|Day-To-Day|illness|Nov 8
 #Minnesota Timberwolves
-Joan Beringer|F|Day-To-Day|fracture|Nov 8
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
@@ -99,8 +101,8 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Nov 9
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Scottie Barnes|F|Day-To-Day|groin soreness|Nov 9
 Immanuel Quickley|G|Day-To-Day|hamstring|Nov 9
+Scottie Barnes|F|Day-To-Day|groin soreness|Nov 9
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 9
 #Utah Jazz

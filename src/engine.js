@@ -19,7 +19,7 @@ const TEAM_IDS = Object.keys(TEAMS);
 const SLATE = [
  {id:"mnf8",away:"CHI",home:"SEA",final:[34,17],when:"Mon Nov 2 · 8:15 PM",wp:null,tv:"MNF",wk:8},
  {id:1,away:"JAX",home:"BAL",final:[33,10],when:"Thu Nov 5 · 8:15 PM",wp:null,tv:"TNF"},
- {id:2,away:"CIN",home:"ATL",when:"Sun Nov 8 · 9:30 AM",wp:null},
+ {id:2,away:"CIN",home:"ATL",final:[34,17],when:"Sun Nov 8 · 9:30 AM",wp:null},
  {id:3,away:"CLE",home:"NO",when:"Sun Nov 8 · 1:00 PM",wp:null},
  {id:4,away:"DAL",home:"IND",when:"Sun Nov 8 · 1:00 PM",wp:null},
  {id:5,away:"DEN",home:"CAR",when:"Sun Nov 8 · 1:00 PM",wp:null},
@@ -47,8 +47,8 @@ const LINES = {
  8:{sp:3,ml:[-162,136],tot:38.5},
  9:{sp:-9.5,ml:[380,-500],tot:47.5},
  10:{sp:5.5,ml:[-230,190],tot:40.5},
- 11:{sp:-9.5,ml:[340,-440],tot:51.5},
- 12:{sp:-8.5,ml:[340,-440],tot:39.5},
+ 11:{sp:-8.5,ml:[340,-440],tot:51.5},
+ 12:{sp:-8.5,ml:[350,-455],tot:39.5},
  13:{sp:-3,ml:[142,-170],tot:44.5},
  14:{sp:-6,ml:[220,-270],tot:47.5},
  15:{sp:3,ml:[-175,145],tot:43.5}
