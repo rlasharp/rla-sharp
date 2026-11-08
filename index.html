@@ -3399,8 +3399,12 @@ function nhBestRow(b){const m=NH_MK[b.k];return `<a class="bprow" href="#nhl-pla
 function nhGoalies(tm){return Object.entries(NHL_G).filter(([,g])=>g.tm===tm).map(([nm,g])=>({nm,...g,last:(g.g.filter(x=>x[7]).slice(-1)[0]||[])[0]||""}))
   .sort((a,b)=>(b.last>a.last?1:b.last<a.last?-1:0)||b.gs-a.gs)}
 function nhProbable(tm){const L=nhGoalies(tm);if(!L.length)return null;const lined=L.find(x=>(NHL_PROPS||[]).some(r=>r[0]===x.nm&&r[1]==="hsaves"));
-  if(lined)return {...lined,why:"books posted a saves line for him"};const s=L.slice().sort((a,b)=>{const r=g=>g.g.slice(-5).filter(x=>x[7]).length;return r(b)-r(a)||b.gs-a.gs})[0];
-  return {...s,why:`${s.g.slice(-5).filter(x=>x[7]).length} of the team's last starts we have`}}
+  /* who started the team's last 5 games */
+  const st=[];for(const x of L)for(const z of x.g)if(z[7])st.push([z[0],x.nm]);st.sort((a,b)=>a[0]<b[0]?1:-1);const l5=st.slice(0,5),cnt={};l5.forEach(([,n])=>cnt[n]=(cnt[n]||0)+1);
+  const n5=x=>cnt[x.nm]||0;
+  if(lined)return {...lined,why:`books posted a saves line for him · started ${n5(lined)} of the team's last ${l5.length}`};
+  const s=L.slice().sort((a,b)=>n5(b)-n5(a)||(b.last>a.last?1:-1))[0];
+  return {...s,why:`started ${n5(s)} of the team's last ${l5.length}${l5[0]&&l5[0][1]===s.nm?", including the last game":l5[0]?` — ${l5[0][1]} started the last game`:""}`}}
 function nhGoalieLine(x){if(!x)return `<span class="small">No goalie data</span>`;const L5=x.g.filter(z=>z[7]).slice(-5),sa=L5.reduce((a,z)=>a+z[3],0),sv=L5.reduce((a,z)=>a+z[4],0);
   return `${nhLink(x.nm)} <span class="small">${x.gs} GS · ${x.w} W · SV% ${x.svp!=null?(x.svp/100).toFixed(3).slice(1):"–"} · GAA ${x.gaa!=null?x.gaa.toFixed(2):"–"}${L5.length?` · last ${L5.length} starts ${sa?(sv/sa).toFixed(3).slice(1):"–"}`:""}</span>`}
 
@@ -3421,7 +3425,7 @@ function nhlGames(el){
        <span class="small">🥅 ${pg?nhE(pg.nm)+` (SV% ${pg.svp!=null?(pg.svp/100).toFixed(3).slice(1):"–"})`:"–"}</span></div>`).join("")}</div>
      ${fin?"":nhLinesHtml(g)}</a>`};
   el.innerHTML=`<h1>🏒 NHL</h1><p class="sub">${nhE(NHL_GEN?`Updated ${NHL_GEN}`:"")} · official NHL stats + live sportsbook lines. Tap a game for the matchup, goalies and every player prop.</p>
-   ${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best NHL props</h2><div class="small" style="margin-bottom:8px">How often the line would have hit (last 10 games 60%, season 40%) vs what the odds need.</div><div class="bpc">${best.map(nhBestRow).join("")}</div><a href="#nhl-props" class="small" style="display:block;margin-top:8px">All NHL props →</a></div>`:""}
+   ${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best NHL props</h2><div class="small" style="margin-bottom:8px">How often the line would have hit (last 10 games 60%, season 40%) vs what the odds need.</div><div class="nhbp">${best.map(nhBestRow).join("")}</div><a href="#nhl-props" class="small" style="display:block;margin-top:8px">All NHL props →</a></div>`:""}
    <h2 style="margin:16px 0 8px">Today${today.length?` · ${today.length} game${today.length>1?"s":""}`:""}</h2>
    ${today.length?`<div class="grid g2">${today.map(card).join("")}</div>`:`<div class="card small">No NHL games today.</div>`}
    ${next.length&&(!open.length||!today.length)?`<h2 style="margin:16px 0 8px">Tomorrow</h2><div class="grid g2">${next.map(card).join("")}</div>`:next.length?`<p class="small" style="margin-top:10px">Tomorrow: ${next.length} games — <a href="#nhl-tomorrow">see them</a>.</p>`:""}
@@ -3436,7 +3440,7 @@ function nhLast(t,n){return (NHL_RES||[]).filter(r=>r[1]===t||r[3]===t).slice(-n
 function nhCmp(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{};
   const rk=(t,k)=>t[k+"R"]?`<span class="small">#${t[k+"R"]}</span>`:"";
   const better=(x,y,hi)=>x==null||y==null||x===y?["",""]:((x>y)===hi?["nhb",""]:["","nhb"]);
-  const row=(lab,k,hi,f)=>{const [ca,ch]=better(A[k],H[k],hi);f=f||(v=>v??"–");return `<tr><td class="${ca}">${f(A[k])} ${rk(A,k)}</td><th>${lab}</th><td class="${ch}">${f(H[k])} ${rk(H,k)}</td></tr>`};
+  const row=(lab,k,hi,f)=>{const [ca,ch]=better(A[k],H[k],hi);f=f||(v=>v==null?"–":(k==="gf"||k==="ga")?(+v).toFixed(2):v);return `<tr><td class="${ca}">${f(A[k])} ${rk(A,k)}</td><th>${lab}</th><td class="${ch}">${f(H[k])} ${rk(H,k)}</td></tr>`};
   const hh=nhH2H(g.a,g.h);
   return `<div class="card"><h2>Team comparison</h2><table class="nhcmp"><thead><tr><th>${nhBadge(g.a)} ${nhE(g.a)}</th><th></th><th>${nhBadge(g.h)} ${nhE(g.h)}</th></tr></thead><tbody>
    <tr><td>${nhRec(g.a)} <span class="small">${A.pts??""} pts</span></td><th>Record</th><td>${nhRec(g.h)} <span class="small">${H.pts??""} pts</span></td></tr>
@@ -3497,7 +3501,7 @@ function nhlProps(el){
   const names=Object.keys(by).sort((a,b)=>{const ga=nhGameOf(nhWho(a).tm),gb=nhGameOf(nhWho(b).tm);return (ga.iso>gb.iso?1:ga.iso<gb.iso?-1:0)||a.localeCompare(b)}).slice(0,60);
   el.innerHTML=`<h1>🎯 NHL player props</h1><p class="sub">${rows.length} lines from licensed US books · ${nhE(NHL_GEN?`stats updated ${NHL_GEN}`:"")}</p>
    <div class="seg" style="margin-bottom:10px">${[["all","All"],...mks.map(m=>[m,NH_MK[m][1]])].map(([v,l])=>`<button class="btn${mf===v?" on":""}" data-nhmk="${v}">${l}</button>`).join("")}</div>
-   ${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best edges</h2><div class="small" style="margin-bottom:8px">Hit rate (last 10 60%, season 40%) minus the probability the odds imply.</div><div class="bpc">${best.map(nhBestRow).join("")}</div></div>`:""}
+   ${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best edges</h2><div class="small" style="margin-bottom:8px">Hit rate (last 10 60%, season 40%) minus the probability the odds imply.</div><div class="nhbp">${best.map(nhBestRow).join("")}</div></div>`:""}
    ${rows.length?names.map(nm=>nhPlayerLines(nm,by[nm],true)).join(""):`<div class="card small">No NHL props posted yet — books usually post them the morning of the game.</div>`}
    ${Object.keys(by).length>60?`<p class="small">Showing 60 players — pick a market above to narrow it down.</p>`:""}${nhFoot()}`;
   nhWire(el,()=>nhlProps(el))}
