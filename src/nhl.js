@@ -172,7 +172,7 @@ function nhGameProps(g){
   const by={};all.filter(r=>(tf==="all"||nhWho(r[0]).tm===tf)&&(mf==="all"||r[1]===mf)).forEach(r=>(by[r[0]]=by[r[0]]||[]).push(r));
   const order=Object.keys(by).sort((x,y)=>{const X=nhWho(x),Y=nhWho(y);return (X.tm===g.a?0:1)-(Y.tm===g.a?0:1)||((Y.s&&Y.s[3])||0)-((X.s&&X.s[3])||0)});
   const chip=(a,v,l,on)=>`<button class="btn${on?" on":""}" data-${a}="${v}">${l}</button>`;
-  return `<div class="gpf"><div class="seg">${chip("nhgp","all","Both teams",tf==="all")}${tms.map(t=>chip("nhgp",t,`${nhBadge(t)} ${nhE(t)}`,tf===t)).join("")}</div>
+  return `${typeof xParlayCard!=="undefined"?xParlayCard(nhlParlayLegs(g)):""}<div class="gpf"><div class="seg">${chip("nhgp","all","Both teams",tf==="all")}${tms.map(t=>chip("nhgp",t,`${nhBadge(t)} ${nhE(t)}`,tf===t)).join("")}</div>
    <div class="seg">${chip("nhgm","all","All",mf==="all")}${mks.map(m=>chip("nhgm",m,NH_MK[m][0],mf===m)).join("")}</div></div>
    ${order.map(nm=>nhPlayerLines(nm,by[nm],true)).join("")}`}
 /* one card per player with every prop line */

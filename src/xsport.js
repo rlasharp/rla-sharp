@@ -82,7 +82,7 @@ function nhlPlayTitle(x){if(x.type==="prop"){const m=typeof NH_MK!=="undefined"&
 function nhlPlaysCard(){if(typeof TRACK==="undefined"||!TRACK)return "";const P=TRACK.nhlPlays||[],S=TRACK.sum&&TRACK.sum.nhl&&TRACK.sum.nhl.plays;
   const rec=S&&(S.w+S.l)?`${S.w}-${S.l}${S.p?"-"+S.p:""} · ${S.u>0?"+":""}${S.u}u`:"tracking started Nov 8";
   return `<div class="card potd" style="margin-bottom:12px"><h2 style="margin-bottom:2px">⭐ NHL Plays of the day</h2><div class="small" style="margin-bottom:6px">${P.length?`Locked before puck drop · counted in our record (${rec})`:`Posted about 6 hours before the first puck drop, once lines are up. Record: ${rec}.`}</div>
-   ${P.map((x,i)=>`<div class="pod"><div class="podn">${i+1}</div><div style="min-width:0;flex:1"><div class="bpl"><b class="${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.type==="prop"?(typeof esc!=="undefined"?esc(nhlPlayTitle(x)):nhlPlayTitle(x)):nhlPlayTitle(x)}</b> <span class="small">${xOdds(x.odds)}</span>${x.r?` <span class="nhtag ${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.r==="win"?"✓ won":x.r==="loss"?"✗ lost":x.r}${x.v!=null?" · "+x.v:""}</span>`:""}</div><div class="small">${x.why||""}</div></div></div>`).join("")}
+   ${P.map((x,i)=>`<div class="pod"><div class="podn">${i+1}</div><div style="min-width:0;flex:1" ${x.type==="prop"?`data-nhlp="${esc(JSON.stringify({nm:x.nm,k:x.k,side:x.side,line:x.line,tm:x.tm}))}"`:""}><div class="bpl"><b class="${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.type==="prop"?(typeof esc!=="undefined"?esc(nhlPlayTitle(x)):nhlPlayTitle(x)):nhlPlayTitle(x)}</b> <span class="small">${xOdds(x.odds)}</span>${x.r?` <span class="nhtag ${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.r==="win"?"✓ won":x.r==="loss"?"✗ lost":x.r}${x.v!=null?" · "+x.v:""}</span>`:""}</div><div class="small">${x.why||""}</div></div></div>`).join("")}
    <div class="small" style="margin-top:6px">Picked automatically: props that hit 7+ of the last 10 with a clear edge over the odds (no worse than −200, nobody injured), plus our biggest game edges. Leans, not guarantees — bet small.</div></div>`}
 /* ---------- 📊 tracking: best props + our game numbers, per sport ---------- */
 function xTrackCard(){if(typeof TRACK==="undefined"||!TRACK)return "";const S=TRACK.sum||{},rows=[];const pc=(w,l)=>w+l?Math.round(w/(w+l)*100)+"%":"–",u=x=>(x>0?"+":"")+(+x).toFixed(2)+"u";
@@ -107,3 +107,40 @@ function xTonightCard(){const L=[];const pill=s=>`<span class="xsp ${s}">${s.toU
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🔥 Best of tonight · all sports</h2><div class="small" style="margin-bottom:8px">Each sport's 3 strongest props and its biggest game edge, ranked by how far our numbers beat what the odds need.</div>
    ${top.map(x=>`<a class="nher" href="${x.href}" ${x.nfl?`data-nflfav="${esc(x.nfl)}"`:""}><span><span>${pill(x.sp)} <b>${x.t}</b></span><span class="small">${x.s}</span></span><span class="nhedv"><b class="up">+${Math.round(x.e*100)}%</b><span class="small">${xOdds(x.o)}</span></span></a>`).join("")}
    <div class="small" style="margin-top:6px">Leans from past results, not guarantees — bet small.</div></div>`}
+
+/* ---------- 📡 NHL live prop tracking (ESPN summary box score, in the visitor's browser) ---------- */
+const NHL_LIVE_SUM="https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=",NHL_LBOX={};
+async function nhlLiveBox(id){const b=NHL_LBOX[id];if(b&&Date.now()-b.t<25000)return b.p;
+  try{const r=await fetch(NHL_LIVE_SUM+id,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json(),p={};
+    for(const tm of ((j.boxscore||{}).players||[]))for(const st of tm.statistics||[]){const lab=(st.labels||st.names||st.keys||[]).map(x=>String(x).toUpperCase());
+      for(const a of st.athletes||[]){const nm=a.athlete&&a.athlete.displayName;if(!nm||!a.stats)continue;const o=p[loNorm(nm)]||(p[loNorm(nm)]={});lab.forEach((l,i)=>{if(o[l]==null)o[l]=a.stats[i]})}}
+    NHL_LBOX[id]={t:Date.now(),p};return p}catch(e){return b?b.p:null}}
+function nhlLiveVal(o,k){if(!o)return null;const n=l=>{for(const x of l){const v=o[x];if(v!=null&&v!==""&&isFinite(+v))return +v}return null};
+  if(k==="hpts"){const g=n(["G","GOALS"]),a=n(["A","ASSISTS"]);return g==null||a==null?null:g+a}
+  return n({hgoals:["G","GOALS"],hanyG:["G","GOALS"],hast:["A","ASSISTS"],hsog:["S","SOG","SHOTS"],hblk:["BS","BLK","BLOCKEDSHOTS"],hhit:["HT","HITS","H"],hfow:["FW","FOW","FACEOFFSWON"],hsaves:["SV","SAVES"]}[k]||[])}
+/* host: element to put the line into; x: {nm, k, side, line, tm} */
+async function nhlLiveLine(host,x){if(!host||typeof liveGet==="undefined"||typeof nhGameOf==="undefined")return;const w=nhWho(x.nm),g=w&&nhGameOf(w.tm);const lg=g&&g.d===NHL_DATE&&liveGet("nhl",g.a,g.h);let el=host.querySelector(".lvp");
+  if(!lg||lg.st==="pre"){if(el)el.remove();return}const bx=await nhlLiveBox(lg.id),v=bx&&nhlLiveVal(bx[loNorm(x.nm)],x.k);if(v==null){if(el)el.remove();return}
+  const over=x.side!=="u",line=x.k==="hanyG"?.5:x.line,hit=over?v>line:v<line,fin=lg.st==="post",u=NH_MK[x.k]?NH_MK[x.k][2]:"";
+  const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${fin?`${hit?"✅ Hit":"❌ Missed"} — finished with <b>${v}</b> ${u}`:`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${u} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${+(line-v+.5).toFixed(1)} more`):(v>line?" · already over ❌":"")}`}</div>`;
+  el=host.querySelector(".lvp");if(el)el.outerHTML=html;else host.insertAdjacentHTML("beforeend",html)}
+async function nhlLiveDecorate(){if(typeof NHL_DATE==="undefined"||!NHL_DATE)return;
+  for(const el of document.querySelectorAll("[data-nhlp]")){try{await nhlLiveLine(el,JSON.parse(el.dataset.nhlp))}catch(e){}}
+  if((location.hash||"").slice(1)==="bets"&&typeof betsLoad!=="undefined")for(const b of betsLoad()){if(b.k!=="nhlprop"||b.date!==NHL_DATE)continue;const el=document.querySelector(`[data-clv="${b.id}"]`);if(el)await nhlLiveLine(el.parentElement,{nm:b.player,k:b.market,side:b.side==="over"?"o":"u",line:b.line,tm:b.team})}}
+
+/* ---------- 🎟 smart parlays: same-game legs that tend to hit together ---------- */
+function xParlays(legs,max){/* legs: [{spec, label}] — spec as used by the parlay slip (nbaprop / nhlprop) */
+  if(typeof sgpPair==="undefined"||legs.length<2)return [];const dec=o=>o>0?1+o/100:1+100/(-o),out=[];
+  for(let i=0;i<legs.length;i++)for(let j=i+1;j<legs.length;j++){const A=legs[i],B=legs[j];if(A.spec.player===B.spec.player)continue;
+    const r=sgpPair(A.spec,B.spec);if(!r||!r.n||r.n<6||r.lift==null)continue;const joint=r.both/r.n,price=dec(A.spec.odds)*dec(B.spec.odds),need=1/price;
+    if(joint<.4||r.lift<1.05)continue;out.push({A,B,n:r.n,both:r.both,joint,price,need,edge:joint-need,lift:r.lift})}
+  return out.sort((a,b)=>b.edge-a.edge).slice(0,max||3)}
+function xParlayCard(legs,title){const P=xParlays(legs,3);if(!P.length)return "";const am=d=>d>=2?"+"+Math.round((d-1)*100):"−"+Math.round(100/(d-1));
+  return `<div class="card" style="margin:10px 0"><h2 style="margin-bottom:2px">🎟 Smart parlays${title?" · "+title:""}</h2><div class="small" style="margin-bottom:8px">Two strong legs from this game that hit together more often than chance, from the games both players played.</div>
+   ${P.map(p=>`<div class="sgr t"><b>🤝 ${p.A.label} + ${p.B.label}</b><span class="small">Both hit in <b>${p.both} of ${p.n}</b> shared games (${Math.round(p.joint*100)}%) · priced as two separate bets ≈ ${am(p.price)}, which needs ${Math.round(p.need*100)}%.</span>
+     <div class="obrow" style="margin-top:4px">${typeof actBtn!=="undefined"?actBtn(p.A.spec,`＋ ${p.A.label}`,"ov")+actBtn(p.B.spec,`＋ ${p.B.label}`,"ov"):""}</div></div>`).join("")}
+   <div class="small" style="margin-top:6px">Books price same-game parlays lower because they know legs are linked — check the real parlay price; small samples, bet small.</div></div>`}
+function nhlParlayLegs(g){if(typeof nhBest==="undefined"||typeof nhlSpec==="undefined")return [];const L=nhBest().filter(b=>b.g.id===g.id&&b.s.p>=.6&&b.k!=="hanyG").slice(0,12),out=[];
+  for(const b of L){const s=nhlSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NH_MK[b.k][0]}`})}return out}
+function nbaParlayLegs(g){if(typeof nbaBest==="undefined"||typeof nbaSpec==="undefined")return [];const L=nbaBest().filter(b=>b.g&&b.g.id===g.id&&b.sc>=.6).slice(0,12),out=[];
+  for(const b of L){const s=nbaSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NBA_MK[b.k]?NBA_MK[b.k][2]:b.k}`})}return out}

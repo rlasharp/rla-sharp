@@ -3128,7 +3128,8 @@ function nbaLineRow(nm,r){
       </div>`}
 
 /* ---------- Game page: every player prop from this game ---------- */
-function nbaGameProps(g){
+function nbaGameProps(g){return (nbaStarted(g)||typeof xParlayCard==="undefined"?"":xParlayCard(nbaParlayLegs(g)))+nbaGameProps0(g)}
+function nbaGameProps0(g){
   if(nbaStarted(g))return `<div class="info"><span>🔒 This game has started — pregame player props are closed.</span></div>`;
   const tms=[g.a,g.h],all=NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&tms.includes(p.tm)&&NBA_MK[r[1]]});
   if(!all.length)return `<div class="card"><h2>No player props yet</h2><p class="small" style="margin:0">Sportsbooks usually post NBA player props the morning of the game. We add them by about noon ET — check back then.</p></div>`;
@@ -3551,7 +3552,7 @@ function nhGameProps(g){
   const by={};all.filter(r=>(tf==="all"||nhWho(r[0]).tm===tf)&&(mf==="all"||r[1]===mf)).forEach(r=>(by[r[0]]=by[r[0]]||[]).push(r));
   const order=Object.keys(by).sort((x,y)=>{const X=nhWho(x),Y=nhWho(y);return (X.tm===g.a?0:1)-(Y.tm===g.a?0:1)||((Y.s&&Y.s[3])||0)-((X.s&&X.s[3])||0)});
   const chip=(a,v,l,on)=>`<button class="btn${on?" on":""}" data-${a}="${v}">${l}</button>`;
-  return `<div class="gpf"><div class="seg">${chip("nhgp","all","Both teams",tf==="all")}${tms.map(t=>chip("nhgp",t,`${nhBadge(t)} ${nhE(t)}`,tf===t)).join("")}</div>
+  return `${typeof xParlayCard!=="undefined"?xParlayCard(nhlParlayLegs(g)):""}<div class="gpf"><div class="seg">${chip("nhgp","all","Both teams",tf==="all")}${tms.map(t=>chip("nhgp",t,`${nhBadge(t)} ${nhE(t)}`,tf===t)).join("")}</div>
    <div class="seg">${chip("nhgm","all","All",mf==="all")}${mks.map(m=>chip("nhgm",m,NH_MK[m][0],mf===m)).join("")}</div></div>
    ${order.map(nm=>nhPlayerLines(nm,by[nm],true)).join("")}`}
 /* one card per player with every prop line */
@@ -3994,7 +3995,7 @@ function nhlPlayTitle(x){if(x.type==="prop"){const m=typeof NH_MK!=="undefined"&
 function nhlPlaysCard(){if(typeof TRACK==="undefined"||!TRACK)return "";const P=TRACK.nhlPlays||[],S=TRACK.sum&&TRACK.sum.nhl&&TRACK.sum.nhl.plays;
   const rec=S&&(S.w+S.l)?`${S.w}-${S.l}${S.p?"-"+S.p:""} · ${S.u>0?"+":""}${S.u}u`:"tracking started Nov 8";
   return `<div class="card potd" style="margin-bottom:12px"><h2 style="margin-bottom:2px">⭐ NHL Plays of the day</h2><div class="small" style="margin-bottom:6px">${P.length?`Locked before puck drop · counted in our record (${rec})`:`Posted about 6 hours before the first puck drop, once lines are up. Record: ${rec}.`}</div>
-   ${P.map((x,i)=>`<div class="pod"><div class="podn">${i+1}</div><div style="min-width:0;flex:1"><div class="bpl"><b class="${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.type==="prop"?(typeof esc!=="undefined"?esc(nhlPlayTitle(x)):nhlPlayTitle(x)):nhlPlayTitle(x)}</b> <span class="small">${xOdds(x.odds)}</span>${x.r?` <span class="nhtag ${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.r==="win"?"✓ won":x.r==="loss"?"✗ lost":x.r}${x.v!=null?" · "+x.v:""}</span>`:""}</div><div class="small">${x.why||""}</div></div></div>`).join("")}
+   ${P.map((x,i)=>`<div class="pod"><div class="podn">${i+1}</div><div style="min-width:0;flex:1" ${x.type==="prop"?`data-nhlp="${esc(JSON.stringify({nm:x.nm,k:x.k,side:x.side,line:x.line,tm:x.tm}))}"`:""}><div class="bpl"><b class="${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.type==="prop"?(typeof esc!=="undefined"?esc(nhlPlayTitle(x)):nhlPlayTitle(x)):nhlPlayTitle(x)}</b> <span class="small">${xOdds(x.odds)}</span>${x.r?` <span class="nhtag ${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.r==="win"?"✓ won":x.r==="loss"?"✗ lost":x.r}${x.v!=null?" · "+x.v:""}</span>`:""}</div><div class="small">${x.why||""}</div></div></div>`).join("")}
    <div class="small" style="margin-top:6px">Picked automatically: props that hit 7+ of the last 10 with a clear edge over the odds (no worse than −200, nobody injured), plus our biggest game edges. Leans, not guarantees — bet small.</div></div>`}
 /* ---------- 📊 tracking: best props + our game numbers, per sport ---------- */
 function xTrackCard(){if(typeof TRACK==="undefined"||!TRACK)return "";const S=TRACK.sum||{},rows=[];const pc=(w,l)=>w+l?Math.round(w/(w+l)*100)+"%":"–",u=x=>(x>0?"+":"")+(+x).toFixed(2)+"u";
@@ -4019,6 +4020,43 @@ function xTonightCard(){const L=[];const pill=s=>`<span class="xsp ${s}">${s.toU
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🔥 Best of tonight · all sports</h2><div class="small" style="margin-bottom:8px">Each sport's 3 strongest props and its biggest game edge, ranked by how far our numbers beat what the odds need.</div>
    ${top.map(x=>`<a class="nher" href="${x.href}" ${x.nfl?`data-nflfav="${esc(x.nfl)}"`:""}><span><span>${pill(x.sp)} <b>${x.t}</b></span><span class="small">${x.s}</span></span><span class="nhedv"><b class="up">+${Math.round(x.e*100)}%</b><span class="small">${xOdds(x.o)}</span></span></a>`).join("")}
    <div class="small" style="margin-top:6px">Leans from past results, not guarantees — bet small.</div></div>`}
+
+/* ---------- 📡 NHL live prop tracking (ESPN summary box score, in the visitor's browser) ---------- */
+const NHL_LIVE_SUM="https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=",NHL_LBOX={};
+async function nhlLiveBox(id){const b=NHL_LBOX[id];if(b&&Date.now()-b.t<25000)return b.p;
+  try{const r=await fetch(NHL_LIVE_SUM+id,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json(),p={};
+    for(const tm of ((j.boxscore||{}).players||[]))for(const st of tm.statistics||[]){const lab=(st.labels||st.names||st.keys||[]).map(x=>String(x).toUpperCase());
+      for(const a of st.athletes||[]){const nm=a.athlete&&a.athlete.displayName;if(!nm||!a.stats)continue;const o=p[loNorm(nm)]||(p[loNorm(nm)]={});lab.forEach((l,i)=>{if(o[l]==null)o[l]=a.stats[i]})}}
+    NHL_LBOX[id]={t:Date.now(),p};return p}catch(e){return b?b.p:null}}
+function nhlLiveVal(o,k){if(!o)return null;const n=l=>{for(const x of l){const v=o[x];if(v!=null&&v!==""&&isFinite(+v))return +v}return null};
+  if(k==="hpts"){const g=n(["G","GOALS"]),a=n(["A","ASSISTS"]);return g==null||a==null?null:g+a}
+  return n({hgoals:["G","GOALS"],hanyG:["G","GOALS"],hast:["A","ASSISTS"],hsog:["S","SOG","SHOTS"],hblk:["BS","BLK","BLOCKEDSHOTS"],hhit:["HT","HITS","H"],hfow:["FW","FOW","FACEOFFSWON"],hsaves:["SV","SAVES"]}[k]||[])}
+/* host: element to put the line into; x: {nm, k, side, line, tm} */
+async function nhlLiveLine(host,x){if(!host||typeof liveGet==="undefined"||typeof nhGameOf==="undefined")return;const w=nhWho(x.nm),g=w&&nhGameOf(w.tm);const lg=g&&g.d===NHL_DATE&&liveGet("nhl",g.a,g.h);let el=host.querySelector(".lvp");
+  if(!lg||lg.st==="pre"){if(el)el.remove();return}const bx=await nhlLiveBox(lg.id),v=bx&&nhlLiveVal(bx[loNorm(x.nm)],x.k);if(v==null){if(el)el.remove();return}
+  const over=x.side!=="u",line=x.k==="hanyG"?.5:x.line,hit=over?v>line:v<line,fin=lg.st==="post",u=NH_MK[x.k]?NH_MK[x.k][2]:"";
+  const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${fin?`${hit?"✅ Hit":"❌ Missed"} — finished with <b>${v}</b> ${u}`:`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${u} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${+(line-v+.5).toFixed(1)} more`):(v>line?" · already over ❌":"")}`}</div>`;
+  el=host.querySelector(".lvp");if(el)el.outerHTML=html;else host.insertAdjacentHTML("beforeend",html)}
+async function nhlLiveDecorate(){if(typeof NHL_DATE==="undefined"||!NHL_DATE)return;
+  for(const el of document.querySelectorAll("[data-nhlp]")){try{await nhlLiveLine(el,JSON.parse(el.dataset.nhlp))}catch(e){}}
+  if((location.hash||"").slice(1)==="bets"&&typeof betsLoad!=="undefined")for(const b of betsLoad()){if(b.k!=="nhlprop"||b.date!==NHL_DATE)continue;const el=document.querySelector(`[data-clv="${b.id}"]`);if(el)await nhlLiveLine(el.parentElement,{nm:b.player,k:b.market,side:b.side==="over"?"o":"u",line:b.line,tm:b.team})}}
+
+/* ---------- 🎟 smart parlays: same-game legs that tend to hit together ---------- */
+function xParlays(legs,max){/* legs: [{spec, label}] — spec as used by the parlay slip (nbaprop / nhlprop) */
+  if(typeof sgpPair==="undefined"||legs.length<2)return [];const dec=o=>o>0?1+o/100:1+100/(-o),out=[];
+  for(let i=0;i<legs.length;i++)for(let j=i+1;j<legs.length;j++){const A=legs[i],B=legs[j];if(A.spec.player===B.spec.player)continue;
+    const r=sgpPair(A.spec,B.spec);if(!r||!r.n||r.n<6||r.lift==null)continue;const joint=r.both/r.n,price=dec(A.spec.odds)*dec(B.spec.odds),need=1/price;
+    if(joint<.4||r.lift<1.05)continue;out.push({A,B,n:r.n,both:r.both,joint,price,need,edge:joint-need,lift:r.lift})}
+  return out.sort((a,b)=>b.edge-a.edge).slice(0,max||3)}
+function xParlayCard(legs,title){const P=xParlays(legs,3);if(!P.length)return "";const am=d=>d>=2?"+"+Math.round((d-1)*100):"−"+Math.round(100/(d-1));
+  return `<div class="card" style="margin:10px 0"><h2 style="margin-bottom:2px">🎟 Smart parlays${title?" · "+title:""}</h2><div class="small" style="margin-bottom:8px">Two strong legs from this game that hit together more often than chance, from the games both players played.</div>
+   ${P.map(p=>`<div class="sgr t"><b>🤝 ${p.A.label} + ${p.B.label}</b><span class="small">Both hit in <b>${p.both} of ${p.n}</b> shared games (${Math.round(p.joint*100)}%) · priced as two separate bets ≈ ${am(p.price)}, which needs ${Math.round(p.need*100)}%.</span>
+     <div class="obrow" style="margin-top:4px">${typeof actBtn!=="undefined"?actBtn(p.A.spec,`＋ ${p.A.label}`,"ov")+actBtn(p.B.spec,`＋ ${p.B.label}`,"ov"):""}</div></div>`).join("")}
+   <div class="small" style="margin-top:6px">Books price same-game parlays lower because they know legs are linked — check the real parlay price; small samples, bet small.</div></div>`}
+function nhlParlayLegs(g){if(typeof nhBest==="undefined"||typeof nhlSpec==="undefined")return [];const L=nhBest().filter(b=>b.g.id===g.id&&b.s.p>=.6&&b.k!=="hanyG").slice(0,12),out=[];
+  for(const b of L){const s=nhlSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NH_MK[b.k][0]}`})}return out}
+function nbaParlayLegs(g){if(typeof nbaBest==="undefined"||typeof nbaSpec==="undefined")return [];const L=nbaBest().filter(b=>b.g&&b.g.id===g.id&&b.sc>=.6).slice(0,12),out=[];
+  for(const b of L){const s=nbaSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NBA_MK[b.k]?NBA_MK[b.k][2]:b.k}`})}return out}
 /* tracker summaries — tools/track.js */
 var TRACK={"sum":{"nba":{"best":{"w":0,"l":0,"u":0,"n":0},"win":[0,0],"tot":[0,0],"edge":{},"plays":{"w":0,"l":0,"p":0,"u":0},"recent":[]},"nfl":{"best":{"w":0,"l":0,"u":0,"n":0},"win":[0,0],"tot":[0,0],"edge":{},"plays":{"w":0,"l":0,"p":0,"u":0},"recent":[]},"nhl":{"best":{"w":0,"l":0,"u":0,"n":0},"win":[0,0],"tot":[0,0],"edge":{},"plays":{"w":0,"l":0,"p":0,"u":0},"recent":[{"d":"2026-11-08","type":"game","mk":"Moneyline","pick":"VGK","a":"VGK","h":"BUF","odds":-113,"line":null,"why":"our estimate 63% vs 51% from the odds"},{"d":"2026-11-08","type":"game","mk":"Puck line","pick":"TOR +1.5","a":"NJD","h":"TOR","odds":-184,"line":1.5,"why":"our estimate 74% vs 62% from the odds"},{"d":"2026-11-08","type":"prop","nm":"Nikita Zadorov","tm":"BOS","k":"hsog","side":"u","line":1.5,"odds":-186,"why":"hit 10/10 last 10 · 13/15 this season · 95% vs 65% the odds need"},{"d":"2026-11-08","type":"prop","nm":"Mitch Marner","tm":"VGK","k":"hast","side":"o","line":0.5,"odds":-125,"why":"hit 9/10 last 10 · 12/15 this season · 86% vs 56% the odds need"},{"d":"2026-11-08","type":"prop","nm":"Neal Pionk","tm":"WPG","k":"hsog","side":"o","line":1.5,"odds":-115,"why":"hit 9/10 last 10 · 13/17 this season · 85% vs 53% the odds need"}]}},"nhlPlays":[{"type":"prop","nm":"Neal Pionk","tm":"WPG","k":"hsog","side":"o","line":1.5,"odds":-115,"why":"hit 9/10 last 10 · 13/17 this season · 85% vs 53% the odds need"},{"type":"prop","nm":"Mitch Marner","tm":"VGK","k":"hast","side":"o","line":0.5,"odds":-125,"why":"hit 9/10 last 10 · 12/15 this season · 86% vs 56% the odds need"},{"type":"prop","nm":"Nikita Zadorov","tm":"BOS","k":"hsog","side":"u","line":1.5,"odds":-186,"why":"hit 10/10 last 10 · 13/15 this season · 95% vs 65% the odds need"},{"type":"game","mk":"Puck line","pick":"TOR +1.5","a":"NJD","h":"TOR","odds":-184,"line":1.5,"why":"our estimate 74% vs 62% from the odds"},{"type":"game","mk":"Moneyline","pick":"VGK","a":"VGK","h":"BUF","odds":-113,"line":null,"why":"our estimate 63% vs 51% from the odds"}],"at":"2026-11-08T17:14:29.879Z"};
 /* Team records always follow RESULTS (real.js, updated with every final by the 2-hour job) — so a Monday-night
@@ -4602,6 +4640,7 @@ function liveNflGame(t){const o=typeof oppOf!=="undefined"?oppOf(t):null;if(!o)r
   return Object.entries(LIVE.nfl||{}).filter(([k])=>!k.includes("@")).map(([,g])=>g).find(g=>g.a===a&&g.h===h)||null}
 async function liveDecorate(){
   const h=decodeURIComponent((location.hash||"#games").slice(1));
+  if(typeof nhlLiveDecorate!=="undefined"&&(h.startsWith("nhl")||h==="today"||h==="bets"))try{await nhlLiveDecorate()}catch(e){}
   /* NHL game cards + game page */
   if(h.startsWith("nhl")&&typeof nhGame!=="undefined"){
     document.querySelectorAll("#v-nhl [data-nhg]").forEach(c=>{const g=nhGame(c.dataset.nhg);if(!g)return;livePut(c,liveBar("nhl",liveGet("nhl",g.a,g.h)),c.querySelector(".nhgh")&&c.querySelector(".nhgh").nextSibling)});
@@ -4662,6 +4701,7 @@ async function liveTick(){
   try{
     const h=(location.hash||"#today").slice(1)||"today",nba=h.startsWith("nba");
     if(h==="today"){await Promise.all([liveFetch("nba"),liveFetch("nfl"),liveFetch("nhl")]);const el=document.getElementById("todayLive");if(el&&typeof todayLive!=="undefined")el.innerHTML=todayLive()}
+    else if(h==="bets")await Promise.all([liveFetch("nba"),liveFetch("nhl")]);
     else await liveFetch(nba?"nba":h.startsWith("nhl")?"nhl":"nfl");
     const sk=startedKey();if(LIVE.sk!=null&&sk!==LIVE.sk&&/^(props|nba-props|nba-best|nba-player-|nba$)/.test(h)&&typeof route!=="undefined"){LIVE.sk=sk;if(typeof NB!=="undefined")NB._best=null;route();await liveDecorate();return}
     LIVE.sk=sk;

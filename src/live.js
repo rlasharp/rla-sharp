@@ -95,6 +95,7 @@ function liveNflGame(t){const o=typeof oppOf!=="undefined"?oppOf(t):null;if(!o)r
   return Object.entries(LIVE.nfl||{}).filter(([k])=>!k.includes("@")).map(([,g])=>g).find(g=>g.a===a&&g.h===h)||null}
 async function liveDecorate(){
   const h=decodeURIComponent((location.hash||"#games").slice(1));
+  if(typeof nhlLiveDecorate!=="undefined"&&(h.startsWith("nhl")||h==="today"||h==="bets"))try{await nhlLiveDecorate()}catch(e){}
   /* NHL game cards + game page */
   if(h.startsWith("nhl")&&typeof nhGame!=="undefined"){
     document.querySelectorAll("#v-nhl [data-nhg]").forEach(c=>{const g=nhGame(c.dataset.nhg);if(!g)return;livePut(c,liveBar("nhl",liveGet("nhl",g.a,g.h)),c.querySelector(".nhgh")&&c.querySelector(".nhgh").nextSibling)});
@@ -155,6 +156,7 @@ async function liveTick(){
   try{
     const h=(location.hash||"#today").slice(1)||"today",nba=h.startsWith("nba");
     if(h==="today"){await Promise.all([liveFetch("nba"),liveFetch("nfl"),liveFetch("nhl")]);const el=document.getElementById("todayLive");if(el&&typeof todayLive!=="undefined")el.innerHTML=todayLive()}
+    else if(h==="bets")await Promise.all([liveFetch("nba"),liveFetch("nhl")]);
     else await liveFetch(nba?"nba":h.startsWith("nhl")?"nhl":"nfl");
     const sk=startedKey();if(LIVE.sk!=null&&sk!==LIVE.sk&&/^(props|nba-props|nba-best|nba-player-|nba$)/.test(h)&&typeof route!=="undefined"){LIVE.sk=sk;if(typeof NB!=="undefined")NB._best=null;route();await liveDecorate();return}
     LIVE.sk=sk;

@@ -922,7 +922,8 @@ function nbaLineRow(nm,r){
       </div>`}
 
 /* ---------- Game page: every player prop from this game ---------- */
-function nbaGameProps(g){
+function nbaGameProps(g){return (nbaStarted(g)||typeof xParlayCard==="undefined"?"":xParlayCard(nbaParlayLegs(g)))+nbaGameProps0(g)}
+function nbaGameProps0(g){
   if(nbaStarted(g))return `<div class="info"><span>🔒 This game has started — pregame player props are closed.</span></div>`;
   const tms=[g.a,g.h],all=NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&tms.includes(p.tm)&&NBA_MK[r[1]]});
   if(!all.length)return `<div class="card"><h2>No player props yet</h2><p class="small" style="margin:0">Sportsbooks usually post NBA player props the morning of the game. We add them by about noon ET — check back then.</p></div>`;
