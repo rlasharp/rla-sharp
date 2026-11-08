@@ -669,11 +669,16 @@ function viewWeeks(){
 /* ---------- Router ---------- */
 function route(){
   const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
-  const SHARED=["calc","record","guide","today","bets","favs"],isNba=h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba");
-  if(h.startsWith("nba"))LS.set("sport","nba");else if(!SHARED.includes(h))LS.set("sport","nfl");
-  document.getElementById("nav").hidden=isNba;document.getElementById("nbaNav").hidden=!isNba;
-  
-  document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===(isNba?"nba":"nfl")));
+  const SHARED=["calc","record","guide","today","bets","favs"],isNhl=h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl"),isNba=!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
+  if(h.startsWith("nba"))LS.set("sport","nba");else if(h.startsWith("nhl"))LS.set("sport","nhl");else if(!SHARED.includes(h))LS.set("sport","nfl");
+  document.getElementById("nav").hidden=isNba||isNhl;document.getElementById("nbaNav").hidden=!isNba;const nhN=document.getElementById("nhlNav");if(nhN)nhN.hidden=!isNhl;
+  document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===(isNhl?"nhl":isNba?"nba":"nfl")));
+  if(h.startsWith("nhl")&&typeof nhlRoute!=="undefined"){
+    document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-nhl"));
+    const nv=h.startsWith("nhl-props")?"nhl-props":h.startsWith("nhl-standings")?"nhl-standings":"nhl";
+    document.querySelectorAll("#nhlNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
+    document.getElementById("banner").innerHTML="";nhlRoute(h);window.scrollTo(0,0);return;
+  }
   if(h.startsWith("nba")&&typeof nbaRoute!=="undefined"){
     document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-nba"));
     const nv=h.split("-").slice(0,2).join("-");

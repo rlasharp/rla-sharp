@@ -36,7 +36,18 @@ function loApply(d){
       REAL_PROPS[nm+"|"+r[1]]=[r[2],r[3],r[4],r[5]];LO.move[nm+"|"+r[1]]={l:r[10],o:r[11],u:r[12],oNow:r[3],uNow:r[4],now:r[2],sp:"nfl",nm,k:r[1]};if(Array.isArray(r[14])&&r[14].length)LO.alt[nm+"|"+r[1]]=r[14];nNfl++}
     if(typeof NFL_BEST_C!=="undefined")NFL_BEST_C=null;
   }
-  LO.nba=nNba;LO.nfl=nNfl;return nNba+nNfl}
+  let nNhl=0;const nh=d.nhl||{};
+  if(typeof NHL_PROPS!=="undefined"&&nh.props&&typeof NHL_DATE!=="undefined"&&NHL_DATE){
+    const days=new Set([NHL_DATE,NHL_TOM]),evd={};for(const e of nh.events||[])evd[String(e.id)]=e.date;
+    const idx={};for(const nm of [...Object.keys(NHL_P),...Object.keys(NHL_G)])idx[loNorm(nm)]=nm;
+    const pos={};NHL_PROPS.forEach((r,i)=>pos[r[0]+"|"+r[1]]=i);
+    for(const r of nh.props){if(!days.has(evd[String(r[13])]))continue;const nm=idx[loNorm(r[0])];if(!nm)continue;
+      const row=[nm,r[1],r[2],r[3],r[4],r[5]],k=nm+"|"+r[1];if(k in pos)NHL_PROPS[pos[k]]=row;else{pos[k]=NHL_PROPS.length;NHL_PROPS.push(row)}
+      LO.move[k]={l:r[10],o:r[11],u:r[12],oNow:r[3],uNow:r[4],now:r[2],sp:"nhl",nm,k:r[1]};if(Array.isArray(r[14])&&r[14].length)LO.alt[k]=r[14];nNhl++}
+    const full={};for(const [a,t] of Object.entries(NHL_TEAM))full[t.n]=a;
+    for(const e of nh.events||[]){const a=full[e.away],h=full[e.home];const g=[...NHL_SLATE,...NHL_NEXT].find(x=>x.a===a&&x.h===h&&x.d===e.date);if(g)for(const k of ["ml","tot","pl"])if(e[k])g[k]=e[k]}
+  }
+  LO.nba=nNba;LO.nfl=nNfl;LO.nhl=nNhl;return nNba+nNfl+nNhl}
 function loAgo(){if(!LO.data)return "";const m=Math.max(0,Math.round((Date.now()-Date.parse(LO.data.updated))/60000));return m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"}
 function loBadge(){return LO.data&&(LO.nba||LO.nfl)?`<div class="upd lo">⚡ Live sportsbook odds · updated <b>${loAgo()}</b> · ${LO.nba?LO.nba+" NBA":""}${LO.nba&&LO.nfl?" + ":""}${LO.nfl?LO.nfl+" NFL":""} lines</div>`:""}
 function loRerender(){const y=scrollY;if(typeof route==="function")route();scrollTo(0,y)}

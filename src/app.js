@@ -52,12 +52,12 @@ function appSearchSetup(){
 }
 
 /* ===== Bottom tab bar (phones) + More sheet ===== */
-function curSport(){const h=(location.hash||"").slice(1);if(h.startsWith("nba"))return "nba";if(["games","plays","props","public","weeks","trends","injuries","bets","standings"].some(x=>h===x||h.startsWith(x))||h.startsWith("game-"))return "nfl";return LS.get("sport","nba")==="nfl"?"nfl":"nba"}
+function curSport(){const h=(location.hash||"").slice(1);if(h.startsWith("nba"))return "nba";if(h.startsWith("nhl"))return "nhl";if(["games","plays","props","public","weeks","trends","injuries","bets","standings"].some(x=>h===x||h.startsWith(x))||h.startsWith("game-"))return "nfl";const s=LS.get("sport","nba");return s==="nfl"||s==="nhl"?s:"nba"}
 function tabbarRender(){
   let bar=document.getElementById("tabbar");if(!bar){bar=document.createElement("nav");bar.id="tabbar";document.body.appendChild(bar)}
   const sp=curSport(),h=(location.hash||"#today").slice(1)||"today";
-  const T=[["today","🏠","Today","#today"],["games",sp==="nba"?"🏀":"🏈","Games",sp==="nba"?"#nba":"#games"],["props","🎯","Props",sp==="nba"?"#nba-best":"#props"],["record","📒","Record","#record"],["more","☰","More",""]];
-  const on=k=>k==="today"?h==="today":k==="games"?(h==="nba"||h==="games"||h==="nextweek"||h.startsWith("nba-tomorrow")||h.startsWith("nba-game")||h.startsWith("game-")):k==="props"?/^(nba-props|nba-best|props)$/.test(h):k==="record"?h==="record":false;
+  const T=[["today","🏠","Today","#today"],["games",sp==="nba"?"🏀":sp==="nhl"?"🏒":"🏈","Games",sp==="nba"?"#nba":sp==="nhl"?"#nhl":"#games"],["props","🎯","Props",sp==="nba"?"#nba-best":sp==="nhl"?"#nhl-props":"#props"],["record","📒","Record","#record"],["more","☰","More",""]];
+  const on=k=>k==="today"?h==="today":k==="games"?(h==="nba"||h==="nhl"||h.startsWith("nhl-game")||h==="games"||h==="nextweek"||h.startsWith("nba-tomorrow")||h.startsWith("nba-game")||h.startsWith("game-")):k==="props"?/^(nba-props|nba-best|props|nhl-props)$/.test(h):k==="record"?h==="record":false;
   bar.innerHTML=T.map(([k,i,l,href])=>k==="more"?`<button data-more="1"><b>${i}</b><span>${l}</span></button>`:`<a href="${href}" class="${on(k)?"on":""}"><b>${i}</b><span>${l}</span></a>`).join("");
   bar.querySelector("[data-more]").onclick=moreOpen;
 }
@@ -65,10 +65,11 @@ function moreOpen(){
   let sh=document.getElementById("moresheet");if(!sh){sh=document.createElement("div");sh.id="moresheet";document.body.appendChild(sh)}
   const nba=[["#nba","🏀 Games"],["#nba-best","🔥 Best props"],["#nba-props","🎯 All props"],["#nba-players","👤 Players"],["#nba-teams","📊 Standings"],["#nba-scores","🧾 Scores"],["#nba-injuries","🚑 Injuries"]];
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
+  const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-standings","📊 Standings"]];
   const all=[["#favs","⭐ Favorites"],["#record","📒 Our record"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
-  sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NFL",nfl)}${grp("More",all)}
+  sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NHL",nhl)}${grp("NFL",nfl)}${grp("More",all)}
    <h3>Odds format</h3><div class="seg" id="msOdds"><button data-f="am" class="${of==="am"?"on":""}">American (−110)</button><button data-f="dec" class="${of==="dec"?"on":""}">Decimal (1.91)</button></div>
    <button class="btn" id="msClose" style="width:100%;margin-top:14px">Close</button></div>`;
   sh.querySelectorAll("#msOdds button").forEach(b=>b.onclick=()=>{if(typeof setOddsFmt!=="undefined"){setOddsFmt(b.dataset.f);if(typeof syncOddsBtns!=="undefined")syncOddsBtns();sh.className="";route()}});
@@ -114,8 +115,8 @@ function viewToday(){
   const favHtml=favListHtml(false);
   const nbaTop=(typeof nbaBest!=="undefined"?nbaBest().slice(0,5):[]),nflTop=(typeof nflBest!=="undefined"?nflBest().slice(0,3):[]);
   const today=new Date().toLocaleDateString("en-US",{timeZone:"America/Toronto",weekday:"long",month:"long",day:"numeric"});
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA and NFL on one screen.</p>${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
-  <div id="todayLive">${todayLive()}</div>
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA, NHL and NFL on one screen.</p>${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
+  <div id="todayLive">${todayLive()}</div>${typeof nhlTodayCard!=="undefined"?nhlTodayCard():""}
   ${favs().length?`<div style="margin-top:12px">${favHtml}</div>`:""}
   <div class="grid g2" style="margin-top:12px">
     <div>${typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():""}</div>

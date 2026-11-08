@@ -187,7 +187,7 @@ for pid, L in SK.items():
     tm = cur_team(pid, L)
     if tm not in teams: continue
     nm = C["names"].get(pid) or pid; n = len(L)
-    tot = [sum(x[i] for x in L) for i in range(3, 15)]
+    tot = [sum(x[i] for x in L) for i in range(3, 13)]
     P[nm] = {"id": int(pid), "tm": tm, "pos": C["pos"].get(pid) or "", "gp": n,
              "s": [n, tot[0], tot[1], tot[2], tot[3], tot[4], tot[5], tot[8], round(tot[7] / n / 60, 1)],  # gp,g,a,pts,sog,blk,hits,ppg,toi min
              "g": L[-25:]}
