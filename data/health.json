@@ -1,11 +1,11 @@
 {
  "auto": {
-  "at": "2026-11-08T06:32:46+00:00",
+  "at": "2026-11-08T06:41:32+00:00",
   "ok": true,
-  "summary": "NHL data: 6 games today, 3 tomorrow, 32 teams, 371 skaters, 62 goalies, 469 props, 268 finals, 364 requests\nSite check OK \u2014 published\n"
+  "summary": "NHL data: 6 games today, 3 tomorrow, 32 teams, 371 skaters, 62 goalies, 480 props, 268 finals, 364 requests\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-08T06:32:46+00:00",
+  "at": "2026-11-08T06:41:32+00:00",
   "ok": true,
   "issue": ""
  }
