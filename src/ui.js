@@ -380,7 +380,7 @@ function nflEval(name,k,side){
   sc=Math.max(0,Math.min(.97,sc));
   const be=odds!=null?nflImpl(odds):NFL_BE;
   return {name,k,side,line,odds,book:rp[3],pl,opp:o.opp,home:o.home,g:o.g,sc,be,edge:sc-be,dvOk,dv,
-    c5:[hit(l5),l5.length],cS:[hit(cur),cur.length],cH:[hit(vs),vs.length]};
+    c3:[hit(cur.slice(-3)),cur.slice(-3).length],c5:[hit(l5),l5.length],c10:(()=>{const a=L.filter(l=>Number.isFinite(stat(l,k))).slice(-10);return [hit(a),a.length]})(),cS:[hit(cur),cur.length],cH:[hit(vs),vs.length]};
 }
 let NFL_BEST_C=null;
 function nflBest(){
@@ -402,14 +402,14 @@ function nflBestRow(b,i){
 }
 let NFL_BF={g:"",m:"",s:"",pos:"",min:"",hot:""};
 function nflTopHtml(){
-  const L0=nflBest(),f=NFL_BF,L=L0.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||b.pl.pos===f.pos)&&(!f.min||b.sc>=f.min/100)&&(!f.hot||(()=>{const [n,of]=f.hot.split('/').map(Number);return b.c5[1]>=of&&b.c5[0]>=n})()));
+  const L0=nflBest(),f=NFL_BF,L=L0.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||b.pl.pos===f.pos)&&(!f.min||b.sc>=f.min/100)&&(typeof hotOk==="undefined"||hotOk(b,f.hot)));
   const games=[...new Map(L0.map(b=>[b.g.id,b.g])).values()],mks=[...new Set(L0.map(b=>b.k))];
   const fil=`<div class="bfil"><select data-nbf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${g.away} @ ${g.home}</option>`).join("")}</select>
    <select data-nbf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${MARKETS[m].n}</option>`).join("")}</select>
    <select data-nbf="pos"><option value="">All positions</option>${["QB","RB","WR","TE"].map(p=>`<option${f.pos===p?" selected":""}>${p}</option>`).join("")}</select>
    <select data-nbf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
    <select data-nbf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select>
-   <select data-nbf="hot"><option value="">Any streak</option>${[["4/5","🔥 Hit 4+ of last 5"],["5/5","🔥 Hit 5 of last 5"]].map(([v,n])=>`<option value="${v}"${f.hot===v?" selected":""}>${n}</option>`).join("")}</select></div>`;
+   ${typeof hotSelect!=="undefined"?hotSelect('data-nbf="hot"',f.hot):""}</div>`;
   const closed=SLATE.filter(g=>!g.final&&nflStarted(g)).length;
   return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props this week</h2>${closed?`<div class="small" style="margin-bottom:4px">🔒 ${closed} game${closed>1?"s have":" has"} kicked off — those props are hidden.</div>`:""}
    <div class="small" style="margin-bottom:8px">Every real book line we found, over and under, ranked by how often it would have hit (last 5 games 45%, ${CUR} season 35%, vs this opponent 20%, ±5 for the defense's rank vs his position) compared with what the odds need. Where a book's price isn't listed we compare to the standard −110 break-even (52%). Tap one for his full page.</div>

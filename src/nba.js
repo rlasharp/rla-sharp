@@ -570,7 +570,7 @@ function nbaEval(nm,k,line,side,odds,book,oppIn){
   sc=Math.max(0,Math.min(.97,sc));
   const be=nbaImpl(odds);
   return {nm,k,line,side,odds,book,p,opp,g,sc,be,edge:sc-be,dvOk,n10:l10.length,
-    c5:[hit(l5),l5.length],c10:[hit(l10),l10.length],cS:[hit(ss),ss.length],cH:[hit(h2),h2.length],
+    c3:[hit(l10.slice(-3)),l10.slice(-3).length],c5:[hit(l5),l5.length],c10:[hit(l10),l10.length],cS:[hit(ss),ss.length],cH:[hit(h2),h2.length],
     id:"pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k};
 }
 /* line shopping: best price at the same line across books (extra columns in nba_props.txt) */
@@ -677,13 +677,17 @@ function nbaPlaysCard(){
 function nbaPropTabs(on){return `<div class="seg ptabs"><a class="${on==="best"?"on":""}" href="#nba-best">🔥 Best tonight</a><a class="${on==="all"?"on":""}" href="#nba-props">All props</a></div>`}
 function nbaBestFilter(L){const f=NB.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.min||b.sc>=f.min/100)&&nbaHotOk(b,f.hot))}
 /* hot streak: hit this side in X of his last 5 / 10 */
-function nbaHotOk(b,h){if(!h)return true;const [n,of]=h.split('/').map(Number),c=of===10?b.c10:b.c5;return c&&c[1]>=of&&c[0]>=n}
+/* shared by NBA / NFL / NHL best-props filters: b.c3 / c5 / c10 = [hits, games] */
+const HOT_OPTS=[["3/3","🔥 Hit 3 of last 3"],["4/5","🔥 Hit 4+ of last 5"],["5/5","🔥 Hit 5 of last 5"],["7/10","🔥 Hit 7+ of last 10"],["8/10","🔥 Hit 8+ of last 10"],["10/10","🔥 Hit 10 of last 10"],["c0/3","🧊 Missed last 3"],["c1/5","🧊 Hit 1 or 0 of last 5"]];
+function hotOk(b,h){if(!h)return true;const cold=h[0]==="c",[n,of]=h.replace("c","").split('/').map(Number),c=b["c"+of];if(!c||c[1]<of)return false;return cold?c[0]<=n:c[0]>=n}
+function hotSelect(attr,cur){return `<select ${attr}><option value="">Any streak</option>${HOT_OPTS.map(([v,n])=>`<option value="${v}"${cur===v?" selected":""}>${n}</option>`).join("")}</select>`}
+function nbaHotOk(b,h){return hotOk(b,h)}
 function nbaBestFilterUI(L0){const f=NB.bf||(NB.bf={});const games=NBA_SLATE.filter(g=>!nbaStarted(g));const mks=[...new Set(L0.map(b=>b.k))];
   return `<div class="bfil"><select data-bf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${g.a} @ ${g.h}</option>`).join("")}</select>
    <select data-bf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${NBA_MK[m][1]}</option>`).join("")}</select>
    <select data-bf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
    <select data-bf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select>
-   <select data-bf="hot"><option value="">Any streak</option>${[["4/5","🔥 Hit 4+ of last 5"],["5/5","🔥 Hit 5 of last 5"],["8/10","🔥 Hit 8+ of last 10"]].map(([v,n])=>`<option value="${v}"${f.hot===v?" selected":""}>${n}</option>`).join("")}</select></div>`}
+   ${hotSelect('data-bf="hot"',f.hot)}</div>`}
 function nbaBestPage(el){
   const L0=nbaBest(),L=nbaBestFilter(L0);
   el.innerHTML=`<h1>NBA Best Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>${nbaPropTabs("best")}
