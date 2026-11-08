@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-07 22:50Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-08 01:21Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|Questionable|Ankle|Nov 8
@@ -11,9 +11,9 @@ James Conner|RB|IR|Foot|Nov 15
 Jeremiyah Love|RB|IR|Ankle|Dec 6
 Kendrick Bourne|WR|IR|Lower Leg|Feb 15
 #ATL
+Beaux Collins|WR|Questionable|Hip|Nov 8
 Yasir Abdullah|LB|Questionable|Hamstring|Nov 8
 Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
-Beaux Collins|WR|Questionable|Hip|Nov 8
 James Pearce Jr.|LB|Questionable|Back|Nov 8
 Divine Deablo|LB|Questionable|Forearm|Nov 8
 Samson Ebukam|DE|IR|Hamstring|Dec 13
@@ -152,9 +152,9 @@ Kaytron Allen|RB|Questionable|Quadriceps|Nov 8
 Jaylen Wright|RB|Questionable|Quadriceps|Nov 8
 Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
 #MIN
+Demond Claiborne|RB|Out|Knee|Nov 15
 Jauan Jennings|WR|Out|Calf|Nov 15
 Kyler Murray|QB|Out|Hamstring|Nov 15
-Demond Claiborne|RB|Out|Knee|Nov 15
 Jay Ward|S|Questionable|Knee|Nov 9
 #NE
 Mack Hollins|WR|Questionable|Calf|Nov 8
@@ -201,7 +201,7 @@ Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
 Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
 Brandon Aiyuk|WR|Out|Personal|Nov 15
-Nate Hobbs|CB|IR|Groin|Nov 8
+Nate Hobbs|CB|IR|Groin|Nov 15
 Mike Evans|WR|Out|Achilles|Nov 15
 Deebo Samuel Sr.|WR|Out|Hamstring|Nov 15
 Siran Neal|S|Questionable|Knee|Nov 8
@@ -239,4 +239,3 @@ Daron Payne|DT|IR|Foot|Feb 15
 Jeremy McNichols|RB|IR|Foot|Feb 15
 Javon Kinlaw|DT|IR|Knee - MCL|Feb 15
 Terry McLaurin|WR|IR|Knee|Feb 15
-Laremy Tunsil|OT|IR|Triceps|Dec 20
