@@ -126,7 +126,7 @@ function viewToday(){
   const nbaTop=(typeof nbaBest!=="undefined"?nbaBest().slice(0,5):[]),nflTop=(typeof nflBest!=="undefined"?nflBest().slice(0,3):[]);
   const today=new Date().toLocaleDateString("en-US",{timeZone:"America/Toronto",weekday:"long",month:"long",day:"numeric"});
   host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA, NHL and NFL on one screen.</p>${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
-  <div id="todayLive">${todayLive()}</div><div id="nhlTodayHost">${typeof nhlTodayCard!=="undefined"?nhlTodayCard():""}</div>
+  <div id="todayLive">${todayLive()}</div><div id="xTonight">${typeof xTonightCard!=="undefined"?xTonightCard():""}</div><div id="nhlTodayHost">${typeof nhlTodayCard!=="undefined"?nhlTodayCard():""}</div>
   ${favs().length?`<div style="margin-top:12px">${favHtml}</div>`:""}
   <div class="grid g2" style="margin-top:12px">
     <div>${typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():""}</div>

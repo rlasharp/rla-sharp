@@ -99,7 +99,7 @@ function nhlGames0(el){
   const today=NHL_SLATE||[],best=nhBest().slice(0,6);
   el.innerHTML=`<h1>🏒 NHL · ${nhE(nhDayS(NHL_DATE))}</h1>${nhDayTabs("nhl")}<p class="sub">${nhE(NHL_GEN?`Updated ${NHL_GEN}`:"")} · official NHL stats + live sportsbook lines. Tap a game for the matchup, goalies and every player prop.</p>
    ${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best NHL props</h2><div class="small" style="margin-bottom:8px">How often the line would have hit (last 10 games 60%, season 40%) vs what the odds need.</div><div class="nhbp">${best.map(nhBestRow).join("")}</div><a href="#nhl-props" class="small" style="display:block;margin-top:8px">All NHL props →</a></div>`:""}
-   ${nhEdgesCard()}${nhModelCard(false)}${nhAnglesCard()}${nhMovesCard()}
+   ${typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():""}${nhEdgesCard()}${nhModelCard(false)}${nhAnglesCard()}${nhMovesCard()}
    <h2 style="margin:16px 0 8px">Today${today.length?` · ${today.length} game${today.length>1?"s":""}`:""}</h2>
    ${today.length?`<div class="grid g2">${today.map(nhCard).join("")}</div>`:`<div class="card small">No NHL games today — see the next days above.</div>`}
    ${nhFoot()}`}
@@ -255,8 +255,8 @@ function nhlRoute(h){const el=document.getElementById("v-nhl");if(!el)return;
   if(h.startsWith("nhl-tomorrow"))return nhlUpcoming(el,h);
   ({"nhl-props":nhlProps,"nhl-standings":nhlStandings,"nhl-injuries":nhlInjuries,"nhl-scores":nhlScores}[h]||nhlGamesW)(el)}
 /* Today page snippet */
-function nhlTodayCard(){if(!NHL_READY&&!NHL_DATE){nhlEnsure(()=>{const el=document.getElementById("nhlTodayHost");if(el)el.innerHTML=nhlTodayCard()});return ""}const L=(NHL_SLATE||[]).filter(g=>!nhStarted(g));if(!L.length)return "";
-  return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:6px">🏒 NHL today</h2>${L.map(g=>`<a class="tgame" href="#nhl-game-${g.id}"><span class="small">${nhE(g.t)}</span><span>${nhBadge(g.a)} ${nhE(g.a)} <span class="small">@</span> ${nhBadge(g.h)} ${nhE(g.h)}</span><span class="small">${g.ml?`${nhOdds(g.ml[0])} / ${nhOdds(g.ml[1])}`:""}${g.tot?` · ${g.tot[0]}`:""}</span></a>`).join("")}
+function nhlTodayCard(){if(!NHL_READY&&!NHL_DATE){nhlEnsure(()=>{const el=document.getElementById("nhlTodayHost");if(el)el.innerHTML=nhlTodayCard();const x=document.getElementById("xTonight");if(x&&typeof xTonightCard!=="undefined")x.innerHTML=xTonightCard()});return ""}const L=(NHL_SLATE||[]).filter(g=>!nhStarted(g));if(!L.length)return "";
+  return `${typeof nhlPlaysCard!=="undefined"&&typeof TRACK!=="undefined"&&TRACK&&TRACK.nhlPlays&&TRACK.nhlPlays.length?`<div style="margin-top:12px">${nhlPlaysCard()}</div>`:""}<div class="card" style="margin-top:12px"><h2 style="margin-bottom:6px">🏒 NHL today</h2>${L.map(g=>`<a class="tgame" href="#nhl-game-${g.id}"><span class="small">${nhE(g.t)}</span><span>${nhBadge(g.a)} ${nhE(g.a)} <span class="small">@</span> ${nhBadge(g.h)} ${nhE(g.h)}</span><span class="small">${g.ml?`${nhOdds(g.ml[0])} / ${nhOdds(g.ml[1])}`:""}${g.tot?` · ${g.tot[0]}`:""}</span></a>`).join("")}
    <a href="#nhl" class="small" style="display:block;margin-top:8px;color:var(--text2)">All NHL games &amp; props →</a></div>`}
 
 /* =====================================================================
