@@ -61,12 +61,16 @@ def game_lines(odds, home, away, period=None):
             if (g(m, "period") or None) != period: continue
             if str(g(m, "line_type", "main") or "main") not in ("main", ""): continue
             oc = {}
+            team_tot = False
             for o in g(m, "outcomes", []) or []:
                 oc[str(g(o, "name", ""))] = (g(o, "price"), g(o, "point"))
+                if k == "totals" and str(g(o, "description", "") or "").strip(): team_tot = True   # team total, not the game total
+            if team_tot: continue
             by.setdefault(k, {}).setdefault(b, []).append(oc)
     even = lambda oc, a, b_: abs(abs(oc[a][0] or 0) - abs(oc[b_][0] or 0))
     def best(k, b, a, b_, want=None):
         L = [oc for oc in (by.get(k) or {}).get(b) or [] if a in oc and b_ in oc and oc[a][0] is not None and oc[b_][0] is not None]
+        if k == "totals" and period is None: L = [oc for oc in L if oc[a][1] is not None and 4.5 <= oc[a][1] <= 9]   # sane full-game NHL totals only
         if want is not None:
             W = [oc for oc in L if oc[b_][1] is not None and abs(oc[b_][1]) == want]
             if W: L = W
