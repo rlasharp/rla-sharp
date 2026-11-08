@@ -293,6 +293,7 @@ def main():
     if last_nhl:
         try: stale = (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_nhl)).total_seconds() > 2 * 3600 - 300
         except Exception: stale = True
+    if "nhl" in os.environ.get("FORCE", ""): stale = True
     if stale and used < 850:
         evs, rows, used = fetch_sport("icehockey_nhl", NHL_MK, 30, opens, used, with_game=True, core=NHL_CORE)
         if evs or rows: out["nhl"] = {"at": out["updated"], "events": evs, "props": rows}

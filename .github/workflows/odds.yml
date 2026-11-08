@@ -3,7 +3,9 @@ on:
   schedule:
     - cron: "7,37 13-23 * * *"   # every 30 min, ~8 AM–7 PM ET (UTC times; GitHub may run a few minutes late)
     - cron: "7,37 0-4 * * *"     # every 30 min, ~7 PM–midnight ET
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force: { description: "refresh these now even if fresh (e.g. nhl, nfl, nhl,nfl)", default: "" }
 permissions:
   contents: write
 concurrency:
@@ -21,6 +23,7 @@ jobs:
       - name: Fetch props
         env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+          FORCE: ${{ github.event.inputs.force }}
         run: python tools/fetch_odds.py
       - name: Commit if changed
         run: |
