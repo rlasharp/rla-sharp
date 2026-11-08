@@ -4,7 +4,7 @@ on:
     - cron: "17 */2 * * *"        # every 2 hours, around the clock
   workflow_dispatch:
     inputs:
-      what: { description: "nba, nfl or all", default: "all" }
+      what: { description: "nba, nfl, nhl or all", default: "all" }
   push:
     paths: ["src/tools/auto_run.sh", "src/tools/auto_espn.py", "src/tools/check.js", ".github/workflows/auto.yml"]
 permissions:

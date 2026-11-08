@@ -1,5 +1,5 @@
 #!/bin/bash
-# Automatic site refresh (GitHub Actions). Run from the repo root:  bash src/tools/auto_run.sh [nba|nfl|all]
+# Automatic site refresh (GitHub Actions). Run from the repo root:  bash src/tools/auto_run.sh [nba|nfl|nhl|all]
 # Refreshes data from ESPN JSON + hoopR + the PropLine feed, rebuilds, runs the full check, and only then
 # replaces the live index.html. Any failed data step keeps the previous data (the site never breaks).
 set -u
@@ -30,6 +30,11 @@ if [ "$WHAT" = nfl ] || [ "$WHAT" = all ]; then
   if [ "$(TZ=America/Toronto date +%u)" = 2 ] && [ "$(TZ=America/Toronto date +%H)" -lt 12 ]; then   # Tuesday morning: weekly nflverse refresh
     bash tools/nflfetch.sh > "$WORK/nflfetch.log" 2>&1 && python3 tools/nfltgt.py "$WORK/nflv" > "$WORK/tgt.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/tgt.js" ] && cp "$WORK/tgt.js" nfl_tgt.js && log "NFL targets/spreads/rest refreshed"
     python3 tools/nflrush.py "$WORK/nflv" > "$WORK/rush.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/rush.js" ] && cp "$WORK/rush.js" nfl_rush.js && log "NFL pass rush vs O-line refreshed"; fi
+fi
+if [ "$WHAT" = nhl ] || [ "$WHAT" = all ]; then   # NHL: official NHL API + PropLine feed (box scores cached in data/nhl_box.json)
+  if python3 tools/nhlfetch.py "$ROOT" "$TODAY" > "$WORK/nhl.js" 2> "$WORK/nhl.log" && grep -q "^const NHL_PROPS" "$WORK/nhl.js"; then
+    cp "$WORK/nhl.js" nhl_data.js; log "$(tail -1 "$WORK/nhl.log")"
+  else log "NHL data FAILED — kept old: $(tail -3 "$WORK/nhl.log" | tr '\n' ' ')"; fi
 fi
 bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 if node tools/check.js "$ROOT/src/index.html" > "$WORK/check.log" 2>&1; then
