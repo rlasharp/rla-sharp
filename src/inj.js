@@ -1,6 +1,6 @@
 /* ---------- Injuries: ESPN NFL injury report (espn.com/nfl/injuries + ESPN team injury pages) ----------
    Every player ESPN lists, incl. injured reserve / PUP / NFI. Regenerate with tools/injgen.py data/espn_inj.txt "<date>". */
-const INJ_ASOF="Sat Nov 7";
+const INJ_ASOF="Sun Nov 8";
 const INJ={
   ARI:[["Isaiah Adams", "G", "Questionable", "Ankle", "Nov 8"], ["Jon Gaines II", "G", "Out", "Ankle", "Nov 15"], ["Jayden Williams", "OT", "Out", "Knee", "Nov 15"], ["Walter Nolen III", "DT", "Questionable", "Ankle", "Nov 8"], ["Max Melton", "CB", "Questionable", "Knee", "Nov 8"], ["Bam Knight", "RB", "Out", "Concussion", "Nov 15"], ["James Conner", "RB", "IR", "Foot", "Nov 15"], ["Jeremiyah Love", "RB", "IR", "Ankle", "Dec 6"], ["Kendrick Bourne", "WR", "IR", "Lower Leg", "Feb 15"]],
   ATL:[["Cameron Williams", "OL", "IR", "Ankle", "Nov 15"], ["Yasir Abdullah", "LB", "Questionable", "Hamstring", "Nov 8"], ["Beaux Collins", "WR", "Questionable", "Hip", "Nov 8"], ["Brian Robinson Jr.", "RB", "IR", "Hamstring", "Dec 13"], ["James Pearce Jr.", "LB", "Questionable", "Back", "Nov 8"], ["Divine Deablo", "LB", "Questionable", "Forearm", "Nov 8"], ["Samson Ebukam", "DE", "IR", "Hamstring", "Dec 13"], ["Zachariah Branch", "WR", "Out", "Hamstring", "Nov 15"], ["Anterio Thompson", "DT", "Out", "Undisclosed", "Feb 15"]],
