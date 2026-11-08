@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name "rla-sharp-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html src
+          git add index.html nhl_data.js src
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -qm "Auto refresh $(TZ=America/Toronto date '+%a %b %-d %-I:%M %p ET')"
           for i in 1 2 3; do { git pull --rebase -X theirs -q origin main || { git rebase --abort; false; }; } && git push -q origin HEAD:main && exit 0; sleep 7; done   # -X theirs: on a clash in generated files keep this run's fresh copy
@@ -69,6 +69,19 @@ jobs:
           h["auto"]={"at":datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),"ok":os.environ.get("RES")=="success",
                      "summary":open(os.path.join(os.environ["RUNNER_TEMP"],"rla","summary.txt")).read()[-1500:] if os.path.exists(os.path.join(os.environ["RUNNER_TEMP"],"rla","summary.txt")) else ""}
           iss=os.environ.get("LIVE_ISSUE",""); h["site"]={"at":h["auto"]["at"],"ok":os.environ.get("LIVE")=="success" and not iss,"issue":iss or ("" if os.environ.get("LIVE")=="success" else "live check did not run")}
+          # NHL health: data generated, fresh, odds flowing, last-season backfill progress
+          try:
+              import re
+              nd=open("src/nhl_data.js").read(); gen=re.search(r'const NHL_GEN="([^"]*)"',nd) or re.search(r'var NHL_GEN="([^"]*)"',nd)
+              summ=h["auto"]["summary"]; lo=json.load(open("data/live_odds.json")).get("nhl") or {}
+              pv=json.load(open("src/data/nhl_prev.json")) if os.path.exists("src/data/nhl_prev.json") else {}
+              iss=[]
+              if "NHL data FAILED" in summ: iss.append("NHL data step failed")
+              if "NHL_TEAM" in nd and nd.count('"conf"')<32: iss.append("NHL standings incomplete")
+              h["nhl"]={"at":h["auto"]["at"],"ok":not iss,"issue":"; ".join(iss),"gen":gen.group(1) if gen else "","odds_at":lo.get("at"),
+                        "backfill":f"{sum(1 for v in (pv.get('games') or {}).values() if v)}/{len(pv.get('sched') or {})}"}
+          except Exception as e:
+              h["nhl"]={"at":h["auto"]["at"],"ok":False,"issue":f"health check error: {e}"}
           json.dump(h,open(p,"w"),indent=1)
           PY
           git add data/health.json; git commit -qm "health" || exit 0

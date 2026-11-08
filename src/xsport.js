@@ -65,12 +65,13 @@ async function xCloseLoad(d){if(!d||location.protocol==="file:")return null;if(d
   try{const r=await fetch(`data/close/${d}.json`,{cache:"no-store"});if(r.ok){const j=await r.json(),m={};for(const [k,v] of Object.entries(j)){const [sp,nm,mk]=k.split("|");m[sp+"|"+(typeof loNorm!=="undefined"?loNorm(nm):nm)+"|"+mk]=v}XCLOSE[d]=m}}catch(e){}
   return XCLOSE[d]}
 /* -> {beat:true/false/null, txt} comparing the bet with the last pre-game line we saw */
-function xClv(b,close){if(!close||!b.player)return null;const sp=b.k==="nbaprop"?"nba":b.k==="nhlprop"?"nhl":null;if(!sp)return null;
+function xBetDate(b){if(b.date)return b.date;if(b.k==="prop"&&b.team&&typeof oppOf!=="undefined"&&typeof PLAYS_WEEK!=="undefined"&&b.wk===PLAYS_WEEK){const o=oppOf(b.team);return o&&typeof nflDate!=="undefined"?nflDate(o.g):null}return null}
+function xClv(b,close){if(!close||!b.player)return null;const sp=b.k==="nbaprop"?"nba":b.k==="nhlprop"?"nhl":b.k==="prop"?"nfl":null;if(!sp)return null;
   const c=close[sp+"|"+(typeof loNorm!=="undefined"?loNorm(b.player):b.player)+"|"+b.market];if(!c)return null;const [cl,co,cu]=c,over=b.side==="over";
   if(cl!==b.line){const beat=over?cl>b.line:cl<b.line;return {beat,txt:`closed at ${cl} (you took ${b.line})`}}
   const cOdds=over?co:cu;if(cOdds==null||b.odds==null)return null;const d=xImp(cOdds)-xImp(b.odds);if(Math.abs(d)<.005)return {beat:null,txt:`closed at the same price (${xOdds(cOdds)})`};
   return {beat:d>0,txt:`closed at ${xOdds(cOdds)} (you got ${xOdds(b.odds)})`}}
 async function xClvDecorate(){const host=document.getElementById("v-bets");if(!host||typeof betsLoad==="undefined")return;const a=betsLoad();let n=0,w=0;
-  for(const b of a){if(!b.date||!b.player)continue;const el=host.querySelector(`[data-clv="${b.id}"]`);const c=await xCloseLoad(b.date),r=xClv(b,c);if(!r||!el)continue;n++;if(r.beat)w++;
+  for(const b of a){const d=xBetDate(b);if(!d||!b.player)continue;const el=host.querySelector(`[data-clv="${b.id}"]`);const c=await xCloseLoad(d),r=xClv(b,c);if(!r||!el)continue;n++;if(r.beat)w++;
     el.innerHTML=`<span class="nhcx ${r.beat===true?"up":r.beat===false?"dn":""}">${r.beat===true?"✅ Beat the closing line":r.beat===false?"❌ Line moved against you":"➖ Even with the close"} — ${r.txt}</span>`}
   const s=document.getElementById("clvSum");if(s&&n)s.innerHTML=`<div class="card" style="padding:12px;margin-bottom:12px"><b>📉 Closing line check</b> <span class="small">— beat the close on <b>${w} of ${n}</b> bets we can check (${Math.round(w/n*100)}%). Beating the closing line often is the best long-run sign of good bets, win or lose.</span></div>`}

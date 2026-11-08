@@ -694,30 +694,30 @@ with open(CACHE, "w") as f: json.dump(C, f, separators=(",", ":"), ensure_ascii=
 now = dt.datetime.now(ET)
 J = lambda o: json.dumps(o, separators=(",", ":"), ensure_ascii=False)
 print(f"/* NHL data — official NHL API (api-web.nhle.com) + PropLine sportsbook feed. Generated {now:%Y-%m-%d %H:%M} ET by tools/nhlfetch.py */")
-print(f'const NHL_GEN="{now:%a %b %-d %-I:%M %p} ET";')
-print(f'const NHL_DATE="{TODAY}",NHL_TOM="{tom}";')
-print(f"const NHL_SLATE={J(SLATE)};")
-print(f"const NHL_NEXT={J(NEXT)};")
-print(f"const NHL_LATER={J(LATER)}; /* games 2 and 3 days out */")
-print(f"const NHL_TEAM={J(TEAM)};")
-print(f"const NHL_RES={J(RES)}; /* [date, away, aGoals, home, hGoals, 0 reg / 1 OT / 2 SO, aSOG, hSOG, home puck line (close), total (close)] */")
-print(f"const NHL_P={J(P)}; /* skaters on teams playing today/tomorrow. g: [date, opp, H/A, G, A, PTS, SOG, BLK, HIT, PIM, TOIsec, PPG, +/-, FOW, FOL, shot attempts] */")
-print(f"const NHL_G={J(G)}; /* goalies. g: [date, opp, H/A, SA, SV, GA, TOIsec, started, teamWon] */")
-print(f"const NHL_INJ={J(INJ)}; /* ESPN injury report: team -> [name, pos, status, injury, est. return] */")
+print(f'var NHL_GEN="{now:%a %b %-d %-I:%M %p} ET";')
+print(f'var NHL_DATE="{TODAY}",NHL_TOM="{tom}";')
+print(f"var NHL_SLATE={J(SLATE)};")
+print(f"var NHL_NEXT={J(NEXT)};")
+print(f"var NHL_LATER={J(LATER)}; /* games 2 and 3 days out */")
+print(f"var NHL_TEAM={J(TEAM)};")
+print(f"var NHL_RES={J(RES)}; /* [date, away, aGoals, home, hGoals, 0 reg / 1 OT / 2 SO, aSOG, hSOG, home puck line (close), total (close)] */")
+print(f"var NHL_P={J(P)}; /* skaters on teams playing today/tomorrow. g: [date, opp, H/A, G, A, PTS, SOG, BLK, HIT, PIM, TOIsec, PPG, +/-, FOW, FOL, shot attempts] */")
+print(f"var NHL_G={J(G)}; /* goalies. g: [date, opp, H/A, SA, SV, GA, TOIsec, started, teamWon] */")
+print(f"var NHL_INJ={J(INJ)}; /* ESPN injury report: team -> [name, pos, status, injury, est. return] */")
 H2HP = {}
 for g in SLATE + NEXT + LATER:
     k_ = "|".join(sorted([g["a"], g["h"]]))
     H2HP[k_] = [[x["d"], x["a"], x["as"], x["h"], x["hs"], x["ot"]] for _, x in PREV if {x["a"], x["h"]} == {g["a"], g["h"]}]
-print(f"const NHL_H2HP={J(H2HP)}; /* last season meetings for upcoming matchups */")
+print(f"var NHL_H2HP={J(H2HP)}; /* last season meetings for upcoming matchups */")
 # league shot-zone averages (attempts share + shooting % per zone)
 LZ = [[0, 0, 0] for _ in range(4)]
 for _, g in games:
     for zl in (g.get("sz") or {}).values():
         for zi, zz in enumerate(zl):
             for j in range(3): LZ[zi][j] += zz[j]
-print(f"const NHL_LZ={J(LZ)}; /* league shot zones [unblocked attempts, SOG, goals]: slot, high slot, wide, long */")
-print(f"const NHL_MODEL={J(MODEL)}; /* our estimate graded vs finals: win pick, total pick, edges >= 4% by market [W, L, units] */")
-print(f"const NHL_PRES={J(PRES)},NHL_PRES_D={J(PRES_D)}; /* props of {PRES_D} graded at the closing line: [name, team, mk, line, over, under, book, result value, over/under/push] */")
-print(f"const NHL_RECENT={J(RECENT)};")
-print(f"const NHL_PROPS={J(PROPS)}; /* [name, market, line, over, under, book] */")
+print(f"var NHL_LZ={J(LZ)}; /* league shot zones [unblocked attempts, SOG, goals]: slot, high slot, wide, long */")
+print(f"var NHL_MODEL={J(MODEL)}; /* our estimate graded vs finals: win pick, total pick, edges >= 4% by market [W, L, units] */")
+print(f"var NHL_PRES={J(PRES)},NHL_PRES_D={J(PRES_D)}; /* props of {PRES_D} graded at the closing line: [name, team, mk, line, over, under, book, result value, over/under/push] */")
+print(f"var NHL_RECENT={J(RECENT)};")
+print(f"var NHL_PROPS={J(PROPS)}; /* [name, market, line, over, under, book] */")
 log(f"NHL data: {len(SLATE)} games today, {len(NEXT)} tomorrow, {len(TEAM)} teams, {len(P)} skaters, {len(G)} goalies, {len(PROPS)} props, {len(RES)} finals, {NREQ[0]} requests")

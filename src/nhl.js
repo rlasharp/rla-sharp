@@ -3,6 +3,12 @@
    + player props / game lines from the PropLine feed (baked in nhl_data.js, refreshed live by liveodds.js).
    Routes: #nhl (games) · #nhl-game-<id> · #nhl-props · #nhl-player-<name> · #nhl-standings */
 const NH={tm:"all",mk:"all",gp:"all",gm:"all"};
+/* NHL data is a separate file (nhl_data.js next to index.html) loaded the first time it's needed — keeps the first page load light */
+let NHL_READY=false,NHL_WAIT=[];
+function nhlEnsure(cb){if(NHL_READY||NHL_DATE){NHL_READY=true;cb&&cb();return}if(cb)NHL_WAIT.push(cb);if(NHL_WAIT.loading)return;NHL_WAIT.loading=1;
+  const sc=document.createElement("script");sc.src="nhl_data.js?v="+Math.floor(Date.now()/600000);
+  sc.onload=()=>{NHL_READY=true;try{if(typeof SRCH!=="undefined")SRCH=null;if(typeof LO!=="undefined"&&LO.data&&typeof loApply!=="undefined")loApply(LO.data)}catch(e){}const W=NHL_WAIT.splice(0);NHL_WAIT.loading=0;W.forEach(f=>{try{f()}catch(e){console.error(e)}})};
+  sc.onerror=()=>{NHL_WAIT.loading=0;const W=NHL_WAIT.splice(0);W.forEach(f=>{try{f()}catch(e){}})};document.head.appendChild(sc)}
 const NH_COL={ANA:"#F47A38",BOS:"#C69214",BUF:"#003087",CAR:"#CE1126",CBJ:"#002654",CGY:"#C8102E",CHI:"#CF0A2C",COL:"#6F263D",DAL:"#006847",DET:"#CE1126",EDM:"#FF4C00",FLA:"#C8102E",LAK:"#3d3d3d",MIN:"#154734",MTL:"#AF1E2D",NJD:"#CE1126",NSH:"#c9a227",NYI:"#00539B",NYR:"#0038A8",OTT:"#C52032",PHI:"#F74902",PIT:"#a88b2c",SEA:"#2b8a8f",SJS:"#006D75",STL:"#002F87",TBL:"#002868",TOR:"#00205B",UTA:"#5b8fbf",VAN:"#00205B",VGK:"#9a8655",WPG:"#041E42",WSH:"#C8102E"};
 /* market: [short, name, unit, value-of-a-game-row (null = no game log), goalie market] */
 const NH_MK={hpts:["PTS","Points","pts",x=>x[5]],hgoals:["G","Goals","goals",x=>x[3]],hast:["A","Assists","ast",x=>x[4]],hsog:["SOG","Shots on goal","shots",x=>x[6]],
@@ -242,13 +248,14 @@ function nhWire(el,redraw){
   el.querySelectorAll("[data-nhgm]").forEach(b=>b.onclick=()=>{NH.gm=b.dataset.nhgm;redraw&&redraw()});
   el.querySelectorAll("[data-nhsw]").forEach(b=>b.onclick=()=>{const y=scrollY;NH.sw=NH.sw===b.dataset.nhsw?null:b.dataset.nhsw;const gi=location.hash.match(/nhl-game-(\d+)/);if(gi)nhlGame(el,gi[1]);scrollTo(0,y)});}
 function nhlRoute(h){const el=document.getElementById("v-nhl");if(!el)return;
+  if(!NHL_READY&&!NHL_DATE){el.innerHTML=`<h1>🏒 NHL</h1><div class="card small">Loading NHL data…</div>`;nhlEnsure(()=>{if(decodeURIComponent((location.hash||"").slice(1))===h)nhlRoute(h)});return}
   if(h.startsWith("nhl-game-"))return nhlGame(el,h.slice(9));
   if(h.startsWith("nhl-player-"))return nhlPlayer(el,h.slice(11));
   if(h.startsWith("nhl-team-"))return nhlTeam(el,h.slice(9));
   if(h.startsWith("nhl-tomorrow"))return nhlUpcoming(el,h);
   ({"nhl-props":nhlProps,"nhl-standings":nhlStandings,"nhl-injuries":nhlInjuries,"nhl-scores":nhlScores}[h]||nhlGamesW)(el)}
 /* Today page snippet */
-function nhlTodayCard(){const L=(NHL_SLATE||[]).filter(g=>!nhStarted(g));if(!L.length)return "";
+function nhlTodayCard(){if(!NHL_READY&&!NHL_DATE){nhlEnsure(()=>{const el=document.getElementById("nhlTodayHost");if(el)el.innerHTML=nhlTodayCard()});return ""}const L=(NHL_SLATE||[]).filter(g=>!nhStarted(g));if(!L.length)return "";
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:6px">🏒 NHL today</h2>${L.map(g=>`<a class="tgame" href="#nhl-game-${g.id}"><span class="small">${nhE(g.t)}</span><span>${nhBadge(g.a)} ${nhE(g.a)} <span class="small">@</span> ${nhBadge(g.h)} ${nhE(g.h)}</span><span class="small">${g.ml?`${nhOdds(g.ml[0])} / ${nhOdds(g.ml[1])}`:""}${g.tot?` · ${g.tot[0]}`:""}</span></a>`).join("")}
    <a href="#nhl" class="small" style="display:block;margin-top:8px;color:var(--text2)">All NHL games &amp; props →</a></div>`}
 

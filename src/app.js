@@ -43,6 +43,7 @@ function searchIndex(){
 }
 function appSearchSetup(){
   const inp=document.getElementById("plSearch"),box=document.getElementById("plRes");if(!inp)return;
+  inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure()});
   inp.placeholder="🔍 Search any player or team";
   const draw=()=>{const q=inp.value.trim().toLowerCase();if(q.length<2){box.innerHTML="";box.hidden=true;return}
     const words=q.split(/\s+/);
@@ -111,7 +112,7 @@ function favListHtml(full){
   }else favHtml=emptyFav;
   return favHtml;
 }
-function viewFavs(){const host=document.getElementById("v-favs");if(!host)return;const n=favs().length;
+function viewFavs(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&favs().some(f=>f.t==="nhlp"||f.t==="nhlt")){nhlEnsure(()=>viewFavs())}const host=document.getElementById("v-favs");if(!host)return;const n=favs().length;
   host.innerHTML=`<h1>⭐ Favorites</h1><p class="sub">${n?`${n} saved · `:""}Saved on this phone/browser only. Tap a name for today's lines and stats.</p>${favListHtml(true)}`;
   host.querySelectorAll("[data-nflfav]").forEach(el=>el.onclick=e=>{e.preventDefault();if(typeof goPlayer!=="undefined")goPlayer(el.dataset.nflfav.replace(/&amp;/g,"&"))});}
 function viewToday(){
@@ -125,7 +126,7 @@ function viewToday(){
   const nbaTop=(typeof nbaBest!=="undefined"?nbaBest().slice(0,5):[]),nflTop=(typeof nflBest!=="undefined"?nflBest().slice(0,3):[]);
   const today=new Date().toLocaleDateString("en-US",{timeZone:"America/Toronto",weekday:"long",month:"long",day:"numeric"});
   host.innerHTML=`<h1>Today</h1><p class="sub">${today} · everything worth knowing for NBA, NHL and NFL on one screen.</p>${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
-  <div id="todayLive">${todayLive()}</div>${typeof nhlTodayCard!=="undefined"?nhlTodayCard():""}
+  <div id="todayLive">${todayLive()}</div><div id="nhlTodayHost">${typeof nhlTodayCard!=="undefined"?nhlTodayCard():""}</div>
   ${favs().length?`<div style="margin-top:12px">${favHtml}</div>`:""}
   <div class="grid g2" style="margin-top:12px">
     <div>${typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():""}</div>

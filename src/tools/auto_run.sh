@@ -38,7 +38,7 @@ if [ "$WHAT" = nhl ] || [ "$WHAT" = all ]; then   # NHL: official NHL API + Prop
 fi
 bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 if node tools/check.js "$ROOT/src/index.html" > "$WORK/check.log" 2>&1; then
-  cp index.html "$ROOT/index.html"; log "Site check OK — published"
+  cp index.html "$ROOT/index.html"; cp nhl_data.js "$ROOT/nhl_data.js"; log "Site check OK — published"
 else
   log "SITE CHECK FAILED — live site left unchanged"; cat "$WORK/check.log"
   git -C "$ROOT" checkout -- src 2>/dev/null; exit 1

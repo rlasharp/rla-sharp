@@ -66,7 +66,8 @@ document.addEventListener("click",e=>{
 // spec builders used across the site
 function specProp(player,market,side){const P=PINFO[player]||{};const rp=realProp(player,market);
   const line=lineFor(player,market);const odds=rp?(side==="over"?rp[1]:rp[2]):null;
-  return {k:"prop",player,market,side,line,team:P.team,pos:P.pos,odds,book:rp?rp[3]:null}}
+  const o=P.team&&typeof oppOf!=="undefined"?oppOf(P.team):null,date=o&&typeof nflDate!=="undefined"?nflDate(o.g):null;
+  return {k:"prop",player,market,side,line,team:P.team,pos:P.pos,odds,book:rp?rp[3]:null,date}}
 function specGame(g,k,teamOrSide){const L=LINES[g.id];
   if(k==="ml")return {k,game:g.id,away:g.away,home:g.home,team:teamOrSide,odds:teamOrSide===g.away?L.ml[0]:L.ml[1]};
   if(k==="spread")return {k,game:g.id,away:g.away,home:g.home,team:teamOrSide,line:teamOrSide===g.home?L.sp:-L.sp,odds:-110,est:true};
