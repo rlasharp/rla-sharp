@@ -43,12 +43,14 @@ NHL_MK = {"player_points": "hpts", "player_goals": "hgoals", "player_assists": "
           "goalie_saves": "hsaves"}
 NHL_CORE = ["player_points", "player_goals", "player_assists", "player_shots_on_goal", "player_blocked_shots", "goalie_saves"]
 GAME_MK = ["h2h", "spreads", "totals"]
+PERIOD_OK = [True]
 YES_MK = {"anyTD", "hanyG"}  # one-sided Yes markets (no under, no alt ladder)
 MKSAMPLE = {}
 MKSEEN = {}  # market keys the feed returned, per sport (run log)
 
-def game_lines(odds, home, away):
-    """moneyline / total / puck line (spread) from the first preferred book that has each market."""
+def game_lines(odds, home, away, period=None):
+    """moneyline / total / puck line (spread) from the first preferred book that has each market.
+    period=None -> full game; "p1" -> 1st period (rows carry a `period` field when the feed was asked for period=all)."""
     by = {}
     for bk in g(odds, "bookmakers", []) or []:
         b = str(g(bk, "key", "")).lower()
@@ -56,6 +58,7 @@ def game_lines(odds, home, away):
         for m in g(bk, "markets", []) or []:
             k = g(m, "key")
             if k not in GAME_MK: continue
+            if (g(m, "period") or None) != period: continue
             if str(g(m, "line_type", "main") or "main") not in ("main", ""): continue
             oc = {}
             for o in g(m, "outcomes", []) or []:
@@ -65,7 +68,7 @@ def game_lines(odds, home, away):
     for b in BOOK_PREF:
         oc = (by.get("h2h") or {}).get(b)
         if oc and home in oc and away in oc and "ml" not in out:
-            out["ml"] = [oc[away][0], oc[home][0], BOOK_NAME[b]]
+            out["ml"] = [oc[away][0], oc[home][0], BOOK_NAME[b]] + ([oc["Draw"][0]] if "Draw" in oc else [])
         oc = (by.get("totals") or {}).get(b)
         if oc and "Over" in oc and "Under" in oc and "tot" not in out:
             out["tot"] = [oc["Over"][1], oc["Over"][0], oc["Under"][0], BOOK_NAME[b]]
@@ -184,7 +187,11 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
         evs.append({"id": eid, "home": g(ev, "home_team"), "away": g(ev, "away_team"), "start": start, "date": d})
         mks = list(mk_map) + (GAME_MK if with_game else [])
         try:
-            odds = client.get_odds(sport, event_id=eid, markets=mks)
+            if with_game and PERIOD_OK[0]:
+                try: odds = client.get_odds(sport, event_id=eid, markets=mks, period="all")   # full game + 1st/2nd/3rd period lines, same request
+                except TypeError: PERIOD_OK[0] = False; odds = client.get_odds(sport, event_id=eid, markets=mks)
+            else:
+                odds = client.get_odds(sport, event_id=eid, markets=mks)
         except Exception as e:
             used += 1
             if not core: print(f"{sport} {eid}: odds failed: {e}"); continue
@@ -195,6 +202,8 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
         if with_game:
             try:
                 gl = game_lines(odds, evs[-1]["home"], evs[-1]["away"]); evs[-1].update(gl)
+                p1 = game_lines(odds, evs[-1]["home"], evs[-1]["away"], "p1")
+                if p1: evs[-1]["p1"] = p1
                 ok_ = f"{eid}|game"; op_ = prev_open.get(ok_) or {}
                 for k_ in ("ml", "tot", "pl"):
                     if k_ in gl and k_ not in op_: op_[k_] = gl[k_]
@@ -211,6 +220,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
                     MKSAMPLE[g(m, "key")] = [b, str(g(m, "line_type", "")), [{k_: g(o, k_) for k_ in ("name", "description", "point", "price", "payout_multiplier")} for o in (g(m, "outcomes", []) or [])[:2]]]
                 mk = mk_map.get(g(m, "key"))
                 if not mk: continue
+                if g(m, "period"): continue   # period player props: full game only
                 lt = str(g(m, "line_type", "") or "")
                 DIAG[lt] = DIAG.get(lt, 0) + 1
                 for oc in g(m, "outcomes", []) or []:

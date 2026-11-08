@@ -98,7 +98,7 @@ for gid, g in sorted(SCHED.items()):
     C["games"][gid] = rec; new += 1
 # play-by-play pass (box scores lack these): faceoffs won/lost, shot attempts (SAT = goals + shots on goal + missed + blocked),
 # goals by period, who scored first, and high-danger attempts (unblocked attempts from within 20 ft of the net)
-PBP_V = 2
+PBP_V = 3
 nfo = 0
 for gid, rec in sorted(C["games"].items()):
     if rec.get("xv") == PBP_V: continue
@@ -110,7 +110,7 @@ for gid, rec in sorted(C["games"].items()):
     for side in ("awayTeam", "homeTeam"):
         t = pbp.get(side) or {}
         if t.get("id") is not None: tid[str(t["id"])] = t.get("abbrev")
-    fo, sat = {}, {}
+    fo, sat, sz = {}, {}, {}   # sz: player -> 4 zones x [unblocked attempts, shots on goal incl. goals, goals]
     tm = {rec["a"]: [0, 0, 0, 0, 0, 0], rec["h"]: [0, 0, 0, 0, 0, 0]}   # [SAT, HD attempts, goals P1, P2, P3, scored first]
     first = None
     for pl in pbp.get("plays") or []:
@@ -128,13 +128,64 @@ for gid, rec in sorted(C["games"].items()):
         if shooter: sat[str(shooter)] = sat.get(str(shooter), 0) + 1
         tm[t][0] += 1
         x, y = dd.get("xCoord"), dd.get("yCoord")
-        if k != "blocked-shot" and x is not None and y is not None and ((89 - abs(x)) ** 2 + y ** 2) ** .5 <= 20: tm[t][1] += 1
+        if k != "blocked-shot" and x is not None and y is not None:
+            dist = ((89 - abs(x)) ** 2 + y ** 2) ** .5
+            if dist <= 20: tm[t][1] += 1
+            if shooter:
+                z = 0 if dist <= 20 else 1 if dist <= 35 and abs(y) <= 12 else 2 if dist <= 45 else 3   # slot, high slot, wide / circles, long range
+                Z = sz.setdefault(str(shooter), [[0, 0, 0] for _ in range(4)])[z]
+                Z[0] += 1
+                if k in ("goal", "shot-on-goal"): Z[1] += 1
+                if k == "goal": Z[2] += 1
         if k == "goal":
             per = ((pl.get("periodDescriptor") or {}).get("number")) or 0
             if 1 <= per <= 3: tm[t][1 + per] += 1
             if first is None: first = t; tm[t][5] = 1
-    rec["fo"] = fo; rec["sat"] = sat; rec["tm"] = tm; rec["xv"] = PBP_V; nfo += 1
+    rec["fo"] = fo; rec["sat"] = sat; rec["tm"] = tm; rec["sz"] = sz; rec["xv"] = PBP_V; nfo += 1
 log(f"NHL: {new} new box scores, {nfo} play-by-play logs, {len(C['games'])} cached, {NREQ[0]} requests so far")
+# ---------- last season (2025-26) box scores, cached once in src/data/nhl_prev.json: longer player histories + H2H ----------
+PREV_F = os.path.join(ROOT, "src", "data", "nhl_prev.json")
+try:
+    with open(PREV_F) as f: PV = json.load(f)
+except Exception:
+    PV = {}
+PV.setdefault("games", {}); PV.setdefault("sched", {})
+if not PV.get("scanned"):
+    d = dt.date(2025, 10, 1)
+    while d <= dt.date(2026, 4, 20):
+        try: w = get(f"https://api-web.nhle.com/v1/schedule/{d.isoformat()}")
+        except Exception as e: log("prev schedule failed", d, e); break
+        for day in w.get("gameWeek") or []:
+            for g in day.get("games") or []:
+                if g.get("gameType") == 2: PV["sched"][str(g["id"])] = day.get("date")
+        nxt = w.get("nextStartDate"); nd = dt.date.fromisoformat(nxt) if nxt else None
+        if not nd or nd <= d: PV["scanned"] = True; break
+        d = nd
+    else:
+        PV["scanned"] = True
+npv = 0
+for gid, day in sorted(PV["sched"].items()):
+    if gid in PV["games"]: continue
+    if npv >= 330: break
+    try: b = get(f"https://api-web.nhle.com/v1/gamecenter/{gid}/boxscore")
+    except Exception as e: log("prev boxscore failed", gid, e); continue
+    if "playerByGameStats" not in b: PV["games"][gid] = None; continue
+    A, H = b["awayTeam"], b["homeTeam"]; pd = (b.get("periodDescriptor") or {})
+    rec = {"d": day, "a": A["abbrev"], "h": H["abbrev"], "as": A.get("score"), "hs": H.get("score"), "ot": 2 if pd.get("periodType") == "SO" else 1 if (pd.get("number") or 3) > 3 else 0, "p": [], "gl": []}
+    for side, tm in (("awayTeam", A["abbrev"]), ("homeTeam", H["abbrev"])):
+        P_ = b["playerByGameStats"].get(side) or {}
+        for grp in ("forwards", "defense"):
+            for x in P_.get(grp) or []:
+                pid = str(x["playerId"]); C["names"].setdefault(pid, dflt(x.get("name"))); C["pos"].setdefault(pid, x.get("position"))
+                rec["p"].append([pid, tm, x.get("goals", 0), x.get("assists", 0), x.get("points", 0), x.get("sog", 0), x.get("blockedShots", 0), x.get("hits", 0), x.get("pim", 0), secs(x.get("toi")), x.get("powerPlayGoals", 0), x.get("plusMinus", 0)])
+        for x in P_.get("goalies") or []:
+            t_ = secs(x.get("toi"))
+            if t_ > 0: rec["gl"].append([str(x["playerId"]), tm, x.get("shotsAgainst", 0), x.get("saves", 0), x.get("goalsAgainst", 0), t_])
+    PV["games"][gid] = rec; npv += 1
+with open(PREV_F, "w") as f: json.dump(PV, f, separators=(",", ":"), ensure_ascii=False)
+log(f"NHL last season: {sum(1 for v in PV['games'].values() if v)} of {len(PV['sched'])} games cached ({npv} new)")
+PREV = sorted([(k, v) for k, v in PV["games"].items() if v], key=lambda kv: (kv[1]["d"], kv[0]))
+
 # next run: rescan from a week before today (late finals, postponements)
 C["scan_from"] = max(SEASON_START, (today - dt.timedelta(days=7)).isoformat())
 
@@ -395,7 +446,17 @@ for r in RES:
         if tot is not None:
             g_ = as_ + hs_; i = 0 if g_ > tot else 1 if g_ < tot else 2
             TEAM[t]["ou"][i] += 1; TEAM[t]["ouH" if home else "ouR"][i] += 1
-SK, GO = {}, {}
+SK, GO, SKP, GOP = {}, {}, {}, {}
+for gid, g in PREV:   # last season: same row layout, faceoffs / attempts unknown (None), last field 1 = last season
+    for r in g["p"]:
+        pid, tm = r[0], r[1]; opp = g["h"] if tm == g["a"] else g["a"]
+        SKP.setdefault(pid, []).append([g["d"], opp, "A" if tm == g["a"] else "H"] + r[2:] + [None, None, None, 1])
+    st_ = {}
+    for r in g["gl"]:
+        if r[5] > st_.get(r[1], (0, None))[0]: st_[r[1]] = (r[5], r[0])
+    for r in g["gl"]:
+        pid, tm = r[0], r[1]; opp = g["h"] if tm == g["a"] else g["a"]; won = (g["as"] > g["hs"]) == (tm == g["a"])
+        GOP.setdefault(pid, []).append([g["d"], opp, "A" if tm == g["a"] else "H", r[2], r[3], r[4], r[5], 1 if st_.get(tm, (0, None))[1] == pid else 0, 1 if won else 0, 1])
 for gid, g in games:
     for r in g["p"]:
         pid, tm = r[0], r[1]; opp = g["h"] if tm == g["a"] else g["a"]; ha = "A" if tm == g["a"] else "H"
@@ -422,9 +483,14 @@ for pid, L in SK.items():
     nm = C["names"].get(pid) or pid; n = len(L)
     tot = [sum(x[i] for x in L) for i in range(3, 13)]
     fw = sum(x[13] or 0 for x in L); fl = sum(x[14] or 0 for x in L)
+    zs = [[0, 0, 0] for _ in range(4)]
+    for _, g in games:
+        for zi, zz in enumerate(((g.get("sz") or {}).get(pid)) or []):
+            for j in range(3): zs[zi][j] += zz[j]
+    LL = [x + [0] for x in L]   # last field 0 = this season
     P[nm] = {"id": int(pid), "tm": tm, "pos": C["pos"].get(pid) or "", "gp": n,
              "s": [n, tot[0], tot[1], tot[2], tot[3], tot[4], tot[5], tot[8], round(tot[7] / n / 60, 1), fw, fl],  # gp,g,a,pts,sog,blk,hits,ppg,toi min,fow,fol
-             "g": L[-25:], "ppt": PPT.get(pid)}
+             "g": (SKP.get(pid, []) + LL)[-30:], "ppt": PPT.get(pid), "sz": zs if any(z[0] for z in zs) else None}
 # PP unit: rank by PP time per game within each team (top 5 = PP1, next 5 = PP2)
 by_t = {}
 for nm, v in P.items():
@@ -437,7 +503,7 @@ for pid, L in GO.items():
     nm = C["names"].get(pid) or pid; st = [x for x in L if x[7]]
     sa, sv, ga, toi = (sum(x[i] for x in L) for i in (3, 4, 5, 6))
     G[nm] = {"id": int(pid), "tm": tm, "gp": len(L), "gs": len(st), "w": sum(1 for x in st if x[8]),
-             "svp": round(sv / sa * 100, 1) if sa else None, "gaa": round(ga * 3600 / toi, 2) if toi else None, "g": L[-15:]}
+             "svp": round(sv / sa * 100, 1) if sa else None, "gaa": round(ga * 3600 / toi, 2) if toi else None, "g": (GOP.get(pid, []) + [x + [0] for x in L])[-25:]}
 
 # ---------- props + game lines from the PropLine feed (refreshed live on the public site too) ----------
 PROPS, LINES = [], {}
@@ -448,7 +514,7 @@ try:
     evday = {str(e["id"]): e.get("date") for e in lo.get("events") or []}
     for e in lo.get("events") or []:
         a, h = full.get(e.get("away")), full.get(e.get("home"))
-        if a and h: LINES[f"{a}@{h}|{e.get('date')}"] = {k: e[k] for k in ("ml", "tot", "pl", "open") if k in e}
+        if a and h: LINES[f"{a}@{h}|{e.get('date')}"] = {k: e[k] for k in ("ml", "tot", "pl", "open", "p1") if k in e}
     miss = set()
     for r in lo.get("props") or []:
         if evday.get(str(r[13])) not in (TODAY, tom): continue
@@ -475,5 +541,17 @@ print(f"const NHL_RES={J(RES)}; /* [date, away, aGoals, home, hGoals, 0 reg / 1 
 print(f"const NHL_P={J(P)}; /* skaters on teams playing today/tomorrow. g: [date, opp, H/A, G, A, PTS, SOG, BLK, HIT, PIM, TOIsec, PPG, +/-, FOW, FOL, shot attempts] */")
 print(f"const NHL_G={J(G)}; /* goalies. g: [date, opp, H/A, SA, SV, GA, TOIsec, started, teamWon] */")
 print(f"const NHL_INJ={J(INJ)}; /* ESPN injury report: team -> [name, pos, status, injury, est. return] */")
+H2HP = {}
+for g in SLATE + NEXT + LATER:
+    k_ = "|".join(sorted([g["a"], g["h"]]))
+    H2HP[k_] = [[x["d"], x["a"], x["as"], x["h"], x["hs"], x["ot"]] for _, x in PREV if {x["a"], x["h"]} == {g["a"], g["h"]}]
+print(f"const NHL_H2HP={J(H2HP)}; /* last season meetings for upcoming matchups */")
+# league shot-zone averages (attempts share + shooting % per zone)
+LZ = [[0, 0, 0] for _ in range(4)]
+for _, g in games:
+    for zl in (g.get("sz") or {}).values():
+        for zi, zz in enumerate(zl):
+            for j in range(3): LZ[zi][j] += zz[j]
+print(f"const NHL_LZ={J(LZ)}; /* league shot zones [unblocked attempts, SOG, goals]: slot, high slot, wide, long */")
 print(f"const NHL_PROPS={J(PROPS)}; /* [name, market, line, over, under, book] */")
 log(f"NHL data: {len(SLATE)} games today, {len(NEXT)} tomorrow, {len(TEAM)} teams, {len(P)} skaters, {len(G)} goalies, {len(PROPS)} props, {len(RES)} finals, {NREQ[0]} requests")
