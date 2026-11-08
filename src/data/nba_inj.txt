@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 17:07Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 17:09Z
 #Atlanta Hawks
 Asa Newell|F|Day-To-Day|toe|Nov 9
 Keshon Gilbert|G|Day-To-Day|knee inflammation|Nov 9
