@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-08 03:01Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-08 04:39Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|Questionable|Ankle|Nov 8
@@ -11,14 +11,14 @@ James Conner|RB|IR|Foot|Nov 15
 Jeremiyah Love|RB|IR|Ankle|Dec 6
 Kendrick Bourne|WR|IR|Lower Leg|Feb 15
 #ATL
-Beaux Collins|WR|Questionable|Hip|Nov 8
+Cameron Williams|OL|IR|Ankle|Nov 15
 Yasir Abdullah|LB|Questionable|Hamstring|Nov 8
+Beaux Collins|WR|Questionable|Hip|Nov 8
 Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
 James Pearce Jr.|LB|Questionable|Back|Nov 8
 Divine Deablo|LB|Questionable|Forearm|Nov 8
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 Zachariah Branch|WR|Out|Hamstring|Nov 15
-Cameron Williams|OL|IR|Ankle|Nov 15
 Anterio Thompson|DT|Out|Undisclosed|Feb 15
 #BAL
 Lamar Jackson|QB|IR|Thumb|Dec 13
@@ -78,9 +78,9 @@ George Pickens|WR|Questionable|Hamstring|Nov 8
 Jalen Thompson|S|IR|Hamstring|Nov 8
 Luke Schoonmaker|TE|Questionable|Groin|Nov 8
 #DEN
+Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 Pat Bryant|WR|Questionable|Ankle|Nov 8
 Kris Abrams-Draine|CB|Out|Ankle|Nov 22
-Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 Brandon Jones|S|Out|Hamstring|Nov 22
 Talanoa Hufanga|S|Questionable|Ankle|Nov 8
 Dondrea Tillman|LB|Questionable|Hip|Nov 8
@@ -158,16 +158,16 @@ Jauan Jennings|WR|Out|Calf|Nov 15
 Kyler Murray|QB|Out|Hamstring|Nov 15
 Jay Ward|S|Questionable|Knee|Nov 9
 #NE
+Greg Van Roten|G|IR|Hamstring|Nov 15
 Mack Hollins|WR|Questionable|Calf|Nov 8
 TreVeyon Henderson|RB|Out|Illness|Nov 15
 Hunter Henry|TE|Questionable|Foot|Nov 8
 A.J. Brown|WR|Out|Knee|Nov 15
 Brenden Schooler|S|Questionable|Hamstring|Nov 8
-Greg Van Roten|G|IR|Hamstring|Nov 8
 Morgan Moses|OT|Questionable|Foot|Nov 8
 #NO
-Jordyn Tyson|WR|Questionable|Hamstring|Nov 8
 Kelvin Banks Jr.|OT|Questionable|Ankle|Nov 8
+Jordyn Tyson|WR|Questionable|Hamstring|Nov 8
 Martin Emerson Jr.|CB|Questionable|Shin|Nov 8
 CJ Donaldson|RB|Out|Shoulder|Nov 15
 Asim Richards|OT|Questionable|Thumb|Nov 8

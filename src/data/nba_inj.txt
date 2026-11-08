@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 03:01Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-08 04:39Z
 #Atlanta Hawks
 Keshon Gilbert|G|Out|knee inflammation|Nov 9
 Asa Newell|F|Out|toe|Nov 9
@@ -6,7 +6,7 @@ Jock Landale|C|Out|hip|Nov 9
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Brooklyn Nets
-Day'Ron Sharpe|C|Day-To-Day|undisclosed|Nov 4
+Mikel Brown Jr.|G|Out|rest|Nov 11
 Egor Demin|G|Out|leg bruise|Nov 11
 #Charlotte Hornets
 Moussa Diabate|F|Day-To-Day|quadriceps|Nov 9
@@ -108,6 +108,7 @@ Lauri Markkanen|F|Day-To-Day|wrist sprain|Nov 8
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
+Deandre Ayton|C|Out|leg|Nov 9
 Anthony Davis|F|Out|ankle sprain|Nov 9
 Reece Beekman|G|Out|shoulder|Dec 3
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 9
