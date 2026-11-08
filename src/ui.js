@@ -675,7 +675,7 @@ function route(){
   document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===(isNhl?"nhl":isNba?"nba":"nfl")));
   if(h.startsWith("nhl")&&typeof nhlRoute!=="undefined"){
     document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-nhl"));
-    const nv=h.startsWith("nhl-props")?"nhl-props":h.startsWith("nhl-standings")?"nhl-standings":"nhl";
+    const nv=h.startsWith("nhl-props")?"nhl-props":h.startsWith("nhl-standings")?"nhl-standings":h.startsWith("nhl-injuries")?"nhl-injuries":"nhl";
     document.querySelectorAll("#nhlNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
     document.getElementById("banner").innerHTML="";nhlRoute(h);window.scrollTo(0,0);return;
   }

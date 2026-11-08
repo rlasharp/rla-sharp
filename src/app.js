@@ -65,7 +65,7 @@ function moreOpen(){
   let sh=document.getElementById("moresheet");if(!sh){sh=document.createElement("div");sh.id="moresheet";document.body.appendChild(sh)}
   const nba=[["#nba","🏀 Games"],["#nba-best","🔥 Best props"],["#nba-props","🎯 All props"],["#nba-players","👤 Players"],["#nba-teams","📊 Standings"],["#nba-scores","🧾 Scores"],["#nba-injuries","🚑 Injuries"]];
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
-  const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-standings","📊 Standings"]];
+  const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
   const all=[["#favs","⭐ Favorites"],["#record","📒 Our record"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";

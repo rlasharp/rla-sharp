@@ -39,7 +39,7 @@ NFL_MK = {"player_pass_yds": "passYds", "player_pass_tds": "passTD", "player_rus
 
 NHL_MK = {"player_points": "hpts", "player_goals": "hgoals", "player_assists": "hast", "player_shots_on_goal": "hsog",
           "player_blocked_shots": "hblk", "player_total_saves": "hsaves", "player_power_play_points": "hppp",
-          "player_goal_scorer_anytime": "hanyG"}
+          "player_goal_scorer_anytime": "hanyG", "player_hits": "hhit", "player_faceoffs_won": "hfow"}
 NHL_CORE = ["player_points", "player_goals", "player_assists", "player_shots_on_goal", "player_blocked_shots", "player_total_saves"]
 GAME_MK = ["h2h", "spreads", "totals"]
 YES_MK = {"anyTD", "hanyG"}  # one-sided Yes markets (no under, no alt ladder)
@@ -138,7 +138,7 @@ def alts(book_rows, main_ln, milestones=None):
         out.append(r)
     return out
 
-MS_MAIN = {"hgoals", "hpts", "hast", "hppp", "hsog", "hblk", "hsaves"}
+MS_MAIN = {"hgoals", "hpts", "hast", "hppp", "hsog", "hblk", "hsaves", "hhit", "hfow"}
 def pick_ms(rungs, mk):
     """main line from milestone rungs only {book: {line: overPrice}}: the "1+" rung for goals/points/assists/PPP,
     otherwise the rung priced closest to even. Over price only (books post no under for these)."""
