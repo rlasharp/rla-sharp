@@ -1,20 +1,20 @@
 {
  "auto": {
-  "at": "2026-11-08T20:51:30+00:00",
+  "at": "2026-11-08T22:50:26+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1596 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 739 feed lines merged (0 skipped from other days), 832 total, unmatched names: []\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 7, lines 7, props 832, inj teams 30, prev-season players 184, play log 18, adv 371, qtr games 139, h2h 3/2/4/3/4/4/2\nnfl-update: 6 lines refreshed, 0 new finals (weeks [8, 9])\n259 players, 32 teams\nnfl-inj: 259 players\nNHL data: 6 games today, 3 tomorrow, 32 teams, 370 skaters, 60 goalies, 533 props, 268 finals, 34 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 0-0, best props NBA 0-0 NFL 0-0 NHL 0-0\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 72 games kept (1 new), 1615 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 738 feed lines merged (0 skipped from other days), 835 total, unmatched names: []\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 7, lines 7, props 835, inj teams 30, prev-season players 184, play log 18, adv 371, qtr games 139, h2h 3/2/4/3/4/4/2\nnfl-update: 2 lines refreshed, 7 new finals (weeks [8, 9])\n271 players, 32 teams\nnfl-inj: 271 players\nNHL data: 6 games today, 3 tomorrow, 32 teams, 372 skaters, 59 goalies, 630 props, 269 finals, 36 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 1-0, best props NBA 0-2 NFL 0-0 NHL 2-0\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-08T20:51:30+00:00",
+  "at": "2026-11-08T22:50:26+00:00",
   "ok": false,
   "issue": "live page fails the site check: node:internal/process/promises:394     triggerUncaughtException(err, true /* fromPromise */);     ^  page.goto: Timeout 30000ms exceeded. Call log:   - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting until \"load\"      at /home/runner/work/rla-sharp/rla-sharp/src/tools/check.js:8:10 {   log: [     '  - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting u"
  },
  "nhl": {
-  "at": "2026-11-08T20:51:30+00:00",
+  "at": "2026-11-08T22:50:26+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sun Nov 8 3:51 PM ET",
-  "odds_at": "2026-11-08T18:46:46+00:00",
+  "gen": "Sun Nov 8 5:49 PM ET",
+  "odds_at": "2026-11-08T21:14:10+00:00",
   "backfill": "1312/1312"
  }
 }
