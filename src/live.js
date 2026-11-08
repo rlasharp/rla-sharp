@@ -15,11 +15,12 @@ function nflDate(g){const m=/([A-Z][a-z]{2})\s+(\d+)/.exec(String(g.when||"").re
 function nbaStarted(g){if(!g)return false;const L=typeof LIVE!=="undefined"&&LIVE.nba&&(LIVE.nba[String(g.id)]||LIVE.nba[g.a+"@"+g.h]);if(L&&L.st!=="pre")return true;return startedAt(NBA_SLATE_DATE,g.t)}
 function nflStarted(g){if(!g)return false;if(g.final)return true;const L=typeof LIVE!=="undefined"&&LIVE.nfl&&LIVE.nfl[g.away+"@"+g.home];if(L&&L.st!=="pre")return true;return startedAt(nflDate(g),String(g.when||"").split("·")[1])}
 function startedKey(){try{return (typeof NBA_SLATE!=="undefined"?NBA_SLATE.filter(nbaStarted).map(g=>g.id).join(","):"")+"|"+(typeof SLATE!=="undefined"?SLATE.filter(nflStarted).map(g=>g.id).join(","):"")}catch(e){return ""}}
-const LIVE={nba:{},nfl:{},ok:{nba:0,nfl:0},box:{},timer:null,busy:0};
+const LIVE={nba:{},nfl:{},nhl:{},ok:{nba:0,nfl:0,nhl:0},box:{},timer:null,busy:0};
 const LIVE_URL={nba:"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  nfl:"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"};
+  nfl:"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+  nhl:"https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard"};
 const LIVE_SUM="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=";
-const LIVE_FIX={nfl:{WSH:"WAS"},nba:{}};
+const LIVE_FIX={nfl:{WSH:"WAS"},nba:{},nhl:{TB:"TBL",NJ:"NJD",SJ:"SJS",LA:"LAK",UTAH:"UTA",LV:"VGK",MON:"MTL",WAS:"WSH"}};
 function liveTeam(sp,ab){return (LIVE_FIX[sp]||{})[ab]||ab}
 async function liveFetch(sp){
   try{
@@ -94,6 +95,10 @@ function liveNflGame(t){const o=typeof oppOf!=="undefined"?oppOf(t):null;if(!o)r
   return Object.entries(LIVE.nfl||{}).filter(([k])=>!k.includes("@")).map(([,g])=>g).find(g=>g.a===a&&g.h===h)||null}
 async function liveDecorate(){
   const h=decodeURIComponent((location.hash||"#games").slice(1));
+  /* NHL game cards + game page */
+  if(h.startsWith("nhl")&&typeof nhGame!=="undefined"){
+    document.querySelectorAll("#v-nhl [data-nhg]").forEach(c=>{const g=nhGame(c.dataset.nhg);if(!g)return;livePut(c,liveBar("nhl",liveGet("nhl",g.a,g.h)),c.querySelector(".nhgh")&&c.querySelector(".nhgh").nextSibling)});
+    const hero=document.querySelector("#v-nhl .nhhero");if(hero&&h.startsWith("nhl-game-")){const g=nhGame(h.slice(9).split("-")[0]);if(g)livePut(hero,liveBar("nhl",liveGet("nhl",g.a,g.h)),hero.querySelector(".nhht"))}}
   /* NBA game cards + game page */
   document.querySelectorAll("#v-nba [data-ng]").forEach(c=>{const g=NBA_SLATE.find(x=>String(x.id)===c.dataset.ng);if(!g)return;
     livePut(c,liveBar("nba",liveGet("nba",g.a,g.h,g.id)),c.querySelector(".when")&&c.querySelector(".when").nextSibling)});
@@ -149,14 +154,14 @@ async function liveTick(){
   if(LIVE.busy)return;LIVE.busy=1;
   try{
     const h=(location.hash||"#today").slice(1)||"today",nba=h.startsWith("nba");
-    if(h==="today"){await Promise.all([liveFetch("nba"),liveFetch("nfl")]);const el=document.getElementById("todayLive");if(el&&typeof todayLive!=="undefined")el.innerHTML=todayLive()}
-    else await liveFetch(nba?"nba":"nfl");
+    if(h==="today"){await Promise.all([liveFetch("nba"),liveFetch("nfl"),liveFetch("nhl")]);const el=document.getElementById("todayLive");if(el&&typeof todayLive!=="undefined")el.innerHTML=todayLive()}
+    else await liveFetch(nba?"nba":h.startsWith("nhl")?"nhl":"nfl");
     const sk=startedKey();if(LIVE.sk!=null&&sk!==LIVE.sk&&/^(props|nba-props|nba-best|nba-player-|nba$)/.test(h)&&typeof route!=="undefined"){LIVE.sk=sk;if(typeof NB!=="undefined")NB._best=null;route();await liveDecorate();return}
     LIVE.sk=sk;
     await liveDecorate();
   }finally{LIVE.busy=0}
-  const hh=(location.hash||"#today").slice(1)||"today",sp=hh.startsWith("nba")?"nba":"nfl";
-  const any=(hh==="today"?[...Object.values(LIVE.nba),...Object.values(LIVE.nfl)]:Object.values(LIVE[sp])).some(g=>g.st==="in");
+  const hh=(location.hash||"#today").slice(1)||"today",sp=hh.startsWith("nba")?"nba":hh.startsWith("nhl")?"nhl":"nfl";
+  const any=(hh==="today"?[...Object.values(LIVE.nba),...Object.values(LIVE.nfl),...Object.values(LIVE.nhl)]:Object.values(LIVE[sp])).some(g=>g.st==="in");
   clearTimeout(LIVE.timer);
   if(LIVE.ok[sp]||!LIVE.fails)LIVE.timer=setTimeout(liveTick,document.hidden?120000:any?30000:120000);
   if(!LIVE.ok[sp])LIVE.fails=(LIVE.fails||0)+1;

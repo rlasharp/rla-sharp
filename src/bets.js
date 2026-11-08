@@ -8,18 +8,24 @@ function betsSave(a){LS.set("bets",a)}
 function betStakeDefault(){return LS.get("betStake",10)}
 function betTitle(b){
   if(b.k==="nbaprop"){const m=typeof NBA_MK!=="undefined"&&NBA_MK[b.market];return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1]:b.market}`}
+  if(b.k==="nhlprop"){const m=typeof NH_MK!=="undefined"&&NH_MK[b.market];if(b.market==="hanyG")return `${b.player} anytime goal`;return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1].toLowerCase():b.market}`}
   if(b.k==="parlay")return `${b.legs.length}-leg parlay`;
   if(b.k==="prop"){const m=MARKETS[b.market];if(b.market==="anyTD")return `${b.player} anytime TD`;
     return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m.n.toLowerCase().replace(/\btds\b/,"TDs"):b.market}`}
   if(b.k==="spread")return `${TEAMS[b.team][0]} ${b.line>0?"+":""}${b.line}`;
   if(b.k==="ml")return `${TEAMS[b.team][0]} moneyline`;
   return `${short(b.away)} @ ${short(b.home)} ${b.side==="over"?"Over":"Under"} ${b.line}`}
-function betMatchup(b){if(b.k==="nbaprop")return `NBA · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nbaDayS!=="undefined"?nbaDayS(b.date):b.date}`;
+function betMatchup(b){if(b.k==="nhlprop")return `NHL · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nhDayS!=="undefined"?nhDayS(b.date):b.date}`;
+  if(b.k==="nbaprop")return `NBA · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nbaDayS!=="undefined"?nbaDayS(b.date):b.date}`;
   if(b.k==="parlay")return b.legs.map(l=>betTitle(l)).join(" + ");
   if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
   const g=SLATE.find(x=>x.id===b.game);return `${short(b.away)} @ ${short(b.home)}${g?" · "+g.when:""}`}
 const betDec=a=>a>0?1+a/100:1+100/(-a);
 function gradeBet(b){
+  if(b.k==="nhlprop"){if(typeof NH_MK==="undefined")return {r:"pending"};const m=NH_MK[b.market],w=nhWho(b.player);
+    const fin=(NHL_RES||[]).some(z=>z[0]===b.date&&(z[1]===b.team||z[3]===b.team));
+    const row=w&&w.g.find(x=>x[0]===b.date);if(!row||!m||!m[3])return fin?(w&&!row?{r:"void",why:"Did not play — no action"}:{r:"pending",why:"Result not in our data"}):{r:"pending"};
+    const v=m[3](row);if(v==null)return {r:"pending"};const r=v===b.line?"push":((b.side==="over")===(v>b.line))?"win":"loss";return {r,why:`Final: ${v}`}}
   if(b.k==="nbaprop"){const p=typeof NBA_LOGS!=="undefined"&&NBA_LOGS[b.player],x=p&&p.g.find(y=>y[1]===b.date&&(!b.opp||y[2]===b.opp));
     if(!x){const done=typeof NBA_RES!=="undefined"&&NBA_RES.some(z=>z[1]===b.date&&(z[2]===b.team||z[3]===b.team));return done?{r:"void",why:"Did not play — no action"}:{r:"pending"}}
     const v=nbaVal(x,b.market),r=v===b.line?"push":((b.side==="over")===(v>b.line))?"win":"loss";return {r,why:`Final: ${v}`}}
@@ -76,7 +82,7 @@ function viewBets(){
   const money=v=>(v<0?"−$":"$")+Math.abs(v).toFixed(2);
   const row=({b,g})=>{const c=RES_COL[g.r];const pr=betProfit(b,g);
     return `<div class="card betrow"><div class="row" style="gap:8px;align-items:center;flex-wrap:wrap">
-      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="parlay"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
+      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="nhlprop"||b.k==="parlay"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
      <h3 style="margin:8px 0 2px">${esc(betTitle(b))}</h3>
      <div class="small">Odds ${amTxt(b.odds)}${b.est?" (assumed — exact price not published)":""}${b.book?" · "+esc(b.book):""}${g.why?` · <b style="color:${c}">${esc(g.why)}</b>`:""}</div>
      <div class="row" style="gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">

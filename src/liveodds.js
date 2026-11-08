@@ -105,15 +105,16 @@ function loAltHtml(nm,k,line,vals){
 function loMoves(sp,n){
   const out=[];for(const m of Object.values(LO.move)){if(m.sp!==sp||m.l==null||m.now==null)continue;
     if(sp==="nba"){const p=NBA_LOGS[m.nm],g=p&&nbaGameOf(p.tm);if(!g||nbaStarted(g))continue}
+    else if(sp==="nhl"){const w=typeof nhWho!=="undefined"&&nhWho(m.nm),g=w&&nhGameOf(w.tm);if(!g||nhStarted(g))continue}
     else{const P=PINFO[m.nm],o=P&&oppOf(P.team);if(!o||nflStarted(o.g))continue}
     const dl=m.now-m.l,dp=m.oNow!=null&&m.o!=null?m.oNow-m.o:0;if(!dl&&Math.abs(dp)<20)continue;
     out.push({...m,dl,dp,score:Math.abs(dl)/Math.max(4,Math.abs(m.l))*100+(dl?10:0)+Math.abs(dp)/10})}
   return out.sort((a,b)=>b.score-a.score).slice(0,n)}
 function loMovesCard(sp,n){
   if(!LO.data)return "";const L=loMoves(sp,n||8);if(!L.length)return "";
-  const mk=m=>sp==="nba"?(NBA_MK[m.k]?NBA_MK[m.k][1]:m.k):(MARKETS[m.k]?MARKETS[m.k].n:m.k);
+  const mk=m=>sp==="nba"?(NBA_MK[m.k]?NBA_MK[m.k][1]:m.k):sp==="nhl"?(NH_MK[m.k]?NH_MK[m.k][1]:m.k):(MARKETS[m.k]?MARKETS[m.k].n:m.k);
   const pr=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
-  const row=m=>{const href=sp==="nba"?`#nba-player-${encodeURIComponent(m.nm)}`:"#props";
+  const row=m=>{const href=sp==="nba"?`#nba-player-${encodeURIComponent(m.nm)}`:sp==="nhl"?`#nhl-player-${encodeURIComponent(m.nm)}`:"#props";
     const what=m.dl?`<b>${m.l} → ${m.now}</b> <span class="lmv ${m.dl>0?"up":"dn"}">${m.dl>0?"▲":"▼"} ${Math.abs(m.dl)}</span>`:`<b>${m.now}</b> <span class="lmv fl">over ${pr(m.o)} → ${pr(m.oNow)}</span>`;
     const why=m.dl>0?"books moved it up — money on the over":m.dl<0?"books moved it down — money on the under":m.dp<0?"over getting pricier":"under getting pricier";
     return `<a class="lmr" href="${href}" ${sp==="nfl"?`data-nflfav="${esc(m.nm)}"`:""}><span><b>${esc(m.nm)}</b> <span class="small">${esc(mk(m))}</span></span><span>${what}</span><span class="small">${why}</span></a>`};

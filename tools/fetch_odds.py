@@ -189,7 +189,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
         try:
             if with_game and PERIOD_OK[0]:
                 try: odds = client.get_odds(sport, event_id=eid, markets=mks, period="all")   # full game + 1st/2nd/3rd period lines, same request
-                except TypeError: PERIOD_OK[0] = False; odds = client.get_odds(sport, event_id=eid, markets=mks)
+                except TypeError as te: PERIOD_OK[0] = False; print("period= not supported by this SDK:", te); odds = client.get_odds(sport, event_id=eid, markets=mks)
             else:
                 odds = client.get_odds(sport, event_id=eid, markets=mks)
         except Exception as e:
@@ -216,6 +216,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
             if b in NOT_BOOKS or b not in BOOK_NAME: continue
             for m in g(bk, "markets", []) or []:
                 MKSEEN.setdefault(sport, {}); MKSEEN[sport][g(m, "key")] = MKSEEN[sport].get(g(m, "key"), 0) + 1
+                if g(m, "period"): MKSEEN[sport]["@" + str(g(m, "period")) + ":" + str(g(m, "key"))] = MKSEEN[sport].get("@" + str(g(m, "period")) + ":" + str(g(m, "key")), 0) + 1
                 if sport == "icehockey_nhl" and g(m, "key") not in MKSAMPLE:
                     MKSAMPLE[g(m, "key")] = [b, str(g(m, "line_type", "")), [{k_: g(o, k_) for k_ in ("name", "description", "point", "price", "payout_multiplier")} for o in (g(m, "outcomes", []) or [])[:2]]]
                 mk = mk_map.get(g(m, "key"))

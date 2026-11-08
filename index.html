@@ -250,7 +250,7 @@ a.tdy{display:block;color:inherit;text-decoration:none}.tdy{padding:12px 12px 10
 .nhtabs{flex-wrap:wrap;gap:4px}.nhtabs a{white-space:nowrap;flex:1 1 auto;text-align:center}.nhgrp h3{margin:14px 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2)}.nhcr{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:center;gap:4px 8px;padding:7px 0;border-top:1px solid var(--line)}.nhch{border-top:0;padding-bottom:2px}.nhcv{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}.nhcv.r{justify-content:flex-end}.nhcv b{font-size:15px}.nhcv.win b{color:#7ee2a0}.nhcl{text-align:center;font-size:12.5px;color:var(--text2);font-weight:600}.nhcb{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:6px}.nhcb>div{height:6px;background:var(--card2);border-radius:99px;display:flex}.nhcb .l{justify-content:flex-end}.nhcb i{display:block;height:100%;border-radius:99px;background:#5a5f68}.nhcb i.win{background:#3fbf6f}.nhpill{font-size:11px;font-weight:700;padding:1px 6px;border-radius:99px;background:var(--card2);color:var(--text2)}.nhpill.up{background:#173323;color:#7ee2a0}.nhpill.dn{background:#3a1d1e;color:#ff9a9d}
 .nhh3{margin:14px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2)}.nhtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:6px}.nhtile{background:var(--card2);border-radius:10px;padding:7px 9px;display:flex;flex-direction:column;gap:1px}.nhtile b{font-size:16px}.nhper{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.nhper>div{background:var(--card2);border-radius:10px;padding:7px 9px}.nhper b{display:block;font-size:15px;margin:2px 0 4px}.nhpb{height:5px;background:var(--card);border-radius:99px;margin-top:3px}.nhpb i{display:block;height:100%;border-radius:99px}.nhpb i.up{background:#3fbf6f}.nhpb i.dn{background:#e0565b}
 .nhrr{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13.5px}.nhrr .nhtag{grid-column:auto}.nhrr>.nhtag:nth-of-type(1){grid-column:2}.nhwl{font-weight:800;font-size:12px;padding:3px 7px;border-radius:7px;min-width:34px;text-align:center}.nhwl.w{background:#173323;color:#7ee2a0}.nhwl.l{background:#3a1d1e;color:#ff9a9d}.nhtag{font-size:11.5px;padding:2px 7px;border-radius:99px;background:var(--card2);color:var(--text2);justify-self:start}.nhtag.up{color:#7ee2a0}.nhtag.dn{color:#ff9a9d}.nhgk{padding:9px 0;border-top:1px solid var(--line)}.nhgk.on{background:rgba(243,199,90,.06);border-radius:10px;padding:9px 8px}.nhgk .nhtiles{margin-top:6px}.nhprob{padding:8px 10px;border-radius:10px;background:rgba(243,199,90,.08);margin-bottom:6px}
-.nhprev td{opacity:.55}.nhcxs{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.nhcx{font-size:12px;padding:3px 8px;border-radius:8px;background:var(--card2);color:var(--text2);line-height:1.35}.nhcx b{color:var(--text)}.nhcx.up{box-shadow:inset 3px 0 0 #3fbf6f}.nhcx.dn{box-shadow:inset 3px 0 0 #e0565b}
+.nhprev td{opacity:.55}.nhsm{display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:10px;align-items:center}@media(max-width:560px){.nhsm{grid-template-columns:1fr}.nhrink{max-width:240px;margin:0 auto}}.nhrink{width:100%;color:var(--text)}.nhdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.nhcxs{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.nhcx{font-size:12px;padding:3px 8px;border-radius:8px;background:var(--card2);color:var(--text2);line-height:1.35}.nhcx b{color:var(--text)}.nhcx.up{box-shadow:inset 3px 0 0 #3fbf6f}.nhcx.dn{box-shadow:inset 3px 0 0 #e0565b}
 .lmv{font-size:11.5px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:999px;white-space:nowrap}.lmv.up{background:#173323;color:#7ee2a0}.lmv.dn{background:#3a1d1e;color:#ff9a9d}.lmv.fl{background:var(--card2);color:var(--text2)}
 .upd.lo{color:#f3c75a}#loPill{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:60;background:#f3c75a;color:#1a1505;border:0;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;box-shadow:0 6px 20px #0008;cursor:pointer}@media(min-width:900px){#loPill{bottom:24px}}
 .pxrw{display:flex;justify-content:flex-end;margin:8px 0 2px}.pxrst{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid #5a4a1c;background:#2b2412;color:#f3c75a;cursor:pointer}.fchip.frst{background:#2b2412!important;border-color:#5a4a1c!important;color:#f3c75a!important;font-weight:800}
@@ -1980,18 +1980,24 @@ function betsSave(a){LS.set("bets",a)}
 function betStakeDefault(){return LS.get("betStake",10)}
 function betTitle(b){
   if(b.k==="nbaprop"){const m=typeof NBA_MK!=="undefined"&&NBA_MK[b.market];return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1]:b.market}`}
+  if(b.k==="nhlprop"){const m=typeof NH_MK!=="undefined"&&NH_MK[b.market];if(b.market==="hanyG")return `${b.player} anytime goal`;return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1].toLowerCase():b.market}`}
   if(b.k==="parlay")return `${b.legs.length}-leg parlay`;
   if(b.k==="prop"){const m=MARKETS[b.market];if(b.market==="anyTD")return `${b.player} anytime TD`;
     return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m.n.toLowerCase().replace(/\btds\b/,"TDs"):b.market}`}
   if(b.k==="spread")return `${TEAMS[b.team][0]} ${b.line>0?"+":""}${b.line}`;
   if(b.k==="ml")return `${TEAMS[b.team][0]} moneyline`;
   return `${short(b.away)} @ ${short(b.home)} ${b.side==="over"?"Over":"Under"} ${b.line}`}
-function betMatchup(b){if(b.k==="nbaprop")return `NBA · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nbaDayS!=="undefined"?nbaDayS(b.date):b.date}`;
+function betMatchup(b){if(b.k==="nhlprop")return `NHL · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nhDayS!=="undefined"?nhDayS(b.date):b.date}`;
+  if(b.k==="nbaprop")return `NBA · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nbaDayS!=="undefined"?nbaDayS(b.date):b.date}`;
   if(b.k==="parlay")return b.legs.map(l=>betTitle(l)).join(" + ");
   if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
   const g=SLATE.find(x=>x.id===b.game);return `${short(b.away)} @ ${short(b.home)}${g?" · "+g.when:""}`}
 const betDec=a=>a>0?1+a/100:1+100/(-a);
 function gradeBet(b){
+  if(b.k==="nhlprop"){if(typeof NH_MK==="undefined")return {r:"pending"};const m=NH_MK[b.market],w=nhWho(b.player);
+    const fin=(NHL_RES||[]).some(z=>z[0]===b.date&&(z[1]===b.team||z[3]===b.team));
+    const row=w&&w.g.find(x=>x[0]===b.date);if(!row||!m||!m[3])return fin?(w&&!row?{r:"void",why:"Did not play — no action"}:{r:"pending",why:"Result not in our data"}):{r:"pending"};
+    const v=m[3](row);if(v==null)return {r:"pending"};const r=v===b.line?"push":((b.side==="over")===(v>b.line))?"win":"loss";return {r,why:`Final: ${v}`}}
   if(b.k==="nbaprop"){const p=typeof NBA_LOGS!=="undefined"&&NBA_LOGS[b.player],x=p&&p.g.find(y=>y[1]===b.date&&(!b.opp||y[2]===b.opp));
     if(!x){const done=typeof NBA_RES!=="undefined"&&NBA_RES.some(z=>z[1]===b.date&&(z[2]===b.team||z[3]===b.team));return done?{r:"void",why:"Did not play — no action"}:{r:"pending"}}
     const v=nbaVal(x,b.market),r=v===b.line?"push":((b.side==="over")===(v>b.line))?"win":"loss";return {r,why:`Final: ${v}`}}
@@ -2048,7 +2054,7 @@ function viewBets(){
   const money=v=>(v<0?"−$":"$")+Math.abs(v).toFixed(2);
   const row=({b,g})=>{const c=RES_COL[g.r];const pr=betProfit(b,g);
     return `<div class="card betrow"><div class="row" style="gap:8px;align-items:center;flex-wrap:wrap">
-      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="parlay"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
+      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="nhlprop"||b.k==="parlay"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
      <h3 style="margin:8px 0 2px">${esc(betTitle(b))}</h3>
      <div class="small">Odds ${amTxt(b.odds)}${b.est?" (assumed — exact price not published)":""}${b.book?" · "+esc(b.book):""}${g.why?` · <b style="color:${c}">${esc(g.why)}</b>`:""}</div>
      <div class="row" style="gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">
@@ -3398,7 +3404,7 @@ function nhB2B(t,d){const p=nhAddDays(d,-1);return (NHL_RES||[]).some(r=>r[0]===
 function nhDayTabs(cur){const T=[0,1,2,3].map(n=>{const d=nhAddDays(NHL_DATE,n);return [n?`nhl-tomorrow${n>1?"-"+n:""}`:"nhl",n===0?"Today":n===1?"Tomorrow":new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"short"}),d]});
   return `<div class="gtabs">${T.map(([h,l,d])=>`<a href="#${h}" class="${h===cur?"on":""}">${l}<small>${nhGamesOn(d).length}</small></a>`).join("")}</div>`}
 function nhGame(id){return nhAllGames().find(g=>String(g.id)===String(id))}
-function nhStarted(g){return !!g&&(g.st&&!["FUT","PRE"].includes(g.st)||Date.parse(g.iso)<=Date.now())}
+function nhStarted(g){if(!g)return false;const L=typeof LIVE!=="undefined"&&LIVE.nhl&&LIVE.nhl[g.a+"@"+g.h];if(L&&L.st!=="pre"&&g.d===NHL_DATE)return true;return (g.st&&!["FUT","PRE"].includes(g.st))||Date.parse(g.iso)<=Date.now()}
 function nhGameOf(tm){return nhAllGames().find(g=>(g.a===tm||g.h===tm)&&!nhStarted(g))||nhAllGames().find(g=>g.a===tm||g.h===tm)}
 function nhWho(nm){return NHL_P[nm]||NHL_G[nm]||null}
 function nhIsG(nm){return !!NHL_G[nm]&&!NHL_P[nm]}
@@ -3416,7 +3422,8 @@ function nhImp(o){return o==null?null:o<0?-o/(-o+100):100/(o+100)}
 function nhScore(nm,k,line,side){const VA=nhVals(nm,k),V=VA.filter(o=>!o.prev).map(o=>o.v);if(V.length<3)return null;const hit=a=>a.filter(v=>side==="u"?v<line:v>line).length/a.length;
   const L10=VA.map(o=>o.v).slice(-10),cnt=a=>[a.filter(v=>side==="u"?v<line:v>line).length,a.length];return {c3:cnt(V.slice(-3)),c5:cnt(V.slice(-5)),c10:cnt(L10),p:hit(L10)*.6+hit(V)*.4,l10:L10.filter(v=>side==="u"?v<line:v>line).length,n10:L10.length,ns:V.length,hs:V.filter(v=>side==="u"?v<line:v>line).length,avg:V.reduce((a,b)=>a+b,0)/V.length}}
 function nhPropRows(){return (NHL_PROPS||[]).filter(r=>NH_MK[r[1]]&&nhWho(r[0]))}
-function nhBest(){const out=[];for(const r of nhPropRows()){const [nm,k,line,o,u]=r,w=nhWho(nm),g=w&&nhGameOf(w.tm);if(!g||nhStarted(g)||!NH_MK[k][3])continue;
+function nhOutNow(nm){const r=typeof nhInjOf!=="undefined"&&nhInjOf(nm);return !!(r&&/out|reserve|ir\b|suspen/i.test(r[2]))}
+function nhBest(){const out=[];for(const r of nhPropRows()){const [nm,k,line,o,u]=r,w=nhWho(nm),g=w&&nhGameOf(w.tm);if(!g||nhStarted(g)||!NH_MK[k][3]||nhOutNow(nm))continue;
   for(const [side,odds] of [["o",o],["u",u]]){if(odds==null)continue;const s=nhScore(nm,k,line,side);if(!s||s.ns<5)continue;const imp=nhImp(odds);if(s.p-imp>0)out.push({nm,k,line,side,odds,s,edge:s.p-imp,g})}}
   return out.sort((a,b)=>b.edge-a.edge)}
 function nhBestFilter(L){const f=NH.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||(f.pos==="G"?!!NHL_G[b.nm]:f.pos==="D"?(NHL_P[b.nm]||{}).pos==="D":NHL_P[b.nm]&&NHL_P[b.nm].pos!=="D"))&&(!f.min||b.s.p>=f.min/100)&&(typeof hotOk==="undefined"||hotOk({c3:b.s.c3,c5:b.s.c5,c10:b.s.c10},f.hot)))}
@@ -3427,7 +3434,7 @@ function nhBestFilterUI(L0){const f=NH.bf||(NH.bf={}),games=[...new Map(L0.map(b
    <select data-nhbf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
    <select data-nhbf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select>
    ${typeof hotSelect!=="undefined"?hotSelect('data-nhbf="hot"',f.hot):""}</div>`}
-function nhBestRow(b){const m=NH_MK[b.k];return `<a class="bprow" href="#nhl-player-${encodeURIComponent(b.nm)}"><span>${nhBadge(nhWho(b.nm).tm)} <b>${nhE(b.nm)}</b>${b.s.c5&&b.s.c5[1]>=5&&b.s.c5[0]>=4?` <span class="bfire">🔥 ${b.s.c5[0]}/${b.s.c5[1]}</span>`:""} <span class="small">${b.side==="o"?(b.k==="hanyG"?"Scores":"Over"):"Under"} ${b.k==="hanyG"?"":b.line+" "}${m[1]}</span></span>
+function nhBestRow(b){const m=NH_MK[b.k];return `<a class="bprow" href="#nhl-player-${encodeURIComponent(b.nm)}"><span>${nhBadge(nhWho(b.nm).tm)} <b>${nhE(b.nm)}</b>${typeof nhInjChip!=="undefined"?nhInjChip(b.nm):""}${b.s.c5&&b.s.c5[1]>=5&&b.s.c5[0]>=4?` <span class="bfire">🔥 ${b.s.c5[0]}/${b.s.c5[1]}</span>`:""} <span class="small">${b.side==="o"?(b.k==="hanyG"?"Scores":"Over"):"Under"} ${b.k==="hanyG"?"":b.line+" "}${m[1]}</span></span>
    <span><b>${nhOdds(b.odds)}</b> <span class="small">hit ${b.s.l10}/${b.s.n10} L10 · ${b.s.hs}/${b.s.ns} season · ${Math.round(b.s.p*100)}% vs ${Math.round(nhImp(b.odds)*100)}% needed</span></span></a>`}
 
 /* ---------- goalies: probable starter ---------- */
@@ -3452,7 +3459,7 @@ function nhLinesHtml(g){const p=[];
 
 /* ---------- Games page: today + the next 3 days (same tabs as NBA) ---------- */
 function nhCard(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},pa=nhProbable(g.a),ph=nhProbable(g.h),fin=g.as!=null&&g.st&&["OFF","FINAL"].includes(g.st);
-  return `<a class="card nhg" href="#nhl-game-${g.id}"><div class="nhgh"><span class="small"><b style="color:var(--text)">${nhE(g.t)}</b> ET${g.tv?" · "+nhE(g.tv):""}</span>${fin?`<b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b>`:nhStarted(g)?`<b class="up">LIVE</b>`:`<span class="small">${nhDayS(g.d)}</span>`}</div>
+  return `<a class="card nhg" href="#nhl-game-${g.id}" data-nhg="${g.id}"><div class="nhgh"><span class="small"><b style="color:var(--text)">${nhE(g.t)}</b> ET${g.tv?" · "+nhE(g.tv):""}</span>${fin?`<b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b>`:nhStarted(g)?`<b class="up">LIVE</b>`:`<span class="small">${nhDayS(g.d)}</span>`}</div>
    <div class="nhgt">${[["a",g.a,A,pa],["h",g.h,H,ph]].map(([s,t,T,pg])=>`<div class="nhrow"><span>${nhBadge(t)} <b>${nhE(nhTm(t))}</b> <span class="small">${nhRec(t)} · ${s==="a"?"road "+nhRecA(T.road):"home "+nhRecA(T.home)}</span>${!fin&&nhB2B(t,g.d)?` <span class="pll u" style="white-space:nowrap">2nd night of back-to-back</span>`:""}</span>${fin?`<b class="nhsc">${s==="a"?g.as:g.hs}</b>`:""}
      <span class="small">GF ${T.gf!=null?(+T.gf).toFixed(2):"–"} · GA ${T.ga!=null?(+T.ga).toFixed(2):"–"} · L10 ${nhRecA(T.l10)}${T.stk?" · "+nhE(T.stk):""}</span>
      <span class="small nhrkl">PP ${T.pp??"–"}% <b class="${nhRkC(T.ppR)}">${nhOrd(T.ppR)}</b> · PK ${T.pk??"–"}% <b class="${nhRkC(T.pkR)}">${nhOrd(T.pkR)}</b> · PPG <b class="${nhRkC(T.far&&T.far.ppg[0])}">${nhOrd(T.far&&T.far.ppg[0])}</b> · FO ${T.fo??"–"}% <b class="${nhRkC(T.foR)}">${nhOrd(T.foR)}</b></span>
@@ -3463,6 +3470,7 @@ function nhlGames(el){
   const today=NHL_SLATE||[],best=nhBest().slice(0,6);
   el.innerHTML=`<h1>🏒 NHL · ${nhE(nhDayS(NHL_DATE))}</h1>${nhDayTabs("nhl")}<p class="sub">${nhE(NHL_GEN?`Updated ${NHL_GEN}`:"")} · official NHL stats + live sportsbook lines. Tap a game for the matchup, goalies and every player prop.</p>
    ${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best NHL props</h2><div class="small" style="margin-bottom:8px">How often the line would have hit (last 10 games 60%, season 40%) vs what the odds need.</div><div class="nhbp">${best.map(nhBestRow).join("")}</div><a href="#nhl-props" class="small" style="display:block;margin-top:8px">All NHL props →</a></div>`:""}
+   ${nhMovesCard()}
    <h2 style="margin:16px 0 8px">Today${today.length?` · ${today.length} game${today.length>1?"s":""}`:""}</h2>
    ${today.length?`<div class="grid g2">${today.map(nhCard).join("")}</div>`:`<div class="card small">No NHL games today — see the next days above.</div>`}
    ${nhFoot()}`}
@@ -3549,6 +3557,7 @@ function nhLineRow(nm,r){
   const avg=a=>a.length?(a.reduce((s,o)=>s+o.v,0)/a.length).toFixed(1):"–";
   return `<div class="pl"><div class="plh"><div><b>${m[1]}</b> ${yes?"":`<span class="plv">${line}</span>${typeof loStep!=="undefined"&&m[3]?loStep(nm,k,main):""}`}${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
     <div class="small">${op==null&&up==null&&!book?"no sportsbook line — his season average":`${yes?"Yes ":"O "}${nhOdds(op)}${up!=null?" · U "+nhOdds(up):""}${book?" · "+nhE(book):""}`}</div></div>
+   ${op!=null&&typeof actBtn!=="undefined"&&typeof nhlSpec!=="undefined"?(()=>{const so=nhlSpec(nm,k,"over"),su=yes?null:nhlSpec(nm,k,"under");return so||su?`<div class="obrow">${so?actBtn(so,`${yes?"Scores":"Over "+so.line} <b>${oddsFmt(so.odds)}</b>`,"ov"):""}${su?actBtn(su,`Under ${su.line} <b>${oddsFmt(su.odds)}</b>`,"un"):""}</div>`:""})():""}
    ${m[3]&&!yes&&typeof loAltHtml!=="undefined"?loAltHtml(nm,k,main,v10):""}
    ${m[3]?(L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>nhLab(o.x,o.prev)))}<div class="small mbs">Last ${L10.length}: <b class="${hit(L10)/L10.length>=.5?"up":"dn"}">${hit(L10)}/${L10.length} ${yes?(PXSIDE==="u"?"no goal":"scored"):pxSW()}</b> · this season <b>${hit(V)}/${V.length}</b> · avg <b>${avg(V)}</b> (L5 ${avg(VA.slice(-5))})${VP.length?` · last season ${hit(VP)}/${VP.length}`:""}${vs.length?` · vs ${nhE(opp)} <b>${hit(vs)}/${vs.length}</b>${vs.some(o=>o.prev)?" (2 seasons)":""}`:""}</div></div>`:`<div class="small">No games logged this season.</div>`):`<div class="small">Game-by-game power-play points aren't in our box-score data — season PP goals: ${w.s?w.s[7]:"–"}.</div>`}
    ${nhCtx(nm,k,line,V)}
@@ -3583,6 +3592,7 @@ function nhlPlayer(el,nm){
   el.innerHTML=`<p class="small"><a href="${g?"#nhl-game-"+g.id:"#nhl"}">← ${g?"Game":"NHL"}</a></p>
    <div class="phead"><div>${nhBadge(w.tm)}</div><div><h1 style="margin:0">${nhE(nm)}${nhInjChip(nm)}</h1><div class="small">${nhE(nhTm(w.tm))} · ${nhE(isG?"G":w.pos)}${g?` · next: ${g.a===w.tm?"@":"vs"} ${nhE(nhTm(opp))} ${g.d===NHL_DATE?"today":"tomorrow"} ${nhE(g.t)}`:""}</div></div></div>
    <div class="card" style="margin-top:10px"><b>This season</b><div class="small">${head}</div></div>
+   ${isG?"":nhShotMap(nm)}
    ${typeof pxSideTg!=="undefined"?pxSideTg():""}
    ${rows.length?nhPlayerLines(nm,rows,false):`<div class="card small" style="margin-top:12px">No props posted for him yet.</div>`}
    ${(()=>{if(isG)return "";const have=new Set(rows.map(r=>r[1])),R=[];for(const k of ["hhit","hfow","hblk","hsog","hpts"]){if(have.has(k))continue;const V=nhVals(nm,k).map(o=>o.v);if(V.length<3)continue;const a=V.reduce((x,y)=>x+y,0)/V.length;
@@ -3594,7 +3604,7 @@ function nhlPlayer(el,nm){
 /* ---------- Standings ---------- */
 function nhlStandings(el){const T=Object.entries(NHL_TEAM).sort((a,b)=>(a[1].rk||99)-(b[1].rk||99));const divs=[...new Set(T.map(([,t])=>t.div))].filter(Boolean);
   el.innerHTML=`<h1>📊 NHL standings</h1><p class="sub">${nhE(NHL_GEN?`Updated ${NHL_GEN}`:"")}</p><div class="grid g2">${divs.map(d=>`<div class="card"><h2>${nhE(d)}</h2><div class="alw"><table class="altt"><thead><tr><th>Team</th><th>W-L-OT</th><th>PTS</th><th>GF/g</th><th>GA/g</th><th>PP%</th><th>PK%</th><th>L10</th></tr></thead><tbody>
-   ${T.filter(([,t])=>t.div===d).sort((a,b)=>(a[1].drk||99)-(b[1].drk||99)).map(([a,t])=>`<tr><td>${nhBadge(a)} ${nhE(t.cn||a)}</td><td>${nhRec(a)}</td><td><b>${t.pts}</b></td><td>${t.gf??"–"}</td><td>${t.ga??"–"}</td><td>${t.pp??"–"}</td><td>${t.pk??"–"}</td><td>${nhRecA(t.l10)}</td></tr>`).join("")}</tbody></table></div></div>`).join("")||`<div class="card small">No standings yet.</div>`}</div>${nhFoot()}`}
+   ${T.filter(([,t])=>t.div===d).sort((a,b)=>(a[1].drk||99)-(b[1].drk||99)).map(([a,t])=>`<tr><td><a href="#nhl-team-${a}" style="color:inherit">${nhBadge(a)} ${nhE(t.cn||a)}</a></td><td>${nhRec(a)}</td><td><b>${t.pts}</b></td><td>${t.gf??"–"}</td><td>${t.ga??"–"}</td><td>${t.pp??"–"}</td><td>${t.pk??"–"}</td><td>${nhRecA(t.l10)}</td></tr>`).join("")}</tbody></table></div></div>`).join("")||`<div class="card small">No standings yet.</div>`}</div>${nhFoot()}`}
 
 /* ---------- wiring + router ---------- */
 function nhWire(el,redraw){
@@ -3605,6 +3615,7 @@ function nhWire(el,redraw){
 function nhlRoute(h){const el=document.getElementById("v-nhl");if(!el)return;
   if(h.startsWith("nhl-game-"))return nhlGame(el,h.slice(9));
   if(h.startsWith("nhl-player-"))return nhlPlayer(el,h.slice(11));
+  if(h.startsWith("nhl-team-"))return nhlTeam(el,h.slice(9));
   if(h.startsWith("nhl-tomorrow"))return nhlUpcoming(el,h);
   ({"nhl-props":nhlProps,"nhl-standings":nhlStandings,"nhl-injuries":nhlInjuries}[h]||nhlGames)(el)}
 /* Today page snippet */
@@ -3634,12 +3645,14 @@ const nhImpP=o=>o==null?null:o<0?-o/(-o+100):100/(o+100);
 function nhMove_unused(now,op,i){if(!op||!now)return "";const a=op[i],b=now[i];if(a==null||b==null||a===b)return "";return ` <span class="nhmv" title="opened ${a>0&&i!==0?"+":""}${a}">${b>a?"▲":"▼"} from ${a>0&&!(now===NH_TOTK)?nhOdds(a):a}</span>`}
 const NH_TOTK={};
 function nhHero(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},fin=g.as!=null&&["OFF","FINAL"].includes(g.st),pr=fin?null:nhProject(g),op=g.open||{};
-  const side=(t,T,s)=>`<div class="nhhs ${s}">${nhBadge(t)}<b>${nhE(nhTm(t))}</b><span class="small">${nhRec(t)} · ${s==="a"?"road "+nhRecA(T.road):"home "+nhRecA(T.home)}</span>${nhB2B(t,g.d)&&!fin?`<span class="pll u">back-to-back</span>`:""}${fin?`<b class="nhhsc">${s==="a"?g.as:g.hs}</b>`:""}</div>`;
+  const side=(t,T,s)=>`<div class="nhhs ${s}">${nhBadge(t)}<b><a href="#nhl-team-${t}" style="color:inherit">${nhE(nhTm(t))}</a></b><span class="small">${nhRec(t)} · ${s==="a"?"road "+nhRecA(T.road):"home "+nhRecA(T.home)}</span>${nhB2B(t,g.d)&&!fin?`<span class="pll u">back-to-back</span>`:""}${fin?`<b class="nhhsc">${s==="a"?g.as:g.hs}</b>`:""}</div>`;
   const chip=(lab,main,sub)=>`<div class="nhlc"><span class="small">${lab}</span><b>${main}</b>${sub?`<span class="small">${sub}</span>`:""}</div>`;
   const mv=(k,i,fmt)=>{const a=op[k]&&op[k][i],b=g[k]&&g[k][i];if(a==null||b==null||a===b)return "";return `<span class="nhmv">opened ${fmt(a)}</span>`};
   const lines=fin?"":`<div class="nhlcs">${g.ml?chip("Moneyline",`${nhE(g.a)} ${nhOdds(g.ml[0])} · ${nhE(g.h)} ${nhOdds(g.ml[1])}`,mv("ml",1,x=>nhE(g.h)+" "+nhOdds(x))):""}
     ${g.pl?chip("Puck line",`${nhE(g.h)} ${g.pl[0]>0?"+":""}${g.pl[0]} (${nhOdds(g.pl[2])})`,`${nhE(g.a)} ${g.pl[0]>0?"−":"+"}${Math.abs(g.pl[0])} (${nhOdds(g.pl[1])})`):""}
-    ${g.tot?chip("Total",`${g.tot[0]} · O ${nhOdds(g.tot[1])} / U ${nhOdds(g.tot[2])}`,mv("tot",0,x=>x)):""}${!g.ml&&!g.tot?`<div class="small">Lines not posted yet — usually the day before.</div>`:""}</div>`;
+    ${g.tot?chip("Total",`${g.tot[0]} · O ${nhOdds(g.tot[1])} / U ${nhOdds(g.tot[2])}`,mv("tot",0,x=>x)):""}
+    ${g.p1&&g.p1.tot?chip("1st period total",`${g.p1.tot[0]} · O ${nhOdds(g.p1.tot[1])} / U ${nhOdds(g.p1.tot[2])}`,(()=>{const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{};if(!A.per||!H.per)return "";const e=(A.per[0][0]+H.per[0][1])/2+(H.per[0][0]+A.per[0][1])/2;return `teams avg ${e.toFixed(2)} 1st-period goals`})()):""}
+    ${g.p1&&g.p1.ml?chip("1st period winner",`${nhE(g.a)} ${nhOdds(g.p1.ml[0])} · ${nhE(g.h)} ${nhOdds(g.p1.ml[1])}${g.p1.ml[3]!=null?` · tie ${nhOdds(g.p1.ml[3])}`:""}`,(()=>{const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{};return A.per&&H.per?`1st-period goal diff: ${nhE(g.a)} ${(A.per[0][0]-A.per[0][1]>=0?"+":"")+(A.per[0][0]-A.per[0][1]).toFixed(2)} · ${nhE(g.h)} ${(H.per[0][0]-H.per[0][1]>=0?"+":"")+(H.per[0][0]-H.per[0][1]).toFixed(2)}`:""})()):""}${!g.ml&&!g.tot?`<div class="small">Lines not posted yet — usually the day before.</div>`:""}</div>`;
   const est=pr?`<div class="nhest">🧮 <b>Our estimate:</b> ${nhE(g.a)} ${pr.la.toFixed(1)} – ${pr.lh.toFixed(1)} ${nhE(g.h)} · <b>${nhE(pr.hwin>=.5?g.h:g.a)} wins ${Math.round(Math.max(pr.hwin,1-pr.hwin)*100)}%</b>${g.ml?` <span class="small">(books: ${Math.round(nhImpP(pr.hwin>=.5?g.ml[1]:g.ml[0])*100)}%)</span>`:""} · ${pr.tot.toFixed(1)} goals${g.tot?` — over ${pr.line} ${Math.round(pr.over*100)}%`:""}<div class="small">From goals for/against, home ice, rest and the probable goalie. A rough guide, not a sportsbook line.</div></div>`:"";
   return `<div class="card nhhero"><div class="nhhw"><span class="small">${g.d===NHL_DATE?"Today":g.d===NHL_TOM?"Tomorrow":nhE(nhDayS(g.d))} · ${nhE(g.t)} ET${g.tv?" · "+nhE(g.tv):""}</span>${fin?`<b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b>`:""}</div>
    <div class="nhht">${side(g.a,A,"a")}<div class="nhat">@</div>${side(g.h,H,"h")}</div>${lines}${est}</div>`}
@@ -3746,6 +3759,45 @@ function nhCtx(nm,k,line,V){const w=nhWho(nm),g=nhGameOf(w.tm),opp=g?(g.a===w.tm
     if(w.s[4]>=25&&sh<lg-4)c("📈","shooting well below average while still getting shots — goals often come back","up");
     if(w.s[4]>=15&&sh>lg+8)c("📉","shooting far above average — hard to keep up","dn");}
   return out.length?`<div class="nhcxs">${out.join("")}</div>`:""}
+
+/* ---------- 🎯 shot map: where his unblocked attempts come from, vs the league ---------- */
+function nhShotMap(nm){const w=NHL_P[nm];if(!w||!w.sz||typeof NHL_LZ==="undefined"||!NHL_LZ.length)return "";const Z=w.sz,tot=Z.reduce((a,z)=>a+z[0],0);if(tot<10)return "";
+  const lt=NHL_LZ.reduce((a,z)=>a+z[0],0),N=["Slot (inside 20 ft)","High slot","Wide / circles","Long range"],sh=(z)=>z[1]?z[2]/z[1]*100:0;
+  const col=(i)=>{const me=Z[i][0]/tot,lg=NHL_LZ[i][0]/lt,r=lg?me/lg:1;return r>=1.25?"#d9483b":r>=1.05?"#e8894a":r<=.75?"#5b9bd5":"#6b7078"};
+  /* half rink, goal line at the top: zones drawn as simple shapes */
+  const svg=`<svg viewBox="0 0 200 150" class="nhrink" role="img" aria-label="Shot zones">
+   <rect x="2" y="2" width="196" height="146" rx="28" fill="none" stroke="currentColor" stroke-opacity=".25"/>
+   <line x1="2" y1="22" x2="198" y2="22" stroke="#d9483b" stroke-opacity=".5"/><rect x="92" y="14" width="16" height="8" fill="none" stroke="currentColor" stroke-opacity=".6"/>
+   <path d="M100 22 m-50 0 a50 50 0 0 0 100 0 Z" fill="${col(0)}" fill-opacity=".85"/>
+   <path d="M50 22 a50 50 0 0 0 100 0 L150 22 L150 22 M62 60 L138 60 L132 100 L68 100 Z" fill="${col(1)}" fill-opacity=".8"/>
+   <path d="M4 22 L50 22 A50 50 0 0 0 66 58 L60 112 L4 112 Z M196 22 L150 22 A50 50 0 0 1 134 58 L140 112 L196 112 Z" fill="${col(2)}" fill-opacity=".7"/>
+   <rect x="4" y="112" width="192" height="34" rx="20" fill="${col(3)}" fill-opacity=".6"/>
+   ${[[100,40],[100,82],[28,70],[100,130]].map(([x,y],i)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${Math.round(Z[i][0]/tot*100)}%</text>`).join("")}</svg>`;
+  return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🎯 Where he shoots from</h2><div class="small" style="margin-bottom:8px">${tot} unblocked shot attempts this season. Colour = more (red) or fewer (blue) than the average NHL skater from that spot.</div>
+   <div class="nhsm">${svg}<table class="altt"><thead><tr><th>Zone</th><th>Share</th><th>NHL</th><th>Goals / SOG</th></tr></thead><tbody>${Z.map((z,i)=>`<tr><td><span class="nhdot" style="background:${col(i)}"></span>${N[i]}</td><td><b>${Math.round(z[0]/tot*100)}%</b></td><td class="small">${lt?Math.round(NHL_LZ[i][0]/lt*100):"–"}%</td><td>${z[2]}/${z[1]} <span class="small">${sh(z).toFixed(0)}% (NHL ${sh(NHL_LZ[i]).toFixed(0)}%)</span></td></tr>`).join("")}</tbody></table></div>
+   <div class="small" style="margin-top:6px">Lots of slot shots = more goals and steadier shots-on-goal; mostly long range = more shots but fewer goals.</div></div>`}
+
+/* ---------- 📈 biggest NHL line moves (props + moneylines / totals since morning) ---------- */
+function nhMovesCard(){const P=typeof loMovesCard!=="undefined"?loMovesCard("nhl",8):"";const G=[];
+  for(const g of nhAllGames()){if(nhStarted(g)||!g.open)continue;const o=g.open;
+    if(o.ml&&g.ml&&(Math.abs((o.ml[1]||0)-(g.ml[1]||0))>=12))G.push(`<a class="lmr" href="#nhl-game-${g.id}"><span><b>${nhE(g.a)} @ ${nhE(g.h)}</b> <span class="small">moneyline</span></span><span><b>${nhE(g.h)} ${nhOdds(o.ml[1])} → ${nhOdds(g.ml[1])}</b></span><span class="small">${(nhImpP(g.ml[1])>nhImpP(o.ml[1]))?`money on ${nhE(g.h)}`:`money on ${nhE(g.a)}`}</span></a>`);
+    if(o.tot&&g.tot&&(o.tot[0]!==g.tot[0]||Math.abs((o.tot[1]||0)-(g.tot[1]||0))>=15))G.push(`<a class="lmr" href="#nhl-game-${g.id}"><span><b>${nhE(g.a)} @ ${nhE(g.h)}</b> <span class="small">total</span></span><span><b>${o.tot[0]} (${nhOdds(o.tot[1])}) → ${g.tot[0]} (${nhOdds(g.tot[1])})</b></span><span class="small">${g.tot[0]>o.tot[0]||(g.tot[0]===o.tot[0]&&g.tot[1]<o.tot[1])?"money on the over":"money on the under"}</span></a>`)}
+  if(!P&&!G.length)return "";
+  return `${G.length?`<div class="card lmc"><h2 style="margin-bottom:2px">📈 NHL game lines moving today</h2><div class="small" style="margin-bottom:8px">Since the first line we saw this morning. Big moves often follow goalie news or sharp money.</div>${G.join("")}</div>`:""}${P}`}
+
+/* ---------- 🏒 team page ---------- */
+function nhlTeam(el,t){const T=NHL_TEAM[t];if(!T){el.innerHTML=`<h1>Team not found</h1><p><a href="#nhl-standings">← Standings</a></p>`;return}
+  const R=(NHL_RES||[]).filter(r=>r[1]===t||r[3]===t),up=nhAllGames().filter(g=>(g.a===t||g.h===t)&&!(g.as!=null&&["OFF","FINAL"].includes(g.st)));
+  const sk=Object.entries(NHL_P).filter(([,p])=>p.tm===t).sort((a,b)=>b[1].s[3]-a[1].s[3]),gk=nhGoalies(t);
+  const rc=r=>r?`${r[0]}-${r[1]}${r.length>2?"-"+r[2]:""}`:"–",fr=(k,i)=>T.far&&T.far[k]?T.far[k][i]:null;
+  el.innerHTML=`<p class="small"><a href="#nhl-standings">← Standings</a></p>
+   <div class="phead"><div>${nhBadge(t)}</div><div><h1 style="margin:0">${nhE(T.n||t)}</h1><div class="small">${nhRec(t)} · ${T.pts} pts · ${nhOrd(T.rk)} in the NHL · ${nhE(T.div||"")} ${nhOrd(T.drk)}</div></div></div>
+   <div class="card" style="margin-top:12px"><div class="nhtiles">${nhTile("Home",nhRecA(T.home))}${nhTile("Road",nhRecA(T.road))}${nhTile("Last 10",nhRecA(T.l10),T.stk?"streak "+nhE(T.stk):"")}${nhTile("Goals for / against",`${(+T.gf).toFixed(2)} / ${(+T.ga).toFixed(2)}`,`${nhOrd(T.gfR)} / ${nhOrd(T.gaR)}`)}${nhTile("PP / PK",`${T.pp}% / ${T.pk}%`,`${nhOrd(T.ppR)} / ${nhOrd(T.pkR)}`)}${nhTile("Shot share",T.fa&&T.fa.cf?T.fa.cf[0]+"%":"–",fr("cf",0)?nhOrd(fr("cf",0)):"")}${nhTile("Puck line",rc(T.ats),T.ats&&T.ats[0]+T.ats[1]?Math.round(T.ats[0]/(T.ats[0]+T.ats[1])*100)+"% covered":"")}${nhTile("Over / under",T.ou?`${T.ou[0]}-${T.ou[1]}`:"–","overs-unders")}${nhTile("Score first",T.sfp!=null?T.sfp+"%":"–")}</div></div>
+   ${up.length?`<div class="card" style="margin-top:12px"><h2>Next games</h2>${up.map(g=>`<a class="tgame" href="#nhl-game-${g.id}"><span class="small">${nhE(nhDayS(g.d).replace(/,.*/,""))} ${nhE(g.t)}</span><span>${g.a===t?"@":"vs"} ${nhBadge(g.a===t?g.h:g.a)} ${nhE(nhTm(g.a===t?g.h:g.a))}</span><span class="small">${g.ml?nhOdds(g.a===t?g.ml[0]:g.ml[1]):""}</span></a>`).join("")}</div>`:""}
+   <div class="grid g2" style="margin-top:12px"><div class="card"><h2>Skaters</h2>${sk.length?`<div class="alw"><table class="altt nhlog"><thead><tr><th>Player</th><th>GP</th><th>G</th><th>A</th><th>PTS</th><th>SOG/g</th><th>TOI</th><th>PP</th></tr></thead><tbody>${sk.map(([n,p])=>`<tr><td style="text-align:left">${nhLink(n)}${nhInjChip(n)}</td><td>${p.s[0]}</td><td>${p.s[1]}</td><td>${p.s[2]}</td><td><b>${p.s[3]}</b></td><td>${(p.s[4]/p.s[0]).toFixed(1)}</td><td>${p.s[8]}</td><td>${p.pu===1?"PP1":p.pu===2?"PP2":"–"}</td></tr>`).join("")}</tbody></table></div>`:`<div class="small">Full skater stats load for teams playing in the next two days.</div>`}</div>
+   <div class="card"><h2>Goalies</h2>${gk.map(x=>`<div class="nhgl">${nhGoalieLine(x)}</div>`).join("")||`<div class="small">No goalie data.</div>`}
+   <h3 class="nhh3">Injuries</h3>${nhInjList(t).map(r=>`<div class="nhgl"><b>${nhE(r[0])}</b> <span class="pll ${/out|reserve|ir/i.test(r[2])?"u":"n"}">${nhE(r[2])}</span> <span class="small">${nhE(r[3])}</span></div>`).join("")||`<div class="small">Nobody listed.</div>`}</div></div>
+   <div class="card" style="margin-top:12px"><h2>Every game this season</h2>${R.slice().reverse().map(r=>nhResRow(r,t)).join("")||`<div class="small">No games yet.</div>`}</div>${nhFoot()}`}
 /* Team records always follow RESULTS (real.js, updated with every final by the 2-hour job) — so a Monday-night
    final shows up in every record right away instead of waiting for the weekly rebuild. */
 (function(){if(typeof RESULTS==="undefined"||typeof TEAMS==="undefined")return;
@@ -4247,11 +4299,12 @@ function nflDate(g){const m=/([A-Z][a-z]{2})\s+(\d+)/.exec(String(g.when||"").re
 function nbaStarted(g){if(!g)return false;const L=typeof LIVE!=="undefined"&&LIVE.nba&&(LIVE.nba[String(g.id)]||LIVE.nba[g.a+"@"+g.h]);if(L&&L.st!=="pre")return true;return startedAt(NBA_SLATE_DATE,g.t)}
 function nflStarted(g){if(!g)return false;if(g.final)return true;const L=typeof LIVE!=="undefined"&&LIVE.nfl&&LIVE.nfl[g.away+"@"+g.home];if(L&&L.st!=="pre")return true;return startedAt(nflDate(g),String(g.when||"").split("·")[1])}
 function startedKey(){try{return (typeof NBA_SLATE!=="undefined"?NBA_SLATE.filter(nbaStarted).map(g=>g.id).join(","):"")+"|"+(typeof SLATE!=="undefined"?SLATE.filter(nflStarted).map(g=>g.id).join(","):"")}catch(e){return ""}}
-const LIVE={nba:{},nfl:{},ok:{nba:0,nfl:0},box:{},timer:null,busy:0};
+const LIVE={nba:{},nfl:{},nhl:{},ok:{nba:0,nfl:0,nhl:0},box:{},timer:null,busy:0};
 const LIVE_URL={nba:"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  nfl:"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"};
+  nfl:"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+  nhl:"https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard"};
 const LIVE_SUM="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=";
-const LIVE_FIX={nfl:{WSH:"WAS"},nba:{}};
+const LIVE_FIX={nfl:{WSH:"WAS"},nba:{},nhl:{TB:"TBL",NJ:"NJD",SJ:"SJS",LA:"LAK",UTAH:"UTA",LV:"VGK",MON:"MTL",WAS:"WSH"}};
 function liveTeam(sp,ab){return (LIVE_FIX[sp]||{})[ab]||ab}
 async function liveFetch(sp){
   try{
@@ -4326,6 +4379,10 @@ function liveNflGame(t){const o=typeof oppOf!=="undefined"?oppOf(t):null;if(!o)r
   return Object.entries(LIVE.nfl||{}).filter(([k])=>!k.includes("@")).map(([,g])=>g).find(g=>g.a===a&&g.h===h)||null}
 async function liveDecorate(){
   const h=decodeURIComponent((location.hash||"#games").slice(1));
+  /* NHL game cards + game page */
+  if(h.startsWith("nhl")&&typeof nhGame!=="undefined"){
+    document.querySelectorAll("#v-nhl [data-nhg]").forEach(c=>{const g=nhGame(c.dataset.nhg);if(!g)return;livePut(c,liveBar("nhl",liveGet("nhl",g.a,g.h)),c.querySelector(".nhgh")&&c.querySelector(".nhgh").nextSibling)});
+    const hero=document.querySelector("#v-nhl .nhhero");if(hero&&h.startsWith("nhl-game-")){const g=nhGame(h.slice(9).split("-")[0]);if(g)livePut(hero,liveBar("nhl",liveGet("nhl",g.a,g.h)),hero.querySelector(".nhht"))}}
   /* NBA game cards + game page */
   document.querySelectorAll("#v-nba [data-ng]").forEach(c=>{const g=NBA_SLATE.find(x=>String(x.id)===c.dataset.ng);if(!g)return;
     livePut(c,liveBar("nba",liveGet("nba",g.a,g.h,g.id)),c.querySelector(".when")&&c.querySelector(".when").nextSibling)});
@@ -4381,14 +4438,14 @@ async function liveTick(){
   if(LIVE.busy)return;LIVE.busy=1;
   try{
     const h=(location.hash||"#today").slice(1)||"today",nba=h.startsWith("nba");
-    if(h==="today"){await Promise.all([liveFetch("nba"),liveFetch("nfl")]);const el=document.getElementById("todayLive");if(el&&typeof todayLive!=="undefined")el.innerHTML=todayLive()}
-    else await liveFetch(nba?"nba":"nfl");
+    if(h==="today"){await Promise.all([liveFetch("nba"),liveFetch("nfl"),liveFetch("nhl")]);const el=document.getElementById("todayLive");if(el&&typeof todayLive!=="undefined")el.innerHTML=todayLive()}
+    else await liveFetch(nba?"nba":h.startsWith("nhl")?"nhl":"nfl");
     const sk=startedKey();if(LIVE.sk!=null&&sk!==LIVE.sk&&/^(props|nba-props|nba-best|nba-player-|nba$)/.test(h)&&typeof route!=="undefined"){LIVE.sk=sk;if(typeof NB!=="undefined")NB._best=null;route();await liveDecorate();return}
     LIVE.sk=sk;
     await liveDecorate();
   }finally{LIVE.busy=0}
-  const hh=(location.hash||"#today").slice(1)||"today",sp=hh.startsWith("nba")?"nba":"nfl";
-  const any=(hh==="today"?[...Object.values(LIVE.nba),...Object.values(LIVE.nfl)]:Object.values(LIVE[sp])).some(g=>g.st==="in");
+  const hh=(location.hash||"#today").slice(1)||"today",sp=hh.startsWith("nba")?"nba":hh.startsWith("nhl")?"nhl":"nfl";
+  const any=(hh==="today"?[...Object.values(LIVE.nba),...Object.values(LIVE.nfl),...Object.values(LIVE.nhl)]:Object.values(LIVE[sp])).some(g=>g.st==="in");
   clearTimeout(LIVE.timer);
   if(LIVE.ok[sp]||!LIVE.fails)LIVE.timer=setTimeout(liveTick,document.hidden?120000:any?30000:120000);
   if(!LIVE.ok[sp])LIVE.fails=(LIVE.fails||0)+1;
@@ -4535,15 +4592,16 @@ function loAltHtml(nm,k,line,vals){
 function loMoves(sp,n){
   const out=[];for(const m of Object.values(LO.move)){if(m.sp!==sp||m.l==null||m.now==null)continue;
     if(sp==="nba"){const p=NBA_LOGS[m.nm],g=p&&nbaGameOf(p.tm);if(!g||nbaStarted(g))continue}
+    else if(sp==="nhl"){const w=typeof nhWho!=="undefined"&&nhWho(m.nm),g=w&&nhGameOf(w.tm);if(!g||nhStarted(g))continue}
     else{const P=PINFO[m.nm],o=P&&oppOf(P.team);if(!o||nflStarted(o.g))continue}
     const dl=m.now-m.l,dp=m.oNow!=null&&m.o!=null?m.oNow-m.o:0;if(!dl&&Math.abs(dp)<20)continue;
     out.push({...m,dl,dp,score:Math.abs(dl)/Math.max(4,Math.abs(m.l))*100+(dl?10:0)+Math.abs(dp)/10})}
   return out.sort((a,b)=>b.score-a.score).slice(0,n)}
 function loMovesCard(sp,n){
   if(!LO.data)return "";const L=loMoves(sp,n||8);if(!L.length)return "";
-  const mk=m=>sp==="nba"?(NBA_MK[m.k]?NBA_MK[m.k][1]:m.k):(MARKETS[m.k]?MARKETS[m.k].n:m.k);
+  const mk=m=>sp==="nba"?(NBA_MK[m.k]?NBA_MK[m.k][1]:m.k):sp==="nhl"?(NH_MK[m.k]?NH_MK[m.k][1]:m.k):(MARKETS[m.k]?MARKETS[m.k].n:m.k);
   const pr=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
-  const row=m=>{const href=sp==="nba"?`#nba-player-${encodeURIComponent(m.nm)}`:"#props";
+  const row=m=>{const href=sp==="nba"?`#nba-player-${encodeURIComponent(m.nm)}`:sp==="nhl"?`#nhl-player-${encodeURIComponent(m.nm)}`:"#props";
     const what=m.dl?`<b>${m.l} → ${m.now}</b> <span class="lmv ${m.dl>0?"up":"dn"}">${m.dl>0?"▲":"▼"} ${Math.abs(m.dl)}</span>`:`<b>${m.now}</b> <span class="lmv fl">over ${pr(m.o)} → ${pr(m.oNow)}</span>`;
     const why=m.dl>0?"books moved it up — money on the over":m.dl<0?"books moved it down — money on the under":m.dp<0?"over getting pricier":"under getting pricier";
     return `<a class="lmr" href="${href}" ${sp==="nfl"?`data-nflfav="${esc(m.nm)}"`:""}><span><b>${esc(m.nm)}</b> <span class="small">${esc(mk(m))}</span></span><span>${what}</span><span class="small">${why}</span></a>`};
@@ -4766,6 +4824,8 @@ function favDecorate(){
   const put=(sel,t,id)=>{const el=document.querySelector(sel);if(!el||el.querySelector(".favb"))return;el.insertAdjacentHTML("beforeend",favBtn(t,id))};
   if(h.startsWith("nba-player-"))put("#v-nba .phead > div:last-child","nbap",h.slice(11));
   if(h.startsWith("nba-team-"))put("#v-nba .phead > div:last-child","nbat",h.slice(9));
+  if(h.startsWith("nhl-player-"))put("#v-nhl .phead > div:last-child","nhlp",h.slice(11));
+  if(h.startsWith("nhl-team-"))put("#v-nhl .phead > div:last-child","nhlt",h.slice(9));
   if(h==="props"&&typeof S!=="undefined"&&S.prop&&S.prop.open&&S.prop.player){const r=document.querySelector("#v-props .row h1");if(r&&!r.parentElement.querySelector(".favb"))r.insertAdjacentHTML("afterend",favBtn("nflp",S.prop.player))}
 }
 
@@ -4784,6 +4844,9 @@ function searchIndex(){
   if(SRCH)return SRCH;const L=[];
   if(typeof NBA_LOGS!=="undefined")for(const [n,p] of Object.entries(NBA_LOGS))L.push({k:n.toLowerCase(),l:n,s:"NBA",sub:`${p.tm} · ${p.p5||p.pos||""}`,h:"nba-player-"+encodeURIComponent(n),w:p.g.length?p.g.reduce((a,x)=>a+x[4],0)/p.g.length:0});
   if(typeof NBA_TEAMS!=="undefined")for(const [t,n] of Object.entries(NBA_TEAMS))if(t!=="TBD")L.push({k:(n+" "+t).toLowerCase(),l:n,s:"NBA",sub:"Team",h:"nba-team-"+t,w:99});
+  if(typeof NHL_P!=="undefined"){for(const [n,p] of Object.entries(NHL_P))L.push({k:n.toLowerCase(),l:n,s:"NHL",sub:`${p.tm} · ${p.pos}`,h:"nhl-player-"+encodeURIComponent(n),w:p.s?p.s[3]/Math.max(1,p.s[0])*10:0});
+    for(const [n,p] of Object.entries(NHL_G))L.push({k:n.toLowerCase(),l:n,s:"NHL",sub:`${p.tm} · G`,h:"nhl-player-"+encodeURIComponent(n),w:5});
+    for(const [t,v] of Object.entries(NHL_TEAM))L.push({k:((v.n||"")+" "+t).toLowerCase(),l:v.n||t,s:"NHL",sub:"Team",h:"nhl-team-"+t,w:99})}
   if(typeof PINFO!=="undefined")for(const [n,p] of Object.entries(PINFO))L.push({k:n.toLowerCase(),l:n,s:"NFL",sub:`${p.team} · ${p.pos}`,nfl:n,w:50});
   if(typeof TEAMS!=="undefined")for(const [t,v] of Object.entries(TEAMS))L.push({k:(v[0]+" "+t).toLowerCase(),l:v[0],s:"NFL",sub:"Team",h:"standings",w:99});
   return SRCH=L;
@@ -4833,12 +4896,12 @@ function moreOpen(){
 function todayLive(){
   const rows=[];
   if(typeof LIVE!=="undefined"){
-    for(const [sp,M] of [["NBA",LIVE.nba],["NFL",LIVE.nfl]])for(const [k,g] of Object.entries(M||{})){if(k.includes("@")||g.st!=="in")continue;rows.push(liveBar(sp.toLowerCase(),g))}
+    for(const [sp,M] of [["NBA",LIVE.nba],["NHL",LIVE.nhl||{}],["NFL",LIVE.nfl]])for(const [k,g] of Object.entries(M||{})){if(k.includes("@")||g.st!=="in")continue;rows.push(liveBar(sp.toLowerCase(),g))}
   }
   return rows.length?`<div class="card"><h2 style="margin-bottom:6px"><span class="lvdot"></span>&nbsp; Live now</h2>${rows.join("")}</div>`:"";
 }
 function favListHtml(full){
-  const emptyFav=`<div class="card tip"><b>⭐ No favorites yet.</b> Open any player or team page (NBA or NFL) and tap <b>☆ Save</b> next to the name. They'll show up here and at the top of Today, every day, with their lines.<div style="margin-top:8px"><a class="btn" href="#nba-players">Find an NBA player</a> <a class="btn" href="#props">Find an NFL player</a></div></div>`;
+  const emptyFav=`<div class="card tip"><b>⭐ No favorites yet.</b> Open any player or team page (NBA, NHL or NFL) and tap <b>☆ Save</b> next to the name. They'll show up here and at the top of Today, every day, with their lines.<div style="margin-top:8px"><a class="btn" href="#nba-players">Find an NBA player</a> <a class="btn" href="#props">Find an NFL player</a></div></div>`;
   const F=favs();let favHtml="";
   if(F.length){
     const items=F.map(f=>{
@@ -4846,6 +4909,10 @@ function favListHtml(full){
         return `<a class="fv" href="#nba-player-${encodeURIComponent(f.id)}"><b>⭐ ${esc(f.id)}</b><span class="small">${p.tm} · ${g?(nbaStarted(g)?"game started":`${g.a===p.tm?"@":"vs"} ${g.a===p.tm?g.h:g.a} ${g.t}`):"no game today"}${pr.length&&g&&!nbaStarted(g)?` · ${pr.length} lines: ${pr.slice(0,3).map(r=>`${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} ${r[2]}`).join(", ")}${pr.length>3?"…":""}`:""}</span></a>`}
       if(f.t==="nbat"&&typeof NBA_TEAM!=="undefined"&&NBA_TEAM[f.id]){const g=nbaGameOf(f.id),x=NBA_TEAM[f.id];
         return `<a class="fv" href="#nba-team-${f.id}"><b>⭐ ${esc(nbaTm(f.id))}</b><span class="small">${x.w}-${x.l} · ${g?`${g.a===f.id?"@":"vs"} ${g.a===f.id?g.h:g.a} ${g.t}`:"no game today"}</span></a>`}
+      if(f.t==="nhlp"&&typeof nhWho!=="undefined"&&nhWho(f.id)){const p=nhWho(f.id),g=nhGameOf(p.tm),pr=NHL_PROPS.filter(r=>r[0]===f.id&&NH_MK[r[1]]);
+        return `<a class="fv" href="#nhl-player-${encodeURIComponent(f.id)}"><b>⭐ ${esc(f.id)}</b><span class="small">🏒 ${p.tm} · ${g?(nhStarted(g)?"game started":`${g.a===p.tm?"@":"vs"} ${g.a===p.tm?g.h:g.a} ${g.d===NHL_DATE?"today":nhDayS(g.d).split(",")[0]} ${g.t}`):"no game soon"}${pr.length&&g&&!nhStarted(g)?` · ${pr.slice(0,3).map(r=>`${NH_MK[r[1]][0]} ${r[2]}`).join(", ")}`:""}</span></a>`}
+      if(f.t==="nhlt"&&typeof NHL_TEAM!=="undefined"&&NHL_TEAM[f.id]){const g=nhGameOf(f.id);
+        return `<a class="fv" href="#nhl-team-${f.id}"><b>⭐ ${esc(nhTm(f.id))}</b><span class="small">🏒 ${nhRec(f.id)} · ${g?`${g.a===f.id?"@":"vs"} ${g.a===f.id?g.h:g.a} ${g.d===NHL_DATE?"today":nhDayS(g.d).split(",")[0]} ${g.t}`:"no game soon"}</span></a>`}
       if(f.t==="nflp"&&typeof PINFO!=="undefined"&&PINFO[f.id]){const P=PINFO[f.id],o=oppOf(P.team),MK=marketsFor(P.pos).filter(m=>realProp(f.id,m));
         return `<a class="fv" href="#" data-nflfav="${esc(f.id)}"><b>⭐ ${esc(f.id)}</b><span class="small">${P.team} ${P.pos} · ${o?`${o.home?"vs":"@"} ${o.opp} ${esc(o.g.when)}`:"no game this week"}${MK.length?` · ${MK.slice(0,3).map(m=>`${MARKETS[m].n} ${realProp(f.id,m)[0]}`).join(", ")}`:""}</span></a>`}
       return "";}).join("");
@@ -4945,10 +5012,16 @@ function nbaSpec(nm,k,side){
   const bp=typeof nbaBestPrice!=="undefined"?nbaBestPrice(r,side==="over"?"o":"u"):null;
   return {k:"nbaprop",player:nm,market:k,side,line:r[2],odds:bp?bp[0]:(side==="over"?r[3]:r[4]),book:bp?bp[1]:r[5],team:p.tm,opp:g?(g.a===p.tm?g.h:g.a):"",home:g?g.h===p.tm:false,date:NBA_SLATE_DATE,wk:NBA_SLATE_DATE};
 }
+function nhlSpec(nm,k,side){
+  if(typeof NHL_PROPS==="undefined")return null;const r=NHL_PROPS.find(x=>x[0]===nm&&x[1]===k),w=r&&nhWho(nm);if(!r||!w)return null;const g=nhGameOf(w.tm);
+  const alt=typeof loAltOdds!=="undefined"?loAltOdds(nm,k):null,line=alt?alt.line:r[2],odds=alt?(side==="over"?alt.o:alt.u):(side==="over"?r[3]:r[4]);if(odds==null)return null;
+  return {k:"nhlprop",player:nm,market:k,side,line,odds,book:alt?(side==="over"?alt.ob:alt.ub):r[5],team:w.tm,opp:g?(g.a===w.tm?g.h:g.a):"",home:g?g.h===w.tm:false,date:g?g.d:NHL_DATE,wk:g?g.d:NHL_DATE};
+}
 function actBtn(spec,label,cls){if(!spec)return "";return `<button class="obtn ${cls||""}" data-act='${esc(JSON.stringify(spec))}'>${label}</button>`}
 function nbaOddsBtns(nm,k){const o=nbaSpec(nm,k,"over"),u=nbaSpec(nm,k,"under");if(!o)return "";
   return `<div class="obrow">${o.odds!=null?actBtn(o,`Over ${o.line} <b>${oddsFmt(o.odds)}</b>`,"ov"):""}${u.odds!=null?actBtn(u,`Under ${u.line} <b>${oddsFmt(u.odds)}</b>`,"un"):""}${snapBtn("nba",nm,k)}</div>`}
 function legHit(s){try{
+  if(s.k==="nhlprop"){const sc=typeof nhScore!=="undefined"&&nhScore(s.player,s.market,s.line,s.side==="over"?"o":"u");return sc?sc.p:null}
   if(s.k==="nbaprop"){const e=nbaEval(s.player,s.market,s.line,s.side==="over"?"o":"u",s.odds,s.book,s.opp);return e?e.sc:null}
   if(s.k==="prop"&&typeof nflEval!=="undefined"){const e=nflEval(s.player,s.market,s.side==="over"?"o":"u");return e?e.sc:null}}catch(e){}return null}
 let ACT=null;
@@ -4989,12 +5062,13 @@ function slipRender(){
 
 /* ===== Same-game parlay check: do two legs tend to hit together? (from shared past games) ===== */
 function sgpSame(x,y){
-  if(x.k==="nbaprop"&&y.k==="nbaprop")return [x.team,x.opp].sort().join()===[y.team,y.opp].sort().join();
+  if((x.k==="nbaprop"&&y.k==="nbaprop")||(x.k==="nhlprop"&&y.k==="nhlprop"))return [x.team,x.opp].sort().join()===[y.team,y.opp].sort().join();
   if(x.k==="prop"&&y.k==="prop"&&typeof oppOf!=="undefined"){if(x.team===y.team)return true;const o=oppOf(x.team);return !!(o&&o.opp===y.team)}
   return false}
 function sgpLog(l){ // {key: hit(bool)}
   const M={},over=l.side==="over";
   if(l.k==="nbaprop"){for(const o of nbaAllG(l.player)){const v=nbaVal(o.x,l.market);M[o.x[1]]=over?v>l.line:v<l.line}}
+  else if(l.k==="nhlprop"){for(const o of nhVals(l.player,l.market))M[o.x[0]]=over?o.v>l.line:o.v<l.line}
   else if(l.k==="prop"){for(const g of pLogs(l.player)){const v=stat(g,l.market);if(Number.isFinite(v))M[g.season+"-"+g.week]=over?v>l.line:v<l.line}}
   return M}
 function sgpPair(x,y){
@@ -5006,7 +5080,7 @@ function sgpPair(x,y){
 function sgpHtml(a){
   const rows=[];let adj=1;
   for(let i=0;i<a.length;i++)for(let j=i+1;j<a.length;j++){if(!sgpSame(a[i],a[j]))continue;const r=sgpPair(a[i],a[j]);
-    const nm=l=>{const last=esc(l.player.split(" ").slice(-1)[0]);if(l.market==="anyTD")return last+" TD";const mk=l.k==="nbaprop"?(NBA_MK[l.market]?NBA_MK[l.market][2]:l.market):(MARKETS[l.market]?MARKETS[l.market].n:l.market);return `${last} ${l.side==="over"?"O":"U"} ${l.line} ${esc(mk)}`};
+    const nm=l=>{const last=esc(l.player.split(" ").slice(-1)[0]);if(l.market==="anyTD")return last+" TD";const mk=l.k==="nhlprop"?(NH_MK[l.market]?NH_MK[l.market][2]:l.market):l.k==="nbaprop"?(NBA_MK[l.market]?NBA_MK[l.market][2]:l.market):(MARKETS[l.market]?MARKETS[l.market].n:l.market);return `${last} ${l.side==="over"?"O":"U"} ${l.line} ${esc(mk)}`};
     if(!r.lift){rows.push(`<div class="sgr"><b>${nm(a[i])} + ${nm(a[j])}</b><span class="small">Not enough shared games to check (${r.n}).</span></div>`);continue}
     if(r.tag!=="n")adj*=Math.max(.6,Math.min(1.6,1+(r.lift-1)*r.n/(r.n+10)));
     rows.push(`<div class="sgr ${r.tag}"><b>${r.tag==="t"?"🤝":r.tag==="a"?"⚔️":"➖"} ${nm(a[i])} + ${nm(a[j])}</b><span class="small">Both hit in <b>${r.both} of ${r.n}</b> shared games — about ${r.exp.toFixed(1)} if they were unrelated. ${r.tag==="t"?"They tend to <b class='up'>hit together</b>.":r.tag==="a"?"They tend to <b class='dn'>work against each other</b> — when one hits, the other often misses.":"No strong link either way."}</span></div>`)}
@@ -5014,7 +5088,7 @@ function sgpHtml(a){
 function slipOpen(){
   const a=slipGet();let p=document.getElementById("slipPanel");if(!p){p=document.createElement("div");p.id="slipPanel";document.body.appendChild(p)}
   const c=slipCalc(a),stake=LS.get("slipStake",10),pay=stake*c.dec;let SG=null;try{SG=sgpHtml(a)}catch(e){}
-  const games={};a.forEach(l=>{const g=l.k==="nbaprop"?l.date+l.team+l.opp:l.team||l.game;if(g)games[g]=(games[g]||0)+1});
+  const games={};a.forEach(l=>{const g=l.k==="nbaprop"||l.k==="nhlprop"?l.date+[l.team,l.opp].sort().join(""):l.team||l.game;if(g)games[g]=(games[g]||0)+1});
   const same=a.filter(l=>l.k==="nbaprop").map(l=>[l.team,l.opp].sort().join("-")).filter((x,i,arr)=>arr.indexOf(x)!==i).length;
   p.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div><h2 style="margin:4px 0 8px">🎟 Parlay builder</h2>
    ${a.map((l,i)=>`<div class="rcr"><div style="flex:1;min-width:0"><b>${esc(betTitle(l))}</b><div class="small">${oddsFmt(l.odds)}${l.est?" (assumed)":""}${l.book?" · "+esc(l.book):""}${c.hs[i]!=null?` · our hit score ${Math.round(c.hs[i]*100)}%`:""}</div></div><button class="btn" data-rmleg="${i}">✕</button></div>`).join("")}
