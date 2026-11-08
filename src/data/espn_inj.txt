@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-08 10:56Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-08 13:06Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Isaiah Adams|G|Questionable|Ankle|Nov 8
@@ -85,6 +85,7 @@ Brandon Jones|S|Out|Hamstring|Nov 22
 Talanoa Hufanga|S|Questionable|Ankle|Nov 8
 Dondrea Tillman|LB|Questionable|Hip|Nov 8
 #DET
+Amon-Ra St. Brown|WR|Questionable|Ribs|Nov 8
 Jack Campbell|LB|IR|Neck|Dec 6
 Cade Mays|C|Out|Ankle|Nov 15
 DJ Wonnum|LB|Out|Concussion|Nov 15
@@ -92,7 +93,6 @@ D.J. Reed|CB|Out|Hip|Nov 15
 Kerby Joseph|S|Out|Knee|Nov 15
 Jacob Saylors|RB|Questionable|Neck|Nov 8
 Sione Vaki|RB|Questionable|Ankle|Nov 8
-Amon-Ra St. Brown|WR|Questionable|Ribs|Nov 8
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
@@ -148,9 +148,9 @@ Trent McDuffie|CB|Questionable|Back|Nov 8
 Dean Connors|RB|IR|Hand|Dec 13
 Grant Stuard|LB|Questionable|Hamstring|Nov 8
 #MIA
+Jaylen Wright|RB|Questionable|Quadriceps|Nov 8
 Malik Herring|DE|Questionable|Neck|Nov 8
 Kaytron Allen|RB|Questionable|Quadriceps|Nov 8
-Jaylen Wright|RB|Questionable|Quadriceps|Nov 8
 Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
 #MIN
 Demond Claiborne|RB|Out|Knee|Nov 15
@@ -186,11 +186,11 @@ Harrison Phillips|DT|Questionable|Ankle|Nov 8
 Max Mitchell|OT|IR|Concussion|Dec 13
 T'Vondre Sweat|DT|IR|Knee|Nov 29
 #PHI
+Tanner McKee|QB|Questionable|Ribs|Nov 8
 Jonathan Jones|CB|Out|Hamstring|Nov 22
 Michael Carter II|CB|Out|Abdomen|Nov 22
 Jihaad Campbell|LB|Out|Hamstring|Nov 22
 Britain Covey|WR|Out|Knee|Nov 22
-Tanner McKee|QB|Questionable|Ribs|Nov 8
 DeVonta Smith|WR|Out|Hamstring|Nov 22
 Dontayvion Wicks|WR|Out|Ankle|Nov 22
 #PIT
@@ -209,13 +209,13 @@ Siran Neal|S|Questionable|Knee|Nov 8
 De'Zhaun Stribling|WR|IR|Ankle|Dec 6
 Upton Stout|CB|Questionable|Shoulder - AC Joint|Nov 8
 #SEA
+Sam Darnold|QB|Out|Quadriceps|Nov 15
 Charles Cross|OT|Out|Ankle|Nov 15
 Brandon Pili|DT|Out|Back|Nov 15
 Uchenna Nwosu|LB|Out|Ankle|Nov 15
 Leonard Williams|DT|Out|Shoulder|Nov 15
 Quenton Nelson|G|Out|Knee|Nov 15
 Rashid Shaheed|WR|Out|Knee|Nov 15
-Sam Darnold|QB|Out|Quadriceps|Nov 15
 Connor O'Toole|LB|Questionable|Foot|Nov 8
 #TB
 Emeka Egbuka|WR|Questionable|Foot|Nov 8
