@@ -18,3 +18,6 @@
 2026-11-08|LaMelo Ball|ra|u|11.5|102|Unibet|MIN|UTAH
 2026-11-08|Bam Adebayo|ra|u|13.5|-137|DraftKings|MIA|SAC
 2026-11-08|Tyrese Maxey|pts|o|25.5|-104|DraftKings|PHI|CHI
+2026-11-09|Royce O'Neale|pts|u|8.5|-104|DraftKings|CHA|CLE
+2026-11-09|RJ Barrett|stl|u|0.5|133|Unibet|TOR|MEM
+2026-11-09|Ziaire Williams|pts|o|8.5|-118|BetRivers|LAL|ATL

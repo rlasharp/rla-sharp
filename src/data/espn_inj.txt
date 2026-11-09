@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 17:33Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 19:35Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Roy Lopez|DT|Questionable|Toe|Nov 15
@@ -42,6 +42,7 @@ Joshua Palmer|WR|Out|Hamstring|Nov 15
 Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
 #CAR
+Jonathon Brooks|RB|IR|Abdomen|Nov 15
 AJ Dillon|RB|Out|Coach's Decision|Nov 15
 Haynes King|QB|Out|Coach's Decision|Nov 15
 Bobby Okereke|LB|Out|Foot|Nov 15
@@ -50,7 +51,6 @@ Will Lee III|CB|Out|Hamstring|Nov 15
 Damien Lewis|G|Out|Knee|Nov 15
 TeRah Edwards|DT|Out|Coach's Decision|Nov 15
 Brady Christensen|G|IR|Hamstring|Nov 15
-Jonathon Brooks|RB|IR|Abdomen|Nov 15
 Xavier Legette|WR|IR|Knee|Nov 15
 #CHI
 Luther Burden III|WR|Questionable|Concussion|Nov 22
@@ -79,6 +79,7 @@ Justin Jefferson|LB|Out|Coach's Decision|Nov 15
 Parker Brailsford|C|Out|Coach's Decision|Nov 15
 Maliek Collins|DT|Out|Elbow|Nov 15
 #DAL
+Tyler Goodson|RB|Doubtful|Knee|Nov 15
 Jake Ferguson|TE|Questionable|Knee|Nov 15
 P.J. Locke|S|Questionable|Concussion|Nov 15
 Jonathan Mingo|WR|Questionable|Ankle|Nov 15
@@ -154,8 +155,8 @@ Cam'Ron Silmon-Craig|S|Out|Coach's Decision|Nov 15
 Alijah Huzzie|CB|Out|Coach's Decision|Nov 15
 Eric Murray|S|IR|Elbow|Feb 15
 #KC
-Patrick Mahomes|QB|Questionable|Elbow|Nov 15
 Xavier Worthy|WR|Questionable|Hamstring|Nov 15
+Patrick Mahomes|QB|Questionable|Elbow|Nov 15
 Jaylon Moore|OT|Questionable|Ankle|Nov 15
 Garrett Nussmeier|QB|Out|Coach's Decision|Nov 15
 Peter Woods|DT|Out|Neck|Nov 15
@@ -214,9 +215,9 @@ Jauan Jennings|WR|Out|Calf|Nov 15
 Kyler Murray|QB|Out|Hamstring|Nov 15
 Jay Ward|S|Questionable|Knee|Nov 9
 #NE
+Ben Brown|C|Doubtful|Knee|Nov 15
 A.J. Brown|WR|Out|Knee|Nov 15
 Rhamondre Stevenson|RB|Questionable|Knee|Nov 15
-Ben Brown|C|Questionable|Knee|Nov 15
 Brenden Schooler|S|Questionable|Hamstring|Nov 15
 Will Campbell|OT|Questionable|Knee|Nov 15
 Carlton Davis III|CB|Questionable|Knee|Nov 15
@@ -283,21 +284,21 @@ Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
 Brandon Aiyuk|WR|Out|Personal|Nov 15
 #SEA
 Drew Lock|QB|Questionable|Oblique|Nov 15
+Sam Darnold|QB|Out|Quadriceps|Nov 29
 Leonard Williams|DT|Out|Shoulder|Nov 15
 Quenton Nelson|G|Out|Knee|Nov 15
 Uchenna Nwosu|LB|Out|Ankle|Nov 15
 Brandon Pili|DT|Out|Back|Nov 15
 Rashid Shaheed|WR|Out|Knee|Nov 15
 Charles Cross|OT|Out|Ankle|Nov 15
-Sam Darnold|QB|Out|Quadriceps|Nov 15
 #TB
+Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 22
 Billy Schrauth|G|Out|Coach's Decision|Nov 22
 Ayden Garnes|CB|Out|Coach's Decision|Nov 22
 Trevor Keegan|G|Out|Coach's Decision|Nov 22
 DeMonte Capehart|DT|Out|Coach's Decision|Nov 22
 Yaya Diaby|LB|Out|Knee - MCL|Nov 22
-Jalen McMillan|WR|IR|Knee - PCL|Nov 22
 #TEN
 Tommy Townsend|P|Out|Knee|Nov 15
 Tyjae Spears|RB|Out|Knee|Nov 15
@@ -309,12 +310,12 @@ James Williams Sr.|LB|Questionable|Groin|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 Dorian Mausi|LB|IR|Foot|Nov 15
 #WAS
+Treylon Burks|WR|Out|Foot|Nov 12
 Lucas Patrick|G|Questionable|Concussion|Nov 12
 Athan Kaliakmanis|QB|Out|Coach's Decision|Nov 12
 Tanoa Togiai|G|Out|Coach's Decision|Nov 12
 Isaac Yiadom|CB|Out|Coach's Decision|Nov 12
 Fabian Moreau|CB|Out|Coach's Decision|Nov 12
-Treylon Burks|WR|Out|Foot|Nov 12
 Dyami Brown|WR|IR|Calf|Dec 6
 Daron Payne|DT|IR|Foot|Feb 15
 Jeremy McNichols|RB|IR|Foot|Feb 15
