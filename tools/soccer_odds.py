@@ -58,15 +58,23 @@ def best_into(d, key, price, book):
 def parse_event(od, home, away):
     """-> game dict + player props {(player, mk): {line: {"o":(price,book), "u":(price,book)}}}"""
     ml, btts, tot, cor, ttot, ah_main, extra = {}, {}, {}, {}, {"home": {}, "away": {}}, {}, {}
-    main_tot, main_cor, props = {}, {}, {}
+    main_tot, main_cor, props, h1 = {}, {}, {}, {}
     for bk in g(od, "bookmakers", []) or []:
         b = str(g(bk, "key", "")).lower()
         if b not in BOOKS: continue
         B = BOOKS[b]
         for m in g(bk, "markets", []) or []:
             k, lt, desc = g(m, "key"), str(g(m, "line_type", "main") or "main"), str(g(m, "description", "") or "")
-            if g(m, "period"): continue
             oc = g(m, "outcomes", []) or []
+            per = str(g(m, "period") or "").lower()
+            if per:
+                if per in ("h1", "1h", "first_half", "1st_half", "half1", "p1") and k in ("h2h", "totals", "both_teams_to_score") and not re.search(r"team", desc, re.I):
+                    for o in oc:
+                        n, p_, pt = str(g(o, "name", "")), g(o, "price"), fnum(g(o, "point"))
+                        if k == "h2h": best_into(h1.setdefault("ml", {}), "h" if n == home else "a" if n == away else "d" if n.lower() == "draw" else "?", p_, B)
+                        elif k == "both_teams_to_score": best_into(h1.setdefault("btts", {}), "y" if n.lower() == "yes" else "n", p_, B)
+                        elif pt is not None and n.lower() in ("over", "under"): best_into(h1.setdefault("tot", {}).setdefault(str(pt), {}), n.lower()[0], p_, B)
+                continue
             if k == "h2h":
                 for o in oc:
                     n, p = str(g(o, "name", "")), g(o, "price")
@@ -120,6 +128,12 @@ def parse_event(od, home, away):
         s = ah_main[ln]
         if "h" in s and "a" in s: out["ah"] = {"line": float(ln), "h": s["h"][0], "hb": s["h"][1], "a": s["a"][0], "ab": s["a"][1]}
     if extra: out["extra"] = {k: ladd(v) for k, v in extra.items()}
+    if h1:
+        o1 = {}
+        if {"h", "d", "a"} <= set(h1.get("ml", {})): o1["ml"] = {k: h1["ml"][k][0] for k in "hda"} | {k + "b": h1["ml"][k][1] for k in "hda"}
+        if h1.get("tot"): o1["tot"] = ladd(h1["tot"])
+        if h1.get("btts"): o1["btts"] = {"y": h1["btts"].get("y", (None,))[0], "yb": h1["btts"].get("y", (None, None))[1], "n": h1["btts"].get("n", (None,))[0], "nb": h1["btts"].get("n", (None, None))[1]}
+        if o1: out["h1"] = o1
     return out, props
 
 def run(client, prev, used, budget_cap, log=print):
@@ -146,7 +160,7 @@ def run(client, prev, used, budget_cap, log=print):
             pid = str(g(ev, "id")); o = old_ev.get(pid) or {}
             e = {"pid": pid, "comp": comp, "home": g(ev, "home_team"), "away": g(ev, "away_team"), "hid": esp_id(g(ev, "home_team_id")),
                  "aid": esp_id(g(ev, "away_team_id")), "start": g(ev, "commence_time")}
-            for k in ("at", "ml", "btts", "tot", "main_tot", "cor", "main_cor", "ttot", "ah", "extra", "open"):
+            for k in ("at", "ml", "btts", "tot", "main_tot", "cor", "main_cor", "ttot", "ah", "extra", "open", "h1"):
                 if k in o: e[k] = o[k]
             evs[pid] = e
         # once a day per competition: look for new market types (cards / fouls / player shots) on the soonest match
@@ -170,13 +184,16 @@ def run(client, prev, used, budget_cap, log=print):
             continue
         sk = dict(COMPS)[e["comp"]]
         mks = GAME_MK + list(PLAYER_MK) + sorted(mk_extra)
-        try: od = client.get_odds(sk, event_id=e["pid"], markets=mks); used += 1; n_odds += 1
+        try:
+            try: od = client.get_odds(sk, event_id=e["pid"], markets=mks, period="all")   # full match + first-half lines in one request
+            except TypeError: od = client.get_odds(sk, event_id=e["pid"], markets=mks)
+            used += 1; n_odds += 1
         except Exception as ex:
             used += 1; log(f"soccer {e['comp']} {e['pid']}: odds failed ({ex}) — retrying with the core list")
             try: od = client.get_odds(sk, event_id=e["pid"], markets=GAME_MK + list(PLAYER_MK)); used += 1
             except Exception as ex2: log(f"soccer {e['pid']}: odds failed: {ex2}"); continue
         game, props = parse_event(od, e["home"], e["away"])
-        for k in ("ml", "btts", "tot", "main_tot", "cor", "main_cor", "ttot", "ah", "extra"): e.pop(k, None)
+        for k in ("ml", "btts", "tot", "main_tot", "cor", "main_cor", "ttot", "ah", "extra", "h1"): e.pop(k, None)
         e.update(game); e["at"] = now.isoformat(timespec="seconds")
         op = e.get("open") or {}
         if "ml" in game and "ml" not in op: op["ml"] = [game["ml"]["h"], game["ml"]["d"], game["ml"]["a"]]

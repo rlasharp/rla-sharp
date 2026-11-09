@@ -169,3 +169,18 @@ function xPropRow(o){const L=o.l10&&o.l10[1]?o.l10:null,pc=L?Math.round(L[0]/L[1
     ${L?`<div class="xph"><span class="xpbar" aria-hidden="true"><i style="width:${pc}%"></i></span><span>Hit <b>${L[0]} of last ${L[1]}</b></span></div>`:""}
     ${more||o.why?`<div class="xpw small">${[more,o.why].filter(Boolean).join(" · ")}</div>`:""}</div>
    <div class="bps"><b>${o.chance}%</b><span>our chance</span><span class="small">odds need ${o.need}%</span>${o.act||""}</div></${tag}>`}
+
+/* ---------- 🎯 did our chances come true? (calibration from the tracker) ---------- */
+function xCalCard(){if(typeof TRACK==="undefined"||!TRACK||!TRACK.sum)return "";const S=TRACK.sum,G=[];const u=x=>(x>0?"+":"")+(+x).toFixed(1)+"u";
+  const judge=(n,said,got)=>n<20?`<span class="small" title="fewer than 20 graded">·</span>`:Math.abs(got-said)<=.05?"✅":got<said?"⬇️":"⬆️";
+  const order={props:["50–59%","60–69%","70–79%","80%+"],edges:["4–6%","7–9%","10%+"]};
+  for(const [sp,nm] of [["nba","🏀 NBA"],["nhl","🏒 NHL"],["nfl","🏈 NFL"]]){const c=S[sp]&&S[sp].cal;if(!c)continue;const R=[];
+    for(const k of order.props){const B=c.props[k];if(B&&B[0])R.push(["Props we gave "+k,B])}
+    for(const k of order.edges){const B=c.edges[k];if(B&&B[0])R.push(["Game edges "+k,B])}if(R.length)G.push([nm,R])}
+  const sp=S.soc&&S.soc.plays;if(!G.length&&!(sp&&sp.w+sp.l))return `<div class="card" style="margin-top:14px"><h2>🎯 Did our chances come true?</h2><div class="small">Fills in as graded picks pile up — every top prop and game edge is saved before the game with the chance we gave it.</div></div>`;
+  const row=(lab,said,B)=>`<tr><td>${lab} <span class="small">(${B[0]})</span></td><td>${said==null?"–":Math.round(said*100)+"%"}</td><td><b>${Math.round(B[1]/B[0]*100)}%</b> ${said==null?"":judge(B[0],said,B[1]/B[0])}</td><td class="${B[3]>0?"up":B[3]<0?"dn":""}">${u(B[3])}</td></tr>`;
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🎯 Did our chances come true?</h2><div class="small" style="margin-bottom:8px">Every day's top props and game edges are saved before the game with the chance we gave them, then graded. If we say 65% and they hit about 65% of the time, the numbers can be trusted.</div>
+   <table class="bxt calt"><thead><tr><th></th><th>We said</th><th>Hit</th><th>Units</th></tr></thead><tbody>
+   ${G.map(([nm,R])=>`<tr class="calh"><td colspan="4">${nm}</td></tr>${R.map(([l,B])=>row(l,B[2]/B[0],B)).join("")}`).join("")}
+   ${sp&&sp.w+sp.l?`<tr class="calh"><td colspan="4">⚽ Soccer</td></tr>${row("Plays of the day",null,[sp.w+sp.l,sp.w,0,sp.u])}`:""}</tbody></table>
+   <div class="small" style="margin-top:6px">✅ within 5 points of what we said · ⬇️ hit less often · ⬆️ hit more often · “·” fewer than 20 graded picks, too early to judge. (n) = graded picks. 1 unit each at the posted odds. Tracking started Nov 8, 2026.</div></div>`}

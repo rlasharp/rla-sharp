@@ -57,7 +57,7 @@ function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){
   <div class="card rec"><div class="recs">${tile("Record",recLine(T))}${tile("Hit rate",T.g?Math.round(T.win/T.g*100)+"%":"–")}${tile("Units",uTxt(T.u),uCls(T.u))}</div>
    <div class="small" style="margin-top:6px">${T.pending?`${T.pending} play${T.pending>1?"s":""} still pending. `:""}Pushes and players who didn't play don't count.</div>
    <div class="row" style="gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn" id="recShare">📤 Share our record</button></div></div>
-  <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">📈 Profit over time</h2>${recChart(R)}</div>
+  <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">📈 Profit over time</h2>${recChart(R)}</div>${typeof xCalCard!=="undefined"?xCalCard():""}
   <div id="clvCard" style="margin-top:14px">${clvCardHtml(R)}</div>
   ${typeof xTrackCard!=="undefined"?xTrackCard():""}
   <div class="grid g2" style="margin-top:14px">${tbl("By sport",grp(r=>r.sport))}${tbl("By bet type",grp(r=>r.sport+" · "+r.type))}</div>

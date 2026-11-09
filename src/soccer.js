@@ -34,7 +34,7 @@ function socAddDays(d,n){const x=new Date(d+"T12:00:00Z");x.setUTCDate(x.getUTCD
 function socDayS(d){return new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"long",month:"short",day:"numeric"})}
 function socFx(id){return (SOC_FX||[]).find(f=>String(f.id)===String(id))}
 let SOC_RIDX=null;function socResIdx(){if(!SOC_RIDX){SOC_RIDX={};for(const r of SOC_RES||[])SOC_RIDX[r[0]]=r}return SOC_RIDX}
-function socStarted(f){return f.state==="in"||f.state==="post"||Date.parse(f.t)<Date.now()-60000}
+function socStarted(f){const L=typeof SOCL!=="undefined"&&SOCL.m[f.id];if(L)return L.st!=="pre";return f.state==="in"||f.state==="post"||Date.parse(f.t)<Date.now()-60000}
 /* team's matches (all competitions), newest last */
 function socTeamRes(tid,comp){return (SOC_RES||[]).filter(r=>(r[3]===tid||r[4]===tid)&&(!comp||r[2]===comp))}
 function socWDL(r,tid){const me=r[3]===tid?r[5]:r[6],op=r[3]===tid?r[6]:r[5];return me>op?"W":me<op?"L":"D"}
@@ -71,11 +71,16 @@ function socSpec(f,kind,side,line,odds,book,extra){const title=kind==="ml"?(side
 function socBetBtn(spec){return `<button class="betplus" data-bet='${socE(JSON.stringify(spec))}' title="Add to My Bets" aria-label="Add to My Bets">＋</button>`}
 /* grading (My Bets): needs soccer_data.js (+ soccer_players.js for player bets); pending until loaded */
 function socGrade(b){if(typeof SOC_RES==="undefined"||!window.SOC_OK){socEnsure();return {r:"pending"}}
-  const r=socResIdx()[b.match];if(!r)return {r:"pending"};const why=`Final: ${socTm(r[3])} ${r[5]}-${r[6]} ${socTm(r[4])}`;
+  const r=socResIdx()[b.match];if(!r){const L=SOCL.m[b.match];if(L&&L.st!=="pre"){const S=SOCL.sum[b.match],f=socFx(b.match),T=S&&f&&[S.ts[f.h],S.ts[f.a]];
+      const cor=T&&T[0]&&T[1]?(T[0][2]||0)+(T[1][2]||0):null,crd=T&&T[0]&&T[1]?(T[0][4]||0)+(T[0][5]||0)+(T[1][4]||0)+(T[1][5]||0):null;
+      return {r:"pending",why:`${L.st==="post"?"Full time":"Live "+(L.clock||"")} ${L.hs}-${L.as}${cor!=null?` · ${cor} corners · ${crd} cards`:""}`}}return {r:"pending"}}const why=`Final: ${socTm(r[3])} ${r[5]}-${r[6]} ${socTm(r[4])}`;
   if(b.kind==="ml"){const w=r[5]>r[6]?"h":r[5]<r[6]?"a":"d";return {r:w===b.side?"win":"loss",why}}
   const ou=(v,u)=>v==null?{r:"pending"}:{r:v===b.line?"push":((b.side==="o")===(v>b.line))?"win":"loss",why:`${why} · ${v} ${u}`};
   if(b.kind==="tot")return ou(r[5]+r[6],"goals");if(b.kind==="cor")return ou(socMatchVal(r,"cor"),"corners");if(b.kind==="card")return ou(socMatchVal(r,"card"),"cards");
   if(b.kind==="btts")return {r:((r[5]>0&&r[6]>0)===(b.side==="y"))?"win":"loss",why};
+  if(b.kind==="tt")return ou(b.team==="h"?r[5]:r[6],"goals");
+  if(b.kind==="h1tot"||b.kind==="h1ml"){const ev=(r[9]||[]).filter(x=>"gpo".includes(x[0]));if(ev.length!==r[5]+r[6]||ev.some(x=>x[1]==null))return {r:"pending",why:"Half-time score not in our data yet"};
+    const fh=ev.filter(x=>x[1]<=45);if(b.kind==="h1ml"&&fh.some(x=>x[0]==="o"))return {r:"pending",why:"Own goal before half-time — check the result yourself"};const hh=fh.filter(x=>x[2]===r[3]).length,aa=fh.length-hh;if(b.kind==="h1tot")return ou(fh.length,"first-half goals");const w=hh>aa?"h":hh<aa?"a":"d";return {r:w===b.side?"win":"loss",why:`Half-time ${hh}-${aa}`}}
   if(b.kind==="prop"){if(!window.SOC_P_OK){socPEnsure();return {r:"pending"}}const P=SOC_P[b.pid];const g=P&&P[3].find(x=>x[0]===b.match);if(!g)return {r:"void",why:"Did not play — no action"};
     const v=socVal(g,b.mk);return {r:v===b.line?"push":((b.side==="o")===(v>b.line))?"win":"loss",why:`Final: ${v} ${(SOC_MK[b.mk]||[])[2]||""}`}}
   return {r:"pending"}}
@@ -120,7 +125,7 @@ function socCard(f){const O=f.odds||{},P=f.proj,st=socStarted(f),fin=f.state==="
   const cell=(lab,o,p)=>`<div class="scod"><span>${lab}</span><b>${socO(o)}</b>${p!=null?`<em class="${o!=null&&p-socImp(o)>=.05?"up":""}">${socPct(p)}</em>`:""}</div>`;
   const mt=O.main_tot||"2.5",mc=O.main_cor,be=!st&&socBestEdge(f);
   return `<a class="card sccard" href="#soccer-game-${f.id}">
-   <div class="row" style="align-items:center;gap:6px">${socLgChip(f.c)}<span class="small">${fin?"<b>FINAL</b>":st?"<b class='up'>LIVE</b>":socTime(f.t)+" "+socTZ()}</span>${socCountdown(f)}<span class="sp"></span>${socWx(f)}</div>
+   <div class="row" style="align-items:center;gap:6px">${socLgChip(f.c)}<span class="small">${fin?"<b>FINAL</b>":st?"<b class='up'>LIVE</b>":socTime(f.t)+" "+socTZ()}</span>${socCountdown(f)}<span class="sp"></span><span data-sclive="${f.id}">${typeof socLiveChip!=="undefined"?socLiveChip(f):""}</span>${socWx(f)}</div>
    <div class="scteams"><div>${socBadge(f.h)} <b>${socE(socTm(f.h))}</b>${rh?` <span class="small">${socOrd(rh)}</span>`:""}<span class="scfm">${socForm(f.h)}</span></div>
      <div>${socBadge(f.a)} <b>${socE(socTm(f.a))}</b>${ra?` <span class="small">${socOrd(ra)}</span>`:""}<span class="scfm">${socForm(f.a)}</span></div></div>
    ${O.ml||P?`<div class="scodds">${cell("1",O.ml&&O.ml.h,P&&P.p[0])}${cell("X",O.ml&&O.ml.d,P&&P.p[1])}${cell("2",O.ml&&O.ml.a,P&&P.p[2])}
@@ -150,7 +155,7 @@ function socHero(f){const st=socStarted(f),fin=f.state==="post";
   <div class="nhht" style="margin-top:10px"><div class="ght">${socBadge(f.h,1)}${socTL(f.h,`<b>${socE(socTmFull(f.h))}</b>`)}<span class="small">${socRank(f.c,f.h)?socOrd(socRank(f.c,f.h))+" · ":""}home</span><span class="scfm">${socForm(f.h,6)}</span></div>
    <div class="ght"><b style="font-size:22px">${fin||st?`${f.hs??""} – ${f.as??""}`:"v"}</b><span class="small">${fin?"Final":st?socE(f.detail||"Live"):""}</span></div>
    <div class="ght">${socBadge(f.a,1)}${socTL(f.a,`<b>${socE(socTmFull(f.a))}</b>`)}<span class="small">${socRank(f.c,f.a)?socOrd(socRank(f.c,f.a))+" · ":""}away</span><span class="scfm">${socForm(f.a,6)}</span></div></div>
-  <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:10px">${socWx(f)}${f.ref?`<span class="pill">🧑‍⚖️ Ref: ${socE(f.ref)}</span>`:""}${f.lu?`<span class="pill">📋 Lineups confirmed</span>`:""}</div></div>`}
+  <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:10px"><span data-sclive="${f.id}">${typeof socLiveChip!=="undefined"?socLiveChip(f):""}</span>${socWx(f)}${f.ref?`<span class="pill">🧑‍⚖️ Ref: ${socE(f.ref)}</span>`:""}${f.lu?`<span class="pill">📋 Lineups confirmed</span>`:""}</div></div>`}
 function socQuick(f){const out=[],S=(c,ic,t)=>out.push({c,ic,t}),P=f.proj,A=socTN(f.c,f.h),B=socTN(f.c,f.a),hN=socE(socTm(f.h)),aN=socE(socTm(f.a)),L=SOC_LG[f.c]||{};
   if(P){const fav=P.p[0]>P.p[2]?[hN,P.p[0]]:[aN,P.p[2]];S(fav[1]>=.55?"good":"",fav[1]>=.55?"✅":"⚖️",`We make <b>${fav[0]}</b> ${socPct(fav[1])} to win (draw ${socPct(P.p[1])}) — expected score ${P.lh.toFixed(1)}–${P.la.toFixed(1)}.`)}
   if(A&&B){const ov=(A[15]+B[15])/(A[0]+B[0]);S(ov>=.6?"good":ov<=.4?"bad":"","⚽",`Over 2.5 goals landed in <b>${A[15]}/${A[0]}</b> ${hN} games and <b>${B[15]}/${B[0]}</b> ${aN} games this season (${L.sh||""} average ${socPct(L.o25)}).`);
@@ -183,6 +188,14 @@ function socEstTable(f){const P=f.proj,O=f.odds||{};if(!P&&!f.odds)return "";con
     for(const ln of lines){const T=O.cor&&O.cor[ln],p=P&&P.cor&&P.cor.o[ln],m=ln===mc;add(m,socRowEst(`Over ${ln}`,p,T&&T[0],T&&T[1],socSpec(f,"cor","o",+ln,T&&T[0],T&&T[1])));add(m,socRowEst(`Under ${ln}`,p!=null?1-p:null,T&&T[2],T&&T[3],socSpec(f,"cor","u",+ln,T&&T[2],T&&T[3])))}}
   if(P&&P.card){head("🟨 Total cards (yellow + red)");const X=O.extra&&Object.entries(O.extra).find(([k])=>/card|booking/i.test(k)),mk=socNear(P.card,["2.5","3.5","4.5","5.5"]);
     for(const ln of ["2.5","3.5","4.5","5.5"]){const T=X&&X[1][ln],p=P.card.o[ln],m=ln===mk;add(m,socRowEst(`Over ${ln}`,p,T&&T[0],T&&T[1],socSpec(f,"card","o",+ln,T&&T[0],T&&T[1])));add(m,socRowEst(`Under ${ln}`,p!=null?1-p:null,T&&T[2],T&&T[3],socSpec(f,"card","u",+ln,T&&T[2],T&&T[3])))}}
+  if(P&&P.tt){head("🎯 Team goals");const TT=O.ttot||{};for(const [sd,tid] of [["h",f.h],["a",f.a]])for(const ln of ["0.5","1.5","2.5"]){const T=(TT[sd==="h"?"home":"away"]||{})[ln],p=P.tt[sd][ln],m=ln==="1.5";
+      add(m,socRowEst(`${socE(socTm(tid))} over ${ln}`,p,T&&T[0],T&&T[1],socSpec(f,"tt","o",+ln,T&&T[0],T&&T[1],{team:sd,title:`${socTm(tid)} over ${ln} goals`})));add(0,socRowEst(`${socE(socTm(tid))} under ${ln}`,p!=null?1-p:null,T&&T[2],T&&T[3],socSpec(f,"tt","u",+ln,T&&T[2],T&&T[3],{team:sd,title:`${socTm(tid)} under ${ln} goals`})))}}
+  if(P&&P.h1){head("⏱ First half");const H=O.h1||{};[["h",0,socTm(f.h)+" leads at HT"],["d",1,"Level at HT"],["a",2,socTm(f.a)+" leads at HT"]].forEach(([k,i,l])=>add(k==="d",socRowEst(socE(l),P.h1.p[i],H.ml&&H.ml[k],H.ml&&H.ml[k+"b"],socSpec(f,"h1ml",k,null,H.ml&&H.ml[k],H.ml&&H.ml[k+"b"],{title:`${l} (half-time result)`}))));
+    for(const ln of ["0.5","1.5"]){const T=H.tot&&H.tot[ln],p=P.h1.o[ln];add(ln==="0.5",socRowEst(`1st half over ${ln}`,p,T&&T[0],T&&T[1],socSpec(f,"h1tot","o",+ln,T&&T[0],T&&T[1],{title:`${socTm(f.h)} v ${socTm(f.a)} 1st half over ${ln} goals`})));add(ln==="0.5",socRowEst(`1st half under ${ln}`,1-p,T&&T[2],T&&T[3],socSpec(f,"h1tot","u",+ln,T&&T[2],T&&T[3],{title:`${socTm(f.h)} v ${socTm(f.a)} 1st half under ${ln} goals`})))}}
+  if(P&&P.cor&&P.cor.ho){head("🚩 Corners by team");add(1,socRowEst(`Most corners: ${socE(socTm(f.h))}`,P.cor.more[0],null,null,null));add(1,socRowEst(`Most corners: ${socE(socTm(f.a))}`,P.cor.more[2],null,null,null));add(0,socRowEst("Corners level",P.cor.more[1],null,null,null));
+    for(const [k,tid] of [["ho",f.h],["ao",f.a]])for(const ln of ["3.5","4.5","5.5"])add(ln==="4.5",socRowEst(`${socE(socTm(tid))} over ${ln}`,P.cor[k][ln],null,null,null))}
+  if(P&&P.card&&P.card.ho){head("🟨 Cards by team");for(const [k,tid] of [["ho",f.h],["ao",f.a]])for(const ln of ["0.5","1.5","2.5"])add(ln==="1.5",socRowEst(`${socE(socTm(tid))} over ${ln}`,P.card[k][ln],null,null,null));
+    if(P.card.h1)for(const ln of ["0.5","1.5"])add(ln==="0.5",socRowEst(`1st half cards over ${ln}`,P.card.h1.o[ln],null,null,null))}
   const mv=O.open&&O.ml&&O.open.ml?((a,b)=>a!=null&&b!=null&&a!==b?`<div class="small" style="margin-top:6px">📈 Opened ${socTm(f.h)} ${socO(O.open.ml[0])} · draw ${socO(O.open.ml[1])} · ${socTm(f.a)} ${socO(O.open.ml[2])} → now ${socO(O.ml.h)} / ${socO(O.ml.d)} / ${socO(O.ml.a)}</div>`:"")(O.open.ml[0],O.ml.h):"";
   return `<div class="card scest"><h2>💰 Our estimate vs the books</h2><div class="xasub">The main line of each market. “Needs” = the chance the price implies; green edge = we beat it by 5%+.</div>
    <div class="alw"><table class="altt sctbl est"><thead><tr><th>Bet</th><th>Ours</th><th>Best odds</th><th>Edge</th></tr></thead><tbody>${rows.join("")}</tbody></table></div>
@@ -225,7 +238,7 @@ function socGame(el,id){const f=socFx(id);if(!f){el.innerHTML=`<p><a href="#socc
    <div id="scBody"></div>`;
   const body=el.querySelector("#scBody");
   const draw=()=>{if(SC.tab==="props"){body.innerHTML=`<div class="small">Loading players…</div>`;socPEnsure(()=>{body.innerHTML=socGameProps(f);socWire(body)})}
-    else{body.innerHTML=`${socVerdictHtml(f,1)}${typeof xQuickHtml!=="undefined"?xQuickHtml(socQuick(f),"Automatic notes from this season's numbers — reasons to look closer, not picks."):""}${socEstTable(f)}${socCornerCard(f)}${socCardCard(f)}${socTeamCmp(f)}${socFormCard(f)}${socH2HCard(f)}${socMissCard(f)}${f.wx?socWx(f,1):""}${socFoot()}`;socWire(body)}};
+    else{body.innerHTML=`<div id="scLiveBox" data-id="${f.id}">${socLiveStats(f)}</div>${socVerdictHtml(f,1)}${typeof xQuickHtml!=="undefined"?xQuickHtml(socQuick(f),"Automatic notes from this season's numbers — reasons to look closer, not picks."):""}${socEstTable(f)}${socCornerCard(f)}${socCardCard(f)}${socTeamCmp(f)}${socFormCard(f)}${socH2HCard(f)}${socMissCard(f)}${f.wx?socWx(f,1):""}${socFoot()}`;socWire(body)}};
   el.querySelectorAll("[data-sctab]").forEach(b=>b.onclick=()=>{SC.tab=b.dataset.sctab;el.querySelectorAll("[data-sctab]").forEach(x=>x.classList.toggle("on",x===b));draw()});draw()}
 function socWire(el){el.querySelectorAll("[data-scx]").forEach(b=>b.onclick=()=>{const c=b.closest(".scest");b.dataset.t0=b.dataset.t0||b.textContent;const on=c.classList.toggle("open");b.textContent=on?"Show main lines only":b.dataset.t0})}
 
@@ -296,8 +309,8 @@ function socTonightItems(){if(!window.SOC_OK)return [];const d=socToday(),d1=soc
 function socMatchRow(id){return socResIdx()[id]||(window.SOC_OLD||[]).find(r=>r[0]===id)||null}
 function socTL(id,txt){return `<a href="#soccer-team-${id}" class="sctl">${txt}</a>`}
 const SOC_TSL=[["Shots",0],["On target",1],["Corners",2],["Fouls",3],["Yellow cards",4],["Red cards",5],["Possession %",6],["Offsides",7],["Saves",8]];
-function socMatchPlayers(id,tid){const out=[];if(window.SOC_P)for(const [aid,P] of Object.entries(SOC_P)){if(P[1]!==tid&&!P[3].some(g=>g[0]===id))continue;const g=P[3].find(g=>g[0]===id);if(g)out.push({aid,nm:P[0],pos:P[2],g,tid:P[1]})}
-  const O=window.SOC_OLDP&&SOC_OLDP[id];if(O&&!out.length)for(const r of O)out.push({aid:r[1],nm:r[2],pos:r[3],g:[id,r[4],r[5],...r.slice(6)],tid:r[0],old:1});
+function socMatchPlayers(id,tid){const out=[];if(window.SOC_P)for(const [aid,P] of Object.entries(SOC_P)){if(P[1]!==tid&&!P[3].some(g=>g[0]===id))continue;const g=P[3].find(g=>g[0]===id);if(g)out.push({aid,nm:P[0],pos:g[12]||P[2],g,tid:P[1]})}
+  const O=window.SOC_OLDP&&SOC_OLDP[id];if(O&&!out.length)for(const r of O)out.push({aid:r[1],nm:r[2],pos:r[3],g:[id,r[4],r[5],...r.slice(6),r[3]],tid:r[0],old:1});
   return out}
 function socMatchPage(el,id){socPEnsure(()=>{const r=socMatchRow(id);if(!r){el.innerHTML=`<p><a href="#soccer-results">← Results</a></p><div class="card">Match not found.</div>`;return}
   const [,t,c,h,a,hs,as,Ht,At,ev]=r,old=!socResIdx()[id];
@@ -311,7 +324,8 @@ function socMatchPage(el,id){socPEnsure(()=>{const r=socMatchRow(id);if(!r){el.i
    <div class="nhht" style="margin-top:10px"><div class="ght">${socBadge(h,1)}${socTL(h,`<b>${socE(socTmFull(h))}</b>`)}</div><div class="ght"><b style="font-size:26px">${hs} – ${as}</b><span class="small">Full time</span></div><div class="ght">${socBadge(a,1)}${socTL(a,`<b>${socE(socTmFull(a))}</b>`)}</div></div></div>
   ${evs.length?`<div class="card"><h2>⏱ Goals &amp; cards</h2>${evs.map(x=>`<div class="scev ${x[2]===h?"h":"a"}"><b>${x[1]}'</b> ${ic[x[0]]||""} ${socE(x[3]||"")} <span class="small">${socE(socTm(x[2]))}</span></div>`).join("")}</div>`:""}
   ${Ht&&At?`<div class="card"><h2>📊 Match stats</h2><div class="alw"><table class="altt sctbl"><thead><tr><th></th><th>${socBadge(h)}</th><th>${socBadge(a)}</th></tr></thead><tbody>${SOC_TSL.map(([l,i])=>`<tr><td>${l}</td><td><b>${Ht[i]??"–"}</b></td><td><b>${At[i]??"–"}</b></td></tr>`).join("")}<tr><td>Total corners</td><td colspan="2"><b>${(Ht[2]??0)+(At[2]??0)}</b></td></tr><tr><td>Total cards</td><td colspan="2"><b>${(Ht[4]??0)+(Ht[5]??0)+(At[4]??0)+(At[5]??0)}</b></td></tr></tbody></table></div></div>`:`<div class="card small">No team stats for this match.</div>`}
-  <div class="card"><h2>👟 Players</h2><h3 style="margin:6px 0">${socE(socTm(h))}</h3>${side(h)}<h3 style="margin:12px 0 6px">${socE(socTm(a))}</h3>${side(a)}<div class="small" style="margin-top:6px">* came off the bench</div></div>${socFoot()}`})}
+  ${socLineupCard(id,h,a,P)}
+  <details class="card"><summary><b>👟 All player numbers (table)</b></summary><h3 style="margin:10px 0 6px">${socE(socTm(h))}</h3>${side(h)}<h3 style="margin:12px 0 6px">${socE(socTm(a))}</h3>${side(a)}<div class="small" style="margin-top:6px">* came off the bench</div></details>${socFoot()}`;socLineupWire(el)})}
 /* a clickable result line (recent form, results, head to head, team page) */
 function socResLine(r,tid){const me=tid&&r[3]===tid,op=tid?(me?r[4]:r[3]):null,x=tid?socWDL(r,tid):null;
   return `<a class="scfr scfrl" href="#soccer-match-${r[0]}">${x?`<i class="scf ${x}">${x}</i>`:""}<span>${tid?`${me?"vs":"@"} ${socE(socTm(op))}`:`${socE(socTm(r[3]))} v ${socE(socTm(r[4]))}`}</span><b>${r[5]}-${r[6]}</b><span class="small">${socE(r[1].slice(5,10))} · ${socE((SOC_LG[r[2]]||{}).sh||"")} · 🚩${socMatchVal(r,"cor")??"–"} · 🟨${socMatchVal(r,"card")??"–"}</span></a>`}
@@ -351,3 +365,50 @@ function socFinder(el){const k=SC.cc==="card"?"card":"cor",d0=(socDays()[0])||so
    <div class="grid g2">${F.slice(0,SC.ccAll?999:24).map(row).join("")||`<div class="card small">No matches with estimates in the next 7 days.</div>`}</div>${F.length>24&&!SC.ccAll?`<button class="btn" data-ccall="1" style="width:100%;margin-top:8px">Show all ${F.length} matches</button>`:""}${socFoot()}`;
   const ca=el.querySelector("[data-ccall]");if(ca)ca.onclick=()=>{SC.ccAll=1;socFinder(el)};
   el.querySelectorAll("[data-scc]").forEach(b=>b.onclick=()=>{SC.cc=b.dataset.scc;socFinder(el)});socLgWire(el,()=>socFinder(el))}
+
+/* ---------- 🟩 lineups: starting XI on a pitch by position, subs below; tap a player for his numbers in that match ---------- */
+function socLineOf(pos){const p=String(pos||"").toUpperCase();if(p==="G"||p==="GK")return 0;if(/^(CD|LB|RB|LWB|RWB|D|SW|CB)/.test(p))return 1;if(/^DM/.test(p))return 2;if(/^AM/.test(p))return 4;if(/^(CF|F|ST|LW|RW|SS|W)/.test(p))return 5;if(/^(CM|LM|RM|M)/.test(p))return 3;return 3}
+function socSideOf(pos){const p=String(pos||"").toUpperCase();if(/-L$/.test(p)||/^L/.test(p))return 0;if(/-R$/.test(p)||/^R/.test(p))return 2;return 1}
+function socShort(n){const w=String(n||"").split(" ");return w.length>1?w.slice(1).join(" "):n}
+function socPitch(L,key){const rows=[[],[],[],[],[],[]];L.forEach((x,i)=>rows[socLineOf(x.pos)].push(Object.assign(x,{i})));
+  const chip=x=>{const g=x.g,b=(g[5]?"⚽".repeat(Math.min(g[5],3)):"")+(g[6]?"🅰️":"")+(g[10]?"🟥":g[9]?"🟨":"")+(!g[1]?"":g[2]<85?"🔻":"");
+    return `<button class="scpl" data-scpl="${key}|${x.i}"><i>${socE(socShort(x.nm))}</i>${b?`<em>${b}</em>`:""}</button>`};
+  return `<div class="scpitch">${rows.slice().reverse().filter(r=>r.length).map(r=>`<div class="scrow">${r.sort((a,b)=>socSideOf(a.pos)-socSideOf(b.pos)).map(chip).join("")}</div>`).join("")}</div>`}
+function socLineupCard(id,h,a,P){const all={};const mk=tid=>{const L=P.filter(x=>x.tid===tid);return {xi:L.filter(x=>x.g[1]),sub:L.filter(x=>!x.g[1]).sort((x,y)=>y.g[2]-x.g[2])}};
+  const H=mk(h),A=mk(a);if(H.xi.length<7||A.xi.length<7)return "";all.h=[...H.xi,...H.sub];all.a=[...A.xi,...A.sub];window.SOC_LU_CUR={id,all};
+  const side=(k,tid,T)=>`<div><h3 style="margin:0 0 6px">${socBadge(tid)} ${socTL(tid,socE(socTm(tid)))}</h3>${socPitch(T.xi,k)}
+    <div class="scbench"><b>Subs used</b>${T.sub.map((x,j)=>`<button class="scpl sub" data-scpl="${k}|${T.xi.length+j}"><i>${socE(x.nm)}</i><em>${x.g[2]}′${x.g[5]?" ⚽":""}${x.g[6]?" 🅰️":""}${x.g[9]?" 🟨":""}</em></button>`).join("")||`<span class="small">none</span>`}</div></div>`;
+  return `<div class="card"><h2>🟩 Lineups</h2><div class="xasub">Starting XI by position · ⚽ goal · 🅰️ assist · 🟨/🟥 card · 🔻 subbed off · tap a player for his match</div>
+   <div class="sc2">${side("h",h,H)}${side("a",a,A)}</div><div id="scPlBox" class="scplbox" hidden></div></div>`}
+function socLineupWire(el){el.querySelectorAll("[data-scpl]").forEach(b=>b.onclick=()=>{const [k,i]=b.dataset.scpl.split("|"),C=window.SOC_LU_CUR,x=C&&C.all[k][+i];if(!x)return;
+  el.querySelectorAll(".scpl.on").forEach(z=>z.classList.remove("on"));b.classList.add("on");const g=x.g,box=el.querySelector("#scPlBox");
+  box.hidden=false;box.innerHTML=`<div class="row" style="align-items:center;gap:8px"><b style="font-size:16px">${socE(x.nm)}</b><span class="small">${socE(x.pos||"")} · ${socE(socTm(x.tid))}</span><span class="sp"></span>${x.old?"":`<a class="small" href="#soccer-player-${x.aid}">Season page →</a>`}</div>
+   <div class="pbio" style="margin-top:8px"><div><b>${g[2]}′</b>${g[1]?"Started":"Came on"}</div><div><b>${g[5]}</b>Goals</div><div><b>${g[6]}</b>Assists</div><div><b>${g[3]}</b>Shots</div><div><b>${g[4]}</b>On target</div><div><b>${g[7]}</b>Fouls</div><div><b>${g[8]}</b>Fouled</div><div><b>${g[9]?"🟨":g[10]?"🟥":"–"}</b>Card</div>${g[11]?`<div><b>${g[11]}</b>Saves</div>`:""}</div>`;
+  box.scrollIntoView({block:"nearest",behavior:"smooth"})})}
+
+/* ---------- 📡 live: scores, minute and running team stats from ESPN, in the visitor's browser ----------
+   Polls only while a match is on (or about to be), every 30 s; game pages also pull live corners / cards / shots.
+   If the feed can't be reached (some hosts block outside requests) nothing changes. */
+const SOCL={m:{},sum:{},t:null,busy:0};
+const SOC_SLUG={epl:"eng.1",laliga:"esp.1",seriea:"ita.1",bund:"ger.1",ligue1:"fra.1",ucl:"uefa.champions",uel:"uefa.europa",uecl:"uefa.europa.conf"};
+function socLiveWindow(){if(!window.SOC_OK)return [];const now=Date.now();return (SOC_FX||[]).filter(f=>{const t=Date.parse(f.t);return t-now<15*60000&&now-t<150*60000})}
+async function socLiveTick(){if(SOCL.busy||location.protocol==="file:"||!window.SOC_OK)return;const W=socLiveWindow();if(!W.length)return;SOCL.busy=1;
+  try{const comps=[...new Set(W.map(f=>f.c))],day=new Date().toISOString().slice(0,10).replace(/-/g,"");
+    await Promise.all(comps.map(async c=>{try{const r=await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${SOC_SLUG[c]}/scoreboard?dates=${day}`,{cache:"no-store"});if(!r.ok)return;const j=await r.json();
+      for(const e of j.events||[]){const co=e.competitions[0],H=co.competitors.find(x=>x.homeAway==="home"),A=co.competitors.find(x=>x.homeAway==="away"),st=e.status.type;
+        SOCL.m[e.id]={st:st.state,clock:e.status.displayClock,det:st.shortDetail||st.detail,hs:+H.score||0,as:+A.score||0,at:Date.now()}}}catch(e){}}));
+    const h=decodeURIComponent((location.hash||"").slice(1)),gid=h.startsWith("soccer-game-")?h.slice(12).replace(/-props$/,""):null;
+    const want=new Set(W.filter(f=>(SOCL.m[f.id]||{}).st==="in"&&(f.id===gid||socBetMatches().has(f.id))).map(f=>f.id));
+    await Promise.all([...want].map(async id=>{const f=socFx(id);try{const r=await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${SOC_SLUG[f.c]}/summary?event=${id}`,{cache:"no-store"});if(!r.ok)return;const j=await r.json();
+      const ts={};for(const t of (j.boxscore||{}).teams||[]){const m={};for(const x of t.statistics||[])m[x.name]=+x.displayValue;ts[t.team.id]=[m.totalShots,m.shotsOnTarget,m.wonCorners,m.foulsCommitted,m.yellowCards,m.redCards,m.possessionPct]}SOCL.sum[id]={ts,at:Date.now()}}catch(e){}}));
+    socLivePaint()}finally{SOCL.busy=0}}
+function socBetMatches(){try{return new Set(betsLoad().filter(b=>b.k==="soc").map(b=>String(b.match)))}catch(e){return new Set()}}
+function socLiveOf(f){return f&&SOCL.m[f.id]||null}
+function socLiveChip(f){const L=socLiveOf(f);if(!L||L.st==="pre")return "";return L.st==="post"?`<span class="sclv post">FT ${L.hs}-${L.as}</span>`:`<span class="sclv"><b>LIVE</b> ${socE(L.clock||"")} · ${L.hs}-${L.as}</span>`}
+function socLiveStats(f){const L=socLiveOf(f),S=SOCL.sum[f.id];if(!L||L.st==="pre")return "";const T=S&&S.ts,a=T&&T[f.h],b=T&&T[f.a];
+  return `<div class="card sclivecard"><h2>📡 ${L.st==="post"?"Full time":"Live"} · ${socE(socTm(f.h))} ${L.hs}–${L.as} ${socE(socTm(f.a))} <span class="small">${socE(L.det||L.clock||"")}</span></h2>
+   ${a&&b?`<div class="alw"><table class="altt sctbl"><thead><tr><th></th><th>${socBadge(f.h)}</th><th>${socBadge(f.a)}</th><th>Total</th></tr></thead><tbody>${[["Corners",2],["Yellow cards",4],["Red cards",5],["Shots",0],["On target",1],["Fouls",3],["Possession %",6]].map(([l,i])=>`<tr><td>${l}</td><td><b>${a[i]??"–"}</b></td><td><b>${b[i]??"–"}</b></td><td>${i===6?"":(a[i]??0)+(b[i]??0)}</td></tr>`).join("")}</tbody></table></div>`:`<div class="small">Live team stats load on this page while the match is on.</div>`}
+   <div class="small" style="margin-top:6px">Updates every 30 seconds from ESPN while you're on the page. Final stats and grading follow after full time.</div></div>`}
+function socLivePaint(){document.querySelectorAll("[data-sclive]").forEach(el=>{const f=socFx(el.dataset.sclive);if(f)el.innerHTML=socLiveChip(f)});
+  const box=document.getElementById("scLiveBox");if(box){const f=socFx(box.dataset.id);if(f)box.innerHTML=socLiveStats(f)}}
+setInterval(()=>{if(!document.hidden)socLiveTick()},30000);window.addEventListener("load",()=>setTimeout(socLiveTick,3000));

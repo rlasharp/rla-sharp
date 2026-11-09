@@ -74,6 +74,12 @@ for(const s of ['nba','nfl','nhl','soc'])T[s]=T[s]||{};
     for(const [d,S] of Object.entries(T[sp])){for(const x of S.best||[]){if(x.r==="win"){s.best.w++;s.best.u+=pay(x.odds)}else if(x.r==="loss"){s.best.l++;s.best.u-=1}if(x.r)s.best.n++}
       for(const G of S.games||[])if(G.f){s.win[G.win?0:1]++;if(G.tw!=null)s.tot[G.tw?0:1]++;for(const e of G.edges||[])if(e.r==="win"||e.r==="loss"){const E=s.edge[e.mk]||(s.edge[e.mk]=[0,0,0]);if(e.r==="win"){E[0]++;E[2]+=pay(e.odds)}else{E[1]++;E[2]-=1}}}
       for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r)s.plays.p++;s.recent.push({d,...x})}}
+    /* calibration — did our stated chances come true? props bucketed by our chance, game edges by edge size */
+    const cal={props:{},edges:{}},pb=x=>x>=.8?"80%+":x>=.7?"70–79%":x>=.6?"60–69%":"50–59%",eb=e=>e>=.1?"10%+":e>=.07?"7–9%":"4–6%";
+    for(const [d,S] of Object.entries(T[sp])){for(const x of S.best||[]){if(x.r!=="win"&&x.r!=="loss"||x.sc==null)continue;const B=cal.props[pb(x.sc)]||(cal.props[pb(x.sc)]=[0,0,0,0]);B[0]++;B[1]+=x.r==="win";B[2]+=x.sc;B[3]+=x.r==="win"?pay(x.odds):-1}
+      for(const G of S.games||[])for(const e of G.edges||[]){if(e.r!=="win"&&e.r!=="loss"||e.me==null||e.bk==null)continue;const k=eb(e.me-e.bk),B=cal.edges[k]||(cal.edges[k]=[0,0,0,0]);B[0]++;B[1]+=e.r==="win";B[2]+=e.me;B[3]+=e.r==="win"?pay(e.odds):-1}}
+    for(const g of [cal.props,cal.edges])for(const B of Object.values(g)){B[2]=Math.round(B[2]*1000)/1000;B[3]=Math.round(B[3]*100)/100}
+    s.cal=cal;
     s.best.u=Math.round(s.best.u*100)/100;s.plays.u=Math.round(s.plays.u*100)/100;for(const E of Object.values(s.edge))E[2]=Math.round(E[2]*100)/100;
     s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM[sp]=s}
   {const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T.soc))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}

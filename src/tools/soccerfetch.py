@@ -140,7 +140,14 @@ for comp, *_ in COMPS:
     def disp(vals):
         if len(vals) < 15: return None
         mu = sum(vals) / len(vals); var = sum((x - mu) ** 2 for x in vals) / (len(vals) - 1); return round(var / mu, 3) if mu else None
-    LG[comp] = {"m": len(M), "hg": hg, "ag": ag, "conv": ((hg or 0) + (ag or 0)) / sot if sot else None, "hc": hc, "ac": ac, "hk": hk, "ak": ak,
+    def evok(e):
+        ev = BOX[e["id"]].get("ev") or []; return sum(1 for x in ev if x[0] in ("g", "p", "o")) == e["hs"] + e["as"] and all(x[1] is not None for x in ev)
+    MT = [e for e in M if evok(e)]
+    g1 = sum(1 for e in MT for x in BOX[e["id"]]["ev"] if x[0] in ("g", "p", "o") and x[1] <= 45); gA = sum(e["hs"] + e["as"] for e in MT)
+    k1 = sum(1 for e in MT for x in BOX[e["id"]]["ev"] if x[0] in ("y", "r") and x[1] <= 45); kA = sum(1 for e in MT for x in BOX[e["id"]]["ev"] if x[0] in ("y", "r"))
+    LG_H1 = {"h1g": round(g1 / gA, 3) if gA >= 50 else None, "h1k": round(k1 / kA, 3) if kA >= 50 else None, "h1n": len(MT),
+             "h1o05": round(sum(1 for e in MT if any(x[0] in ("g", "p", "o") and x[1] <= 45 for x in BOX[e["id"]]["ev"])) / len(MT), 3) if MT else None}
+    LG[comp] = {**LG_H1, "m": len(M), "hg": hg, "ag": ag, "conv": ((hg or 0) + (ag or 0)) / sot if sot else None, "hc": hc, "ac": ac, "hk": hk, "ak": ak,
                 "cdisp": disp(tot(lambda e: None if tstat(e, e["h"], "wonCorners") is None else tstat(e, e["h"], "wonCorners") + (tstat(e, e["a"], "wonCorners") or 0))),
                 "kdisp": disp(tot(lambda e: None if cards(e, e["h"]) is None else cards(e, e["h"]) + (cards(e, e["a"]) or 0))),
                 "o25": sum(1 for e in M if e["hs"] + e["as"] > 2.5) / len(M), "btts": sum(1 for e in M if e["hs"] and e["as"]) / len(M),
@@ -148,7 +155,8 @@ for comp, *_ in COMPS:
     for e in M:
         for tid, opp, gf, ga, home in ((e["h"], e["a"], e["hs"], e["as"], 1), (e["a"], e["h"], e["as"], e["hs"], 0)):
             T = TN.setdefault((comp, tid), {"n": 0, "gf": 0, "ga": 0, "sot": 0, "sota": 0, "sh": 0, "sha": 0, "cf": 0, "ca": 0, "kf": 0, "ka": 0,
-                                            "fo": 0, "foa": 0, "nc": 0, "nk": 0, "nf": 0, "ns": 0, "cs": 0, "btts": 0, "o25": 0, "pos": 0, "np": 0, "last": []})
+                                            "fo": 0, "foa": 0, "nc": 0, "nk": 0, "nf": 0, "ns": 0, "cs": 0, "btts": 0, "o25": 0, "pos": 0, "np": 0, "last": [],
+                                            "h1g": 0, "h1all": 0, "h1n": 0, "h1o05": 0})
             T["n"] += 1; T["gf"] += gf; T["ga"] += ga; T["cs"] += ga == 0; T["btts"] += bool(gf and ga); T["o25"] += gf + ga > 2.5
             a1, b1 = tstat(e, tid, "shotsOnTarget"), tstat(e, opp, "shotsOnTarget")
             if a1 is not None and b1 is not None: T["sot"] += a1; T["sota"] += b1; T["ns"] += 1; T["sh"] += tstat(e, tid, "totalShots") or 0; T["sha"] += tstat(e, opp, "totalShots") or 0
@@ -161,6 +169,9 @@ for comp, *_ in COMPS:
             p_ = tstat(e, tid, "possessionPct")
             if p_ is not None: T["pos"] += p_; T["np"] += 1
             T["last"].append(e["id"])
+            ev = BOX[e["id"]].get("ev") or []
+            if sum(1 for x in ev if x[0] in ("g", "p", "o")) == e["hs"] + e["as"] and all(x[1] is not None for x in ev):
+                n1 = sum(1 for x in ev if x[0] in ("g", "p", "o") and x[1] <= 45); T["h1g"] += n1; T["h1all"] += e["hs"] + e["as"]; T["h1n"] += 1; T["h1o05"] += n1 > 0
 
 # ---------------- referees (from the odds feed) ----------------
 LO = jload(os.path.join(R, "data/live_odds.json"), {}).get("soc") or {}
@@ -200,13 +211,27 @@ def project(f):
     btts = (1 - pois(0, lh)) * (1 - pois(0, la))
     out = {"lh": round(lh, 2), "la": round(la, 2), "p": [round(p1, 3), round(px, 3), round(p2, 3)], "o": {k: round(v, 3) for k, v in ov.items()}, "btts": round(btts, 3),
            "att": [round(att(A), 2), round(att(B), 2)], "def": [round(dfn(A), 2), round(dfn(B), 2)], "n": [A["n"], B["n"]]}
+    # first half: the league's share of goals before half-time, nudged by these two teams' own share (shrunk hard)
+    if L.get("h1g"):
+        def sh1(T): return ((T["h1g"] / T["h1all"]) * T["h1all"] + L["h1g"] * 12) / (T["h1all"] + 12) if T["h1all"] else L["h1g"]
+        s1 = (sh1(A) + sh1(B)) / 2; l1h, l1a = lh * s1, la * s1
+        Q = [[pois(i, l1h) * pois(j, l1a) for j in range(8)] for i in range(8)]
+        out["h1"] = {"lh": round(l1h, 2), "la": round(l1a, 2), "share": round(s1, 3),
+                     "p": [round(sum(Q[i][j] for i in range(8) for j in range(8) if i > j), 3), round(sum(Q[i][i] for i in range(8)), 3), round(sum(Q[i][j] for i in range(8) for j in range(8) if i < j), 3)],
+                     "o": {str(x): round(1 - sum(Q[i][j] for i in range(8) for j in range(8) if i + j <= x - 0.5), 3) for x in (0.5, 1.5, 2.5)},
+                     "btts": round((1 - pois(0, l1h)) * (1 - pois(0, l1a)), 3)}
+    out["tt"] = {"h": {str(x): round(1 - sum(pois(i, lh) for i in range(int(x) + 1)), 3) for x in (0.5, 1.5, 2.5, 3.5)},
+                 "a": {str(x): round(1 - sum(pois(i, la) for i in range(int(x) + 1)), 3) for x in (0.5, 1.5, 2.5, 3.5)}}
     # corners
     if A["nc"] >= 3 and B["nc"] >= 3 and L["hc"] and L["ac"]:
         lc = (L["hc"] + L["ac"]) / 2
         ch = L["hc"] * shrink(A["cf"] / A["nc"] / lc, A["nc"]) * shrink(B["ca"] / B["nc"] / lc, B["nc"])
         ca = L["ac"] * shrink(B["cf"] / B["nc"] / lc, B["nc"]) * shrink(A["ca"] / A["nc"] / lc, A["nc"])
         out["cor"] = {"h": round(ch, 2), "a": round(ca, 2), "t": round(ch + ca, 2), "disp": L["cdisp"],
-                      "o": {str(x): round(nb_cdf_over(x, ch + ca, L["cdisp"]), 3) for x in (7.5, 8.5, 9.5, 10.5, 11.5, 12.5)}}
+                      "o": {str(x): round(nb_cdf_over(x, ch + ca, L["cdisp"]), 3) for x in (7.5, 8.5, 9.5, 10.5, 11.5, 12.5)},
+                      "ho": {str(x): round(nb_cdf_over(x, ch, L["cdisp"]), 3) for x in (2.5, 3.5, 4.5, 5.5, 6.5)},
+                      "ao": {str(x): round(nb_cdf_over(x, ca, L["cdisp"]), 3) for x in (2.5, 3.5, 4.5, 5.5, 6.5)},
+                      "more": [round(sum(pois(i, ch) * pois(j, ca) for i in range(25) for j in range(25) if i > j), 3), round(sum(pois(i, ch) * pois(i, ca) for i in range(25)), 3), round(sum(pois(i, ch) * pois(j, ca) for i in range(25) for j in range(25) if i < j), 3)]}
     # cards (yellow + red), adjusted for the referee when he's known
     if A["nk"] >= 3 and B["nk"] >= 3 and L["hk"] and L["ak"]:
         lk = (L["hk"] + L["ak"]) / 2
@@ -216,7 +241,10 @@ def project(f):
         if rx and rx[4] and REFAVG.get(c): rf = ((rx[1] or 0) * rx[4] / REFAVG[c] + 8) / ((rx[1] or 0) + 8)
         t = (kh + ka) * rf
         out["card"] = {"h": round(kh * rf, 2), "a": round(ka * rf, 2), "t": round(t, 2), "rf": round(rf, 3), "disp": L["kdisp"],
-                       "o": {str(x): round(nb_cdf_over(x, t, L["kdisp"]), 3) for x in (2.5, 3.5, 4.5, 5.5, 6.5)}}
+                       "o": {str(x): round(nb_cdf_over(x, t, L["kdisp"]), 3) for x in (2.5, 3.5, 4.5, 5.5, 6.5)},
+                       "ho": {str(x): round(nb_cdf_over(x, kh * rf, None), 3) for x in (0.5, 1.5, 2.5, 3.5)},
+                       "ao": {str(x): round(nb_cdf_over(x, ka * rf, None), 3) for x in (0.5, 1.5, 2.5, 3.5)}}
+        if L.get("h1k"): t1 = t * L["h1k"]; out["card"]["h1"] = {"t": round(t1, 2), "share": L["h1k"], "o": {str(x): round(nb_cdf_over(x, t1, None), 3) for x in (0.5, 1.5, 2.5)}}
     return out
 
 # ---------------- upcoming fixtures: odds join, weather, lineups, missing players ----------------
@@ -226,7 +254,7 @@ for f in FX:
     m_ = [o for o in OD if o.get("hid") == f["h"] and o.get("aid") == f["a"] and abs((ts(o["start"]) - ts(f["t"])).total_seconds()) < 6 * 3600]
     if m_:
         o = m_[0]; f["pid"] = o["pid"]
-        f["odds"] = {k: o[k] for k in ("ml", "tot", "main_tot", "btts", "ah", "cor", "main_cor", "ttot", "extra", "open", "at") if k in o}
+        f["odds"] = {k: o[k] for k in ("ml", "tot", "main_tot", "btts", "ah", "cor", "main_cor", "ttot", "extra", "open", "at", "h1") if k in o}
         if o.get("ref"): f["ref"] = o["ref"]
 # weather (Open-Meteo), fixtures in the next 7 days, one forecast per city
 GEOF = os.path.join(R, "data/soccer_geo.json"); GEO = jload(GEOF, {})
@@ -269,7 +297,7 @@ for e in DONE:
         tid, aid, nm, pos, stt, mins = row[:6]; v = row[6:]
         P = PL.setdefault(aid, {"n": nm, "t": tid, "pos": "" if pos == "SUB" else pos, "g": []})
         P["t"] = tid; P["pos"] = pos if pos and pos != "SUB" else P["pos"]
-        P["g"].append([e["id"], stt, mins] + v)
+        P["g"].append([e["id"], stt, mins] + v + [pos or ""])   # last field: his position in that match (for the lineup view)
 # missing regulars / red-card bans for each fixture team
 def team_players(tid):
     return {aid: P for aid, P in PL.items() if P["t"] == tid}
@@ -363,7 +391,8 @@ def tnum(c, tid):
     if not T: return None
     d = lambda a, b: round(a / b, 2) if b else None
     return [T["n"], T["gf"], T["ga"], d(T["sh"], T["ns"]), d(T["sot"], T["ns"]), d(T["sha"], T["ns"]), d(T["sota"], T["ns"]), d(T["cf"], T["nc"]), d(T["ca"], T["nc"]),
-            d(T["kf"], T["nk"]), d(T["ka"], T["nk"]), d(T["fo"], T["nf"]), d(T["foa"], T["nf"]), T["cs"], T["btts"], T["o25"], d(T["pos"], T["np"])]
+            d(T["kf"], T["nk"]), d(T["ka"], T["nk"]), d(T["fo"], T["nf"]), d(T["foa"], T["nf"]), T["cs"], T["btts"], T["o25"], d(T["pos"], T["np"]),
+            d(T["h1g"], T["h1n"]), T["h1o05"], T["h1n"]]
 used = {f["h"] for f in FX} | {f["a"] for f in FX} | {r[0] for L in ST.values() for r in L} | {t for m in OLD_IDS.values() for t in (m[2], m[3])}
 RES = [[e["id"], e["t"][:16], e["c"], e["h"], e["a"], e["hs"], e["as"], BOX[e["id"]]["ts"].get(e["h"]), BOX[e["id"]]["ts"].get(e["a"]),
         BOX[e["id"]].get("ev", [])] for e in DONE]
@@ -385,7 +414,7 @@ print("/* ⚽ Soccer — tools/soccerfetch.py (ESPN results + box scores, PropLi
 for k, v in out.items(): print(f"var {k}=" + json.dumps(v, separators=(",", ":"), ensure_ascii=False) + ";")
 print("var SOC_OK=1;")
 with open("soccer_players.js", "w", encoding="utf8") as fh:
-    fh.write("/* ⚽ Soccer player game logs — tools/soccerfetch.py. g: [match id, started, minutes, shots, on target, goals, assists, fouls committed, fouls won, yellow, red, saves] */\n")
+    fh.write("/* ⚽ Soccer player game logs — tools/soccerfetch.py. g: [match id, started, minutes, shots, on target, goals, assists, fouls committed, fouls won, yellow, red, saves, position] */\n")
     fh.write("var SOC_P=" + json.dumps({aid: [P["n"], P["t"], P["pos"], P["g"]] for aid, P in PL.items()}, separators=(",", ":"), ensure_ascii=False) + ";\n")
     fh.write("/* players in older head-to-head matches: match id -> [team, espn id, name, pos, started, minutes, shots, on target, goals, assists, fouls, fouled, yellow, red, saves] */\n")
     fh.write("var SOC_OLDP=" + json.dumps({m[0]: (BOX.get(m[0]) or {}).get("p", []) for m in OLD_IDS.values()}, separators=(",", ":"), ensure_ascii=False) + ";var SOC_P_OK=1;\n")
