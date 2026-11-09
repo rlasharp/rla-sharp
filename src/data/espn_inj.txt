@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 20:16Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 20:25Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Roy Lopez|DT|Questionable|Toe|Nov 15
@@ -117,7 +117,7 @@ Kerby Joseph|S|Out|Knee|Nov 15
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
-Josh Jacobs|RB|Questionable|Finger|Nov 15
+Josh Jacobs|RB|Doubtful|Finger|Nov 15
 Bo Melton|WR|Questionable|Head|Nov 15
 Ty'Ron Hopper|LB|Questionable|Chest|Nov 15
 MarShawn Lloyd|RB|Out|Knee|Nov 15
