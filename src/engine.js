@@ -31,7 +31,7 @@ const SLATE = [
  {id:11,away:"LV",home:"SF",final:[17,38],when:"Sun Nov 8 · 4:25 PM",wp:null},
  {id:12,away:"ARI",home:"SEA",final:[3,17],when:"Sun Nov 8 · 4:25 PM",wp:null},
  {id:13,away:"GB",home:"NE",final:[45,27],when:"Sun Nov 8 · 4:25 PM",wp:null},
- {id:14,away:"TB",home:"CHI",when:"Sun Nov 8 · 8:20 PM",wp:null,tv:"SNF"},
+ {id:14,away:"TB",home:"CHI",final:[24,27],when:"Sun Nov 8 · 8:20 PM",wp:null,tv:"SNF"},
  {id:15,away:"BUF",home:"MIN",when:"Mon Nov 9 · 8:15 PM",wp:null,tv:"MNF"}
 ];
 // REAL lines: DraftKings current lines on ESPN's NFL odds page, Mon Nov 2 2026 (evening refresh). sp = HOME spread, ml = [away, home]

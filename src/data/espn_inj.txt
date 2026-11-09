@@ -1,12 +1,12 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 03:00Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 05:20Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Roy Lopez|DT|Questionable|Toe|Nov 15
 Jayden Williams|OT|Out|Knee|Nov 15
-Albert Reese IV|OT|Out|Coach's Decision|
-Starling Thomas V|CB|Out|Coach's Decision|
+Albert Reese IV|OT|Out|Coach's Decision|Nov 15
+Starling Thomas V|CB|Out|Coach's Decision|Nov 15
 Bam Knight|RB|Out|Concussion|Nov 15
-Eku Leota|LB|Out|Coach's Decision|
+Eku Leota|LB|Out|Coach's Decision|Nov 15
 Jon Gaines II|G|Out|Ankle|Nov 15
 James Conner|RB|IR|Foot|Nov 15
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -53,6 +53,8 @@ Brady Christensen|G|IR|Hamstring|Nov 15
 Jonathon Brooks|RB|IR|Abdomen|Nov 15
 Xavier Legette|WR|IR|Knee|Nov 15
 #CHI
+Luther Burden III|WR|Questionable|Concussion|Nov 22
+Tyrique Stevenson Sr.|CB|Questionable|Hand|Nov 8
 Malik Muhammad II|CB|Out|Toe|Nov 22
 Case Keenum|QB|Out|Coach's Decision|Nov 22
 Kyle Monangai|RB|Out|Toe|Nov 22
@@ -78,9 +80,9 @@ Parker Brailsford|C|Out|Coach's Decision|Nov 15
 Maliek Collins|DT|Out|Elbow|Nov 15
 #DAL
 P.J. Locke|S|Questionable|Concussion|Nov 15
-Jonathan Mingo|WR|Questionable|Ankle|Nov 8
-Jake Ferguson|TE|Questionable|Knee|Nov 8
-Donovan Ezeiruaku|LB|Questionable|Ankle|Nov 8
+Jonathan Mingo|WR|Questionable|Ankle|Nov 15
+Jake Ferguson|TE|Questionable|Knee|Nov 15
+Donovan Ezeiruaku|LB|Questionable|Ankle|Nov 15
 Joey Porter Jr.|CB|Out|Ankle|Nov 15
 DeMarvion Overshown|LB|Out|Hamstring|Nov 15
 Luke Schoonmaker|TE|Out|Groin|Nov 15
@@ -115,7 +117,7 @@ Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
 Josh Jacobs|RB|Questionable|Finger|Nov 15
-Bo Melton|WR|Questionable|Head|Nov 8
+Bo Melton|WR|Questionable|Head|Nov 15
 Ty'Ron Hopper|LB|Questionable|Chest|Nov 15
 MarShawn Lloyd|RB|Out|Knee|Nov 15
 Josh Whyle|TE|Out|Concussion|Nov 15
@@ -134,7 +136,7 @@ David Montgomery|RB|Out|Groin|Nov 15
 Reed Blankenship|S|Out|Concussion|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
-Mo Alie-Cox|TE|Questionable|Groin|Nov 8
+Mo Alie-Cox|TE|Questionable|Groin|Nov 15
 Jalen Travis|OT|Questionable|Knee|Nov 15
 Jaylon Carlies|LB|Questionable|Neck|Nov 15
 Riley Leonard|QB|Out|Coach's Decision|Nov 15
@@ -154,7 +156,7 @@ Eric Murray|S|IR|Elbow|Feb 15
 #KC
 Patrick Mahomes|QB|Questionable|Elbow|Nov 15
 Xavier Worthy|WR|Questionable|Hamstring|Nov 15
-Jaylon Moore|OT|Questionable|Ankle|Nov 8
+Jaylon Moore|OT|Questionable|Ankle|Nov 15
 Garrett Nussmeier|QB|Out|Coach's Decision|Nov 15
 Peter Woods|DT|Out|Neck|Nov 15
 Ben VanSumeren|FB|Out|Coach's Decision|Nov 15
@@ -173,13 +175,13 @@ Thomas Booker IV|DT|Out|Ankle|Nov 15
 Bryce Cabeldue|G|Out|Coach's Decision|Nov 15
 #LAC
 Justin Herbert|QB|Questionable|Finger|Nov 16
-Isas Waxter|CB|Questionable|Ankle|Nov 8
-Justin Eboigbe|DT|Questionable|Ankle|Nov 8
+Isas Waxter|CB|Questionable|Ankle|Nov 16
+Justin Eboigbe|DT|Questionable|Ankle|Nov 16
 Ladd McConkey|WR|Questionable|Back|Nov 16
-Kayode Awosika|G|Out|Lower Leg|Nov 8
+Kayode Awosika|G|Out|Lower Leg|Nov 16
 Brenen Thompson|WR|Out|Quadriceps|Nov 16
 Kendall Williamson|S|Out|Calf|Nov 16
-Theo Wease Jr.|WR|Out|Coach's Decision|
+Theo Wease Jr.|WR|Out|Coach's Decision|Nov 16
 Deane Leonard|CB|Out|Concussion|Nov 16
 Denzel Perryman|LB|IR|Undisclosed|Nov 16
 David Njoku|TE|IR|Lower Leg|Nov 16
@@ -197,7 +199,7 @@ Desjuan Johnson|DE|Out|Coach's Decision|Nov 15
 Jaylen Watson|CB|IR|Shoulder|Feb 15
 Dean Connors|RB|IR|Hand|Dec 13
 #MIA
-Will Kacmarek|TE|Questionable|Quadriceps|Nov 8
+Will Kacmarek|TE|Questionable|Quadriceps|Nov 15
 Jaylen Wright|RB|Out|Quadriceps|Nov 15
 Reese Taylor|CB|Out|Coach's Decision|Nov 15
 Jalen Tolbert|WR|Out|Coach's Decision|Nov 15
@@ -205,7 +207,6 @@ Chukwuebuka Godrick|OT|Out|Coach's Decision|Nov 15
 Christian Haynes|G|Out|Coach's Decision|Nov 15
 Justin Joly|TE|Out|Coach's Decision|Nov 15
 Marcellas Dial Jr.|CB|Out|Coach's Decision|Nov 15
-Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
 #MIN
 Demond Claiborne|RB|Out|Knee|Nov 15
 Jauan Jennings|WR|Out|Calf|Nov 15
@@ -214,9 +215,9 @@ Jay Ward|S|Questionable|Knee|Nov 9
 #NE
 Ben Brown|C|Questionable|Knee|Nov 15
 Brenden Schooler|S|Questionable|Hamstring|Nov 15
-Will Campbell|OT|Questionable|Knee|Nov 8
+Will Campbell|OT|Questionable|Knee|Nov 15
 Rhamondre Stevenson|RB|Questionable|Knee|Nov 15
-Carlton Davis III|CB|Questionable|Knee|Nov 8
+Carlton Davis III|CB|Questionable|Knee|Nov 15
 Behren Morton|QB|Out|Coach's Decision|Nov 15
 TreVeyon Henderson|RB|Out|Illness|Nov 15
 A.J. Brown|WR|Out|Knee|Nov 15
@@ -224,7 +225,7 @@ Dametrious Crownover|OT|Out|Coach's Decision|Nov 15
 Charles Woods|CB|Out|Hamstring|Nov 15
 Greg Van Roten|G|IR|Hamstring|Nov 15
 #NO
-Erik McCoy|C|Questionable|Biceps|Nov 8
+Erik McCoy|C|Questionable|Biceps|Nov 15
 Zach Wilson|QB|Out|Coach's Decision|Nov 15
 Mason Murphy|OT|Out|Coach's Decision|Nov 15
 Mike Reid|CB|Out|Coach's Decision|Nov 15
@@ -253,7 +254,7 @@ Joseph Ossai|DE|Out|Ankle|Nov 15
 Max Mitchell|OT|IR|Concussion|Dec 13
 T'Vondre Sweat|DT|IR|Knee|Nov 29
 #PHI
-Zack Baun|LB|Questionable|Back|Nov 8
+Zack Baun|LB|Questionable|Back|Nov 22
 Dontayvion Wicks|WR|Out|Ankle|Nov 22
 DeVonta Smith|WR|Out|Hamstring|Nov 22
 Britain Covey|WR|Out|Knee|Nov 22
@@ -261,9 +262,9 @@ Jonathan Jones|CB|Out|Hamstring|Nov 22
 Jihaad Campbell|LB|Out|Hamstring|Nov 22
 Michael Carter II|CB|Out|Abdomen|Nov 22
 #PIT
-Doneiko Slaughter|CB|Out|Hamstring|Nov 8
-Ben Skowronek|WR|Out|Calf|Nov 8
-Brandin Echols|CB|Out|Hamstring|Nov 8
+Doneiko Slaughter|CB|Out|Hamstring|Nov 15
+Ben Skowronek|WR|Out|Calf|Nov 15
+Brandin Echols|CB|Out|Hamstring|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
@@ -289,7 +290,7 @@ Rashid Shaheed|WR|Out|Knee|Nov 15
 Charles Cross|OT|Out|Ankle|Nov 15
 Sam Darnold|QB|Out|Quadriceps|Nov 15
 #TB
-Antoine Winfield Jr.|S|Questionable|Ankle|Nov 8
+Antoine Winfield Jr.|S|Questionable|Ankle|Nov 22
 Billy Schrauth|G|Out|Coach's Decision|Nov 22
 Ayden Garnes|CB|Out|Coach's Decision|Nov 22
 Trevor Keegan|G|Out|Coach's Decision|Nov 22
