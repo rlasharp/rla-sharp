@@ -976,6 +976,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
       <div><b>${X.p36[0]}</b>Pts per 36</div><div><b>${X.p36[1]}</b>Reb per 36</div><div><b>${X.p36[2]}</b>Ast per 36</div></div>
       <div class="small" style="margin-top:6px"><b>Usage</b> = share of his team's plays he finishes (shot, free throws or turnover) while on the floor — 20% is average, 30%+ is a star's load. <b>True shooting</b> counts 3s and free throws (league average ≈ 57–58%). Ranks among players averaging 15+ minutes.</div></div>`})()}
   <div class="pbio" style="margin-top:10px"><div><b>${pct(tot(10),tot(11))}</b>Field goal %</div><div><b>${pct(tot(8),tot(15))}</b>3-point %</div><div><b>${pct(tot(16),tot(17))}</b>Free throw %</div><div><b>${nbaF(nbaAvg(p,"stl"))}</b>Steals</div><div><b>${nbaF(nbaAvg(p,"blk"))}</b>Blocks</div></div>
+  ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nba",nm):""}
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${opp?`Where he scores vs where ${nbaEsc(nbaShort(opp))} allow`:"Where he scores"}</h2>${opp?nbaShotMatchup(nm,opp):nbaCourt(nm)}</div>
     ${nbaShotTypes(nm)}

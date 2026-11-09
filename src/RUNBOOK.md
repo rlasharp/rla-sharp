@@ -316,3 +316,6 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
 - **NHL "to score":** fetch_odds.py turns Yes-only 0.5 goal lines into hanyG. Saves / Hits tabs always show on the NHL
   props page; with no book lines yet they list probable goalies / top hitters with their usual number (no odds).
 - Public betting splits: no source we can use (PropLine/ESPN don't carry them).
+- **📈 Role over the season** (xana.js xaTrendsCard) on NBA / NHL / NFL player pages: every game + 5-game rolling
+  average + season average for minutes, shots, plays used (NBA); ice time, SOG, shot attempts (NHL; goalies: shots
+  faced, saves); attempts / carries / catches by position (NFL, plus snap / target / carry share from USAGE).

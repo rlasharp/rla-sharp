@@ -594,7 +594,8 @@ function viewPlayer(){
    ${QA?qbSplitCard(pl,k,line,CLall,QS,QM,qmode):""}
    <div class="section">
     ${v10.length?"":`<div class="card"><h2>Game log</h2><p class="note">No game log loaded for ${esc(pl.name)} yet.</p></div>`}</div>
-   ${nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA)}`;
+   ${nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA)}
+   ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nfl",pl.name):""}`;
   $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;try{history.replaceState(null,"","#props")}catch(x){}viewProps()};
   {const px=$("#pxNfl");if(px&&typeof pxFilterWire!=="undefined")pxFilterWire(px)}
   if(typeof pxSwipe!=="undefined")pxSwipe($("#pxNfl"),"#v-props [data-m]");

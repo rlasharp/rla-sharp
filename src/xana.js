@@ -156,3 +156,38 @@ function xaGoalieNote(g){const L=typeof liveGet!=="undefined"&&liveGet("nhl",g.a
   const one=(t,i,ours)=>{const e=eg[i];if(!e)return "";const same=ours&&loNorm(ours)===loNorm(e);return `<span class="xachip ${same?"":"warn"}">${t}: ESPN lists <b>${xaEsc(e)}</b>${ours&&!same?` · our numbers used ${xaEsc(ours)}`:""}</span>`};
   return `<div class="xagl">${one(g.a,0,q.ga)}${one(g.h,1,q.gh)}</div>`}
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("details.xa"))e.stopPropagation()},true);
+
+/* ---------- 📈 Season-long role trends: minutes / ice time, shot volume, usage — every game + a rolling 5-game line ---------- */
+function xaSeries(sp,nm){const S=[];
+  try{
+    if(sp==="nba"){const p=NBA_LOGS[nm];if(!p)return S;const G=p.g;if(G.length<4)return S;
+      S.push({t:"Minutes",u:"min",v:G.map(x=>x[4])},{t:"Shots",u:"shots",v:G.map(x=>x[11]||0)},
+        {t:"Plays used (shots + FT trips + turnovers)",u:"plays",v:G.map(x=>Math.round(((x[11]||0)+.44*(x[17]||0)+(x[14]||0))*10)/10)});
+      S.forEach(s=>s.d=G.map(x=>x[1]))}
+    if(sp==="nhl"){const w=nhWho(nm);if(!w)return S;const gk=!!NHL_G[nm];const G=w.g.filter(x=>gk?(x[9]!==1&&x[7]):x[16]!==1);if(G.length<4)return S;
+      if(gk)S.push({t:"Shots faced",u:"shots",v:G.map(x=>x[3])},{t:"Saves",u:"saves",v:G.map(x=>x[4])});
+      else{S.push({t:"Ice time",u:"minutes",v:G.map(x=>Math.round(x[10]/6)/10)},{t:"Shots on goal",u:"SOG",v:G.map(x=>x[6])});
+        if(G.some(x=>x[15]!=null))S.push({t:"Shot attempts",u:"attempts",v:G.map(x=>x[15]==null?null:x[15])})}
+      S.forEach(s=>s.d=G.map(x=>x[0]))}
+    if(sp==="nfl"){const P=PINFO[nm];if(!P)return S;const L=pLogs(nm).filter(l=>l.season===CUR).sort((a,b)=>a.week-b.week);if(L.length<3)return S;const f=k=>L.map(l=>l[k]==null?null:+l[k]);
+      if(P.pos==="QB")S.push({t:"Pass attempts",u:"attempts",v:f("passAtt")},{t:"Rush attempts",u:"carries",v:f("rushAtt")});
+      else if(P.pos==="RB")S.push({t:"Carries",u:"carries",v:f("rushAtt")},{t:"Catches",u:"receptions",v:f("rec")});
+      else S.push({t:"Catches",u:"receptions",v:f("rec")},{t:"Receiving yards",u:"yards",v:f("recYds")});
+      S.forEach(s=>s.d=L.map(l=>"Wk "+l.week))}
+  }catch(e){}
+  return S.filter(s=>s.v.filter(v=>v!=null).length>=3)}
+function xaDay(d){const m=/^\d{4}-(\d\d)-(\d\d)$/.exec(d||"");return m?["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+m[1]]+" "+(+m[2]):d}
+function xaSpark(s){const v=s.v,n=v.length,W=300,H=64,ok=v.filter(x=>x!=null),hi0=Math.max(...ok),lo0=Math.min(...ok),pad=Math.max(1,(hi0-lo0)*.15),hi=hi0+pad,lo=Math.max(0,lo0-pad),X=i=>8+i*((W-16)/Math.max(1,n-1)),Y=x=>H-6-(H-12)*(x-lo)/(hi-lo||1);
+  const roll=v.map((_,i)=>{const w=v.slice(Math.max(0,i-4),i+1).filter(x=>x!=null);return w.length?w.reduce((a,b)=>a+b,0)/w.length:null});
+  const path=a=>a.map((x,i)=>x==null?"":`${X(i).toFixed(1)},${Y(x).toFixed(1)}`).filter(Boolean).join(" ");
+  const avg=ok.reduce((a,b)=>a+b,0)/ok.length,l5=ok.slice(-5),a5=l5.reduce((a,b)=>a+b,0)/l5.length,d=a5-avg,big=Math.abs(d)>=Math.max(1,avg*.12);
+  return `<div class="xasp"><div class="xasph"><b>${s.t}</b><span class="small">season ${avg.toFixed(1)} · last 5 <b class="${big?(d>0?"up":"dn"):""}">${a5.toFixed(1)}${big?(d>0?" ▲":" ▼"):""}</b></span></div>
+   <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" class="xasvg" role="img" aria-label="${xaEsc(s.t)} by game">
+    <line x1="8" x2="${W-8}" y1="${Y(avg).toFixed(1)}" y2="${Y(avg).toFixed(1)}" class="xaavg"/>
+    <polyline points="${path(v)}" class="xaraw"/>${v.map((x,i)=>x==null?"":`<circle cx="${X(i).toFixed(1)}" cy="${Y(x).toFixed(1)}" r="2.3" class="xadot"><title>${xaEsc(s.d[i])}: ${x}</title></circle>`).join("")}
+    <polyline points="${path(roll)}" class="xaroll"/></svg>
+   <div class="xaspf small"><span>${xaEsc(xaDay(s.d[0]))}</span><span>${lo0}–${hi0} ${xaEsc(s.u.split(" ")[0])}</span><span>${xaEsc(xaDay(s.d[n-1]))}</span></div></div>`}
+function xaTrendsCard(sp,nm){const S=xaSeries(sp,nm);if(!S.length)return "";
+  const U=sp==="nfl"&&typeof USAGE!=="undefined"&&USAGE[nm],us=U&&U.s&&U.l3?` Snap share ${U.s.snap}% season, ${U.l3.snap}% last 3${U.s.tsh?` · target share ${U.s.tsh}% → ${U.l3.tsh}%`:""}${U.s.csh?` · carry share ${U.s.csh}% → ${U.l3.csh}%`:""}.`:"";
+  return `<div class="card xatr" style="margin-top:12px"><h2 style="margin-bottom:2px">📈 Role over the season</h2><div class="small" style="margin-bottom:8px">Every game this season (dots), the 5-game rolling average (bold line) and his season average (dashed). ▲▼ = last 5 games well above or below his season.${us}</div>
+   <div class="xagrid">${S.map(xaSpark).join("")}</div></div>`}

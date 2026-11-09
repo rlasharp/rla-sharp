@@ -231,6 +231,7 @@ function nhlPlayer(el,nm){
      return `<div class="nbtabs pmk nhpmk" style="margin-top:12px">${M.map(x=>`<button data-nhpm="${x.k}" class="${x.k===cur.k?"on":""}">${NH_MK[x.k][0]==="Goal"?"Goal":NH_MK[x.k][1].replace("Shots on goal","Shots").replace("Blocked shots","Blocks").replace("Faceoffs won","Faceoffs").replace("Anytime goal","Goal").replace("Power-play points","PP pts")}<small>${x.r?(x.k==="hanyG"?nhOdds(x.r[3]):x.r[2]):"avg"}</small></button>`).join("")}</div>
       <div class="card plines" style="margin-top:8px">${cur.r?"":`<div class="small" style="margin-bottom:4px">No sportsbook line in our feed for this one — the line starts at his season average. Use − / + to set your book's line.</div>`}${nhLineRow(nm,cur.r||cur.syn)}</div>`})()}
    <div class="card" style="margin-top:12px"><b>This season</b><div class="small">${head}</div></div>
+   ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nhl",nm):""}
    ${isG?"":nhShotMap(nm)}
    <div class="card" style="margin-top:12px"><h2>Game log</h2><div class="alw"><table class="altt nhlog"><thead><tr>${isG?"<th>Date</th><th>Opp</th><th>Start</th><th>SA</th><th>SV</th><th>GA</th><th>SV%</th><th>Min</th>":"<th>Date</th><th>Opp</th><th>G</th><th>A</th><th>PTS</th><th>SOG</th><th>BLK</th><th>HIT</th><th>PPG</th><th>FO</th><th>TOI</th>"}</tr></thead><tbody>${lg}</tbody></table></div></div>${nhFoot()}`;
   el.querySelectorAll("[data-nhpm]").forEach(b=>b.onclick=()=>{NH.pm=b.dataset.nhpm;const y=scrollY;nhlPlayer(el,nm);scrollTo(0,y)});
