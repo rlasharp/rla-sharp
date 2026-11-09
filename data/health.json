@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-09T05:21:33+00:00",
+  "at": "2026-11-09T06:00:20+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 75 games kept (4 new), 1691 player lines\nNBA injuries refreshed\nNBA lines checked\nNBA props reset for 2026-11-09\nliveprops: 139 feed lines merged (0 skipped from other days), 139 total, unmatched names: []\nFirst tip is 1120 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 8, lines 8, props 139, inj teams 29, prev-season players 216, play log 18, adv 371, qtr games 139, h2h 2/4/4/2/2/4/4/3\nnfl-update: 1 lines refreshed, 1 new finals (weeks [8, 9])\n286 players, 32 teams\nnfl-inj: 286 players\nNHL data: 3 games today, 7 tomorrow, 32 teams, 429 skaters, 67 goalies, 227 props, 274 finals, 40 requests\ntrack: nba 2026-11-09: snapshot 10 props, 8 games \u00b7 graded: NHL plays 3-2, best props NBA 4-6 NFL 0-0 NHL 3-4\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 75 games kept (0 new), 1691 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 139 feed lines merged (0 skipped from other days), 139 total, unmatched names: []\nFirst tip is 1081 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 8, lines 8, props 139, inj teams 29, prev-season players 216, play log 18, adv 371, qtr games 139, h2h 2/4/4/2/2/4/4/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [8, 9])\n286 players, 32 teams\nnfl-inj: 286 players\nNHL data: 3 games today, 7 tomorrow, 32 teams, 429 skaters, 67 goalies, 227 props, 274 finals, 38 requests\ntrack: nba 2026-11-09: snapshot 10 props, 8 games \u00b7 graded: NHL plays 3-2, best props NBA 4-6 NFL 0-0 NHL 3-4\nSite check OK \u2014 published (2026-11-09T05:59:53Z)\n"
  },
  "site": {
-  "at": "2026-11-09T05:21:33+00:00",
+  "at": "2026-11-09T06:00:20+00:00",
   "ok": false,
   "issue": "live page fails the site check: node:internal/process/promises:394     triggerUncaughtException(err, true /* fromPromise */);     ^  page.goto: Timeout 30000ms exceeded. Call log:   - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting until \"load\"      at /home/runner/work/rla-sharp/rla-sharp/src/tools/check.js:8:10 {   log: [     '  - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting u"
  },
  "nhl": {
-  "at": "2026-11-09T05:21:33+00:00",
+  "at": "2026-11-09T06:00:20+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Mon Nov 9 12:21 AM ET",
+  "gen": "Mon Nov 9 12:59 AM ET",
   "odds_at": "2026-11-09T03:26:11+00:00",
   "backfill": "1312/1312"
  }
