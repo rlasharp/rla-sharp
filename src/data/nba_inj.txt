@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 15:31Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 15:56Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -16,8 +16,8 @@ Moussa Diabate|F|Day-To-Day|quadriceps|Nov 9
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 Brandon Miller|F|Out|groin soreness|Nov 12
 #Chicago Bulls
-Norman Powell|G|Out|shoulder inflammation|Nov 11
-Zach Collins|F|Out|illness|Nov 11
+Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 11
+Zach Collins|F|Day-To-Day|illness|Nov 11
 #Cleveland Cavaliers
 Sam Merrill|G|Out|elbow|Nov 11
 Jarrett Allen|C|Day-To-Day|knee|Nov 9
@@ -58,8 +58,8 @@ Yanic Konan Niederhauser|C|Out|foot surgery|Nov 10
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
+Luka Doncic|G|Day-To-Day|back soreness|Nov 9
 Quentin Grimes|G|Day-To-Day|finger|Nov 9
-Luka Doncic|G|Out|back soreness|Nov 9
 #Memphis Grizzlies
 Scotty Pippen Jr.|G|Out|back soreness|Nov 11
 Isaiah Stewart|C|Out|knee bruise|Nov 11
@@ -87,7 +87,7 @@ Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
-Adem Bona|C|Out|back sprain|Nov 10
+Adem Bona|C|Day-To-Day|back sprain|Nov 10
 Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
