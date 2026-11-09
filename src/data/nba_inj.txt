@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 21:02Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 21:19Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -73,6 +73,7 @@ Gary Trent Jr.|G|Day-To-Day|illness|Nov 10
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
+Trendon Watford|F|Out|ankle|Nov 11
 Trey Murphy III|F|Out|knee tendinitis|Nov 11
 Yves Missi|C|Out|knee bruise|Nov 16
 #New York Knicks
