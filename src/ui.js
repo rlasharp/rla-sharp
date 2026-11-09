@@ -187,7 +187,7 @@ function nflGameProps(g){
   const tf=tms.includes(NFL_GPT)?NFL_GPT:"all";
   const best=nflBest().filter(b=>tms.includes(b.pl.team)).slice(0,5);
   const list=P.filter(p=>tf==="all"||p.team===tf);
-  return `${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best props in this game</h2><div class="small" style="margin-bottom:8px">Ranked by how far our hit score beats the odds.</div><div class="bpc">${best.map(nflBestRow).join("")}</div></div>`:""}
+  return `${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best props in this game</h2><div class="small" style="margin-bottom:8px">Ranked by how far our chance of winning beats the chance the odds imply.</div><div class="bpc">${best.map(nflBestRow).join("")}</div></div>`:""}
   <div class="info" style="margin-top:10px"><span>🔗 <b>Building a same-game parlay?</b> Tap a price → <b>Add to parlay</b>. Your parlay slip checks past games to show which legs tend to hit together and which work against each other.</span></div>
   <div class="gpf"><div class="seg"><button class="btn${tf==="all"?" on":""}" data-ngpt="all">Both teams</button>${tms.map(t=>`<button class="btn${tf===t?" on":""}" data-ngpt="${t}">${badge(t)} ${esc(short(t))}</button>`).join("")}</div></div>
   ${list.map(p=>nflLinesBlock(p,`<div class="gph">${badge(p.team)}<div style="min-width:0"><a href="#" data-gopl="${esc(p.name)}"><b>${esc(p.name)}</b></a><div class="small">${p.team} · ${p.pos} · ${marketsFor(p.pos).filter(m=>realProp(p.name,m)).length} line${marketsFor(p.pos).filter(m=>realProp(p.name,m)).length>1?"s":""}</div></div></div>`)).join("")}
@@ -398,15 +398,12 @@ function nflBest(){
   for(const x of out.sort((a,b)=>b.edge-a.edge)){const key=x.name+"|"+x.k;if(seen.has(key))continue;seen.add(key);per[x.name]=(per[x.name]||0)+1;(per[x.name]<=2?top:rest).push(x)}
   const L=top.concat(rest);NFL_BEST_C={k:ck,L};return L;
 }
-function nflBestRow(b,i){
-  const hr=(c,l)=>c[1]?`<span class="${c[0]/c[1]>=.6?"g":c[0]/c[1]<.4?"r":""}"><b>${c[0]}/${c[1]}</b> ${l}</span>`:"";
-  const td=b.k==="anyTD";
-  return `<div class="bp" data-nflp="${esc(b.name)}" data-k="${b.k}"><div class="bpn">${i+1}</div>
-    <div class="bpm"><div class="bpw">${badge(b.pl.team)}<b>${esc(b.name)}</b> <span class="small">${b.pl.pos} · ${b.home?"vs":"@"} ${b.opp}</span>${b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:""}</div>
-      <div class="bpl"><span class="bln ${b.side==="o"?"up":"dn"}">${td?"TD":(b.side==="o"?"O ":"U ")+b.line}</span> <b>${td?"Anytime TD":MARKETS[b.k].n}</b> <span class="small">${b.odds!=null?amTxt(b.odds):"odds not listed"}${b.book?" · "+esc(b.book):""}</span></div>
-      <div class="bph">${hr(b.c5,"L5")}${hr(b.cS,"season")}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
-    <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">${b.odds!=null?"odds need":"≈ needs"} ${Math.round(b.be*100)}%</span></div></div>`;
-}
+function nflBestRow(b,i){const td=b.k==="anyTD";
+  return xPropRow({i,attrs:`data-nflp="${esc(b.name)}" data-k="${b.k}"`,badge:badge(b.pl.team),name:esc(b.name),sub:`${b.pl.pos} · ${b.home?"vs":"@"} ${b.opp}`,
+    chips:b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:"",pick:td?"Anytime TD":`${b.side==="o"?"Over":"Under"} ${b.line} ${MARKETS[b.k].n}`,
+    odds:b.odds!=null?amTxt(b.odds):"odds not listed",book:b.book?esc(b.book):"",l10:b.c10&&b.c10[1]?b.c10:b.c5,
+    hits:[[b.cS[0],b.cS[1],"this season"],b.cH[1]&&[b.cH[0],b.cH[1],"vs "+b.opp]],why:b.dvOk===1?"matchup helps":b.dvOk===-1?"tough matchup":"",
+    chance:Math.round(b.sc*100),need:Math.round(b.be*100)})}
 let NFL_BF={g:"",m:"",s:"",pos:"",min:"",hot:""};
 function nflTopHtml(){
   const L0=nflBest(),f=NFL_BF,L=L0.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||b.pl.pos===f.pos)&&(!f.min||b.sc>=f.min/100)&&(typeof hotOk==="undefined"||hotOk(b,f.hot)));
@@ -415,8 +412,8 @@ function nflTopHtml(){
    <select data-nbf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${MARKETS[m].n}</option>`).join("")}</select>
    <select data-nbf="pos"><option value="">All positions</option>${["QB","RB","WR","TE"].map(p=>`<option${f.pos===p?" selected":""}>${p}</option>`).join("")}</select>
    <select data-nbf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
-   <select data-nbf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select>
-   ${typeof hotSelect!=="undefined"?hotSelect('data-nbf="hot"',f.hot):""}</div>`;
+   <select data-nbf="min"><option value="">Any chance</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ our chance</option>`).join("")}</select>
+   ${typeof hotSelect!=="undefined"?hotSelect('data-nbf="hot"',f.hot):""}${typeof xResetChip!=="undefined"?xResetChip("nfl"):""}</div>`;
   const closed=SLATE.filter(g=>!g.final&&nflStarted(g)).length;
   return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props this week</h2>${closed?`<div class="small" style="margin-bottom:4px">🔒 ${closed} game${closed>1?"s have":" has"} kicked off — those props are hidden.</div>`:""}
    <div class="small" style="margin-bottom:8px">Every real book line we found, over and under, ranked by how often it would have hit (last 5 games 45%, ${CUR} season 35%, vs this opponent 20%, ±5 for the defense's rank vs his position) compared with what the odds need. Where a book's price isn't listed we compare to the standard −110 break-even (52%). Tap one for his full page.</div>
@@ -708,7 +705,7 @@ function route(){
 window.addEventListener("hashchange",route);
 document.querySelectorAll("#oddsFmt button").forEach(b=>b.onclick=()=>{setOddsFmt(b.dataset.f);syncOddsBtns();route()});
 function syncOddsBtns(){document.querySelectorAll("#oddsFmt button").forEach(b=>b.classList.toggle("on",b.dataset.f===ODDS_FMT))}
-syncOddsBtns();if(typeof appSearchSetup!=="undefined")appSearchSetup();else if(typeof searchSetup!=="undefined")searchSetup();route();
+syncOddsBtns();if(typeof appSearchSetup!=="undefined")appSearchSetup();else if(typeof searchSetup!=="undefined")searchSetup();if(typeof uxFiltLoad!=="undefined")uxFiltLoad();route();
 /* ---------- NFL: what this week's defense allows to his position, as tiles (★ = matters for this prop) ---------- */
 function nflAllowTiles(t,pos,k){const D=DVP_RAW[pos];if(!D||!D.rows[t])return "";
   const lab={att:"Pass att",comp:"Completions",passYds:"Pass yds",passTD:"Pass TD",int:"INT",rate:"Passer rating",rushAtt:"Rush att",rushYds:"Rush yds",rushTD:"Rush TD",tgt:"Targets",rec:"Receptions",recYds:"Rec yds",recTD:"Rec TD"};

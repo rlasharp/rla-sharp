@@ -280,3 +280,20 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
   `https://api.github.com/repos/rlasharp/rla-sharp/dispatches` with body `{"event_type":"refresh"}` and headers
   `Authorization: Bearer <fine-grained token, this repo only, Contents: read & write>`,
   `Accept: application/vnd.github+json` every 10–20 min. That runs the same gate (cheap; it only updates when needed).
+
+## 🧭 Easier to use (Nov 9)
+- **Tab bar (phones):** Today · Games · Props · My Bets (open-bet count badge) · More. Record moved into More.
+- **One prop row everywhere:** `xPropRow()` (xsport.js) used by nbaBestRow / nflBestRow / nhBestRow — player, the bet,
+  odds, a hit-rate bar ("Hit 9 of last 10"), one line of context, and "our chance" vs "odds need". "Hit score" is now
+  called "our chance" everywhere; glossary has our chance / odds need / closing line / puck line / Corsi / PP / PK.
+- **Colour:** green/red only mean good/bad results; Over/Under are neutral.
+- **Player pages (ux.js uxCollapse):** bio, shot charts and game logs sit behind "📊 Show all stats" (remembered).
+- **Remembered filters (ux.js):** best-props filters per sport saved in localStorage (`ge_filters`, game filter not
+  kept); "✕ Reset filters" chip (`xResetChip`).
+- **First-visit tour (ux.js uxTour):** 3 cards after the age check; `ge_tour_done`.
+- **Light mode:** tools/lighttheme.py generates `html[data-theme=light]` overrides from the dark CSS at build time
+  (shell_head.html → shell_built.html). Theme = Auto (follows the device) / Light / Dark: More sheet, or 🌓 in the
+  desktop header; set before first paint by the <head> script (`ge_theme`). Hand fixes go in MANUAL in that script.
+- **Faster load:** tools/splitnba.py moves NBA_CHANCE / NBA_SHOT / NBA_STYPE (~200 KB) into nba_detail.js, loaded on
+  demand (nbaDetailEnsure, preloaded 1.2 s after load); NHL data is preloaded from <head> on Today/NHL pages.
+  Root must have nba_detail.js next to index.html (auto_run.sh copies it).

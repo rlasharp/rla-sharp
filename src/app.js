@@ -62,9 +62,10 @@ function curSport(){const h=(location.hash||"").slice(1);if(h.startsWith("nba"))
 function tabbarRender(){
   let bar=document.getElementById("tabbar");if(!bar){bar=document.createElement("nav");bar.id="tabbar";document.body.appendChild(bar)}
   const sp=curSport(),h=(location.hash||"#today").slice(1)||"today";
-  const T=[["today","🏠","Today","#today"],["games",sp==="nba"?"🏀":sp==="nhl"?"🏒":"🏈","Games",sp==="nba"?"#nba":sp==="nhl"?"#nhl":"#games"],["props","🎯","Props",sp==="nba"?"#nba-best":sp==="nhl"?"#nhl-props":"#props"],["record","📒","Record","#record"],["more","☰","More",""]];
-  const on=k=>k==="today"?h==="today":k==="games"?(h==="nba"||h==="nhl"||h.startsWith("nhl-game")||h==="games"||h==="nextweek"||h.startsWith("nba-tomorrow")||h.startsWith("nba-game")||h.startsWith("game-")):k==="props"?/^(nba-props|nba-best|props|nhl-props)$/.test(h):k==="record"?h==="record":false;
-  bar.innerHTML=T.map(([k,i,l,href])=>k==="more"?`<button data-more="1"><b>${i}</b><span>${l}</span></button>`:`<a href="${href}" class="${on(k)?"on":""}"><b>${i}</b><span>${l}</span></a>`).join("");
+  const T=[["today","🏠","Today","#today"],["games",sp==="nba"?"🏀":sp==="nhl"?"🏒":"🏈","Games",sp==="nba"?"#nba":sp==="nhl"?"#nhl":"#games"],["props","🎯","Props",sp==="nba"?"#nba-best":sp==="nhl"?"#nhl-props":"#props"],["bets","🎟️","My Bets","#bets"],["more","☰","More",""]];
+  const on=k=>k==="today"?h==="today":k==="games"?(h==="nba"||h==="nhl"||h.startsWith("nhl-game")||h==="games"||h==="nextweek"||h.startsWith("nba-tomorrow")||h.startsWith("nba-game")||h.startsWith("game-")):k==="props"?/^(nba-props|nba-best|props|nhl-props)$/.test(h):k==="bets"?h==="bets":false;
+  const nb=typeof uxBetsCount!=="undefined"?uxBetsCount():0;
+  bar.innerHTML=T.map(([k,i,l,href])=>k==="more"?`<button data-more="1"><b>${i}</b><span>${l}</span></button>`:`<a href="${href}" class="${on(k)?"on":""}"><b>${i}${k==="bets"&&nb?`<em class="tbn">${nb}</em>`:""}</b><span>${l}</span></a>`).join("");
   bar.querySelector("[data-more]").onclick=moreOpen;
 }
 function moreOpen(){
@@ -72,11 +73,12 @@ function moreOpen(){
   const nba=[["#nba","🏀 Games"],["#nba-best","🔥 Best props"],["#nba-props","🎯 All props"],["#nba-players","👤 Players"],["#nba-teams","📊 Standings"],["#nba-scores","🧾 Scores"],["#nba-injuries","🚑 Injuries"]];
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
   const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-scores","🧾 Scores"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
-  const all=[["#favs","⭐ Favorites"],["#record","📒 Our record"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
+  const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
   sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NHL",nhl)}${grp("NFL",nfl)}${grp("More",all)}
    <h3>Odds format</h3><div class="seg" id="msOdds"><button data-f="am" class="${of==="am"?"on":""}">American (−110)</button><button data-f="dec" class="${of==="dec"?"on":""}">Decimal (1.91)</button></div>
+   <h3>Theme</h3>${typeof uxThemeSeg!=="undefined"?uxThemeSeg():""}
    <button class="btn" id="msClose" style="width:100%;margin-top:14px">Close</button></div>`;
   sh.querySelectorAll("#msOdds button").forEach(b=>b.onclick=()=>{if(typeof setOddsFmt!=="undefined"){setOddsFmt(b.dataset.f);if(typeof syncOddsBtns!=="undefined")syncOddsBtns();sh.className="";route()}});
   sh.className="open";const close=()=>{sh.className=""};
@@ -172,7 +174,7 @@ function ageGate(){
 }
 
 /* ===== hooks ===== */
-function appAfterRoute(){tabbarRender();favDecorate();{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
+function appAfterRoute(){tabbarRender();favDecorate();if(typeof uxCollapse!=="undefined")setTimeout(uxCollapse,0);{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
   const h=(location.hash||"").slice(1),host=document.getElementById("banner");
   if(host&&(h==="nba"||h==="games"||h==="nba-props"||h==="nba-best"||h==="props")){host.innerHTML=updatedHtml(h.startsWith("nba")?"nba":"nfl")}
 }
@@ -288,7 +290,7 @@ function slipOpen(){
   const games={};a.forEach(l=>{const g=l.k==="nbaprop"||l.k==="nhlprop"?l.date+[l.team,l.opp].sort().join(""):l.team||l.game;if(g)games[g]=(games[g]||0)+1});
   const same=a.filter(l=>l.k==="nbaprop").map(l=>[l.team,l.opp].sort().join("-")).filter((x,i,arr)=>arr.indexOf(x)!==i).length;
   p.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div><h2 style="margin:4px 0 8px">🎟 Parlay builder</h2>
-   ${a.map((l,i)=>`<div class="rcr"><div style="flex:1;min-width:0"><b>${esc(betTitle(l))}</b><div class="small">${oddsFmt(l.odds)}${l.est?" (assumed)":""}${l.book?" · "+esc(l.book):""}${c.hs[i]!=null?` · our hit score ${Math.round(c.hs[i]*100)}%`:""}</div></div><button class="btn" data-rmleg="${i}">✕</button></div>`).join("")}
+   ${a.map((l,i)=>`<div class="rcr"><div style="flex:1;min-width:0"><b>${esc(betTitle(l))}</b><div class="small">${oddsFmt(l.odds)}${l.est?" (assumed)":""}${l.book?" · "+esc(l.book):""}${c.hs[i]!=null?` · our chance ${Math.round(c.hs[i]*100)}%`:""}</div></div><button class="btn" data-rmleg="${i}">✕</button></div>`).join("")}
    <div class="grid g2" style="gap:8px;margin-top:10px">
     <div class="stat"><div class="l">Parlay odds</div><div style="font-size:22px;font-weight:800">${a.length>1?(c.am>0?"+":"")+c.am:oddsFmt(a[0].odds)}</div><div class="small">book's chance ${(c.impl*100).toFixed(1)}%</div></div>
     <div class="stat"><div class="l">Our estimate</div><div style="font-size:22px;font-weight:800">${c.est!=null?(c.est*100).toFixed(1)+"%":"–"}</div><div class="small">${c.est!=null?(c.est>c.impl?"<b class='up'>above</b> the book's price":"<b class='dn'>below</b> the book's price"):"needs hit scores for every leg"}</div></div>
@@ -296,7 +298,7 @@ function slipOpen(){
    <label class="small" style="display:block;margin-top:10px">Stake $ <input type="number" min="0" step="1" id="slipStake" value="${stake}" style="width:90px"></label>
    <div style="font-size:15px;margin-top:6px">Pays <b>$${pay.toFixed(2)}</b> (profit $${(pay-stake).toFixed(2)}) if all ${a.length} hit.</div>
    ${SG?SG.html+(c.est!=null&&Math.abs(SG.adj-1)>.03?`<div class="small" style="margin-top:6px">Adjusted for these links, our estimate is <b>${(Math.min(.99,c.est*SG.adj)*100).toFixed(1)}%</b> (vs ${(c.impl*100).toFixed(1)}% the book's price implies). Books price same-game parlays with these links in mind, so check the SGP odds at your book.</div>`:`<div class="small" style="margin-top:6px">Many books only allow legs from one game as a "same game parlay" (SGP), with their own price.</div>`):same?`<div class="small" style="margin-top:6px;color:#f3c75a">⚠️ Two legs come from the same game — results can be linked. Many books only allow these as a "same game parlay".</div>`:""}
-   <div class="small" style="margin-top:6px">Every leg must win. Our estimate multiplies each leg's hit score, as if the legs were independent — a guide, not a guarantee.</div>
+   <div class="small" style="margin-top:6px">Every leg must win. Our estimate multiplies each leg's chance of winning, as if the legs were independent — a guide, not a guarantee.</div>
    <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn" id="slipTrack" ${a.length<2?"disabled":""}>＋ Track this parlay</button><button class="btn" data-snap="parlay||">📸 Share</button><button class="btn" id="slipClear">Clear</button><button class="btn" id="slipClose">Close</button></div></div>`;
   p.className="open";
   const close=()=>{p.className=""};p.querySelector(".msback").onclick=close;p.querySelector("#slipClose").onclick=close;
@@ -461,7 +463,14 @@ const GLOSS=[
  ["usage","Usage rate: the share of his team's plays he finishes (shots, free throws, turnovers) while on the court. Higher = more chances.",1],
  ["USG%","Usage rate: the share of his team's plays he finishes while on the court. Higher = more chances to hit overs.",0],
  ["USG","Usage rate: the share of his team's plays he finishes while on the court. Higher = more chances to hit overs.",0],
- ["edge","Our hit score minus the chance the odds imply. Positive edge = the price looks better than it should.",1],
+ ["edge","Our chance of winning minus the chance the odds imply. +8% means we think it wins 8 points more often than the price says — bigger is better.",1],
+ ["our chance","Our estimated chance this bet wins, from his recent games, this season, the matchup and his minutes. Compare it with what the odds need.",1],
+ ["odds need","The win rate the price needs just to break even. −128 needs 56%; +120 needs 45%.",1],
+ ["closing line","The last odds before the game starts — the market's best guess. Getting a better price than the close is the best sign of a real edge.",1],
+ ["puck line","Hockey's spread: almost always 1.5 goals. Favorite −1.5 must win by 2+; underdog +1.5 wins the bet if they lose by 1 or win.",1],
+ ["Corsi","All shot attempts (on goal, missed and blocked). A team with more of them usually controls the puck and the game.",0],
+ ["power play","When the other team has a player in the penalty box — more room, more shots and goals.",1],
+ ["penalty kill","Playing short-handed. PK% = how often a team stops the other side's power play.",1],
  ["implied","The win chance hidden in the odds. −110 implies about 52.4%.",1],
  ["book's chance","The win chance hidden in the odds. −110 implies about 52.4%.",1],
  ["no-vig","The odds with the sportsbook's fee taken out — the market's fair price.",1],

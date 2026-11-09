@@ -600,16 +600,12 @@ function nbaBest(){
   for(const x of out.sort((a,b)=>b.edge-a.edge)){const key=x.nm+"|"+x.k;if(seen.has(key)||x.edge<=0)continue;seen.add(key);per[x.nm]=(per[x.nm]||0)+1;(per[x.nm]<=2?top:rest).push(x)}
   const L=top.concat(rest);NB._best={v:ck,L};return L;
 }
-function nbaBestRow(b,i){
-  const hr=(c,l)=>c[1]?`<span class="${c[0]/c[1]>=.6?"g":c[0]/c[1]<.4?"r":""}"><b>${c[0]}/${c[1]}</b> ${l}</span>`:"";
-  return `<div class="bp" data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}">
-    <div class="bpn">${i+1}</div>
-    <div class="bpm"><div class="bpw">${nbaBadge(b.p.tm)}<b>${nbaEsc(b.nm)}</b> <span class="small">${b.g.a===b.p.tm?"@":"vs"} ${b.opp}</span>${nbaInjChip(nbaInjOf(b.nm))}${b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:""}</div>
-      <div class="bpl"><span class="bln ${b.side==="o"?"up":"dn"}">${b.side==="o"?"O":"U"} ${b.line}</span> <b>${NBA_MK[b.k][1]}</b> <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
-      <div class="bph">${hr(b.c5,"L5")}${hr(b.c10,"L10")}${b.cS[1]>=3?hr(b.cS,"season"):""}${b.cH[1]?hr(b.cH,"vs "+b.opp):""}${b.dvOk===1?`<span class="g">matchup helps</span>`:b.dvOk===-1?`<span class="r">matchup hurts</span>`:""}</div></div>
-    <div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span><span class="small">odds need ${Math.round(b.be*100)}%</span>${typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""}</div>
-  </div>`;
-}
+function nbaBestRow(b,i){const mk=NBA_MK[b.k][1];
+  return xPropRow({i,attrs:`data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}"`,badge:nbaBadge(b.p.tm),name:nbaEsc(b.nm),sub:`${b.g.a===b.p.tm?"@":"vs"} ${b.opp}`,
+    chips:nbaInjChip(nbaInjOf(b.nm))+(b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:""),
+    pick:`${b.side==="o"?"Over":"Under"} ${b.line} ${mk}`,odds:oddsFmt(b.odds),book:b.book?nbaEsc(b.book):"",l10:b.c10[1]?b.c10:b.c5,
+    hits:[b.cS[1]>=3&&[b.cS[0],b.cS[1],"this season"],b.cH[1]&&[b.cH[0],b.cH[1],"vs "+b.opp]],why:b.dvOk===1?"matchup helps":b.dvOk===-1?"tough matchup":"",
+    chance:Math.round(b.sc*100),need:Math.round(b.be*100),act:typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""})}
 function nbaBestCard(n,more){
   const L=nbaBest(),top=L.slice(0,n);
   if(!NBA_PROPS.length||!top.length)return "";
@@ -676,8 +672,8 @@ function nbaPlaysCard(){
     const why=`${b.side==="o"?"Over":"Under"} in ${b.c10[0]} of his last ${b.c10[1]}`+(b.cS[1]?`, ${b.cS[0]}/${b.cS[1]} this season`:"")+(b.cH[1]?`, ${b.cH[0]}/${b.cH[1]} vs ${b.opp}`:"")+(b.dvOk===1?`; the matchup at his position helps`:"")+".";
     return `<div class="pod" data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}"><div class="podn">${i+1}</div><div style="min-width:0;flex:1">
       <div><b>${nbaEsc(b.nm)}</b> <span class="small">${b.p.tm} ${b.g.a===b.p.tm?"@":"vs"} ${b.opp} · ${b.g.t} ET</span></div>
-      <div class="bpl"><b class="${b.side==="o"?"up":"dn"}">${b.side==="o"?"Over":"Under"} ${b.line}</b> ${NBA_MK[b.k][1]} <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
-      <div class="small">${why}</div></div><div class="bps"><b>${Math.round(b.sc*100)}%</b><span>hit score</span>${typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""}</div></div>`}).join("")}
+      <div class="bpl"><b class="xpk">${b.side==="o"?"Over":"Under"} ${b.line}</b> ${NBA_MK[b.k][1]} <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
+      <div class="small">${why}</div></div><div class="bps"><b>${Math.round(b.sc*100)}%</b><span>our chance</span>${typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""}</div></div>`}).join("")}
   <button class="btn shbtn" data-shimg="nba">📤 Share today's plays</button>
   <div class="small" style="margin-top:8px">Picked automatically from real posted lines: 7+ of last 10, a winning record this season, a clear edge over what the odds need, no injury tag, odds no worse than −200. Leans, not guarantees — bet small.</div></div>`;
 }
@@ -693,8 +689,8 @@ function nbaBestFilterUI(L0){const f=NB.bf||(NB.bf={});const games=NBA_SLATE.fil
   return `<div class="bfil"><select data-bf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${g.a} @ ${g.h}</option>`).join("")}</select>
    <select data-bf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${NBA_MK[m][1]}</option>`).join("")}</select>
    <select data-bf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
-   <select data-bf="min"><option value="">Any hit score</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ hit score</option>`).join("")}</select>
-   ${hotSelect('data-bf="hot"',f.hot)}</div>`}
+   <select data-bf="min"><option value="">Any chance</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ our chance</option>`).join("")}</select>
+   ${hotSelect('data-bf="hot"',f.hot)}${typeof xResetChip!=="undefined"?xResetChip("nba"):""}</div>`}
 function nbaBestPage(el){
   const L0=nbaBest(),L=nbaBestFilter(L0);
   el.innerHTML=`<h1>NBA Best Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>${nbaPropTabs("best")}
@@ -933,7 +929,7 @@ function nbaGameProps0(g){
   const byP={};all.filter(r=>(tf==="all"||NBA_LOGS[r[0]].tm===tf)&&(mf==="all"||r[1]===mf)).forEach(r=>(byP[r[0]]=byP[r[0]]||[]).push(r));
   const order=Object.keys(byP).sort((x,y)=>(NBA_LOGS[x].tm===g.a?0:1)-(NBA_LOGS[y].tm===g.a?0:1)||nbaAvg(NBA_LOGS[y],"min")-nbaAvg(NBA_LOGS[x],"min"));
   const chip=(attr,v,l,on)=>`<button class="btn${on?" on":""}" data-${attr}="${v}">${l}</button>`;
-  return `${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best props in this game</h2><div class="small" style="margin-bottom:8px">Ranked by how far our hit score beats the odds.</div><div class="bpc">${best.map(nbaBestRow).join("")}</div></div>`:""}
+  return `${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best props in this game</h2><div class="small" style="margin-bottom:8px">Ranked by how far our chance of winning beats the chance the odds imply.</div><div class="bpc">${best.map(nbaBestRow).join("")}</div></div>`:""}
   <div class="info" style="margin-top:10px"><span>🔗 <b>Building a same-game parlay?</b> Tap a price → <b>Add to parlay</b>. Your parlay slip checks past games to show which legs tend to hit together and which work against each other.</span></div>
   <div class="grid g2" style="margin-top:10px;gap:10px">${(tf==="all"?tms:[tf]).map(t=>`<div class="card" style="padding:12px">${nbaOppAllows(t===g.a?g.h:g.a,mf==="all"?null:mf,`For ${nbaEsc(nbaShort(t))} players: what ${nbaEsc(nbaShort(t===g.a?g.h:g.a))} allows`)}</div>`).join("")}</div>
   <div class="gpf"><div class="seg">${chip("gpt","all",`Both teams`,tf==="all")}${tms.map(t=>chip("gpt",t,`${nbaBadge(t)} ${nbaShort(t)}`,tf===t)).join("")}</div>
@@ -1112,8 +1108,16 @@ function nbaInjuries(el){
   sync();draw();
 }
 
+/* detail data (chances, shot zones, shot types) loads on demand from nba_detail.js — keeps the first page load lighter */
+let NBA_DET={ok:typeof NBA_DETAIL_OK!=="undefined",cb:[],busy:0,fail:0};
+function nbaDetailEnsure(cb){if(NBA_DET.ok||(NBA_DET.fail&&Date.now()-NBA_DET.fail<60000)){cb&&cb();return}if(cb)NBA_DET.cb.push(cb);if(NBA_DET.busy)return;NBA_DET.busy=1;
+  const sc=document.createElement("script");sc.src="nba_detail.js?v="+(typeof BUILD_AT!=="undefined"?BUILD_AT.replace(/\D/g,""):Date.now());
+  const done=ok=>{NBA_DET.busy=0;if(ok)NBA_DET.ok=true;else NBA_DET.fail=Date.now();NBA_DET.cb.splice(0).forEach(f=>{try{f()}catch(e){console.error(e)}})};
+  sc.onload=()=>done(true);sc.onerror=()=>done(false);document.head.appendChild(sc)}
+if(typeof window!=="undefined")window.addEventListener("load",()=>setTimeout(()=>nbaDetailEnsure(),1200));
 function nbaRoute(h){
   const el=document.getElementById("v-nba");
+  if(!NBA_DET.ok&&!/^(nba|nba-best|nba-scores|nba-teams|nba-injuries|nba-tomorrow.*)$/.test(h)){const y=scrollY;el.innerHTML=`<div class="small" style="padding:30px 0;text-align:center">Loading…</div>`;return nbaDetailEnsure(()=>{const now=(location.hash||"").slice(1);let dn=now;try{dn=decodeURIComponent(now)}catch(e){}if(now===h||dn===h){if(typeof route!=="undefined")route();else nbaRoute(h);scrollTo(0,y)}})}
   if(h.startsWith("nba-game-"))return nbaGame(el,h.slice(9));
   if(h.startsWith("nba-player-"))return nbaPlayer(el,h.slice(11));
   if(h.startsWith("nba-team-"))return nbaTeamPage(el,h.slice(9));

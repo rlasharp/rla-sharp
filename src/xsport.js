@@ -89,16 +89,16 @@ function xTrackCard(){if(typeof TRACK==="undefined"||!TRACK)return "";const S=TR
   for(const [sp,nm] of [["nba","NBA"],["nhl","NHL"],["nfl","NFL"]]){const s=S[sp];if(!s)continue;const E=Object.values(s.edge||{}),ew=E.reduce((a,e)=>a+e[0],0),el=E.reduce((a,e)=>a+e[1],0),eu=E.reduce((a,e)=>a+e[2],0);
     let win=s.win,tot=s.tot;if(sp==="nhl"&&typeof NHL_MODEL!=="undefined"&&NHL_MODEL){win=NHL_MODEL.win;tot=NHL_MODEL.tot;const NE=Object.values(NHL_MODEL.edge||{});rows.push([nm,s.best,win,tot,[NE.reduce((a,e)=>a+e[0],0),NE.reduce((a,e)=>a+e[1],0),NE.reduce((a,e)=>a+e[2],0)]]);continue}
     rows.push([nm,s.best,win,tot,[ew,el,eu]])}
-  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">📊 How our numbers are doing</h2><div class="small" style="margin-bottom:8px">Saved before every game and graded after — nothing is picked after the fact. Best props = each day's top 10 by hit score, 1 unit each at the posted odds.</div>${typeof finTonightHtml!=="undefined"?finTonightHtml():""}
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">📊 How our numbers are doing</h2><div class="small" style="margin-bottom:8px">Saved before every game and graded after — nothing is picked after the fact. Best props = each day's top 10 by our chance of winning, 1 unit each at the posted odds.</div>${typeof finTonightHtml!=="undefined"?finTonightHtml():""}
    <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Top-10 best props</th><th>Winner picked</th><th>Total O/U</th><th>Odds edges ≥ 4%</th></tr></thead><tbody>
    ${rows.map(([nm,b,w,t,e])=>`<tr><td><b>${nm}</b></td><td>${b.w}-${b.l} <span class="small">${pc(b.w,b.l)} · <span class="${b.u>0?"up":b.u<0?"dn":""}">${u(b.u)}</span></span></td><td>${w[0]}-${w[1]} <span class="small">${pc(w[0],w[1])}</span></td><td>${t[0]}-${t[1]} <span class="small">${pc(t[0],t[1])}</span></td><td>${e[0]}-${e[1]} <span class="small ${e[2]>0?"up":e[2]<0?"dn":""}">${u(e[2])}</span></td></tr>`).join("")}</tbody></table></div>
    <div class="small" style="margin-top:6px">Tracking started Nov 8, 2026 — give it a few weeks before trusting any of these.</div></div>`}
 
 /* ---------- 🔥 one list for tonight, all sports ---------- */
 function xTonightCard(){const L=[];const pill=s=>`<span class="xsp ${s}">${s.toUpperCase()}</span>`;
-  try{if(typeof nbaBest!=="undefined")for(const b of nbaBest().slice(0,5))L.push({sp:"nba",e:b.sc-xImp(b.odds??-110),href:`#nba-player-${encodeURIComponent(b.nm)}`,t:`${nbaEsc(b.nm)} ${b.side==="o"?"Over":"Under"} ${b.line} ${NBA_MK[b.k]?NBA_MK[b.k][1]:b.k}`,o:b.odds,s:`hit score ${Math.round(b.sc*100)}%`})}catch(e){}
+  try{if(typeof nbaBest!=="undefined")for(const b of nbaBest().slice(0,5))L.push({sp:"nba",e:b.sc-xImp(b.odds??-110),href:`#nba-player-${encodeURIComponent(b.nm)}`,t:`${nbaEsc(b.nm)} ${b.side==="o"?"Over":"Under"} ${b.line} ${NBA_MK[b.k]?NBA_MK[b.k][1]:b.k}`,o:b.odds,s:`our chance ${Math.round(b.sc*100)}%`})}catch(e){}
   try{if(typeof nhBest!=="undefined"&&NHL_DATE)for(const b of nhBest().filter(b=>b.g.d===NHL_DATE).slice(0,5))L.push({sp:"nhl",e:b.edge,href:`#nhl-player-${encodeURIComponent(b.nm)}`,t:`${nhE(b.nm)} ${b.side==="o"?(b.k==="hanyG"?"to score":"Over "+b.line):"Under "+b.line} ${b.k==="hanyG"?"":NH_MK[b.k][1]}`,o:b.odds,s:`hit ${b.s.l10}/${b.s.n10} last 10`})}catch(e){}
-  try{if(typeof nflBest!=="undefined"){const soon=g=>{const d=nflDate(g);if(!d)return false;return (Date.parse(d)-Date.parse(etNow().d))/864e5<=1};for(const b of nflBest().filter(b=>soon(b.g)).slice(0,5))L.push({sp:"nfl",e:b.edge,href:"#props",nfl:b.name,t:`${esc(b.name)} ${b.k==="anyTD"?"anytime TD":(b.side==="o"?"Over ":"Under ")+b.line+" "+MARKETS[b.k].n}`,o:b.odds,s:`hit score ${Math.round(b.sc*100)}%`})}}catch(e){}
+  try{if(typeof nflBest!=="undefined"){const soon=g=>{const d=nflDate(g);if(!d)return false;return (Date.parse(d)-Date.parse(etNow().d))/864e5<=1};for(const b of nflBest().filter(b=>soon(b.g)).slice(0,5))L.push({sp:"nfl",e:b.edge,href:"#props",nfl:b.name,t:`${esc(b.name)} ${b.k==="anyTD"?"anytime TD":(b.side==="o"?"Over ":"Under ")+b.line+" "+MARKETS[b.k].n}`,o:b.odds,s:`our chance ${Math.round(b.sc*100)}%`})}}catch(e){}
   try{for(const e of (typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]).flatMap(nbaOddsEdges).slice(0,3))L.push({sp:"nba",e:e.edge,href:e.href,t:`${e.pick} <span class="small">${e.mk.toLowerCase()} · ${e.game}</span>`,o:e.odds,s:`us ${Math.round(e.me*100)}% vs ${Math.round(e.bk*100)}%`})}catch(e){}
   try{if(typeof nhEdges!=="undefined"&&NHL_DATE)for(const e of NHL_SLATE.filter(g=>!nhStarted(g)).flatMap(nhEdges).sort((a,b)=>b.edge-a.edge).slice(0,3))L.push({sp:"nhl",e:e.edge,href:`#nhl-game-${e.g.id}`,t:`${nhE(e.pick)} <span class="small">${e.mk.toLowerCase()} · ${nhE(e.g.a)} @ ${nhE(e.g.h)}</span>`,o:e.odds,s:`us ${Math.round(e.me*100)}% vs ${Math.round(e.bk*100)}%`})}catch(e){}
   /* hit scores aren't comparable across sports, so take each sport's best 3 props + best game edge, then rank */
@@ -153,3 +153,14 @@ function xInsights(id,title,tabs){tabs=tabs.filter(t=>t[2]);if(!tabs.length)retu
    ${tabs.map(([k,,h])=>`<div class="xinsp" data-xinsp="${k}"${k===cur?"":" hidden"}>${strip(h)}</div>`).join("")}</div>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-xinst]");if(!b)return;const [id,k]=b.dataset.xinst.split("|");XINS[id]=k;const c=b.closest(".xins");
   c.querySelectorAll("[data-xinst]").forEach(x=>x.classList.toggle("on",x===b));c.querySelectorAll("[data-xinsp]").forEach(p=>p.hidden=p.dataset.xinsp!==k)});
+
+/* ---------- 🎯 one prop row for every sport: who · the bet · odds · hit-rate bar · one plain reason · our chance ----------
+   o: {i, tag, href, attrs, badge, name, sub, chips, pick, odds, book, l10:[hits,games], hits:[[h,n,label]], why, chance, need, act} */
+function xPropRow(o){const L=o.l10&&o.l10[1]?o.l10:null,pc=L?Math.round(L[0]/L[1]*100):0,tag=o.href?"a":"div";
+  const more=(o.hits||[]).filter(h=>h&&h[1]).map(h=>`${h[0]}/${h[1]} ${h[2]}`).join(" · ");
+  return `<${tag} class="bp xp"${o.href?` href="${o.href}"`:""} ${o.attrs||""}>${o.i!=null?`<div class="bpn">${o.i+1}</div>`:""}
+   <div class="bpm"><div class="bpw">${o.badge||""}<b>${o.name}</b> <span class="small">${o.sub||""}</span>${o.chips||""}</div>
+    <div class="bpl"><b class="xpk">${o.pick}</b> <span class="xpo">${o.odds}</span>${o.book?` <span class="small">${o.book}</span>`:""}</div>
+    ${L?`<div class="xph"><span class="xpbar" aria-hidden="true"><i style="width:${pc}%"></i></span><span>Hit <b>${L[0]} of last ${L[1]}</b></span></div>`:""}
+    ${more||o.why?`<div class="xpw small">${[more,o.why].filter(Boolean).join(" · ")}</div>`:""}</div>
+   <div class="bps"><b>${o.chance}%</b><span>our chance</span><span class="small">odds need ${o.need}%</span>${o.act||""}</div></${tag}>`}
