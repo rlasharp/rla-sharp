@@ -75,7 +75,7 @@ function srchFind(q0){const q=srchNorm(q0),W=q.split(" ").filter(Boolean),I=sear
   return [...out.values()].sort((a,b)=>a._t-b._t||(/^Team/.test(b.sub)-/^Team/.test(a.sub))||b.w-a.w).slice(0,10)}
 function appSearchSetup(){
   const inp=document.getElementById("plSearch"),box=document.getElementById("plRes");if(!inp)return;
-  inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure();if(typeof socEnsure!=="undefined"){socEnsure();socPEnsure()}});
+  inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure();if(typeof socEnsure!=="undefined"){socEnsure();setTimeout(()=>socPEnsure(),1200)}});
   inp.placeholder="🔍 Search any player or team (all sports)";
   const draw=()=>{const q=inp.value.trim().toLowerCase();if(q.length<2){box.innerHTML="";box.hidden=true;return}
     const hit=srchFind(q);const fz=hit.length&&hit[0]._t===2;
@@ -208,7 +208,7 @@ function ageGate(){
 }
 
 /* ===== hooks ===== */
-function appAfterRoute(){tabbarRender();favDecorate();if(typeof uxCollapse!=="undefined")setTimeout(()=>{uxCollapse();if(typeof xaPlayerChipsInject!=="undefined")xaPlayerChipsInject();if(typeof freshLateInject!=="undefined")freshLateInject();if(typeof uxJump!=="undefined")uxJump()},0);{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
+function appAfterRoute(){tabbarRender();favDecorate();if(typeof uxCollapse!=="undefined")setTimeout(()=>{uxCollapse();if(typeof xaPlayerChipsInject!=="undefined")xaPlayerChipsInject();if(typeof freshLateInject!=="undefined")freshLateInject();if(typeof uxFoldCards!=="undefined")uxFoldCards();if(typeof uxJump!=="undefined")uxJump()},0);{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
   const h=(location.hash||"").slice(1),host=document.getElementById("banner");
   if(host&&(h==="nba"||h==="games"||h==="nba-props"||h==="nba-best"||h==="props")){host.innerHTML=updatedHtml(h.startsWith("nba")?"nba":"nfl")}
 }

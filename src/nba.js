@@ -577,12 +577,18 @@ function nbaEval(nm,k,line,side,odds,book,oppIn){
   let dv=null;if(p.p5&&opp){const d=nbaDvp(opp,p.p5,k,5);if(d.rows.length>=3&&d.lg>0)dv=(d.rows.reduce((s,x)=>s+x.v,0)/d.rows.length)/d.lg-1}
   const hit=a=>a.filter(o=>side==="o"?nbaVal(o.x,k)>line:nbaVal(o.x,k)<line).length;
   const r10=hit(l10)/l10.length,rS=ss.length>=3?hit(ss)/ss.length:r10,rH=h2.length>=2?hit(h2)/h2.length:r10;
-  let sc=.45*r10+.35*rS+.2*rH;
+  const raw=.45*r10+.35*rS+.2*rH;
   const dvOk=dv==null?null:(side==="o"?dv>.08:dv<-.08)?1:(side==="o"?dv<-.08:dv>.08)?-1:0;
-  if(dvOk)sc+=.05*dvOk;
-  sc=Math.max(0,Math.min(.97,sc));
   const be=nbaImpl(odds);
-  return {nm,k,line,side,odds,book,p,opp,g,sc,be,edge:sc-be,dvOk,n10:l10.length,
+  /* calibrated chance (Nov 2026): raw hit rates were far too confident (top props "92%" won 4 of 10) because the books
+     already price streaks in. Start from the market's fair chance (vig removed, both sides of the same line) and move
+     toward the player's hit rates only part of the way — more with more games behind them. */
+  const row=NBA_PROPS.find(r=>r[0]===nm&&r[1]===k&&r[2]===line&&r[3]!=null&&r[4]!=null);
+  let fair=row?(()=>{const io=nbaImpl(row[3]),iu=nbaImpl(row[4]);return side==="o"?io/(io+iu):iu/(io+iu)})():be/1.045;
+  const nEff=Math.min(25,l10.length+.5*ss.length),w=.4*nEff/(nEff+10);
+  let sc=fair+w*(raw-fair)+(dvOk?.02*dvOk:0);
+  sc=Math.max(.03,Math.min(.9,sc));
+  return {nm,k,line,side,odds,book,p,opp,g,sc,raw,fair,be,edge:sc-be,dvOk,n10:l10.length,
     c3:[hit(l10.slice(-3)),l10.slice(-3).length],c5:[hit(l5),l5.length],c10:[hit(l10),l10.length],cS:[hit(ss),ss.length],cH:[hit(h2),h2.length],
     id:"pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k};
 }
@@ -632,7 +638,7 @@ function nbaWireBest(root){
 /* plays of the day: the 2-3 strongest leans from the ranking, with stricter rules */
 function nbaPlays(){
   const out=[],games=new Set(),used=new Set();
-  const ok=b=>b.c10[0]>=7&&b.edge>=.12&&b.odds>=-200&&b.odds<=150&&!/day|quest|doubt|out/i.test((nbaInjOf(b.nm)||[])[2]||"")&&b.cS[1]>=3&&b.cS[0]/b.cS[1]>=.6;
+  const ok=b=>b.c10[0]>=7&&b.edge>=.07&&b.odds>=-200&&b.odds<=150&&!/day|quest|doubt|out/i.test((nbaInjOf(b.nm)||[])[2]||"")&&b.cS[1]>=3&&b.cS[0]/b.cS[1]>=.6;
   const L=nbaBest().filter(ok);
   for(const pass of [0,1])for(const b of L){if(out.length>=3)break;if(used.has(b.nm))continue;if(!pass&&games.has(b.g.id))continue;out.push(b);used.add(b.nm);games.add(b.g.id)}
   return out;

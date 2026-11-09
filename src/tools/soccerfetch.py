@@ -464,6 +464,13 @@ def tnum(c, tid):
 used = {f["h"] for f in FX} | {f["a"] for f in FX} | {r[0] for L in ST.values() for r in L} | {t for m in OLD_IDS.values() for t in (m[2], m[3])}
 RES = [[e["id"], e["t"][:16], e["c"], e["h"], e["a"], e["hs"], e["as"], BOX[e["id"]]["ts"].get(e["h"]), BOX[e["id"]]["ts"].get(e["a"]),
         BOX[e["id"]].get("ev", [])] for e in DONE]
+# player logs are split by each team's domestic league (cup-only teams together) so a page loads only what it shows
+def pkey(tid):
+    for c in (TEAM.get(tid) or {}).get("c") or []:
+        if c not in CUPS: return c
+    return "cups"
+PFILES = {}
+for aid, P in PL.items(): PFILES.setdefault(pkey(P["t"]), {})[aid] = [P["n"], P["t"], P["pos"], P["g"]]
 out = {
   "SOC_GEN": NOW.astimezone(ZoneInfo("America/Toronto")).strftime("%a %b %-d %-I:%M %p ET"),
   "SOC_LG": {c[0]: {"n": c[2], "sh": c[3], "col": c[4], **({k: (round(v, 3) if isinstance(v, float) else v) for k, v in LG[c[0]].items()} if c[0] in LG else {})} for c in COMPS},
@@ -477,14 +484,20 @@ out = {
   "SOC_H2H": H2H,
   "SOC_OLD": OLD,
   "SOC_ODDS_AT": LO.get("at"),
+  "SOC_PFILES": {k: len(v) for k, v in sorted(PFILES.items())},
 }
 print("/* ⚽ Soccer — tools/soccerfetch.py (ESPN results + box scores, PropLine odds + referees, Open-Meteo weather) */")
 for k, v in out.items(): print(f"var {k}=" + json.dumps(v, separators=(",", ":"), ensure_ascii=False) + ";")
 print("var SOC_OK=1;")
-with open("soccer_players.js", "w", encoding="utf8") as fh:
-    fh.write("/* ⚽ Soccer player game logs — tools/soccerfetch.py. g: [match id, started, minutes, shots, on target, goals, assists, fouls committed, fouls won, yellow, red, saves, position] */\n")
-    fh.write("var SOC_P=" + json.dumps({aid: [P["n"], P["t"], P["pos"], P["g"]] for aid, P in PL.items()}, separators=(",", ":"), ensure_ascii=False) + ";\n")
+import glob
+for old in glob.glob("soccer_p_*.js"): os.remove(old)
+for k, D in PFILES.items():
+    with open(f"soccer_p_{k}.js", "w", encoding="utf8") as fh:
+        fh.write(f"/* ⚽ {k} player game logs — tools/soccerfetch.py. g: [match id, started, minutes, shots, on target, goals, assists, fouls committed, fouls won, yellow, red, saves, position] */\n")
+        fh.write(f"SOC_PADD({json.dumps(k)}," + json.dumps(D, separators=(",", ":"), ensure_ascii=False) + ");\n")
+with open("soccer_old.js", "w", encoding="utf8") as fh:
     fh.write("/* players in older head-to-head matches: match id -> [team, espn id, name, pos, started, minutes, shots, on target, goals, assists, fouls, fouled, yellow, red, saves] */\n")
-    fh.write("var SOC_OLDP=" + json.dumps({m[0]: (BOX.get(m[0]) or {}).get("p", []) for m in OLD_IDS.values()}, separators=(",", ":"), ensure_ascii=False) + ";var SOC_P_OK=1;\n")
+    fh.write("SOC_OLDADD(" + json.dumps({m[0]: (BOX.get(m[0]) or {}).get("p", []) for m in OLD_IDS.values()}, separators=(",", ":"), ensure_ascii=False) + ");\n")
+if os.path.exists("soccer_players.js"): os.remove("soccer_players.js")
 log(f"soccer: {len(FX)} upcoming matches ({sum(1 for f in FX if f.get('odds'))} with odds, {sum(1 for f in FX if f.get('proj'))} with estimates, "
     f"{sum(1 for f in FX if f.get('wx'))} with weather, {sum(1 for f in FX if f.get('ref'))} with referee), {len(PROPS)} player props, {len(PL)} players")

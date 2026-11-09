@@ -80,3 +80,11 @@ async function uxSave(blob,name){
   const d=UX_DL?await UX_DL:null;
   if(d){try{await d.save({filename:name,data:blob});return "saved"}catch(e){if(e&&(e.code==="declined"||e.code==="rate_limited"))return "declined";if(typeof toast!=="undefined")toast("Saving isn't available here — press and hold the image instead");return "failed"}}
   try{const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);return "saved"}catch(e){return "failed"}}
+
+/* 📏 shorter game pages (NBA / NHL / NFL): the detailed analysis cards collapse to their title — tap to open.
+   Which ones you open is remembered on this device. Soccer folds its own cards. */
+function uxFoldCards(){const h=(location.hash||"").slice(1);if(!/^(nba-game-|nhl-game-|game-)/.test(h))return;let open={};try{open=JSON.parse(localStorage.getItem("ge_fold")||"{}")}catch(e){}
+  document.querySelectorAll("main>section:not(.hide) .xacard:not(.xfold)").forEach(c=>{const t=c.querySelector("h2,h3");if(!t)return;const key=(t.textContent||"").replace(/[^A-Za-z ]/g,"").trim().slice(0,40);
+    c.classList.add("xfold");if(open[key])c.classList.add("open");t.classList.add("xfoldh");t.setAttribute("role","button");t.tabIndex=0;
+    const tog=()=>{const o=c.classList.toggle("open");open[key]=o?1:0;try{localStorage.setItem("ge_fold",JSON.stringify(open))}catch(e){}};t.onclick=tog;t.onkeydown=e=>{if(e.key==="Enter")tog()}})}
+document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-nhtab],[data-nbgt],[data-nfgt]"))setTimeout(uxFoldCards,120)},true);
