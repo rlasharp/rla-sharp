@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 15:56Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 16:47Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Roy Lopez|DT|Questionable|Toe|Nov 15
@@ -21,6 +21,7 @@ Zachariah Branch|WR|Out|Hamstring|Nov 15
 Cameron Williams|OL|IR|Ankle|Nov 15
 Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
 Samson Ebukam|DE|IR|Hamstring|Dec 13
+Anterio Thompson|DT|Out|Undisclosed|Feb 15
 #BAL
 Lamar Jackson|QB|IR|Thumb|Dec 13
 Kyle Hamilton|S|Questionable|Hip|Nov 16
@@ -235,6 +236,7 @@ Christen Miller|DT|Out|Coach's Decision|Nov 15
 CJ Donaldson|RB|Out|Shoulder|Nov 15
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 #NYG
+J.J. McCarthy|QB|Questionable|Undisclosed|
 Thomas Fidone II|TE|Out|Coach's Decision|Nov 12
 Cam Skattebo|RB|Out|Hamstring|Nov 12
 CJ Okoye|DT|Out|Coach's Decision|Nov 12
