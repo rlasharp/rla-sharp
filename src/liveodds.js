@@ -51,7 +51,10 @@ function loApply(d){
   LO.nba=nNba;LO.nfl=nNfl;LO.nhl=nNhl;LO.soc=nSoc;return nNba+nNfl+nNhl+nSoc}
 function loAgo(){if(!LO.data)return "";const m=Math.max(0,Math.round((Date.now()-Date.parse(LO.data.updated))/60000));return m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"}
 function loBadge(){return LO.data&&(LO.nba||LO.nfl)?`<div class="upd lo">⚡ Live sportsbook odds · updated <b>${loAgo()}</b> · ${LO.nba?LO.nba+" NBA":""}${LO.nba&&LO.nfl?" + ":""}${LO.nfl?LO.nfl+" NFL":""} lines</div>`:""}
-function loRerender(){const y=scrollY;if(typeof route==="function")route();scrollTo(0,y)}
+/* full redraw; with an alt key, keep that prop's − / + exactly where it was on screen so the page doesn't jump */
+function loRerender(key){const y=scrollY,fb=key?[...document.querySelectorAll(".alsb")].find(b=>b.dataset.altkey===key&&b.offsetParent):null,top=fb?fb.getBoundingClientRect().top:null;
+  if(typeof route==="function")route();scrollTo(0,y);
+  if(fb){const nb=[...document.querySelectorAll(".alsb")].find(b=>b.dataset.altkey===key&&b.offsetParent);if(nb)scrollBy(0,nb.getBoundingClientRect().top-top)}}
 async function loFetch(first){
   if(location.protocol==="file:")return;
   try{const r=await fetch("data/live_odds.json",{cache:"no-store"});if(!r.ok)return;const d=await r.json();if(!d||!d.updated)return;
@@ -86,7 +89,17 @@ function loAltStep(key,d,main,btn){const cur=LO.pick[key]!=null?LO.pick[key]:mai
   if(btn){const st=btn.closest(".alst"),box=st&&st.parentElement,card=btn.closest(".card,.pl")||box;
     const v=box&&box.classList.contains("pcv")?[...box.childNodes].find(n=>n.nodeType===3):st&&st.previousElementSibling&&st.previousElementSibling.classList.contains("plv")?st.previousElementSibling:null;
     if(v)v.textContent=String(nx);if(card)card.classList.add("lopend")}
-  clearTimeout(LO.stepT);LO.stepT=setTimeout(()=>loRerender(),btn?350:0)}
+  clearTimeout(LO.stepT);LO.stepT=setTimeout(()=>{if(!loSwapCards(key))loRerender(key)},btn?250:0)}
+/* redraw only the card(s) for this prop (NBA prop cards) instead of the whole page: no lag, and nothing else moves */
+function loSwapCards(key){if(typeof nbaPropCard==="undefined"||typeof NBA_PROPS==="undefined")return false;
+  const i=key.lastIndexOf("|"),nm=key.slice(0,i),k=key.slice(i+1),r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k);if(!r)return false;
+  const C=[...document.querySelectorAll(".card.prop[data-k]")].filter(c=>c.dataset.k===k&&c.dataset.nm===nm&&/^pc_/.test(c.id));
+  if(!C.length)return false;
+  /* this prop shows up elsewhere on the page too (a row on a game page, the alt-lines table) — those need the full redraw */
+  if([...document.querySelectorAll(".alsb")].some(b=>b.dataset.altkey===key&&!C.some(c=>c.contains(b))))return false;
+  try{for(const c of C){const w=document.createElement("div");w.innerHTML=nbaPropCard(r,/_p$/.test(c.id)?100:0);const n=w.firstElementChild;if(!n)return false;
+      c.replaceWith(n);if(typeof nbaWireCharts!=="undefined")nbaWireCharts(n,()=>loRerender(key));if(typeof nbaWireBest!=="undefined")nbaWireBest(n)}
+    return true}catch(e){return false}}
 function loAltChip(nm,k){const a=loAltOdds(nm,k);if(!a)return "";
   return `<span class="altc">🪜 Alt line${a.o==null&&a.u==null?" · no book odds":""}<button class="altx" data-altkey="${esc(nm+"|"+k)}" onclick="event.stopPropagation();loAltPick(this.dataset.altkey,null)" title="Back to the main line">✕ main</button></span>`}
 function loAltPick(key,line,keepClosed){if(line==null)delete LO.pick[key];else LO.pick[key]=line;LO.openAlt=keepClosed?LO.openAlt:key;loRerender()}
