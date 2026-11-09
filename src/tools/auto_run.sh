@@ -30,9 +30,11 @@ if want nfl; then
   python3 tools/auto_espn.py nfl-update >> "$WORK/summary.txt" 2>&1 || log "NFL lines/finals: kept old"
   python3 tools/auto_espn.py nfl-inj "$NOWS" >> "$WORK/summary.txt" 2>&1 || log "NFL injuries: kept old"
   python3 tools/auto_espn.py nfl-qtr >> "$WORK/summary.txt" 2>&1 || log "NFL quarter scores: kept old"
+  python3 tools/nflbox.py "$ROOT" > "$WORK/nflbox.js" 2>> "$WORK/summary.txt" && grep -q "^var BOX_ESPN" "$WORK/nflbox.js" && cp "$WORK/nflbox.js" nfl_box.js || log "NFL box scores (ESPN): kept old"
   if [ "$(TZ=America/Toronto date +%u)" = 2 ] && [ "$(TZ=America/Toronto date +%H)" -lt 12 ]; then   # Tuesday morning: weekly nflverse refresh
     bash tools/nflfetch.sh > "$WORK/nflfetch.log" 2>&1 && python3 tools/nfltgt.py "$WORK/nflv" > "$WORK/tgt.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/tgt.js" ] && cp "$WORK/tgt.js" nfl_tgt.js && log "NFL targets/spreads/rest refreshed"
     python3 tools/nflrush.py "$WORK/nflv" > "$WORK/rush.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/rush.js" ] && cp "$WORK/rush.js" nfl_rush.js && log "NFL pass rush vs O-line refreshed"
+    python3 tools/advgen.py "$WORK/nflv" auto > "$WORK/adv.js" 2>> "$WORK/summary.txt" && grep -q "^const BOX=" "$WORK/adv.js" && cp "$WORK/adv.js" adv_data.js && log "NFL box scores / red zone / pace (nflverse) refreshed"
     python3 tools/nflx2.py "$WORK/nflv" > "$WORK/x2.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_K" "$WORK/x2.js" && cp "$WORK/x2.js" nfl_x2.js && log "NFL red zone / QB runs / PROE / division / kickers refreshed"; fi
 fi
 if want nhl; then   # NHL: official NHL API + PropLine feed (box scores cached in data/nhl_box.json)

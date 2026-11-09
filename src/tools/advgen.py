@@ -2,12 +2,19 @@
 # Source: nflverse open data (CC-BY 4.0): stats_player_week_2026.csv, play_by_play_2026.csv.gz, games.csv
 # Usage: python3 tools/advgen.py <nflverse dir> <current week> > adv_data.js
 import csv,gzip,sys,json,math,collections
-D,CW=sys.argv[1],int(sys.argv[2])
+import os
+D=sys.argv[1]
+def pick(*names):   # tools/nflfetch.sh saves short names (pstats.csv / pbp.csv.gz); older runs used the nflverse names
+    for n_ in names:
+        if os.path.exists(os.path.join(D,n_)):return os.path.join(D,n_)
+    return os.path.join(D,names[0])
 TM={"LA":"LAR","WSH":"WAS","JAC":"JAX"};t=lambda x:TM.get(x,x)
 n=lambda v:float(v) if v not in ("","NA",None) else 0.0
 i=lambda v:int(round(n(v)))
-st=[r for r in csv.DictReader(open(D+"/stats_player_week_2026.csv")) if r["season_type"]=="REG"]
+st=[r for r in csv.DictReader(open(pick("stats_player_week_2026.csv","pstats.csv"))) if r["season_type"]=="REG"]
 games=[r for r in csv.DictReader(open(D+"/games.csv")) if r["season"]=="2026" and r["game_type"]=="REG"]
+# current week: given, or "auto" = the first week with a game not played yet
+CW=int(sys.argv[2]) if len(sys.argv)>2 and sys.argv[2]!="auto" else min([int(g["week"]) for g in games if g["home_score"]==""] or [18])
 gid={r["game_id"]:r for r in games}
 # ---- box scores: BOX["wk|AWAY|HOME"]={p:[...],r:[...],c:[...]}
 BOX=collections.defaultdict(lambda:{"p":[],"r":[],"c":[]})
@@ -24,7 +31,7 @@ for v in BOX.values():
 idname={r["player_id"]:r["player_display_name"] for r in st}
 rz=collections.defaultdict(lambda:collections.Counter());team_rz=collections.defaultdict(collections.Counter)
 pace=collections.defaultdict(lambda:{"plays":0,"games":set(),"np":0,"nr":0,"poe":0.0,"poen":0})
-rd=csv.DictReader(gzip.open(D+"/play_by_play_2026.csv.gz","rt"))
+rd=csv.DictReader(gzip.open(pick("play_by_play_2026.csv.gz","pbp.csv.gz"),"rt"))
 for p in rd:
     if p.get("season_type","REG")!="REG":continue
     pt=p["play_type"];
