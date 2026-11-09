@@ -102,6 +102,11 @@ def main():
             alert.append(f"NHL data problem: {n.get('issue')}"); title = title or "NHL data problem"
     except Exception:
         pass
+    try:   # stale-data alarm: any data source behind the latest results (tools/staleness.py)
+        sp = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "staleness.py"), "."], capture_output=True, text=True, timeout=60)
+        if sp.stdout.strip():
+            alert.append("Some data has stopped updating:\n" + "\n".join("- " + l for l in sp.stdout.strip().splitlines())); title = title or "Stale data"
+    except Exception as e: print("staleness check failed:", e)
     if len(errs) == len(URL) * len(days):
         alert.append("ESPN's scoreboards could not be reached at all, so game-night updates are not being triggered."); title = title or "Game-night updates blocked"
 

@@ -1,9 +1,14 @@
 # Builds usage.js (snap share, target share, air-yards share, carry share) from nflverse open data (CC-BY 4.0).
-# Usage: python3 tools/usagegen.py <dir with stats_player_week_2026.csv + snap_counts_2026.csv> > usage.js
+# Usage: python3 tools/usagegen.py <dir with stats_player_week_2026.csv + snap_counts_2026.csv> > usage_data.js
 import csv,sys,json,re,collections
+import os
 D=sys.argv[1]
-st=[r for r in csv.DictReader(open(D+"/stats_player_week_2026.csv")) if r["season_type"]=="REG"]
-sn=[r for r in csv.DictReader(open(D+"/snap_counts_2026.csv")) if r["game_type"]=="REG"]
+def pick(*names):   # tools/nflfetch.sh saves short names; older runs used the nflverse names
+    for n_ in names:
+        if os.path.exists(os.path.join(D,n_)):return os.path.join(D,n_)
+    return os.path.join(D,names[0])
+st=[r for r in csv.DictReader(open(pick("stats_player_week_2026.csv","pstats.csv"))) if r["season_type"]=="REG"]
+sn=[r for r in csv.DictReader(open(pick("snap_counts_2026.csv","snaps.csv"))) if r["game_type"]=="REG"]
 TM={"LA":"LAR","WSH":"WAS","JAC":"JAX"}
 t=lambda x:TM.get(x,x)
 num=lambda v:float(v) if v not in ("","NA",None) else 0.0

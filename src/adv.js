@@ -92,3 +92,15 @@ function restMini(g){if(!ADVOK)return "";const t=[];[g.away,g.home].forEach(tm=>
     for(const r of B.c||[]){const x=row(r[0],r[1]);if(x){x.rec=r[2];x.tgt=r[3];x.recYds=r[4];x.recTD=r[5]}}
     for(const x of Object.values(P)){REAL_LOGS.push(x);n++}}
   window.NFL_ESPN_LOGS=n})();
+
+/* 🗓️ weekly NFL tables (tools/nflweekly.py, every Tuesday): replace the older hand-made defense-vs-position, recent-players,
+   QB1 and head-to-head data when they're newer */
+(function(){if(typeof NFLW==="undefined"||!NFLW||!NFLW.week)return;
+  const oldWk=+((typeof PFR_SRC!=="undefined"&&String(PFR_SRC).match(/Week (\d+)/))||[0,0])[1]||8;if(NFLW.week<oldWk)return;
+  if(typeof DVP_RAW!=="undefined")for(const [p,v] of Object.entries(NFLW.dvp||{}))DVP_RAW[p]=v;
+  if(typeof PFR_DVP!=="undefined")for(const [p,v] of Object.entries(NFLW.pfr||{}))PFR_DVP[p]=v;
+  if(typeof POSV!=="undefined")for(const [t,v] of Object.entries(NFLW.posv||{}))POSV[t]=v;
+  if(typeof QB1_STATUS!=="undefined")for(const [t,q] of Object.entries(NFLW.qb1||{})){const i=typeof INJ_P!=="undefined"&&INJ_P[q.qb];
+    QB1_STATUS[t]={qb:q.qb,out:q.out,left:q.left,sub:q.sub,now:i?`${i.s}${i.i?" — "+String(i.i).toLowerCase():""}${typeof INJ_ASOF!=="undefined"?` (ESPN injury report, ${INJ_ASOF.replace(/^\w+ /,"")})`:""}`:"Playing"}}
+  window.NFLW_ON=1})();
+function nflH2hRows(g){const P=typeof NFLW!=="undefined"&&NFLW&&NFLW.h2h;const r=P&&(P[g.away+"|"+g.home]||P[g.home+"|"+g.away]);return r||((typeof H2H_RAW!=="undefined"&&H2H_RAW[g.id])||[])}

@@ -46,6 +46,14 @@ else:
     out += ["", "### Steps that failed (old data was kept each time)"]
     out += [f"- **{c}×** {ex[k]}" for k, c in F.most_common(12)] or ["- None 🎉"]
 out += ["", "### Data timestamps right now"] + [f"- {a}: {b}" for a, b in ages]
+# stale data
+try:
+    import subprocess
+    sp = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "staleness.py"), R], capture_output=True, text=True, timeout=60)
+    out += ["", "### Is any data behind?"] + ([f"- ⚠️ {l}" for l in sp.stdout.strip().splitlines()] or ["- ✅ Every data source is up to date with the latest results."])
+    if sp.stdout.strip(): out[0] = out[0].replace("✅ Healthy", "⚠️ Needs a look")
+except Exception as e:
+    out += ["", f"_(stale-data check skipped: {e})_"]
 # did our stated chances come true? flag any group with 20+ graded picks that is more than 10 points off
 try:
     tj = open(os.path.join(R, "src/track_data.js"), encoding="utf8").read(); TR = json.loads(tj[tj.index("=") + 1:].strip().rstrip(";"))

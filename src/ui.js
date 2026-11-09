@@ -323,7 +323,7 @@ function formHtml(t){const G=[...teamGames(t)].reverse(),w=G.filter(x=>x.pf>x.pa
    ${G.map(x=>{const m=x.pf-x.pa,win=m>0;return `<div class="frow"><span class="small" style="width:42px">Wk ${x.week}</span><span style="width:58px">${x.home?"vs":"@"} <b>${x.opp}</b></span>
      <span class="wl ${win?"w":"l"}">${win?"W":"L"}</span><span class="num" style="width:52px">${x.pf}-${x.pa}</span>
      <span class="mbar"><i style="width:${Math.abs(m)/mx*100}%;background:${win?"#22c55e":"#f05252"}"></i></span><span class="small" style="width:70px;text-align:right">${win?"won by "+m:"lost by "+(-m)}</span></div>`}).join("")}</div>`}
-function h2hHtml(g){const R=(typeof H2H_RAW!=="undefined"&&H2H_RAW[g.id])||[];if(!R.length)return '<p class="note">No meetings found.</p>';
+function h2hHtml(g){const R=typeof nflH2hRows!=="undefined"?nflH2hRows(g):((typeof H2H_RAW!=="undefined"&&H2H_RAW[g.id])||[]);if(!R.length)return '<p class="note">No meetings found.</p>';
   const tl=bookTotal(g),G=R.map(([d,a,ap,h,hp,po])=>({d,a,ap,h,hp,po,win:ap>hp?a:h,tot:ap+hp}));
   const aw=G.filter(x=>x.win===g.away).length,hw=G.length-aw,ov=G.filter(x=>x.tot>tl).length,avgT=avg(G.map(x=>x.tot));
   const lead=aw>hw?`${short(g.away)} lead ${aw}-${hw}`:hw>aw?`${short(g.home)} lead ${hw}-${aw}`:`Tied ${aw}-${hw}`;

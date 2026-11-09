@@ -235,7 +235,7 @@ function gsRowsNba(t){const S=typeof NBA_SPR!=="undefined"?NBA_SPR:{};
   return NBA_RES.filter(r=>r[2]===t||r[3]===t).sort((a,b)=>a[1]<b[1]?-1:1).map(r=>{const h=r[3]===t,s=S[r[0]];return {opp:h?r[2]:r[3],home:h,pf:h?r[5]:r[4],pa:h?r[4]:r[5],sp:s?(h?s[3]:-s[3]):null,tot:s?s[4]:null,d:r[1]}})}
 function gsRowsNfl(t){const SP=typeof NFL_SPR!=="undefined"?NFL_SPR:{};
   return teamGames(t).map(x=>{const s=SP[x.week+"|"+t];return {opp:x.opp,home:!!x.home,pf:x.pf,pa:x.pa,sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,d:"Wk "+x.week}})}
-function gsH2hNfl(g,t){const o=t===g.away?g.home:g.away,R=(typeof H2H_RAW!=="undefined"&&H2H_RAW[g.id])||[];
+function gsH2hNfl(g,t){const o=t===g.away?g.home:g.away,R=typeof nflH2hRows!=="undefined"?nflH2hRows(g):((typeof H2H_RAW!=="undefined"&&H2H_RAW[g.id])||[]);
   if(!R.length){const SP=typeof NFL_SPR!=="undefined"?NFL_SPR:{};return teamGames(t,null).filter(x=>x.opp===o).map(x=>{const s=x.season===CUR?SP[x.week+"|"+t]:null;return {opp:x.opp,home:!!x.home,pf:x.pf,pa:x.pa,sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,d:x.season===CUR?"Wk "+x.week:String(x.season)}})}
   return R.map(([d,a,ap,h,hp])=>({opp:a===t?h:a,home:h===t,pf:a===t?ap:hp,pa:a===t?hp:ap,sp:null,tot:null,d:d.slice(0,4)})).reverse()}
 function gsCard(key,sport,teams,rowsFor,h2hFor,ton,TR){
