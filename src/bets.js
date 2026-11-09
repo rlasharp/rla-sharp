@@ -148,11 +148,11 @@ function shareCard(s){
   let m=document.getElementById("shareModal");if(m)m.remove();m=document.createElement("div");m.id="shareModal";m.className="modal";
   m.innerHTML=`<div class="mbox"><div class="row" style="align-items:center"><h2 style="margin:0">Share this pick</h2><span class="sp"></span><button class="btn" id="smClose">✕</button></div>
     <img src="${url}" alt="${esc(I.title)}" style="width:100%;border-radius:12px;margin:12px 0;display:block">
-    <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn pri" id="smShare">Share…</button><a class="btn" id="smDl" href="${url}" download="${name}">Download image</a></div>
+    <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn pri" id="smShare">Share…</button><button class="btn" id="smDl">Download image</button></div>
     <p class="small" style="margin:8px 0 0">On a phone you can also press and hold the image to save it.</p></div>`;
   document.body.appendChild(m);
   m.onclick=e=>{if(e.target===m)m.remove()};$("#smClose").onclick=()=>m.remove();
-  const sb=$("#smShare");
+  const sb=$("#smShare");$("#smDl").onclick=()=>c.toBlob(bl=>bl&&uxSave(bl,name),"image/png");
   c.toBlob(bl=>{const f=bl&&typeof File!=="undefined"?new File([bl],name,{type:"image/png"}):null;
     if(!(f&&navigator.canShare&&navigator.canShare({files:[f]})))sb.style.display="none";
     else sb.onclick=()=>navigator.share({files:[f],title:I.title,text:I.title+" — RLA Sharp"}).catch(()=>{})},"image/png");

@@ -136,7 +136,7 @@ async function shareImage(o){
   const blob=await new Promise(r=>c.toBlob(r,"image/png"));const file=new File([blob],o.file||"rla-sharp.png",{type:"image/png"});
   const text=`${o.title} — ${siteUrl()}`;
   try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:o.title,text});return}}catch(e){if(e&&e.name==="AbortError")return}
-  try{const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=file.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}catch(e){}
+  if(await uxSave(blob,file.name)!=="saved")return;
   shareToast("Image saved — post it anywhere 📸");
 }
 function shareToast(t){let el=document.getElementById("shToast");if(!el){el=document.createElement("div");el.id="shToast";document.body.appendChild(el)}el.textContent=t;el.className="show";setTimeout(()=>el.className="",2600)}

@@ -72,3 +72,11 @@ function uxViewSeg(){const v=uxViewGet();return `<div class="seg">${[["simple","
 function uxViewSet(v){try{LS.set("view",v)}catch(e){}uxViewApply();if(typeof toast!=="undefined")toast(v==="simple"?"Simple view — just the essentials":"Detailed view — everything");if(typeof uxJump!=="undefined")setTimeout(uxJump,50)}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-view-set]");if(b){uxViewSet(b.dataset.viewSet);return}if(e.target.closest&&e.target.closest("#viewBtn"))uxViewSet(uxViewGet()==="simple"?"detailed":"simple")});
 uxViewApply();window.addEventListener("load",uxViewApply);
+
+/* 💾 save a generated file. Inside the Claude viewer downloads go through its "downloads" capability (the viewer
+   confirms); on the normal website it's a plain browser download. Returns "saved" | "declined" | "failed". */
+const UX_DL=(()=>{try{return window.claude&&window.claude.use?window.claude.use("downloads").catch(()=>null):null}catch(e){return null}})();
+async function uxSave(blob,name){
+  const d=UX_DL?await UX_DL:null;
+  if(d){try{await d.save({filename:name,data:blob});return "saved"}catch(e){if(e&&(e.code==="declined"||e.code==="rate_limited"))return "declined";if(typeof toast!=="undefined")toast("Saving isn't available here — press and hold the image instead");return "failed"}}
+  try{const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);return "saved"}catch(e){return "failed"}}

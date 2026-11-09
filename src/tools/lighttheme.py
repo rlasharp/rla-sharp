@@ -34,7 +34,7 @@ def flip(c, kind):
         if kind == "bg" and l < 0.35: return (*colorsys.hls_to_rgb(h, 1 - l * 0.6, s * 0.8), a)
         return None
     if kind == "text":
-        if l > 0.55: return (*colorsys.hls_to_rgb(h, max(0.13, min(0.36, 1.05 - l)), min(1, s * 1.05)), a)
+        if l > 0.55: return (*colorsys.hls_to_rgb(h, max(0.13, min(0.29, 1.05 - l)), min(1, s * 1.05)), a)
         return None
     if kind == "bg":
         if l < 0.35: return (*colorsys.hls_to_rgb(h, 1 - l * 0.6, s * 0.75), a)
@@ -132,7 +132,7 @@ def walk(css):
         i = k
     return "".join(out)
 
-MANUAL = ("html[data-theme=light] .ab,html[data-theme=light] .nbbdg,html[data-theme=light] .pnum,html[data-theme=light] .bpn.n1{color:#fff!important}"   # team badges: inline team colour
+MANUAL = ("html[data-theme=light] .ab,html[data-theme=light] .pnum,html[data-theme=light] .bpn.n1{color:#fff!important}"   # team badges: inline team colour
           "html[data-theme=light] .fresh:not(.new):not(.bad){color:var(--text2)}html[data-theme=light] .card{box-shadow:0 1px 2px rgba(16,24,40,.05)}html[data-theme=light] #tabbar{box-shadow:0 -1px 0 var(--line)}")
 
 def main():

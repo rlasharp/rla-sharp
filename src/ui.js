@@ -308,11 +308,11 @@ function rkBar(r){const w=Math.max(4,Math.round((33-r)/32*100));return `<div cla
 function ovdHtml(off,def){
   const u=units(),O=u[off].o,D=u[def].d;
   const row=(k,lab,unit,dec)=>{const oR=O[k+"R"],dR=D[k+"R"],edge=dR-oR; // positive => offense better ranked than defense
-    const w=Math.abs(edge)<6?["Even matchup","#b9bdc4"]:edge>0?[`Edge: ${short(off)} offense`,"#7fdc95"]:[`Edge: ${short(def)} defense`,"#8cc0ff"];
+    const w=Math.abs(edge)<6?["Even matchup","ovw0"]:edge>0?[`Edge: ${short(off)} offense`,"ovw1"]:[`Edge: ${short(def)} defense`,"ovw2"];
     return `<div class="ovd"><div class="ovl">${lab}</div>
       <div><div class="num"><b>${fmt(O[k],dec)}</b> <span class="small">${unit}/game</span></div>${rankPill(oR)}${rkBar(oR)}</div>
       <div><div class="num"><b>${fmt(D[k],dec)}</b> <span class="small">${unit} allowed</span></div>${rankPill(dR)}${rkBar(dR)}</div>
-      <div style="color:${w[1]};font-weight:700;font-size:13.5px">${w[0]}</div></div>`};
+      <div class="ovw ${w[1]}">${w[0]}</div></div>`};
   return `<div class="card"><div class="row"><h3 style="margin:0">${badge(off)} ${short(off)} offense <span class="small">vs</span> ${badge(def)} ${short(def)} defense</h3></div>
     <div class="ovd head"><div></div><div>${short(off)} offense</div><div>${short(def)} defense</div><div>Who wins it</div></div>
     ${row("pts","Points","pts",1)}${row("pass","Passing","yds",1)}${row("rush","Rushing","yds",1)}${row("tot","Total","yds",1)}</div>`;

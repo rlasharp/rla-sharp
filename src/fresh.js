@@ -34,3 +34,22 @@ window.addEventListener("load",()=>{
 setInterval(()=>{if(!document.hidden)freshCheck();else freshPaint()},180000);
 setInterval(freshPaint,60000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)freshCheck()});
+
+/* ⚠️ per-sport "data is late": every automatic run rebuilds the whole site, but each sport's data step can fail on its
+   own (the old data is then kept). If the site was rebuilt well after a sport's last good data, that sport's step is
+   failing — say so on that sport's pages. Uses only the timestamps the data files carry. */
+function freshParseET(s){const m=String(s||"").match(/([A-Z][a-z]{2})\s+(\d{1,2}),?\s+(\d{1,2})(?::(\d{2}))?\s*(AM|PM)/);if(!m)return NaN;
+  const mo="JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(m[1])/3;if(mo<0)return NaN;let h=+m[3]%12+(m[5]==="PM"?12:0);
+  const off=mo>=3&&mo<=9?4:mo===2||mo===10?(+m[2]>=8?(mo===2?4:5):(mo===2?5:4)):5;   /* ET: EDT mid-Mar..early Nov */
+  const y=new Date().getUTCFullYear();let t=Date.UTC(y,mo,+m[2],h+off,+(m[4]||0));if(t>Date.now()+864e5)t=Date.UTC(y-1,mo,+m[2],h+off,+(m[4]||0));return t}
+const FRESH_SP={nba:["NBA",()=>typeof NBA_GEN!=="undefined"?NBA_GEN:"",6],nhl:["NHL",()=>typeof NHL_GEN!=="undefined"?NHL_GEN:"",6],
+  nfl:["NFL",()=>typeof MARKET_ASOF!=="undefined"?MARKET_ASOF:"",12]};
+function freshLate(sp){const d=FRESH_SP[sp];if(!d||!FRESH.at)return null;const s=d[1]();if(!s)return null;const t=freshParseET(s),b=Date.parse(FRESH.at);
+  if(!isFinite(t)||!isFinite(b))return null;const behind=(b-t)/36e5,age=(Date.now()-t)/36e5;return behind>=3&&age>=d[2]?{lab:d[0],s,age}:null}
+function freshLateHtml(sps){const L=sps.map(freshLate).filter(Boolean);if(!L.length)return "";
+  return `<div class="latenote">⚠️ ${L.map(x=>`<b>${x.lab}</b> data hasn't refreshed since ${x.s.replace(/^[A-Z][a-z]{2},?\s+/,"")}`).join(" · ")} — the automatic update for ${L.length>1?"these sports":"it"} is having trouble. Lines, live scores and other sports are still current; stats and props here may be a few hours old.</div>`}
+function freshLateInject(){document.querySelectorAll(".latenote").forEach(e=>e.remove());const h=(location.hash||"#today").slice(1);
+  const sps=h==="today"||h===""?["nfl","nba","nhl"]:/^nba/.test(h)?["nba"]:/^nhl/.test(h)?["nhl"]:/^(games|game-|props|plays|injuries|weeks)/.test(h)?["nfl"]:[];
+  if(!sps.length)return;const html=freshLateHtml(sps);if(!html)return;
+  const v=[...document.querySelectorAll("main > section, .view")].find(x=>x.offsetParent);const h1=v&&v.querySelector("h1");
+  if(h1)h1.insertAdjacentHTML("afterend",html);else if(v)v.insertAdjacentHTML("afterbegin",html)}

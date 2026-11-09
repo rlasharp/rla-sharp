@@ -177,7 +177,7 @@ function ageGate(){
 }
 
 /* ===== hooks ===== */
-function appAfterRoute(){tabbarRender();favDecorate();if(typeof uxCollapse!=="undefined")setTimeout(()=>{uxCollapse();if(typeof xaPlayerChipsInject!=="undefined")xaPlayerChipsInject();if(typeof uxJump!=="undefined")uxJump()},0);{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
+function appAfterRoute(){tabbarRender();favDecorate();if(typeof uxCollapse!=="undefined")setTimeout(()=>{uxCollapse();if(typeof xaPlayerChipsInject!=="undefined")xaPlayerChipsInject();if(typeof freshLateInject!=="undefined")freshLateInject();if(typeof uxJump!=="undefined")uxJump()},0);{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
   const h=(location.hash||"").slice(1),host=document.getElementById("banner");
   if(host&&(h==="nba"||h==="games"||h==="nba-props"||h==="nba-best"||h==="props")){host.innerHTML=updatedHtml(h.startsWith("nba")?"nba":"nfl")}
 }
@@ -429,7 +429,7 @@ async function snapImage(o){
   drawLogo(x,W-72-70,H-122,70);
   const blob=await new Promise(r=>c.toBlob(r,"image/png"));const file=new File([blob],(o.file||"rla-sharp")+".png",{type:"image/png"});
   try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:o.title,text:`${o.title} — ${siteUrl()}`});return}}catch(e){if(e&&e.name==="AbortError")return}
-  try{const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=file.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}catch(e){}
+  if(await uxSave(blob,file.name)!=="saved")return;
   if(typeof shareToast!=="undefined")shareToast("Snapshot saved — post it anywhere 📸");
 }
 function vData(html){const d=document.createElement("div");d.innerHTML=html;const b=d.querySelector(".vh"),items=[...d.querySelectorAll("li")].map(li=>{const m=li.querySelector("span").textContent;return [m==="✅"?1:m==="⚠️"?-1:0,li.textContent.slice(m.length)]});

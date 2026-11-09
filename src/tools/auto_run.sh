@@ -46,9 +46,7 @@ bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 if node tools/track.js "$ROOT/src/index.html" > "$WORK/track.log" 2>&1; then log "$(tail -1 "$WORK/track.log")"; bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 else log "tracker FAILED (kept old): $(tail -2 "$WORK/track.log" | tr '\n' ' ')"; fi
 if node tools/check.js "$ROOT/src/index.html" > "$WORK/check.log" 2>&1; then
-  cp index.html "$ROOT/index.html"; cp nhl_data.js "$ROOT/nhl_data.js"; cp nba_detail.js "$ROOT/nba_detail.js"; cp lines_hist.js "$ROOT/lines_hist.js"
-  AT=$(grep -o 'var BUILD_AT="[^"]*"' index.html | head -1 | cut -d'"' -f2)
-  printf '{"at":"%s","what":"%s"}\n' "$AT" "$WHAT" > "$ROOT/version.json"   # the open site checks this to refresh itself
+  AT=$(bash tools/publish_copy.sh "$ROOT" "$WHAT")   # copies the build + stamps version.json (the open site checks it to refresh itself)
   log "Site check OK — published ($AT)"
 else
   log "SITE CHECK FAILED — live site left unchanged"; cat "$WORK/check.log"

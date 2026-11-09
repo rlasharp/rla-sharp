@@ -151,7 +151,10 @@ function nbaLinesHtml(g,full){
 
 /* ---------- Games ---------- */
 function nbaCol(t){const c=(typeof NBA_TCOL!=="undefined"&&NBA_TCOL[t])||"3a3f47";return "#"+c.replace("#","")}
-function nbaBadge(t){return `<span class="nbbdg" style="background:${nbaCol(t)}">${t}</span>`}
+/* white text on dark team colours, near-black on pale ones (GS gold, MEM light blue…) so the badge stays readable */
+function xInkOn(c){const m=String(c||"").match(/^#?([0-9a-f]{6})$/i);if(!m)return "#fff";const n=parseInt(m[1],16),L=[n>>16,n>>8&255,n&255].map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});
+  const Y=.2126*L[0]+.7152*L[1]+.0722*L[2];return (Y+.05)/.05>1.05/(Y+.05)?"#111":"#fff"}
+function nbaBadge(t){const c=nbaCol(t),k=xInkOn(c);return `<span class="nbbdg" style="background:${c};color:${k}${k==="#111"?";text-shadow:none":""}">${t}</span>`}
 function nbaImpl(ml){return ml<0?-ml/(-ml+100):100/(ml+100)}
 function nbaWinPct(L){if(!L||!L.mla||!L.mlh)return null;const a=nbaImpl(L.mla),h=nbaImpl(L.mlh);return {a:a/(a+h),h:h/(a+h)}}
 function nbaPills(g){
