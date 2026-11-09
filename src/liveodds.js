@@ -12,7 +12,8 @@ function loMoveTag(nm,k,line){if(LO.pick[nm+"|"+k]!=null)return loAltChip(nm,k);
   if(m.l!=null&&m.l!==line)return `<span class="lmv ${line>m.l?"up":"dn"}" title="Opened at ${m.l} today">${line>m.l?"▲":"▼"} from ${m.l}</span>`;
   if(m.o!=null&&m.oNow!=null&&Math.abs(m.oNow-m.o)>=10)return `<span class="lmv fl" title="Over price opened ${m.o>0?"+":""}${m.o}">price ${m.oNow>m.o?"↑":"↓"} ${m.o>0?"+":""}${m.o}→${m.oNow>0?"+":""}${m.oNow}</span>`;
   return ""}
-function loApply(d){
+function loApply(d){const n_=loApply0(d);loDropOut();return n_}
+function loApply0(d){
   const I=loIdx();let nNba=0,nNfl=0;LO.move={};LO.alt={};
   const nb=d.nba||{},nf=d.nfl||{};
   if(typeof NBA_PROPS!=="undefined"&&nb.props&&typeof NBA_SLATE_DATE!=="undefined"){
@@ -142,3 +143,21 @@ function loMovesCard(sp,n){
     const why=m.dl>0?"books moved it up — money on the over":m.dl<0?"books moved it down — money on the under":m.dp<0?"over getting pricier":"under getting pricier";
     return `<a class="lmr" href="${href}" ${sp==="nfl"?`data-nflfav="${esc(m.nm)}"`:""}><span><b>${esc(m.nm)}</b> <span class="small">${esc(mk(m))}</span></span><span>${what}</span><span class="small">${why}</span></a>`};
   return `<div class="card lmc"><h2 style="margin-bottom:2px">📈 Biggest ${sp.toUpperCase()} line moves today</h2><div class="small" style="margin-bottom:8px">Since the first line we saw this morning · live sportsbook odds, updated ${loAgo()}. Big moves often follow injury news or sharp money.</div>${L.map(row).join("")}</div>`}
+
+/* 🚑 players ruled out (injury report: Out / IR / suspended) have their props removed everywhere — prop lists, best plays,
+   player pages, line moves. Questionable / doubtful / day-to-day players keep theirs (with their injury tag). Runs at load,
+   after every live-odds refresh and when the NHL data arrives. OUT_DROP = names removed, for the "ruled out" note. */
+var OUT_DROP={nba:new Set(),nhl:new Set(),nfl:new Set()};
+function loOutSet(sp){const S=new Set(),add=(L,re)=>{for(const r of L||[])if(re.test(String(r[2]||"").trim()))S.add(loNorm(r[0]))};
+  if(sp==="nba"&&typeof NBA_INJ!=="undefined")for(const L of Object.values(NBA_INJ))add(L,/^(out|suspen)/i);
+  if(sp==="nhl"&&typeof NHL_INJ!=="undefined")for(const L of Object.values(NHL_INJ))add(L,/^(out|injured reserve|ir\b|ltir|long[- ]term|suspen)/i);
+  if(sp==="nfl"&&typeof INJ!=="undefined")for(const L of Object.values(INJ))add(L,/^(out|ir\b|ir-|pup|nfi|suspen)/i);
+  return S}
+function loDropOut(){try{
+  const drop=(sp,A)=>{const O=loOutSet(sp);if(!O.size||!A)return;for(let i=A.length-1;i>=0;i--)if(O.has(loNorm(A[i][0]))){OUT_DROP[sp].add(A[i][0]);A.splice(i,1)}};
+  if(typeof NBA_PROPS!=="undefined")drop("nba",NBA_PROPS);
+  if(typeof NHL_PROPS!=="undefined")drop("nhl",NHL_PROPS);
+  if(typeof REAL_PROPS!=="undefined"){const O=loOutSet("nfl");for(const k of Object.keys(REAL_PROPS)){const n=k.slice(0,k.lastIndexOf("|"));if(O.has(loNorm(n))){OUT_DROP.nfl.add(n);delete REAL_PROPS[k]}}}
+  if(typeof LO!=="undefined"&&LO.move)for(const k of Object.keys(LO.move)){const m=LO.move[k];if(m&&OUT_DROP[m.sp]&&OUT_DROP[m.sp].has(m.nm)){delete LO.move[k];delete LO.alt[k]}}
+  if(typeof NB!=="undefined")NB._best=null}catch(e){}}
+loDropOut();
