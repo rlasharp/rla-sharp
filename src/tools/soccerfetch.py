@@ -281,14 +281,17 @@ for f in FX:
         i = h["time"].index(k)
         f["wx"] = [h["temperature_2m"][i], h["precipitation_probability"][i], h["precipitation"][i], h["wind_speed_10m"][i], h["weather_code"][i]]
 json.dump(GEO, open(GEOF, "w"), separators=(",", ":"), ensure_ascii=False)
-# lineups (posted ~1 hour before kickoff) for matches in the next 3 hours
+# confirmed lineups (posted ~1 hour before kickoff) for matches in the next 3 hours — the game-day check re-runs this
+# ~60 and ~10-45 minutes before kickoff, so late changes (warm-up injuries) are picked up
 for f in FX:
     if ts(f["t"]) - NOW > dt.timedelta(hours=3): continue
     sm = get(f"{S}{f['slug']}/summary?event={f['id']}")
     lu = {}
     for side in (sm or {}).get("rosters") or []:
-        tid = (side.get("team") or {}).get("id"); xi = [((p.get("athlete") or {}).get("displayName")) for p in side.get("roster") or [] if p.get("starter")]
-        if len(xi) >= 11: lu[tid] = xi
+        tid = (side.get("team") or {}).get("id"); R_ = side.get("roster") or []
+        xi = [[(p.get("athlete") or {}).get("displayName"), (p.get("position") or {}).get("abbreviation") or "", (p.get("athlete") or {}).get("id")] for p in R_ if p.get("starter")]
+        sub = [(p.get("athlete") or {}).get("displayName") for p in R_ if not p.get("starter")]
+        if len(xi) >= 11: lu[tid] = {"xi": xi, "sub": sub}
     if len(lu) == 2: f["lu"] = lu
 # player logs
 PL = {}
