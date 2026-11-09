@@ -72,19 +72,26 @@ function loAltOdds(nm,k){const key=nm+"|"+k,p=LO.pick[key];if(p==null)return nul
 function loLine(nm,k,line){const a=loAltOdds(nm,k);return a?a.line:line}
 /* − / + stepper: walks the real alt ladder when books post one, otherwise moves the line by 1 (5 for yards; no odds for those) */
 function loStep(nm,k,main){if(main==null||!Number.isFinite(+main))return "";const key=esc(nm+"|"+k),cur=loLine(nm,k,main);
-  const b=(d,t)=>`<button class="alsb" data-altkey="${key}" data-main="${main}" onclick="event.stopPropagation();loAltStep(this.dataset.altkey,${d},+this.dataset.main)" title="${t}" aria-label="${t}">${d<0?"−":"+"}</button>`;
+  const b=(d,t)=>`<button class="alsb" data-altkey="${key}" data-main="${main}" onclick="event.stopPropagation();loAltStep(this.dataset.altkey,${d},+this.dataset.main,this)" title="${t}" aria-label="${t}">${d<0?"−":"+"}</button>`;
   return `<span class="alst">${b(-1,"Lower the line")}${b(1,"Raise the line")}</span>`}
-function loAltStep(key,d,main){const cur=LO.pick[key]!=null?LO.pick[key]:main,k=key.split("|").pop();d=d*(/Yds$|^rushRec$/.test(k)?5:1);
+function loAltStep(key,d,main,btn){const cur=LO.pick[key]!=null?LO.pick[key]:main,k=key.split("|").pop();d=d*(/Yds$|^rushRec$/.test(k)?5:1);
   const L=[...new Set([main,...(LO.alt[key]||[]).map(r=>r[0])])].sort((a,b)=>a-b);let nx;
   if(L.length>1){const i=L.findIndex(x=>x===cur);nx=i<0?(d>0?L.find(x=>x>cur):[...L].reverse().find(x=>x<cur)):L[i+Math.sign(d)];
     if(nx==null)nx=cur+d}
   else nx=cur+d;
-  nx=Math.round(nx*2)/2;if(nx<0)return;loAltPick(key,nx===main?null:nx,1)}
+  nx=Math.round(nx*2)/2;if(nx<0)return;
+  /* rebuilding the whole page costs ~200 ms on a phone, so quick taps lagged: show the new number right away (odds/hit rates dim)
+     and rebuild once, when the taps stop */
+  if(nx===main)delete LO.pick[key];else LO.pick[key]=nx;
+  if(btn){const st=btn.closest(".alst"),box=st&&st.parentElement,card=btn.closest(".card,.pl")||box;
+    const v=box&&box.classList.contains("pcv")?[...box.childNodes].find(n=>n.nodeType===3):st&&st.previousElementSibling&&st.previousElementSibling.classList.contains("plv")?st.previousElementSibling:null;
+    if(v)v.textContent=String(nx);if(card)card.classList.add("lopend")}
+  clearTimeout(LO.stepT);LO.stepT=setTimeout(()=>loRerender(),btn?350:0)}
 function loAltChip(nm,k){const a=loAltOdds(nm,k);if(!a)return "";
   return `<span class="altc">🪜 Alt line${a.o==null&&a.u==null?" · no book odds":""}<button class="altx" data-altkey="${esc(nm+"|"+k)}" onclick="event.stopPropagation();loAltPick(this.dataset.altkey,null)" title="Back to the main line">✕ main</button></span>`}
 function loAltPick(key,line,keepClosed){if(line==null)delete LO.pick[key];else LO.pick[key]=line;LO.openAlt=keepClosed?LO.openAlt:key;loRerender()}
 /* every new page starts from the normal (main) line */
-window.addEventListener("hashchange",()=>{LO.pick={};LO.openAlt=null});
+window.addEventListener("hashchange",()=>{clearTimeout(LO.stepT);LO.pick={};LO.openAlt=null});
 function loAltClick(e){e.stopPropagation();const tr=e.target.closest("[data-alt]");if(!tr)return;
   const key=tr.dataset.alt,l=tr.dataset.l===""?null:+tr.dataset.l;loAltPick(key,LO.pick[key]===l?null:l)}
 function loAltHtml(nm,k,line,vals){
