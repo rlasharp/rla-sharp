@@ -10,7 +10,7 @@ function socLoad(file,okVar,W,done,cb){if(window[okVar]){done();cb&&cb();return}
   const sc=document.createElement("script");sc.src=file+"?v="+(typeof BUILD_AT!=="undefined"&&BUILD_AT?BUILD_AT.replace(/\D/g,""):Math.floor(Date.now()/600000));
   sc.onload=()=>{done();W.loading=0;try{if(typeof SRCH!=="undefined")SRCH=null;const i=document.getElementById("plSearch");if(i&&document.activeElement===i&&i.value.trim().length>=2)setTimeout(()=>i.dispatchEvent(new Event("input")),0)}catch(e){}W.splice(0).forEach(f=>{try{f()}catch(e){console.error(e)}})};
   sc.onerror=()=>{W.loading=0;W.fail=Date.now();W.splice(0).forEach(f=>{try{f()}catch(e){}})};document.head.appendChild(sc)}
-function socEnsure(cb){socLoad("soccer_data.js","SOC_OK",SOC_WAIT,()=>{SOC_READY=true},cb)}
+function socEnsure(cb){socLoad("soccer_data.js","SOC_OK",SOC_WAIT,()=>{SOC_READY=true;try{if(typeof SOCL!=="undefined"&&SOCL.loPend){const d=SOCL.loPend;SOCL.loPend=null;socLoApply(d)}}catch(e){}},cb)}
 function socPEnsure(cb){socLoad("soccer_players.js","SOC_P_OK",SOCP_WAIT,()=>{SOCP_READY=true},cb)}
 const socE=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const socO=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
@@ -131,7 +131,7 @@ function socCard(f){const O=f.odds||{},P=f.proj,st=socStarted(f),fin=f.state==="
    ${O.ml||P?`<div class="scodds">${cell("1",O.ml&&O.ml.h,P&&P.p[0])}${cell("X",O.ml&&O.ml.d,P&&P.p[1])}${cell("2",O.ml&&O.ml.a,P&&P.p[2])}
      ${cell("O "+mt,O.tot&&O.tot[mt]&&O.tot[mt][0],P&&P.o[mt])}${cell("BTTS",O.btts&&O.btts.y,P&&P.btts)}</div>`:""}
    <div class="small scsum">${P&&P.cor?`🚩 Corners: we expect <b>${P.cor.t.toFixed(1)}</b>${mc?` (line ${mc})`:""}`:""}${P&&P.card?` · 🟨 Cards: <b>${P.card.t.toFixed(1)}</b>${f.ref?` · ref ${socE(f.ref)}`:""}`:""}</div>
-   ${st?"":socPredShort(f)+socVerdictHtml(f)}
+   ${st?"":socPredShort(f)+socVerdictHtml(f)}${st?"":`<div style="margin-top:4px">${socMoveChip(f)}</div>`}
    ${O.ml||P?`<div class="small scpct">Odds = best US book · % = our estimate</div>`:`<div class="small">No odds yet — books usually post 2–3 days before kickoff.</div>`}</a>`}
 function socLgFilter(){return `<div class="seg sclgf"><button class="btn${SC.lgs.length?"":" on"}" data-sclg="all">All</button>${Object.entries(SOC_LG).map(([k,v])=>`<button class="btn${SC.lgs.includes(k)?" on":""}" data-sclg="${k}">${socE(v.sh)}</button>`).join("")}</div><div class="small" style="margin:-2px 0 6px">${SC.lgs.length?"⭐ Showing your leagues — remembered on this device. Tap a league to add or remove it.":"Tap leagues to show only those — your choice is remembered."}</div>`}
 function socLgWire(el,redraw){el.querySelectorAll("[data-sclg]").forEach(b=>b.onclick=()=>{const k=b.dataset.sclg;if(k==="all")SC.lgs=[];else SC.lgs=SC.lgs.includes(k)?SC.lgs.filter(x=>x!==k):[...SC.lgs,k];socLgSave();redraw()})}
@@ -141,8 +141,8 @@ function socDayTabs(D,cur){const d0=socToday();return `<div class="gtabs scdays"
 function socMatches(el){const D=socDays();if(!D.includes(SC.day))SC.day=D[0]||socToday();const d=SC.day,F=socFxOn(d);
   const byLg={};F.forEach(f=>(byLg[f.c]=byLg[f.c]||[]).push(f));
   const gap=D.length&&D[0]>socAddDays(socToday(),1)?`<div class="card small" style="margin:8px 0">No matches in the next couple of days (international break) — the next ones are below.</div>`:"";
-  el.innerHTML=`<h1>⚽ Soccer · ${socE(socDayS(d))}</h1>${socPlaysCard()}${socDayTabs(D,d)}${socLgFilter()}${gap}
-  <p class="sub">Premier League, La Liga, Serie A, Bundesliga, Ligue 1 and the three European cups. Every match shows the best US odds and <b>our estimate</b> — tap one for corners, cards, referee, weather and player props.</p>
+  el.innerHTML=`<h1>⚽ Soccer · ${socE(socDayS(d))}</h1>${socPlaysCard()}${socDayTabs(D,d)}${socLgFilter()}${gap}${socMovesCard()}
+  <p class="sub">Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Championship, Eredivisie, Portugal, MLS and the three European cups. Every match shows the best US odds and <b>our estimate</b> — tap one for corners, cards, referee, weather and player props.</p>
   ${F.length?Object.entries(byLg).map(([c,L])=>`<h2 class="tsh">${socLgChip(c)} ${socE((SOC_LG[c]||{}).n||c)}</h2><div class="grid g2">${L.map(socCard).join("")}</div>`).join(""):`<div class="card"><p>No upcoming matches${SC.lgs.length?" in your leagues":""} in the next 2 weeks.</p></div>`}
   ${socFoot()}`;
   el.querySelectorAll("[data-scday]").forEach(a=>a.onclick=e=>{e.preventDefault();SC.day=a.dataset.scday;socMatches(el)});
@@ -237,16 +237,20 @@ function socGame(el,id){const f=socFx(id);if(!f){el.innerHTML=`<p><a href="#socc
    <div id="scBody"></div>`;
   const body=el.querySelector("#scBody");
   const draw=()=>{if(SC.tab==="props"){body.innerHTML=`<div class="small">Loading players…</div>`;socPEnsure(()=>{body.innerHTML=socGameProps(f);socWire(body)})}
-    else{body.innerHTML=`<div id="scLiveBox" data-id="${f.id}">${socLiveStats(f)}</div>${socVerdictHtml(f,1)}${socPredCard(f)}${typeof xQuickHtml!=="undefined"?xQuickHtml(socQuick(f),"Automatic notes from this season's numbers — reasons to look closer, not picks."):""}${socEstTable(f)}${socCornerCard(f)}${socCardCard(f)}${socGKCard(f)}${socTeamCmp(f)}${socFormCard(f)}${socH2HCard(f)}${socMissCard(f)}<div id="scXIbox">${window.SOC_P_OK||socLuOf(f)?socXICard(f):""}</div>${f.wx?socWx(f,1):""}${socFoot()}`;socWire(body);if(!window.SOC_P_OK)socPEnsure(()=>{const g=body.querySelector("#scGK");if(g)g.outerHTML=socGKCard(f);const x=body.querySelector("#scXIbox");if(x)x.innerHTML=socXICard(f)})}};
+    else{body.innerHTML=`<div id="scLiveBox" data-id="${f.id}">${socLiveStats(f)}</div>${socVerdictHtml(f,1)}${socPredCard(f)}${typeof xQuickHtml!=="undefined"?xQuickHtml(socQuick(f),"Automatic notes from this season's numbers — reasons to look closer, not picks."):""}${socEstTable(f)}${socCornerCard(f)}${socCardCard(f)}${socMissCard(f)}<div id="scXIbox">${window.SOC_P_OK||socLuOf(f)?socXICard(f):""}</div>
+     ${socFold("📅 Recent form",socFormCard(f))}${socFold("🆚 Head to head",socH2HCard(f))}<div id="scGKf">${socFold("🧤 Goalkeepers",socGKCard(f))}</div>${socFold("📊 Team numbers",socTeamCmp(f))}${f.wx?socFold("🌦️ Weather at kickoff",socWx(f,1)):""}${socFoot()}`;socWire(body);if(!window.SOC_P_OK)socPEnsure(()=>{const g=body.querySelector("#scGKf");if(g)g.innerHTML=socFold("🧤 Goalkeepers",socGKCard(f));const x=body.querySelector("#scXIbox");if(x)x.innerHTML=socXICard(f)})}};
   el.querySelectorAll("[data-sctab]").forEach(b=>b.onclick=()=>{SC.tab=b.dataset.sctab;el.querySelectorAll("[data-sctab]").forEach(x=>x.classList.toggle("on",x===b));draw()});draw()}
 function socWire(el){el.querySelectorAll("[data-scx]").forEach(b=>b.onclick=()=>{const c=b.closest(".scest");b.dataset.t0=b.dataset.t0||b.textContent;const on=c.classList.toggle("open");b.textContent=on?"Show main lines only":b.dataset.t0})}
 
 /* ---------- player props ---------- */
-function socPropEval(r,f){const [nm,mk,line,price,book,,under,aid]=r;const L=aid&&socLam(aid,mk,f);const our=L?socPover(L.lam,line):null;const im=socImp(price);
-  const [h,n]=aid?socHitP(aid,mk,line,10):[0,0];return {nm,mk,line,price,book,under,aid,our,im,edge:our!=null&&im!=null?our-im:null,h,n,L}}
+function socLuStatus(f,nm){const L=socLuOf(f);if(!L)return null;const n=String(nm||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();const eq=x=>String(x||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()===n;
+  for(const v of Object.values(L)){const xi=Array.isArray(v)?v:(v.xi||[]).map(x=>x[0]);if(xi.some(eq))return "xi";if(!Array.isArray(v)&&(v.sub||[]).some(eq))return "bench"}return "out"}
+function socPropEval(r,f){const [nm,mk,line,price,book,,under,aid]=r;const lu=socLuStatus(f,nm);const L=aid&&lu!=="out"&&socLam(aid,mk,f);const our=L?socPover(L.lam,line):null;const im=socImp(price);
+  const [h,n]=aid?socHitP(aid,mk,line,10):[0,0];return {nm,mk,line,price,book,under,aid,our,im,edge:our!=null&&im!=null?our-im:null,h,n,L,lu}}
 function socPropLab(mk,line){const m=SOC_MK[mk]||[mk,mk];if(mk==="sgoal")return "Anytime goal";if(mk==="sast")return "To assist";if(mk==="sga")return "Goal or assist";if(mk==="s2g")return "2+ goals";if(mk==="scard")return "To be booked";return `${line+.5}+ ${m[1].toLowerCase()}`}
 function socPropRow(x,f){const sp=f&&socSpec(f,"prop","o",x.line,x.price,x.book,{pid:x.aid,mk:x.mk,player:x.nm,title:`${x.nm} ${socPropLab(x.mk,x.line)}`});
-  return `<div class="scpr"><div><a href="${x.aid?"#soccer-player-"+x.aid:"#"}"><b>${socE(x.nm)}</b></a> <span class="small">${socE(socPropLab(x.mk,x.line))}</span>${x.n?`<div class="small">Hit in <b>${x.h} of last ${x.n}</b> games${x.L?` · ${x.L.r90.toFixed(2)} per 90 · ~${Math.round(x.L.em)} min`:""}</div>`:`<div class="small">Not enough games in our data</div>`}</div>
+  const luc=x.lu==="xi"?`<span class="pll o" title="In the confirmed starting XI">✅ starting</span>`:x.lu==="bench"?`<span class="pll n" title="On the bench — our chance assumes about 20 minutes">🪑 bench</span>`:x.lu==="out"?`<span class="pll u" title="Not in the confirmed squad">❌ not in squad</span>`:"";
+  return `<div class="scpr"><div><a href="${x.aid?"#soccer-player-"+x.aid:"#"}"><b>${socE(x.nm)}</b></a> ${luc} <span class="small">${socE(socPropLab(x.mk,x.line))}</span>${x.n?`<div class="small">Hit in <b>${x.h} of last ${x.n}</b> games${x.L?` · ${x.L.r90.toFixed(2)} per 90 · ~${Math.round(x.L.em)} min`:""}</div>`:`<div class="small">Not enough games in our data</div>`}</div>
    <div class="scprr"><b>${socO(x.price)}</b><span class="small">${socE(x.book||"")}</span>${x.our!=null?`<em class="${socEdgeCls(x.edge)}">our ${socPct(x.our)} · needs ${socPct(x.im)}</em>`:""}</div>${sp&&x.price!=null?socBetBtn(sp):""}</div>`}
 /* stat-only markets (no US book line yet): shots, fouls committed, fouls won for the likely starters */
 function socStatOnly(f){const T={};for(const [aid,P] of Object.entries(window.SOC_P||{})){if(P[1]!==f.h&&P[1]!==f.a)continue;const G=P[3].slice(-5);if(f.lu?!socLuNames(f).includes(P[0]):G.filter(g=>g[1]).length<3)continue;(T[P[1]]=T[P[1]]||[]).push(aid)}
@@ -398,7 +402,7 @@ async function socLuTick(){if(location.protocol==="file:"||!window.SOC_OK)return
     for(const sd of j.rosters||[]){const R=sd.roster||[],xi=R.filter(p=>p.starter).map(p=>[(p.athlete||{}).displayName,(p.position||{}).abbreviation||"",(p.athlete||{}).id]);if(xi.length>=11)lu[(sd.team||{}).id]={xi,sub:R.filter(p=>!p.starter).map(p=>(p.athlete||{}).displayName)}}
     if(Object.keys(lu).length===2){SOCL.lu[f.id]=lu;SOCL.luAt[f.id]=Date.now();const x=document.getElementById("scXIbox");if(x)x.innerHTML=socXICard(f)}}catch(e){}}
 setInterval(()=>{if(!document.hidden)socLuTick()},120000);window.addEventListener("hashchange",()=>setTimeout(socLuTick,1500));
-const SOC_SLUG={epl:"eng.1",laliga:"esp.1",seriea:"ita.1",bund:"ger.1",ligue1:"fra.1",ucl:"uefa.champions",uel:"uefa.europa",uecl:"uefa.europa.conf"};
+const SOC_SLUG={epl:"eng.1",laliga:"esp.1",seriea:"ita.1",bund:"ger.1",ligue1:"fra.1",ucl:"uefa.champions",uel:"uefa.europa",uecl:"uefa.europa.conf",champ:"eng.2",ered:"ned.1",port:"por.1",mls:"usa.1"};
 function socLiveWindow(){if(!window.SOC_OK)return [];const now=Date.now();return (SOC_FX||[]).filter(f=>{const t=Date.parse(f.t);return t-now<15*60000&&now-t<150*60000})}
 async function socLiveTick(){if(SOCL.busy||location.protocol==="file:"||!window.SOC_OK)return;const W=socLiveWindow();if(!W.length)return;SOCL.busy=1;
   try{const comps=[...new Set(W.map(f=>f.c))],day=new Date().toISOString().slice(0,10).replace(/-/g,"");
@@ -463,3 +467,31 @@ function socPredCard(f){const x=socPred(f);if(!x)return "";const c=(lab,v,p)=>`<
   return `<div class="card scpredc"><h2>🔮 Our prediction</h2><div class="scpscore">${socBadge(f.h)} <b>${x.score[0]} – ${x.score[1]}</b> ${socBadge(f.a)}<span class="small">predicted score (exact score ${socPct(x.score[2])}) · most common scores: ${x.top.map(t=>`${t[0]}-${t[1]}`).join(", ")}</span></div>
    <div class="scpcs">${c("Result",socE(x.res),x.rp)}${c("Goals",x.ou[0],x.ou[1])}${c("Both score",x.btts[0],x.btts[1])}${x.cor!=null?c("Corners","~"+x.cor.toFixed(1)):""}${x.card!=null?c("Cards","~"+x.card.toFixed(1)):""}</div>
    <div class="small" style="margin-top:6px">Our numbers, not a bet tip — the verdict above says whether any price is worth it.</div></div>`}
+
+/* ⚡ newer soccer odds from data/live_odds.json (refreshed every ~30 min by the odds job) — applied on top of the
+   odds baked into soccer_data.js whenever they're newer, so prices stay current between site rebuilds */
+function socLoApply(d){const S=d&&d.soc;if(!S||!S.events)return 0;if(!window.SOC_OK){SOCL.loPend=d;return 0}let n=0;
+  const nameIdx={};if(window.SOC_P_OK)for(const [aid,P] of Object.entries(SOC_P))nameIdx[P[1]+"|"+loNorm(P[0])]=aid;
+  for(const e of S.events){if(!e.at)continue;const f=(SOC_FX||[]).find(f=>f.h===e.hid&&f.a===e.aid&&Math.abs(Date.parse(f.t)-Date.parse(e.start))<6*3600e3);if(!f)continue;
+    if(f.odds&&f.odds.at&&Date.parse(f.odds.at)>=Date.parse(e.at))continue;
+    f.pid=e.pid;f.odds={};for(const k of ["ml","tot","main_tot","btts","ah","cor","main_cor","ttot","extra","open","at","h1"])if(e[k]!=null)f.odds[k]=e[k];if(e.ref&&!f.ref)f.ref=e.ref;
+    const old={};for(const r of SOC_PROPS)if(r[5]===f.id)old[loNorm(r[0])]=r[7];
+    SOC_PROPS=SOC_PROPS.filter(r=>r[5]!==f.id);
+    for(const r of S.props||[])if(r[5]===e.pid){const k=loNorm(r[0]),aid=old[k]||nameIdx[f.h+"|"+k]||nameIdx[f.a+"|"+k]||null;SOC_PROPS.push([r[0],r[1],r[2],r[3],r[4],f.id,r[6],aid])}
+    n++}
+  if(n)SOC_ODDS_AT=S.at;return n}
+
+/* 📈 line moves: opening price (first seen today by the odds job) vs now */
+function socMoves(f){const O=f.odds||{},op=O.open||{},M=[];const pp=(a,b)=>a!=null&&b!=null?Math.round((socImp(b)-socImp(a))*100):0;
+  if(op.ml&&O.ml){[["h",0,socTm(f.h)],["d",1,"Draw"],["a",2,socTm(f.a)]].forEach(([k,i,l])=>{const d=pp(op.ml[i],O.ml[k]);if(Math.abs(d)>=3)M.push({t:`${l}`,from:socO(op.ml[i]),to:socO(O.ml[k]),d})})}
+  if(op.tot&&O.tot){const [ln,o]=op.tot,now=O.tot[String(ln)];if(now&&now[0]!=null){const d=pp(o,now[0]);if(Math.abs(d)>=3)M.push({t:`Over ${ln} goals`,from:socO(o),to:socO(now[0]),d})}
+    if(O.main_tot&&+O.main_tot!==+ln)M.push({t:"Goals line",from:String(ln),to:O.main_tot,d:(+O.main_tot>+ln?5:-5),line:1})}
+  if(op.cor&&O.cor){const [ln,o]=op.cor,now=O.cor[String(ln)];if(now&&now[0]!=null){const d=pp(o,now[0]);if(Math.abs(d)>=3)M.push({t:`Over ${ln} corners`,from:socO(o),to:socO(now[0]),d})}}
+  return M.sort((a,b)=>Math.abs(b.d)-Math.abs(a.d))}
+function socMoveChip(f){const M=socMoves(f);if(!M.length)return "";const m=M[0];return `<span class="lmv ${m.d>0?"up":"dn"}" title="Since the first price we saw today">📈 ${socE(m.t)} ${m.from}→${m.to}</span>`}
+function socMovesCard(){const L=[];for(const f of (SOC_FX||[]).filter(f=>!socStarted(f)&&socLgOk(f.c)))for(const m of socMoves(f))L.push({f,m});if(!L.length)return "";
+  L.sort((a,b)=>Math.abs(b.m.d)-Math.abs(a.m.d));
+  return `<details class="card scfold"><summary><b>📈 Biggest line moves</b> <span class="small">${L.length} since this morning's prices</span></summary>${L.slice(0,8).map(({f,m})=>`<a class="scfr scfrl" href="#soccer-game-${f.id}">${socLgChip(f.c)}<span>${socE(socTm(f.h))} v ${socE(socTm(f.a))}</span><span class="small">${socE(m.t)}: ${m.from} → <b class="${m.d>0?"up":"dn"}">${m.to}</b>${m.line?"":` (${m.d>0?"+":""}${m.d} pts)`}</span></a>`).join("")}
+   <div class="small" style="margin-top:6px">Money coming in usually moves a price — a shorter price means the books now think it's more likely.</div></details>`}
+/* 6) fold the less-used cards */
+function socFold(title,html,open){return html?`<details class="card scfold"${open?" open":""}><summary><b>${title}</b> <span class="small">tap to ${open?"close":"open"}</span></summary><div class="scfoldb">${html.replace(/^<div class="card[^"]*"[^>]*>/,"<div>")}</div></details>`:""}

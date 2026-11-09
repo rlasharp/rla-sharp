@@ -15,7 +15,8 @@ import re, json, datetime as dt
 
 COMPS = [("epl", "soccer_epl"), ("laliga", "soccer_la_liga"), ("seriea", "soccer_serie_a"), ("bund", "soccer_bundesliga"),
          ("ligue1", "soccer_ligue_1"), ("ucl", "soccer_uefa_champions_league"), ("uel", "soccer_uefa_europa_league"),
-         ("uecl", "soccer_uefa_conference_league")]
+         ("uecl", "soccer_uefa_conference_league"), ("champ", "soccer_championship"), ("ered", "soccer_eredivisie"),
+         ("port", "soccer_primeira_liga"), ("mls", "soccer_mls")]
 BOOKS = {"draftkings": "DraftKings", "fanduel": "FanDuel", "betmgm": "BetMGM", "williamhill_us": "Caesars", "caesars": "Caesars",
          "fanatics": "Fanatics", "espnbet": "ESPN BET", "thescorebet": "theScore Bet", "betrivers": "BetRivers",
          "hardrock": "Hard Rock Bet", "hardrockbet": "Hard Rock Bet"}

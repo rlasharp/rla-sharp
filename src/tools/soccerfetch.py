@@ -16,9 +16,14 @@ NOW = dt.datetime.now(dt.timezone.utc)
 COMPS = [("epl", "eng.1", "Premier League", "EPL", "#3d195b"), ("laliga", "esp.1", "La Liga", "LaLiga", "#ee8707"),
          ("seriea", "ita.1", "Serie A", "Serie A", "#008fd7"), ("bund", "ger.1", "Bundesliga", "Bundesliga", "#d20515"),
          ("ligue1", "fra.1", "Ligue 1", "Ligue 1", "#091c3e"), ("ucl", "uefa.champions", "Champions League", "UCL", "#0e1e5b"),
-         ("uel", "uefa.europa", "Europa League", "UEL", "#f68e00"), ("uecl", "uefa.europa.conf", "Conference League", "UECL", "#19b25b")]
+         ("uel", "uefa.europa", "Europa League", "UEL", "#f68e00"), ("uecl", "uefa.europa.conf", "Conference League", "UECL", "#19b25b"),
+         ("champ", "eng.2", "Championship", "Champ", "#1f3f8f"), ("ered", "ned.1", "Eredivisie", "Eredivisie", "#e4012b"),
+         ("port", "por.1", "Primeira Liga", "Portugal", "#00843d"), ("mls", "usa.1", "MLS", "MLS", "#0a2240")]
+CUPS = ("ucl", "uel", "uecl")
 S = "https://site.api.espn.com/apis/site/v2/sports/soccer/"
 SEASON0 = dt.datetime(NOW.year if NOW.month >= 7 else NOW.year - 1, 7, 1, tzinfo=dt.timezone.utc)
+START = {"usa.1": dt.datetime(NOW.year, 1, 1, tzinfo=dt.timezone.utc)}   # MLS: calendar-year season
+def start_of(slug): return START.get(slug, SEASON0)
 LOG = []
 def log(*a): LOG.append(" ".join(str(x) for x in a)); print(*a, file=sys.stderr)
 def get(u, tries=3):
@@ -37,19 +42,21 @@ def jload(p, d):
     except Exception: return d
 
 # ---------------- fixtures + results (scoreboard by month) ----------------
-months, m = [], dt.date(SEASON0.year, 8 if SEASON0.month <= 8 else SEASON0.month, 1)
 end = (NOW + dt.timedelta(days=17)).date()
-while m <= end:
-    months.append(m.strftime("%Y%m")); m = dt.date(m.year + (m.month == 12), m.month % 12 + 1, 1)
+def months_for(slug):
+    st = start_of(slug); m = dt.date(st.year, max(st.month, 8) if st == SEASON0 else st.month, 1); out = []
+    while m <= end:
+        out.append(m.strftime("%Y%m")); m = dt.date(m.year + (m.month == 12), m.month % 12 + 1, 1)
+    return out
 TEAM, EV = {}, {}
 def sb_job(args):
     comp, slug, mo = args; return comp, slug, get(f"{S}{slug}/scoreboard?dates={mo}&limit=200")
 with ThreadPoolExecutor(8) as ex:
-    for comp, slug, sb in ex.map(sb_job, [(c[0], c[1], mo) for c in COMPS for mo in months]):
+    for comp, slug, sb in ex.map(sb_job, [(c[0], c[1], mo) for c in COMPS for mo in months_for(c[1])]):
         for e in (sb or {}).get("events", []):
             try:
                 t = ts(e["date"])
-                if t < SEASON0: continue
+                if t < start_of(slug): continue
                 c = e["competitions"][0]; H = next(x for x in c["competitors"] if x["homeAway"] == "home"); A = next(x for x in c["competitors"] if x["homeAway"] == "away")
                 for x in (H, A):
                     tm = x["team"]; T = TEAM.setdefault(tm["id"], {"n": tm.get("displayName"), "s": tm.get("shortDisplayName") or tm.get("displayName"),
@@ -198,18 +205,76 @@ def nb_cdf_over(line, mu, disp):
         c += pr; pr *= (i + r) / (i + 1) * (1 - p)
     return 1 - c
 def shrink(v, n, k=5): return (v * n + k) / (n + k)
+def raw_att(c, T, L):
+    lgpg = (L["hg"] + L["ag"]) / 2; conv = L["conv"] or 0.3
+    return (0.5 * T["gf"] + 0.5 * (T["sot"] * conv if T["ns"] else T["gf"])) / T["n"] / lgpg
+def raw_def(c, T, L):
+    lgpg = (L["hg"] + L["ag"]) / 2; conv = L["conv"] or 0.3
+    return (0.5 * T["ga"] + 0.5 * (T["sota"] * conv if T["ns"] else T["ga"])) / T["n"] / lgpg
+def dom_of(tid):
+    for c in (TEAM.get(tid) or {}).get("c") or []:
+        if c not in CUPS and (c, tid) in TN and TN[(c, tid)]["n"] >= 5 and c in LG: return c
+    return None
+# how each domestic league's teams have done in each European cup, relative to their domestic numbers (shrunk to 1)
+STR = {}
+for cup in CUPS:
+    if cup not in LG: continue
+    acc = {}
+    for (c, tid), T in TN.items():
+        if c != cup or T["n"] < 2: continue
+        d = dom_of(tid)
+        if not d: continue
+        D = TN[(d, tid)]; a = acc.setdefault(d, [0, 0, 0, 0])
+        a[0] += raw_att(cup, T, LG[cup]) * T["n"]; a[1] += raw_att(d, D, LG[d]) * T["n"]; a[2] += raw_def(cup, T, LG[cup]) * T["n"]; a[3] += raw_def(d, D, LG[d]) * T["n"]
+        acc[d + "#n"] = acc.get(d + "#n", 0) + T["n"]
+    for d in [k for k in acc if not k.endswith("#n")]:
+        a, n = acc[d], acc[d + "#n"]
+        STR[(cup, d)] = ((a[0] / a[1]) * n + 10) / (n + 10) if a[1] else 1, ((a[2] / a[3]) * n + 10) / (n + 10) if a[3] else 1
+def lams(c, h, a):
+    L = LG.get(c); A, B = TN.get((c, h)), TN.get((c, a))
+    if not L or L["m"] < 12: return None
+    def rating(tid, T, kind):
+        raw = raw_att if kind == "a" else raw_def; n = T["n"] if T else 0; v = raw(c, T, L) if T else None
+        if c in CUPS:
+            d = dom_of(tid)
+            if d:   # blend in domestic form, scaled by how that league's teams do in this cup
+                s_ = (STR.get((c, d)) or (1, 1))[0 if kind == "a" else 1]; dv = raw(d, TN[(d, tid)], LG[d]) * s_; K = 6
+                v = ((v * n if v is not None else 0) + dv * K) / (n + K); n = n + K
+        if v is None or n < 3: return None
+        return shrink(v, n)
+    ah, dh, aa, da = rating(h, A, "a"), rating(h, A, "d"), rating(a, B, "a"), rating(a, B, "d")
+    if None in (ah, dh, aa, da): return None
+    return L["hg"] * ah * da, L["ag"] * aa * dh, ah, aa, dh, da
+# draw correction (Dixon-Coles): low scores (0-0, 1-1, 1-0, 0-1) happen at different rates than independent Poisson says;
+# rho fitted on this season's real results across all competitions
+def tau(x, y, lh, la, rho):
+    if x == 0 and y == 0: return 1 - lh * la * rho
+    if x == 0 and y == 1: return 1 + lh * rho
+    if x == 1 and y == 0: return 1 + la * rho
+    if x == 1 and y == 1: return 1 - rho
+    return 1
+FIT = [(e["hs"], e["as"], *lams(e["c"], e["h"], e["a"])[:2]) for e in DONE if lams(e["c"], e["h"], e["a"])]
+RHO = 0.0
+if len(FIT) >= 200:
+    best = None
+    for k in range(-30, 11):
+        r_ = k / 100; ll = sum(math.log(max(1e-9, tau(x, y, lh_, la_, r_))) for x, y, lh_, la_ in FIT)
+        if best is None or ll > best[0]: best = (ll, r_)
+    RHO = best[1]
+log(f"soccer: draw correction rho = {RHO} (fitted on {len(FIT)} matches)")
 def project(f):
     c = f["c"]; L = LG.get(c); A, B = TN.get((c, f["h"])), TN.get((c, f["a"]))
-    if not L or not A or not B or A["n"] < 3 or B["n"] < 3 or L["m"] < 12: return None
-    lgpg = (L["hg"] + L["ag"]) / 2; conv = L["conv"] or 0.3
-    def att(T): return shrink((0.5 * T["gf"] + 0.5 * (T["sot"] * conv if T["ns"] else T["gf"])) / T["n"] / lgpg, T["n"])
-    def dfn(T): return shrink((0.5 * T["ga"] + 0.5 * (T["sota"] * conv if T["ns"] else T["ga"])) / T["n"] / lgpg, T["n"])
-    lh, la = L["hg"] * att(A) * dfn(B), L["ag"] * att(B) * dfn(A)
-    P = [[pois(i, lh) * pois(j, la) for j in range(11)] for i in range(11)]
+    X = lams(c, f["h"], f["a"])
+    if not X or not A or not B: return None
+    lh, la, ah, aa, dh, da = X
+    att = lambda T: ah if T is A else aa
+    dfn = lambda T: dh if T is A else da
+    P = [[pois(i, lh) * pois(j, la) * tau(i, j, lh, la, RHO) for j in range(11)] for i in range(11)]
+    tot_ = sum(map(sum, P)); P = [[q / tot_ for q in row] for row in P]
     p1 = sum(P[i][j] for i in range(11) for j in range(11) if i > j); px = sum(P[i][i] for i in range(11)); p2 = 1 - p1 - px
     ov = {str(x): 1 - sum(P[i][j] for i in range(11) for j in range(11) if i + j <= x - 0.5) for x in (1.5, 2.5, 3.5, 4.5)}
-    btts = (1 - pois(0, lh)) * (1 - pois(0, la))
-    out = {"lh": round(lh, 2), "la": round(la, 2), "p": [round(p1, 3), round(px, 3), round(p2, 3)], "o": {k: round(v, 3) for k, v in ov.items()}, "btts": round(btts, 3),
+    btts = 1 - sum(P[0][j] for j in range(11)) - sum(P[i][0] for i in range(11)) + P[0][0]
+    out = {"rho": RHO, "blend": c in CUPS, "lh": round(lh, 2), "la": round(la, 2), "p": [round(p1, 3), round(px, 3), round(p2, 3)], "o": {k: round(v, 3) for k, v in ov.items()}, "btts": round(btts, 3),
            "att": [round(att(A), 2), round(att(B), 2)], "def": [round(dfn(A), 2), round(dfn(B), 2)], "n": [A["n"], B["n"]]}
     # first half: the league's share of goals before half-time, nudged by these two teams' own share (shrunk hard)
     if L.get("h1g"):
@@ -262,7 +327,7 @@ CC = {"England": "GB", "Scotland": "GB", "Wales": "GB", "Spain": "ES", "Italy": 
       "Portugal": "PT", "Belgium": "BE", "Turkey": "TR", "Türkiye": "TR", "Greece": "GR", "Austria": "AT", "Switzerland": "CH", "Denmark": "DK",
       "Norway": "NO", "Sweden": "SE", "Poland": "PL", "Czechia": "CZ", "Czech Republic": "CZ", "Croatia": "HR", "Serbia": "RS", "Scotland ": "GB",
       "Ukraine": "UA", "Cyprus": "CY", "Israel": "IL", "Hungary": "HU", "Romania": "RO", "Bulgaria": "BG", "Slovakia": "SK", "Slovenia": "SI",
-      "Ireland": "IE", "Northern Ireland": "GB", "Kazakhstan": "KZ", "Azerbaijan": "AZ", "Finland": "FI", "Iceland": "IS", "Moldova": "MD", "Armenia": "AM"}
+      "Ireland": "IE", "Northern Ireland": "GB", "USA": "US", "United States": "US", "Canada": "CA", "Kazakhstan": "KZ", "Azerbaijan": "AZ", "Finland": "FI", "Iceland": "IS", "Moldova": "MD", "Armenia": "AM"}
 WX = {}
 for f in FX:
     if not f.get("city") or ts(f["t"]) > NOW + dt.timedelta(days=7): continue

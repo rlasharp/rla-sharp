@@ -47,7 +47,8 @@ function loApply(d){
     const full={};for(const [a,t] of Object.entries(NHL_TEAM))full[t.n]=a;
     for(const e of nh.events||[]){const a=full[e.away],h=full[e.home];const g=[...NHL_SLATE,...NHL_NEXT].find(x=>x.a===a&&x.h===h&&x.d===e.date);if(g)for(const k of ["ml","tot","pl"])if(e[k])g[k]=e[k]}
   }
-  LO.nba=nNba;LO.nfl=nNfl;LO.nhl=nNhl;return nNba+nNfl+nNhl}
+  const nSoc=typeof socLoApply!=="undefined"?socLoApply(d):0;
+  LO.nba=nNba;LO.nfl=nNfl;LO.nhl=nNhl;LO.soc=nSoc;return nNba+nNfl+nNhl+nSoc}
 function loAgo(){if(!LO.data)return "";const m=Math.max(0,Math.round((Date.now()-Date.parse(LO.data.updated))/60000));return m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"}
 function loBadge(){return LO.data&&(LO.nba||LO.nfl)?`<div class="upd lo">⚡ Live sportsbook odds · updated <b>${loAgo()}</b> · ${LO.nba?LO.nba+" NBA":""}${LO.nba&&LO.nfl?" + ":""}${LO.nfl?LO.nfl+" NFL":""} lines</div>`:""}
 function loRerender(){const y=scrollY;if(typeof route==="function")route();scrollTo(0,y)}

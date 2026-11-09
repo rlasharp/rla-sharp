@@ -17,7 +17,8 @@ ET = ZoneInfo("America/Toronto")
 URL = {"nba": "basketball/nba", "nfl": "football/nfl", "nhl": "hockey/nhl",
        # soccer: 8 competitions, all mapped to the "soc" site update
        "soc-epl": "soccer/eng.1", "soc-esp": "soccer/esp.1", "soc-ita": "soccer/ita.1", "soc-ger": "soccer/ger.1", "soc-fra": "soccer/fra.1",
-       "soc-ucl": "soccer/uefa.champions", "soc-uel": "soccer/uefa.europa", "soc-uecl": "soccer/uefa.europa.conf"}
+       "soc-ucl": "soccer/uefa.champions", "soc-uel": "soccer/uefa.europa", "soc-uecl": "soccer/uefa.europa.conf",
+       "soc-champ": "soccer/eng.2", "soc-ered": "soccer/ned.1", "soc-port": "soccer/por.1", "soc-mls": "soccer/usa.1"}
 SP = lambda k: "soc" if k.startswith("soc") else k
 STATE = "data/quick.json"
 
