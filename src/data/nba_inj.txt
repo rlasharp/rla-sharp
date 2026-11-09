@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 23:21Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 23:24Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -68,7 +68,7 @@ Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
 Giannis Antetokounmpo|F|Day-To-Day|wrist sprain|Nov 10
 #Milwaukee Bucks
-Tyler Herro|G|Day-To-Day|bruise|Nov 10
+Tyler Herro|G|Day-To-Day|knee bruise|Nov 10
 Gary Trent Jr.|G|Day-To-Day|illness|Nov 10
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
