@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 19:35Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 20:16Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Roy Lopez|DT|Questionable|Toe|Nov 15
@@ -42,6 +42,7 @@ Joshua Palmer|WR|Out|Hamstring|Nov 15
 Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
 #CAR
+Xavier Legette|WR|IR|Knee|Nov 15
 Jonathon Brooks|RB|IR|Abdomen|Nov 15
 AJ Dillon|RB|Out|Coach's Decision|Nov 15
 Haynes King|QB|Out|Coach's Decision|Nov 15
@@ -51,7 +52,6 @@ Will Lee III|CB|Out|Hamstring|Nov 15
 Damien Lewis|G|Out|Knee|Nov 15
 TeRah Edwards|DT|Out|Coach's Decision|Nov 15
 Brady Christensen|G|IR|Hamstring|Nov 15
-Xavier Legette|WR|IR|Knee|Nov 15
 #CHI
 Luther Burden III|WR|Questionable|Concussion|Nov 22
 Tyrique Stevenson Sr.|CB|Questionable|Hand|Nov 8
@@ -64,12 +64,12 @@ Zavier Scott|RB|IR|Wrist|Dec 13
 Kentavius Street|DT|IR|Knee|Feb 15
 Braxton Jones|OT|IR|Knee|Feb 15
 #CIN
+Andrei Iosivas|WR|IR|Thumb|Nov 15
 Landon Robinson|DT|Out|Coach's Decision|Nov 15
 Myles Hinton|OT|Out|Coach's Decision|Nov 15
 Connor Lew|C|Out|Coach's Decision|Nov 15
 Kyle Dugger|S|Out|Quadriceps|Nov 15
 Cashius Howell|DE|IR|Wrist|Dec 6
-Andrei Iosivas|WR|IR|Thumb|Nov 15
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
 Deshaun Watson|QB|Out|Concussion|Nov 15
@@ -227,7 +227,7 @@ Dametrious Crownover|OT|Out|Coach's Decision|Nov 15
 Charles Woods|CB|Out|Hamstring|Nov 15
 Greg Van Roten|G|IR|Hamstring|Nov 15
 #NO
-Erik McCoy|C|Questionable|Biceps|Nov 15
+Erik McCoy|C|Doubtful|Biceps|Nov 15
 Zach Wilson|QB|Out|Coach's Decision|Nov 15
 Mason Murphy|OT|Out|Coach's Decision|Nov 15
 Mike Reid|CB|Out|Coach's Decision|Nov 15
