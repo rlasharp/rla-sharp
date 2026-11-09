@@ -133,7 +133,7 @@ def walk(css):
     return "".join(out)
 
 MANUAL = ("html[data-theme=light] .ab,html[data-theme=light] .nbbdg,html[data-theme=light] .pnum,html[data-theme=light] .bpn.n1{color:#fff!important}"   # team badges: inline team colour
-          "html[data-theme=light] .card{box-shadow:0 1px 2px rgba(16,24,40,.05)}html[data-theme=light] #tabbar{box-shadow:0 -1px 0 var(--line)}")
+          "html[data-theme=light] .fresh:not(.new):not(.bad){color:var(--text2)}html[data-theme=light] .card{box-shadow:0 1px 2px rgba(16,24,40,.05)}html[data-theme=light] #tabbar{box-shadow:0 -1px 0 var(--line)}")
 
 def main():
     src = open(sys.argv[1], encoding="utf8").read()

@@ -6,8 +6,9 @@ const FRESH={at:typeof BUILD_AT!=="undefined"?BUILD_AT:"",live:"",last:Date.now(
 function freshAge(iso){const m=Math.max(0,Math.round((Date.now()-Date.parse(iso))/60000));return m<1?"just now":m<60?m+" min ago":m<1440?Math.floor(m/60)+" h ago":Math.floor(m/1440)+" d ago"}
 function freshNew(){return FRESH.live&&FRESH.at&&FRESH.live>FRESH.at}
 function freshPaint(){const el=document.getElementById("fresh");if(!el||!FRESH.at)return;const m=(Date.now()-Date.parse(FRESH.at))/60000;
-  const cls=freshNew()?"new":m<150?"ok":m<360?"old":"bad";el.className="fresh "+cls;el.hidden=false;
-  el.innerHTML=`<span class="fdot"></span><span class="ftx">${freshNew()?"New data":`<span class="fpre">Updated </span>`+freshAge(FRESH.at)}</span>`;
+  const cls=freshNew()?"new":m<150?"ok":m<360?"old":"bad";
+  for(const e of [el,document.getElementById("freshM")]){if(!e)continue;e.className=(e===el?"fresh ":"fresh freshm ")+cls;e.hidden=false;
+    e.innerHTML=`<span class="fdot"></span><span class="ftx">${freshNew()?"New data — tap to update":`<span class="fpre">Updated </span>`+freshAge(FRESH.at)}</span>`}
   document.querySelectorAll(".freshtx").forEach(t=>{t.className="freshtx "+cls;t.textContent=freshNew()?"🔄 Newer data is out — tap to update":`Updated ${freshAge(FRESH.at)}`;t.onclick=freshNew()?freshGo:null});
   el.title=freshNew()?"A newer update is out — tap to load it":`Stats & results updated ${freshAge(FRESH.at)}${cls==="bad"?" — the automatic update may be stuck":""}. Live scores and odds refresh on their own.`}
 function freshIdle(){return document.hidden||Date.now()-FRESH.last>90000}
@@ -26,7 +27,7 @@ async function freshCheck(){if(location.protocol==="file:"||!FRESH.at)return;
   b.textContent="🔄 New results & stats — tap to update"}
 window.addEventListener("load",()=>{
   try{const s=JSON.parse(sessionStorage.getItem("freshY")||"null");sessionStorage.removeItem("freshY");if(s&&s.h===location.hash&&s.y)setTimeout(()=>scrollTo(0,s.y),700)}catch(e){}
-  const el=document.getElementById("fresh");if(el)el.onclick=e=>{e.preventDefault();if(freshNew())freshGo();else{el.classList.add("spin");freshCheck().finally(()=>setTimeout(()=>el.classList.remove("spin"),400))}};
+  for(const el of [document.getElementById("fresh"),document.getElementById("freshM")])if(el)el.onclick=e=>{e.preventDefault();if(freshNew())freshGo();else{el.classList.add("spin");freshCheck().finally(()=>setTimeout(()=>el.classList.remove("spin"),400))}};
   freshPaint();setTimeout(freshCheck,4000)});
 setInterval(()=>{if(!document.hidden)freshCheck();else freshPaint()},180000);
 setInterval(freshPaint,60000);
