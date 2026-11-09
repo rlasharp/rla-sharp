@@ -33,13 +33,14 @@ async function liveFetch(sp){
           rec:((x.records||[])[0]||{}).summary||"",ls:(x.linescores||[]).map(l=>+l.value||0)};
         const pl=(x.leaders||[]).find(l=>/^points/i.test(l.name||""));const ld=pl&&(pl.leaders||[])[0];
         if(ld&&ld.athlete)o.ldr=[ld.athlete.shortName||ld.athlete.displayName||"",ld.displayValue||String(ld.value||"")];
+        const pq=(x.probables||[]).find(q=>/goalie/i.test(q.name||""));if(pq&&pq.athlete)o.pg=pq.athlete.displayName||pq.athlete.fullName;
         if(x.homeAway==="home")home=o;else away=o}
       if(!home||!away)continue;
       const sit=c.situation||{};let poss=null;
       if(sit.possession)poss=[home,away].find(o=>String(o.id)===String(sit.possession));
       const g={id:String(e.id),a:away.ab,h:home.ab,as:away.sc,hs:home.sc,st:t.state||"pre",det:t.shortDetail||t.detail||"",
         poss:poss?poss.ab:null,dd:sit.shortDownDistanceText||"",rz:!!sit.isRedZone,date:e.date||"",
-        ar:away.rec,hr:home.rec,als:away.ls,hls:home.ls,ald:away.ldr||null,hld:home.ldr||null,tv:((c.broadcasts||[])[0]||{}).names?.[0]||""};
+        ar:away.rec,hr:home.rec,pg:(away.pg||home.pg)?[away.pg||null,home.pg||null]:null,als:away.ls,hls:home.ls,ald:away.ldr||null,hld:home.ldr||null,tv:((c.broadcasts||[])[0]||{}).names?.[0]||""};
       m[g.id]=g;m[g.a+"@"+g.h]=g;
     }
     LIVE[sp]=m;LIVE.ok[sp]=1;

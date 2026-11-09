@@ -271,6 +271,12 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
                          bu if (bub and bub != b) else None, BOOK_NAME.get(bub) if (bub and bub != b) else None,
                          op[0], op[1], op[2], eid] + ([] if mk in YES_MK else [alts(br, ln, ms.get((player, mk))) or None]))
             prev_open[key] = op
+    if sport == "icehockey_nhl":
+        # books post "to score" as a Yes-only goals line at 0.5 -> show it as the anytime-goal market
+        have = {(r[0], r[13]) for r in rows if r[1] == "hanyG"}
+        for r in rows:
+            if r[1] == "hgoals" and r[2] == 0.5 and r[4] is None and (r[0], r[13]) not in have:
+                r[1] = "hanyG"; del r[14:]
     return evs, rows, used
 
 def save_close(sport_key, evs, rows, stamp):

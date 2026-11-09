@@ -548,9 +548,32 @@ def out_inj(nm):
         for r in L_:
             if norm(r[0]) == norm(nm) and re.search(r"out|reserve|\bir\b|suspen", r[2], re.I): return True
     return False
+# ---- ESPN's listed starting goalies (scoreboard "probables"), today + tomorrow ----
+EG = {}   # (day, team) -> goalie name as ESPN lists it
+for day in sorted({g["d"] for g in SLATE + NEXT}):
+    try:
+        req = urllib.request.Request("https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard?dates=" + day.replace("-", ""), headers=UA)
+        with urllib.request.urlopen(req, timeout=30) as r: sb = json.load(r)
+        for e in sb.get("events") or []:
+            for x in ((e.get("competitions") or [{}])[0].get("competitors") or []):
+                ab = byn0.get(norm((x.get("team") or {}).get("displayName")))
+                pr = next((q for q in x.get("probables") or [] if "goalie" in (q.get("name") or "").lower()), None)
+                nm = ((pr or {}).get("athlete") or {}).get("displayName")
+                if ab and nm: EG[(day, ab)] = nm
+    except Exception as e: log("ESPN probable goalies failed", day, e)
+log(f"ESPN listed starters: {len(EG)} teams")
+def espn_goalie(t, d):
+    nm = EG.get((d, t))
+    if not nm: return None
+    return next((k for k in G if norm(k) == norm(nm) and G[k]["tm"] == t), None) or next((k for k in G if norm(k) == norm(nm)), None)
+for g in SLATE + NEXT:
+    eg = [EG.get((g["d"], g["a"])), EG.get((g["d"], g["h"]))]
+    if any(eg): g["eg"] = eg
 def probable(t, d):
     L_ = [(nm, g_) for nm, g_ in G.items() if g_["tm"] == t and not out_inj(nm)]
     if not L_: return None
+    eg = espn_goalie(t, d)
+    if eg and not out_inj(eg): return eg, "ESPN lists him as the starter (teams confirm closer to puck drop)"
     lined = next((nm for nm, _ in L_ if any(r[0] == nm and r[1] == "hsaves" for r in PROPS)), None)
     st = sorted([(x[0], nm) for nm, g_ in L_ for x in g_["g"] if x[7] and x[9] != 1], reverse=True)[:5]
     cnt = {}

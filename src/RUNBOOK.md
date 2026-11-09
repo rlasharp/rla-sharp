@@ -297,3 +297,22 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
 - **Faster load:** tools/splitnba.py moves NBA_CHANCE / NBA_SHOT / NBA_STYPE (~200 KB) into nba_detail.js, loaded on
   demand (nbaDetailEnsure, preloaded 1.2 s after load); NHL data is preloaded from <head> on Today/NHL pages.
   Root must have nba_detail.js next to index.html (auto_run.sh copies it).
+
+## 📐 Deeper analysis (Nov 9)
+- **src/xana.js** — "📐 Deeper splits" drawer on every NBA / NHL / NFL prop card (built when opened): hit rate & average
+  vs generous / middle / stingy defenses for that stat (NBA: by position from box scores; NHL: team shots / goals /
+  shots-for; NFL: DvP), close games vs blowouts + tonight's blowout risk from the spread, with/without teammates who are
+  out now (NHL, NFL), and closing line vs result (lines_hist.js, built from data/close by tools/linehist.py, loaded on
+  demand). Chips on best-prop rows: ⏱️ minutes / ice-time streak (3+ straight games ±3 min NBA, ±1.5 min NHL) and
+  ⚠️ blowout risk (overs, spread ≥10 / NHL big favourite). "⏱️ Minutes" / "⏱️ Ice time" tab in Tonight's insights.
+- **NFL quarters:** tools/auto_espn.py nfl-qtr → nfl_qtr.js (cache data/nfl_qtr.json) → "By quarter & first half" on
+  the NFL game page Trends tab (NBA already had nbaQtrCard).
+- **NBA referees:** tools/nbarefs.py (in auto_run NBA block) — tonight's crews from official.nba.com/referee-assignments
+  + per-referee FTA / fouls / points / over-under from ESPN summaries (cache src/data/nba_refs.json) → nba_refs.js →
+  "🦓 Referees" on the NBA game page Matchup tab. PropLine has referees only for soccer; NHL referee assignments are
+  not published before games in any free feed, so NHL has none.
+- **NHL listed goalies:** nhlfetch.py reads ESPN scoreboard "probables" (today + tomorrow); the model uses ESPN's listed
+  starter first (g.eg); the game page shows it and live.js re-checks ESPN in the browser (LIVE.nhl[..].pg).
+- **NHL "to score":** fetch_odds.py turns Yes-only 0.5 goal lines into hanyG. Saves / Hits tabs always show on the NHL
+  props page; with no book lines yet they list probable goalies / top hitters with their usual number (no odds).
+- Public betting splits: no source we can use (PropLine/ESPN don't carry them).

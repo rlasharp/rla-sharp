@@ -151,6 +151,7 @@ function viewGame(id){
     if(T==="tr")return nav+`   <div class="section">${nflGsHtml(g)}</div>
    ${paceRestSection(g)}${marketSection(g)}
    <div class="section">${trendsBox(g)}</div>
+   ${typeof xaNflQtrCard!=="undefined"?xaNflQtrCard(g):""}
    <div class="section grid g2">
     <div class="card"><h2>Recent form</h2><p class="small" style="margin-top:-6px">Every 2026 game, newest first. Green = won, red = lost. The bar shows how much they won or lost by. Source: CBS Sports scores.</p>${formHtml(g.away)}${formHtml(g.home)}</div>
     <div class="card"><h2>Head-to-head</h2>${h2hHtml(g)}</div></div>
@@ -366,7 +367,7 @@ function propCard(r){const td=r.k==="anyTD";
    <div class="bet n">${td?"Anytime TD":MARKETS[r.k].n+" "+r.line}</div>${typeof nflVerdict!=="undefined"&&realProp(r.pl.name,r.k)?nflVerdict(r.pl.name,r.k):""}
    ${lineTag(r)}${oddsRow(r)}${propMoveTxt(r.pl.name,r.k)}${trackRow(r)}
    ${usageLine(r.pl.name)}${r.k==="anyTD"?rzLine(r.pl.name):""}<div class="facts">${Number.isFinite(r.avg)?`<span>Season average: <b>${fmt(r.avg,MARKETS[r.k].cnt?1:0)}</b></span>`:""}<span class="small">${defRankTxt(r.dv,r.opp,r.pl.pos)}</span></div>
-   ${r.ssn.n?`<div class="small" style="margin-bottom:-4px">${td?"Scored a TD":"Went over "+r.line} (${CUR}):</div><div class="hr">${hrBox("L3",r.l3)}${hrBox("L5",r.l5)}${hrBox("Season",r.ssn)}</div>`:`<div class="small" style="background:var(--card2);border-radius:8px;padding:8px">No games logged yet this season.</div>`}</div>`}
+   ${r.ssn.n?`<div class="small" style="margin-bottom:-4px">${td?"Scored a TD":"Went over "+r.line} (${CUR}):</div><div class="hr">${hrBox("L3",r.l3)}${hrBox("L5",r.l5)}${hrBox("Season",r.ssn)}</div>`:`<div class="small" style="background:var(--card2);border-radius:8px;padding:8px">No games logged yet this season.</div>`}${typeof xaPanel!=="undefined"?xaPanel("nfl",r.pl.name,r.k,r.k==="anyTD"?.5:r.line,"o"):""}</div>`}
 function bindProps(scope){scope.querySelectorAll("[data-p]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.p,market:el.dataset.k,open:true};if(location.hash==="#props")viewProps();else location.hash="props"})}
 /* ---------- NFL best props: every real line, both sides, ranked (same method as NBA) ---------- */
 const NFL_BE=0.524; /* break-even at the standard -110 when a book's price isn't listed */
@@ -400,7 +401,7 @@ function nflBest(){
 }
 function nflBestRow(b,i){const td=b.k==="anyTD";
   return xPropRow({i,attrs:`data-nflp="${esc(b.name)}" data-k="${b.k}"`,badge:badge(b.pl.team),name:esc(b.name),sub:`${b.pl.pos} · ${b.home?"vs":"@"} ${b.opp}`,
-    chips:b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:"",pick:td?"Anytime TD":`${b.side==="o"?"Over":"Under"} ${b.line} ${MARKETS[b.k].n}`,
+    chips:(b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nfl",b.name,b.k,b.side):""),pick:td?"Anytime TD":`${b.side==="o"?"Over":"Under"} ${b.line} ${MARKETS[b.k].n}`,
     odds:b.odds!=null?amTxt(b.odds):"odds not listed",book:b.book?esc(b.book):"",l10:b.c10&&b.c10[1]?b.c10:b.c5,
     hits:[[b.cS[0],b.cS[1],"this season"],b.cH[1]&&[b.cH[0],b.cH[1],"vs "+b.opp]],why:b.dvOk===1?"matchup helps":b.dvOk===-1?"tough matchup":"",
     chance:Math.round(b.sc*100),need:Math.round(b.be*100)})}

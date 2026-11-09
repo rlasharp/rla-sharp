@@ -207,7 +207,7 @@ function nbaGames(el){
   el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nba",4):""}${nbaDayTabs("nba")}
   <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today${(()=>{const f=NBA_SLATE.filter(g=>nbaFinalHtml(g)).length;return f?`, ${f} final`:""})()}. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
   <div class="grid g2">${[...NBA_SLATE.filter(g=>!nbaFinalHtml(g)),...NBA_SLATE.filter(g=>nbaFinalHtml(g))].map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
-  ${typeof xInsights!=="undefined"?xInsights("nba","🧠 Tonight's insights",[["edges","💰 Odds gaps",xEdgesCard("nba")],["ang","🧭 Player angles",typeof nbaAnglesCard!=="undefined"?nbaAnglesCard():""],["moves","📈 Line moves",typeof loMovesCard!=="undefined"?loMovesCard("nba",8):""]]):""}
+  ${typeof xInsights!=="undefined"?xInsights("nba","🧠 Tonight's insights",[["edges","💰 Odds gaps",xEdgesCard("nba")],["ang","🧭 Player angles",typeof nbaAnglesCard!=="undefined"?nbaAnglesCard():""],["moves","📈 Line moves",typeof loMovesCard!=="undefined"?loMovesCard("nba",8):""],["min","⏱️ Minutes",typeof xaTrendCard!=="undefined"?`<div class="card">${xaTrendCard("nba")}</div>`:""]]):""}
   <div style="margin-top:14px">${nbaPlaysCard()}</div>
   ${typeof loMovesCard!=="undefined"&&loMovesCard("nba",8)?`<div style="margin-top:14px">${loMovesCard("nba",8)}</div>`:""}
   <div style="margin-top:14px">${nbaRecordCard(0)}</div>
@@ -320,7 +320,7 @@ function nbaGame(el,id){
     ${tile(nbaShort(g.a)+" defense",nbaF(A.d.rtg),nbaOrd(A.dR.rtg)+" of 30 · allowed/100")}
     ${tile(nbaShort(g.h)+" defense",nbaF(H.d.rtg),nbaOrd(H.dR.rtg)+" of 30 · allowed/100")}
   </div>`:""}
-  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}
+  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.a)} have the ball</h2>${nbaMatchup(g.a,g.h)}</div>
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>
   <p class="note" style="margin-top:6px">Longer bar = better rank (1st of 30). <span class="rkg">Green</span> = top 8, <span class="rkb">red</span> = bottom 8. Highlighted rows are mismatches. Season to date.</p>
@@ -506,6 +506,7 @@ function nbaPropCard(r,idx){
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
   ${(idx||0)<100?`<a href="#nba-player-${encodeURIComponent(nm)}" class="gopl" data-gopl="${nbaEsc(nm)}|${k}">📊 ${nbaEsc(nm.split(" ").filter(w=>!/^(Jr\.?|Sr\.?|II|III|IV)$/.test(w)).slice(-1)[0])}'s stats &amp; all his lines →</a>`:""}
   ${opp&&p.p5?(()=>{const d=nbaDvp(opp,p.p5,k,5);if(!d.rows.length)return "";const av=d.rows.reduce((s,r)=>s+r.v,0)/d.rows.length;return `<div class="small" style="margin-top:6px">${opp} last 5: allowed ${nbaF(av)} ${NBA_MK[k][2]} a game to ${nbaPosWord(p.p5)} (NBA avg ${nbaF(d.lg)}) — <b class="${av>d.lg?"up":"dn"}">${av>d.lg?"easier":"tougher"}</b></div>`})():""}
+  ${typeof xaPanel!=="undefined"?xaPanel("nba",nm,k,line,PXSIDE):""}
   </div>`;
 }
 function nbaWireCharts(root,redraw){
@@ -602,7 +603,7 @@ function nbaBest(){
 }
 function nbaBestRow(b,i){const mk=NBA_MK[b.k][1];
   return xPropRow({i,attrs:`data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}"`,badge:nbaBadge(b.p.tm),name:nbaEsc(b.nm),sub:`${b.g.a===b.p.tm?"@":"vs"} ${b.opp}`,
-    chips:nbaInjChip(nbaInjOf(b.nm))+(b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:""),
+    chips:nbaInjChip(nbaInjOf(b.nm))+(b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nba",b.nm,b.k,b.side):""),
     pick:`${b.side==="o"?"Over":"Under"} ${b.line} ${mk}`,odds:oddsFmt(b.odds),book:b.book?nbaEsc(b.book):"",l10:b.c10[1]?b.c10:b.c5,
     hits:[b.cS[1]>=3&&[b.cS[0],b.cS[1],"this season"],b.cH[1]&&[b.cH[0],b.cH[1],"vs "+b.opp]],why:b.dvOk===1?"matchup helps":b.dvOk===-1?"tough matchup":"",
     chance:Math.round(b.sc*100),need:Math.round(b.be*100),act:typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""})}

@@ -13,6 +13,7 @@ if want nba; then
   if bash tools/nbafetch.sh > "$WORK/nbafetch.log" 2>&1; then
     python3 tools/auto_espn.py nba-inj 2>>"$WORK/summary.txt" && log "NBA injuries refreshed" || log "NBA injuries: kept old"
     python3 tools/auto_espn.py nba-lines "$TODAY" 2>>"$WORK/summary.txt" && log "NBA lines checked" || log "NBA lines: kept old"
+    python3 tools/nbarefs.py "$ROOT" > "$WORK/refs.js" 2>> "$WORK/summary.txt" && grep -q "^var NBA_REFS" "$WORK/refs.js" && cp "$WORK/refs.js" nba_refs.js || log "NBA referees: kept old"
     if ! grep -q "^# day: $TODAY" data/nba_props.txt; then   # new day: drop yesterday's props
       grep '^#' data/nba_props.txt | grep -v '^# day:' > "$WORK/h.txt"; echo "# day: $TODAY" >> "$WORK/h.txt"; cp "$WORK/h.txt" data/nba_props.txt; log "NBA props reset for $TODAY"; fi
     cp nba_data.js "$WORK/nba_data.bak"
@@ -28,6 +29,7 @@ if want nfl; then
   for f in engine.js real.js market.js inj.js data/espn_inj.txt; do cp "$f" "$WORK/$(basename $f).bak"; done
   python3 tools/auto_espn.py nfl-update >> "$WORK/summary.txt" 2>&1 || log "NFL lines/finals: kept old"
   python3 tools/auto_espn.py nfl-inj "$NOWS" >> "$WORK/summary.txt" 2>&1 || log "NFL injuries: kept old"
+  python3 tools/auto_espn.py nfl-qtr >> "$WORK/summary.txt" 2>&1 || log "NFL quarter scores: kept old"
   if [ "$(TZ=America/Toronto date +%u)" = 2 ] && [ "$(TZ=America/Toronto date +%H)" -lt 12 ]; then   # Tuesday morning: weekly nflverse refresh
     bash tools/nflfetch.sh > "$WORK/nflfetch.log" 2>&1 && python3 tools/nfltgt.py "$WORK/nflv" > "$WORK/tgt.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/tgt.js" ] && cp "$WORK/tgt.js" nfl_tgt.js && log "NFL targets/spreads/rest refreshed"
     python3 tools/nflrush.py "$WORK/nflv" > "$WORK/rush.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/rush.js" ] && cp "$WORK/rush.js" nfl_rush.js && log "NFL pass rush vs O-line refreshed"; fi
@@ -42,7 +44,7 @@ bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 if node tools/track.js "$ROOT/src/index.html" > "$WORK/track.log" 2>&1; then log "$(tail -1 "$WORK/track.log")"; bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 else log "tracker FAILED (kept old): $(tail -2 "$WORK/track.log" | tr '\n' ' ')"; fi
 if node tools/check.js "$ROOT/src/index.html" > "$WORK/check.log" 2>&1; then
-  cp index.html "$ROOT/index.html"; cp nhl_data.js "$ROOT/nhl_data.js"; cp nba_detail.js "$ROOT/nba_detail.js"
+  cp index.html "$ROOT/index.html"; cp nhl_data.js "$ROOT/nhl_data.js"; cp nba_detail.js "$ROOT/nba_detail.js"; cp lines_hist.js "$ROOT/lines_hist.js"
   AT=$(grep -o 'var BUILD_AT="[^"]*"' index.html | head -1 | cut -d'"' -f2)
   printf '{"at":"%s","what":"%s"}\n' "$AT" "$WHAT" > "$ROOT/version.json"   # the open site checks this to refresh itself
   log "Site check OK — published ($AT)"

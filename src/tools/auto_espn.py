@@ -236,6 +236,28 @@ def nba_finals(today, days=8):
                                    + json.dumps({"games": games, "logs": logs}, separators=(",", ":"), ensure_ascii=False) + ";\n")
     print(f"NBA finals from ESPN: {len(games)} games kept ({nnew} new), {len(logs)} player lines")
 
+def nfl_qtr():
+    """quarter-by-quarter scores of every final this season -> nfl_qtr.js (var NFL_QTR={"wk|A|H":[[away q1..],[home q1..]]})"""
+    pw = re.search(r"PLAYS_WEEK\s*=\s*(\d+)", "".join(open(f, encoding="utf-8").read() for f in os.listdir(".") if f.endswith(".js")))
+    wk = int(pw.group(1)) if pw else 18
+    try: C = json.load(open("data/nfl_qtr.json"))
+    except Exception: C = {}
+    C.setdefault("q", {}); C.setdefault("done", [])
+    for w in range(1, wk + 1):
+        if w in C["done"]: continue
+        try: d = get(B + f"football/nfl/scoreboard?week={w}&seasontype=2")
+        except Exception as e: print("nfl-qtr: week", w, "failed", e); continue
+        allfin = True
+        for e in d.get("events", []):
+            c = e["competitions"][0]; a, h, T = teams_of(c, FIX_NFL)
+            if ((c.get("status") or {}).get("type") or {}).get("state") != "post": allfin = False; continue
+            ls = lambda x: [int(float(q.get("value", 0) or 0)) for q in (x.get("linescores") or [])]
+            if ls(T["away"]) and ls(T["home"]): C["q"][f"{w}|{a}|{h}"] = [ls(T["away"]), ls(T["home"])]
+        if allfin and d.get("events"): C["done"].append(w)
+    os.makedirs("data", exist_ok=True); json.dump(C, open("data/nfl_qtr.json", "w"), separators=(",", ":"))
+    open("nfl_qtr.js", "w").write("/* NFL quarter scores (ESPN) — tools/auto_espn.py nfl-qtr */\nvar NFL_QTR=" + json.dumps(C["q"], separators=(",", ":")) + ";\n")
+    print(f"nfl-qtr: {len(C['q'])} games with quarter scores")
+
 if __name__ == "__main__":
     cmd = sys.argv[1]
     if cmd == "nba-inj": nba_inj()
@@ -243,4 +265,5 @@ if __name__ == "__main__":
     elif cmd == "nba-finals": nba_finals(sys.argv[2])
     elif cmd == "nfl-inj": nfl_inj(sys.argv[2])
     elif cmd == "nfl-update": nfl_update()
+    elif cmd == "nfl-qtr": nfl_qtr()
     else: raise SystemExit("unknown command")

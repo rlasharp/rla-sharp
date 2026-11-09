@@ -1,0 +1,1 @@
+var NFL_QTR={};
