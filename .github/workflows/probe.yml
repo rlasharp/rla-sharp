@@ -2,18 +2,31 @@ name: Probe (one-off data checks, run by hand)
 on:
   workflow_dispatch:
     inputs:
-      script: { description: "tools/probe/<name>.py", default: "soccer_probe.py" }
+      script: { description: "tools/probe/<name>.py, or 'soccer' to run the soccer data build and push it to the soccer-dev branch", default: "soccer" }
 permissions:
-  contents: read
+  contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install --quiet propline
-      - env:
+      - if: github.event.inputs.script != 'soccer'
+        env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
         run: python tools/probe/${{ github.event.inputs.script }}
+      - name: Soccer dev build -> soccer-dev branch
+        if: github.event.inputs.script == 'soccer'
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: |
+          FORCE=soc python tools/fetch_odds.py || echo "odds step failed"
+          cd src && python3 tools/soccerfetch.py "$GITHUB_WORKSPACE" > soccer_data.js && cd ..
+          git config user.name "rla-sharp-bot"; git config user.email "actions@users.noreply.github.com"
+          git checkout -q -b soccer-dev
+          git add -f src/soccer_data.js src/soccer_players.js data/soccer_box.json data/soccer_geo.json data/live_odds.json
+          git commit -qm "soccer dev data $(date -u +%H:%MZ)" && git push -f -q origin soccer-dev
+          ls -la src/soccer_data.js src/soccer_players.js data/soccer_box.json

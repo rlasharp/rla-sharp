@@ -356,6 +356,13 @@ def main():
         if evs or rows: out["nhl"] = {"at": out["updated"], "events": evs, "props": rows}
         try: save_close("nhl", evs, rows, out["updated"])
         except Exception as e: print("close (nhl) failed:", e)
+    # Soccer (8 competitions): its own throttling per match — see tools/soccer_odds.py
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import soccer_odds
+        out["soc"], used = soccer_odds.run(client, prev, used, 950)
+    except Exception as e:
+        print("soccer odds failed:", e); out["soc"] = prev.get("soc") or {}
     keep = {e["id"] for s in ("nba", "nfl", "nhl") for e in (out[s].get("events") or [])}
     out["open"] = {k: v for k, v in opens.items() if k.split("|")[0] in {str(x) for x in keep}}
     out["budget"] = {"day": today, "used": used}
