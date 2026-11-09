@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 23:24Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 23:57Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Gardner Minshew II|QB|Doubtful|Elbow|Nov 15
@@ -26,13 +26,17 @@ Adisa Isaac|LB|Questionable|Hamstring|Nov 16
 Tyler Huntley|QB|IR|Toe|Feb 15
 Adam Randall|RB|IR|Neck|Nov 16
 #BUF
+Jalon Kilgore|S|Out|Coach's Decision|Nov 15
+Mike Danna|DE|Out|Coach's Decision|
+Dion Dawkins|OT|Out|Ribs|Nov 15
+Greg Gaines|DT|Out|Calf|Nov 15
+Alec Anderson|OT|Out|Ankle|Nov 15
+Skyler Bell|WR|Out|Coach's Decision|Nov 15
 Joshua Palmer|WR|IR|Hamstring|Dec 6
-Alec Anderson|OT|Questionable|Ankle|Nov 9
-Dion Dawkins|OT|Questionable|Ribs|Nov 9
 Tyrell Shavers|WR|Out|Knee - ACL|Nov 15
-Jordan Hancock|CB|IR|Hamstring|Nov 9
-Greg Gaines|DT|Questionable|Calf|Nov 9
+Jordan Hancock|CB|IR|Hamstring|Nov 15
 #CAR
+Jaycee Horn|CB|IR|Quadriceps|Nov 15
 Mike Jackson|CB|IR|Groin|Nov 22
 Jaelan Phillips|LB|Out|Hamstring|Nov 15
 Will Lee III|CB|Out|Hamstring|Nov 15
@@ -147,10 +151,12 @@ Jaylen Wright|RB|Out|Quadriceps|Nov 15
 Malik Willis|QB|Questionable|Groin|Nov 15
 Will Kacmarek|TE|Questionable|Quadriceps|Nov 15
 #MIN
-Demond Claiborne|RB|IR|Knee|Dec 6
-Jauan Jennings|WR|Out|Calf|Nov 15
+Jakobe Thomas|S|Out|Coach's Decision|Nov 15
 Kyler Murray|QB|Out|Hamstring|Nov 15
-Jay Ward|S|Questionable|Knee|Nov 9
+Charles Demmings|CB|Out|Coach's Decision|Nov 15
+Jauan Jennings|WR|Out|Calf|Nov 15
+Caleb Banks|DT|Out|Coach's Decision|Nov 15
+Demond Claiborne|RB|IR|Knee|Dec 6
 #NE
 A.J. Brown|WR|Out|Knee|Nov 15
 Charles Woods|CB|Out|Hamstring|Nov 15
