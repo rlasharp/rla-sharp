@@ -36,6 +36,7 @@ if want nfl; then
 fi
 if want nhl; then   # NHL: official NHL API + PropLine feed (box scores cached in data/nhl_box.json)
   if python3 tools/nhlfetch.py "$ROOT" "$TODAY" > "$WORK/nhl.js" 2> "$WORK/nhl.log" && grep -q "^var NHL_PROPS" "$WORK/nhl.js"; then
+    python3 tools/nhlpp.py >> "$WORK/nhl.js" 2>> "$WORK/summary.txt" || log "NHL power-play time: skipped"
     cp "$WORK/nhl.js" nhl_data.js; log "$(tail -1 "$WORK/nhl.log")"
   else log "NHL data FAILED — kept old: $(tail -3 "$WORK/nhl.log" | tr '\n' ' ')"; fi
 fi

@@ -296,6 +296,7 @@ function nbaGame(el,id){
     ${L?`<div class="nbl" style="justify-content:center"><span>Spread <b>${L.sp<=0?g.h:g.a} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`:`<div class="small">Lines not posted yet.</div>`}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>
     <div class="nbwpl"><span>${g.a} ${Math.round(W.a*100)}%</span><span class="small">chance to win (from the odds)</span><span>${g.h} ${Math.round(W.h*100)}%</span></div>`:""}
+    ${typeof xaPmLine!=="undefined"?xaPmLine("nba",g.a,g.h,W&&W.a,W&&W.h):""}
     ${nbaMoveHtml(g,1)}
     ${nbaPickTxt(g)}${say?`<p style="margin:10px 0 0;font-size:14px;color:var(--text2)">${say}</p>`:""}
   </div>
@@ -320,7 +321,7 @@ function nbaGame(el,id){
     ${tile(nbaShort(g.a)+" defense",nbaF(A.d.rtg),nbaOrd(A.dR.rtg)+" of 30 · allowed/100")}
     ${tile(nbaShort(g.h)+" defense",nbaF(H.d.rtg),nbaOrd(H.dR.rtg)+" of 30 · allowed/100")}
   </div>`:""}
-  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}
+  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}${typeof xaKeyOutCard!=="undefined"?xaKeyOutCard("nba",g.a,g.h)+xaDefTrendCard("nba",g.a,g.h):""}
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.a)} have the ball</h2>${nbaMatchup(g.a,g.h)}</div>
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>
   <p class="note" style="margin-top:6px">Longer bar = better rank (1st of 30). <span class="rkg">Green</span> = top 8, <span class="rkb">red</span> = bottom 8. Highlighted rows are mismatches. Season to date.</p>

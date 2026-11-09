@@ -319,3 +319,14 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
 - **📈 Role over the season** (xana.js xaTrendsCard) on NBA / NHL / NFL player pages: every game + 5-game rolling
   average + season average for minutes, shots, plays used (NBA); ice time, SOG, shot attempts (NHL; goalies: shots
   faced, saves); attempts / carries / catches by position (NFL, plus snap / target / carry share from USAGE).
+- **Game script** (splits drawer): his numbers when his team won big / close / lost big (NBA 15, NHL 3, NFL 17 points).
+- **📉 Defense trending** (game pages + a line in the splits drawer): last 10 (NFL 4; half the games early in the
+  season) vs season — NBA points / stat allowed to his position, NHL goals + shots allowed, NFL points allowed.
+- **🚑 Without their key players** (game pages): key players out tonight (NBA 10+ pts or 26+ min; NHL 0.5+ pts/game or
+  goalies; NFL QB / 15%+ targets / 35%+ carries) and the team's record + scores with and without them.
+- **🍀 Luck check** (NHL matchup tab): one-goal/OT record, points % vs expected from goal differential, PDO.
+- **Goalie vs tonight's opponent + rest** line on each goalie in the NHL Goalies tab.
+- **🔮 Prediction markets:** fetch_odds.py now also asks for h2h on NBA/NFL (same request count) and keeps Kalshi /
+  Polymarket winner prices per event (`events[].pm`), shown as a second opinion under the odds — never as a bet line.
+- **⚡ NHL power-play time:** tools/nhlpp.py (after nhlfetch, cache src/data/nhl_pp.json, ESPN box scores PPTOI)
+  appends `var NHL_PP` to nhl_data.js → PP time chart + "top unit" note. No free pre-game source for linemates.

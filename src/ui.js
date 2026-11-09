@@ -144,7 +144,7 @@ function viewGame(id){
    ${tabP?`<div id="gpBody">${nflGameProps(g)}</div>`:`
    ${typeof nflQuick!=="undefined"?nflQuick(g):""}
    <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
-    <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p></div>
+    <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p>${typeof xaPmLine!=="undefined"?xaPmLine("nfl",g.away,g.home):""}</div>
    ${nflEdgesCard(g)}
    ${(()=>{const T=S.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["inj","🩹 Injuries & weather"]];
     const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nfgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#game-${g.id}-props">🎯 Props</a></div>`;
@@ -160,7 +160,7 @@ function viewGame(id){
     if(T==="inj")return nav+`<div class="section">${injWxSection(g)}</div>`;
     return nav+`   <div class="section"><h2>Offense vs defense</h2><p class="small" style="margin-top:-6px">Per-game averages this season. Rank 1st = best in the NFL (most gained for offenses, least allowed for defenses). <span class="tag real">Real</span> Offense from ESPN, yards allowed from NFL.com, points allowed from CBS scores.</p>
     <div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>
-   ${nfPressCard(g)}${nfShareCard(g)}
+   ${nfPressCard(g)}${nfShareCard(g)}${typeof xaKeyOutCard!=="undefined"?`<div class="section">${xaKeyOutCard("nfl",g.away,g.home)}${xaDefTrendCard("nfl",g.away,g.home)}</div>`:""}
    <div class="section"><h2>Run game: yards per rushing attempt</h2><p class="small" style="margin-top:-6px">How well each offense runs the ball against how well the other defense stops it. <span class="tag real">Real</span> <a href="${RUN_SRC.att}" target="_blank" rel="noopener">StatRankings</a> rushing attempts and YPC allowed (2026, through Oct 27) with ESPN rushing yards.</p>
     <div class="grid g2">${runGameHtml(g.away,g.home)}${runGameHtml(g.home,g.away)}</div></div>
    <div class="section"><h2>Coverage: man vs zone</h2><p class="small" style="margin-top:-6px"><b>Man</b> = each defender follows one receiver. <b>Zone</b> = defenders guard areas of the field. Some offenses and receivers are much better against one than the other.</p>

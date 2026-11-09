@@ -7,7 +7,7 @@
 function a(){var v=t==="auto"?(m&&m.matches?"light":"dark"):t;document.documentElement.setAttribute("data-theme",v);var mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=v==="light"?"#f6f7f9":"#0f1012"}
 a();if(m&&m.addEventListener)m.addEventListener("change",function(){if(t==="auto")a()});
 window.setTheme=function(v){t=v;try{localStorage.setItem("ge_theme",JSON.stringify(v))}catch(e){}a()};window.getTheme=function(){return t}})();</script>
-<script>/* start downloading the NHL data right away on pages that need it (Today, NHL) */(function(){var h=location.hash;if(!h||h==="#today"||/^#nhl/.test(h)){var l=document.createElement("link");l.rel="preload";l.as="script";l.href="nhl_data.js?v=20261109154432";document.head.appendChild(l)}})();</script>
+<script>/* start downloading the NHL data right away on pages that need it (Today, NHL) */(function(){var h=location.hash;if(!h||h==="#today"||/^#nhl/.test(h)){var l=document.createElement("link");l.rel="preload";l.as="script";l.href="nhl_data.js?v=20261109155446";document.head.appendChild(l)}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RLA Sharp — NFL Betting Research</title>
 <meta name="description" content="Free NFL & NBA betting research: player props ranked by hit rate, Plays of the day with a public record, live scores, line movement, injuries and matchup stats.">
@@ -618,6 +618,8 @@ details.xa{margin-top:10px}details.xa>summary{font-weight:700;font-size:14px}det
 .xasvg{display:block;width:100%;height:70px;margin-top:6px}.xaraw{fill:none;stroke:var(--muted);stroke-width:1;opacity:.55}.xadot{fill:var(--muted)}
 .xaroll{fill:none;stroke:#3987e5;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}.xaavg{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
 .xaspf{display:flex;justify-content:space-between;margin-top:2px}
+
+.xapm{margin-top:8px;padding:6px 10px;border-radius:10px;background:var(--card2)}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#121418">
@@ -2579,6 +2581,7 @@ function nbaGame(el,id){
     ${L?`<div class="nbl" style="justify-content:center"><span>Spread <b>${L.sp<=0?g.h:g.a} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`:`<div class="small">Lines not posted yet.</div>`}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>
     <div class="nbwpl"><span>${g.a} ${Math.round(W.a*100)}%</span><span class="small">chance to win (from the odds)</span><span>${g.h} ${Math.round(W.h*100)}%</span></div>`:""}
+    ${typeof xaPmLine!=="undefined"?xaPmLine("nba",g.a,g.h,W&&W.a,W&&W.h):""}
     ${nbaMoveHtml(g,1)}
     ${nbaPickTxt(g)}${say?`<p style="margin:10px 0 0;font-size:14px;color:var(--text2)">${say}</p>`:""}
   </div>
@@ -2603,7 +2606,7 @@ function nbaGame(el,id){
     ${tile(nbaShort(g.a)+" defense",nbaF(A.d.rtg),nbaOrd(A.dR.rtg)+" of 30 · allowed/100")}
     ${tile(nbaShort(g.h)+" defense",nbaF(H.d.rtg),nbaOrd(H.dR.rtg)+" of 30 · allowed/100")}
   </div>`:""}
-  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}
+  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}${typeof xaKeyOutCard!=="undefined"?xaKeyOutCard("nba",g.a,g.h)+xaDefTrendCard("nba",g.a,g.h):""}
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.a)} have the ball</h2>${nbaMatchup(g.a,g.h)}</div>
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>
   <p class="note" style="margin-top:6px">Longer bar = better rank (1st of 30). <span class="rkg">Green</span> = top 8, <span class="rkb">red</span> = bottom 8. Highlighted rows are mismatches. Season to date.</p>
@@ -3463,7 +3466,7 @@ const NFL_QBP={"Jacoby Brissett":{"db":331,"pdb":71,"cy":6.0,"py":1.5,"cd":7.7,"
 /* NFL quarter scores (ESPN) — tools/auto_espn.py nfl-qtr */
 var NFL_QTR={"1|NE|SEA":[[0,7,3,0],[0,0,3,10]],"1|SF|LAR":[[3,7,7,10],[0,7,0,0]],"1|TB|CIN":[[3,7,10,7],[14,10,3,6]],"1|NO|DET":[[0,0,14,10,6],[7,0,14,3,7]],"1|NYJ|TEN":[[7,3,10,3],[3,0,0,7]],"1|BAL|IND":[[14,17,0,10],[6,7,3,7]],"1|ATL|PIT":[[7,0,3,3],[3,10,0,7]],"1|CHI|CAR":[[14,17,14,14],[7,17,7,6]],"1|CLE|JAX":[[0,0,3,7],[14,10,10,0]],"1|BUF|HOU":[[3,21,3,9],[7,14,0,10]],"1|MIA|LV":[[0,6,7,0],[7,10,10,0]],"1|GB|MIN":[[9,10,3,0],[3,7,7,22]],"1|WAS|PHI":[[3,6,0,13],[0,14,3,7]],"1|ARI|LAC":[[7,6,3,10],[7,0,7,0]],"1|DAL|NYG":[[0,7,7,6],[7,7,7,7]],"1|DEN|KC":[[7,0,3,0],[7,7,10,7]],"2|DET|BUF":[[0,10,7,14],[14,13,7,7]],"2|CAR|ATL":[[10,10,14,0],[0,3,0,0]],"2|MIN|CHI":[[3,3,0,3],[3,0,0,0]],"2|PHI|TEN":[[0,14,3,7],[7,3,7,3]],"2|PIT|NE":[[0,3,0,0],[7,3,3,7]],"2|GB|NYJ":[[0,7,0,10,3],[0,7,7,3,0]],"2|CLE|TB":[[3,3,10,7],[6,3,7,3]],"2|NO|BAL":[[0,6,3,15],[7,7,3,0]],"2|CIN|HOU":[[0,7,10,3],[0,3,3,0]],"2|JAX|DEN":[[0,10,3,0],[0,3,3,14]],"2|LV|LAC":[[0,10,7,9],[0,7,7,0]],"2|WAS|DAL":[[0,10,3,7],[10,7,10,10]],"2|SEA|ARI":[[7,0,10,14],[0,7,0,0]],"2|MIA|SF":[[0,6,0,7],[7,7,21,0]],"2|IND|KC":[[7,13,0,7,3],[10,7,7,3,6]],"2|NYG|LAR":[[0,3,3,0],[7,7,7,7]],"3|ATL|GB":[[7,10,7,11],[7,0,0,7]],"3|LAC|BUF":[[10,0,3,3],[0,10,0,14]],"3|CAR|CLE":[[0,3,6,9],[0,10,0,11]],"3|NYJ|DET":[[0,7,3,14],[0,10,7,14]],"3|HOU|IND":[[0,7,0,10],[3,10,0,6]],"3|KC|MIA":[[7,7,0,10],[7,0,3,0]],"3|TEN|NYG":[[0,0,0,7],[3,6,3,0]],"3|CIN|PIT":[[7,10,3,7],[14,3,7,6]],"3|SEA|WAS":[[0,10,7,14],[7,10,7,9]],"3|NE|JAX":[[0,3,0,3],[0,14,14,7]],"3|ARI|SF":[[0,6,7,17],[7,10,6,13]],"3|MIN|TB":[[10,7,0,6],[7,3,3,3]],"3|BAL|DAL":[[7,10,7,10],[10,3,8,10]],"3|LV|NO":[[3,13,6,13],[6,7,14,0]],"3|LAR|DEN":[[7,9,0,10],[0,0,16,14]],"3|PHI|CHI":[[0,7,0,0],[7,3,10,7]],"4|PIT|CLE":[[7,3,0,14],[0,21,0,6]],"4|IND|WAS":[[0,10,10,10],[6,0,7,0]],"4|NE|BUF":[[7,7,7,8],[0,17,0,9]],"4|NYJ|CHI":[[0,3,3,6],[7,6,7,3]],"4|JAX|CIN":[[3,10,3,6],[0,3,7,7]],"4|ARI|NYG":[[14,3,7,0],[3,16,8,9]],"4|LAR|PHI":[[3,7,0,14],[3,17,0,0]],"4|GB|TB":[[0,10,7,0],[0,7,0,7]],"4|TEN|BAL":[[7,0,3,8],[7,17,0,0]],"4|DAL|HOU":[[3,3,14,14],[10,6,7,7]],"4|MIA|MIN":[[0,0,10,0],[3,6,3,3]],"4|KC|LV":[[7,3,0,20],[7,6,0,14]],"4|DEN|SF":[[3,0,0,11],[0,3,7,14]],"4|LAC|SEA":[[3,3,7,10],[7,13,10,0]],"4|DET|CAR":[[3,13,3,7],[7,9,13,3]],"4|ATL|NO":[[14,10,7,14],[0,7,3,14]],"5|TB|DAL":[[0,7,17,0],[7,3,0,6]],"5|PHI|JAX":[[0,14,0,3],[7,0,3,9]],"5|CHI|GB":[[0,7,0,0],[7,7,9,8]],"5|HOU|TEN":[[3,9,7,7],[3,0,0,0]],"5|CIN|MIA":[[7,14,7,3],[7,0,3,14]],"5|LV|NE":[[7,0,3,7],[14,7,14,10]],"5|MIN|NO":[[3,3,7,10],[0,7,6,0]],"5|CLE|NYJ":[[3,3,0,6],[7,0,0,10]],"5|IND|PIT":[[6,7,6,3],[7,10,7,10]],"5|NYG|WAS":[[3,0,10,14,0],[6,6,7,8,0]],"5|DEN|LAC":[[7,3,0,13],[0,3,14,0]],"5|DET|ARI":[[0,24,14,7],[7,0,7,7]],"5|SF|SEA":[[7,14,0,11],[7,6,13,3]],"5|BAL|ATL":[[3,6,6,8,7],[7,7,3,6,0]],"5|BUF|LAR":[[6,7,6,15,3],[0,7,7,20,0]],"6|SEA|DEN":[[3,0,0,11,0],[0,14,0,0,3]],"6|HOU|JAX":[[7,10,14,3],[0,14,7,10]],"6|CHI|ATL":[[14,7,7,3],[0,7,0,16]],"6|BAL|CLE":[[10,0,0,0],[0,0,3,10]],"6|TEN|IND":[[0,0,6,20],[0,13,0,7]],"6|NYJ|NE":[[3,0,10,6],[7,10,0,9]],"6|NO|NYG":[[0,10,17,7],[7,3,0,17]],"6|CAR|PHI":[[3,7,3,12],[0,7,0,7]],"6|PIT|TB":[[0,3,0,16,7],[3,10,3,3,0]],"6|ARI|LAR":[[3,6,3,6],[3,6,0,7]],"6|LAC|KC":[[3,0,3,0],[9,10,0,3]],"6|BUF|LV":[[3,10,10,10],[7,6,0,17]],"6|DAL|GB":[[0,0,7,6],[7,10,3,3]],"6|WAS|SF":[[3,0,7,7],[13,7,3,0]],"7|NE|CHI":[[0,14,7,3],[10,10,7,3]],"7|PIT|NO":[[3,10,3,0],[0,10,0,0]],"7|SF|ATL":[[7,7,0,6],[3,9,7,10]],"7|CLE|TEN":[[7,10,0,10],[14,0,0,10]],"7|IND|MIN":[[7,3,0,0],[0,6,0,10]],"7|MIA|NYJ":[[14,7,0,7],[7,0,7,11]],"7|TB|CAR":[[7,26,3,7],[0,6,0,7]],"7|CIN|BAL":[[0,0,14,21],[7,6,0,0]],"7|NYG|HOU":[[7,7,0,7,6],[3,11,0,7,0]],"7|DEN|ARI":[[6,7,14,3],[0,6,7,3]],"7|GB|DET":[[7,0,7,3],[7,3,7,3]],"7|LAR|LV":[[7,21,0,7],[3,3,0,15]],"7|KC|SEA":[[0,0,3,0],[0,10,3,7]],"7|DAL|PHI":[[10,10,8,10],[7,7,7,0]],"8|CAR|GB":[[3,7,3,6],[6,14,7,0]],"8|BAL|BUF":[[7,0,3,0],[10,6,7,13]],"8|TEN|CIN":[[13,0,8,15,0],[0,14,9,13,7]],"8|ARI|DAL":[[0,3,7,20,3],[7,7,3,13,0]],"8|MIN|DET":[[0,7,0,8],[3,3,6,7]],"8|LV|NYJ":[[7,7,14,10],[6,17,7,3]],"8|CLE|PIT":[[0,6,0,0],[7,13,7,0]],"8|ATL|TB":[[0,0,0,0],[6,3,7,0]],"8|IND|JAX":[[0,0,7,0],[7,21,14,0]],"8|LAC|LAR":[[3,6,0,0],[3,7,14,0]],"8|KC|DEN":[[7,10,7,0],[3,10,0,15]],"8|NE|MIA":[[3,0,14,7],[3,10,0,6]],"8|PHI|WAS":[[10,0,0,0],[3,10,3,11]],"8|CHI|SEA":[[7,6,7,14],[0,9,0,8]],"9|JAX|BAL":[[10,7,3,13],[3,0,0,7]],"9|CIN|ATL":[[7,17,7,3],[10,0,7,0]],"9|DAL|IND":[[3,14,3,7],[7,0,10,6]],"9|NYJ|KC":[[6,6,0,0],[0,14,14,7]],"9|DET|MIA":[[3,3,10,3],[3,0,3,3]],"9|CLE|NO":[[0,3,3,10,6],[3,0,3,10,7]],"9|NYG|PHI":[[6,0,7,6],[8,0,0,3]],"9|LAR|WAS":[[3,3,7,7],[3,7,3,0]],"9|DEN|CAR":[[10,3,0,13],[0,7,7,7]],"9|HOU|LAC":[[10,14,7,13],[3,6,0,13]],"9|GB|NE":[[14,10,18,3],[0,14,7,6]],"9|LV|SF":[[0,10,7,0],[14,7,14,3]],"9|ARI|SEA":[[3,0,0,0],[0,14,3,0]],"9|TB|CHI":[[0,6,7,11],[14,3,7,3]]};
 /* NHL data loads on demand from nhl_data.js (next to index.html) */ var NHL_GEN="",NHL_DATE="",NHL_TOM="",NHL_SLATE=[],NHL_NEXT=[],NHL_LATER=[],NHL_TEAM={},NHL_RES=[],NHL_P={},NHL_G={},NHL_INJ={},NHL_H2HP={},NHL_LZ=[],NHL_MODEL=null,NHL_PRES=[],NHL_PRES_D=null,NHL_RECENT=[],NHL_PROPS=[];
-var BUILD_AT="2026-11-09T15:44:32Z";
+var BUILD_AT="2026-11-09T15:54:46Z";
 /* ================= 🏒 NHL section =================
    Data: NHL_* from nhl_data.js (official NHL API box scores, standings, team stats, built by tools/nhlfetch.py)
    + player props / game lines from the PropLine feed (baked in nhl_data.js, refreshed live by liveodds.js).
@@ -3843,15 +3846,15 @@ function nhGoalieTab(g){const lsv=NH_LGSV();
       const L5=sv(st.slice(-5)),hm=sv(st.filter(z=>z[2]==="H")),rd=sv(st.filter(z=>z[2]==="A")),inj=nhInjOf(x.nm);
       return `<div class="nhgk ${p&&p.nm===x.nm?"on":""}"><div><b>${nhLink(x.nm)}</b>${inj?nhInjChip(x.nm):""} <span class="small">${x.gs} starts · ${x.w} wins</span></div>
        <div class="nhtiles">${nhTile("Save %",fmt(x.svp!=null?x.svp/100:null),"season",c(x.svp/100))}${nhTile("GAA",x.gaa!=null?x.gaa.toFixed(2):"–","goals against avg")}${nhTile("Last 5 starts",fmt(L5),"save %",c(L5))}${nhTile("Home / road",`${fmt(hm)} / ${fmt(rd)}`,"save %")}${nhTile("Saves / start",st.length?(st.reduce((s,z)=>s+z[4],0)/st.length).toFixed(1):"–","")}</div>
-       ${(()=>{const W=nhGoalieLoad(x,g);return `<div class="nhtiles" style="margin-top:6px">${nhTile("Starts last 7 days",W.s7,`${W.s14} in last 14`,W.s7>=4?"dn":"")}${nhTile("Days since last start",W.rest==null?"–":W.rest,W.run>1?`${W.run} straight starts`:"")}${nhTile("vs top-10 shooting teams",W.hsv,`${W.hs} starts`)}${nhTile("2nd night of back-to-backs",W.b2bsv,`${W.b2b} starts`)}</div>`})()}</div>`}).join("")||`<div class="small">No goalie data.</div>`}</div>`};
+       ${(()=>{const W=nhGoalieLoad(x,g);return `<div class="nhtiles" style="margin-top:6px">${nhTile("Starts last 7 days",W.s7,`${W.s14} in last 14`,W.s7>=4?"dn":"")}${nhTile("Days since last start",W.rest==null?"–":W.rest,W.run>1?`${W.run} straight starts`:"")}${nhTile("vs top-10 shooting teams",W.hsv,`${W.hs} starts`)}${nhTile("2nd night of back-to-backs",W.b2bsv,`${W.b2b} starts`)}</div>`})()}${typeof xaGoalieVs!=="undefined"?xaGoalieVs(x,g):""}</div>`}).join("")||`<div class="small">No goalie data.</div>`}</div>`};
   return `<div class="grid g2">${side(g.a)}${side(g.h)}</div><p class="small">League average save % this season: ${lsv.toFixed(3).slice(1)} — green above, red below.</p>`}
 function nhlGame(el,id){
   const g=nhGame(id);if(!g){el.innerHTML=`<h1>Game not found</h1><p><a href="#nhl">← NHL games</a></p>`;return}
   const tab=NH.tab||"matchup",nInj=nhInjList(g.a).length+nhInjList(g.h).length,nP=nhPropRows().filter(r=>[g.a,g.h].includes(nhWho(r[0]).tm)).length;
   const T=[["matchup","📊 Matchup"],["trends","📈 Trends"],["goalies","🥅 Goalies"],["injuries",`🚑 Injuries${nInj?` <small>${nInj}</small>`:""}`],["props",`🎯 Props${nP?` <small>${nP}</small>`:""}`]];
-  const body={matchup:()=>nhMatchup(g),trends:()=>nhTrends(g),goalies:()=>nhGoalieTab(g),injuries:()=>nhInjCard(g),props:()=>`<div id="nhGP">${nhGameProps(g)}</div>`}[tab]||(()=>nhMatchup(g));
+  const body={matchup:()=>nhMatchup(g)+(typeof xaLuckCard!=="undefined"?xaLuckCard(g)+xaKeyOutCard("nhl",g.a,g.h)+xaDefTrendCard("nhl",g.a,g.h):""),trends:()=>nhTrends(g),goalies:()=>nhGoalieTab(g),injuries:()=>nhInjCard(g),props:()=>`<div id="nhGP">${nhGameProps(g)}</div>`}[tab]||(()=>nhMatchup(g));
   el.innerHTML=`<p class="small"><a href="#${g.d===NHL_DATE?"nhl":g.d===NHL_TOM?"nhl-tomorrow":"nhl-tomorrow-"+Math.round((Date.parse(g.d)-Date.parse(NHL_DATE))/864e5)}">← NHL games</a></p>
-   ${nhHero(g)}${typeof xaGoalieNote!=="undefined"?xaGoalieNote(g):""}${nhQuick(g)}
+   ${nhHero(g)}${typeof xaGoalieNote!=="undefined"?xaGoalieNote(g)+xaPmLine("nhl",g.a,g.h):""}${nhQuick(g)}
    <div class="gtabs nhtabs" style="margin-top:12px">${T.map(([k,l])=>`<a href="#" data-nhtab="${k}" class="${k===tab?"on":""}">${l}</a>`).join("")}</div>
    <div style="margin-top:10px">${body()}</div>${nhFoot()}`;
   el.querySelectorAll("[data-nhtab]").forEach(a=>a.onclick=e=>{e.preventDefault();const y=scrollY;NH.tab=a.dataset.nhtab;nhlGame(el,id);scrollTo(0,y)});
@@ -5240,14 +5243,16 @@ function xaPanelBody(sp,nm,k,line,side){const over=xaOver(side),word=over?"Over"
   /* vs defenses */
   if(Object.keys(TT).length){const by={soft:[],avg:[],tough:[]};for(const x of G){const t=TT[x.opp];if(t)by[t.tier].push(x)}
     rows.push(`<h4>🛡️ Against defenses like tonight's</h4><div class="small">${tn?`${xaEsc(O.opp)} rank <b>${tn.rank} of ${tn.n}</b> in what they allow here (${tn.tier==="soft"?"one of the most generous":tn.tier==="tough"?"one of the stingiest":"middle of the pack"}).`:""}</div>
-      <table class="bxt xat"><thead><tr><th>Defense</th><th>${word} ${line}</th><th>Avg</th></tr></thead><tbody>${cell(xaGrp(by.soft,line,over),"Generous (top third)",tn&&tn.tier==="soft")}${cell(xaGrp(by.avg,line,over),"Middle third",tn&&tn.tier==="avg")}${cell(xaGrp(by.tough,line,over),"Stingy (bottom third)",tn&&tn.tier==="tough")}</tbody></table>`)}
+      ${O?xaDefTrendLine(sp,O.opp,pos,k):""}<table class="bxt xat"><thead><tr><th>Defense</th><th>${word} ${line}</th><th>Avg</th></tr></thead><tbody>${cell(xaGrp(by.soft,line,over),"Generous (top third)",tn&&tn.tier==="soft")}${cell(xaGrp(by.avg,line,over),"Middle third",tn&&tn.tier==="avg")}${cell(xaGrp(by.tough,line,over),"Stingy (bottom third)",tn&&tn.tier==="tough")}</tbody></table>`)}
   /* blowouts */
   const b=xaBlow(sp,nm,k,side),M=G.filter(x=>x.mg!=null),Bl=M.filter(x=>Math.abs(x.mg)>=XA_BLOW[sp]),Cl=M.filter(x=>Math.abs(x.mg)<=XA_CLOSE[sp]);
-  if(Bl.length||Cl.length){const u=sp==="nhl"?"goals":"points";
-    rows.push(`<h4>💨 Close games vs blowouts</h4><div class="small">${b?`Tonight: ${b.s>=0?"favoured":"underdog"}${sp==="nhl"?"":` by ${Math.abs(b.s)}`} — ${b.big?"<b>real blowout risk</b> (starters can sit late)":b.some?"some blowout risk":"should be competitive"}.`:""}</div>
-      <table class="bxt xat"><thead><tr><th>Final margin</th><th>${word} ${line}</th><th>Avg</th></tr></thead><tbody>${cell(xaGrp(Cl,line,over),`Close (≤${XA_CLOSE[sp]} ${u})`,b&&!b.some)}${cell(xaGrp(Bl,line,over),`Blowout (${XA_BLOW[sp]}+ ${u})`,b&&b.big)}</tbody></table>`)}
+  if(Bl.length||Cl.length){const u=sp==="nhl"?"goals":"points",X=XA_BLOW[sp],Wb=M.filter(x=>x.mg>=X),Lb=M.filter(x=>x.mg<=-X),fav=b&&b.s>0;
+    rows.push(`<h4>💨 Game script: winning big, close, losing big</h4><div class="small">${b?`Tonight: ${b.s>=0?"favoured":"underdog"}${sp==="nhl"?"":` by ${Math.abs(b.s)}`} — ${b.big?"<b>real blowout risk</b> (starters can sit late)":b.some?"some blowout risk":"should be competitive"}.`:""}${sp==="nfl"?" Trailing teams throw more; leading teams run more.":""}</div>
+      <table class="bxt xat"><thead><tr><th>His team…</th><th>${word} ${line}</th><th>Avg</th></tr></thead><tbody>${cell(xaGrp(Wb,line,over),`won by ${X}+ ${u}`,b&&b.big&&fav)}${cell(xaGrp(Cl,line,over),`close (≤${XA_CLOSE[sp]})`,b&&!b.some)}${cell(xaGrp(Lb,line,over),`lost by ${X}+ ${u}`,b&&b.big&&!fav)}</tbody></table>`)}
   /* teammates */
   const WO=xaWithout(sp,nm,k,line,side);if(WO.length)rows.push(`<h4>👥 With / without teammates who are out now</h4><table class="bxt xat"><thead><tr><th>Teammate</th><th>With him</th><th>Without</th></tr></thead><tbody>${WO.map(o=>`<tr class="xame"><td>${xaEsc(o.m)}</td><td>${o.w.h}/${o.w.n} · ${o.w.av.toFixed(1)}</td><td><b>${o.wo.h}/${o.wo.n} · ${o.wo.av.toFixed(1)}</b></td></tr>`).join("")}</tbody></table><div class="small">${word} ${line} hits / games · average.</div>`);
+  /* power play */
+  if(sp==="nhl"){const s=xaPPSay(nm);if(s)rows.push(`<h4>⚡ Power play</h4><div class="small">${s}</div>`)}
   /* minutes */
   const t=xaMinTrend(sp,nm);if(t)rows.push(`<h4>⏱️ ${sp==="nba"?"Minutes":"Ice time"}</h4><div class="small">${t.n} straight games ${t.dir==="up"?"above":"below"} his season average (${t.avg.toFixed(1)} min): ${t.last.map(v=>v.toFixed(1)).join(", ")}. Lines often lag a role change.</div>`);
   rows.push(`<h4>📉 Closing line vs result</h4><div class="xahw">${XA.hist?xaHistHtml(sp,nm,k,side):"Loading…"}</div>`);
@@ -5319,7 +5324,8 @@ function xaSeries(sp,nm){const S=[];
     if(sp==="nhl"){const w=nhWho(nm);if(!w)return S;const gk=!!NHL_G[nm];const G=w.g.filter(x=>gk?(x[9]!==1&&x[7]):x[16]!==1);if(G.length<4)return S;
       if(gk)S.push({t:"Shots faced",u:"shots",v:G.map(x=>x[3])},{t:"Saves",u:"saves",v:G.map(x=>x[4])});
       else{S.push({t:"Ice time",u:"minutes",v:G.map(x=>Math.round(x[10]/6)/10)},{t:"Shots on goal",u:"SOG",v:G.map(x=>x[6])});
-        if(G.some(x=>x[15]!=null))S.push({t:"Shot attempts",u:"attempts",v:G.map(x=>x[15]==null?null:x[15])})}
+        if(G.some(x=>x[15]!=null))S.push({t:"Shot attempts",u:"attempts",v:G.map(x=>x[15]==null?null:x[15])});
+        const PP=xaPP(nm);if(PP){const m=new Map(PP.map(r=>[r[0],r[1]]));S.push({t:"Power-play time",u:"min",v:G.map(x=>m.has(x[0])?Math.round(m.get(x[0])/6)/10:null)})}}
       S.forEach(s=>s.d=G.map(x=>x[0]))}
     if(sp==="nfl"){const P=PINFO[nm];if(!P)return S;const L=pLogs(nm).filter(l=>l.season===CUR).sort((a,b)=>a.week-b.week);if(L.length<3)return S;const f=k=>L.map(l=>l[k]==null?null:+l[k]);
       if(P.pos==="QB")S.push({t:"Pass attempts",u:"attempts",v:f("passAtt")},{t:"Rush attempts",u:"carries",v:f("rushAtt")});
@@ -5343,6 +5349,93 @@ function xaTrendsCard(sp,nm){const S=xaSeries(sp,nm);if(!S.length)return "";
   const U=sp==="nfl"&&typeof USAGE!=="undefined"&&USAGE[nm],us=U&&U.s&&U.l3?` Snap share ${U.s.snap}% season, ${U.l3.snap}% last 3${U.s.tsh?` · target share ${U.s.tsh}% → ${U.l3.tsh}%`:""}${U.s.csh?` · carry share ${U.s.csh}% → ${U.l3.csh}%`:""}.`:"";
   return `<div class="card xatr" style="margin-top:12px"><h2 style="margin-bottom:2px">📈 Role over the season</h2><div class="small" style="margin-bottom:8px">Every game this season (dots), the 5-game rolling average (bold line) and his season average (dashed). ▲▼ = last 5 games well above or below his season.${us}</div>
    <div class="xagrid">${S.map(xaSpark).join("")}</div></div>`}
+
+/* ---------- 📉 defense trending: last 10 (NFL: last 4) vs season ---------- */
+function xaDefSeries(sp,t,pos,k){try{
+  if(sp==="nba"){const idx=nbaDvpIdx(),G=NBA_RES.filter(r=>r[2]===t||r[3]===t);
+    if(pos&&k&&NBA_MK[k])return G.map(r=>{const xs=(idx[r[0]+"|"+t]||{})[pos];return xs?xs.reduce((a,o)=>a+nbaVal(o.x,k),0):null}).filter(v=>v!=null);
+    return G.map(r=>r[2]===t?r[5]:r[4])}
+  if(sp==="nhl"){const G=(NHL_RES||[]).filter(r=>r[0]>="2026-10-01"&&(r[1]===t||r[3]===t));
+    if(k==="hsog"||k==="hblk")return G.map(r=>r[1]===t?r[7]:r[6]).filter(v=>v!=null);
+    if(k==="hsaves")return G.map(r=>r[1]===t?r[6]:r[7]).filter(v=>v!=null);
+    return G.map(r=>r[1]===t?r[4]:r[2])}
+  if(sp==="nfl")return RESULTS.filter(r=>r[1]===t||r[3]===t).sort((a,b)=>a[0]-b[0]).map(r=>r[1]===t?r[4]:r[2])}catch(e){}return []}
+function xaDefTrend(sp,t,pos,k){const v=xaDefSeries(sp,t,pos,k),n=sp==="nfl"?4:Math.min(10,Math.floor(v.length/2));if(v.length<(sp==="nfl"?6:8))return null;const av=a=>a.reduce((s,x)=>s+x,0)/a.length;
+  const s=av(v),l=av(v.slice(-n));return {s,l,n,d:l-s,big:Math.abs(l-s)>=Math.max(sp==="nhl"?.25:1,s*.08)}}
+function xaDefTrendLine(sp,t,pos,k){const r=xaDefTrend(sp,t,pos,k);if(!r)return "";const what=sp==="nhl"?(k==="hsog"||k==="hblk"?"shots on goal allowed":k==="hsaves"?"shots taken":"goals allowed"):sp==="nfl"?"points allowed":(pos&&NBA_MK[k]?`${NBA_MK[k][2]} allowed to ${pos}s`:"points allowed");
+  const easier=k==="hsaves"?r.d>0:r.d>0;
+  return `<div class="small" style="margin:4px 0">Trend: ${xaEsc(t)} ${what} — last ${r.n} games <b>${r.l.toFixed(1)}</b> vs season ${r.s.toFixed(1)}${r.big?` <b class="${easier?"up":"dn"}">${easier?"▲ getting easier":"▼ getting tougher"}</b>`:" (steady)"}.</div>`}
+function xaDefTrendCard(sp,a,h){const rows=[];const lab=sp==="nhl"?"Goals allowed":"Points allowed";
+  for(const t of [a,h]){const r=xaDefTrend(sp,t,null,sp==="nhl"?"hgoals":null),s2=sp==="nhl"?xaDefTrend(sp,t,null,"hsog"):null;if(!r)continue;
+    const c=x=>x.big?`<b class="${x.d>0?"dn":"up"}">${x.d>0?"▲ worse":"▼ better"}</b>`:`<span class="small">steady</span>`;
+    rows.push(`<tr><td><b>${xaEsc(t)}</b></td><td>${r.l.toFixed(1)} <span class="small">vs ${r.s.toFixed(1)}</span></td><td>${c(r)}</td>${s2?`<td>${s2.l.toFixed(1)} <span class="small">vs ${s2.s.toFixed(1)}</span> ${c(s2)}</td>`:""}</tr>`)}
+  if(!rows.length)return "";const n=xaDefTrend(sp,a,null,sp==="nhl"?"hgoals":null)?.n||10;
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">📉 Defense trending</h2><div class="small" style="margin-bottom:8px">Last ${n} games vs the season — a defense that's slipping (or tightening up) shows here before its season rank catches up.</div>
+   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>${lab}/game</th><th></th>${sp==="nhl"?"<th>Shots allowed</th>":""}</tr></thead><tbody>${rows.join("")}</tbody></table></div></div>`}
+
+/* ---------- 🚑 team without its key players (who are out tonight) ---------- */
+function xaKeyOut(sp,t){const L=[];try{
+  if(sp==="nba"){for(const [n,p] of Object.entries(NBA_LOGS)){if(p.tm!==t||p.g.length<3)continue;const i=nbaInjOf(n);if(!i||!/out/i.test(i[2]||""))continue;const a=nbaAvg(p,"pts");if(a>=10||nbaAvg(p,"min")>=26)L.push({n,ids:new Set(p.g.map(x=>x[0])),why:`${a.toFixed(1)} pts`})}}
+  if(sp==="nhl"){for(const r of (NHL_INJ[t]||[])){if(!/out|reserve|\bir\b|suspen/i.test(r[2]))continue;const w=nhWho(r[0]);if(!w)continue;const G=w.g.filter(x=>NHL_G[r[0]]?(x[9]!==1&&x[7]):x[16]!==1);if(G.length<3)continue;
+    const pts=NHL_G[r[0]]?null:G.reduce((s,x)=>s+x[5],0)/G.length;if(!NHL_G[r[0]]&&pts<.5)continue;L.push({n:r[0],ds:new Set(G.map(x=>x[0])),why:NHL_G[r[0]]?`${G.length} starts`:`${pts.toFixed(2)} pts/game`})}}
+  if(sp==="nfl"){for(const [n,x] of Object.entries(typeof INJ_P!=="undefined"?INJ_P:{})){if(x.team!==t||!/out|ir|doubtful/i.test(x.s))continue;const U=(typeof USAGE!=="undefined"&&USAGE[n])||{};const s=U.s||{};
+    if(!(x.pos==="QB"||s.tsh>=15||s.csh>=35))continue;const W=new Set(pLogs(n).filter(l=>l.season===CUR).map(l=>l.week));if(W.size<2)continue;L.push({n,ws:W,why:x.pos==="QB"?"starting QB":s.tsh>=15?`${s.tsh}% of targets`:`${s.csh}% of carries`})}}
+}catch(e){}return L.slice(0,3)}
+function xaTeamSplit(sp,t,k){const G=[];try{
+  if(sp==="nba")for(const r of NBA_RES){if(r[2]!==t&&r[3]!==t)continue;const me=r[2]===t?r[4]:r[5],op=r[2]===t?r[5]:r[4];G.push({id:r[0],d:r[1],me,op,in:k.ids?k.ids.has(r[0]):true})}
+  if(sp==="nhl")for(const r of (NHL_RES||[])){if(r[0]<"2026-10-01"||(r[1]!==t&&r[3]!==t))continue;const me=r[1]===t?r[2]:r[4],op=r[1]===t?r[4]:r[2];G.push({d:r[0],me,op,in:k.ds.has(r[0])})}
+  if(sp==="nfl")for(const r of RESULTS){if(r[1]!==t&&r[3]!==t)continue;const me=r[1]===t?r[2]:r[4],op=r[1]===t?r[4]:r[2];G.push({wk:r[0],me,op,in:k.ws.has(r[0])})}}catch(e){}
+  const S=a=>({n:a.length,w:a.filter(x=>x.me>x.op).length,l:a.filter(x=>x.me<x.op).length,me:a.length?a.reduce((s,x)=>s+x.me,0)/a.length:0,op:a.length?a.reduce((s,x)=>s+x.op,0)/a.length:0});
+  return {w:S(G.filter(x=>x.in)),wo:S(G.filter(x=>!x.in))}}
+function xaKeyOutCard(sp,a,h){const rows=[];
+  for(const t of [a,h])for(const k of xaKeyOut(sp,t)){const s=xaTeamSplit(sp,t,k);if(s.wo.n<1)continue;const f=v=>v.toFixed(sp==="nhl"?2:1);
+    rows.push(`<tr><td><b>${xaEsc(t)}</b> without <b>${xaEsc(k.n)}</b><div class="small">${xaEsc(k.why)}</div></td><td>${s.wo.w}-${s.wo.l}<div class="small">${f(s.wo.me)}–${f(s.wo.op)}</div></td><td>${s.w.w}-${s.w.l}<div class="small">${f(s.w.me)}–${f(s.w.op)}</div></td></tr>`)}
+  if(!rows.length)return "";
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🚑 Without their key players</h2><div class="small" style="margin-bottom:8px">Key players listed out tonight, and how the team did this season in games he missed vs games he played (record · average score for–against).</div>
+   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Without him</th><th>With him</th></tr></thead><tbody>${rows.join("")}</tbody></table></div><div class="small" style="margin-top:6px">Few games without him = small sample.</div></div>`}
+
+/* ---------- 🍀 NHL luck check: close-game record, expected points from goal differential, shooting + save % (PDO) ---------- */
+function xaLuck(t){const G=(NHL_RES||[]).filter(r=>r[0]>="2026-10-01"&&(r[1]===t||r[3]===t));if(G.length<6)return null;
+  let gf=0,ga=0,sf=0,sa=0,one=[0,0],oth=[0,0],pts=0;
+  for(const r of G){const me=r[1]===t?r[2]:r[4],op=r[1]===t?r[4]:r[2],ms=r[1]===t?r[6]:r[7],os=r[1]===t?r[7]:r[6];gf+=me;ga+=op;if(ms!=null&&os!=null){sf+=ms;sa+=os}
+    const w=me>op,close=Math.abs(me-op)===1||!!r[5];(close?one:oth)[w?0:1]++;pts+=w?2:r[5]?1:0}
+  const n=G.length,exp=Math.pow(gf,2.1)/(Math.pow(gf,2.1)+Math.pow(ga,2.1)),act=pts/(2*n),pdo=sf&&sa?(gf/sf+1-ga/sa)*100:null;
+  return {n,one,oth,exp,act,pdo,gd:gf-ga}}
+function xaLuckCard(g){const R=[g.a,g.h].map(t=>[t,xaLuck(t)]).filter(x=>x[1]);if(!R.length)return "";
+  const say=x=>{const d=x.act-x.exp,l=[];if(d>=.06)l.push("winning more than their goal differential says");if(d<=-.06)l.push("winning less than their goal differential says");
+    if(x.pdo!=null&&x.pdo>=101.5)l.push("hot shooting + goaltending (PDO high)");if(x.pdo!=null&&x.pdo<=98.5)l.push("cold shooting + goaltending (PDO low)");
+    const c=x.one[0]+x.one[1];if(c>=5&&x.one[0]/c>=.7)l.push("very good in one-goal games");if(c>=5&&x.one[0]/c<=.3)l.push("very bad in one-goal games");
+    return l.length?`<b class="${d>0||(x.pdo||100)>101.5?"dn":"up"}">${d>0||(x.pdo||100)>101.5?"Due to cool off":"Due to bounce back"}</b> — ${l.join(" · ")}`:"Results match how they've played"};
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🍀 Luck check</h2><div class="small" style="margin-bottom:8px">One-goal and OT games are close to a coin flip over a season, and very high or low shooting / save % (PDO, normal ≈ 100) usually drifts back. Teams living on those tend to even out.</div>
+   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>One-goal / OT</th><th>Other games</th><th>Points % (expected)</th><th>PDO</th></tr></thead><tbody>
+   ${R.map(([t,x])=>`<tr><td><b>${xaEsc(t)}</b></td><td>${x.one[0]}-${x.one[1]}</td><td>${x.oth[0]}-${x.oth[1]}</td><td>${Math.round(x.act*100)}% <span class="small">(${Math.round(x.exp*100)}%)</span></td><td>${x.pdo!=null?x.pdo.toFixed(1):"–"}</td></tr><tr><td colspan="5" class="small">${say(x)}</td></tr>`).join("")}</tbody></table></div></div>`}
+
+/* ---------- 🥅 goalie vs tonight's opponent + rest ---------- */
+function xaGoalieVs(x,g){if(!g)return "";const t=x.tm||(NHL_G[x.nm]||{}).tm,opp=g.a===t?g.h:g.a;const st=x.g.filter(z=>z[7]);const vs=st.filter(z=>z[1]===opp);
+  const sv=a=>{const sa=a.reduce((s,z)=>s+z[3],0),v=a.reduce((s,z)=>s+z[4],0);return sa?(v/sa).toFixed(3).slice(1):"–"};
+  const cur=st.filter(z=>z[9]!==1),rest=[];for(let i=1;i<cur.length;i++){const d=(Date.parse(cur[i][0])-Date.parse(cur[i-1][0]))/864e5;rest.push({d,z:cur[i]})}
+  const r1=rest.filter(o=>o.d>=3).map(o=>o.z),r0=rest.filter(o=>o.d===2).map(o=>o.z);
+  return `<div class="small" style="margin-top:6px">vs ${xaEsc(opp)}: <b>${vs.length?sv(vs):"–"}</b> save % in ${vs.length} start${vs.length===1?"":"s"}${vs.some(z=>z[9]===1)?" (incl. last season)":""} · on 2+ days' rest <b>${r1.length?sv(r1):"–"}</b> (${r1.length}) · 1 day's rest <b>${r0.length?sv(r0):"–"}</b> (${r0.length})</div>`}
+
+/* ---------- 🔮 prediction markets (Kalshi / Polymarket via the odds feed) ---------- */
+function xaPmProb(p){if(p==null)return null;p=+p;if(p>0&&p<1)return p;if(Math.abs(p)>=100)return p<0?-p/(-p+100):100/(p+100);if(p>1&&p<50)return 1/p;return null}
+function xaPmFor(sp,a,h){const D=typeof LO!=="undefined"&&LO.data&&LO.data[sp];if(!D||!D.events)return null;
+  const nick=t=>sp==="nba"?(NBA_TEAMS[t]||t).split(" ").pop():sp==="nhl"?((NHL_TEAM[t]||{}).cn||t):((typeof TEAMS!=="undefined"&&TEAMS[t]&&TEAMS[t][0])||t).split(" ").pop();
+  const na=String(nick(a)).toLowerCase(),nh=String(nick(h)).toLowerCase();
+  const ev=D.events.find(e=>e.pm&&String(e.away).toLowerCase().includes(na)&&String(e.home).toLowerCase().includes(nh));if(!ev)return null;
+  const out=[];for(const [b,[pa,ph]] of Object.entries(ev.pm)){const A=xaPmProb(pa),H=xaPmProb(ph);if(A==null||H==null)continue;const s=A+H;out.push({b:b==="kalshi"?"Kalshi":"Polymarket",a:A/s,h:H/s})}
+  return out.length?out:null}
+function xaPmLine(sp,a,h,bookA,bookH){const P=xaPmFor(sp,a,h);if(!P)return "";
+  return `<div class="xapm small">🔮 Prediction markets: ${P.map(p=>`${p.b} <b>${xaEsc(a)} ${Math.round(p.a*100)}%</b> / <b>${xaEsc(h)} ${Math.round(p.h*100)}%</b>`).join(" · ")}${bookA!=null?` <span class="small">(sportsbooks ${Math.round(bookA*100)}% / ${Math.round(bookH*100)}%)</span>`:""}</div>`}
+
+/* ---------- ⚡ NHL power-play time (NHL_PP from ESPN box scores, in nhl_data.js) ---------- */
+function xaPP(nm){if(typeof NHL_PP==="undefined"||!NHL_PP)return null;if(NHL_PP[nm])return NHL_PP[nm];const k=loNorm(nm);for(const n in NHL_PP)if(loNorm(n)===k)return NHL_PP[n];return null}
+function xaPPRank(nm){const w=nhWho(nm);if(!w||typeof NHL_PP==="undefined")return null;const L=[];
+  for(const [n,p] of Object.entries(NHL_P)){if(p.tm!==w.tm)continue;const r=xaPP(n);if(!r)continue;const l3=r.slice(-3);L.push([n,l3.reduce((s,x)=>s+x[1],0)/l3.length])}
+  L.sort((a,b)=>b[1]-a[1]);const i=L.findIndex(x=>x[0]===nm);return i<0?null:i+1}
+function xaPPSay(nm){const r=xaPP(nm);if(!r||r.length<3)return "";const av=a=>a.reduce((s,x)=>s+x[1],0)/a.length/60,l5=r.slice(-5),rk=xaPPRank(nm);
+  const unit=rk==null?"":rk<=5?" — <b>on the top power-play unit</b>":rk<=10?" — on the second unit":" — little power-play time";
+  return `Power-play time last ${l5.length}: <b>${av(l5).toFixed(1)} min/game</b> (last ${r.length}: ${av(r).toFixed(1)})${rk?` · ${rk}${rk===1?"st":rk===2?"nd":rk===3?"rd":"th"} on his team over the last 3 games`:""}${unit}.`}
 /* ---------- Shared pages: combined record, beginner guide; share images; install-as-app ---------- */
 
 /* ===== Combined record (NFL Plays of the Week + NBA Plays of the day) ===== */
@@ -6243,7 +6336,7 @@ function viewGame(id){
    ${tabP?`<div id="gpBody">${nflGameProps(g)}</div>`:`
    ${typeof nflQuick!=="undefined"?nflQuick(g):""}
    <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
-    <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p></div>
+    <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p>${typeof xaPmLine!=="undefined"?xaPmLine("nfl",g.away,g.home):""}</div>
    ${nflEdgesCard(g)}
    ${(()=>{const T=S.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["inj","🩹 Injuries & weather"]];
     const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nfgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#game-${g.id}-props">🎯 Props</a></div>`;
@@ -6259,7 +6352,7 @@ function viewGame(id){
     if(T==="inj")return nav+`<div class="section">${injWxSection(g)}</div>`;
     return nav+`   <div class="section"><h2>Offense vs defense</h2><p class="small" style="margin-top:-6px">Per-game averages this season. Rank 1st = best in the NFL (most gained for offenses, least allowed for defenses). <span class="tag real">Real</span> Offense from ESPN, yards allowed from NFL.com, points allowed from CBS scores.</p>
     <div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>
-   ${nfPressCard(g)}${nfShareCard(g)}
+   ${nfPressCard(g)}${nfShareCard(g)}${typeof xaKeyOutCard!=="undefined"?`<div class="section">${xaKeyOutCard("nfl",g.away,g.home)}${xaDefTrendCard("nfl",g.away,g.home)}</div>`:""}
    <div class="section"><h2>Run game: yards per rushing attempt</h2><p class="small" style="margin-top:-6px">How well each offense runs the ball against how well the other defense stops it. <span class="tag real">Real</span> <a href="${RUN_SRC.att}" target="_blank" rel="noopener">StatRankings</a> rushing attempts and YPC allowed (2026, through Oct 27) with ESPN rushing yards.</p>
     <div class="grid g2">${runGameHtml(g.away,g.home)}${runGameHtml(g.home,g.away)}</div></div>
    <div class="section"><h2>Coverage: man vs zone</h2><p class="small" style="margin-top:-6px"><b>Man</b> = each defender follows one receiver. <b>Zone</b> = defenders guard areas of the field. Some offenses and receivers are much better against one than the other.</p>

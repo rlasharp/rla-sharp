@@ -44,6 +44,8 @@ NHL_MK = {"player_points": "hpts", "player_goals": "hgoals", "player_assists": "
 NHL_CORE = ["player_points", "player_goals", "player_assists", "player_shots_on_goal", "player_blocked_shots", "goalie_saves"]
 GAME_MK = ["h2h", "spreads", "totals"]
 PERIOD_OK = [True]
+PM_BOOKS = {"kalshi", "polymarket"}
+PMSAMPLE = {}
 YES_MK = {"anyTD", "hanyG"}  # one-sided Yes markets (no under, no alt ladder)
 MKSAMPLE = {}
 MKSEEN = {}  # market keys the feed returned, per sport (run log)
@@ -196,7 +198,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
             continue  # started already, or too far out
         eid = g(ev, "id")
         evs.append({"id": eid, "home": g(ev, "home_team"), "away": g(ev, "away_team"), "start": start, "date": d})
-        mks = list(mk_map) + (GAME_MK if with_game else [])
+        mks = list(mk_map) + (GAME_MK if with_game else ["h2h"])   # h2h: prediction-market win prices (Kalshi / Polymarket)
         try:
             if with_game and PERIOD_OK[0]:
                 try: odds = client.get_odds(sport, event_id=eid, markets=mks, period="all")   # full game + 1st/2nd/3rd period lines, same request
@@ -224,6 +226,15 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
         ms = {}     # (player, mk) -> {book: {line: overPrice}}  milestone ("N+") rungs
         for bk in g(odds, "bookmakers", []) or []:
             b = str(g(bk, "key", "")).lower()
+            if b in PM_BOOKS:   # prediction markets: full-game winner price only, shown as a second opinion (never as a bet line)
+                for m in g(bk, "markets", []) or []:
+                    if g(m, "key") != "h2h" or g(m, "period"): continue
+                    pr = {str(g(o, "name", "")): g(o, "price") for o in g(m, "outcomes", []) or []}
+                    a_, h_ = pr.get(evs[-1]["away"]), pr.get(evs[-1]["home"])
+                    if a_ is not None and h_ is not None:
+                        evs[-1].setdefault("pm", {})[b] = [a_, h_]
+                        if b not in PMSAMPLE: PMSAMPLE[b] = [sport, evs[-1]["away"], a_, evs[-1]["home"], h_]
+                continue
             if b in NOT_BOOKS or b not in BOOK_NAME: continue
             for m in g(bk, "markets", []) or []:
                 MKSEEN.setdefault(sport, {}); MKSEEN[sport][g(m, "key")] = MKSEEN[sport].get(g(m, "key"), 0) + 1
@@ -347,6 +358,7 @@ def main():
     print("markets seen:", json.dumps(MKSEEN))
     for k_, v_ in MKSAMPLE.items(): print("  NHL sample", k_, json.dumps(v_, default=str))
     print("line_type counts:", DIAG)
+    print("prediction markets sample:", json.dumps(PMSAMPLE, default=str))
 
 if __name__ == "__main__":
     main()
