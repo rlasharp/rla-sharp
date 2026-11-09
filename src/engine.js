@@ -27,10 +27,10 @@ const SLATE = [
  {id:7,away:"LAR",home:"WAS",final:[20,13],when:"Sun Nov 8 · 1:00 PM",wp:null},
  {id:8,away:"NYG",home:"PHI",final:[19,11],when:"Sun Nov 8 · 1:00 PM",wp:null},
  {id:9,away:"NYJ",home:"KC",final:[12,35],when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:10,away:"HOU",home:"LAC",when:"Sun Nov 8 · 4:05 PM",wp:null},
- {id:11,away:"LV",home:"SF",when:"Sun Nov 8 · 4:25 PM",wp:null},
- {id:12,away:"ARI",home:"SEA",when:"Sun Nov 8 · 4:25 PM",wp:null},
- {id:13,away:"GB",home:"NE",when:"Sun Nov 8 · 4:25 PM",wp:null},
+ {id:10,away:"HOU",home:"LAC",final:[44,22],when:"Sun Nov 8 · 4:05 PM",wp:null},
+ {id:11,away:"LV",home:"SF",final:[17,38],when:"Sun Nov 8 · 4:25 PM",wp:null},
+ {id:12,away:"ARI",home:"SEA",final:[3,17],when:"Sun Nov 8 · 4:25 PM",wp:null},
+ {id:13,away:"GB",home:"NE",final:[45,27],when:"Sun Nov 8 · 4:25 PM",wp:null},
  {id:14,away:"TB",home:"CHI",when:"Sun Nov 8 · 8:20 PM",wp:null,tv:"SNF"},
  {id:15,away:"BUF",home:"MIN",when:"Mon Nov 9 · 8:15 PM",wp:null,tv:"MNF"}
 ];
@@ -51,7 +51,7 @@ const LINES = {
  12:{sp:-8.5,ml:[350,-455],tot:39.5},
  13:{sp:-3,ml:[154,-185],tot:44.5},
  14:{sp:-6,ml:[220,-270],tot:47.5},
- 15:{sp:3,ml:[-170,142],tot:43.5}
+ 15:{sp:3,ml:[-175,145],tot:43.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
 const SPLITS = {};
