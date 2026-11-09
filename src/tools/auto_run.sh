@@ -34,6 +34,7 @@ if want nfl; then
   if [ "$(TZ=America/Toronto date +%u)" = 2 ] && [ "$(TZ=America/Toronto date +%H)" -lt 12 ]; then   # Tuesday morning: weekly nflverse refresh
     bash tools/nflfetch.sh > "$WORK/nflfetch.log" 2>&1 && python3 tools/nfltgt.py "$WORK/nflv" > "$WORK/tgt.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/tgt.js" ] && cp "$WORK/tgt.js" nfl_tgt.js && log "NFL targets/spreads/rest refreshed"
     python3 tools/nflrush.py "$WORK/nflv" > "$WORK/rush.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/rush.js" ] && cp "$WORK/rush.js" nfl_rush.js && log "NFL pass rush vs O-line refreshed"
+    python3 tools/nflgen.py "$WORK/nflv" > "$WORK/extra.js" 2>> "$WORK/summary.txt" && grep -q "NFL_STAND" "$WORK/extra.js" && cp "$WORK/extra.js" nfl_extra.js && log "NFL standings / schedule / shares (nflverse) refreshed"
     python3 tools/advgen.py "$WORK/nflv" auto > "$WORK/adv.js" 2>> "$WORK/summary.txt" && grep -q "^const BOX=" "$WORK/adv.js" && cp "$WORK/adv.js" adv_data.js && log "NFL box scores / red zone / pace (nflverse) refreshed"
     python3 tools/nflx2.py "$WORK/nflv" > "$WORK/x2.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_K" "$WORK/x2.js" && cp "$WORK/x2.js" nfl_x2.js && log "NFL red zone / QB runs / PROE / division / kickers refreshed"; fi
 fi

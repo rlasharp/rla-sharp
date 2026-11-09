@@ -32,7 +32,7 @@ function viewStandings(){
   const pic=c=>`<div class="card"><h2 style="margin-bottom:6px">${c} playoff picture</h2>
     ${NFL_SEEDS[c].map((t,i)=>{const s=NFL_STAND[t];return `<div class="l5r"><span class="chip ${i<4?"w":""}" style="${i<4?"":"background:#2b2a1a;color:#f3c75a"}">${i+1}</span><span>${badge(t)} ${esc(nfTm(t))}</span><span class="small">${i<4?(i===0?"Bye · division leader":"Division leader"):"Wild card"}</span><b>${nfRec(s)}</b></div>`}).join("")}
     ${(NFL_SEEDS[c+"_hunt"]||[]).length?`<div class="small" style="margin-top:8px">In the hunt: ${NFL_SEEDS[c+"_hunt"].map(t=>`${esc(short(t))} (${nfRec(NFL_STAND[t])})`).join(" · ")}</div>`:""}</div>`;
-  host.innerHTML=`<h1>NFL standings</h1><p class="sub">Through Week ${NFL_XWEEK}. If the season ended today: seeds 1–4 are division leaders (1 gets the only bye), 5–7 are wild cards. Ties are broken by win %, then division record, then point differential — the NFL's full tiebreakers can differ.</p>
+  host.innerHTML=`<h1>NFL standings</h1><p class="sub">Through Week ${nflXWeek()}. If the season ended today: seeds 1–4 are division leaders (1 gets the only bye), 5–7 are wild cards. Ties are broken by win %, then division record, then point differential — the NFL's full tiebreakers can differ.</p>
    <div class="grid g2">${pic("AFC")}${pic("NFC")}</div>
    <h2 style="margin-top:18px">AFC</h2><div class="grid g2">${["AFC East","AFC North","AFC South","AFC West"].map(div).join("")}</div>
    <h2 style="margin-top:18px">NFC</h2><div class="grid g2">${["NFC East","NFC North","NFC South","NFC West"].map(div).join("")}</div>

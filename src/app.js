@@ -24,7 +24,7 @@ function updatedHtml(sport){
   const lb=typeof loBadge!=="undefined"?loBadge():"";if(lb&&(sport==="nba"?LO.nba:LO.nfl))return lb+updatedHtml0(sport);return updatedHtml0(sport)}
 function updatedHtml0(sport){
   if(sport==="nba"&&typeof NBA_GEN!=="undefined")return `<div class="upd">🕒 NBA updated <b>${esc(NBA_GEN)}</b> · stats through ${nbaDayS(window.NBA_THRU||NBA_ASOF)} · game lines ${esc(NBA_LINES_ASOF||"")}</div>`;
-  if(sport==="nfl")return `<div class="upd">🕒 NFL lines & injuries <b>${typeof MARKET_ASOF!=="undefined"?esc(MARKET_ASOF):""}</b> · stats ${typeof USAGE_ASOF!=="undefined"?esc(USAGE_ASOF):""}${typeof NFL_XWEEK!=="undefined"?` · standings through Week ${NFL_XWEEK}`:""} · <a href="#guide" style="color:inherit">sources</a></div>`;
+  if(sport==="nfl")return `<div class="upd">🕒 NFL lines & injuries <b>${typeof MARKET_ASOF!=="undefined"?esc(MARKET_ASOF):""}</b> · stats ${typeof USAGE_ASOF!=="undefined"?esc(USAGE_ASOF):""}${typeof nflXWeek!=="undefined"&&nflXWeek()?` · standings through Week ${nflXWeek()}`:""} · <a href="#guide" style="color:inherit">sources</a></div>`;
   return "";
 }
 

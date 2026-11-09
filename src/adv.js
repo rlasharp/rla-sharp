@@ -78,3 +78,17 @@ function paceRestSection(g){if(!ADVOK)return "";const pa=PACE[g.away],ph=PACE[g.
 function restMini(g){if(!ADVOK)return "";const t=[];[g.away,g.home].forEach(tm=>{const r=REST[tm];if(!r)return;
   if(r.bye)t.push(`${short(tm)} off bye`);else if(r.short)t.push(`${short(tm)} short week`);if(r.mi>=1500)t.push(`${short(tm)} ${r.mi.toLocaleString()} mi trip`)});
   return t.length?`<div class="pubmini">🧳 ${t.join(" · ")}</div>`:""}
+
+/* ⏱ NFL player game logs right after the games: ESPN box scores (nfl_box.js) fill in weeks the nflverse logs don't have yet,
+   so prop hit rates include last Sunday. The official nflverse rows replace them on Tuesday. */
+(function(){if(typeof BOX_ESPN==="undefined"||typeof REAL_LOGS==="undefined"||typeof PINFO==="undefined")return;
+  const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv)\b\.?/g,"").replace(/[^a-z]/g,"");
+  const idx={};for(const n in PINFO)idx[norm(n)+"|"+PINFO[n].team]=n;const have=new Set(REAL_LOGS.map(l=>l.player+"|"+l.week));let n=0;
+  for(const [key,B] of Object.entries(BOX_ESPN)){const [w,a,h]=key.split("|"),wk=+w,P={};
+    const row=(nm,tm)=>{const name=idx[norm(nm)+"|"+tm];if(!name||have.has(name+"|"+wk))return null;return P[name]||(P[name]={player:name,team:tm,pos:PINFO[name].pos,season:CUR,week:wk,opp:tm===a?h:a,home:tm===h?1:0,src:"espn",
+      passYds:0,comp:0,passTD:0,int:0,passAtt:0,rushAtt:0,rushYds:0,rushTD:0,rec:0,recYds:0,recTD:0,tgt:0})};
+    for(const r of B.p||[]){const x=row(r[0],r[1]);if(x){x.comp=r[2];x.passAtt=r[3];x.passYds=r[4];x.passTD=r[5];x.int=r[6]}}
+    for(const r of B.r||[]){const x=row(r[0],r[1]);if(x){x.rushAtt=r[2];x.rushYds=r[3];x.rushTD=r[4]}}
+    for(const r of B.c||[]){const x=row(r[0],r[1]);if(x){x.rec=r[2];x.tgt=r[3];x.recYds=r[4];x.recTD=r[5]}}
+    for(const x of Object.values(P)){REAL_LOGS.push(x);n++}}
+  window.NFL_ESPN_LOGS=n})();

@@ -1,3 +1,20 @@
+/* 📊 NFL standings right after the games: rebuilt from RESULTS (updated by every automatic run) whenever RESULTS has games
+   the weekly nflverse standings don't. Same simple tiebreakers as the standings page (win %, division record, point diff). */
+function nflXWeek(){return (typeof NFL_STAND_WK!=="undefined"&&NFL_STAND_WK)||(typeof NFL_XWEEK!=="undefined"?NFL_XWEEK:null)}
+var NFL_STAND_WK=null;
+(function(){if(typeof NFL_STAND==="undefined"||typeof RESULTS==="undefined"||typeof NFL_DIV==="undefined")return;
+  const counted=Object.values(NFL_STAND).reduce((a,s)=>a+s.w+s.l+(s.t||0),0)/2;if(RESULTS.length<=counted){if(counted>=RESULTS.length&&RESULTS.length)NFL_STAND_WK=Math.max(...RESULTS.map(r=>r[0]));return}
+  const divOf={},confOf={};for(const [d,L] of Object.entries(NFL_DIV))for(const t of L){divOf[t]=d;confOf[t]=d.slice(0,3)}
+  const S={};for(const t of Object.keys(NFL_STAND))S[t]={w:0,l:0,t:0,pf:0,pa:0,hw:0,hl:0,aw:0,al:0,dw:0,dl:0,cw:0,cl:0,res:[]};
+  for(const [wk,a,ap,h,hp] of RESULTS.slice().sort((x,y)=>x[0]-y[0])){if(!S[a]||!S[h])continue;
+    for(const [t,me,op,home,o] of [[a,ap,hp,0,h],[h,hp,ap,1,a]]){const x=S[t],r=me>op?"W":me<op?"L":"T";x.pf+=me;x.pa+=op;x.res.push(r);
+      if(r==="W"){x.w++;home?x.hw++:x.aw++;if(divOf[t]===divOf[o])x.dw++;if(confOf[t]===confOf[o])x.cw++}else if(r==="L"){x.l++;home?x.hl++:x.al++;if(divOf[t]===divOf[o])x.dl++;if(confOf[t]===confOf[o])x.cl++}else x.t++}}
+  for(const [t,x] of Object.entries(S)){const g=x.w+x.l+x.t,last=x.res[x.res.length-1];let k=0;for(let i=x.res.length-1;i>=0&&x.res[i]===last;i--)k++;
+    Object.assign(NFL_STAND[t],{w:x.w,l:x.l,t:x.t,pf:x.pf,pa:x.pa,hw:x.hw,hl:x.hl,aw:x.aw,al:x.al,dw:x.dw,dl:x.dl,cw:x.cw,cl:x.cl,l5:x.res.slice(-5).join(""),strk:last?last+k:"",pct:g?(x.w+x.t/2)/g:0})}
+  const rk=(a,b)=>NFL_STAND[b].pct-NFL_STAND[a].pct||(NFL_STAND[b].dw-NFL_STAND[b].dl)-(NFL_STAND[a].dw-NFL_STAND[a].dl)||(NFL_STAND[b].pf-NFL_STAND[b].pa)-(NFL_STAND[a].pf-NFL_STAND[a].pa);
+  if(typeof NFL_SEEDS!=="undefined")for(const c of ["AFC","NFC"]){const divs=Object.keys(NFL_DIV).filter(d=>d.startsWith(c)),lead=divs.map(d=>NFL_DIV[d].slice().sort(rk)[0]).sort(rk);
+    const rest=divs.flatMap(d=>NFL_DIV[d]).filter(t=>!lead.includes(t)).sort(rk);NFL_SEEDS[c].splice(0,NFL_SEEDS[c].length,...lead,...rest.slice(0,3));if(NFL_SEEDS[c+"_hunt"])NFL_SEEDS[c+"_hunt"].splice(0,NFL_SEEDS[c+"_hunt"].length,...rest.slice(3,6))}
+  NFL_STAND_WK=Math.max(...RESULTS.map(r=>r[0]))})();
 /* ---------- 🏈 NFL team pages (#team-BUF): record, next game, offense / defense ranks, red zone, pass rate,
    division betting record, results, injuries and the key players. Real data only (nflverse, PFR, ESPN, books). ---------- */
 function nflTeamLink(t,txt){return `<a href="#team-${t}" class="sctl">${txt||esc(short(t))}</a>`}
