@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 22:17Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 22:41Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 15
@@ -26,10 +26,10 @@ Adisa Isaac|LB|Questionable|Hamstring|Nov 16
 Tyler Huntley|QB|IR|Toe|Feb 15
 Adam Randall|RB|IR|Neck|Nov 16
 #BUF
+Joshua Palmer|WR|IR|Hamstring|Dec 6
 Alec Anderson|OT|Questionable|Ankle|Nov 9
 Dion Dawkins|OT|Questionable|Ribs|Nov 9
-Tyrell Shavers|WR|Out|Knee - ACL|Nov 9
-Joshua Palmer|WR|Out|Hamstring|Dec 6
+Tyrell Shavers|WR|Out|Knee - ACL|Nov 15
 Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
 #CAR
@@ -58,14 +58,14 @@ Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 Maliek Collins|DT|Out|Elbow|Nov 15
 Deshaun Watson|QB|Out|Concussion|Nov 15
 #DAL
+P.J. Locke|S|Out|Concussion|Nov 22
+Tyler Goodson|RB|Out|Knee|Nov 22
 Jake Ferguson|TE|Out|Knee|Nov 22
 KaVontae Turpin|WR|Out|Ribs|Nov 15
 DeMarvion Overshown|LB|Out|Hamstring|Nov 15
 George Pickens|WR|Out|Hamstring|Nov 15
 Joey Porter Jr.|CB|Out|Ankle|Nov 15
 Luke Schoonmaker|TE|Out|Groin|Nov 15
-Tyler Goodson|RB|Doubtful|Knee|Nov 15
-P.J. Locke|S|Questionable|Concussion|Nov 15
 Jonathan Mingo|WR|Questionable|Ankle|Nov 15
 Donovan Ezeiruaku|LB|Questionable|Ankle|Nov 15
 Jonathan Bullard|DT|IR|Calf|Nov 15
@@ -111,7 +111,6 @@ Jaylon Carlies|LB|Questionable|Neck|Nov 15
 Alec Pierce|WR|IR|Heel|Nov 29
 #JAX
 Cam'Ron Silmon-Craig|S|Out|Coach's Decision|Nov 15
-Eric Murray|S|IR|Elbow|Feb 15
 #KC
 Peter Woods|DT|Out|Neck|Nov 15
 Mansoor Delane|CB|Out|Shoulder|Nov 15
@@ -135,9 +134,9 @@ Justin Eboigbe|DT|Questionable|Ankle|Nov 16
 Denzel Perryman|LB|IR|Undisclosed|Nov 16
 David Njoku|TE|IR|Lower Leg|Nov 16
 #LAR
+Puka Nacua|WR|Doubtful|Knee|Nov 15
 Trent McDuffie|CB|Out|Back|Nov 15
 Joe Cardona|LS|Out|Ankle|Nov 15
-Puka Nacua|WR|Questionable|Knee|Nov 15
 Terrance Ferguson|TE|IR|Hamstring|Nov 25
 Steve Avila|G|Questionable|Hamstring|Nov 15
 Jaylen Watson|CB|IR|Shoulder|Feb 15
@@ -190,6 +189,7 @@ Brandin Echols|CB|Out|Hamstring|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Brandon Aiyuk|WR|Out|Personal|Nov 29
 Deebo Samuel Sr.|WR|Out|Hamstring|Nov 15
 Mike Evans|WR|Out|Achilles|Nov 15
 Deommodore Lenoir|CB|Questionable|Foot|Nov 15
@@ -197,7 +197,6 @@ Renardo Green|CB|Questionable|Back|Nov 15
 Gracen Halton|DT|Out|Ankle|Feb 15
 Nate Hobbs|CB|IR|Groin|Nov 15
 Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
-Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
 Leonard Williams|DT|Out|Shoulder|Nov 15
 Brandon Pili|DT|Out|Back|Nov 15
