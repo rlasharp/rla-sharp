@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 13:51Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 15:31Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Roy Lopez|DT|Questionable|Toe|Nov 15
@@ -78,9 +78,9 @@ Justin Jefferson|LB|Out|Coach's Decision|Nov 15
 Parker Brailsford|C|Out|Coach's Decision|Nov 15
 Maliek Collins|DT|Out|Elbow|Nov 15
 #DAL
+Jake Ferguson|TE|Questionable|Knee|Nov 15
 P.J. Locke|S|Questionable|Concussion|Nov 15
 Jonathan Mingo|WR|Questionable|Ankle|Nov 15
-Jake Ferguson|TE|Questionable|Knee|Nov 15
 Donovan Ezeiruaku|LB|Questionable|Ankle|Nov 15
 Joey Porter Jr.|CB|Out|Ankle|Nov 15
 DeMarvion Overshown|LB|Out|Hamstring|Nov 15
@@ -173,10 +173,10 @@ Dalton Johnson|S|Out|Coach's Decision|Nov 15
 Thomas Booker IV|DT|Out|Ankle|Nov 15
 Bryce Cabeldue|G|Out|Coach's Decision|Nov 15
 #LAC
+Ladd McConkey|WR|Questionable|Back|Nov 16
 Justin Herbert|QB|Questionable|Finger|Nov 16
 Isas Waxter|CB|Questionable|Ankle|Nov 16
 Justin Eboigbe|DT|Questionable|Ankle|Nov 16
-Ladd McConkey|WR|Questionable|Back|Nov 16
 Kayode Awosika|G|Out|Lower Leg|Nov 16
 Brenen Thompson|WR|Out|Quadriceps|Nov 16
 Kendall Williamson|S|Out|Calf|Nov 16
@@ -252,7 +252,6 @@ VJ Payne|S|IR|Knee|Nov 15
 Nahshon Wright|CB|Out|Back|Nov 15
 Joseph Ossai|DE|Out|Ankle|Nov 15
 Max Mitchell|OT|IR|Concussion|Dec 13
-T'Vondre Sweat|DT|IR|Knee|Nov 29
 #PHI
 Zack Baun|LB|Questionable|Back|Nov 22
 Dontayvion Wicks|WR|Out|Ankle|Nov 22
