@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 22:41Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 23:18Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -19,10 +19,9 @@ Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 11
 Zach Collins|F|Day-To-Day|illness|Nov 11
 #Cleveland Cavaliers
 Sam Merrill|G|Out|elbow|Nov 11
-Jarrett Allen|C|Day-To-Day|knee|Nov 9
 Jaylon Tyson|G|Out|ankle sprain|Nov 11
 #Dallas Mavericks
-Morez Johnson Jr.|F|Day-To-Day|leg|Nov 9
+Morez Johnson Jr.|F|Out|leg|Nov 12
 Sergio de Larrea|F|Out|knee strain|Nov 12
 Tarik Biberovic|F|Out|heel inflammation|Nov 12
 Dereck Lively II|C|Out|foot surgery|Nov 12
@@ -86,9 +85,8 @@ Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
-Desmond Bane|G|Day-To-Day|illness|Nov 10
-Jonathan Isaac|F|Out|knee not specified|Nov 10
-Jalen Suggs|G|Out|knee|Nov 10
+Jalen Suggs|G|Out|knee|Nov 16
+Jonathan Isaac|F|Out|knee not specified|Nov 11
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
@@ -113,10 +111,10 @@ Devin Vassell|G|Out|groin|Nov 11
 Tobias Harris|F|Out|calf strain|Nov 11
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Collin Murray-Boyles|F|Day-To-Day|illness|Nov 9
+Immanuel Quickley|G|Out|hamstring|Nov 11
+Collin Murray-Boyles|F|Out|illness|Nov 11
+Scottie Barnes|F|Out|groin soreness|Nov 11
 Nate Bittle|C|Out|foot fracture|Nov 15
-Immanuel Quickley|G|Day-To-Day|hamstring|Nov 9
-Scottie Barnes|F|Day-To-Day|groin soreness|Nov 9
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
 Lauri Markkanen|F|Day-To-Day|wrist sprain|Nov 10
@@ -124,9 +122,8 @@ Keyonte George|G|Day-To-Day|ankle|Nov 10
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
-Bilal Coulibaly|G|Day-To-Day|hand|Nov 9
+Bilal Coulibaly|G|Out|hand|Nov 11
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 16
-Anthony Davis|F|Day-To-Day|ankle sprain|Nov 9
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
 Jamir Watkins|G|Out|knee surgery|Apr 2

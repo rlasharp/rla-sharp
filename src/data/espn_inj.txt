@@ -1,8 +1,8 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 22:41Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 23:18Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Gardner Minshew II|QB|Doubtful|Elbow|Nov 15
 Hjalte Froholdt|C|Questionable|Concussion|Nov 15
-Gardner Minshew II|QB|Questionable|Elbow|Nov 15
 Michael Wilson|WR|Out|Neck|Feb 15
 Jayden Williams|OT|Out|Knee|Nov 15
 Bam Knight|RB|Out|Concussion|Nov 15
@@ -33,6 +33,7 @@ Tyrell Shavers|WR|Out|Knee - ACL|Nov 15
 Jordan Hancock|CB|IR|Hamstring|Nov 9
 Greg Gaines|DT|Questionable|Calf|Nov 9
 #CAR
+Mike Jackson|CB|IR|Groin|Nov 22
 Jaelan Phillips|LB|Out|Hamstring|Nov 15
 Will Lee III|CB|Out|Hamstring|Nov 15
 Damien Lewis|G|Out|Knee|Nov 15
@@ -58,8 +59,8 @@ Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 Maliek Collins|DT|Out|Elbow|Nov 15
 Deshaun Watson|QB|Out|Concussion|Nov 15
 #DAL
-P.J. Locke|S|Out|Concussion|Nov 22
 Tyler Goodson|RB|Out|Knee|Nov 22
+P.J. Locke|S|Out|Concussion|Nov 22
 Jake Ferguson|TE|Out|Knee|Nov 22
 KaVontae Turpin|WR|Out|Ribs|Nov 15
 DeMarvion Overshown|LB|Out|Hamstring|Nov 15
@@ -189,9 +190,9 @@ Brandin Echols|CB|Out|Hamstring|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
-Brandon Aiyuk|WR|Out|Personal|Nov 29
 Deebo Samuel Sr.|WR|Out|Hamstring|Nov 15
 Mike Evans|WR|Out|Achilles|Nov 15
+Brandon Aiyuk|WR|Out|Personal|Nov 29
 Deommodore Lenoir|CB|Questionable|Foot|Nov 15
 Renardo Green|CB|Questionable|Back|Nov 15
 Gracen Halton|DT|Out|Ankle|Feb 15
@@ -220,7 +221,10 @@ Peter Skoronski|G|Questionable|Hamstring|Nov 15
 JC Latham|OT|Questionable|Finger|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 #WAS
+Shy Tuttle|DT|Questionable|Shoulder|Nov 12
+Colson Yankoff|TE|Questionable|Knee|Nov 12
 Treylon Burks|WR|Out|Foot|Nov 12
+Chig Okonkwo|TE|Questionable|Hip|Nov 12
 Lucas Patrick|G|Questionable|Concussion|Nov 12
 Dyami Brown|WR|IR|Calf|Dec 6
 Daron Payne|DT|IR|Foot|Feb 15
