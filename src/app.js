@@ -39,7 +39,7 @@ function searchIndex(){
     for(const [t,v] of Object.entries(NHL_TEAM))L.push({k:((v.n||"")+" "+t).toLowerCase(),l:v.n||t,s:"NHL",sub:"Team",h:"nhl-team-"+t,w:99})}
   if(typeof PINFO!=="undefined")for(const [n,p] of Object.entries(PINFO))L.push({k:n.toLowerCase(),l:n,s:"NFL",sub:`${p.team} · ${p.pos}`,nfl:n,w:50});
   if(typeof TEAMS!=="undefined")for(const [t,v] of Object.entries(TEAMS))L.push({k:(v[0]+" "+t).toLowerCase(),l:v[0],s:"NFL",sub:"Team",h:"standings",w:99});
-  if(window.SOC_OK)for(const [id,t] of Object.entries(SOC_TM)){const f=(SOC_FX||[]).find(f=>f.h===id||f.a===id);L.push({k:(t[0]+" "+t[1]+" "+t[2]).toLowerCase(),l:t[0],s:"SOC",sub:"Team"+(f?" · next match":""),h:f?"soccer-game-"+f.id:"soccer-table",w:60})}
+  if(window.SOC_OK)for(const [id,t] of Object.entries(SOC_TM)){if(!(t[4]||[]).length)continue;L.push({k:(t[0]+" "+t[1]+" "+t[2]).toLowerCase(),l:t[0],s:"SOC",sub:"Team · "+(t[4]||[]).map(c=>(SOC_LG[c]||{}).sh||c).join(", "),h:"soccer-team-"+id,w:90})}
   if(window.SOC_P_OK)for(const [aid,P] of Object.entries(SOC_P)){if(P[3].length<2)continue;L.push({k:P[0].toLowerCase(),l:P[0],s:"SOC",sub:`${typeof socTm!=="undefined"?socTm(P[1]):""} · ${P[2]||""}`,h:"soccer-player-"+aid,w:P[3].length})}
   for(const x of L){x.n=srchNorm(x.l+(x.sub==="Team"?" "+x.k:""));x.tk=x.n.split(" ").filter(Boolean);x.ini=srchNorm(x.l).split(/[ -]+/).filter(Boolean).map(w=>w[0]).join("")}
   return SRCH=L;
@@ -53,25 +53,33 @@ const SRCH_NICK={"king james":"LeBron James","lbj":"LeBron James","bron":"LeBron
   "ovi":"Alex Ovechkin","mcdavid":"Connor McDavid","the great 8":"Alex Ovechkin","geno":"Evgeni Malkin","sid":"Sidney Crosby","sid the kid":"Sidney Crosby",
   "cmc":"Christian McCaffrey","jj":"Justin Jefferson","ceedee":"CeeDee Lamb","saquon":"Saquon Barkley","king henry":"Derrick Henry","tyreek":"Tyreek Hill","cheetah":"Tyreek Hill",
   "lamar":"Lamar Jackson","josh":"Josh Allen","burrow":"Joe Burrow","joey b":"Joe Burrow","amon ra":"Amon-Ra St. Brown","arsb":"Amon-Ra St. Brown","jsn":"Jaxon Smith-Njigba","bijan":"Bijan Robinson"};
+/* team nicknames -> part of the official name (| = several teams share it) */
+const SRCH_TEAM_NICK={"niners":"49ers","sixers":"76ers","habs":"canadiens","cavs":"cavaliers","mavs":"mavericks","wolves":"timberwolves|wolverhampton","pens":"penguins","caps":"capitals","bolts":"lightning|chargers",
+  "canes":"hurricanes","sens":"senators","isles":"islanders","avs":"avalanche","preds":"predators","dubs":"warriors","clips":"clippers","nugs":"nuggets","blazers":"trail blazers","sonics":"thunder","pels":"pelicans","grizz":"grizzlies",
+  "pats":"patriots","bucs":"buccaneers","jags":"jaguars","fins":"dolphins","g men":"giants","boys":"cowboys","birds":"eagles","hawks":"hawks|seahawks","blues":"st louis blues|chelsea","kings":"kings",
+  "gunners":"arsenal","spurs":"spurs|tottenham","man utd":"manchester united","man u":"manchester united","man united":"manchester united","man city":"manchester city","city":"manchester city","united":"manchester united|newcastle",
+  "the reds":"liverpool","toffees":"everton","villa":"aston villa","forest":"nottingham","barca":"barcelona","atleti":"atletico","real":"real madrid","inter":"internazionale|inter","juve":"juventus","milan":"milan",
+  "bvb":"dortmund","dortmund":"dortmund","leverkusen":"leverkusen","psg":"paris saint","om":"marseille","ol":"lyon","bayern":"bayern"};
 function srchLev(a,b,max){if(Math.abs(a.length-b.length)>max)return max+1;let pp=null,p=Array.from({length:b.length+1},(_,j)=>j);
   for(let i=1;i<=a.length;i++){const c=[i];let mn=i;for(let j=1;j<=b.length;j++){c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));
       if(pp&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])c[j]=Math.min(c[j],pp[j-2]+1);mn=Math.min(mn,c[j])}if(mn>max)return max+1;pp=p;p=c}return p[b.length]}
 function srchFind(q0){const q=srchNorm(q0),W=q.split(" ").filter(Boolean),I=searchIndex(),out=new Map();if(!W.length)return [];
   const put=(x,t,via)=>{const o=out.get(x);if(!o||o._t>t)out.set(x,{...x,_t:t,_via:via||""})};
   for(const x of I)if(W.every(w=>x.n.includes(w)))put(x,x.n.startsWith(q)||x.tk.some(t=>t.startsWith(q))?0:0.5);
-  const nk=SRCH_NICK[q];if(nk){const nn=srchNorm(nk);for(const x of I)if(x.sub!=="Team"&&srchNorm(x.l)===nn)put(x,0.2,q0.trim())}
-  if(/^[a-z]{2,4}$/.test(q))for(const x of I)if(x.sub!=="Team"&&x.ini===q)put(x,0.3,q0.trim().toUpperCase());
+  const nk=SRCH_NICK[q];if(nk){const nn=srchNorm(nk);for(const x of I)if(!/^Team/.test(x.sub)&&srchNorm(x.l)===nn)put(x,0.2,q0.trim())}
+  if(/^[a-z]{2,4}$/.test(q))for(const x of I)if(!/^Team/.test(x.sub)&&x.ini===q)put(x,0.3,q0.trim().toUpperCase());
+  const tn=SRCH_TEAM_NICK[q];if(tn)for(const part of tn.split("|")){const pn=srchNorm(part);for(const x of I)if(/^Team/.test(x.sub)&&x.n.includes(pn))put(x,0.1,q0.trim())}
   if(!out.size)for(const x of I){let ok=true;for(const w of W){if(w.length<4){if(!x.tk.some(t=>t.startsWith(w))){ok=false;break}continue}
       const m=w.length>=7?2:1;if(!x.tk.some(t=>srchLev(w,t,m)<=m||(t.length>w.length&&srchLev(w,t.slice(0,w.length),m)<=m))){ok=false;break}}
     if(ok)put(x,2)}
-  return [...out.values()].sort((a,b)=>a._t-b._t||b.w-a.w).slice(0,10)}
+  return [...out.values()].sort((a,b)=>a._t-b._t||(/^Team/.test(b.sub)-/^Team/.test(a.sub))||b.w-a.w).slice(0,10)}
 function appSearchSetup(){
   const inp=document.getElementById("plSearch"),box=document.getElementById("plRes");if(!inp)return;
   inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure();if(typeof socEnsure!=="undefined"){socEnsure();socPEnsure()}});
-  inp.placeholder="🔍 Search any player or team";
+  inp.placeholder="🔍 Search any player or team (all sports)";
   const draw=()=>{const q=inp.value.trim().toLowerCase();if(q.length<2){box.innerHTML="";box.hidden=true;return}
     const hit=srchFind(q);const fz=hit.length&&hit[0]._t===2;
-    box.innerHTML=hit.length?(fz?'<div class="small" style="padding:6px 8px 2px">No exact match — did you mean:</div>':"")+hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":x.s==="NHL"?"nh":x.s==="SOC"?"sc":"nf"}">${x.s==="SOC"?"⚽":x.s}</span> <span>${esc(x.l)}</span><small>${esc(x.sub)}${x._via?` · “${esc(x._via)}”`:""}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found — try a last name or team</div>';
+    box.innerHTML=hit.length?(fz?'<div class="small" style="padding:6px 8px 2px">No exact match — did you mean:</div>':"")+hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":x.s==="NHL"?"nh":x.s==="SOC"?"sc":"nf"}">${x.s==="SOC"?"⚽":x.s}</span> <span>${/^Team/.test(x.sub)?"🛡️ ":""}${esc(x.l)}</span><small>${esc(x.sub)}${x._via?` · “${esc(x._via)}”`:""}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found — try a last name or team</div>';
     box.hidden=false;box._hits=hit};
   inp.oninput=draw;inp.onfocus=draw;
   inp.onkeydown=e=>{if(e.key==="Enter"){const b=box.querySelector("button");if(b)b.click()}if(e.key==="Escape"){inp.value="";draw();inp.blur()}};

@@ -8,7 +8,7 @@ const SC={lgs:(()=>{try{return JSON.parse(localStorage.getItem("ge_soclgs")||"[]
 let SOC_READY=false,SOC_WAIT=[],SOCP_READY=false,SOCP_WAIT=[];
 function socLoad(file,okVar,W,done,cb){if(window[okVar]){done();cb&&cb();return}if(W.fail&&Date.now()-W.fail<60000){cb&&cb();return}if(cb)W.push(cb);if(W.loading)return;W.loading=1;
   const sc=document.createElement("script");sc.src=file+"?v="+(typeof BUILD_AT!=="undefined"&&BUILD_AT?BUILD_AT.replace(/\D/g,""):Math.floor(Date.now()/600000));
-  sc.onload=()=>{done();W.loading=0;try{if(typeof SRCH!=="undefined")SRCH=null}catch(e){}W.splice(0).forEach(f=>{try{f()}catch(e){console.error(e)}})};
+  sc.onload=()=>{done();W.loading=0;try{if(typeof SRCH!=="undefined")SRCH=null;const i=document.getElementById("plSearch");if(i&&document.activeElement===i&&i.value.trim().length>=2)setTimeout(()=>i.dispatchEvent(new Event("input")),0)}catch(e){}W.splice(0).forEach(f=>{try{f()}catch(e){console.error(e)}})};
   sc.onerror=()=>{W.loading=0;W.fail=Date.now();W.splice(0).forEach(f=>{try{f()}catch(e){}})};document.head.appendChild(sc)}
 function socEnsure(cb){socLoad("soccer_data.js","SOC_OK",SOC_WAIT,()=>{SOC_READY=true},cb)}
 function socPEnsure(cb){socLoad("soccer_players.js","SOC_P_OK",SOCP_WAIT,()=>{SOCP_READY=true},cb)}
