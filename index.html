@@ -7,7 +7,7 @@
 function a(){var v=t==="auto"?(m&&m.matches?"light":"dark"):t;document.documentElement.setAttribute("data-theme",v);var mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=v==="light"?"#f6f7f9":"#0f1012"}
 a();if(m&&m.addEventListener)m.addEventListener("change",function(){if(t==="auto")a()});
 window.setTheme=function(v){t=v;try{localStorage.setItem("ge_theme",JSON.stringify(v))}catch(e){}a()};window.getTheme=function(){return t}})();</script>
-<script>/* start downloading the NHL data right away on pages that need it (Today, NHL) */(function(){var h=location.hash;if(!h||h==="#today"||/^#nhl/.test(h)){var l=document.createElement("link");l.rel="preload";l.as="script";l.href="nhl_data.js?v=20261109161329";document.head.appendChild(l)}})();</script>
+<script>/* start downloading the NHL data right away on pages that need it (Today, NHL) */(function(){var h=location.hash;if(!h||h==="#today"||/^#nhl/.test(h)){var l=document.createElement("link");l.rel="preload";l.as="script";l.href="nhl_data.js?v=20261109161840";document.head.appendChild(l)}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RLA Sharp — NFL Betting Research</title>
 <meta name="description" content="Free NFL & NBA betting research: player props ranked by hit rate, Plays of the day with a public record, live scores, line movement, injuries and matchup stats.">
@@ -620,6 +620,8 @@ details.xa{margin-top:10px}details.xa>summary{font-weight:700;font-size:14px}det
 .xaspf{display:flex;justify-content:space-between;margin-top:2px}
 
 .xapm{margin-top:8px;padding:6px 10px;border-radius:10px;background:var(--card2)}
+
+.xaflow{min-width:0!important;width:100%;table-layout:fixed}.xaflow td,.xaflow th{font-size:13px;padding:6px 4px;white-space:normal!important;overflow-wrap:anywhere}.xaflow th:first-child,.xaflow td:first-child{width:46%;text-align:left}.xaflow td:not(:first-child),.xaflow th:not(:first-child){text-align:center}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#121418">
@@ -3466,7 +3468,7 @@ const NFL_QBP={"Jacoby Brissett":{"db":331,"pdb":71,"cy":6.0,"py":1.5,"cd":7.7,"
 /* NFL quarter scores (ESPN) — tools/auto_espn.py nfl-qtr */
 var NFL_QTR={"1|NE|SEA":[[0,7,3,0],[0,0,3,10]],"1|SF|LAR":[[3,7,7,10],[0,7,0,0]],"1|TB|CIN":[[3,7,10,7],[14,10,3,6]],"1|NO|DET":[[0,0,14,10,6],[7,0,14,3,7]],"1|NYJ|TEN":[[7,3,10,3],[3,0,0,7]],"1|BAL|IND":[[14,17,0,10],[6,7,3,7]],"1|ATL|PIT":[[7,0,3,3],[3,10,0,7]],"1|CHI|CAR":[[14,17,14,14],[7,17,7,6]],"1|CLE|JAX":[[0,0,3,7],[14,10,10,0]],"1|BUF|HOU":[[3,21,3,9],[7,14,0,10]],"1|MIA|LV":[[0,6,7,0],[7,10,10,0]],"1|GB|MIN":[[9,10,3,0],[3,7,7,22]],"1|WAS|PHI":[[3,6,0,13],[0,14,3,7]],"1|ARI|LAC":[[7,6,3,10],[7,0,7,0]],"1|DAL|NYG":[[0,7,7,6],[7,7,7,7]],"1|DEN|KC":[[7,0,3,0],[7,7,10,7]],"2|DET|BUF":[[0,10,7,14],[14,13,7,7]],"2|CAR|ATL":[[10,10,14,0],[0,3,0,0]],"2|MIN|CHI":[[3,3,0,3],[3,0,0,0]],"2|PHI|TEN":[[0,14,3,7],[7,3,7,3]],"2|PIT|NE":[[0,3,0,0],[7,3,3,7]],"2|GB|NYJ":[[0,7,0,10,3],[0,7,7,3,0]],"2|CLE|TB":[[3,3,10,7],[6,3,7,3]],"2|NO|BAL":[[0,6,3,15],[7,7,3,0]],"2|CIN|HOU":[[0,7,10,3],[0,3,3,0]],"2|JAX|DEN":[[0,10,3,0],[0,3,3,14]],"2|LV|LAC":[[0,10,7,9],[0,7,7,0]],"2|WAS|DAL":[[0,10,3,7],[10,7,10,10]],"2|SEA|ARI":[[7,0,10,14],[0,7,0,0]],"2|MIA|SF":[[0,6,0,7],[7,7,21,0]],"2|IND|KC":[[7,13,0,7,3],[10,7,7,3,6]],"2|NYG|LAR":[[0,3,3,0],[7,7,7,7]],"3|ATL|GB":[[7,10,7,11],[7,0,0,7]],"3|LAC|BUF":[[10,0,3,3],[0,10,0,14]],"3|CAR|CLE":[[0,3,6,9],[0,10,0,11]],"3|NYJ|DET":[[0,7,3,14],[0,10,7,14]],"3|HOU|IND":[[0,7,0,10],[3,10,0,6]],"3|KC|MIA":[[7,7,0,10],[7,0,3,0]],"3|TEN|NYG":[[0,0,0,7],[3,6,3,0]],"3|CIN|PIT":[[7,10,3,7],[14,3,7,6]],"3|SEA|WAS":[[0,10,7,14],[7,10,7,9]],"3|NE|JAX":[[0,3,0,3],[0,14,14,7]],"3|ARI|SF":[[0,6,7,17],[7,10,6,13]],"3|MIN|TB":[[10,7,0,6],[7,3,3,3]],"3|BAL|DAL":[[7,10,7,10],[10,3,8,10]],"3|LV|NO":[[3,13,6,13],[6,7,14,0]],"3|LAR|DEN":[[7,9,0,10],[0,0,16,14]],"3|PHI|CHI":[[0,7,0,0],[7,3,10,7]],"4|PIT|CLE":[[7,3,0,14],[0,21,0,6]],"4|IND|WAS":[[0,10,10,10],[6,0,7,0]],"4|NE|BUF":[[7,7,7,8],[0,17,0,9]],"4|NYJ|CHI":[[0,3,3,6],[7,6,7,3]],"4|JAX|CIN":[[3,10,3,6],[0,3,7,7]],"4|ARI|NYG":[[14,3,7,0],[3,16,8,9]],"4|LAR|PHI":[[3,7,0,14],[3,17,0,0]],"4|GB|TB":[[0,10,7,0],[0,7,0,7]],"4|TEN|BAL":[[7,0,3,8],[7,17,0,0]],"4|DAL|HOU":[[3,3,14,14],[10,6,7,7]],"4|MIA|MIN":[[0,0,10,0],[3,6,3,3]],"4|KC|LV":[[7,3,0,20],[7,6,0,14]],"4|DEN|SF":[[3,0,0,11],[0,3,7,14]],"4|LAC|SEA":[[3,3,7,10],[7,13,10,0]],"4|DET|CAR":[[3,13,3,7],[7,9,13,3]],"4|ATL|NO":[[14,10,7,14],[0,7,3,14]],"5|TB|DAL":[[0,7,17,0],[7,3,0,6]],"5|PHI|JAX":[[0,14,0,3],[7,0,3,9]],"5|CHI|GB":[[0,7,0,0],[7,7,9,8]],"5|HOU|TEN":[[3,9,7,7],[3,0,0,0]],"5|CIN|MIA":[[7,14,7,3],[7,0,3,14]],"5|LV|NE":[[7,0,3,7],[14,7,14,10]],"5|MIN|NO":[[3,3,7,10],[0,7,6,0]],"5|CLE|NYJ":[[3,3,0,6],[7,0,0,10]],"5|IND|PIT":[[6,7,6,3],[7,10,7,10]],"5|NYG|WAS":[[3,0,10,14,0],[6,6,7,8,0]],"5|DEN|LAC":[[7,3,0,13],[0,3,14,0]],"5|DET|ARI":[[0,24,14,7],[7,0,7,7]],"5|SF|SEA":[[7,14,0,11],[7,6,13,3]],"5|BAL|ATL":[[3,6,6,8,7],[7,7,3,6,0]],"5|BUF|LAR":[[6,7,6,15,3],[0,7,7,20,0]],"6|SEA|DEN":[[3,0,0,11,0],[0,14,0,0,3]],"6|HOU|JAX":[[7,10,14,3],[0,14,7,10]],"6|CHI|ATL":[[14,7,7,3],[0,7,0,16]],"6|BAL|CLE":[[10,0,0,0],[0,0,3,10]],"6|TEN|IND":[[0,0,6,20],[0,13,0,7]],"6|NYJ|NE":[[3,0,10,6],[7,10,0,9]],"6|NO|NYG":[[0,10,17,7],[7,3,0,17]],"6|CAR|PHI":[[3,7,3,12],[0,7,0,7]],"6|PIT|TB":[[0,3,0,16,7],[3,10,3,3,0]],"6|ARI|LAR":[[3,6,3,6],[3,6,0,7]],"6|LAC|KC":[[3,0,3,0],[9,10,0,3]],"6|BUF|LV":[[3,10,10,10],[7,6,0,17]],"6|DAL|GB":[[0,0,7,6],[7,10,3,3]],"6|WAS|SF":[[3,0,7,7],[13,7,3,0]],"7|NE|CHI":[[0,14,7,3],[10,10,7,3]],"7|PIT|NO":[[3,10,3,0],[0,10,0,0]],"7|SF|ATL":[[7,7,0,6],[3,9,7,10]],"7|CLE|TEN":[[7,10,0,10],[14,0,0,10]],"7|IND|MIN":[[7,3,0,0],[0,6,0,10]],"7|MIA|NYJ":[[14,7,0,7],[7,0,7,11]],"7|TB|CAR":[[7,26,3,7],[0,6,0,7]],"7|CIN|BAL":[[0,0,14,21],[7,6,0,0]],"7|NYG|HOU":[[7,7,0,7,6],[3,11,0,7,0]],"7|DEN|ARI":[[6,7,14,3],[0,6,7,3]],"7|GB|DET":[[7,0,7,3],[7,3,7,3]],"7|LAR|LV":[[7,21,0,7],[3,3,0,15]],"7|KC|SEA":[[0,0,3,0],[0,10,3,7]],"7|DAL|PHI":[[10,10,8,10],[7,7,7,0]],"8|CAR|GB":[[3,7,3,6],[6,14,7,0]],"8|BAL|BUF":[[7,0,3,0],[10,6,7,13]],"8|TEN|CIN":[[13,0,8,15,0],[0,14,9,13,7]],"8|ARI|DAL":[[0,3,7,20,3],[7,7,3,13,0]],"8|MIN|DET":[[0,7,0,8],[3,3,6,7]],"8|LV|NYJ":[[7,7,14,10],[6,17,7,3]],"8|CLE|PIT":[[0,6,0,0],[7,13,7,0]],"8|ATL|TB":[[0,0,0,0],[6,3,7,0]],"8|IND|JAX":[[0,0,7,0],[7,21,14,0]],"8|LAC|LAR":[[3,6,0,0],[3,7,14,0]],"8|KC|DEN":[[7,10,7,0],[3,10,0,15]],"8|NE|MIA":[[3,0,14,7],[3,10,0,6]],"8|PHI|WAS":[[10,0,0,0],[3,10,3,11]],"8|CHI|SEA":[[7,6,7,14],[0,9,0,8]],"9|JAX|BAL":[[10,7,3,13],[3,0,0,7]],"9|CIN|ATL":[[7,17,7,3],[10,0,7,0]],"9|DAL|IND":[[3,14,3,7],[7,0,10,6]],"9|NYJ|KC":[[6,6,0,0],[0,14,14,7]],"9|DET|MIA":[[3,3,10,3],[3,0,3,3]],"9|CLE|NO":[[0,3,3,10,6],[3,0,3,10,7]],"9|NYG|PHI":[[6,0,7,6],[8,0,0,3]],"9|LAR|WAS":[[3,3,7,7],[3,7,3,0]],"9|DEN|CAR":[[10,3,0,13],[0,7,7,7]],"9|HOU|LAC":[[10,14,7,13],[3,6,0,13]],"9|GB|NE":[[14,10,18,3],[0,14,7,6]],"9|LV|SF":[[0,10,7,0],[14,7,14,3]],"9|ARI|SEA":[[3,0,0,0],[0,14,3,0]],"9|TB|CHI":[[0,6,7,11],[14,3,7,3]]};
 /* NHL data loads on demand from nhl_data.js (next to index.html) */ var NHL_GEN="",NHL_DATE="",NHL_TOM="",NHL_SLATE=[],NHL_NEXT=[],NHL_LATER=[],NHL_TEAM={},NHL_RES=[],NHL_P={},NHL_G={},NHL_INJ={},NHL_H2HP={},NHL_LZ=[],NHL_MODEL=null,NHL_PRES=[],NHL_PRES_D=null,NHL_RECENT=[],NHL_PROPS=[],NHL_FOM={};
-var BUILD_AT="2026-11-09T16:13:29Z";
+var BUILD_AT="2026-11-09T16:18:40Z";
 /* ================= 🏒 NHL section =================
    Data: NHL_* from nhl_data.js (official NHL API box scores, standings, team stats, built by tools/nhlfetch.py)
    + player props / game lines from the PropLine feed (baked in nhl_data.js, refreshed live by liveodds.js).
@@ -5439,7 +5441,7 @@ function xaPPRank(nm){const w=nhWho(nm);if(!w||typeof NHL_PP==="undefined")retur
   L.sort((a,b)=>b[1]-a[1]);const i=L.findIndex(x=>x[0]===nm);return i<0?null:i+1}
 function xaPPSay(nm){const r=xaPP(nm);if(!r||r.length<3)return "";const av=a=>a.reduce((s,x)=>s+x[1],0)/a.length/60,l5=r.slice(-5),rk=xaPPRank(nm);
   const unit=rk==null?"":rk<=5?" — <b>on the top power-play unit</b>":rk<=10?" — on the second unit":" — little power-play time";
-  return `Power-play time last ${l5.length}: <b>${av(l5).toFixed(1)} min/game</b> (last ${r.length}: ${av(r).toFixed(1)})${rk?` · ${rk}${rk===1?"st":rk===2?"nd":rk===3?"rd":"th"} on his team over the last 3 games`:""}${unit}.`}
+  return `Power-play time last ${l5.length}: <b>${av(l5).toFixed(1)} min/game</b> (last ${r.length}: ${av(r).toFixed(1)})${rk?` · ${xaOrd(rk)} on his team over the last 3 games`:""}${unit}.`}
 
 /* ---------- 🏒 NHL extras: expected goals, shooting %, PP vs even-strength points, faceoff matchups, projected saves, game flow ---------- */
 function xaXG(nm){const w=NHL_P[nm];if(!w||!w.sz||typeof NHL_LZ==="undefined"||!NHL_LZ.length)return null;
@@ -5452,7 +5454,7 @@ function xaFinishSay(nm){const X=xaXG(nm),S=xaShPct(nm);if(!X&&!S)return "";cons
   return out.join(" ")}
 function xaPPSplitSay(nm){const w=NHL_P[nm];if(!w||!w.ppp||!w.s)return "";const [pg,pa,sh,n]=w.ppp,pts=w.s[3],pp=pg+pa;if(!pts)return "";
   const g=nhGameOf(w.tm),opp=g?(g.a===w.tm?g.h:g.a):null,O=opp&&NHL_TEAM[opp];
-  return `<b>${pp}</b> of his ${pts} points on the power play (${Math.round(pp/pts*100)}%)${sh?`, ${sh} short-handed`:""}, ${pts-pp-sh} at even strength.${O&&O.pen?` Tonight ${xaEsc(opp)} take <b>${O.pen[0].toFixed(1)}</b> penalties a game${O.pkR?` and rank ${O.pkR}${O.pkR===1?"st":O.pkR===2?"nd":O.pkR===3?"rd":"th"} on the penalty kill`:""}${pp/pts>=.4&&O.pen[0]<=2.8?" — fewer power plays likely, a knock on his points":pp/pts>=.4&&O.pen[0]>=3.6?" — lots of power plays likely, good for his points":""}.`:""}`}
+  return `<b>${pp}</b> of his ${pts} points on the power play (${Math.round(pp/pts*100)}%)${sh?`, ${sh} short-handed`:""}, ${pts-pp-sh} at even strength.${O&&O.pen?` Tonight ${xaEsc(opp)} take <b>${O.pen[0].toFixed(1)}</b> penalties a game${O.pkR?` and rank ${xaOrd(O.pkR)} on the penalty kill`:""}${pp/pts>=.4&&O.pen[0]<=2.8?" — fewer power plays likely, a knock on his points":pp/pts>=.4&&O.pen[0]>=3.6?" — lots of power plays likely, good for his points":""}.`:""}`}
 function xaFOSay(nm){const w=NHL_P[nm];if(!w||!w.s||!(w.s[9]+w.s[10]))return "";const g=nhGameOf(w.tm),opp=g?(g.a===w.tm?g.h:g.a):null;if(!opp)return "";
   const M=(typeof NHL_FOM!=="undefined"&&NHL_FOM[nm])||{};
   const cs=Object.entries(NHL_P).filter(([n,p])=>p.tm===opp&&p.s&&p.s[0]&&(p.s[9]+p.s[10])/p.s[0]>=5).sort((a,b)=>(b[1].s[9]+b[1].s[10])-(a[1].s[9]+a[1].s[10])).slice(0,4);
@@ -5467,15 +5469,18 @@ function xaSavesSay(nm,line){const P=xaSavesProj(nm);if(!P)return "";
 function xaFlowCard(g){const R=[g.a,g.h].map(t=>[t,NHL_TEAM[t]]).filter(x=>x[1]);if(!R.length)return "";const rc=a=>a?`${a[0]}-${a[1]}-${a[2]}`:"–",f=v=>v==null?"–":(+v).toFixed(2);
   const A=NHL_TEAM[g.a],H=NHL_TEAM[g.h];const ppA=A&&H&&A.pen&&H.pen?(A.pen[1]+H.pen[0])/2:null,ppH=A&&H&&A.pen&&H.pen?(H.pen[1]+A.pen[0])/2:null;
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🧮 Game flow</h2><div class="small" style="margin-bottom:8px">Penalties, empty-net goals and how each team plays the 3rd period this season.</div>
-   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th>${R.map(([t])=>`<th>${xaEsc(t)}</th>`).join("")}</tr></thead><tbody>
-   <tr><td>Penalties taken / drawn per game</td>${R.map(([,T])=>`<td>${T.pen?`${T.pen[0].toFixed(1)} / ${T.pen[1].toFixed(1)}`:"–"}</td>`).join("")}</tr>
-   <tr><td>Power play / penalty kill</td>${R.map(([,T])=>`<td>${T.pp!=null?T.pp+"%":"–"} / ${T.pk!=null?T.pk+"%":"–"}</td>`).join("")}</tr>
-   <tr><td>Empty-net goals for / against per game</td>${R.map(([,T])=>`<td>${T.eng?`${f(T.eng[0])} / ${f(T.eng[1])}`:"–"}<div class="small">${T.eng?`ENG in ${T.eng[4]}% of games`:""}</div></td>`).join("")}</tr>
-   <tr><td>3rd-period goals for / against</td>${R.map(([,T])=>`<td>${T.per?`${f(T.per[2][0])} / ${f(T.per[2][1])}`:"–"}</td>`).join("")}</tr>
-   <tr><td>Leading after 2 (W-L-OTL)</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.lead)}</td>`).join("")}</tr>
+   <div class="nbatbl"><table class="bxt xat xaflow"><thead><tr><th>per game</th>${R.map(([t])=>`<th>${xaEsc(t)}</th>`).join("")}</tr></thead><tbody>
+   <tr><td>Penalties taken / drawn</td>${R.map(([,T])=>`<td>${T.pen?`${T.pen[0].toFixed(1)} / ${T.pen[1].toFixed(1)}`:"–"}</td>`).join("")}</tr>
+   <tr><td>PP% / PK%</td>${R.map(([,T])=>`<td>${T.pp!=null?T.pp+"%":"–"} / ${T.pk!=null?T.pk+"%":"–"}</td>`).join("")}</tr>
+   <tr><td>Empty-net goals for / ag.</td>${R.map(([,T])=>`<td>${T.eng?`${f(T.eng[0])} / ${f(T.eng[1])}`:"–"}</td>`).join("")}</tr>
+   <tr><td>Games with an empty-netter</td>${R.map(([,T])=>`<td>${T.eng?T.eng[4]+"%":"–"}</td>`).join("")}</tr>
+   <tr><td>3rd-period goals for / ag.</td>${R.map(([,T])=>`<td>${T.per?`${f(T.per[2][0])} / ${f(T.per[2][1])}`:"–"}</td>`).join("")}</tr>
+   <tr><td>Up after 2 periods (W-L-OTL)</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.lead)}</td>`).join("")}</tr>
    <tr><td>Tied after 2</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.tied)}</td>`).join("")}</tr>
-   <tr><td>Trailing after 2</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.trail)}</td>`).join("")}</tr>
+   <tr><td>Down after 2</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.trail)}</td>`).join("")}</tr>
    </tbody></table></div>${ppA!=null?`<div class="small" style="margin-top:8px">Expected power plays tonight: <b>${xaEsc(g.a)} ${ppA.toFixed(1)}</b> · <b>${xaEsc(g.h)} ${ppH.toFixed(1)}</b> (each side's penalties drawn blended with the other's penalties taken). More whistles = more power-play points and usually more goals.</div>`:""}</div>`}
+
+function xaOrd(n){const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
 /* ---------- Shared pages: combined record, beginner guide; share images; install-as-app ---------- */
 
 /* ===== Combined record (NFL Plays of the Week + NBA Plays of the day) ===== */

@@ -284,7 +284,7 @@ function xaPPRank(nm){const w=nhWho(nm);if(!w||typeof NHL_PP==="undefined")retur
   L.sort((a,b)=>b[1]-a[1]);const i=L.findIndex(x=>x[0]===nm);return i<0?null:i+1}
 function xaPPSay(nm){const r=xaPP(nm);if(!r||r.length<3)return "";const av=a=>a.reduce((s,x)=>s+x[1],0)/a.length/60,l5=r.slice(-5),rk=xaPPRank(nm);
   const unit=rk==null?"":rk<=5?" — <b>on the top power-play unit</b>":rk<=10?" — on the second unit":" — little power-play time";
-  return `Power-play time last ${l5.length}: <b>${av(l5).toFixed(1)} min/game</b> (last ${r.length}: ${av(r).toFixed(1)})${rk?` · ${rk}${rk===1?"st":rk===2?"nd":rk===3?"rd":"th"} on his team over the last 3 games`:""}${unit}.`}
+  return `Power-play time last ${l5.length}: <b>${av(l5).toFixed(1)} min/game</b> (last ${r.length}: ${av(r).toFixed(1)})${rk?` · ${xaOrd(rk)} on his team over the last 3 games`:""}${unit}.`}
 
 /* ---------- 🏒 NHL extras: expected goals, shooting %, PP vs even-strength points, faceoff matchups, projected saves, game flow ---------- */
 function xaXG(nm){const w=NHL_P[nm];if(!w||!w.sz||typeof NHL_LZ==="undefined"||!NHL_LZ.length)return null;
@@ -297,7 +297,7 @@ function xaFinishSay(nm){const X=xaXG(nm),S=xaShPct(nm);if(!X&&!S)return "";cons
   return out.join(" ")}
 function xaPPSplitSay(nm){const w=NHL_P[nm];if(!w||!w.ppp||!w.s)return "";const [pg,pa,sh,n]=w.ppp,pts=w.s[3],pp=pg+pa;if(!pts)return "";
   const g=nhGameOf(w.tm),opp=g?(g.a===w.tm?g.h:g.a):null,O=opp&&NHL_TEAM[opp];
-  return `<b>${pp}</b> of his ${pts} points on the power play (${Math.round(pp/pts*100)}%)${sh?`, ${sh} short-handed`:""}, ${pts-pp-sh} at even strength.${O&&O.pen?` Tonight ${xaEsc(opp)} take <b>${O.pen[0].toFixed(1)}</b> penalties a game${O.pkR?` and rank ${O.pkR}${O.pkR===1?"st":O.pkR===2?"nd":O.pkR===3?"rd":"th"} on the penalty kill`:""}${pp/pts>=.4&&O.pen[0]<=2.8?" — fewer power plays likely, a knock on his points":pp/pts>=.4&&O.pen[0]>=3.6?" — lots of power plays likely, good for his points":""}.`:""}`}
+  return `<b>${pp}</b> of his ${pts} points on the power play (${Math.round(pp/pts*100)}%)${sh?`, ${sh} short-handed`:""}, ${pts-pp-sh} at even strength.${O&&O.pen?` Tonight ${xaEsc(opp)} take <b>${O.pen[0].toFixed(1)}</b> penalties a game${O.pkR?` and rank ${xaOrd(O.pkR)} on the penalty kill`:""}${pp/pts>=.4&&O.pen[0]<=2.8?" — fewer power plays likely, a knock on his points":pp/pts>=.4&&O.pen[0]>=3.6?" — lots of power plays likely, good for his points":""}.`:""}`}
 function xaFOSay(nm){const w=NHL_P[nm];if(!w||!w.s||!(w.s[9]+w.s[10]))return "";const g=nhGameOf(w.tm),opp=g?(g.a===w.tm?g.h:g.a):null;if(!opp)return "";
   const M=(typeof NHL_FOM!=="undefined"&&NHL_FOM[nm])||{};
   const cs=Object.entries(NHL_P).filter(([n,p])=>p.tm===opp&&p.s&&p.s[0]&&(p.s[9]+p.s[10])/p.s[0]>=5).sort((a,b)=>(b[1].s[9]+b[1].s[10])-(a[1].s[9]+a[1].s[10])).slice(0,4);
@@ -312,12 +312,15 @@ function xaSavesSay(nm,line){const P=xaSavesProj(nm);if(!P)return "";
 function xaFlowCard(g){const R=[g.a,g.h].map(t=>[t,NHL_TEAM[t]]).filter(x=>x[1]);if(!R.length)return "";const rc=a=>a?`${a[0]}-${a[1]}-${a[2]}`:"–",f=v=>v==null?"–":(+v).toFixed(2);
   const A=NHL_TEAM[g.a],H=NHL_TEAM[g.h];const ppA=A&&H&&A.pen&&H.pen?(A.pen[1]+H.pen[0])/2:null,ppH=A&&H&&A.pen&&H.pen?(H.pen[1]+A.pen[0])/2:null;
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🧮 Game flow</h2><div class="small" style="margin-bottom:8px">Penalties, empty-net goals and how each team plays the 3rd period this season.</div>
-   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th>${R.map(([t])=>`<th>${xaEsc(t)}</th>`).join("")}</tr></thead><tbody>
-   <tr><td>Penalties taken / drawn per game</td>${R.map(([,T])=>`<td>${T.pen?`${T.pen[0].toFixed(1)} / ${T.pen[1].toFixed(1)}`:"–"}</td>`).join("")}</tr>
-   <tr><td>Power play / penalty kill</td>${R.map(([,T])=>`<td>${T.pp!=null?T.pp+"%":"–"} / ${T.pk!=null?T.pk+"%":"–"}</td>`).join("")}</tr>
-   <tr><td>Empty-net goals for / against per game</td>${R.map(([,T])=>`<td>${T.eng?`${f(T.eng[0])} / ${f(T.eng[1])}`:"–"}<div class="small">${T.eng?`ENG in ${T.eng[4]}% of games`:""}</div></td>`).join("")}</tr>
-   <tr><td>3rd-period goals for / against</td>${R.map(([,T])=>`<td>${T.per?`${f(T.per[2][0])} / ${f(T.per[2][1])}`:"–"}</td>`).join("")}</tr>
-   <tr><td>Leading after 2 (W-L-OTL)</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.lead)}</td>`).join("")}</tr>
+   <div class="nbatbl"><table class="bxt xat xaflow"><thead><tr><th>per game</th>${R.map(([t])=>`<th>${xaEsc(t)}</th>`).join("")}</tr></thead><tbody>
+   <tr><td>Penalties taken / drawn</td>${R.map(([,T])=>`<td>${T.pen?`${T.pen[0].toFixed(1)} / ${T.pen[1].toFixed(1)}`:"–"}</td>`).join("")}</tr>
+   <tr><td>PP% / PK%</td>${R.map(([,T])=>`<td>${T.pp!=null?T.pp+"%":"–"} / ${T.pk!=null?T.pk+"%":"–"}</td>`).join("")}</tr>
+   <tr><td>Empty-net goals for / ag.</td>${R.map(([,T])=>`<td>${T.eng?`${f(T.eng[0])} / ${f(T.eng[1])}`:"–"}</td>`).join("")}</tr>
+   <tr><td>Games with an empty-netter</td>${R.map(([,T])=>`<td>${T.eng?T.eng[4]+"%":"–"}</td>`).join("")}</tr>
+   <tr><td>3rd-period goals for / ag.</td>${R.map(([,T])=>`<td>${T.per?`${f(T.per[2][0])} / ${f(T.per[2][1])}`:"–"}</td>`).join("")}</tr>
+   <tr><td>Up after 2 periods (W-L-OTL)</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.lead)}</td>`).join("")}</tr>
    <tr><td>Tied after 2</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.tied)}</td>`).join("")}</tr>
-   <tr><td>Trailing after 2</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.trail)}</td>`).join("")}</tr>
+   <tr><td>Down after 2</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.trail)}</td>`).join("")}</tr>
    </tbody></table></div>${ppA!=null?`<div class="small" style="margin-top:8px">Expected power plays tonight: <b>${xaEsc(g.a)} ${ppA.toFixed(1)}</b> · <b>${xaEsc(g.h)} ${ppH.toFixed(1)}</b> (each side's penalties drawn blended with the other's penalties taken). More whistles = more power-play points and usually more goals.</div>`:""}</div>`}
+
+function xaOrd(n){const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
