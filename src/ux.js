@@ -63,3 +63,12 @@ function uxJumpOpen(){const L=uxJumpList();let s=document.getElementById("uxjump
   s.className="open";const close=()=>{s.className=""};s.querySelector(".ujback").onclick=close;s.querySelector("[data-ujx]").onclick=close;
   s.querySelectorAll("[data-uj]").forEach(x=>x.onclick=()=>{const h=L[+x.dataset.uj];close();if(h){const y=h.getBoundingClientRect().top+scrollY-(innerWidth<700?150:90);scrollTo({top:y,behavior:"smooth"});if(h.tagName==="SUMMARY"&&!h.parentElement.open)h.parentElement.open=true}})}
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-nhtab],[data-nbgt],[data-nfgt],[data-xinst],[data-tt]"))setTimeout(uxJump,80)},true);
+
+/* 👁 Simple / Detailed view: Simple hides the deep-dive extras (they stay one tap away by switching back) */
+function uxViewGet(){try{return LS.get("view","detailed")}catch(e){return "detailed"}}
+function uxViewApply(){const v=uxViewGet();document.body.classList.toggle("simple",v==="simple");const b=document.getElementById("viewBtn");if(b){b.textContent=v==="simple"?"Simple":"Detailed";b.title=v==="simple"?"Simple view — tap for all the details":"Detailed view — tap for a simpler page"}
+  document.querySelectorAll("[data-view-set]").forEach(x=>x.classList.toggle("on",x.dataset.viewSet===v))}
+function uxViewSeg(){const v=uxViewGet();return `<div class="seg">${[["simple","✨ Simple"],["detailed","🔬 Detailed"]].map(([k,l])=>`<button data-view-set="${k}" class="${v===k?"on":""}">${l}</button>`).join("")}</div><div class="small" style="margin-top:4px">Simple shows the verdict, projection and odds; Detailed adds every split, chart and analysis card.</div>`}
+function uxViewSet(v){try{LS.set("view",v)}catch(e){}uxViewApply();if(typeof toast!=="undefined")toast(v==="simple"?"Simple view — just the essentials":"Detailed view — everything");if(typeof uxJump!=="undefined")setTimeout(uxJump,50)}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-view-set]");if(b){uxViewSet(b.dataset.viewSet);return}if(e.target.closest&&e.target.closest("#viewBtn"))uxViewSet(uxViewGet()==="simple"?"detailed":"simple")});
+uxViewApply();window.addEventListener("load",uxViewApply);

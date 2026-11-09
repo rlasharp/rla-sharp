@@ -78,7 +78,7 @@ function moreOpen(){
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
   sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NHL",nhl)}${grp("NFL",nfl)}${grp("More",all)}
    <h3>Odds format</h3><div class="seg" id="msOdds"><button data-f="am" class="${of==="am"?"on":""}">American (−110)</button><button data-f="dec" class="${of==="dec"?"on":""}">Decimal (1.91)</button></div>
-   <h3>Theme</h3>${typeof uxThemeSeg!=="undefined"?uxThemeSeg():""}
+   <h3>Theme</h3>${typeof uxThemeSeg!=="undefined"?uxThemeSeg():""}<h3>View</h3>${typeof uxViewSeg!=="undefined"?uxViewSeg():""}
    <button class="btn" id="msClose" style="width:100%;margin-top:14px">Close</button></div>`;
   sh.querySelectorAll("#msOdds button").forEach(b=>b.onclick=()=>{if(typeof setOddsFmt!=="undefined"){setOddsFmt(b.dataset.f);if(typeof syncOddsBtns!=="undefined")syncOddsBtns();sh.className="";route()}});
   sh.className="open";const close=()=>{sh.className=""};
@@ -146,14 +146,17 @@ function viewToday(){
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}
   ${PT.length?`<h2 class="tsh">⭐ Today's plays</h2>${PT.length>1?todayTabs("plays",PT,pc):""}<div class="tsec">${(PT.find(x=>x[0]===pc)||PT[0])[2]}</div>`:""}
-  <h2 class="tsh">🔥 Best of tonight</h2><div id="xTonight" class="tsec">${typeof xTonightCard!=="undefined"?xTonightCard().replace(/<h2[^>]*>.*?<\/h2>/,""):""}</div>
-  <h2 class="tsh">🗓️ Games</h2>${todayTabs("games",GT,gc)}<div class="card tsec">${(GT.find(x=>x[0]===gc)||GT[0])[2]()}
+  <h2 class="tsh">🔥 Best of tonight</h2><div id="xTonight" class="tsec tcap5">${typeof xTonightCard!=="undefined"?xTonightCard().replace(/<h2[^>]*>.*?<\/h2>/,""):""}</div>
+  <h2 class="tsh">🗓️ Games</h2>${todayTabs("games",GT,gc)}<div class="card tsec tcap5">${(GT.find(x=>x[0]===gc)||GT[0])[2]()}<button class="btn tmorebtn" data-tcap="1">Show all</button>
    <a href="${gc==="nba"?"#nba":gc==="nhl"?"#nhl":"#games"}" class="small" style="display:block;margin-top:8px">All ${gc.toUpperCase()} games, matchups &amp; props →</a></div>
   ${moves||role?`<details class="tmore"><summary>📈 Line moves${role?" &amp; role changes":""} <span class="small">— tap to open</span></summary><div class="grid g2" style="margin-top:10px">${moves}${role}</div></details>`:""}
   ${favs().length?"":`<p class="small" style="margin-top:14px">⭐ Tip: tap ☆ Save on any player or team page to pin them here every day.</p>`}
   <details class="tmore"><summary>🕒 When the data was updated</summary><div style="margin-top:8px">${updatedHtml("nba")}${updatedHtml("nfl")}</div></details>`;
   host.querySelectorAll("[data-tt]").forEach(b=>b.onclick=()=>{const [k,v]=b.dataset.tt.split("|");TODAY_T[k]=v;const y=scrollY;viewToday();scrollTo(0,y)});
   if(typeof freshPaint!=="undefined")freshPaint();
+  host.querySelectorAll(".tcap5").forEach(c=>{const R=[...c.querySelectorAll(".nher,.tgr")],b0=c.querySelector("[data-tcap]");if(R.length<=5){if(b0)b0.remove();return}
+    R.slice(5).forEach(r=>r.classList.add("tcaph"));const b=b0||(c.insertAdjacentHTML("beforeend",`<button class="btn tmorebtn" data-tcap="1"></button>`),c.querySelector("[data-tcap]"));
+    b.textContent=`Show all ${R.length}`;b.onclick=()=>{R.forEach(r=>r.classList.remove("tcaph"));b.remove()}});
   host.querySelectorAll("[data-bp]").forEach(b=>b.onclick=e=>{if(e.target.closest("[data-act]"))return;nbaGoPlayer(nbaUnesc(b.dataset.nm),b.dataset.bp.split("|")[0])});
   host.querySelectorAll("[data-shimg=nba]").forEach(b=>b.onclick=e=>{e.stopPropagation();shareNbaPlays()});
   host.querySelectorAll("[data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};location.hash="props"});

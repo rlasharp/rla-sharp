@@ -46,7 +46,8 @@ function nbaAnglesCard(){const HC=nbaHotCold(),R=typeof nbaRoleList!=="undefined
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-nbang]");if(!b)return;NB_ANG=b.dataset.nbang;const y=scrollY;if(typeof route!=="undefined")route();scrollTo(0,y)});
 
 /* ---------- 🧠 quick reads for NBA and NFL game pages ---------- */
-function xQuickHtml(items,foot){if(!items.length)return "";return `<div class="card nhquick" style="margin:12px 0"><h2 style="margin-bottom:6px">🔑 Key takeaways</h2>${items.slice(0,7).map(x=>`<div class="nhq ${x.c}"><span>${x.ic}</span><div>${x.t}</div></div>`).join("")}<div class="small" style="margin-top:6px">${foot||"Automatic notes from this season's numbers — reasons to look closer, not picks."}</div></div>`}
+function xQuickTidy(items,max){const by=new Map();for(const x of items){const y=by.get(x.ic);if(y){if(y.n<2){y.t+=" · "+x.t;y.n++}}else by.set(x.ic,{...x,n:1})}return [...by.values()].slice(0,max||5)}
+function xQuickHtml(items,foot){if(!items.length)return "";items=xQuickTidy(items,5);return `<div class="card nhquick" style="margin:12px 0"><h2 style="margin-bottom:6px">🔑 Key takeaways</h2>${items.slice(0,7).map(x=>`<div class="nhq ${x.c}"><span>${x.ic}</span><div>${x.t}</div></div>`).join("")}<div class="small" style="margin-top:6px">${foot||"Automatic notes from this season's numbers — reasons to look closer, not picks."}</div></div>`}
 function nbaQuick(g){const out=[],S=(c,ic,t)=>out.push({c,ic,t});const ra=(typeof NBA_REST!=="undefined"&&NBA_REST)||{};
   for(const [t,o] of [[g.a,g.h],[g.h,g.a]]){const r=ra[t],ro=ra[o];if(r&&ro&&r.rest===0&&ro.rest>0)S("dn","😴",`<b>${nbaEsc(nbaShort(t))}</b> are on a back-to-back — ${nbaEsc(nbaShort(o))} are rested.`)}
   const k=typeof nbaKeyOutAll!=="undefined"?nbaKeyOutAll(g):[];if(k.length)S("dn","🚑",`Out: <b>${k.map(nbaEsc).join(", ")}</b> — lines usually already account for it; player props for teammates may not.`);

@@ -507,7 +507,7 @@ function nbaPropCard(r,idx){
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
   ${typeof xaVerdictHtml!=="undefined"?xaVerdictHtml("nba",nm,k,line):""}${typeof xaProjLine!=="undefined"?xaProjLine(nm,k,line):""}${typeof xaSitChips!=="undefined"?xaSitChips(nm,k,line):""}
   ${(idx||0)<100?`<a href="#nba-player-${encodeURIComponent(nm)}" class="gopl" data-gopl="${nbaEsc(nm)}|${k}">📊 ${nbaEsc(nm.split(" ").filter(w=>!/^(Jr\.?|Sr\.?|II|III|IV)$/.test(w)).slice(-1)[0])}'s stats &amp; all his lines →</a>`:""}
-  ${opp&&p.p5?(()=>{const d=nbaDvp(opp,p.p5,k,5);if(!d.rows.length)return "";const av=d.rows.reduce((s,r)=>s+r.v,0)/d.rows.length;return `<div class="small" style="margin-top:6px">${opp} last 5: allowed ${nbaF(av)} ${NBA_MK[k][2]} a game to ${nbaPosWord(p.p5)} (NBA avg ${nbaF(d.lg)}) — <b class="${av>d.lg?"up":"dn"}">${av>d.lg?"easier":"tougher"}</b></div>`})():""}
+  <div class="xadeep">${opp&&p.p5?(()=>{const d=nbaDvp(opp,p.p5,k,5);if(!d.rows.length)return "";const av=d.rows.reduce((s,r)=>s+r.v,0)/d.rows.length;return `<div class="small" style="margin-top:6px">${opp} last 5: allowed ${nbaF(av)} ${NBA_MK[k][2]} a game to ${nbaPosWord(p.p5)} (NBA avg ${nbaF(d.lg)}) — <b class="${av>d.lg?"up":"dn"}">${av>d.lg?"easier":"tougher"}</b></div>`})():""}</div>
   ${typeof xaPanel!=="undefined"?xaPanel("nba",nm,k,line,PXSIDE):""}
   </div>`;
 }
@@ -909,7 +909,7 @@ function nbaMiniBars(vals,line,labs){
 function nbaLineRow(nm,r){
       let [,k,line,op,up,book]=r;const main=line,alt=typeof loAltOdds!=="undefined"?loAltOdds(nm,k):null;if(alt){line=alt.line;op=alt.o;up=alt.u;book=alt.ob||alt.ub||""}
       const l6=nbaAllG(nm).slice(-6),vals=l6.map(o=>nbaVal(o.x,k)),ov=vals.filter(v=>v>line).length;
-      const lean=l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
+      const V0=typeof xaVerdict!=="undefined"?xaVerdict("nba",nm,k,line):null;const lean=V0?(V0.v==="o"?["o","Leans over"]:V0.v==="u"?["u","Leans under"]:["n","Mixed"]):l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
       return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p">
         <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span>${typeof loStep!=="undefined"?loStep(nm,k,main):""}${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
           <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${alt?"":(typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):"")+nbaShopHtml(r)}
@@ -957,7 +957,7 @@ function nbaPlayer(el,nm){
   const tk=NB.ptk||"pts";
   const dvp=opp&&p.p5?nbaDvp(opp,p.p5,"pts",5):null,dvpAvg=dvp&&dvp.rows.length?dvp.rows.reduce((s,r)=>s+r.v,0)/dvp.rows.length:null;
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
-  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
+  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk","sb"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div><div class="small swh">👆 Swipe the chart left or right for the next prop</div>
 ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null;return {fga:fg0,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":"rest"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
     <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":"No prop lines posted for him today."}</span></div>`:"");

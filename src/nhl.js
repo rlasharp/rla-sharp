@@ -326,7 +326,7 @@ function nhQuick(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},out=[];const S
   if(A.otp!=null&&H.otp!=null&&A.otp+H.otp>=60)S("n","⏱️",`Both teams go to overtime a lot (${A.otp}% / ${H.otp}%) — the 60-minute line and puck line get riskier.`);
   if(typeof xaTakeaways!=="undefined")out.push(...xaTakeaways("nhl",g));
   if(!out.length)return "";
-  return `<div class="card nhquick"><h2 style="margin-bottom:6px">🔑 Key takeaways</h2>${out.slice(0,8).map(x=>`<div class="nhq ${x.c}"><span>${x.ic}</span><div>${x.t}</div></div>`).join("")}<div class="small" style="margin-top:6px">Automatic notes from this season's numbers — the reasons to look closer, not picks.</div></div>`}
+  return `<div class="card nhquick"><h2 style="margin-bottom:6px">🔑 Key takeaways</h2>${(typeof xQuickTidy!=="undefined"?xQuickTidy(out,5):out.slice(0,6)).map(x=>`<div class="nhq ${x.c}"><span>${x.ic}</span><div>${x.t}</div></div>`).join("")}<div class="small" style="margin-top:6px">Automatic notes from this season's numbers — the reasons to look closer, not picks.</div></div>`}
 /* one comparison row with mirrored bars (rank strength) */
 function nhCRow(lab,va,ra,vh,rh,tip){const bw=r=>r?Math.round((33-r)/32*100):0,bet=ra&&rh&&ra!==rh?(ra<rh?"a":"h"):"";
   const pill=r=>r?`<span class="nhpill ${nhRkC(r)}">${nhOrd(r)}</span>`:"";

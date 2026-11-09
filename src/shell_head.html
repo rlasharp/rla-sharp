@@ -639,9 +639,18 @@ details.xa{margin-top:10px}details.xa>summary{font-weight:700;font-size:14px;dis
 #uxjumpb{position:fixed;right:14px;bottom:84px;z-index:55;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:9px 14px;font:inherit;font-size:13.5px;font-weight:700;box-shadow:0 6px 18px #0006;cursor:pointer}@media(min-width:700px){#uxjumpb{bottom:24px}}
 #uxjump{position:fixed;inset:0;z-index:70;pointer-events:none}#uxjump .ujback{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .2s}
 #uxjump .ujpanel{position:absolute;left:0;right:0;bottom:0;max-height:70vh;overflow:auto;background:var(--card);border-radius:18px 18px 0 0;padding:10px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .22s}
-@media(min-width:700px){#uxjump .ujpanel{left:auto;right:16px;bottom:70px;width:340px;border-radius:16px}}
-#uxjump.open{pointer-events:auto}#uxjump.open .ujback{opacity:1}#uxjump.open .ujpanel{transform:none}
+@media(min-width:700px){#uxjump .ujpanel{left:auto;right:16px;bottom:70px;width:340px;border-radius:16px;transform:translateY(24px)}}
+#uxjump .ujpanel{visibility:hidden;opacity:0;transition:transform .22s,opacity .18s,visibility 0s .22s}#uxjump.open{pointer-events:auto}#uxjump.open .ujback{opacity:1}#uxjump.open .ujpanel{transform:none;visibility:visible;opacity:1;transition:transform .22s,opacity .18s}
 #uxjump h3{margin:8px 0;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}#uxjump [data-uj]{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--text);font:inherit;font-size:15px;padding:11px 2px;cursor:pointer}
+
+/* ---- one look for analysis cards; Simple view; Today caps ---- */
+.xacard{margin-top:14px}.xacard>h2{margin:0 0 2px;font-size:18px}.xasub{font-size:13px;color:var(--muted);line-height:1.45;margin:0 0 10px}
+.xat{width:100%;border-collapse:collapse}.xat th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;text-align:left;padding:6px 6px;border-bottom:1px solid var(--line)}
+.xat td{padding:7px 6px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:top}.xat tr:last-child td{border-bottom:0}
+.xacard .nher{padding:9px 0}
+body.simple .xadeep{display:none!important}
+.viewbtn{width:auto;padding:0 10px;font-size:12px;font-weight:700;color:var(--text2)}
+.tcaph{display:none!important}.tmorebtn{display:block;width:100%;margin-top:8px}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#121418">
@@ -654,7 +663,7 @@ details.xa{margin-top:10px}details.xa>summary{font-weight:700;font-size:14px;dis
 </head>
 <body>
 <header><div class="hwrap">
-  <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div><span class="bname">Sharp</span></a><a id="fresh" class="fresh" href="#" hidden aria-label="Data freshness"></a><button id="themeBtn" class="themebtn" aria-label="Theme">🌓</button><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
+  <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div><span class="bname">Sharp</span></a><a id="fresh" class="fresh" href="#" hidden aria-label="Data freshness"></a><button id="themeBtn" class="themebtn" aria-label="Theme">🌓</button><button id="viewBtn" class="themebtn viewbtn" aria-label="Simple or detailed view">Detailed</button><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
   <a id="freshM" class="fresh freshm" href="#" hidden aria-label="Data freshness"></a><div class="psearch"><input id="plSearch" type="search" placeholder="🔍 Search player" autocomplete="off" aria-label="Search player"><div id="plRes" class="psres" hidden></div></div>
   <div id="sport" class="sportsw"><a href="#games" data-s="nfl">🏈 NFL</a><a href="#nba" data-s="nba">🏀 NBA</a><a href="#nhl" data-s="nhl">🏒 NHL</a></div>
   <nav id="nav">
