@@ -7,12 +7,13 @@
 const {chromium}=require('playwright');const fs=require('fs'),path=require('path');
 const f=process.argv[2],dir=path.dirname(f),SF=path.join(dir,'data','track.json'),OUT=path.join(dir,'track_data.js');
 let T={};try{T=JSON.parse(fs.readFileSync(SF,'utf8'))}catch(e){}
-for(const s of ['nba','nfl','nhl'])T[s]=T[s]||{};
+for(const s of ['nba','nfl','nhl','soc'])T[s]=T[s]||{};
 (async()=>{const b=await chromium.launch();const p=await b.newPage();
  await p.route(/espn|fonts\.g|cdnjs|jsdelivr|api\./,r=>r.abort());
  await p.addInitScript(()=>{window.Chart=class{constructor(){}destroy(){}update(){}};window.Chart.defaults={font:{},borderColor:''}});
  await p.goto('file://'+f+'#today');await p.waitForTimeout(800);
  await p.evaluate(()=>new Promise(r=>{if(typeof nhlEnsure==="undefined")return r();nhlEnsure(r);setTimeout(r,8000)}));
+ await p.evaluate(()=>new Promise(r=>{if(typeof socEnsure==="undefined")return r();socEnsure(()=>socPEnsure(r));setTimeout(r,8000)}));
  const R=await p.evaluate((T)=>{
   const imp=o=>o==null?null:o<0?-o/(-o+100):100/(o+100),pay=o=>o==null?.909:o>0?o/100:100/-o,log=[];
   const keep=(o,ks)=>{const x={};for(const k of ks)if(o[k]!==undefined)x[k]=o[k];return x};
@@ -42,6 +43,14 @@ for(const s of ['nba','nfl','nhl'])T[s]=T[s]||{};
       const ids=new Set(G.map(g=>g.id));S.best=nflBest().filter(b=>ids.has(b.g.id)).slice(0,10).map(b=>({nm:b.name,k:b.k,side:b.side,line:b.line,odds:b.odds,tm:b.pl.team,sc:Math.round(b.sc*100)/100}));
       S.games=G.map(g=>{const P=projectGame(g),L=LINES[g.id],m=P.shp-P.sap,E=typeof nflOddsEdges!=="undefined"?nflOddsEdges(g):[];
         return {id:g.id,a:g.away,h:g.home,p:Math.round(normCdf(m/13.5)*1000)/1000,m:Math.round(m*10)/10,tot:Math.round((P.shp+P.sap)*10)/10,L:L?{sp:L.sp,tot:L.tot}:null,edges:E.filter(e=>e.edge>=.04).map(e=>({mk:e.mk,pick:e.pick,odds:e.odds,me:Math.round(e.me*1000)/1000,bk:Math.round(e.bk*1000)/1000}))}})}}
+  // Soccer: plays of the day per ET date, locked once within 6 h of that day's first kickoff (matches with odds only)
+  if(window.SOC_OK&&typeof socPickPlays!=="undefined"){const et=iso=>new Intl.DateTimeFormat("en-CA",{timeZone:"America/Toronto"}).format(new Date(iso));const by={};
+    for(const f of SOC_FX||[])if(f.odds)(by[et(f.t)]=by[et(f.t)]||[]).push(f);
+    for(const [d,F] of Object.entries(by)){const S=T.soc[d]||(T.soc[d]={});if(S.locked)continue;const first=Math.min(...F.map(f=>Date.parse(f.t)));
+      if(first-Date.now()>6*3600e3||F.some(socStarted))continue;
+      const save=window.socDay;window.socDay=et;let P=[];try{P=socPickPlays(d)}finally{window.socDay=save}
+      if(P.length){S.plays=P;S.locked=1;log.push(`soc ${d}: locked ${P.length} plays`)}}
+    for(const S of Object.values(T.soc))for(const x of S.plays||[])if(!x.r||x.r==="pending"){const g=socGrade(x);if(g&&g.r&&g.r!=="pending"){x.r=g.r;x.v=g.why}}}
   /* ---------- grading ---------- */
   const side=(v,line,s)=>v===line?"push":((s==="o")===(v>line))?"win":"loss";
   const gradeProp=(sp,d,x)=>{
@@ -67,15 +76,18 @@ for(const s of ['nba','nfl','nhl'])T[s]=T[s]||{};
       for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r)s.plays.p++;s.recent.push({d,...x})}}
     s.best.u=Math.round(s.best.u*100)/100;s.plays.u=Math.round(s.plays.u*100)/100;for(const E of Object.values(s.edge))E[2]=Math.round(E[2]*100)/100;
     s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM[sp]=s}
+  {const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T.soc))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}
+   s.plays.u=Math.round(s.plays.u*100)/100;s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM.soc=s}
   const today=(typeof NHL_DATE!=="undefined"&&NHL_DATE&&T.nhl[NHL_DATE])||null;
   /* tonight's snapshots (latest 1 day for NBA/NHL, this week's game days for NFL) so the site can grade them live as games end */
   const etd=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Toronto"}).format(new Date()),TD={};
   for(const sp of ['nba','nhl','nfl']){const ds=Object.keys(T[sp]).filter(d=>d<=etd&&(T[sp][d].best||T[sp][d].plays)).sort().reverse().slice(0,sp==="nfl"?4:1).filter(d=>(Date.parse(etd)-Date.parse(d))/864e5<=(sp==="nfl"?6:1));
     TD[sp]=ds.map(d=>({d,best:(T[sp][d].best||[]).map(x=>keep(x,["nm","k","side","line","odds","tm","r","v"])),plays:(T[sp][d].plays||[]).map(x=>keep(x,["type","nm","k","side","line","odds","tm","mk","pick","a","h","r","v","f"]))}))}
+  TD.soc=Object.keys(T.soc).filter(d=>d>=etd&&(T.soc[d].plays||[]).length||d===etd).sort().slice(0,2).map(d=>({d,plays:T.soc[d].plays||[]}));
   return {T,SUM,todayPlays:today&&today.plays||[],today:TD,log};
  },T);
  /* keep ~60 days */
- const cut=new Date(Date.now()-60*864e5).toISOString().slice(0,10);for(const s of ['nba','nfl','nhl'])for(const d of Object.keys(R.T[s]))if(d<cut)delete R.T[s][d];
+ const cut=new Date(Date.now()-60*864e5).toISOString().slice(0,10);for(const s of ['nba','nfl','nhl','soc'])for(const d of Object.keys(R.T[s]))if(d<cut)delete R.T[s][d];
  fs.mkdirSync(path.dirname(SF),{recursive:true});fs.writeFileSync(SF,JSON.stringify(R.T));
  fs.writeFileSync(OUT,`/* tracker summaries — tools/track.js */\nvar TRACK=${JSON.stringify({sum:R.SUM,nhlPlays:R.todayPlays,today:R.today,at:new Date().toISOString()})};\n`);
  console.log("track: "+(R.log.join("; ")||"no new snapshots")+` · graded: NHL plays ${R.SUM.nhl.plays.w}-${R.SUM.nhl.plays.l}, best props NBA ${R.SUM.nba.best.w}-${R.SUM.nba.best.l} NFL ${R.SUM.nfl.best.w}-${R.SUM.nfl.best.l} NHL ${R.SUM.nhl.best.w}-${R.SUM.nhl.best.l}`);

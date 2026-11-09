@@ -73,7 +73,7 @@ def minute(s):
 def parse_box(e):
     sm = get(f"{S}{e['slug']}/summary?event={e['id']}")
     if not sm: return None
-    out = {"v": 2, "ts": {}, "p": [], "ev": []}
+    out = {"v": 3, "ts": {}, "p": [], "ev": []}
     for t in (sm.get("boxscore") or {}).get("teams", []):
         st = {s.get("name"): num(s.get("displayValue")) for s in t.get("statistics", [])}
         out["ts"][t["team"]["id"]] = [st.get(k) for k in TS]
@@ -85,9 +85,9 @@ def parse_box(e):
             for n in names:
                 if n: subs.setdefault(n, mn)
         elif ty in ("goal", "goal - header", "goal - free-kick", "penalty - scored", "own goal") or "goal" in ty and "disallowed" not in ty:
-            out["ev"].append(["g", mn, ((k.get("team") or {}).get("id"))])
+            out["ev"].append(["o" if "own" in ty else "p" if "penalty" in ty else "g", mn, ((k.get("team") or {}).get("id")), names[0] if names else None])
         elif "card" in ty:
-            out["ev"].append(["r" if "red" in ty else "y", mn, ((k.get("team") or {}).get("id"))])
+            out["ev"].append(["r" if "red" in ty else "y", mn, ((k.get("team") or {}).get("id")), names[0] if names else None])
     for side in sm.get("rosters") or []:
         tid = (side.get("team") or {}).get("id")
         for p in side.get("roster") or []:
@@ -100,7 +100,7 @@ def parse_box(e):
             out["p"].append([tid, a.get("id"), nm, ((p.get("position") or {}).get("abbreviation") or ""), 1 if starter else 0, mins]
                             + [int(st.get(k) or 0) for k in PS])
     return out
-need = [e for e in EV.values() if e["done"] and (BOX.get(e["id"]) or {}).get("v") != 2]
+need = [e for e in EV.values() if e["done"] and (BOX.get(e["id"]) or {}).get("v") != 3]
 log(f"soccer: downloading {len(need)} new box scores")
 with ThreadPoolExecutor(8) as ex:
     for e, b in zip(need, ex.map(parse_box, need)):
@@ -291,6 +291,56 @@ for f in FX:
     if miss: f["miss"] = miss
 for f in FX: f["proj"] = project(f)
 
+# ---------------- head to head: this season + the last 3 seasons (team schedules, cached for good) ----------------
+SCHF = os.path.join(R, "data/soccer_sched.json"); SCH = jload(SCHF, {})
+SLUG = {c[0]: c[1] for c in COMPS}; COMP_OF = {c[1]: c[0] for c in COMPS}
+def sched(slug, tid, yr):
+    k = f"{slug}|{tid}|{yr}"
+    if k in SCH: return SCH[k]
+    j = get(f"{S}{slug}/teams/{tid}/schedule?season={yr}")
+    rows = []
+    for e in (j or {}).get("events", []):
+        try:
+            c = e["competitions"][0]
+            if not ((c.get("status") or e.get("status") or {}).get("type") or {}).get("completed"): continue
+            H = next(x for x in c["competitors"] if x["homeAway"] == "home"); A = next(x for x in c["competitors"] if x["homeAway"] == "away")
+            sc = lambda x: int((x.get("score") or {}).get("value") if isinstance(x.get("score"), dict) else x.get("score"))
+            rows.append([e["id"], e["date"][:16], H["team"]["id"], A["team"]["id"], sc(H), sc(A),
+                         [H["team"].get("displayName"), H["team"].get("abbreviation"), H["team"].get("color")], [A["team"].get("displayName"), A["team"].get("abbreviation"), A["team"].get("color")]])
+        except Exception: pass
+    if j is not None and yr < SEASON0.year: SCH[k] = rows    # finished seasons never change: keep for good
+    return rows
+H2H, OLD_IDS = {}, {}
+for f in FX:
+    if f["c"] in ("ucl", "uel", "uecl"): slugs = [SLUG[f["c"]]]
+    else: slugs = [SLUG[f["c"]]]
+    meet = [[e["id"], e["t"][:16], e["h"], e["a"], e["hs"], e["as"], e["c"]] for e in DONE if {e["h"], e["a"]} == {f["h"], f["a"]}]
+    for slug in slugs:
+        for yr in (SEASON0.year - 1, SEASON0.year - 2, SEASON0.year - 3):
+            for r in sched(slug, f["h"], yr):
+                if {r[2], r[3]} == {f["h"], f["a"]} and r[0] not in {m[0] for m in meet}: meet.append(r[:6] + [COMP_OF.get(slug, f["c"])])
+                for tid, nm in ((r[2], r[6] if len(r) > 6 else None), (r[3], r[7] if len(r) > 7 else None)):
+                    if nm and tid not in TEAM: TEAM[tid] = {"n": nm[0], "s": nm[0], "ab": nm[1] or "?", "col": "#" + (nm[2] or "555555"), "c": []}
+    meet.sort(key=lambda r: r[1], reverse=True)
+    if meet:
+        H2H[f["id"]] = [m[0] for m in meet[:8]]
+        for m in meet[:6]:
+            if m[0] not in EV: OLD_IDS[m[0]] = m
+json.dump(SCH, open(SCHF, "w"), separators=(",", ":"), ensure_ascii=False)
+# box scores for the older meetings (downloaded once, cached with the rest)
+oneed = [m for m in OLD_IDS.values() if (BOX.get(m[0]) or {}).get("v") != 3]
+def old_box(m):
+    return parse_box({"id": m[0], "slug": SLUG.get(m[6], "eng.1")})
+with ThreadPoolExecutor(8) as ex:
+    for m, b in zip(oneed, ex.map(old_box, oneed)):
+        if b: b["old"] = 1; BOX[m[0]] = b
+json.dump(BOX, open(BOXF, "w"), separators=(",", ":"), ensure_ascii=False)
+OLD = [[m[0], m[1], m[6], m[2], m[3], m[4], m[5], (BOX.get(m[0]) or {}).get("ts", {}).get(m[2]), (BOX.get(m[0]) or {}).get("ts", {}).get(m[3]), (BOX.get(m[0]) or {}).get("ev", [])] for m in OLD_IDS.values()]
+for m in OLD_IDS.values():
+    for tid in (m[2], m[3]):
+        if tid not in TEAM: TEAM[tid] = {"n": tid, "s": tid, "ab": "?", "col": "#555555", "c": []}
+log(f"soccer: head to head for {len(H2H)} fixtures, {len(OLD)} older meetings ({len(oneed)} new box scores)")
+
 # ---------------- props join ----------------
 def find_player(name, tids):
     n = norm(name); c = [(aid, P) for aid, P in PL.items() if P["t"] in tids]
@@ -314,9 +364,9 @@ def tnum(c, tid):
     d = lambda a, b: round(a / b, 2) if b else None
     return [T["n"], T["gf"], T["ga"], d(T["sh"], T["ns"]), d(T["sot"], T["ns"]), d(T["sha"], T["ns"]), d(T["sota"], T["ns"]), d(T["cf"], T["nc"]), d(T["ca"], T["nc"]),
             d(T["kf"], T["nk"]), d(T["ka"], T["nk"]), d(T["fo"], T["nf"]), d(T["foa"], T["nf"]), T["cs"], T["btts"], T["o25"], d(T["pos"], T["np"])]
-used = {f["h"] for f in FX} | {f["a"] for f in FX} | {r[0] for L in ST.values() for r in L}
+used = {f["h"] for f in FX} | {f["a"] for f in FX} | {r[0] for L in ST.values() for r in L} | {t for m in OLD_IDS.values() for t in (m[2], m[3])}
 RES = [[e["id"], e["t"][:16], e["c"], e["h"], e["a"], e["hs"], e["as"], BOX[e["id"]]["ts"].get(e["h"]), BOX[e["id"]]["ts"].get(e["a"]),
-        [x for x in BOX[e["id"]].get("ev", []) if x[0] in ("g",)]] for e in DONE]
+        BOX[e["id"]].get("ev", [])] for e in DONE]
 out = {
   "SOC_GEN": NOW.astimezone(ZoneInfo("America/Toronto")).strftime("%a %b %-d %-I:%M %p ET"),
   "SOC_LG": {c[0]: {"n": c[2], "sh": c[3], "col": c[4], **({k: (round(v, 3) if isinstance(v, float) else v) for k, v in LG[c[0]].items()} if c[0] in LG else {})} for c in COMPS},
@@ -327,6 +377,8 @@ out = {
   "SOC_ST": ST,
   "SOC_REF": {c: [x[:5] for x in L] for c, L in REFS.items()},
   "SOC_PROPS": PROPS,
+  "SOC_H2H": H2H,
+  "SOC_OLD": OLD,
   "SOC_ODDS_AT": LO.get("at"),
 }
 print("/* ⚽ Soccer — tools/soccerfetch.py (ESPN results + box scores, PropLine odds + referees, Open-Meteo weather) */")
@@ -334,6 +386,8 @@ for k, v in out.items(): print(f"var {k}=" + json.dumps(v, separators=(",", ":")
 print("var SOC_OK=1;")
 with open("soccer_players.js", "w", encoding="utf8") as fh:
     fh.write("/* ⚽ Soccer player game logs — tools/soccerfetch.py. g: [match id, started, minutes, shots, on target, goals, assists, fouls committed, fouls won, yellow, red, saves] */\n")
-    fh.write("var SOC_P=" + json.dumps({aid: [P["n"], P["t"], P["pos"], P["g"]] for aid, P in PL.items()}, separators=(",", ":"), ensure_ascii=False) + ";var SOC_P_OK=1;\n")
+    fh.write("var SOC_P=" + json.dumps({aid: [P["n"], P["t"], P["pos"], P["g"]] for aid, P in PL.items()}, separators=(",", ":"), ensure_ascii=False) + ";\n")
+    fh.write("/* players in older head-to-head matches: match id -> [team, espn id, name, pos, started, minutes, shots, on target, goals, assists, fouls, fouled, yellow, red, saves] */\n")
+    fh.write("var SOC_OLDP=" + json.dumps({m[0]: (BOX.get(m[0]) or {}).get("p", []) for m in OLD_IDS.values()}, separators=(",", ":"), ensure_ascii=False) + ";var SOC_P_OK=1;\n")
 log(f"soccer: {len(FX)} upcoming matches ({sum(1 for f in FX if f.get('odds'))} with odds, {sum(1 for f in FX if f.get('proj'))} with estimates, "
     f"{sum(1 for f in FX if f.get('wx'))} with weather, {sum(1 for f in FX if f.get('ref'))} with referee), {len(PROPS)} player props, {len(PL)} players")

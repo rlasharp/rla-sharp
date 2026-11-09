@@ -10,7 +10,8 @@ on:
   schedule:
     - cron: "4,24,44 15-23 * * *"
     - cron: "4,24,44 0-7 * * *"
-    - cron: "34 8-14 * * *"
+    - cron: "34 8-9 * * *"
+    - cron: "4,24,44 10-14 * * *"     # European kickoffs and full-times (soccer) — every 20 min from ~6 AM ET
   workflow_dispatch:
     inputs:
       force: { description: "1 = start a full update now", default: "" }

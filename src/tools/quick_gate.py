@@ -14,7 +14,11 @@ import json, os, sys, subprocess, urllib.request, datetime as dt
 from zoneinfo import ZoneInfo
 
 ET = ZoneInfo("America/Toronto")
-URL = {"nba": "basketball/nba", "nfl": "football/nfl", "nhl": "hockey/nhl"}
+URL = {"nba": "basketball/nba", "nfl": "football/nfl", "nhl": "hockey/nhl",
+       # soccer: 8 competitions, all mapped to the "soc" site update
+       "soc-epl": "soccer/eng.1", "soc-esp": "soccer/esp.1", "soc-ita": "soccer/ita.1", "soc-ger": "soccer/ger.1", "soc-fra": "soccer/fra.1",
+       "soc-ucl": "soccer/uefa.champions", "soc-uel": "soccer/uefa.europa", "soc-uecl": "soccer/uefa.europa.conf"}
+SP = lambda k: "soc" if k.startswith("soc") else k
 STATE = "data/quick.json"
 
 def get(u):
@@ -50,11 +54,11 @@ def main():
     sports, why, full, pre, done = set(), [], force, set(), list(done0)
     if new:
         names = list(dict.fromkeys(g["name"] for g in allg if g["id"] in new))
-        sports |= {i.split(":")[0] for i in new}
+        sports |= {SP(i.split(":")[0]) for i in new}
         why.append(f"{len(new)} game(s) final: " + ", ".join(names[:6]) + ("…" if len(names) > 6 else ""))
     for (sp, d), L in G.items():
         k = f"{sp}:{d}"
-        if L and all(g["st"] == "post" for g in L) and k not in done0:
+        if L and not sp.startswith("soc") and all(g["st"] == "post" for g in L) and k not in done0:
             done.append(k); full = True; why.append(f"last {sp.upper()} game of {d} is final — full update")
     for g in allg:
         if g["st"] != "pre" or not g["start"]: continue
@@ -63,7 +67,7 @@ def main():
         if not key: continue
         pre.add(key)
         if key not in pre0:
-            sports.add(g["sp"]); why.append(f"{g['name']} starts in {int(mins)} min — pre-game update")
+            sports.add(SP(g["sp"])); why.append(f"{g['name']} starts in {int(mins)} min — pre-game update")
     # keep state small: only games we can still see (+ the last 10 'done' days)
     ids = {g["id"] for g in allg}
     state = {"finals": sorted(finals | {f for f in finals0 if f in ids}), "pre": sorted(pre | {p for p in pre0 if p.rsplit(":", 1)[0] in ids}),
@@ -97,7 +101,7 @@ def main():
             alert.append(f"NHL data problem: {n.get('issue')}"); title = title or "NHL data problem"
     except Exception:
         pass
-    if len(errs) == 3 * len(days):
+    if len(errs) == len(URL) * len(days):
         alert.append("ESPN's scoreboards could not be reached at all, so game-night updates are not being triggered."); title = title or "Game-night updates blocked"
 
     print(f"run={run} what={what} reason={' | '.join(why) or 'nothing new'}")

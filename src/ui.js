@@ -681,7 +681,7 @@ function route(){
   document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===(isSoc?"soc":isNhl?"nhl":isNba?"nba":"nfl")));
   if(h.startsWith("soccer")&&typeof soccerRoute!=="undefined"){
     document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-soccer"));
-    const nv=h.startsWith("soccer-props")?"soccer-props":h.startsWith("soccer-table")?"soccer-table":"soccer";
+    const nv=["soccer-props","soccer-table","soccer-results","soccer-cc"].find(x=>h.startsWith(x))||(h.startsWith("soccer-match")?"soccer-results":"soccer");
     document.querySelectorAll("#socNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
     document.getElementById("banner").innerHTML="";soccerRoute(h);window.scrollTo(0,0);return;
   }

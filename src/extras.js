@@ -8,6 +8,9 @@ function recAll(){
     rows.push({sport:"NBA",when:d,sort:d,date:d,label:`${nm} ${side==="o"?"Over":"Under"} ${line} ${NBA_MK[k]?NBA_MK[k][1]:k}`,type:"Player prop",st,u:u0,odds,v,lv,cl:{sp:"nba",nm,k,side,line,odds,dates:[d]}})}}
   if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.nhl){for(const x0 of TRACK.sum.nhl.recent||[]){const L=!x0.r&&typeof finItem!=="undefined"?finItem("nhl",x0.d,x0):null,x=L?{...x0,r:L.r,v:L.v}:x0;const st=x.r==="win"?"win":x.r==="loss"?"loss":x.r==="push"?"push":x.r==="void"?"void":"pending";const pay=x.odds>0?x.odds/100:100/-x.odds;
     rows.push({sport:"NHL",when:x.d,sort:x.d,date:x.d,label:typeof nhlPlayTitle!=="undefined"?nhlPlayTitle(x).replace(/<[^>]+>/g,""):"",type:x.type==="prop"?"Player prop":x.mk,st,u:st==="win"?pay:st==="loss"?-1:0,odds:x.odds,v:x.v,lv:L?1:0,cl:null})}}
+  if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.soc){for(const x0 of TRACK.sum.soc.recent||[]){const g=(!x0.r||x0.r==="pending")&&typeof socGrade!=="undefined"&&window.SOC_OK?socGrade(x0):null,r=g&&g.r!=="pending"?g.r:x0.r;
+    const st=r==="win"?"win":r==="loss"?"loss":r==="push"?"push":r==="void"?"void":"pending",pay=x0.odds>0?x0.odds/100:100/-x0.odds;
+    rows.push({sport:"Soccer",when:x0.d,sort:x0.d,date:x0.d,label:x0.title||"",type:x0.type==="prop"?"Player prop":({ml:"Match result",tot:"Goals over/under",btts:"Both teams to score",cor:"Corners"}[x0.kind]||"Soccer"),st,u:st==="win"?pay:st==="loss"?-1:0,odds:x0.odds,v:null,lv:g?1:0,cl:null})}}
   if(typeof PLAY_ARCHIVE!=="undefined"&&typeof gradeOne!=="undefined"){
     const tn={prop:"Player prop",spread:"Spread",ml:"Moneyline",total:"Over / Under"};
     const add=(pl,wk,d)=>{const g=gradeOne(pl,wk,d),odds=pl.odds!=null?pl.odds:d?d.odds:null;
