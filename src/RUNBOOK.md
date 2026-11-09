@@ -354,3 +354,9 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
   or run-heavy, 🤝 Division game, 🦵 Kickers). fetch_odds.py: + player_pass_attempts (passAtt market added to
   MARKETS), player_field_goals_made (fgm), player_kicking_points (kpts), player_extra_points_made (xpm); anytime TD
   now allowed for QBs. FORCE=markets prints the markets books offer.
+- **NBA round 3 (Nov 9):** steals + blocks market (sb = [12,13]; fetch_odds player_blocks_steals; LIVE_LAB sb).
+  📐 Projection (xaProj): minutes (60% last 5, 40% season) × per-minute rate (55% last 10, 45% season) × pace
+  (tonight / his games, ±8%) × defense vs position (±12%), range = his own game-to-game spread; normal for big stats,
+  Poisson for 3PM / STL / BLK / S+B. Shown on each prop card and as a line/alt-line table in the drawer. Usage %
+  per game ((FGA + .44 FTA + TOV) share of team plays scaled to minutes; chart + last-5 vs season). Free-throw
+  matchup (opp FTA allowed × tonight's referee crew). "🔁 Who gains with a star out" card on the game page.

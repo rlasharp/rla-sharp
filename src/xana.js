@@ -97,7 +97,9 @@ function xaPanelBody(sp,nm,k,line,side){const over=xaOver(side),word=over?"Over"
   /* teammates */
   const WO=xaWithout(sp,nm,k,line,side);if(WO.length)rows.push(`<h4>👥 With / without teammates who are out now</h4><table class="bxt xat"><thead><tr><th>Teammate</th><th>With him</th><th>Without</th></tr></thead><tbody>${WO.map(o=>`<tr class="xame"><td>${xaEsc(o.m)}</td><td>${o.w.h}/${o.w.n} · ${o.w.av.toFixed(1)}</td><td><b>${o.wo.h}/${o.wo.n} · ${o.wo.av.toFixed(1)}</b></td></tr>`).join("")}</tbody></table><div class="small">${word} ${line} hits / games · average.</div>`);
   /* NBA extras */
-  if(sp==="nba"){const pc=xaPaceBody(nm,k,line,over);if(pc)rows.push(pc);
+  if(sp==="nba"){const pj=xaProjBody(nm,k,line);if(pj)rows.unshift(pj);const us=xaUsageSay(nm);if(us)rows.push(`<h4>📊 Usage</h4><div class="small">${us}</div>`);
+    if(["pts","pa","pr","pra"].includes(k)){const ft=xaFTSay(nm);if(ft)rows.push(`<h4>🎯 Free throws</h4><div class="small">${ft}</div>`)}
+    const pc=xaPaceBody(nm,k,line,over);if(pc)rows.push(pc);
     if(["pts","3pm","3pa","pa","pr","pra"].includes(k)){const t=xa3PSay(nm);if(t)rows.push(`<h4>🎯 3-point shooting</h4><div class="small">${t}</div>`)}
     const f=xaFoulSay(nm);if(f)rows.push(`<h4>🟨 Fouls</h4><div class="small">${f}</div>`);
     const q=xaQ1Body(nm,k);if(q)rows.push(q)}
@@ -180,7 +182,7 @@ function xaSeries(sp,nm){const S=[];
     if(sp==="nba"){const p=NBA_LOGS[nm];if(!p)return S;const G=p.g;if(G.length<4)return S;
       S.push({t:"Minutes",u:"min",v:G.map(x=>x[4])},{t:"Shots",u:"shots",v:G.map(x=>x[11]||0)},
         {t:"Plays used (shots + FT trips + turnovers)",u:"plays",v:G.map(x=>Math.round(((x[11]||0)+.44*(x[17]||0)+(x[14]||0))*10)/10)});
-      S.forEach(s=>s.d=G.map(x=>x[1]))}
+      S.forEach(s=>s.d=G.map(x=>x[1]));const U=xaUsage(nm);if(U&&U.length>=4){const m=new Map(U.map(u=>[u.d,u.u]));S.push({t:"Usage % (share of team plays on court)",u:"%",v:G.map(x=>m.has(x[1])?Math.round(m.get(x[1])*10)/10:null),d:G.map(x=>x[1])})}}
     if(sp==="nhl"){const w=nhWho(nm);if(!w)return S;const gk=!!NHL_G[nm];const G=w.g.filter(x=>gk?(x[9]!==1&&x[7]):x[16]!==1);if(G.length<4)return S;
       if(gk)S.push({t:"Shots faced",u:"shots",v:G.map(x=>x[3])},{t:"Saves",u:"saves",v:G.map(x=>x[4])});
       else{S.push({t:"Ice time",u:"minutes",v:G.map(x=>Math.round(x[10]/6)/10)},{t:"Shots on goal",u:"SOG",v:G.map(x=>x[6])});
@@ -235,7 +237,7 @@ function xaDefTrendCard(sp,a,h){const rows=[];const lab=sp==="nhl"?"Goals allowe
 
 /* ---------- 🚑 team without its key players (who are out tonight) ---------- */
 function xaKeyOut(sp,t){const L=[];try{
-  if(sp==="nba"){for(const [n,p] of Object.entries(NBA_LOGS)){if(p.tm!==t||p.g.length<3)continue;const i=nbaInjOf(n);if(!i||!/out/i.test(i[2]||""))continue;const a=nbaAvg(p,"pts");if(a>=10||nbaAvg(p,"min")>=26)L.push({n,ids:new Set(p.g.map(x=>x[0])),why:`${a.toFixed(1)} pts`})}}
+  if(sp==="nba"){for(const [n,p] of Object.entries(NBA_LOGS)){if(p.tm!==t||p.g.length<3)continue;const i=xaNbaInj(n);if(!i||!/out/i.test(i[2]||""))continue;const a=nbaAvg(p,"pts");if(a>=10||nbaAvg(p,"min")>=26)L.push({n,ids:new Set(p.g.map(x=>x[0])),why:`${a.toFixed(1)} pts`})}}
   if(sp==="nhl"){for(const r of (NHL_INJ[t]||[])){if(!/out|reserve|\bir\b|suspen/i.test(r[2]))continue;const w=nhWho(r[0]);if(!w)continue;const G=w.g.filter(x=>NHL_G[r[0]]?(x[9]!==1&&x[7]):x[16]!==1);if(G.length<3)continue;
     const pts=NHL_G[r[0]]?null:G.reduce((s,x)=>s+x[5],0)/G.length;if(!NHL_G[r[0]]&&pts<.5)continue;L.push({n:r[0],ds:new Set(G.map(x=>x[0])),why:NHL_G[r[0]]?`${G.length} starts`:`${pts.toFixed(2)} pts/game`})}}
   if(sp==="nfl"){for(const [n,x] of Object.entries(typeof INJ_P!=="undefined"?INJ_P:{})){if(x.team!==t||!/out|ir|doubtful/i.test(x.s))continue;const U=(typeof USAGE!=="undefined"&&USAGE[n])||{};const s=U.s||{};
@@ -467,3 +469,53 @@ function xaTdCard(g){if(typeof REAL_PROPS==="undefined"||typeof NFL_RZ==="undefi
   return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🎯 Anytime TD estimates</h2><div class="small" style="margin-bottom:8px">His share of his team's red-zone and goal-line touches and TDs × tonight's expected team TDs (from the implied points), vs what the odds need.</div>
    ${L.slice(0,12).map(x=>`<div class="nher"><span><span>${typeof badge!=="undefined"?badge(x.P.team):""} <b>${xaEsc(x.nm)}</b> <span class="small">${x.P.pos}</span></span><span class="small">${x.e.R[0]} red-zone touches · ${x.e.R[2]} TDs · ${Math.round(x.e.share*100)}% of team</span></span><span class="nhedv"><b class="${x.edge>.03?"up":x.edge<-.03?"dn":""}">${Math.round(x.e.p*100)}%</b><span class="small">${x.odds!=null?amTxt(x.odds)+" needs "+Math.round(x.need*100)+"%":""}</span></span></div>`).join("")}
    <div class="small" style="margin-top:6px">A rough guide — touchdowns are streaky and small samples swing a lot.</div></div>`}
+
+/* ================= NBA: projection, usage, free throws, who gains ================= */
+function xaNormCdf(z){const t=1/(1+.2316419*Math.abs(z)),d=.3989423*Math.exp(-z*z/2),p=d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return z>0?1-p:p}
+function xaPois(lam,k){let p=Math.exp(-lam),s=p;for(let i=1;i<=k;i++){p*=lam/i;s+=p}return s}   // P(X<=k)
+const XA_POIS=new Set(["3pm","stl","blk","sb"]);
+/* 📐 projection: minutes × per-minute rate × pace × defense, with a range from his own game-to-game spread */
+function xaProj(nm,k){const p=NBA_LOGS[nm];if(!p||!NBA_MK[k])return null;const G=p.g.filter(x=>x[4]>0);if(G.length<5)return null;
+  const avg=a=>a.reduce((s,x)=>s+x,0)/a.length,mins=G.map(x=>x[4]),min=.6*avg(mins.slice(-5))+.4*avg(mins);
+  const L10=G.slice(-10),rate=(.55*L10.reduce((s,x)=>s+nbaVal(x,k),0)/L10.reduce((s,x)=>s+x[4],0))+(.45*G.reduce((s,x)=>s+nbaVal(x,k),0)/G.reduce((s,x)=>s+x[4],0));
+  const g=nbaGameOf(p.tm);let pace=1,def=1,notes=[];
+  if(g&&typeof NBA_TADV!=="undefined"&&NBA_TADV[g.a]&&NBA_TADV[g.h]&&typeof NBA_GPACE!=="undefined"){const tp=(NBA_TADV[g.a].pace+NBA_TADV[g.h].pace)/2,mp=G.map(x=>NBA_GPACE[x[0]]).filter(Boolean);
+    if(mp.length>=4){pace=Math.max(.92,Math.min(1.08,tp/avg(mp)));if(Math.abs(pace-1)>=.02)notes.push(`pace ${pace>1?"+":""}${Math.round((pace-1)*100)}%`)}}
+  const opp=g?(g.a===p.tm?g.h:g.a):null,pos=p.p5;
+  if(opp&&pos){const T=xaTierTable("nba",pos,k),vs=Object.values(T).map(x=>x.v);if(T[opp]&&vs.length>=20){const lg=avg(vs);def=Math.max(.88,Math.min(1.12,1+.6*(T[opp].v/lg-1)));if(Math.abs(def-1)>=.02)notes.push(`${opp} defense ${def>1?"+":""}${Math.round((def-1)*100)}%`)}}
+  const inj=xaNbaInj(nm);const out=inj&&/out/i.test(inj[2]||"");const mean=min*rate*pace*def;
+  const vals=G.map(x=>nbaVal(x,k)),m0=avg(vals),sd0=Math.sqrt(avg(vals.map(v=>(v-m0)**2))),sd=m0>0?sd0/m0*mean:sd0;
+  return {mean,sd:Math.max(sd,XA_POIS.has(k)?Math.sqrt(mean):.5),min,rate,pace,def,notes,out}}
+function xaProjP(P,k,line){if(XA_POIS.has(k))return 1-xaPois(P.mean,Math.floor(line));return 1-xaNormCdf((line+.5-.5-P.mean)/P.sd)}   // continuity: over x.5 means >= ceil
+function xaProjLine(nm,k,line){const P=xaProj(nm,k);if(!P||P.out||line==null)return "";const lo=Math.max(0,P.mean-P.sd),hi=P.mean+P.sd,po=xaProjP(P,k,line),over=typeof PXSIDE==="undefined"||PXSIDE!=="u";
+  return `<div class="xaproj"><span>📐 Our projection <b>${P.mean.toFixed(1)}</b> <span class="small">(usually ${lo.toFixed(0)}–${hi.toFixed(0)})</span></span><span><b>${Math.round((over?po:1-po)*100)}%</b> <span class="small">${over?"over":"under"} ${line}</span></span></div>`}
+function xaProjBody(nm,k,line){const P=xaProj(nm,k);if(!P)return "";if(P.out)return `<h4>📐 Projection</h4><div class="small">Listed out tonight.</div>`;
+  const alt=(typeof LO!=="undefined"&&LO.alt&&LO.alt[nm+"|"+k])||[];const lines=[...new Set([line,...alt.map(a=>a[0])])].filter(v=>v!=null).sort((a,b)=>a-b).slice(0,9);
+  return `<h4>📐 Projection</h4><div class="small">${P.min.toFixed(1)} minutes × ${(P.rate*36).toFixed(1)} per 36 (last 10 weighted)${P.notes.length?" · "+P.notes.join(" · "):""} ≈ <b>${P.mean.toFixed(1)}</b>, usually ${Math.max(0,P.mean-P.sd).toFixed(1)}–${(P.mean+P.sd).toFixed(1)}.</div>
+   <table class="bxt xat"><thead><tr><th>Line</th><th>Over</th><th>Under</th>${alt.length?"<th>Best odds (o/u)</th>":""}</tr></thead><tbody>${lines.map(l=>{const po=xaProjP(P,k,l),a=alt.find(z=>z[0]===l);return `<tr${l===line?' class="xame"':""}><td>${l}</td><td><b>${Math.round(po*100)}%</b></td><td>${Math.round((1-po)*100)}%</td>${alt.length?`<td>${a?`${a[1]!=null?oddsFmt(a[1]):"–"} / ${a[3]!=null?oddsFmt(a[3]):"–"}`:"–"}</td>`:""}</tr>`}).join("")}</tbody></table>
+   <div class="small">A model, not a promise — it can't see tonight's injuries until they're posted.</div>`}
+/* 📊 usage share per game: (FGA + 0.44·FTA + TOV) of his team's, scaled to his minutes */
+function xaUsage(nm){const p=NBA_LOGS[nm];if(!p)return null;if(!XA.tp){XA.tp={};for(const q of Object.values(NBA_LOGS))for(const x of q.g){const key=x[0]+"|"+q.tm,o=XA.tp[key]||(XA.tp[key]=[0,0]);o[0]+=(x[11]||0)+.44*(x[17]||0)+(x[14]||0);o[1]+=x[4]||0}}
+  const out=[];for(const x of p.g){const T=XA.tp[x[0]+"|"+p.tm];if(!T||!T[0]||!(x[4]>0))continue;const mine=(x[11]||0)+.44*(x[17]||0)+(x[14]||0);out.push({d:x[1],u:100*mine*(T[1]/5)/(x[4]*T[0])})}return out}
+function xaUsageSay(nm){const U=xaUsage(nm);if(!U||U.length<5)return "";const av=a=>a.reduce((s,x)=>s+x.u,0)/a.length,s=av(U),l5=av(U.slice(-5)),d=l5-s;
+  return `Usage: he finishes <b>${l5.toFixed(1)}%</b> of his team's plays while on the court over the last 5 (season ${s.toFixed(1)}%)${Math.abs(d)>=3?` — <b>${d>0?"a bigger role lately":"a smaller role lately"}</b>; lines often lag this`:""}.`}
+/* 🎯 free-throw matchup */
+function xaFTSay(nm){const p=NBA_LOGS[nm];if(!p)return "";const G=p.g.filter(x=>x[4]>0);if(G.length<4)return "";const fta=G.reduce((s,x)=>s+(x[17]||0),0)/G.length,ftm=G.reduce((s,x)=>s+(x[16]||0),0)/G.length;if(fta<1)return "";
+  const g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):null,O=opp&&NBA_TADV[opp];const lgF=Object.values(NBA_TADV).reduce((s,t)=>s+t.d.fta,0)/Object.keys(NBA_TADV).length;
+  let f=O?O.d.fta/lgF:1,txt=O?`${xaEsc(opp)} allow ${O.d.fta} free-throw attempts a game (${xaOrd(O.dR.fta)} fewest of 30)`:"";
+  const crew=g&&typeof NBA_REFS!=="undefined"&&NBA_REFS&&NBA_REFS.today&&NBA_REFS.today[g.a+"@"+g.h];
+  if(crew&&NBA_REFS.lg){const S=crew.map(n=>NBA_REFS.ref[n]).filter(Boolean);if(S.length){const cf=S.reduce((s,r)=>s+r[1],0)/S.length/NBA_REFS.lg[0];f*=cf;txt+=`; tonight's referees call ${cf>=1?Math.round((cf-1)*100)+"% more":Math.round((1-cf)*100)+"% fewer"} free throws than average`}}
+  return `He averages <b>${fta.toFixed(1)}</b> free-throw attempts (${ftm.toFixed(1)} made)${txt?". "+txt:""}. Expected tonight ≈ <b>${(fta*f).toFixed(1)}</b> attempts.`}
+/* 🔁 who gains when a star is out */
+function xaGainCard(g){const cards=[];
+  for(const t of [g.a,g.h]){const stars=Object.entries(NBA_LOGS).filter(([n,p])=>{if(p.tm!==t||p.g.length<3)return false;const i=xaNbaInj(n);return i&&/out/i.test(i[2]||"")&&(nbaAvg(p,"pts")>=12||nbaAvg(p,"min")>=26)});
+    for(const [sn,sp] of stars.slice(0,2)){const ids=new Set(sp.g.map(x=>x[0])),L=[];
+      for(const [n,p] of Object.entries(NBA_LOGS)){if(p.tm!==t||n===sn)continue;const i=xaNbaInj(n);if(i&&/out/i.test(i[2]||""))continue;
+        const W=p.g.filter(x=>ids.has(x[0])),WO=p.g.filter(x=>!ids.has(x[0]));if(WO.length<2||W.length<2)continue;const a=(A,f)=>A.reduce((s,x)=>s+f(x),0)/A.length;
+        const dm=a(WO,x=>x[4])-a(W,x=>x[4]),df=a(WO,x=>x[11]||0)-a(W,x=>x[11]||0),dp=a(WO,x=>x[5])-a(W,x=>x[5]);if(dm<2&&df<2&&dp<3)continue;L.push({n,dm,df,dp,wo:WO.length,pts:a(WO,x=>x[5])})}
+      L.sort((a,b)=>(b.dp+b.df)-(a.dp+a.df));if(L.length)cards.push(`<div style="margin-bottom:10px"><b>${xaEsc(t)} without ${xaEsc(sn)}</b>
+        ${L.slice(0,5).map(x=>`<a class="xafb" href="#nba-player-${encodeURIComponent(x.n)}"><span>${xaEsc(x.n)} <span class="small">${x.wo} games without</span></span><span class="small">${x.dm>=0?"+":""}${x.dm.toFixed(1)} min · ${x.df>=0?"+":""}${x.df.toFixed(1)} shots · <b>${x.dp>=0?"+":""}${x.dp.toFixed(1)} pts</b> (${x.pts.toFixed(1)})</span></a>`).join("")}</div>`)}}
+  if(!cards.length)return "";
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🔁 Who gains with a star out</h2><div class="small" style="margin-bottom:8px">Teammates whose minutes, shots and points went up in games the star missed this season (vs games he played). Props are often slow to catch up.</div>${cards.join("")}<div class="small">Small samples — check his props for tonight's line.</div></div>`}
+
+function xaNbaInj(n){const r=nbaInjOf(n);if(r)return r;if(!XA.inj){XA.inj={};for(const t in NBA_INJ)for(const x of NBA_INJ[t])XA.inj[loNorm(x[0])]=x}return XA.inj[loNorm(n)]||null}

@@ -32,7 +32,7 @@ NOT_BOOKS = {"prizepicks", "underdog", "pick6", "kalshi", "polymarket", "prophet
 NBA_MK = {"player_points": "pts", "player_rebounds": "reb", "player_assists": "ast", "player_threes": "3pm",
           "player_steals": "stl", "player_blocks": "blk", "player_points_rebounds": "pr",
           "player_points_assists": "pa", "player_rebounds_assists": "ra", "player_points_rebounds_assists": "pra",
-          "player_double_double": "dd", "player_triple_double": "td", "player_first_basket": "fb"}
+          "player_blocks_steals": "sb", "player_double_double": "dd", "player_triple_double": "td", "player_first_basket": "fb"}
 NFL_MK = {"player_pass_yds": "passYds", "player_pass_tds": "passTD", "player_rush_yds": "rushYds", "player_pass_attempts": "passAtt",
           "player_field_goals_made": "fgm", "player_kicking_points": "kpts", "player_extra_points_made": "xpm",
           "player_reception_yds": "recYds", "player_receptions": "rec", "player_anytime_td": "anyTD",

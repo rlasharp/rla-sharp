@@ -61,7 +61,7 @@ function livePut(host,html,before){
   if(el)el.replaceWith(nb);else if(before)host.insertBefore(nb,before);else host.prepend(nb);
 }
 /* NBA live stat line for a player: value of a market so far */
-const LIVE_LAB={pts:["PTS"],reb:["REB"],ast:["AST"],"3pm":["3PT",0],"3pa":["3PT",1],blk:["BLK"],stl:["STL"],pa:["PTS","AST"],pr:["PTS","REB"],ra:["REB","AST"],pra:["PTS","REB","AST"]};
+const LIVE_LAB={pts:["PTS"],reb:["REB"],ast:["AST"],"3pm":["3PT",0],"3pa":["3PT",1],blk:["BLK"],stl:["STL"],pa:["PTS","AST"],pr:["PTS","REB"],ra:["REB","AST"],pra:["PTS","REB","AST"],sb:["STL","BLK"]};
 async function liveBox(id){
   const b=LIVE.box[id];if(b&&Date.now()-b.t<25000)return b.p;
   try{const r=await fetch(LIVE_SUM+id,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json(),p={};
