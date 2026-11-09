@@ -38,7 +38,7 @@ def jload(p, d):
 
 # ---------------- fixtures + results (scoreboard by month) ----------------
 months, m = [], dt.date(SEASON0.year, 8 if SEASON0.month <= 8 else SEASON0.month, 1)
-end = (NOW + dt.timedelta(days=12)).date()
+end = (NOW + dt.timedelta(days=17)).date()
 while m <= end:
     months.append(m.strftime("%Y%m")); m = dt.date(m.year + (m.month == 12), m.month % 12 + 1, 1)
 TEAM, EV = {}, {}
@@ -220,7 +220,7 @@ def project(f):
     return out
 
 # ---------------- upcoming fixtures: odds join, weather, lineups, missing players ----------------
-FX = sorted([e for e in EV.values() if not e["done"] and ts(e["t"]) > NOW - dt.timedelta(hours=3) and ts(e["t"]) < NOW + dt.timedelta(days=10)], key=lambda e: e["t"])
+FX = sorted([e for e in EV.values() if not e["done"] and ts(e["t"]) > NOW - dt.timedelta(hours=3) and ts(e["t"]) < NOW + dt.timedelta(days=16)], key=lambda e: e["t"])
 OD = LO.get("events") or []
 for f in FX:
     m_ = [o for o in OD if o.get("hid") == f["h"] and o.get("aid") == f["a"] and abs((ts(o["start"]) - ts(f["t"])).total_seconds()) < 6 * 3600]
