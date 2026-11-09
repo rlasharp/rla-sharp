@@ -1,0 +1,61 @@
+name: Game-night quick updates (results right after games, pre-game refresh, watchdog)
+# Every 20 min from ~10 AM to 3 AM ET (hourly overnight) a ~15-second check looks at ESPN's scoreboards and only starts
+# a real site update (auto.yml) when something happened: a game went final, the last game of the night ended (full
+# update), or a game starts within ~90 / ~30 min (injuries, goalies, lines). It also watches the site's health and
+# opens a GitHub issue (= email + GitHub app notification) if updates stop or fail, closing it once things are fine.
+# Off-peak minutes (:04/:24/:44) because GitHub delays jobs scheduled on the hour the most. It is state-based
+# (data/quick.json), so a run that starts late still catches everything it missed.
+# Exact timing (optional): any outside scheduler can POST a repository_dispatch {"event_type":"refresh"} — see RUNBOOK.
+on:
+  schedule:
+    - cron: "4,24,44 15-23 * * *"
+    - cron: "4,24,44 0-7 * * *"
+    - cron: "34 8-14 * * *"
+  workflow_dispatch:
+    inputs:
+      force: { description: "1 = start a full update now", default: "" }
+  repository_dispatch:
+    types: [refresh]
+permissions:
+  contents: read
+  actions: write
+  issues: write
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 30 }
+      - name: Anything to update?
+        id: g
+        run: python3 src/tools/quick_gate.py "${{ github.event.inputs.force || github.event.client_payload.force || '' }}"
+      - name: Start the site update
+        if: steps.g.outputs.run == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WHAT: ${{ steps.g.outputs.what }}
+          REASON: ${{ steps.g.outputs.reason }}
+          STATE: ${{ steps.g.outputs.state }}
+        run: |
+          busy=$(gh run list --workflow auto.yml -L 10 --json status -q '[.[]|select(.status!="completed")]|length' || echo 0)
+          if [ "${busy:-0}" -gt 0 ]; then echo "An update is already queued or running — will check again in 20 min"; exit 0; fi
+          gh workflow run auto.yml -f what="$WHAT" -f gate_state="$STATE" -f reason="$REASON"
+          { echo "### Started a site update: $WHAT"; echo "$REASON"; } >> $GITHUB_STEP_SUMMARY
+      - name: Health alert (GitHub issue)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ALERT: ${{ steps.g.outputs.alert }}
+          TITLE: ${{ steps.g.outputs.alert_title }}
+        run: |
+          n=$(gh issue list --label site-alert --state open --json number -q '.[0].number' 2>/dev/null || true)
+          if [ -n "$(echo "$ALERT" | tr -d '[:space:]')" ]; then
+            if [ -n "$n" ]; then echo "Alert already open (#$n)"; exit 0; fi
+            gh label create site-alert --color d73a4a --description "Automatic site health alert" 2>/dev/null || true
+            { echo "@rlasharp — automatic heads-up from the site watchdog."; echo; echo "$ALERT"; echo;
+              echo "Recent runs: https://github.com/${{ github.repository }}/actions"; echo;
+              echo "_This issue closes by itself once the site is updating normally again._"; } > body.md
+            gh issue create --title "⚠️ RLA Sharp: ${TITLE:-site problem}" --body-file body.md --label site-alert
+          elif [ -n "$n" ]; then
+            gh issue close "$n" --comment "✅ Back to normal — checked $(TZ=America/Toronto date '+%a %-I:%M %p ET')."
+          fi

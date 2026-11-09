@@ -258,3 +258,25 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
 - **Filter his games (spread / total / minutes sliders)** in propx.js (`pxFilterBlock`, `pxFilterWire`). NBA spreads+totals = NBA_SPR (nba_spr.js), built by build.sh from /home/claude/rla-sharp/data/nba_spreads.json — written nightly (~4:23 AM ET) by the repo's `spreads.yml` Action (tools/fetch_spreads.py, ESPN closing lines). So **git pull the repo before building** to pick up last night's games. NFL spreads+totals = NFL_SPR [teamSpread, margin, total] from tools/nfltgt.py (games.csv).
 - **Situation filters** (Venue / Rest / Role on NBA via NB.gf.ven/rest/role in nbaInR; Venue / Rest on NFL via PXS[key].ven/rest). NFL rest = NFL_RST (week|team → rest days from nflverse games.csv, written by tools/nfltgt.py): ≤5 short week, ≥12 after bye. The old Splits cards were removed (the filters replace them).
 - **NBA filters (Nov 2 eve):** FGA slider (x[11]), implied team-total slider (tot/2 − sp/2), multi-teammate With/Without (NB.tmf[nm] = {name:"w"|"o"}), filters reset when you open a different player. "Team without player" cards removed. NFL: Targets slider (USAGE_RAW wk[1]); NFL player page = header line, defense tiles, one prop card + filters, extras as tabs (nflExtrasCard); All props tab uses rows (propRowLite).
+
+## ⚡ Fast results & self-refresh (Nov 9)
+- **Instant results in the browser (src/finals.js):** when ESPN marks a game final, pending My Bets, NHL plays, NBA plays
+  on the Record page and the latest top-10 best props (TRACK.today, written by tools/track.js) are graded from ESPN's
+  final box score in the visitor's browser (tagged "⚡ live"). A player missing from the box score stays pending —
+  never guessed. The next site update makes it official from our own data. gradeBet() → gradeBetCore() + finBet().
+- **Game-night updates (.github/workflows/quick.yml + src/tools/quick_gate.py):** every 20 min 10 AM–3 AM ET (hourly
+  overnight) a ~15 s check reads ESPN scoreboards and dispatches auto.yml (`what` = sport list, e.g. `nba,nhl`, or `all`)
+  only when: a game went final · the last game of a sport's day is final (full update) · a game starts in ~60–100 or
+  ~10–45 min (pre-game: injuries, goalies, lines). State in data/quick.json (saved by auto.yml via the `gate_state`
+  input). Skips if an auto.yml run is already queued/running. auto_run.sh accepts comma lists.
+- **Auto-refresh (src/fresh.js):** build.sh stamps `var BUILD_AT`; auto_run.sh writes /version.json on publish. The
+  open page polls version.json every 3 min; newer → silent reload when idle (keeps page + scroll), else a
+  "🔄 New results & stats" button. Header chip shows age (green <2.5 h, yellow <6 h, red older). sw.js v2 revalidates
+  pages and stores one copy per file (ignores ?v= / ?t=). nhl_data.js is keyed by BUILD_AT.
+- **Watchdog alerts:** quick.yml opens ONE GitHub issue labelled `site-alert` (mentions @rlasharp → email + GitHub app
+  push) when the site is >3.5 h stale, the last auto run failed, the live site check failed, NHL data failed, or ESPN is
+  unreachable; it closes the issue automatically when healthy again.
+- **Exact timing (optional):** GitHub cron can start 5–60 min late. Any outside scheduler (e.g. cron-job.org) can POST
+  `https://api.github.com/repos/rlasharp/rla-sharp/dispatches` with body `{"event_type":"refresh"}` and headers
+  `Authorization: Bearer <fine-grained token, this repo only, Contents: read & write>`,
+  `Accept: application/vnd.github+json` every 10–20 min. That runs the same gate (cheap; it only updates when needed).

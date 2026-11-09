@@ -258,6 +258,13 @@ a.tdy{display:block;color:inherit;text-decoration:none}.tdy{padding:12px 12px 10
 @media(max-width:700px){.tsum{grid-template-columns:repeat(2,1fr)}.card{padding:14px}h1{font-size:25px}}
 @media(max-width:430px){.bname{display:none}.sportsw a{padding:6px 10px}}
 .lmv{font-size:11.5px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:999px;white-space:nowrap}.lmv.up{background:#173323;color:#7ee2a0}.lmv.dn{background:#3a1d1e;color:#ff9a9d}.lmv.fl{background:var(--card2);color:var(--text2)}
+.fresh{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--muted);border:1px solid #ffffff1f;border-radius:999px;padding:3px 8px;margin-left:8px;white-space:nowrap;text-decoration:none;line-height:1.2}
+.fresh .fdot{width:7px;height:7px;border-radius:50%;background:#7d8590;flex:none}.fresh.ok .fdot{background:#3fb950}.fresh.old .fdot{background:#f3c75a}.fresh.bad{color:#ff8a80;border-color:#ff8a8055}.fresh.bad .fdot{background:#f85149}
+.fresh.new{color:#1a1505;background:#f3c75a;border-color:#f3c75a}.fresh.new .fdot{background:#1a1505}.fresh.spin .fdot{animation:lvp 0.8s infinite}
+@media(max-width:430px){.fresh .ftx{display:none}.fresh{padding:6px;margin-left:6px;border-color:#ffffff14}.fresh .fdot{width:9px;height:9px}.fresh.new .ftx{display:inline}.fresh.new{padding:3px 8px}}.freshtx.bad{color:#ff8a80}.freshtx.new{color:#f3c75a;cursor:pointer}
+#freshPill{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:61;background:#3fb950;color:#04140a;border:0;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;box-shadow:0 6px 20px #0008;cursor:pointer;white-space:nowrap}@media(min-width:900px){#freshPill{bottom:24px}}
+.fintw{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:2px 0 10px}.fint{background:#ffffff0d;border-radius:8px;padding:3px 8px;font-size:13px}
+.livegr{display:inline-block;font-size:11px;font-weight:700;color:#f3c75a;margin-left:4px}
 .upd.lo{color:#f3c75a}#loPill{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:60;background:#f3c75a;color:#1a1505;border:0;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;box-shadow:0 6px 20px #0008;cursor:pointer}@media(min-width:900px){#loPill{bottom:24px}}
 .pxrw{display:flex;justify-content:flex-end;margin:8px 0 2px}.pxrst{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid #5a4a1c;background:#2b2412;color:#f3c75a;cursor:pointer}.fchip.frst{background:#2b2412!important;border-color:#5a4a1c!important;color:#f3c75a!important;font-weight:800}
 .sidetg{display:flex;align-items:center;gap:6px;margin:8px 0 6px;font-size:12px;color:var(--text2)}.sidetg span{margin-right:2px}.sidetg button{font-size:12.5px;font-weight:700;padding:5px 14px;border-radius:999px;border:1px solid var(--line,#333);background:var(--card,#16181d);color:var(--text2);cursor:pointer}.sidetg button.on.o{background:#11301d;border-color:#3fb26b;color:#7fdc95}.sidetg button.on.u{background:#3a1618;border-color:#e5534b;color:#ff9a9d}
@@ -566,7 +573,7 @@ nav[hidden]{display:none!important}
 </head>
 <body>
 <header><div class="hwrap">
-  <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div><span class="bname">Sharp</span></a><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
+  <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div><span class="bname">Sharp</span></a><a id="fresh" class="fresh" href="#" hidden aria-label="Data freshness"></a><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
   <div class="psearch"><input id="plSearch" type="search" placeholder="🔍 Search player" autocomplete="off" aria-label="Search player"><div id="plRes" class="psres" hidden></div></div>
   <div id="sport" class="sportsw"><a href="#games" data-s="nfl">🏈 NFL</a><a href="#nba" data-s="nba">🏀 NBA</a><a href="#nhl" data-s="nhl">🏒 NHL</a></div>
   <nav id="nav">
@@ -2000,7 +2007,9 @@ function betMatchup(b){if(b.k==="nhlprop")return `NHL · ${b.team} ${b.home?"vs"
   if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
   const g=SLATE.find(x=>x.id===b.game);return `${short(b.away)} @ ${short(b.home)}${g?" · "+g.when:""}`}
 const betDec=a=>a>0?1+a/100:1+100/(-a);
-function gradeBet(b){
+/* our own data first; if it has no result yet, a game ESPN already marked final is graded live (finals.js) */
+function gradeBet(b){const g=gradeBetCore(b);if(g.r!=="pending"||b.k==="parlay"||typeof finBet==="undefined")return g;return finBet(b)||g}
+function gradeBetCore(b){
   if(b.k==="nhlprop"){if(typeof NH_MK==="undefined")return {r:"pending"};const m=NH_MK[b.market],w=nhWho(b.player);
     const fin=(NHL_RES||[]).some(z=>z[0]===b.date&&(z[1]===b.team||z[3]===b.team));
     const row=w&&w.g.find(x=>x[0]===b.date);if(!row||!m||!m[3])return fin?(w&&!row?{r:"void",why:"Did not play — no action"}:{r:"pending",why:"Result not in our data"}):{r:"pending"};
@@ -3384,6 +3393,7 @@ const NFL_RUSH_WK=8;
 const NFL_RUSH={"ARI":{"o":{"p":20.4,"pR":16,"p4":23.0,"p4R":25},"d":{"p":18.8,"pR":25,"p4":18.8,"p4R":19,"blz":32.2,"blzR":14}},"ATL":{"o":{"p":14.1,"pR":2,"p4":13.0,"p4R":6},"d":{"p":18.9,"pR":23,"p4":17.6,"p4R":23,"blz":25.1,"blzR":26}},"BAL":{"o":{"p":25.0,"pR":28,"p4":29.3,"p4R":31},"d":{"p":24.3,"pR":4,"p4":24.7,"p4R":4,"blz":33.0,"blzR":13}},"BUF":{"o":{"p":21.5,"pR":21,"p4":19.9,"p4R":16},"d":{"p":22.2,"pR":6,"p4":19.5,"p4R":17,"blz":38.6,"blzR":7}},"CAR":{"o":{"p":19.1,"pR":12,"p4":20.5,"p4R":18},"d":{"p":16.8,"pR":29,"p4":9.2,"p4R":32,"blz":38.6,"blzR":8}},"CHI":{"o":{"p":20.1,"pR":14,"p4":20.2,"p4R":17},"d":{"p":22.1,"pR":7,"p4":20.4,"p4R":12,"blz":41.1,"blzR":4}},"CIN":{"o":{"p":20.8,"pR":18,"p4":20.5,"p4R":19},"d":{"p":22.9,"pR":5,"p4":24.0,"p4R":5,"blz":18.5,"blzR":32}},"CLE":{"o":{"p":28.8,"pR":32,"p4":30.8,"p4R":32},"d":{"p":20.0,"pR":16,"p4":22.1,"p4R":7,"blz":25.3,"blzR":25}},"DAL":{"o":{"p":18.2,"pR":10,"p4":14.1,"p4R":8},"d":{"p":21.2,"pR":13,"p4":19.6,"p4R":16,"blz":24.7,"blzR":27}},"DEN":{"o":{"p":12.7,"pR":1,"p4":12.8,"p4R":5},"d":{"p":26.8,"pR":2,"p4":28.3,"p4R":1,"blz":35.4,"blzR":10}},"DET":{"o":{"p":17.1,"pR":6,"p4":12.2,"p4R":2},"d":{"p":21.5,"pR":10,"p4":20.9,"p4R":9,"blz":26.6,"blzR":21}},"GB":{"o":{"p":16.5,"pR":5,"p4":12.7,"p4R":3},"d":{"p":20.2,"pR":14,"p4":17.0,"p4R":25,"blz":34.4,"blzR":12}},"HOU":{"o":{"p":16.4,"pR":4,"p4":12.7,"p4R":4},"d":{"p":19.0,"pR":22,"p4":18.9,"p4R":18,"blz":25.6,"blzR":24}},"IND":{"o":{"p":22.4,"pR":24,"p4":24.5,"p4R":28},"d":{"p":18.9,"pR":24,"p4":16.8,"p4R":27,"blz":20.8,"blzR":31}},"JAX":{"o":{"p":20.3,"pR":15,"p4":20.6,"p4R":20},"d":{"p":21.5,"pR":11,"p4":20.3,"p4R":13,"blz":30.5,"blzR":16}},"KC":{"o":{"p":21.3,"pR":20,"p4":22.8,"p4R":23},"d":{"p":18.5,"pR":26,"p4":17.8,"p4R":21,"blz":26.0,"blzR":23}},"LA":{"o":{"p":15.9,"pR":3,"p4":11.6,"p4R":1},"d":{"p":16.8,"pR":30,"p4":17.6,"p4R":24,"blz":29.2,"blzR":17}},"LAC":{"o":{"p":27.7,"pR":31,"p4":27.6,"p4R":29},"d":{"p":20.0,"pR":17,"p4":17.7,"p4R":22,"blz":26.5,"blzR":22}},"LV":{"o":{"p":18.3,"pR":11,"p4":16.6,"p4R":9},"d":{"p":22.1,"pR":8,"p4":15.8,"p4R":29,"blz":27.4,"blzR":19}},"MIA":{"o":{"p":24.0,"pR":27,"p4":22.9,"p4R":24},"d":{"p":19.4,"pR":20,"p4":20.7,"p4R":11,"blz":23.6,"blzR":29}},"MIN":{"o":{"p":22.9,"pR":25,"p4":23.8,"p4R":26},"d":{"p":28.5,"pR":1,"p4":25.5,"p4R":3,"blz":72.8,"blzR":1}},"NE":{"o":{"p":23.8,"pR":26,"p4":21.6,"p4R":21},"d":{"p":20.1,"pR":15,"p4":20.1,"p4R":14,"blz":37.2,"blzR":9}},"NO":{"o":{"p":17.2,"pR":7,"p4":16.7,"p4R":10},"d":{"p":19.1,"pR":21,"p4":16.9,"p4R":26,"blz":34.8,"blzR":11}},"NYG":{"o":{"p":20.4,"pR":17,"p4":19.2,"p4R":13},"d":{"p":16.9,"pR":28,"p4":22.5,"p4R":6,"blz":41.7,"blzR":3}},"NYJ":{"o":{"p":21.0,"pR":19,"p4":19.1,"p4R":12},"d":{"p":21.7,"pR":9,"p4":26.9,"p4R":2,"blz":39.4,"blzR":6}},"PHI":{"o":{"p":21.7,"pR":22,"p4":19.3,"p4R":14},"d":{"p":14.8,"pR":32,"p4":15.6,"p4R":30,"blz":27.6,"blzR":18}},"PIT":{"o":{"p":17.2,"pR":8,"p4":13.9,"p4R":7},"d":{"p":19.8,"pR":18,"p4":18.6,"p4R":20,"blz":27.0,"blzR":20}},"SEA":{"o":{"p":22.3,"pR":23,"p4":23.8,"p4R":27},"d":{"p":26.7,"pR":3,"p4":22.1,"p4R":8,"blz":22.1,"blzR":30}},"SF":{"o":{"p":17.7,"pR":9,"p4":19.7,"p4R":15},"d":{"p":17.2,"pR":27,"p4":16.5,"p4R":28,"blz":31.7,"blzR":15}},"TB":{"o":{"p":25.7,"pR":29,"p4":22.2,"p4R":22},"d":{"p":15.4,"pR":31,"p4":14.6,"p4R":31,"blz":40.6,"blzR":5}},"TEN":{"o":{"p":19.1,"pR":13,"p4":18.2,"p4R":11},"d":{"p":19.7,"pR":19,"p4":19.8,"p4R":15,"blz":24.3,"blzR":28}},"WAS":{"o":{"p":27.3,"pR":30,"p4":28.8,"p4R":30},"d":{"p":21.5,"pR":12,"p4":20.8,"p4R":10,"blz":43.8,"blzR":2}}};
 const NFL_QBP={"Jacoby Brissett":{"db":331,"pdb":71,"cy":6.0,"py":1.5,"cd":7.7,"pd":25.6,"ci":1.5,"pi":7.0,"by":4.5,"ny":5.2,"bdb":88},"Justin Herbert":{"db":255,"pdb":70,"cy":7.1,"py":1.0,"cd":9.7,"pd":16.0,"ci":4.9,"pi":4.0,"by":5.8,"ny":5.3,"bdb":63},"Aaron Rodgers":{"db":311,"pdb":52,"cy":6.3,"py":1.6,"cd":12.4,"pd":20.0,"ci":1.9,"pi":4.0,"by":4.3,"ny":6.1,"bdb":98},"Daniel Jones":{"db":299,"pdb":66,"cy":6.2,"py":0.3,"cd":11.6,"pd":8.8,"ci":2.6,"pi":8.8,"by":3.8,"ny":5.4,"bdb":103},"Lamar Jackson":{"db":112,"pdb":23,"cy":10.6,"py":2.9,"cd":20.2,"pd":0.0,"ci":1.1,"pi":0.0,"by":7.6,"ny":9.7,"bdb":37},"Josh Allen":{"db":237,"pdb":51,"cy":9.0,"py":4.6,"cd":14.5,"pd":26.3,"ci":2.7,"pi":0.0,"by":7.8,"ny":8.3,"bdb":83},"C.J. Stroud":{"db":266,"pdb":43,"cy":8.3,"py":-0.3,"cd":13.5,"pd":30.0,"ci":0.4,"pi":0.0,"by":8.3,"ny":6.5,"bdb":68},"Caleb Williams":{"db":186,"pdb":42,"cy":8.4,"py":1.9,"cd":11.8,"pd":14.3,"ci":0.0,"pi":7.1,"by":6.6,"ny":7.3,"bdb":71},"Bryce Young":{"db":296,"pdb":56,"cy":7.3,"py":1.4,"cd":9.6,"pd":22.2,"ci":2.1,"pi":0.0,"by":5.7,"ny":6.4,"bdb":82},"Deshaun Watson":{"db":306,"pdb":89,"cy":7.4,"py":2.3,"cd":10.1,"pd":15.6,"ci":0.5,"pi":6.2,"by":5.7,"ny":6.0,"bdb":103},"Trevor Lawrence":{"db":219,"pdb":45,"cy":8.9,"py":2.1,"cd":9.8,"pd":21.7,"ci":1.1,"pi":8.7,"by":6.1,"ny":8.1,"bdb":67},"Dak Prescott":{"db":330,"pdb":60,"cy":7.2,"py":2.2,"cd":7.8,"pd":12.5,"ci":1.9,"pi":0.0,"by":5.3,"ny":6.8,"bdb":112},"Bo Nix":{"db":268,"pdb":34,"cy":6.3,"py":1.7,"cd":9.0,"pd":18.8,"ci":1.3,"pi":0.0,"by":4.8,"ny":6.2,"bdb":87},"Patrick Mahomes":{"db":254,"pdb":54,"cy":7.9,"py":4.2,"cd":9.0,"pd":18.8,"ci":1.0,"pi":6.2,"by":7.1,"ny":7.1,"bdb":72},"Kyler Murray":{"db":184,"pdb":43,"cy":6.6,"py":3.4,"cd":11.3,"pd":25.0,"ci":0.7,"pi":16.7,"by":4.1,"ny":6.6,"bdb":56},"Jordan Love":{"db":327,"pdb":54,"cy":7.0,"py":4.7,"cd":16.5,"pd":20.5,"ci":1.8,"pi":2.6,"by":6.6,"ny":6.6,"bdb":117},"Malik Willis":{"db":225,"pdb":54,"cy":7.2,"py":2.6,"cd":17.5,"pd":27.3,"ci":2.9,"pi":0.0,"by":5.2,"ny":6.5,"bdb":72},"Kirk Cousins":{"db":296,"pdb":54,"cy":8.0,"py":2.4,"cd":9.5,"pd":13.2,"ci":1.7,"pi":2.6,"by":6.8,"ny":7.1,"bdb":91},"Sam Darnold":{"db":235,"pdb":54,"cy":7.7,"py":0.8,"cd":8.3,"pd":17.9,"ci":4.4,"pi":3.6,"by":5.6,"ny":6.8,"bdb":71},"Drake Maye":{"db":275,"pdb":65,"cy":8.9,"py":4.0,"cd":13.3,"pd":13.0,"ci":2.9,"pi":8.7,"by":8.9,"ny":7.2,"bdb":80},"Jared Goff":{"db":269,"pdb":46,"cy":8.1,"py":1.5,"cd":8.5,"pd":4.0,"ci":0.4,"pi":0.0,"by":6.6,"ny":7.1,"bdb":102},"Tyler Shough":{"db":296,"pdb":51,"cy":6.3,"py":3.3,"cd":9.4,"pd":22.2,"ci":2.0,"pi":3.7,"by":5.2,"ny":6.1,"bdb":104},"Geno Smith":{"db":272,"pdb":57,"cy":8.4,"py":-0.5,"cd":12.1,"pd":8.7,"ci":0.9,"pi":4.3,"by":7.3,"ny":6.3,"bdb":72},"Cam Ward":{"db":278,"pdb":53,"cy":6.1,"py":1.8,"cd":8.4,"pd":17.4,"ci":0.9,"pi":13.0,"by":6.5,"ny":4.9,"bdb":62},"Matthew Stafford":{"db":316,"pdb":49,"cy":7.3,"py":2.5,"cd":6.7,"pd":36.4,"ci":3.0,"pi":0.0,"by":6.1,"ny":6.8,"bdb":95},"Brock Purdy":{"db":231,"pdb":41,"cy":8.1,"py":7.5,"cd":9.5,"pd":0.0,"ci":2.1,"pi":0.0,"by":8.7,"ny":7.7,"bdb":69},"Baker Mayfield":{"db":134,"pdb":33,"cy":6.6,"py":0.5,"cd":12.9,"pd":22.2,"ci":1.0,"pi":11.1,"by":4.6,"ny":5.4,"bdb":50},"Joe Burrow":{"db":289,"pdb":60,"cy":8.3,"py":2.8,"cd":7.4,"pd":18.4,"ci":0.9,"pi":10.5,"by":6.4,"ny":7.4,"bdb":78},"Jayden Daniels":{"db":176,"pdb":46,"cy":7.1,"py":4.5,"cd":15.4,"pd":15.4,"ci":0.0,"pi":0.0,"by":7.0,"ny":6.0,"bdb":72},"Jalen Hurts":{"db":179,"pdb":40,"cy":6.4,"py":1.6,"cd":10.8,"pd":13.3,"ci":1.4,"pi":6.7,"by":4.0,"ny":6.2,"bdb":71},"Jameis Winston":{"db":178,"pdb":37,"cy":5.9,"py":2.6,"cd":12.8,"pd":29.4,"ci":2.1,"pi":11.8,"by":4.1,"ny":5.9,"bdb":62},"Michael Penix Jr.":{"db":181,"pdb":20,"cy":7.9,"py":-1.6,"cd":9.9,"pd":0.0,"ci":3.1,"pi":0.0,"by":6.5,"ny":7.1,"bdb":77},"Jalon Daniels":{"db":123,"pdb":33,"cy":5.5,"py":1.7,"cd":8.9,"pd":12.5,"ci":3.3,"pi":25.0,"by":2.9,"ny":5.3,"bdb":41},"Tyler Huntley":{"db":130,"pdb":33,"cy":6.9,"py":1.4,"cd":5.2,"pd":15.4,"ci":1.0,"pi":0.0,"by":6.1,"ny":5.3,"bdb":39},"Tanner McKee":{"db":129,"pdb":27,"cy":6.1,"py":-1.1,"cd":5.9,"pd":16.7,"ci":1.0,"pi":8.3,"by":4.5,"ny":4.6,"bdb":40}};
 /* NHL data loads on demand from nhl_data.js (next to index.html) */ var NHL_GEN="",NHL_DATE="",NHL_TOM="",NHL_SLATE=[],NHL_NEXT=[],NHL_LATER=[],NHL_TEAM={},NHL_RES=[],NHL_P={},NHL_G={},NHL_INJ={},NHL_H2HP={},NHL_LZ=[],NHL_MODEL=null,NHL_PRES=[],NHL_PRES_D=null,NHL_RECENT=[],NHL_PROPS=[];
+var BUILD_AT="2026-11-09T05:58:04Z";
 /* ================= 🏒 NHL section =================
    Data: NHL_* from nhl_data.js (official NHL API box scores, standings, team stats, built by tools/nhlfetch.py)
    + player props / game lines from the PropLine feed (baked in nhl_data.js, refreshed live by liveodds.js).
@@ -3392,7 +3402,7 @@ const NH={tm:"all",mk:"all",gp:"all",gm:"all"};
 /* NHL data is a separate file (nhl_data.js next to index.html) loaded the first time it's needed — keeps the first page load light */
 let NHL_READY=false,NHL_WAIT=[];
 function nhlEnsure(cb){if(NHL_READY||NHL_DATE){NHL_READY=true;cb&&cb();return}if(cb)NHL_WAIT.push(cb);if(NHL_WAIT.loading)return;NHL_WAIT.loading=1;
-  const sc=document.createElement("script");sc.src="nhl_data.js?v="+Math.floor(Date.now()/600000);
+  const sc=document.createElement("script");sc.src="nhl_data.js?v="+(typeof BUILD_AT!=="undefined"&&BUILD_AT?BUILD_AT.replace(/\D/g,""):Math.floor(Date.now()/600000));
   sc.onload=()=>{NHL_READY=true;try{if(typeof SRCH!=="undefined")SRCH=null;if(typeof LO!=="undefined"&&LO.data&&typeof loApply!=="undefined")loApply(LO.data)}catch(e){}const W=NHL_WAIT.splice(0);NHL_WAIT.loading=0;W.forEach(f=>{try{f()}catch(e){console.error(e)}})};
   sc.onerror=()=>{NHL_WAIT.loading=0;const W=NHL_WAIT.splice(0);W.forEach(f=>{try{f()}catch(e){}})};document.head.appendChild(sc)}
 const NH_COL={ANA:"#F47A38",BOS:"#C69214",BUF:"#003087",CAR:"#CE1126",CBJ:"#002654",CGY:"#C8102E",CHI:"#CF0A2C",COL:"#6F263D",DAL:"#006847",DET:"#CE1126",EDM:"#FF4C00",FLA:"#C8102E",LAK:"#3d3d3d",MIN:"#154734",MTL:"#AF1E2D",NJD:"#CE1126",NSH:"#c9a227",NYI:"#00539B",NYR:"#0038A8",OTT:"#C52032",PHI:"#F74902",PIT:"#a88b2c",SEA:"#2b8a8f",SJS:"#006D75",STL:"#002F87",TBL:"#002868",TOR:"#00205B",UTA:"#5b8fbf",VAN:"#00205B",VGK:"#9a8655",WPG:"#041E42",WSH:"#C8102E"};
@@ -4003,14 +4013,14 @@ function nhlPlayTitle(x){if(x.type==="prop"){const m=typeof NH_MK!=="undefined"&
 function nhlPlaysCard(){if(typeof TRACK==="undefined"||!TRACK)return "";const P=TRACK.nhlPlays||[],S=TRACK.sum&&TRACK.sum.nhl&&TRACK.sum.nhl.plays;
   const rec=S&&(S.w+S.l)?`${S.w}-${S.l}${S.p?"-"+S.p:""} · ${S.u>0?"+":""}${S.u}u`:"tracking started Nov 8";
   return `<div class="card potd" style="margin-bottom:12px"><h2 style="margin-bottom:2px">⭐ NHL Plays of the day</h2><div class="small" style="margin-bottom:6px">${P.length?`Locked before puck drop · counted in our record (${rec})`:`Posted about 6 hours before the first puck drop, once lines are up. Record: ${rec}.`}</div>
-   ${P.map((x,i)=>`<div class="pod"><div class="podn">${i+1}</div><div style="min-width:0;flex:1" ${x.type==="prop"?`data-nhlp="${esc(JSON.stringify({nm:x.nm,k:x.k,side:x.side,line:x.line,tm:x.tm}))}"`:""}><div class="bpl"><b class="${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.type==="prop"?(typeof esc!=="undefined"?esc(nhlPlayTitle(x)):nhlPlayTitle(x)):nhlPlayTitle(x)}</b> <span class="small">${xOdds(x.odds)}</span>${x.r?` <span class="nhtag ${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.r==="win"?"✓ won":x.r==="loss"?"✗ lost":x.r}${x.v!=null?" · "+x.v:""}</span>`:""}</div><div class="small">${x.why||""}</div></div></div>`).join("")}
+   ${P.map(x0=>{const L=!x0.r&&typeof finItem!=="undefined"&&typeof NHL_DATE!=="undefined"&&NHL_DATE?finItem("nhl",NHL_DATE,x0):null;return L?{...x0,r:L.r,v:L.v,lv:1}:x0}).map((x,i)=>`<div class="pod"><div class="podn">${i+1}</div><div style="min-width:0;flex:1" ${x.type==="prop"?`data-nhlp="${esc(JSON.stringify({nm:x.nm,k:x.k,side:x.side,line:x.line,tm:x.tm}))}"`:""}><div class="bpl"><b class="${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.type==="prop"?(typeof esc!=="undefined"?esc(nhlPlayTitle(x)):nhlPlayTitle(x)):nhlPlayTitle(x)}</b> <span class="small">${xOdds(x.odds)}</span>${x.r?` <span class="nhtag ${x.r==="win"?"up":x.r==="loss"?"dn":""}">${x.r==="win"?"✓ won":x.r==="loss"?"✗ lost":x.r}${x.v!=null?" · "+x.v:""}</span>${x.lv?`<span class="livegr" title="Graded from ESPN's final box score — made official at the next site update">⚡ live</span>`:""}`:""}</div><div class="small">${x.why||""}</div></div></div>`).join("")}
    <div class="small" style="margin-top:6px">Picked automatically: props that hit 7+ of the last 10 with a clear edge over the odds (no worse than −200, nobody injured), plus our biggest game edges. Leans, not guarantees — bet small.</div></div>`}
 /* ---------- 📊 tracking: best props + our game numbers, per sport ---------- */
 function xTrackCard(){if(typeof TRACK==="undefined"||!TRACK)return "";const S=TRACK.sum||{},rows=[];const pc=(w,l)=>w+l?Math.round(w/(w+l)*100)+"%":"–",u=x=>(x>0?"+":"")+(+x).toFixed(2)+"u";
   for(const [sp,nm] of [["nba","NBA"],["nhl","NHL"],["nfl","NFL"]]){const s=S[sp];if(!s)continue;const E=Object.values(s.edge||{}),ew=E.reduce((a,e)=>a+e[0],0),el=E.reduce((a,e)=>a+e[1],0),eu=E.reduce((a,e)=>a+e[2],0);
     let win=s.win,tot=s.tot;if(sp==="nhl"&&typeof NHL_MODEL!=="undefined"&&NHL_MODEL){win=NHL_MODEL.win;tot=NHL_MODEL.tot;const NE=Object.values(NHL_MODEL.edge||{});rows.push([nm,s.best,win,tot,[NE.reduce((a,e)=>a+e[0],0),NE.reduce((a,e)=>a+e[1],0),NE.reduce((a,e)=>a+e[2],0)]]);continue}
     rows.push([nm,s.best,win,tot,[ew,el,eu]])}
-  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">📊 How our numbers are doing</h2><div class="small" style="margin-bottom:8px">Saved before every game and graded after — nothing is picked after the fact. Best props = each day's top 10 by hit score, 1 unit each at the posted odds.</div>
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">📊 How our numbers are doing</h2><div class="small" style="margin-bottom:8px">Saved before every game and graded after — nothing is picked after the fact. Best props = each day's top 10 by hit score, 1 unit each at the posted odds.</div>${typeof finTonightHtml!=="undefined"?finTonightHtml():""}
    <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Top-10 best props</th><th>Winner picked</th><th>Total O/U</th><th>Odds edges ≥ 4%</th></tr></thead><tbody>
    ${rows.map(([nm,b,w,t,e])=>`<tr><td><b>${nm}</b></td><td>${b.w}-${b.l} <span class="small">${pc(b.w,b.l)} · <span class="${b.u>0?"up":b.u<0?"dn":""}">${u(b.u)}</span></span></td><td>${w[0]}-${w[1]} <span class="small">${pc(w[0],w[1])}</span></td><td>${t[0]}-${t[1]} <span class="small">${pc(t[0],t[1])}</span></td><td>${e[0]}-${e[1]} <span class="small ${e[2]>0?"up":e[2]<0?"dn":""}">${u(e[2])}</span></td></tr>`).join("")}</tbody></table></div>
    <div class="small" style="margin-top:6px">Tracking started Nov 8, 2026 — give it a few weeks before trusting any of these.</div></div>`}
@@ -4888,15 +4898,129 @@ function loMovesCard(sp,n){
     const why=m.dl>0?"books moved it up — money on the over":m.dl<0?"books moved it down — money on the under":m.dp<0?"over getting pricier":"under getting pricier";
     return `<a class="lmr" href="${href}" ${sp==="nfl"?`data-nflfav="${esc(m.nm)}"`:""}><span><b>${esc(m.nm)}</b> <span class="small">${esc(mk(m))}</span></span><span>${what}</span><span class="small">${why}</span></a>`};
   return `<div class="card lmc"><h2 style="margin-bottom:2px">📈 Biggest ${sp.toUpperCase()} line moves today</h2><div class="small" style="margin-bottom:8px">Since the first line we saw this morning · live sportsbook odds, updated ${loAgo()}. Big moves often follow injury news or sharp money.</div>${L.map(row).join("")}</div>`}
+/* ---------- ⚡ Instant results: grade finished games right in the browser ----------
+   As soon as ESPN marks a game final, pending props, My Bets, plays and tonight's best props are graded here from
+   ESPN's final box score — no waiting for the next site update. The next site update makes it official from our own
+   data (same numbers). Fails silently if ESPN can't be reached: everything then just waits for the site update.
+   Only ever reads real final stats; a player missing from the box score is left pending (never guessed). */
+const FIN={sb:{},box:{},sig:null,busy:0,want:new Set()};
+const FIN_NFLK=new Set(["passYds","passTD","comp","rushYds","rushAtt","rushTD","recYds","rec","recTD","rushRec","anyTD"]);
+function finNorm(s){return typeof loNorm!=="undefined"?loNorm(s):String(s||"").toLowerCase().replace(/[^a-z]/g,"")}
+function finRecent(d){if(!d)return false;const t=etNow().d;return d<=t&&(Date.parse(t)-Date.parse(d))/864e5<=3}
+async function finDay(sp,d){const key=sp+d,c=FIN.sb[key];if(c&&(c.done||Date.now()-c.t<60000))return c.g;
+  try{const r=await fetch(LIVE_URL[sp]+"?dates="+String(d).replace(/-/g,""),{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json(),G=[];
+    for(const e of j.events||[]){const cp=(e.competitions||[])[0];if(!cp)continue;const st=(((cp.status||e.status||{}).type)||{}).state||"pre";let h=null,a=null;
+      for(const x of cp.competitors||[]){const o={ab:liveTeam(sp,(x.team&&x.team.abbreviation)||""),sc:+x.score||0};if(x.homeAway==="home")h=o;else a=o}
+      if(h&&a)G.push({id:String(e.id),a:a.ab,h:h.ab,as:a.sc,hs:h.sc,st})}
+    FIN.sb[key]={t:Date.now(),g:G,done:G.length>0&&G.every(x=>x.st==="post")};return G}catch(e){return c?c.g:[]}}
+async function finBox(sp,id){const key=sp+id;if(FIN.box[key])return FIN.box[key];let p=null;
+  try{p=JSON.parse(sessionStorage.getItem("fin:"+key)||"null")}catch(e){}
+  if(!p){let raw=null;try{raw=sp==="nba"?await liveBox(id):sp==="nfl"?await liveNflBox(id):await nhlLiveBox(id)}catch(e){}
+    if(!raw||!Object.keys(raw).length)return null;p={};for(const n in raw)p[finNorm(n)]=raw[n];
+    try{sessionStorage.setItem("fin:"+key,JSON.stringify(p))}catch(e){}}
+  FIN.box[key]=p;return p}
+/* ---- sync lookups (they note what's missing; finRefresh fetches it and redraws) ---- */
+function finGameOf(sp,d,tm){if(!finRecent(d)||!tm)return null;const c=FIN.sb[sp+d];if(!c){FIN.want.add(sp+"|"+d);return null}
+  if(!c.done)FIN.want.add(sp+"|"+d);return c.g.find(g=>g.a===tm||g.h===tm)||null}
+function finScore(sp,d,a,h){if(!finRecent(d))return null;const c=FIN.sb[sp+d];if(!c){FIN.want.add(sp+"|"+d);return null}
+  if(!c.done)FIN.want.add(sp+"|"+d);const g=c.g.find(g=>g.a===a&&g.h===h);return g&&g.st==="post"?[g.as,g.hs]:null}
+function finStat(sp,d,tm,nm,k){const g=finGameOf(sp,d,tm);if(!g||g.st!=="post")return null;const B=FIN.box[sp+g.id];
+  if(!B){FIN.want.add(sp+"|"+d+"|"+g.id);return null}const o=B[finNorm(nm)];if(!o)return null;
+  const v=sp==="nba"?liveVal(o,k):sp==="nfl"?(FIN_NFLK.has(k)?liveNflVal(o,k):null):nhlLiveVal(o,k);return v==null||!Number.isFinite(+v)?null:+v}
+/* prop result: side "o"/"over" or "u"/"under" */
+function finProp(sp,d,tm,nm,k,side,line){if(line==null&&(k==="hanyG"||k==="anyTD"))line=.5;if(line==null)return null;const v=finStat(sp,d,tm,nm,k);if(v==null)return null;
+  const over=side==="o"||side==="over";return {r:v===+line?"push":(over===(v>+line))?"win":"loss",v}}
+function finEdge(mk,pick,a,h,F){const [as,hs]=F,pk=String(pick);
+  if(mk==="Moneyline")return (pk===h)===(hs>as)?"win":"loss";
+  if(mk==="Total"){const L=+pk.split(" ")[1],t=as+hs;return t===L?"push":(pk.startsWith("Over")===(t>L))?"win":"loss"}
+  if(mk==="Spread"||mk==="Puck line"){const [tm,ln]=pk.split(" "),mg=tm===h?hs-as:as-hs;return mg+(+ln)===0?"push":mg+(+ln)>0?"win":"loss"}return null}
+/* a tracked play / best prop {type?, nm,k,side,line,tm | mk,pick,a,h} on date d */
+function finItem(sp,d,x){if(x.r)return null;
+  if(x.type==="game"){const F=finScore(sp,d,x.a,x.h);if(!F)return null;const r=finEdge(x.mk,x.pick,x.a,x.h,F);return r?{r,f:F}:null}
+  return finProp(sp,d,x.tm,x.nm,x.k,x.side,x.line)}
+/* My Bets (called from gradeBet when our data has no result yet) */
+function finBet(b){try{
+  const why=v=>`Final: ${v} · ⚡ graded from ESPN's box score`;
+  if(b.k==="nbaprop"||b.k==="nhlprop"){const g=finProp(b.k==="nbaprop"?"nba":"nhl",b.date,b.team,b.player,b.market,b.side,b.line);return g?{r:g.r,why:why(g.v),live:1}:null}
+  if(b.k==="prop"){if(b.wk!==BETS_WEEK||typeof oppOf==="undefined")return null;const o=oppOf(b.team),d=o&&nflDate(o.g);const g=d&&finProp("nfl",d,b.team,b.player,b.market,b.side,b.line);return g?{r:g.r,why:why(g.v),live:1}:null}
+  if(b.k==="ml"||b.k==="spread"||b.k==="total"){if(b.wk!==BETS_WEEK)return null;const gm=SLATE.find(x=>x.id===b.game),d=gm&&nflDate(gm),F=d&&finScore("nfl",d,b.away,b.home);if(!F)return null;
+    const [ap,hp]=F,w=`Final: ${short(b.away)} ${ap}, ${short(b.home)} ${hp} · ⚡ from ESPN`;
+    if(b.k==="ml"){const win=ap>hp?b.away:hp>ap?b.home:null;return {r:win===null?"push":win===b.team?"win":"loss",why:w,live:1}}
+    if(b.k==="spread"){const me=b.team===b.away?ap:hp,op=b.team===b.away?hp:ap,m=me-op+b.line;return {r:m>0?"win":m<0?"loss":"push",why:w,live:1}}
+    const t=ap+hp;return {r:t===b.line?"push":((b.side==="over")===(t>b.line))?"win":"loss",why:w,live:1}}
+ }catch(e){}return null}
+/* tonight's tracked best props + plays, with live grades filled in: {sp:{w,l,p,n,pend}} */
+function finTonight(){const T=typeof TRACK!=="undefined"&&TRACK&&TRACK.today;if(!T)return null;const out={};
+  for(const sp of ["nba","nhl","nfl"])for(const day of T[sp]||[]){const o=out[sp]||(out[sp]={w:0,l:0,p:0,n:0,pend:0,live:0,d:day.d});
+    for(const x of day.best||[]){o.n++;let r=x.r;if(!r){const g=finItem(sp,day.d,x);if(g){r=g.r;o.live++}}
+      if(r==="win")o.w++;else if(r==="loss")o.l++;else if(r==="push")o.p++;else if(r==="void")o.n--;else o.pend++}}
+  return out}
+function finTonightHtml(){const T=finTonight();if(!T)return "";const parts=[];
+  for(const [sp,nm] of [["nba","NBA"],["nhl","NHL"],["nfl","NFL"]]){const o=T[sp];if(!o||!o.n||o.w+o.l+o.p===0)continue;
+    parts.push(`<span class="fint"><b>${nm}</b> ${o.w}-${o.l}${o.p?"-"+o.p:""}${o.pend?` <span class="small">· ${o.pend} still to play</span>`:""}</span>`)}
+  return parts.length?`<div class="fintw"><span class="small">⚡ Latest top-10 best props:</span> ${parts.join("")}</div>`:""}
+function finTonightTile(){const T=finTonight();if(!T)return "";let w=0,l=0,pend=0;for(const o of Object.values(T)){w+=o.w;l+=o.l;pend+=o.pend}
+  return w+l?`<a href="#record"><b class="${w>l?"up":w<l?"dn":""}">${w}-${l}</b><span>latest best props${pend?` · ${pend} to go`:""}</span></a>`:""}
+/* everything that can be graded live right now — used to notice when a new final comes in */
+function finCollect(){const sig=[];
+  try{if(typeof betsLoad!=="undefined")for(const b of betsLoad()){const g=gradeBet(b);if(g.live)sig.push(b.id+g.r)}}catch(e){}
+  try{const T=finTonight();if(T)for(const [sp,o] of Object.entries(T))if(o.live)sig.push(sp+o.live+":"+o.w+"-"+o.l+"-"+o.p)}catch(e){}
+  try{if(typeof TRACK!=="undefined"&&TRACK&&TRACK.nhlPlays&&typeof NHL_DATE!=="undefined"&&NHL_DATE)for(const x of TRACK.nhlPlays){const g=finItem("nhl",NHL_DATE,x);if(g)sig.push("np"+(x.nm||x.pick)+g.r)}}catch(e){}
+  try{if(typeof nbaRecord!=="undefined")for(const x of nbaRecord().rows){if(x.st!=="pending")continue;const [d,nm,k,side,line]=x.r,p=NBA_LOGS[nm];const g=p&&finProp("nba",d,p.tm,nm,k,side,line);if(g)sig.push("nr"+nm+g.r)}}catch(e){}
+  return sig.join("|")}
+async function finRefresh(){if(FIN.busy||location.protocol==="file:"||typeof LIVE_URL==="undefined")return;FIN.busy=1;
+  try{for(let pass=0;pass<3;pass++){FIN.want.clear();finCollect();if(!FIN.want.size)break;
+      await Promise.all([...FIN.want].map(w=>{const [sp,d,id]=w.split("|");return id?finBox(sp,id):finDay(sp,d)}))}
+    const sig=finCollect(),h=(location.hash||"#today").slice(1)||"today";
+    if(sig!==(FIN.sig||"")&&/^(bets|record|today|nhl$|nba$)/.test(h)&&typeof loRerender!=="undefined")loRerender();
+    FIN.sig=sig}finally{FIN.busy=0}}
+window.addEventListener("load",()=>setTimeout(finRefresh,1500));
+window.addEventListener("hashchange",()=>setTimeout(finRefresh,400));
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)finRefresh()});
+setInterval(()=>{if(!document.hidden)finRefresh()},90000);
+/* ---------- 🔄 Fresh data: "updated X ago" chip + automatic refresh when a newer site update is out ----------
+   Every site update writes version.json next to index.html. While the page is open we check it every 3 minutes
+   (and whenever you come back to the tab). If a newer update is out we reload quietly when you're not using the
+   page, otherwise a "tap to update" button appears. You stay on the same page and scroll spot. */
+const FRESH={at:typeof BUILD_AT!=="undefined"?BUILD_AT:"",live:"",last:Date.now()};
+function freshAge(iso){const m=Math.max(0,Math.round((Date.now()-Date.parse(iso))/60000));return m<1?"just now":m<60?m+" min ago":m<1440?Math.floor(m/60)+" h ago":Math.floor(m/1440)+" d ago"}
+function freshNew(){return FRESH.live&&FRESH.at&&FRESH.live>FRESH.at}
+function freshPaint(){const el=document.getElementById("fresh");if(!el||!FRESH.at)return;const m=(Date.now()-Date.parse(FRESH.at))/60000;
+  const cls=freshNew()?"new":m<150?"ok":m<360?"old":"bad";el.className="fresh "+cls;el.hidden=false;
+  el.innerHTML=`<span class="fdot"></span><span class="ftx">${freshNew()?"New data":`<span class="fpre">Updated </span>`+freshAge(FRESH.at)}</span>`;
+  document.querySelectorAll(".freshtx").forEach(t=>{t.className="freshtx "+cls;t.textContent=freshNew()?"🔄 Newer data is out — tap to update":`Updated ${freshAge(FRESH.at)}`;t.onclick=freshNew()?freshGo:null});
+  el.title=freshNew()?"A newer update is out — tap to load it":`Stats & results updated ${freshAge(FRESH.at)}${cls==="bad"?" — the automatic update may be stuck":""}. Live scores and odds refresh on their own.`}
+function freshIdle(){return document.hidden||Date.now()-FRESH.last>90000}
+["pointerdown","keydown","touchstart","wheel"].forEach(ev=>addEventListener(ev,()=>{FRESH.last=Date.now()},{passive:true}));
+async function freshGo(){try{sessionStorage.setItem("freshY",JSON.stringify({h:location.hash,y:scrollY}));sessionStorage.setItem("freshTry",FRESH.live)}catch(e){}
+  try{await fetch(location.pathname,{cache:"reload"})}catch(e){}   /* refresh the browser's saved copy, then reload */
+  location.reload()}
+async function freshCheck(){if(location.protocol==="file:"||!FRESH.at)return;
+  try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(r.ok){const j=await r.json();if(j&&j.at)FRESH.live=j.at}}catch(e){}
+  freshPaint();if(!freshNew())return;
+  let tried="";try{tried=sessionStorage.getItem("freshTry")||""}catch(e){}
+  const busy=document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)||document.getElementById("agegate");
+  if(tried!==FRESH.live&&freshIdle()&&!busy){freshGo();return}
+  const lo=document.getElementById("loPill");if(lo)lo.remove();
+  let b=document.getElementById("freshPill");if(!b){b=document.createElement("button");b.id="freshPill";b.onclick=()=>{b.textContent="Updating…";freshGo()};document.body.appendChild(b)}
+  b.textContent="🔄 New results & stats — tap to update"}
+window.addEventListener("load",()=>{
+  try{const s=JSON.parse(sessionStorage.getItem("freshY")||"null");sessionStorage.removeItem("freshY");if(s&&s.h===location.hash&&s.y)setTimeout(()=>scrollTo(0,s.y),700)}catch(e){}
+  const el=document.getElementById("fresh");if(el)el.onclick=e=>{e.preventDefault();if(freshNew())freshGo();else{el.classList.add("spin");freshCheck().finally(()=>setTimeout(()=>el.classList.remove("spin"),400))}};
+  freshPaint();setTimeout(freshCheck,4000)});
+setInterval(()=>{if(!document.hidden)freshCheck();else freshPaint()},180000);
+setInterval(freshPaint,60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)freshCheck()});
 /* ---------- Shared pages: combined record, beginner guide; share images; install-as-app ---------- */
 
 /* ===== Combined record (NFL Plays of the Week + NBA Plays of the day) ===== */
 function recAll(){
   const rows=[];
   if(typeof nbaRecord!=="undefined"){for(const x of nbaRecord().rows){const [d,nm,k,side,line,odds]=x.r;
-    rows.push({sport:"NBA",when:d,sort:d,date:d,label:`${nm} ${side==="o"?"Over":"Under"} ${line} ${NBA_MK[k]?NBA_MK[k][1]:k}`,type:"Player prop",st:x.st,u:x.u||0,odds,v:x.v,cl:{sp:"nba",nm,k,side,line,odds,dates:[d]}})}}
-  if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.nhl){for(const x of TRACK.sum.nhl.recent||[]){const st=x.r==="win"?"win":x.r==="loss"?"loss":x.r==="push"?"push":x.r==="void"?"void":"pending";const pay=x.odds>0?x.odds/100:100/-x.odds;
-    rows.push({sport:"NHL",when:x.d,sort:x.d,date:x.d,label:typeof nhlPlayTitle!=="undefined"?nhlPlayTitle(x).replace(/<[^>]+>/g,""):"",type:x.type==="prop"?"Player prop":x.mk,st,u:st==="win"?pay:st==="loss"?-1:0,odds:x.odds,v:x.v,cl:null})}}
+    let st=x.st,u0=x.u||0,v=x.v,lv=0;if(st==="pending"&&typeof finProp!=="undefined"&&NBA_LOGS[nm]){const g=finProp("nba",d,NBA_LOGS[nm].tm,nm,k,side,line);if(g){st=g.r;v=g.v;lv=1;u0=st==="win"?(odds>0?odds/100:100/-(odds||-110)):st==="loss"?-1:0}}
+    rows.push({sport:"NBA",when:d,sort:d,date:d,label:`${nm} ${side==="o"?"Over":"Under"} ${line} ${NBA_MK[k]?NBA_MK[k][1]:k}`,type:"Player prop",st,u:u0,odds,v,lv,cl:{sp:"nba",nm,k,side,line,odds,dates:[d]}})}}
+  if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.nhl){for(const x0 of TRACK.sum.nhl.recent||[]){const L=!x0.r&&typeof finItem!=="undefined"?finItem("nhl",x0.d,x0):null,x=L?{...x0,r:L.r,v:L.v}:x0;const st=x.r==="win"?"win":x.r==="loss"?"loss":x.r==="push"?"push":x.r==="void"?"void":"pending";const pay=x.odds>0?x.odds/100:100/-x.odds;
+    rows.push({sport:"NHL",when:x.d,sort:x.d,date:x.d,label:typeof nhlPlayTitle!=="undefined"?nhlPlayTitle(x).replace(/<[^>]+>/g,""):"",type:x.type==="prop"?"Player prop":x.mk,st,u:st==="win"?pay:st==="loss"?-1:0,odds:x.odds,v:x.v,lv:L?1:0,cl:null})}}
   if(typeof PLAY_ARCHIVE!=="undefined"&&typeof gradeOne!=="undefined"){
     const tn={prop:"Player prop",spread:"Spread",ml:"Moneyline",total:"Over / Under"};
     const add=(pl,wk,d)=>{const g=gradeOne(pl,wk,d),odds=pl.odds!=null?pl.odds:d?d.odds:null;
@@ -4948,7 +5072,7 @@ function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){
   ${typeof xTrackCard!=="undefined"?xTrackCard():""}
   <div class="grid g2" style="margin-top:14px">${tbl("By sport",grp(r=>r.sport))}${tbl("By bet type",grp(r=>r.sport+" · "+r.type))}</div>
   <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">Every play</h2>
-   ${recent.map(r=>`<div class="rcr"><span class="lc ${chip[r.st]?chip[r.st][1]:"p"} rcc">${chip[r.st]?chip[r.st][0]:r.st}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)} · ${esc(r.type)}${r.odds!=null?" · "+oddsFmt(r.odds):""}${r.v!=null?" · finished with "+r.v:""}</div></div><span class="${uCls(r.u)}">${r.st==="pending"?"":uTxt(r.u)}</span></div>`).join("")||`<div class="small">No plays yet.</div>`}</div>
+   ${recent.map(r=>`<div class="rcr"><span class="lc ${chip[r.st]?chip[r.st][1]:"p"} rcc">${chip[r.st]?chip[r.st][0]:r.st}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)} · ${esc(r.type)}${r.odds!=null?" · "+oddsFmt(r.odds):""}${r.v!=null?" · finished with "+r.v:""}${r.lv?` <span class="livegr" title="Graded from ESPN's final box score — made official at the next site update">⚡ live</span>`:""}</div></div><span class="${uCls(r.u)}">${r.st==="pending"?"":uTxt(r.u)}</span></div>`).join("")||`<div class="small">No plays yet.</div>`}</div>
   <p class="note" style="margin-top:10px">Past results don't guarantee future results. Bet small and only what you can afford to lose.</p>`;
   clvLoad(R).then(ch=>{if(ch){const c=document.getElementById("clvCard");if(c)c.innerHTML=clvCardHtml(R)}});
   document.getElementById("recShare").onclick=()=>shareImage({title:"Our record",sub:"NFL Plays of the Week + NBA Plays of the day",
@@ -5233,8 +5357,8 @@ function viewToday(){
   const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
   const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].map(sp=>loMovesCard(sp,5)).join(""):"";
   const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today}</p>
-  <div class="tsum"><a href="#nba"><b>${nbaGames.length}</b><span>NBA games</span></a><a href="#nhl"><b>${nhlGames.length||"–"}</b><span>NHL games</span></a><a href="#games"><b>${nflUp.length}</b><span>NFL games left</span></a>${T?`<a href="#record"><b class="${T.u>0?"up":T.u<0?"dn":""}">${recLine(T)}</b><span>our record · ${(T.u>0?"+":"")+T.u.toFixed(1)}u</span></a>`:""}</div>
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p>
+  <div class="tsum"><a href="#nba"><b>${nbaGames.length}</b><span>NBA games</span></a><a href="#nhl"><b>${nhlGames.length||"–"}</b><span>NHL games</span></a><a href="#games"><b>${nflUp.length}</b><span>NFL games left</span></a>${T?`<a href="#record"><b class="${T.u>0?"up":T.u<0?"dn":""}">${recLine(T)}</b><span>our record · ${(T.u>0?"+":"")+T.u.toFixed(1)}u</span></a>`:""}${typeof finTonightTile!=="undefined"?finTonightTile():""}</div>
   ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}
@@ -5246,6 +5370,7 @@ function viewToday(){
   ${favs().length?"":`<p class="small" style="margin-top:14px">⭐ Tip: tap ☆ Save on any player or team page to pin them here every day.</p>`}
   <details class="tmore"><summary>🕒 When the data was updated</summary><div style="margin-top:8px">${updatedHtml("nba")}${updatedHtml("nfl")}</div></details>`;
   host.querySelectorAll("[data-tt]").forEach(b=>b.onclick=()=>{const [k,v]=b.dataset.tt.split("|");TODAY_T[k]=v;const y=scrollY;viewToday();scrollTo(0,y)});
+  if(typeof freshPaint!=="undefined")freshPaint();
   host.querySelectorAll("[data-bp]").forEach(b=>b.onclick=e=>{if(e.target.closest("[data-act]"))return;nbaGoPlayer(nbaUnesc(b.dataset.nm),b.dataset.bp.split("|")[0])});
   host.querySelectorAll("[data-shimg=nba]").forEach(b=>b.onclick=e=>{e.stopPropagation();shareNbaPlays()});
   host.querySelectorAll("[data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};location.hash="props"});

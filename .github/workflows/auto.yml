@@ -1,10 +1,13 @@
 name: Auto refresh (NBA + NFL data, rebuild, check, publish)
+run-name: "${{ github.event.inputs.reason && format('Quick update ({0}) - {1}', github.event.inputs.what, github.event.inputs.reason) || 'Auto refresh' }}"
 on:
   schedule:
-    - cron: "17 */2 * * *"        # every 2 hours, around the clock
+    - cron: "41 */2 * * *"        # every 2 hours, around the clock (off-peak minute; quick.yml adds game-night updates)
   workflow_dispatch:
     inputs:
       what: { description: "nba, nfl, nhl or all", default: "all" }
+      gate_state: { description: "(set by quick.yml) game-night state to save", default: "" }
+      reason: { description: "(set by quick.yml) why this update was started", default: "" }
   push:
     paths: ["src/tools/auto_run.sh", "src/tools/auto_espn.py", "src/tools/check.js", ".github/workflows/auto.yml"]
 permissions:
@@ -51,10 +54,13 @@ jobs:
         run: cat "$RUNNER_TEMP/rla/summary.txt" >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
       - name: Commit if changed
         if: success()
+        env:
+          GATE_STATE: ${{ github.event.inputs.gate_state }}
         run: |
           git config user.name "rla-sharp-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html nhl_data.js src
+          if [ -n "$GATE_STATE" ]; then mkdir -p data; printf '%s\n' "$GATE_STATE" > data/quick.json; git add data/quick.json; fi
+          git add index.html nhl_data.js version.json src
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -qm "Auto refresh $(TZ=America/Toronto date '+%a %b %-d %-I:%M %p ET')"
           for i in 1 2 3; do { git pull --rebase -X theirs -q origin main || { git rebase --abort; false; }; } && git push -q origin HEAD:main && exit 0; sleep 7; done   # -X theirs: on a clash in generated files keep this run's fresh copy

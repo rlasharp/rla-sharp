@@ -4,9 +4,10 @@
 function recAll(){
   const rows=[];
   if(typeof nbaRecord!=="undefined"){for(const x of nbaRecord().rows){const [d,nm,k,side,line,odds]=x.r;
-    rows.push({sport:"NBA",when:d,sort:d,date:d,label:`${nm} ${side==="o"?"Over":"Under"} ${line} ${NBA_MK[k]?NBA_MK[k][1]:k}`,type:"Player prop",st:x.st,u:x.u||0,odds,v:x.v,cl:{sp:"nba",nm,k,side,line,odds,dates:[d]}})}}
-  if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.nhl){for(const x of TRACK.sum.nhl.recent||[]){const st=x.r==="win"?"win":x.r==="loss"?"loss":x.r==="push"?"push":x.r==="void"?"void":"pending";const pay=x.odds>0?x.odds/100:100/-x.odds;
-    rows.push({sport:"NHL",when:x.d,sort:x.d,date:x.d,label:typeof nhlPlayTitle!=="undefined"?nhlPlayTitle(x).replace(/<[^>]+>/g,""):"",type:x.type==="prop"?"Player prop":x.mk,st,u:st==="win"?pay:st==="loss"?-1:0,odds:x.odds,v:x.v,cl:null})}}
+    let st=x.st,u0=x.u||0,v=x.v,lv=0;if(st==="pending"&&typeof finProp!=="undefined"&&NBA_LOGS[nm]){const g=finProp("nba",d,NBA_LOGS[nm].tm,nm,k,side,line);if(g){st=g.r;v=g.v;lv=1;u0=st==="win"?(odds>0?odds/100:100/-(odds||-110)):st==="loss"?-1:0}}
+    rows.push({sport:"NBA",when:d,sort:d,date:d,label:`${nm} ${side==="o"?"Over":"Under"} ${line} ${NBA_MK[k]?NBA_MK[k][1]:k}`,type:"Player prop",st,u:u0,odds,v,lv,cl:{sp:"nba",nm,k,side,line,odds,dates:[d]}})}}
+  if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.nhl){for(const x0 of TRACK.sum.nhl.recent||[]){const L=!x0.r&&typeof finItem!=="undefined"?finItem("nhl",x0.d,x0):null,x=L?{...x0,r:L.r,v:L.v}:x0;const st=x.r==="win"?"win":x.r==="loss"?"loss":x.r==="push"?"push":x.r==="void"?"void":"pending";const pay=x.odds>0?x.odds/100:100/-x.odds;
+    rows.push({sport:"NHL",when:x.d,sort:x.d,date:x.d,label:typeof nhlPlayTitle!=="undefined"?nhlPlayTitle(x).replace(/<[^>]+>/g,""):"",type:x.type==="prop"?"Player prop":x.mk,st,u:st==="win"?pay:st==="loss"?-1:0,odds:x.odds,v:x.v,lv:L?1:0,cl:null})}}
   if(typeof PLAY_ARCHIVE!=="undefined"&&typeof gradeOne!=="undefined"){
     const tn={prop:"Player prop",spread:"Spread",ml:"Moneyline",total:"Over / Under"};
     const add=(pl,wk,d)=>{const g=gradeOne(pl,wk,d),odds=pl.odds!=null?pl.odds:d?d.odds:null;
@@ -58,7 +59,7 @@ function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){
   ${typeof xTrackCard!=="undefined"?xTrackCard():""}
   <div class="grid g2" style="margin-top:14px">${tbl("By sport",grp(r=>r.sport))}${tbl("By bet type",grp(r=>r.sport+" · "+r.type))}</div>
   <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">Every play</h2>
-   ${recent.map(r=>`<div class="rcr"><span class="lc ${chip[r.st]?chip[r.st][1]:"p"} rcc">${chip[r.st]?chip[r.st][0]:r.st}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)} · ${esc(r.type)}${r.odds!=null?" · "+oddsFmt(r.odds):""}${r.v!=null?" · finished with "+r.v:""}</div></div><span class="${uCls(r.u)}">${r.st==="pending"?"":uTxt(r.u)}</span></div>`).join("")||`<div class="small">No plays yet.</div>`}</div>
+   ${recent.map(r=>`<div class="rcr"><span class="lc ${chip[r.st]?chip[r.st][1]:"p"} rcc">${chip[r.st]?chip[r.st][0]:r.st}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)} · ${esc(r.type)}${r.odds!=null?" · "+oddsFmt(r.odds):""}${r.v!=null?" · finished with "+r.v:""}${r.lv?` <span class="livegr" title="Graded from ESPN's final box score — made official at the next site update">⚡ live</span>`:""}</div></div><span class="${uCls(r.u)}">${r.st==="pending"?"":uTxt(r.u)}</span></div>`).join("")||`<div class="small">No plays yet.</div>`}</div>
   <p class="note" style="margin-top:10px">Past results don't guarantee future results. Bet small and only what you can afford to lose.</p>`;
   clvLoad(R).then(ch=>{if(ch){const c=document.getElementById("clvCard");if(c)c.innerHTML=clvCardHtml(R)}});
   document.getElementById("recShare").onclick=()=>shareImage({title:"Our record",sub:"NFL Plays of the Week + NBA Plays of the day",

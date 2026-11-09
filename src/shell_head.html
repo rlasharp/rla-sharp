@@ -258,6 +258,13 @@ a.tdy{display:block;color:inherit;text-decoration:none}.tdy{padding:12px 12px 10
 @media(max-width:700px){.tsum{grid-template-columns:repeat(2,1fr)}.card{padding:14px}h1{font-size:25px}}
 @media(max-width:430px){.bname{display:none}.sportsw a{padding:6px 10px}}
 .lmv{font-size:11.5px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:999px;white-space:nowrap}.lmv.up{background:#173323;color:#7ee2a0}.lmv.dn{background:#3a1d1e;color:#ff9a9d}.lmv.fl{background:var(--card2);color:var(--text2)}
+.fresh{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--muted);border:1px solid #ffffff1f;border-radius:999px;padding:3px 8px;margin-left:8px;white-space:nowrap;text-decoration:none;line-height:1.2}
+.fresh .fdot{width:7px;height:7px;border-radius:50%;background:#7d8590;flex:none}.fresh.ok .fdot{background:#3fb950}.fresh.old .fdot{background:#f3c75a}.fresh.bad{color:#ff8a80;border-color:#ff8a8055}.fresh.bad .fdot{background:#f85149}
+.fresh.new{color:#1a1505;background:#f3c75a;border-color:#f3c75a}.fresh.new .fdot{background:#1a1505}.fresh.spin .fdot{animation:lvp 0.8s infinite}
+@media(max-width:430px){.fresh .ftx{display:none}.fresh{padding:6px;margin-left:6px;border-color:#ffffff14}.fresh .fdot{width:9px;height:9px}.fresh.new .ftx{display:inline}.fresh.new{padding:3px 8px}}.freshtx.bad{color:#ff8a80}.freshtx.new{color:#f3c75a;cursor:pointer}
+#freshPill{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:61;background:#3fb950;color:#04140a;border:0;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;box-shadow:0 6px 20px #0008;cursor:pointer;white-space:nowrap}@media(min-width:900px){#freshPill{bottom:24px}}
+.fintw{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:2px 0 10px}.fint{background:#ffffff0d;border-radius:8px;padding:3px 8px;font-size:13px}
+.livegr{display:inline-block;font-size:11px;font-weight:700;color:#f3c75a;margin-left:4px}
 .upd.lo{color:#f3c75a}#loPill{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:60;background:#f3c75a;color:#1a1505;border:0;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;box-shadow:0 6px 20px #0008;cursor:pointer}@media(min-width:900px){#loPill{bottom:24px}}
 .pxrw{display:flex;justify-content:flex-end;margin:8px 0 2px}.pxrst{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid #5a4a1c;background:#2b2412;color:#f3c75a;cursor:pointer}.fchip.frst{background:#2b2412!important;border-color:#5a4a1c!important;color:#f3c75a!important;font-weight:800}
 .sidetg{display:flex;align-items:center;gap:6px;margin:8px 0 6px;font-size:12px;color:var(--text2)}.sidetg span{margin-right:2px}.sidetg button{font-size:12.5px;font-weight:700;padding:5px 14px;border-radius:999px;border:1px solid var(--line,#333);background:var(--card,#16181d);color:var(--text2);cursor:pointer}.sidetg button.on.o{background:#11301d;border-color:#3fb26b;color:#7fdc95}.sidetg button.on.u{background:#3a1618;border-color:#e5534b;color:#ff9a9d}
@@ -566,7 +573,7 @@ nav[hidden]{display:none!important}
 </head>
 <body>
 <header><div class="hwrap">
-  <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div><span class="bname">Sharp</span></a><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
+  <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div><span class="bname">Sharp</span></a><a id="fresh" class="fresh" href="#" hidden aria-label="Data freshness"></a><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
   <div class="psearch"><input id="plSearch" type="search" placeholder="🔍 Search player" autocomplete="off" aria-label="Search player"><div id="plRes" class="psres" hidden></div></div>
   <div id="sport" class="sportsw"><a href="#games" data-s="nfl">🏈 NFL</a><a href="#nba" data-s="nba">🏀 NBA</a><a href="#nhl" data-s="nhl">🏒 NHL</a></div>
   <nav id="nav">

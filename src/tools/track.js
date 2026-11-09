@@ -68,11 +68,15 @@ for(const s of ['nba','nfl','nhl'])T[s]=T[s]||{};
     s.best.u=Math.round(s.best.u*100)/100;s.plays.u=Math.round(s.plays.u*100)/100;for(const E of Object.values(s.edge))E[2]=Math.round(E[2]*100)/100;
     s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM[sp]=s}
   const today=(typeof NHL_DATE!=="undefined"&&NHL_DATE&&T.nhl[NHL_DATE])||null;
-  return {T,SUM,todayPlays:today&&today.plays||[],log};
+  /* tonight's snapshots (latest 1 day for NBA/NHL, this week's game days for NFL) so the site can grade them live as games end */
+  const etd=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Toronto"}).format(new Date()),TD={};
+  for(const sp of ['nba','nhl','nfl']){const ds=Object.keys(T[sp]).filter(d=>d<=etd&&(T[sp][d].best||T[sp][d].plays)).sort().reverse().slice(0,sp==="nfl"?4:1).filter(d=>(Date.parse(etd)-Date.parse(d))/864e5<=(sp==="nfl"?6:1));
+    TD[sp]=ds.map(d=>({d,best:(T[sp][d].best||[]).map(x=>keep(x,["nm","k","side","line","odds","tm","r","v"])),plays:(T[sp][d].plays||[]).map(x=>keep(x,["type","nm","k","side","line","odds","tm","mk","pick","a","h","r","v","f"]))}))}
+  return {T,SUM,todayPlays:today&&today.plays||[],today:TD,log};
  },T);
  /* keep ~60 days */
  const cut=new Date(Date.now()-60*864e5).toISOString().slice(0,10);for(const s of ['nba','nfl','nhl'])for(const d of Object.keys(R.T[s]))if(d<cut)delete R.T[s][d];
  fs.mkdirSync(path.dirname(SF),{recursive:true});fs.writeFileSync(SF,JSON.stringify(R.T));
- fs.writeFileSync(OUT,`/* tracker summaries — tools/track.js */\nvar TRACK=${JSON.stringify({sum:R.SUM,nhlPlays:R.todayPlays,at:new Date().toISOString()})};\n`);
+ fs.writeFileSync(OUT,`/* tracker summaries — tools/track.js */\nvar TRACK=${JSON.stringify({sum:R.SUM,nhlPlays:R.todayPlays,today:R.today,at:new Date().toISOString()})};\n`);
  console.log("track: "+(R.log.join("; ")||"no new snapshots")+` · graded: NHL plays ${R.SUM.nhl.plays.w}-${R.SUM.nhl.plays.l}, best props NBA ${R.SUM.nba.best.w}-${R.SUM.nba.best.l} NFL ${R.SUM.nfl.best.w}-${R.SUM.nfl.best.l} NHL ${R.SUM.nhl.best.w}-${R.SUM.nhl.best.l}`);
  await b.close()})().catch(e=>{console.error("track failed:",e.message);process.exit(1)});

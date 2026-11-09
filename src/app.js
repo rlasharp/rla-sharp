@@ -138,8 +138,8 @@ function viewToday(){
   const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
   const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].map(sp=>loMovesCard(sp,5)).join(""):"";
   const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today}</p>
-  <div class="tsum"><a href="#nba"><b>${nbaGames.length}</b><span>NBA games</span></a><a href="#nhl"><b>${nhlGames.length||"–"}</b><span>NHL games</span></a><a href="#games"><b>${nflUp.length}</b><span>NFL games left</span></a>${T?`<a href="#record"><b class="${T.u>0?"up":T.u<0?"dn":""}">${recLine(T)}</b><span>our record · ${(T.u>0?"+":"")+T.u.toFixed(1)}u</span></a>`:""}</div>
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p>
+  <div class="tsum"><a href="#nba"><b>${nbaGames.length}</b><span>NBA games</span></a><a href="#nhl"><b>${nhlGames.length||"–"}</b><span>NHL games</span></a><a href="#games"><b>${nflUp.length}</b><span>NFL games left</span></a>${T?`<a href="#record"><b class="${T.u>0?"up":T.u<0?"dn":""}">${recLine(T)}</b><span>our record · ${(T.u>0?"+":"")+T.u.toFixed(1)}u</span></a>`:""}${typeof finTonightTile!=="undefined"?finTonightTile():""}</div>
   ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}
@@ -151,6 +151,7 @@ function viewToday(){
   ${favs().length?"":`<p class="small" style="margin-top:14px">⭐ Tip: tap ☆ Save on any player or team page to pin them here every day.</p>`}
   <details class="tmore"><summary>🕒 When the data was updated</summary><div style="margin-top:8px">${updatedHtml("nba")}${updatedHtml("nfl")}</div></details>`;
   host.querySelectorAll("[data-tt]").forEach(b=>b.onclick=()=>{const [k,v]=b.dataset.tt.split("|");TODAY_T[k]=v;const y=scrollY;viewToday();scrollTo(0,y)});
+  if(typeof freshPaint!=="undefined")freshPaint();
   host.querySelectorAll("[data-bp]").forEach(b=>b.onclick=e=>{if(e.target.closest("[data-act]"))return;nbaGoPlayer(nbaUnesc(b.dataset.nm),b.dataset.bp.split("|")[0])});
   host.querySelectorAll("[data-shimg=nba]").forEach(b=>b.onclick=e=>{e.stopPropagation();shareNbaPlays()});
   host.querySelectorAll("[data-nflp]").forEach(el=>el.onclick=()=>{S.prop={player:el.dataset.nflp.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"'),market:el.dataset.k,open:true};location.hash="props"});

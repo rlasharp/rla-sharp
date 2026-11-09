@@ -21,7 +21,9 @@ function betMatchup(b){if(b.k==="nhlprop")return `NHL · ${b.team} ${b.home?"vs"
   if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
   const g=SLATE.find(x=>x.id===b.game);return `${short(b.away)} @ ${short(b.home)}${g?" · "+g.when:""}`}
 const betDec=a=>a>0?1+a/100:1+100/(-a);
-function gradeBet(b){
+/* our own data first; if it has no result yet, a game ESPN already marked final is graded live (finals.js) */
+function gradeBet(b){const g=gradeBetCore(b);if(g.r!=="pending"||b.k==="parlay"||typeof finBet==="undefined")return g;return finBet(b)||g}
+function gradeBetCore(b){
   if(b.k==="nhlprop"){if(typeof NH_MK==="undefined")return {r:"pending"};const m=NH_MK[b.market],w=nhWho(b.player);
     const fin=(NHL_RES||[]).some(z=>z[0]===b.date&&(z[1]===b.team||z[3]===b.team));
     const row=w&&w.g.find(x=>x[0]===b.date);if(!row||!m||!m[3])return fin?(w&&!row?{r:"void",why:"Did not play — no action"}:{r:"pending",why:"Result not in our data"}):{r:"pending"};

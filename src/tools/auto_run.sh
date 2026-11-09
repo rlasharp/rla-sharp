@@ -7,7 +7,8 @@ WHAT=${1:-all}; ROOT=$(pwd); export REPO=$ROOT WORK=${RUNNER_TEMP:-/tmp}/rla; mk
 cd "$ROOT/src"
 TODAY=$(TZ=America/Toronto date +%F); NOWS=$(TZ=America/Toronto date "+%a %b %-d")
 log(){ echo "::notice::$*"; echo "$*" >> "$WORK/summary.txt"; }
-if [ "$WHAT" = nba ] || [ "$WHAT" = all ]; then
+want(){ [ "$WHAT" = all ] || [[ ",$WHAT," == *",$1,"* ]]; }   # WHAT: all, or a comma list like nba,nhl
+if want nba; then
   python3 tools/auto_espn.py nba-finals "$TODAY" >> "$WORK/summary.txt" 2>&1 || log "NBA finals (ESPN): kept old"
   if bash tools/nbafetch.sh > "$WORK/nbafetch.log" 2>&1; then
     python3 tools/auto_espn.py nba-inj 2>>"$WORK/summary.txt" && log "NBA injuries refreshed" || log "NBA injuries: kept old"
@@ -23,7 +24,7 @@ if [ "$WHAT" = nba ] || [ "$WHAT" = all ]; then
     else cp "$WORK/nba_data.bak" nba_data.js; log "NBA data generation FAILED — kept old (see nbagen.log)"; fi
   else log "hoopR download FAILED — NBA data kept as is"; fi
 fi
-if [ "$WHAT" = nfl ] || [ "$WHAT" = all ]; then
+if want nfl; then
   for f in engine.js real.js market.js inj.js data/espn_inj.txt; do cp "$f" "$WORK/$(basename $f).bak"; done
   python3 tools/auto_espn.py nfl-update >> "$WORK/summary.txt" 2>&1 || log "NFL lines/finals: kept old"
   python3 tools/auto_espn.py nfl-inj "$NOWS" >> "$WORK/summary.txt" 2>&1 || log "NFL injuries: kept old"
@@ -31,7 +32,7 @@ if [ "$WHAT" = nfl ] || [ "$WHAT" = all ]; then
     bash tools/nflfetch.sh > "$WORK/nflfetch.log" 2>&1 && python3 tools/nfltgt.py "$WORK/nflv" > "$WORK/tgt.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/tgt.js" ] && cp "$WORK/tgt.js" nfl_tgt.js && log "NFL targets/spreads/rest refreshed"
     python3 tools/nflrush.py "$WORK/nflv" > "$WORK/rush.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/rush.js" ] && cp "$WORK/rush.js" nfl_rush.js && log "NFL pass rush vs O-line refreshed"; fi
 fi
-if [ "$WHAT" = nhl ] || [ "$WHAT" = all ]; then   # NHL: official NHL API + PropLine feed (box scores cached in data/nhl_box.json)
+if want nhl; then   # NHL: official NHL API + PropLine feed (box scores cached in data/nhl_box.json)
   if python3 tools/nhlfetch.py "$ROOT" "$TODAY" > "$WORK/nhl.js" 2> "$WORK/nhl.log" && grep -q "^var NHL_PROPS" "$WORK/nhl.js"; then
     cp "$WORK/nhl.js" nhl_data.js; log "$(tail -1 "$WORK/nhl.log")"
   else log "NHL data FAILED — kept old: $(tail -3 "$WORK/nhl.log" | tr '\n' ' ')"; fi
@@ -41,7 +42,10 @@ bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 if node tools/track.js "$ROOT/src/index.html" > "$WORK/track.log" 2>&1; then log "$(tail -1 "$WORK/track.log")"; bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 else log "tracker FAILED (kept old): $(tail -2 "$WORK/track.log" | tr '\n' ' ')"; fi
 if node tools/check.js "$ROOT/src/index.html" > "$WORK/check.log" 2>&1; then
-  cp index.html "$ROOT/index.html"; cp nhl_data.js "$ROOT/nhl_data.js"; log "Site check OK — published"
+  cp index.html "$ROOT/index.html"; cp nhl_data.js "$ROOT/nhl_data.js"
+  AT=$(grep -o 'var BUILD_AT="[^"]*"' index.html | head -1 | cut -d'"' -f2)
+  printf '{"at":"%s","what":"%s"}\n' "$AT" "$WHAT" > "$ROOT/version.json"   # the open site checks this to refresh itself
+  log "Site check OK — published ($AT)"
 else
   log "SITE CHECK FAILED — live site left unchanged"; cat "$WORK/check.log"
   git -C "$ROOT" checkout -- src 2>/dev/null; exit 1
