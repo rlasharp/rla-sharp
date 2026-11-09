@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 22:17Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 22:29Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -9,7 +9,7 @@ Mikel Brown Jr.|G|Day-To-Day|rest|Nov 11
 Grant Nelson|F|Day-To-Day|knee|Nov 10
 Egor Demin|G|Out|leg bruise|Nov 11
 #Charlotte Hornets
-Moussa Diabate|F|Day-To-Day|quadriceps|Nov 9
+Moussa Diabate|F|Day-To-Day|quadriceps|Nov 12
 Grant Williams|F|Out|hamstring|Nov 12
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
