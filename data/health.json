@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-09T01:25:31+00:00",
+  "at": "2026-11-09T03:01:22+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 72 games kept (0 new), 1615 player lines\nNBA injuries refreshed\nNBA lines checked\nlive feed is not from 2026-11-08 - nothing merged\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 7, lines 7, props 835, inj teams 29, prev-season players 184, play log 18, adv 371, qtr games 139, h2h 3/2/4/3/4/4/2\nnfl-update: 1 lines refreshed, 4 new finals (weeks [8, 9])\n287 players, 32 teams\nnfl-inj: 287 players\nNHL data: 6 games today, 3 tomorrow, 32 teams, 372 skaters, 59 goalies, 227 props, 270 finals, 36 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 3-0, best props NBA 0-2 NFL 0-0 NHL 3-2\nSite check OK \u2014 published\n"
+  "summary": "NBA finals from ESPN: 74 games kept (2 new), 1659 player lines\nNBA injuries refreshed\nNBA lines checked\nlive feed is not from 2026-11-08 - nothing merged\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 7, lines 7, props 835, inj teams 29, prev-season players 184, play log 18, adv 371, qtr games 139, h2h 3/2/4/3/4/4/2\nnfl-update: 1 lines refreshed, 0 new finals (weeks [8, 9])\n285 players, 32 teams\nnfl-inj: 285 players\nNHL data: 6 games today, 3 tomorrow, 32 teams, 374 skaters, 59 goalies, 227 props, 273 finals, 40 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 3-2, best props NBA 2-6 NFL 0-0 NHL 3-4\nSite check OK \u2014 published\n"
  },
  "site": {
-  "at": "2026-11-09T01:25:31+00:00",
+  "at": "2026-11-09T03:01:22+00:00",
   "ok": false,
   "issue": "live page fails the site check: node:internal/process/promises:394     triggerUncaughtException(err, true /* fromPromise */);     ^  page.goto: Timeout 30000ms exceeded. Call log:   - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting until \"load\"      at /home/runner/work/rla-sharp/rla-sharp/src/tools/check.js:8:10 {   log: [     '  - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting u"
  },
  "nhl": {
-  "at": "2026-11-09T01:25:31+00:00",
+  "at": "2026-11-09T03:01:22+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sun Nov 8 8:25 PM ET",
+  "gen": "Sun Nov 8 10:00 PM ET",
   "odds_at": "2026-11-09T01:05:58+00:00",
   "backfill": "1312/1312"
  }
