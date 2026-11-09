@@ -89,6 +89,14 @@ jobs:
                         "backfill":f"{sum(1 for v in (pv.get('games') or {}).values() if v)}/{len(pv.get('sched') or {})}"}
           except Exception as e:
               h["nhl"]={"at":h["auto"]["at"],"ok":False,"issue":f"health check error: {e}"}
+          # rolling history for the weekly health report (tools/weekly_health.py): one short line per run, last ~40 days
+          import re as _re
+          summ=h["auto"].get("summary","")
+          fails=[l.strip()[:160] for l in summ.splitlines() if _re.search(r"FAILED|kept old|skipped|error",l,_re.I)]
+          h.setdefault("hist",[]).append({"at":h["auto"]["at"],"what":os.environ.get("WHAT") or "all","ok":h["auto"]["ok"],
+              "site_ok":h["site"]["ok"],"site_issue":h["site"].get("issue","")[:160],"fails":fails[:12],
+              "check_failed":"SITE CHECK FAILED" in summ,"published":"published (" in summ})
+          h["hist"]=h["hist"][-600:]
           json.dump(h,open(p,"w"),indent=1)
           PY
           git add data/health.json; git commit -qm "health" || exit 0
@@ -97,3 +105,4 @@ jobs:
           RES: ${{ steps.run.outcome }}
           LIVE: ${{ steps.live.outcome }}
           LIVE_ISSUE: ${{ steps.live.outputs.issue }}
+          WHAT: ${{ github.event.inputs.what || 'all' }}

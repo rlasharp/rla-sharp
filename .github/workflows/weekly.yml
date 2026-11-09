@@ -1,0 +1,26 @@
+name: Weekly site health report
+# Mondays: opens one GitHub issue (= email + GitHub app notification) summarising the last 7 days of automatic updates —
+# how many ran and published, which data steps failed, each sport's refresh rate, and current data timestamps.
+on:
+  schedule:
+    - cron: "37 18 * * 1"        # Mondays ~1:37 PM ET (off-peak minute)
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and post the report
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create site-health --color 0e8a16 --description "Weekly site health report" --force >/dev/null 2>&1 || true
+          gh issue list --label site-alert --state all --limit 50 --json number,title,createdAt,closedAt > alerts.json 2>/dev/null || echo "[]" > alerts.json
+          python3 src/tools/weekly_health.py "$PWD" alerts.json > report.md
+          TITLE=$(head -1 report.md); tail -n +3 report.md > body.md
+          for n in $(gh issue list --label site-health --state open --json number -q '.[].number'); do gh issue close "$n" --comment "Superseded by this week's report." >/dev/null || true; done
+          gh issue create --title "📋 $TITLE" --body-file body.md --label site-health

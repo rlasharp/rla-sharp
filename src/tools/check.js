@@ -28,7 +28,13 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
    FRESH.live=at;if(freshNew())o.push('same version reported as new');FRESH.live=live;sessionStorage.removeItem('freshTry');sessionStorage.removeItem('freshFrom');
    const y=new Date().getUTCFullYear(),t=freshParseET('Mon, Nov 9, 2:35 PM ET'),w=Date.UTC(y,10,9,19,35);if(t!==w&&t!==Date.UTC(y-1,10,9,19,35))o.push('ET time parse wrong');
    if(!isFinite(freshParseET(typeof NBA_GEN!=='undefined'?NBA_GEN:'Mon Nov 9 2 PM ET')))o.push('NBA_GEN not parseable');
-   if(typeof freshLateHtml(['nfl','nba','nhl'])!=='string')o.push('late note failed');return o});
+   if(typeof freshLateHtml(['nfl','nba','nhl'])!=='string')o.push('late note failed');
+   // search: exact, accent-free and one-typo versions of a real player name must all find him
+   const nm=Object.keys(NBA_LOGS).find(n=>/^[A-Za-z]+ [A-Za-z]{6,}$/.test(n));if(nm&&typeof srchFind!=='undefined'){const last=nm.split(' ')[1].toLowerCase(),typo=last.slice(0,2)+last[3]+last[2]+last.slice(4);
+     for(const q of [nm,last,typo])if(!srchFind(q).some(x=>x.l===nm))o.push('search cannot find '+nm+' via "'+q+'"')}
+   // what changed: a snapshot with one prop removed and one final removed must report both
+   if(typeof wnSnap!=='undefined'){const a=wnSnap(),b=JSON.parse(JSON.stringify(a));const k=Object.keys(b.p).find(x=>x[0]==='b');if(k){delete b.p[k];const t=wnText(wnDiff(b,a)).join(' ');if(!/1 new NBA prop/.test(t))o.push('what-changed note miscounts: '+t)}}
+   return o});
  fr.forEach(x=>errs.push('fresh: '+x));
  const g=await p.evaluate(()=>(SLATE.find(g=>!g.final)||SLATE[0]||{}).id);
  if(g!=null){await p.goto('file://'+f+'#game-'+g);await p.waitForTimeout(700);

@@ -53,3 +53,32 @@ function freshLateInject(){document.querySelectorAll(".latenote").forEach(e=>e.r
   if(!sps.length)return;const html=freshLateHtml(sps);if(!html)return;
   const v=[...document.querySelectorAll("main > section, .view")].find(x=>x.offsetParent);const h1=v&&v.querySelector("h1");
   if(h1)h1.insertAdjacentHTML("afterend",html);else if(v)v.insertAdjacentHTML("afterbegin",html)}
+
+/* 🆕 "What changed": the first time you open a newer version of the site, one line says what's new since the version you
+   last saw — new props, lines that moved, injury status changes, new final scores. Counted by comparing this page's
+   data with a small snapshot saved on this device (nothing is sent anywhere). */
+function wnSnap(){const S={p:{},i:{},f:[]};
+  try{if(typeof NBA_PROPS!=="undefined")for(const r of NBA_PROPS)S.p["b|"+r[0]+"|"+r[1]]=r[2]}catch(e){}
+  try{if(typeof REAL_PROPS!=="undefined")for(const [k,v] of Object.entries(REAL_PROPS))if(v&&v[0]!=null)S.p["f|"+k]=v[0]}catch(e){}
+  try{if(typeof NBA_INJ!=="undefined")for(const [t,a] of Object.entries(NBA_INJ))if(Array.isArray(a))for(const r of a)S.i["b|"+r[0]]=r[2]}catch(e){}
+  try{if(typeof INJ!=="undefined")for(const a of Object.values(INJ))for(const r of a)S.i["f|"+r[0]]=r[2]}catch(e){}
+  try{if(typeof NBA_RES!=="undefined")for(const r of NBA_RES)S.f.push("b"+r[0])}catch(e){}
+  try{if(typeof SLATE!=="undefined")for(const g of SLATE)if(g.final)S.f.push("f"+g.away+g.home+(g.wk||""))}catch(e){}
+  return S}
+function wnDiff(o,n){const sp=k=>k[0]==="b"?"NBA":"NFL",c={};const add=(k,x)=>{(c[k]||(c[k]={NBA:0,NFL:0}))[x]++};
+  const has=(m,s)=>Object.keys(m).some(k=>k[0]===s);
+  for(const [k,v] of Object.entries(n.p)){if(!has(o.p,k[0]))continue;if(!(k in o.p))add("props",sp(k));else if(o.p[k]!==v)add("moves",sp(k))}
+  for(const [k,v] of Object.entries(n.i)){if(!has(o.i,k[0]))continue;if(o.i[k]!==v)add("inj",sp(k))}
+  for(const [k,v] of Object.entries(o.i))if(has(n.i,k[0])&&!(k in n.i))add("inj",sp(k));
+  const of=new Set(o.f);for(const k of n.f)if(!of.has(k)&&o.f.some(x=>x[0]===k[0]))add("finals",k[0]==="b"?"NBA":"NFL");return c}
+function wnText(c){const part=(k,one,many)=>{const v=c[k];if(!v)return [];return ["NBA","NFL"].filter(s=>v[s]).map(s=>`${v[s]} ${(v[s]===1?one:many).replace("@",s)}`)};
+  return [...part("finals","@ final score","@ final scores"),...part("props","new @ prop","new @ props"),...part("moves","@ line moved","@ lines moved"),...part("inj","@ injury update","@ injury updates")]}
+function wnRun(){if(!FRESH.at)return;let old=null;try{old=JSON.parse(localStorage.getItem("ge_wn")||"null")}catch(e){}
+  const cur=wnSnap();if(old&&old.at===FRESH.at)return;
+  try{localStorage.setItem("ge_wn",JSON.stringify({at:FRESH.at,...cur}))}catch(e){}
+  if(!old||!old.p)return;const T=wnText(wnDiff(old,cur));if(!T.length)return;
+  let b=document.getElementById("wnBar");if(!b){b=document.createElement("div");b.id="wnBar";document.body.appendChild(b)}
+  b.innerHTML=`<span>🆕 <b>Since you last looked:</b> ${T.slice(0,5).join(" · ")}</span><button aria-label="Close">✕</button>`;
+  const close=()=>{b.classList.remove("on");setTimeout(()=>b.remove(),300)};b.querySelector("button").onclick=close;b.onclick=e=>{if(e.target===b||e.target.closest("span"))close()};
+  requestAnimationFrame(()=>b.classList.add("on"));setTimeout(close,15000)}
+window.addEventListener("load",()=>setTimeout(()=>{if(!navigator.webdriver||window.WN_TEST)wnRun()},1500));

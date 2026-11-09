@@ -39,16 +39,37 @@ function searchIndex(){
     for(const [t,v] of Object.entries(NHL_TEAM))L.push({k:((v.n||"")+" "+t).toLowerCase(),l:v.n||t,s:"NHL",sub:"Team",h:"nhl-team-"+t,w:99})}
   if(typeof PINFO!=="undefined")for(const [n,p] of Object.entries(PINFO))L.push({k:n.toLowerCase(),l:n,s:"NFL",sub:`${p.team} · ${p.pos}`,nfl:n,w:50});
   if(typeof TEAMS!=="undefined")for(const [t,v] of Object.entries(TEAMS))L.push({k:(v[0]+" "+t).toLowerCase(),l:v[0],s:"NFL",sub:"Team",h:"standings",w:99});
+  for(const x of L){x.n=srchNorm(x.l+(x.sub==="Team"?" "+x.k:""));x.tk=x.n.split(" ").filter(Boolean);x.ini=srchNorm(x.l).split(/[ -]+/).filter(Boolean).map(w=>w[0]).join("")}
   return SRCH=L;
 }
+/* 🔎 smarter search: ignores accents and punctuation (Jokic = Jokić, DAngelo = D'Angelo), knows initials (SGA, KD, CMC)
+   and a few well-known nicknames, and forgives a typo or two (“Jokci”, “Mahommes”). Exact matches always rank first. */
+function srchNorm(t){return String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[.'’`]/g,"").replace(/[-_/]/g," ").replace(/\s+/g," ").trim()}
+const SRCH_NICK={"king james":"LeBron James","lbj":"LeBron James","bron":"LeBron James","greek freak":"Giannis Antetokounmpo","joker":"Nikola Jokic","the joker":"Nikola Jokic",
+  "steph":"Stephen Curry","chef curry":"Stephen Curry","the brow":"Anthony Davis","cp3":"Chris Paul","the beard":"James Harden","spida":"Donovan Mitchell","wemby":"Victor Wembanyama",
+  "ant":"Anthony Edwards","ant man":"Anthony Edwards","book":"Devin Booker","dame":"Damian Lillard","jimmy buckets":"Jimmy Butler","zion":"Zion Williamson","melo":"LaMelo Ball",
+  "ovi":"Alex Ovechkin","mcdavid":"Connor McDavid","the great 8":"Alex Ovechkin","geno":"Evgeni Malkin","sid":"Sidney Crosby","sid the kid":"Sidney Crosby",
+  "cmc":"Christian McCaffrey","jj":"Justin Jefferson","ceedee":"CeeDee Lamb","saquon":"Saquon Barkley","king henry":"Derrick Henry","tyreek":"Tyreek Hill","cheetah":"Tyreek Hill",
+  "lamar":"Lamar Jackson","josh":"Josh Allen","burrow":"Joe Burrow","joey b":"Joe Burrow","amon ra":"Amon-Ra St. Brown","arsb":"Amon-Ra St. Brown","jsn":"Jaxon Smith-Njigba","bijan":"Bijan Robinson"};
+function srchLev(a,b,max){if(Math.abs(a.length-b.length)>max)return max+1;let pp=null,p=Array.from({length:b.length+1},(_,j)=>j);
+  for(let i=1;i<=a.length;i++){const c=[i];let mn=i;for(let j=1;j<=b.length;j++){c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));
+      if(pp&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])c[j]=Math.min(c[j],pp[j-2]+1);mn=Math.min(mn,c[j])}if(mn>max)return max+1;pp=p;p=c}return p[b.length]}
+function srchFind(q0){const q=srchNorm(q0),W=q.split(" ").filter(Boolean),I=searchIndex(),out=new Map();if(!W.length)return [];
+  const put=(x,t,via)=>{const o=out.get(x);if(!o||o._t>t)out.set(x,{...x,_t:t,_via:via||""})};
+  for(const x of I)if(W.every(w=>x.n.includes(w)))put(x,x.n.startsWith(q)||x.tk.some(t=>t.startsWith(q))?0:0.5);
+  const nk=SRCH_NICK[q];if(nk){const nn=srchNorm(nk);for(const x of I)if(x.sub!=="Team"&&srchNorm(x.l)===nn)put(x,0.2,q0.trim())}
+  if(/^[a-z]{2,4}$/.test(q))for(const x of I)if(x.sub!=="Team"&&x.ini===q)put(x,0.3,q0.trim().toUpperCase());
+  if(!out.size)for(const x of I){let ok=true;for(const w of W){if(w.length<4){if(!x.tk.some(t=>t.startsWith(w))){ok=false;break}continue}
+      const m=w.length>=7?2:1;if(!x.tk.some(t=>srchLev(w,t,m)<=m||(t.length>w.length&&srchLev(w,t.slice(0,w.length),m)<=m))){ok=false;break}}
+    if(ok)put(x,2)}
+  return [...out.values()].sort((a,b)=>a._t-b._t||b.w-a.w).slice(0,10)}
 function appSearchSetup(){
   const inp=document.getElementById("plSearch"),box=document.getElementById("plRes");if(!inp)return;
   inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure()});
   inp.placeholder="🔍 Search any player or team";
   const draw=()=>{const q=inp.value.trim().toLowerCase();if(q.length<2){box.innerHTML="";box.hidden=true;return}
-    const words=q.split(/\s+/);
-    const hit=searchIndex().filter(x=>words.every(w=>x.k.includes(w))).sort((a,b)=>(b.k.startsWith(q)-a.k.startsWith(q))||b.w-a.w).slice(0,10);
-    box.innerHTML=hit.length?hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":"nf"}">${x.s}</span> <span>${esc(x.l)}</span><small>${esc(x.sub)}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found</div>';
+    const hit=srchFind(q);const fz=hit.length&&hit[0]._t===2;
+    box.innerHTML=hit.length?(fz?'<div class="small" style="padding:6px 8px 2px">No exact match — did you mean:</div>':"")+hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":x.s==="NHL"?"nh":"nf"}">${x.s}</span> <span>${esc(x.l)}</span><small>${esc(x.sub)}${x._via?` · “${esc(x._via)}”`:""}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found — try a last name or team</div>';
     box.hidden=false;box._hits=hit};
   inp.oninput=draw;inp.onfocus=draw;
   inp.onkeydown=e=>{if(e.key==="Enter"){const b=box.querySelector("button");if(b)b.click()}if(e.key==="Escape"){inp.value="";draw();inp.blur()}};
