@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 21:19Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 21:27Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Out|Knee|Nov 15
@@ -96,44 +96,37 @@ Chris Brooks|RB|IR|Ankle|Nov 15
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 #HOU
 David Montgomery|RB|Out|Groin|Nov 15
-Febechi Nwaiwu|G|Out|Undisclosed|
-Braden Smith|OT|Out|Undisclosed|
-Cade Stover|TE|Out|Coach's Decision|Nov 15
-Nate Thomas|OT|Out|Undisclosed|
 Reed Blankenship|S|Out|Concussion|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
-Justin Walley|CB|Out|Knee|Nov 15
-A.J. Haulcy|S|Out|Ankle|Nov 15
-Akeem Davis-Gaither|LB|Out|Knee|Nov 15
 Mo Alie-Cox|TE|Questionable|Groin|Nov 15
 Jalen Travis|OT|Questionable|Knee|Nov 15
 Jaylon Carlies|LB|Questionable|Neck|Nov 15
+Riley Leonard|QB|Out|Undisclosed|
+Justin Walley|CB|Out|Knee|Nov 15
+Will Mallory|TE|Out|Undisclosed|
+Akeem Davis-Gaither|LB|Out|Knee|Nov 15
+Charlie Heck|OT|Out|Undisclosed|
+Pharaoh Brown|TE|Out|Undisclosed|
+A.J. Haulcy|S|Out|Ankle|Nov 15
 Alec Pierce|WR|IR|Heel|Nov 29
 #JAX
-Wesley Williams|DE|Out|Coach's Decision|Nov 15
-CJ Williams|WR|Out|Coach's Decision|Nov 15
 Cam'Ron Silmon-Craig|S|Out|Coach's Decision|Nov 15
-Alijah Huzzie|CB|Out|Coach's Decision|Nov 15
 Eric Murray|S|IR|Elbow|Feb 15
 #KC
+Peter Woods|DT|Out|Neck|Nov 15
+Mansoor Delane|CB|Out|Shoulder|Nov 15
 Xavier Worthy|WR|Questionable|Hamstring|Nov 15
 Patrick Mahomes|QB|Questionable|Elbow|Nov 15
 Jaylon Moore|OT|Questionable|Ankle|Nov 15
-Garrett Nussmeier|QB|Out|Coach's Decision|Nov 15
-Peter Woods|DT|Out|Neck|Nov 15
-Ben VanSumeren|FB|Out|Coach's Decision|Nov 15
-Diego Pounds|OT|Out|Coach's Decision|Nov 15
-Jack Pyburn|LB|Out|Coach's Decision|Nov 15
-Mansoor Delane|CB|Out|Shoulder|Nov 15
 L'Jarius Sneed|CB|IR|Knee|Nov 26
 Omarr Norman-Lott|DT|Out|Knee - ACL|Nov 15
 #LV
 Trey Zuhn III|C|Questionable|Concussion|Nov 15
-Dont'e Thornton Jr.|WR|Out|Coach's Decision|Nov 15
+Dont'e Thornton Jr.|WR|Out|Undisclosed|
 Malik Benson|WR|Out|Coach's Decision|Nov 15
-Aidan O'Connell|QB|Out|Coach's Decision|Nov 15
-Dalton Johnson|S|Out|Coach's Decision|Nov 15
+Aidan O'Connell|QB|Out|Undisclosed|
+Dalton Johnson|S|Out|Undisclosed|
 Thomas Booker IV|DT|Out|Ankle|Nov 15
 Bryce Cabeldue|G|Out|Coach's Decision|Nov 15
 #LAC
@@ -155,10 +148,10 @@ Steve Avila|G|Questionable|Hamstring|Nov 15
 Joe Cardona|LS|Out|Ankle|Nov 15
 Ty Simpson|QB|Out|Coach's Decision|Nov 15
 Trent McDuffie|CB|Out|Back|Nov 15
-Keagen Trost|OT|Out|Coach's Decision|Nov 15
+Keagen Trost|OT|Out|Undisclosed|
 Bill Murray|G|Out|Coach's Decision|Nov 15
 Darryl Peterson III|LB|Out|Coach's Decision|Nov 15
-Desjuan Johnson|DE|Out|Coach's Decision|Nov 15
+Desjuan Johnson|DE|Out|Undisclosed|
 Jaylen Watson|CB|IR|Shoulder|Feb 15
 Dean Connors|RB|IR|Hand|Dec 13
 #MIA
@@ -262,15 +255,14 @@ Trevor Keegan|G|Out|Coach's Decision|Nov 22
 DeMonte Capehart|DT|Out|Coach's Decision|Nov 22
 Yaya Diaby|LB|Out|Knee - MCL|Nov 22
 #TEN
+James Williams Sr.|LB|IR|Groin|Dec 13
 Tommy Townsend|P|Out|Knee|Nov 15
 Tyjae Spears|RB|Out|Knee|Nov 15
 Carnell Tate|WR|Out|Shoulder|Nov 15
 Jaylon Jones|CB|Out|Knee|Nov 15
 Peter Skoronski|G|Questionable|Hamstring|Nov 15
 JC Latham|OT|Questionable|Finger|Nov 15
-James Williams Sr.|LB|Questionable|Groin|Dec 13
 Marcus Harris|CB|Questionable|Ankle|Nov 15
-Dorian Mausi|LB|IR|Undisclosed|
 #WAS
 Treylon Burks|WR|Out|Foot|Nov 12
 Lucas Patrick|G|Questionable|Concussion|Nov 12
