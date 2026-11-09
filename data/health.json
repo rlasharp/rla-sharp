@@ -1,20 +1,20 @@
 {
  "auto": {
-  "at": "2026-11-09T13:51:59+00:00",
+  "at": "2026-11-09T15:32:06+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 75 games kept (0 new), 1691 player lines\nNBA injuries refreshed\nNBA lines checked\nNBA refs: 0 summaries checked, 139 games cached\nNBA refs: 0 crews posted today\nliveprops: 546 feed lines merged (0 skipped from other days), 520 total, unmatched names: []\nFirst tip is 609 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 8, lines 8, props 520, inj teams 29, prev-season players 216, play log 18, adv 371, qtr games 139, h2h 2/4/4/2/2/4/4/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [8, 9])\n286 players, 32 teams\nnfl-inj: 286 players\nnfl-qtr: 135 games with quarter scores\nNHL data: 3 games today, 7 tomorrow, 32 teams, 429 skaters, 67 goalies, 247 props, 274 finals, 38 requests\ntrack: nba 2026-11-09: snapshot 10 props, 8 games \u00b7 graded: NHL plays 3-2, best props NBA 4-6 NFL 0-0 NHL 3-4\nSite check OK \u2014 published (2026-11-09T13:51:31Z)\n"
+  "summary": "NBA finals from ESPN: 75 games kept (0 new), 1691 player lines\nNBA injuries refreshed\nNBA lines checked\nNBA refs: 0 summaries checked, 139 games cached\nNBA refs: 0 crews posted today\nliveprops: 785 feed lines merged (0 skipped from other days), 726 total, unmatched names: []\nFirst tip is 509 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 8, lines 8, props 726, inj teams 29, prev-season players 216, play log 18, adv 371, qtr games 139, h2h 2/4/4/2/2/4/4/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [8, 9])\n285 players, 32 teams\nnfl-inj: 285 players\nnfl-qtr: 135 games with quarter scores\nNHL data: 3 games today, 7 tomorrow, 32 teams, 429 skaters, 67 goalies, 322 props, 274 finals, 38 requests\ntrack: nba 2026-11-09: snapshot 10 props, 8 games \u00b7 graded: NHL plays 3-2, best props NBA 4-6 NFL 0-0 NHL 3-4\nSite check OK \u2014 published (2026-11-09T15:31:37Z)\n"
  },
  "site": {
-  "at": "2026-11-09T13:51:59+00:00",
+  "at": "2026-11-09T15:32:06+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-09T13:51:59+00:00",
+  "at": "2026-11-09T15:32:06+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Mon Nov 9 8:51 AM ET",
-  "odds_at": "2026-11-09T06:40:03+00:00",
+  "gen": "Mon Nov 9 10:31 AM ET",
+  "odds_at": "2026-11-09T14:19:19+00:00",
   "backfill": "1312/1312"
  }
 }
