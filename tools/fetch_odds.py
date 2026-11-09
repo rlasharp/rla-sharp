@@ -46,6 +46,7 @@ NHL_CORE = ["player_points", "player_goals", "player_assists", "player_shots_on_
 GAME_MK = ["h2h", "spreads", "totals"]
 PERIOD_OK = [True]
 PM_BOOKS = {"kalshi", "polymarket"}
+MKLIST = {}
 PMSAMPLE = {}
 YES_MK = {"anyTD", "hanyG", "dd", "td", "fb"}  # one-sided Yes markets (no under, no alt ladder)
 MKSAMPLE = {}
@@ -200,6 +201,9 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
         eid = g(ev, "id")
         evs.append({"id": eid, "home": g(ev, "home_team"), "away": g(ev, "away_team"), "start": start, "date": d})
         mks = list(mk_map) + (GAME_MK if with_game else ["h2h"])   # h2h: prediction-market win prices (Kalshi / Polymarket)
+        if "markets" in os.environ.get("FORCE", "") and not MKLIST.get(sport):
+            try: MKLIST[sport] = [g(m, "key") for m in client.get_markets(sport, eid)]; used += 1
+            except Exception as e: MKLIST[sport] = [f"failed: {e}"]
         try:
             if with_game and PERIOD_OK[0]:
                 try: odds = client.get_odds(sport, event_id=eid, markets=mks, period="all")   # full game + 1st/2nd/3rd period lines, same request
@@ -334,6 +338,7 @@ def main():
     if last_nfl:
         try: stale = (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_nfl)).total_seconds() > 3 * 3600
         except Exception: stale = True
+    if "markets" in os.environ.get("FORCE", "") or "nfl" in os.environ.get("FORCE", ""): stale = True
     if stale and used < 900:
         evs, rows, used = fetch_sport("football_nfl", NFL_MK, 8 * 24, opens, used)
         if evs or rows: out["nfl"] = {"at": out["updated"], "events": evs, "props": rows}
@@ -362,6 +367,7 @@ def main():
     for k_, v_ in MKSAMPLE.items(): print("  NHL sample", k_, json.dumps(v_, default=str))
     print("line_type counts:", DIAG)
     print("prediction markets sample:", json.dumps(PMSAMPLE, default=str))
+    if MKLIST: print("markets offered:", json.dumps(MKLIST))
 
 if __name__ == "__main__":
     main()
