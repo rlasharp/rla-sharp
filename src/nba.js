@@ -321,7 +321,7 @@ function nbaGame(el,id){
     ${tile(nbaShort(g.a)+" defense",nbaF(A.d.rtg),nbaOrd(A.dR.rtg)+" of 30 · allowed/100")}
     ${tile(nbaShort(g.h)+" defense",nbaF(H.d.rtg),nbaOrd(H.dR.rtg)+" of 30 · allowed/100")}
   </div>`:""}
-  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}${typeof xaKeyOutCard!=="undefined"?xaKeyOutCard("nba",g.a,g.h)+xaDefTrendCard("nba",g.a,g.h):""}
+  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}${typeof xaKeyOutCard!=="undefined"?xaKeyOutCard("nba",g.a,g.h)+xaDefTrendCard("nba",g.a,g.h)+xaBenchCard(g)+xaYesCard(g):""}
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.a)} have the ball</h2>${nbaMatchup(g.a,g.h)}</div>
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>
   <p class="note" style="margin-top:6px">Longer bar = better rank (1st of 30). <span class="rkg">Green</span> = top 8, <span class="rkb">red</span> = bottom 8. Highlighted rows are mismatches. Season to date.</p>
@@ -505,6 +505,7 @@ function nbaPropCard(r,idx){
   ${alt?"":`${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}`}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${(idx||0)<100?nbaMateSel(nm):""}
   ${pxSideTg()}<div class="nbtabs hrt">${tab("l5","L5",rate(S.l5))}${tab("l10","L10",rate(S.l10))}${tab("season","Season",rate(S.season))}${tab("h2h","H2H",rate(S.h2h))}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
+  ${typeof xaSitChips!=="undefined"?xaSitChips(nm,k,line):""}
   ${(idx||0)<100?`<a href="#nba-player-${encodeURIComponent(nm)}" class="gopl" data-gopl="${nbaEsc(nm)}|${k}">📊 ${nbaEsc(nm.split(" ").filter(w=>!/^(Jr\.?|Sr\.?|II|III|IV)$/.test(w)).slice(-1)[0])}'s stats &amp; all his lines →</a>`:""}
   ${opp&&p.p5?(()=>{const d=nbaDvp(opp,p.p5,k,5);if(!d.rows.length)return "";const av=d.rows.reduce((s,r)=>s+r.v,0)/d.rows.length;return `<div class="small" style="margin-top:6px">${opp} last 5: allowed ${nbaF(av)} ${NBA_MK[k][2]} a game to ${nbaPosWord(p.p5)} (NBA avg ${nbaF(d.lg)}) — <b class="${av>d.lg?"up":"dn"}">${av>d.lg?"easier":"tougher"}</b></div>`})():""}
   ${typeof xaPanel!=="undefined"?xaPanel("nba",nm,k,line,PXSIDE):""}
@@ -704,6 +705,7 @@ function nbaBestPage(el){
     ${L.map(nbaBestRow).join("")}
     <div class="small" style="margin-top:8px">Hit score blends last 10 (45%), this season (35%) and vs tonight's opponent (20%), ±5 for the position matchup. A lean, not a guarantee.</div></div>`
    :`<div class="card" style="margin-top:14px">${NBA_PROPS.length&&NBA_SLATE.length&&NBA_SLATE.every(nbaStarted)?"🔒 Every game today has started — pregame lines are closed. New lines come out tomorrow morning.":NBA_PROPS.length?"No open line shows an edge right now.":"Today's prop lines aren't out yet — books post them in the morning."}</div>`}`;
+  if(typeof xaYesCard!=="undefined"){const h=xaYesCard(null);if(h)el.insertAdjacentHTML("beforeend",h)}
   nbaWireBest(el);
   el.querySelectorAll("[data-bf]").forEach(s=>s.onchange=()=>{NB.bf[s.dataset.bf]=s.value;const y=window.scrollY;nbaBestPage(el);window.scrollTo(0,y)});
 }

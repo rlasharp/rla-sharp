@@ -35,6 +35,7 @@ evday = {str(e.get("id")): e.get("date") for e in nba.get("events", [])}
 stale = 0
 for r in nba.get("props", []):
     if day and len(r) > 13 and evday.get(str(r[13])) and evday[str(r[13])] != day: stale += 1; continue   # yesterday's game still in the feed
+    if r[1] in ("dd", "td", "fb"): continue   # yes-only markets: read straight from the feed by the site (xana.js)
     nm = find(r[0])
     if not nm: miss.add(r[0]); continue
     best = r[6:10]

@@ -31,7 +31,8 @@ NOT_BOOKS = {"prizepicks", "underdog", "pick6", "kalshi", "polymarket", "prophet
 
 NBA_MK = {"player_points": "pts", "player_rebounds": "reb", "player_assists": "ast", "player_threes": "3pm",
           "player_steals": "stl", "player_blocks": "blk", "player_points_rebounds": "pr",
-          "player_points_assists": "pa", "player_rebounds_assists": "ra", "player_points_rebounds_assists": "pra"}
+          "player_points_assists": "pa", "player_rebounds_assists": "ra", "player_points_rebounds_assists": "pra",
+          "player_double_double": "dd", "player_triple_double": "td", "player_first_basket": "fb"}
 NFL_MK = {"player_pass_yds": "passYds", "player_pass_tds": "passTD", "player_rush_yds": "rushYds",
           "player_reception_yds": "recYds", "player_receptions": "rec", "player_anytime_td": "anyTD",
           "player_rush_attempts": "rushAtt", "player_rush_reception_yds": "rushRec",
@@ -46,7 +47,7 @@ GAME_MK = ["h2h", "spreads", "totals"]
 PERIOD_OK = [True]
 PM_BOOKS = {"kalshi", "polymarket"}
 PMSAMPLE = {}
-YES_MK = {"anyTD", "hanyG"}  # one-sided Yes markets (no under, no alt ladder)
+YES_MK = {"anyTD", "hanyG", "dd", "td", "fb"}  # one-sided Yes markets (no under, no alt ladder)
 MKSAMPLE = {}
 MKSEEN = {}  # market keys the feed returned, per sport (run log)
 
@@ -258,6 +259,8 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
                         try: ms.setdefault((player, mk), {}).setdefault(b, {})[float(mm.group(1)) - 0.5] = int(round(float(price)))
                         except Exception: pass
                         continue
+                    if mk in YES_MK and side is None and not player and name and price is not None:
+                        player, side = re.sub(r"\s*\([A-Z]{2,4}\)\s*$", "", name).strip(), "Over"   # "first basket" style: the outcome name is the player
                     if not player or not side or price is None: continue
                     if point is None: point = 0.5
                     try: price = int(round(float(price))); point = float(point)

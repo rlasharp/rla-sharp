@@ -51,7 +51,7 @@ for (const r of rows) {
   // [gameId, date, opp, H/A, min, pts, reb, ast, 3pm, starter, fgm, fga, stl, blk, tov, 3pa, ftm, fta]
   p.g.push([r.game_id, etDay(r.game_date_time), r.opponent_team_abbreviation, r.home_away === "home" ? "H" : "A",
     Math.round(r.minutes), r.points, r.rebounds, r.assists, r.three_point_field_goals_made, r.starter ? 1 : 0,
-    r.field_goals_made, r.field_goals_attempted, r.steals, r.blocks, r.turnovers, r.three_point_field_goals_attempted, r.free_throws_made, r.free_throws_attempted]);
+    r.field_goals_made, r.field_goals_attempted, r.steals, r.blocks, r.turnovers, r.three_point_field_goals_attempted, r.free_throws_made, r.free_throws_attempted, r.fouls == null ? null : +r.fouls]);
 }
 
 // 5-position map from ESPN depth charts (data/nba_depth.txt): best depth slot wins, ties go to the earlier row
@@ -184,10 +184,13 @@ const SPOT = {}, NEXT = {};
 }
 
 // ---------- Advanced player stats: usage %, true shooting %, per-36, plus/minus ----------
+const FB = {}; const Q1 = {}; const GPACE = {};
 const PADV = {};
 if (fs.existsSync(tbFile)) {
   const tbAll = JSON.parse(fs.readFileSync(tbFile)).filter(r => resIds.has(r.game_id));
   const TT = {}; for (const r of tbAll) TT[r.game_id + "|" + r.team_abbreviation] = { fga: +r.field_goals_attempted || 0, fta: +r.free_throws_attempted || 0, tov: +(r.total_turnovers || r.turnovers) || 0 };
+  { const pg = {}; for (const r of tbAll) { const p = (+r.field_goals_attempted || 0) - (+r.offensive_rebounds || 0) + (+(r.total_turnovers || r.turnovers) || 0) + 0.44 * (+r.free_throws_attempted || 0); (pg[r.game_id] || (pg[r.game_id] = [])).push(p); }
+    for (const [gid, a] of Object.entries(pg)) if (a.length === 2) GPACE[gid] = +((a[0] + a[1]) / 2).toFixed(1); }
   const per = {}; const gmin = {};
   for (const r of rows) { const k = r.game_id + "|" + r.team_abbreviation; gmin[k] = (gmin[k] || 0) + (+r.minutes || 0); }
   for (const r of rows) {
@@ -298,6 +301,27 @@ if (fs.existsSync(pbpFile)) {
   const sum = a => a.reduce((s, r) => s.map((v, i) => v + r[i + 1]), [0, 0, 0, 0, 0, 0, 0]).map(v => +v.toFixed(0));
   for (const [n, g] of Object.entries(PG)) { g.sort((a, b) => a[0] < b[0] ? -1 : 1); CHANCE[n] = { s: [g.length, ...sum(g)], l10: [Math.min(10, g.length), ...sum(g.slice(-10))], l5: [Math.min(5, g.length), ...sum(g.slice(-5))], last: g.slice(-10).map(r => [r[0], r[1] + r[2], r[3] + r[4], r[5], r[6], r[7]]) }; }
   console.error(`chances: ${Object.keys(CHANCE).length} players, ${chkN} misses, ${(chkBad / Math.max(1, chkN) * 100).toFixed(1)}% without exactly 10 on court`);
+  // ---------- First basket (first made field goal) + who won the opening possession; 1st-quarter player stats ----------
+  const resById = {}; for (const g of RES) resById[g[0]] = g;
+  for (const [gid, ev0] of Object.entries(byG)) {
+    const g = resById[gid]; if (!g) continue; const ev = ev0.slice().sort((a, b) => (+a.sequence_number) - (+b.sequence_number));
+    const ab = r => String(r.team_id) === String(r.home_team_id) ? r.home_team_abbrev : String(r.team_id) === String(r.away_team_id) ? r.away_team_abbrev : null;
+    const fb = ev.find(r => +r.period_number === 1 && r.shooting_play && r.scoring_play && r.points_attempted >= 2);
+    const poss = ev.find(r => +r.period_number === 1 && (r.shooting_play || /Turnover|Foul/i.test(String(r.type_text || ""))) && ab(r));
+    let tip = null; if (poss) { tip = ab(poss); if (/Foul/i.test(String(poss.type_text)) && !poss.shooting_play) tip = tip === g[2] ? g[3] : g[2]; }   // a foul is usually by the defense
+    if (fb) FB[gid] = [idToName[fb.athlete_id_1] || null, ab(fb), tip];
+    const q = {};
+    for (const r of ev) { if (+r.period_number !== 1) continue;
+      const P = id => { const n = idToName[id]; return n ? (q[n] || (q[n] = [0, 0, 0])) : null; };
+      if (r.scoring_play && r.athlete_id_1 != null) { const x = P(r.athlete_id_1); if (x) x[0] += +r.score_value || 0;
+        if (r.points_attempted >= 2 && r.athlete_id_2 != null) { const y = P(r.athlete_id_2); if (y) y[2] += 1; } }
+      if (/Rebound/i.test(String(r.type_text || "")) && !/Team/i.test(String(r.type_text || "")) && r.athlete_id_1 != null) { const x = P(r.athlete_id_1); if (x) x[1] += 1; } }
+    const played = new Set(Object.keys(boxG[gid] || {}).map(id => idToName[id]).filter(Boolean));
+    for (const n of played) { const b = Object.values(boxG[gid]).find(z => idToName[String(z.athlete_id)] === n); if (!b || !(+b.minutes > 0)) continue;
+      (Q1[n] || (Q1[n] = [])).push([g[1], ...(q[n] || [0, 0, 0])]); }
+  }
+  for (const n in Q1) Q1[n] = Q1[n].sort((a, b) => a[0] < b[0] ? -1 : 1).slice(-25);
+  console.error(`first basket: ${Object.keys(FB).length} games; 1st-quarter stats: ${Object.keys(Q1).length} players`);
 }
 
 // ---------- Height / weight / age from rosters ----------
@@ -415,6 +439,9 @@ const NBA_LGZ=${JSON.stringify(LGZ)};
 const NBA_SHOT=${JSON.stringify(SHOT)};
 const NBA_STYPE=${JSON.stringify(STYPE)}; /* [catch&shoot, pull-up, <10 ft, other 10+ ft] each [FGA, FGM, 3PA, 3PM], this season, ESPN play-by-play */
 const NBA_LGST=${JSON.stringify(LGST)};
+const NBA_FB=${JSON.stringify(FB)}; /* game id -> [first-basket scorer, his team, team that won the opening possession] */
+const NBA_Q1=${JSON.stringify(Q1)}; /* player -> [[date, 1st-quarter pts, reb, ast], ...] last 25 games */
+const NBA_GPACE=${JSON.stringify(GPACE)}; /* game id -> possessions per team */
 const NBA_CHANCE=${JSON.stringify(CHANCE)}; /* rebound + assist chances rebuilt from ESPN play-by-play lineups: s/l10/l5 = [games, ownMiss, oppMiss, oreb, dreb, teammateFGM, ast, min] */
 const NBA_DZONE=${JSON.stringify(DZONE)};
 const NBA_DZG=${JSON.stringify(Object.fromEntries(Object.entries(DZG).map(([t, g]) => [t, g.size])))};

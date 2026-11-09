@@ -337,3 +337,11 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
   points + tonight's opponent penalties, faceoff matchups vs tonight's centres, projected saves (opp shots for × own
   shots against / league, × blended save %), and the "🧮 Game flow" card on the NHL Trends tab. Scoring first was
   already on the Matchup tab ("First goal").
+- **NBA extras (Nov 9):** Home/Away · Starting/Bench · Back-to-back/Rested were already in 🎚 Filters → Situation; each
+  prop card now also shows those splits as one-tap chips (`xaSitChips`, data-xsit toggles NB.gf). nbagen.mjs adds
+  fouls to game rows (index 18), NBA_GPACE (possessions per game), NBA_FB (first basket scorer / team / opening
+  possession per game), NBA_Q1 (1st-quarter pts/reb/ast per game, in nba_detail.js). Splits drawer: fast vs slow games,
+  3-point % last 10 vs season / last season (+ 🎯 3s hot/cold chip), fouls per 36 + 5-foul games, 1st quarter.
+  fetch_odds.py: player_double_double (dd), player_triple_double (td), player_first_basket (fb) as yes-only markets;
+  liveprops.py skips them (they are read straight from the feed). "🎯 Double-doubles & first basket" card (game page +
+  Best props page) and "🪑 Bench & rotation" card (game page).
