@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 01:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 03:00Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -38,6 +38,7 @@ Julian Strawther|G|Out|knee sprain|Nov 29
 Jalen Duren|C|Out|hamstring strain|Nov 24
 Isaiah Joe|G|Out|hip bruise|Nov 9
 #Golden State Warriors
+Will Richard|G|Out|thumb|Nov 11
 Gui Santos|F|Day-To-Day|knee tendinitis|Nov 9
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
@@ -57,7 +58,7 @@ Yanic Konan Niederhauser|C|Out|foot surgery|Nov 10
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Quentin Grimes|G|Day-To-Day|undisclosed|Nov 8
+Quentin Grimes|G|Day-To-Day|finger|Nov 9
 Luka Doncic|G|Out|back soreness|Nov 9
 #Memphis Grizzlies
 Scotty Pippen Jr.|G|Out|back soreness|Nov 11
@@ -111,6 +112,7 @@ Immanuel Quickley|G|Day-To-Day|hamstring|Nov 9
 Scottie Barnes|F|Day-To-Day|groin soreness|Nov 9
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
+Keyonte George|G|Day-To-Day|ankle|Nov 10
 Lauri Markkanen|F|Out|wrist sprain|Nov 10
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
