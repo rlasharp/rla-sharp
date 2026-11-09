@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-09T06:00:20+00:00",
+  "at": "2026-11-09T06:21:28+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 75 games kept (0 new), 1691 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 139 feed lines merged (0 skipped from other days), 139 total, unmatched names: []\nFirst tip is 1081 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 8, lines 8, props 139, inj teams 29, prev-season players 216, play log 18, adv 371, qtr games 139, h2h 2/4/4/2/2/4/4/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [8, 9])\n286 players, 32 teams\nnfl-inj: 286 players\nNHL data: 3 games today, 7 tomorrow, 32 teams, 429 skaters, 67 goalies, 227 props, 274 finals, 38 requests\ntrack: nba 2026-11-09: snapshot 10 props, 8 games \u00b7 graded: NHL plays 3-2, best props NBA 4-6 NFL 0-0 NHL 3-4\nSite check OK \u2014 published (2026-11-09T05:59:53Z)\n"
+  "summary": "NBA finals from ESPN: 75 games kept (0 new), 1691 player lines\nNBA injuries refreshed\nNBA lines checked\nliveprops: 139 feed lines merged (0 skipped from other days), 139 total, unmatched names: []\nevalmachine.<anonymous>:1152\nif(typeof window!==\"undefined\")window.addEventListener(\"load\",()=>setTimeout(()=>nbaDetailEnsure(),1200));\n                                      ^\n\nTypeError: window.addEventListener is not a function\n    at evalmachine.<anonymous>:1152:39\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at file:///home/runner/work/rla-sharp/rla-sharp/src/tools/nbaplays.mjs:11:4\n    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)\n\nNode.js v22.23.4\nNBA data: teams 30, results 139 (through 2026-11-07), players 459, slate 8, lines 8, props 139, inj teams 29, prev-season players 216, play log 18, adv 371, qtr games 139, h2h 2/4/4/2/2/4/4/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [8, 9])\n286 players, 32 teams\nnfl-inj: 286 players\nNHL data: 3 games today, 7 tomorrow, 32 teams, 429 skaters, 67 goalies, 227 props, 274 finals, 38 requests\ntrack: nba 2026-11-09: snapshot 10 props, 8 games \u00b7 graded: NHL plays 3-2, best props NBA 4-6 NFL 0-0 NHL 3-4\nSite check OK \u2014 published (2026-11-09T06:20:59Z)\n"
  },
  "site": {
-  "at": "2026-11-09T06:00:20+00:00",
+  "at": "2026-11-09T06:21:28+00:00",
   "ok": false,
-  "issue": "live page fails the site check: node:internal/process/promises:394     triggerUncaughtException(err, true /* fromPromise */);     ^  page.goto: Timeout 30000ms exceeded. Call log:   - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting until \"load\"      at /home/runner/work/rla-sharp/rla-sharp/src/tools/check.js:8:10 {   log: [     '  - navigating to \"file:///home/runner/work/_temp/live.html#today\", waiting u"
+  "issue": "live page fails the site check: CHECK FAILED: @390 nba-props: Maximum call stack size exceeded @390 nba-players: Maximum call stack size exceeded @390 nba-game-401909952: Maximum call stack size exceeded @390 nba-game-401909952-props: Maximum call stack size exceeded @390 nba-player-Tyrese%20Maxey: Maximum call stack size exceeded @1200 nba-props: Maximum call stack size exceeded @1200 nba-players: Maximum call stack size exceed"
  },
  "nhl": {
-  "at": "2026-11-09T06:00:20+00:00",
+  "at": "2026-11-09T06:21:28+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Mon Nov 9 12:59 AM ET",
+  "gen": "Mon Nov 9 1:20 AM ET",
   "odds_at": "2026-11-09T03:26:11+00:00",
   "backfill": "1312/1312"
  }
