@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 20:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 21:02Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -36,7 +36,7 @@ DeMar DeRozan|G|Day-To-Day|back spasms|Nov 9
 Jamal Murray|G|Day-To-Day|lower leg bruise|Nov 9
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
-Isaiah Joe|G|Out|hip bruise|Nov 12
+Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
 Gary Payton II|G|Day-To-Day|knee|Nov 9
@@ -73,6 +73,7 @@ Gary Trent Jr.|G|Day-To-Day|illness|Nov 10
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
+Trey Murphy III|F|Out|knee tendinitis|Nov 11
 Yves Missi|C|Out|knee bruise|Nov 16
 #New York Knicks
 Josh Hart|G|Day-To-Day|ankle|Nov 10
