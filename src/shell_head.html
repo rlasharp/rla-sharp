@@ -607,7 +607,7 @@ nav[hidden]{display:none!important}
 /* ---- deeper analysis (xana.js) ---- */
 .xachip{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:1px 8px;background:var(--card2);color:var(--text2);border:1px solid var(--line);white-space:nowrap}
 .xachip.up{color:var(--text)}.xachip.warn{background:rgba(243,199,90,.14);border-color:rgba(243,199,90,.35);color:#f3c75a}
-details.xa{margin-top:10px}details.xa>summary{font-weight:700;font-size:14px}details.xa>summary .small{display:block;font-weight:500}
+details.xa{margin-top:10px}details.xa>summary{font-weight:700;font-size:14px;display:block!important}details.xa>summary .small{display:block;font-weight:500}
 .xab h4{margin:12px 0 4px;font-size:14px;color:var(--text)}.xat{min-width:0;width:100%;margin-top:4px}.xat td,.xat th{padding:5px 6px;font-size:13px}.xame td{background:rgba(57,135,229,.12)}
 .xah{overflow-x:auto}.xahs{display:block;height:96px;min-width:220px}.xaln{stroke:var(--muted);stroke-width:2}.xalt{fill:var(--muted);font-size:9px;text-anchor:middle}.xald{fill:var(--muted);font-size:9px;text-anchor:middle}
 .xao{fill:#3987e5}.xau{fill:none;stroke:#3987e5;stroke-width:2}.xap{fill:var(--muted)}
@@ -628,6 +628,20 @@ details.xa{margin-top:10px}details.xa>summary{font-weight:700;font-size:14px}det
 .xafb{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px solid var(--line);font-size:14px}.xafb:last-child{border-bottom:0}
 
 .xaproj{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0 2px;padding:7px 10px;border-radius:10px;background:var(--card2);font-size:14px}
+
+/* ---- verdict / tabs / chips / jump / chart tips ---- */
+.xaver{margin:8px 0 4px;padding:8px 10px;border-radius:10px;background:var(--card2);border-left:3px solid var(--line);font-size:14px}.xaver.o,.xaver.u{border-left-color:#3987e5}
+.xavs{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:4px;font-size:12px;color:var(--muted)}.xavs b{color:var(--text)}
+.xatabs{display:flex;gap:6px;overflow-x:auto;margin:8px 0 4px;scrollbar-width:none}.xatabs button{flex:none;background:var(--card2);border:1px solid var(--line);color:var(--text2);border-radius:999px;padding:6px 11px;font:inherit;font-size:13px;cursor:pointer}.xatabs button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.xapcw{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.xapc{font-size:12.5px;font-weight:600;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+#xatip{position:fixed;z-index:90;max-width:200px;background:var(--text);color:var(--bg);font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:8px;pointer-events:none;opacity:0;transition:opacity .15s}#xatip.show{opacity:.95}
+.nbbar,.mbc,.xasvg circle{cursor:pointer}
+#uxjumpb{position:fixed;right:14px;bottom:84px;z-index:55;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:9px 14px;font:inherit;font-size:13.5px;font-weight:700;box-shadow:0 6px 18px #0006;cursor:pointer}@media(min-width:700px){#uxjumpb{bottom:24px}}
+#uxjump{position:fixed;inset:0;z-index:70;pointer-events:none}#uxjump .ujback{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .2s}
+#uxjump .ujpanel{position:absolute;left:0;right:0;bottom:0;max-height:70vh;overflow:auto;background:var(--card);border-radius:18px 18px 0 0;padding:10px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .22s}
+@media(min-width:700px){#uxjump .ujpanel{left:auto;right:16px;bottom:70px;width:340px;border-radius:16px}}
+#uxjump.open{pointer-events:auto}#uxjump.open .ujback{opacity:1}#uxjump.open .ujpanel{transform:none}
+#uxjump h3{margin:8px 0;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}#uxjump [data-uj]{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--text);font:inherit;font-size:15px;padding:11px 2px;cursor:pointer}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#121418">

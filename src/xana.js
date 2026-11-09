@@ -118,7 +118,7 @@ function xaPanelBody(sp,nm,k,line,side){const over=xaOver(side),word=over?"Over"
   /* minutes */
   const t=xaMinTrend(sp,nm);if(t)rows.push(`<h4>⏱️ ${sp==="nba"?"Minutes":"Ice time"}</h4><div class="small">${t.n} straight games ${t.dir==="up"?"above":"below"} his season average (${t.avg.toFixed(1)} min): ${t.last.map(v=>v.toFixed(1)).join(", ")}. Lines often lag a role change.</div>`);
   rows.push(`<h4>📉 Closing line vs result</h4><div class="xahw">${XA.hist?xaHistHtml(sp,nm,k,side):"Loading…"}</div>`);
-  return rows.join("")+`<div class="small" style="margin-top:6px">This season's games only. Defense ranks use each team's season-long numbers.</div>`}
+  return xaTabify(rows)+`<div class="small" style="margin-top:6px">This season's games only. Defense ranks use each team's season-long numbers.</div>`}
 document.addEventListener("toggle",e=>{const d=e.target;if(!d.matches||!d.matches("details.xa")||!d.open||d.dataset.done)return;d.dataset.done=1;
   let a;try{a=JSON.parse(d.dataset.xa)}catch(x){return}const body=d.querySelector(".xab");try{body.innerHTML=xaPanelBody(...a)}catch(x){body.textContent="Couldn't build these splits."}
   xaHistEnsure(()=>{const w=d.querySelector(".xahw");if(w)w.innerHTML=xaHistHtml(a[0],a[1],a[2],a[4])})},true);
@@ -519,3 +519,60 @@ function xaGainCard(g){const cards=[];
   return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🔁 Who gains with a star out</h2><div class="small" style="margin-bottom:8px">Teammates whose minutes, shots and points went up in games the star missed this season (vs games he played). Props are often slow to catch up.</div>${cards.join("")}<div class="small">Small samples — check his props for tonight's line.</div></div>`}
 
 function xaNbaInj(n){const r=nbaInjOf(n);if(r)return r;if(!XA.inj){XA.inj={};for(const t in NBA_INJ)for(const x of NBA_INJ[t])XA.inj[loNorm(x[0])]=x}return XA.inj[loNorm(n)]||null}
+
+/* ================= Easier to read: verdict, takeaways, drawer tabs, player chips, chart taps ================= */
+/* ✅ one-line verdict: independent signals, each pointing over / under / neither */
+function xaVerdict(sp,nm,k,line){if(line==null)return null;const G=xaGames(sp,nm,k);if(G.length<5)return null;const S=[];const add=(ic,lab,d,why)=>S.push({ic,lab,d,why});
+  const L=G.slice(-10),hr=a=>a.filter(x=>x.v>line).length/a.length;
+  {const h=hr(L);add("🔥","last 10",h>=.7?1:h<=.3?-1:0,`over in ${L.filter(x=>x.v>line).length} of ${L.length}`)}
+  if(G.length>=6){const h=hr(G);add("📅","season",h>=.6?1:h<=.4?-1:0,`over in ${Math.round(h*100)}% of games`)}
+  if(sp==="nba"){const P=xaProj(nm,k);if(P&&!P.out){const po=xaProjP(P,k,line);add("📐","projection",po>=.58?1:po<=.42?-1:0,`${P.mean.toFixed(1)} projected · ${Math.round(po*100)}% over`)}}
+  const O=xaOpp(sp,nm),pos=xaPos(sp,nm);if(O&&pos){const T=xaTierTable(sp,pos,k)[O.opp];if(T)add("🛡️","matchup",T.tier==="soft"?1:T.tier==="tough"?-1:0,`${O.opp} rank ${T.rank} of ${T.n} in what they allow`)
+    const D=xaDefTrend(sp,O.opp,pos==="all"?null:pos,k);if(D&&D.big)add("📉","defense trend",D.d>0?1:-1,`${O.opp} allowing ${D.d>0?"more":"less"} lately`)}
+  const M=xaMinTrend(sp,nm);if(M)add("⏱️","role",M.dir==="up"?1:-1,`${sp==="nba"?"minutes":"ice time"} ${M.dir==="up"?"up":"down"} ${M.n} straight`);
+  const up=S.filter(s=>s.d>0).length,dn=S.filter(s=>s.d<0).length,n=S.length;
+  const v=up-dn>=2&&up>=dn*2?"o":dn-up>=2&&dn>=up*2?"u":"m";return {v,up,dn,n,S}}
+function xaVerdictHtml(sp,nm,k,line){let V;try{V=xaVerdict(sp,nm,k,line)}catch(e){return ""}if(!V)return "";
+  const head=V.v==="o"?`✅ Leans <b>over</b> ${line} — ${V.up} of ${V.n} signals agree`:V.v==="u"?`✅ Leans <b>under</b> ${line} — ${V.dn} of ${V.n} signals agree`:`➖ Mixed signals on ${line} — ${V.up} say over, ${V.dn} say under`;
+  return `<div class="xaver ${V.v}"><div>${head}</div><div class="xavs">${V.S.map(s=>`<span title="${xaEsc(s.why)}">${s.ic} ${s.lab} <b>${s.d>0?"▲":s.d<0?"▼":"–"}</b></span>`).join("")}</div></div>`}
+/* 🔑 extra key takeaways for the game pages' Quick read */
+function xaTakeaways(sp,g){const out=[],S=(c,ic,t)=>out.push({c,ic,t});try{
+  const a=sp==="nfl"?g.away:g.a,h=sp==="nfl"?g.home:g.h;
+  for(const t of [a,h]){const r=xaDefTrend(sp,t,null,sp==="nhl"?"hgoals":null);if(r&&r.big)S(r.d>0?"up":"dn","📉",`<b>${xaEsc(t)}</b> defense ${r.d>0?"slipping":"tightening up"}: ${r.l.toFixed(1)} allowed over the last ${r.n} vs ${r.s.toFixed(1)} on the season.`)}
+  if(sp==="nba"){const A=NBA_TADV[a],H=NBA_TADV[h],C=xaPaceCuts();if(A&&H&&C){const tp=(A.pace+H.pace)/2;if(tp>=C[1])S("up","🏃",`Fast game expected (${tp.toFixed(1)} possessions) — more shots for everyone.`);else if(tp<C[0])S("dn","🐢",`Slow game expected (${tp.toFixed(1)} possessions) — fewer shots, leans unders.`)}
+    const crew=typeof NBA_REFS!=="undefined"&&NBA_REFS&&NBA_REFS.today&&NBA_REFS.today[a+"@"+h];if(crew&&NBA_REFS.lg){const R=crew.map(n=>NBA_REFS.ref[n]).filter(Boolean);if(R.length){const ft=R.reduce((s,r)=>s+r[1],0)/R.length,d=ft-NBA_REFS.lg[0];if(Math.abs(d)>=3)S(d>0?"up":"dn","🦓",`Referees call ${d>0?"lots of":"few"} free throws (${ft.toFixed(1)} a game vs ${NBA_REFS.lg[0]}) — ${d>0?"helps free-throw-heavy scorers":"a small knock on scorers who live at the line"}.`)}}}
+  if(sp==="nhl"){for(const t of [a,h]){const x=xaLuck(t);if(!x)continue;const d=x.act-x.exp;if(d>=.06||(x.pdo||100)>=101.5)S("dn","🍀",`<b>${xaEsc(t)}</b> have been lucky (points ${Math.round(x.act*100)}% vs ${Math.round(x.exp*100)}% expected, PDO ${x.pdo?x.pdo.toFixed(1):"–"}) — due to cool off.`);else if(d<=-.06||(x.pdo||100)<=98.5)S("up","🍀",`<b>${xaEsc(t)}</b> have been unlucky — due to bounce back.`)}
+    const A=NHL_TEAM[a],H=NHL_TEAM[h];if(A&&H&&A.pen&&H.pen){const pp=(A.pen[1]+H.pen[0])/2+(H.pen[1]+A.pen[0])/2;if(pp>=8)S("up","⚡",`Lots of penalties likely (${pp.toFixed(1)} power plays expected in total) — good for power-play points.`)}}
+  if(sp==="nfl"){const P=typeof NFL_PROE!=="undefined"?NFL_PROE:{};for(const t of [a,h]){const x=P[t];if(x&&x[0]!=null&&Math.abs(x[0])>=4)S(x[0]>0?"up":"n","🧠",`<b>${xaEsc(t)}</b> are ${x[0]>0?"pass-heavy":"run-heavy"} (${x[0]>0?"+":""}${x[0]}% pass rate over expected).`)}
+    if(typeof NFL_DIVG!=="undefined"&&NFL_DIVG.some(k=>k.endsWith("|"+a+"|"+h)))S("n","🤝","Division game — historically lower scoring and closer than the spread.")}
+}catch(e){}return out}
+/* drawer sections -> tabs */
+const XA_TABS=[["proj","📐 Projection",/📐|📊|🎯|🟨|1️⃣|⚡|🧤|📈 Pass/],["match","🛡️ Matchup",/🛡️|🏃 Fast|↔️|🔁/],["role","⏱️ Role",/💨|👥|⏱️|🏃 Designed/],["hist","📉 History",/📉/]];
+function xaTabify(rows){const B={proj:[],match:[],role:[],hist:[]},misc=[];
+  for(const r of rows){const h=(/<h4>([^<]*)/.exec(r)||[])[1]||"";const t=XA_TABS.find(([,,re])=>re.test(h));if(t)B[t[0]].push(r);else misc.push(r)}
+  B.match.push(...misc);const on=XA_TABS.filter(([k])=>B[k].length);if(on.length<2)return rows.join("");
+  return `<div class="xatabs">${on.map(([k,l],i)=>`<button data-xat="${k}" class="${i?"":"on"}">${l}</button>`).join("")}</div>${on.map(([k],i)=>`<div class="xatp" data-xatp="${k}"${i?" hidden":""}>${B[k].join("")}</div>`).join("")}`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-xat]");if(!b)return;e.preventDefault();e.stopPropagation();const box=b.closest(".xab");
+  box.querySelectorAll("[data-xat]").forEach(x=>x.classList.toggle("on",x===b));box.querySelectorAll("[data-xatp]").forEach(p=>p.hidden=p.dataset.xatp!==b.dataset.xat)},true);
+/* 🏷️ player summary chips */
+function xaPlayerChips(sp,nm){const C=[];const add=(ic,t,why)=>C.push(`<span class="xapc" title="${xaEsc(why||"")}">${ic} ${t}</span>`);try{
+  const mk=sp==="nba"?"pts":sp==="nhl"?(NHL_G[nm]?"hsaves":"hsog"):({QB:"passYds",RB:"rushYds"}[(PINFO[nm]||{}).pos]||"recYds");const G=xaGames(sp,nm,mk);
+  const lab=sp==="nba"?"points":sp==="nhl"?(NHL_G[nm]?"saves":"shots"):(MARKETS[mk]||{}).n||"";
+  if(G.length>=6){const av=a=>a.reduce((s,x)=>s+x.v,0)/a.length,s=av(G),l=av(G.slice(-5));if(s>0&&l>=s*1.15)add("🔥","Hot",`${lab}: last 5 avg ${l.toFixed(1)} vs ${s.toFixed(1)} season`);else if(s>0&&l<=s*.85)add("❄️","Cold",`${lab}: last 5 avg ${l.toFixed(1)} vs ${s.toFixed(1)} season`)}
+  const M=xaMinTrend(sp,nm);if(M)add("⏱️",`${sp==="nba"?"Minutes":"Ice time"} ${M.dir==="up"?"up":"down"}`,`${M.n} straight games`);
+  const O=xaOpp(sp,nm),pos=xaPos(sp,nm);if(O&&pos){const T=xaTierTable(sp,pos,mk)[O.opp];if(T&&T.tier!=="avg")add("🛡️",`${T.tier==="soft"?"Soft":"Tough"} matchup tonight`,`${O.opp} rank ${T.rank} of ${T.n} in ${lab} allowed`)}
+  if(sp==="nba"){const U=xaUsage(nm);if(U&&U.length>=6){const av=a=>a.reduce((s,x)=>s+x.u,0)/a.length,d=av(U.slice(-5))-av(U);if(Math.abs(d)>=3)add("🎯",`Usage ${d>0?"rising":"falling"}`,`last 5 ${av(U.slice(-5)).toFixed(1)}% vs ${av(U).toFixed(1)}%`)}
+    const c3=xa3PChip(nm,"pts");if(c3)C.push(c3)}
+  if(sp==="nhl"&&!NHL_G[nm]){const rk=xaPPRank(nm);if(rk&&rk<=5)add("⚡","Top power-play unit",`${xaOrd(rk)} on his team in PP time`)}
+  if(sp==="nhl"&&NHL_G[nm]){const P=xaSavesProj(nm);if(P)add("🧤",`~${P.saves.toFixed(0)} saves projected`,`${P.shots.toFixed(1)} shots expected`)}
+}catch(e){}return C.length?`<div class="xapcw">${C.join("")}</div>`:""}
+function xaPlayerChipsInject(){const h=(location.hash||"").slice(1);let sp=null,nm=null,host=null;try{
+  if(h.startsWith("nba-player-")){sp="nba";nm=decodeURIComponent(h.slice(11));host=document.querySelector("#v-nba .phead")}
+  else if(h.startsWith("nhl-player-")){sp="nhl";nm=decodeURIComponent(h.slice(11));host=document.querySelector("#v-nhl .phead")}
+  else if(h.startsWith("props/")){sp="nfl";nm=decodeURIComponent(h.split("/")[1]);const h1=document.querySelector("#v-props h1");host=h1&&h1.closest(".row")}}catch(e){}
+  if(!host||!nm||host.nextElementSibling&&host.nextElementSibling.classList.contains("xapcw"))return;const html=xaPlayerChips(sp,nm);if(html)host.insertAdjacentHTML("afterend",html)}
+/* 👆 tap a chart bar / dot to see the game (title text, which phones never show) */
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest(".nbbar[title],.mbc[title],.xasvg circle");if(!el)return;
+  const t=el.getAttribute("title")||(el.querySelector&&el.querySelector("title")&&el.querySelector("title").textContent);if(!t)return;
+  let tip=document.getElementById("xatip");if(!tip){tip=document.createElement("div");tip.id="xatip";document.body.appendChild(tip)}
+  tip.textContent=t;tip.style.left=Math.max(8,Math.min(innerWidth-208,e.clientX-100))+"px";tip.style.top=(e.clientY-48)+"px";tip.className="show";clearTimeout(tip._t);tip._t=setTimeout(()=>tip.className="",2600)});

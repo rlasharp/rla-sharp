@@ -196,7 +196,7 @@ function nhLineRow(nm,r){
    ${m[3]?(L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>nhLab(o.x,o.prev)))}<div class="small mbs">Last ${L10.length}: <b class="${hit(L10)/L10.length>=.5?"up":"dn"}">${hit(L10)}/${L10.length} ${yes?(PXSIDE==="u"?"no goal":"scored"):pxSW()}</b> · this season <b>${hit(V)}/${V.length}</b> · avg <b>${avg(V)}</b> (L5 ${avg(VA.slice(-5))})${VP.length?` · last season ${hit(VP)}/${VP.length}`:""}${vs.length?` · vs ${nhE(opp)} <b>${hit(vs)}/${vs.length}</b>${vs.some(o=>o.prev)?" (2 seasons)":""}`:""}</div></div>`:`<div class="small">No games logged this season.</div>`):`<div class="small">Game-by-game power-play points aren't in our box-score data — season PP goals: ${w.s?w.s[7]:"–"}.</div>`}
    ${nhCtx(nm,k,line,V)}
    ${k==="hfow"&&w.s&&w.s[9]!=null&&(w.s[9]+w.s[10])?`<div class="small">Season faceoffs: <b>${w.s[9]} won</b> of ${w.s[9]+w.s[10]} (${Math.round(w.s[9]/(w.s[9]+w.s[10])*100)}%) · ${((w.s[9]+w.s[10])/w.s[0]).toFixed(1)} taken per game — volume (more draws) matters as much as win %.</div>`:""}
-   ${typeof xaPanel!=="undefined"&&m[3]?xaPanel("nhl",nm,k,yes?.5:line,PXSIDE):""}
+   ${typeof xaVerdictHtml!=="undefined"&&m[3]?xaVerdictHtml("nhl",nm,k,yes?.5:line):""}${typeof xaPanel!=="undefined"&&m[3]?xaPanel("nhl",nm,k,yes?.5:line,PXSIDE):""}
    </div>`}
 
 /* ---------- All props page ---------- */
@@ -324,8 +324,9 @@ function nhQuick(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},out=[];const S
     const inj=nhInjList(t).filter(r=>/out|reserve|ir/i.test(r[2])&&NHL_P[r[0]]&&NHL_P[r[0]].s[3]>=Math.max(6,NHL_P[r[0]].s[0]*.6));for(const r of inj.slice(0,2))S("dn","🚑",`<b>${nhE(r[0])}</b> (${nhE(t)}, ${NHL_P[r[0]].s[3]} pts) is out (${nhE(String(r[3]).toLowerCase())}).`);
   }
   if(A.otp!=null&&H.otp!=null&&A.otp+H.otp>=60)S("n","⏱️",`Both teams go to overtime a lot (${A.otp}% / ${H.otp}%) — the 60-minute line and puck line get riskier.`);
+  if(typeof xaTakeaways!=="undefined")out.push(...xaTakeaways("nhl",g));
   if(!out.length)return "";
-  return `<div class="card nhquick"><h2 style="margin-bottom:6px">🧠 Quick read</h2>${out.slice(0,7).map(x=>`<div class="nhq ${x.c}"><span>${x.ic}</span><div>${x.t}</div></div>`).join("")}<div class="small" style="margin-top:6px">Automatic notes from this season's numbers — the reasons to look closer, not picks.</div></div>`}
+  return `<div class="card nhquick"><h2 style="margin-bottom:6px">🔑 Key takeaways</h2>${out.slice(0,8).map(x=>`<div class="nhq ${x.c}"><span>${x.ic}</span><div>${x.t}</div></div>`).join("")}<div class="small" style="margin-top:6px">Automatic notes from this season's numbers — the reasons to look closer, not picks.</div></div>`}
 /* one comparison row with mirrored bars (rank strength) */
 function nhCRow(lab,va,ra,vh,rh,tip){const bw=r=>r?Math.round((33-r)/32*100):0,bet=ra&&rh&&ra!==rh?(ra<rh?"a":"h"):"";
   const pill=r=>r?`<span class="nhpill ${nhRkC(r)}">${nhOrd(r)}</span>`:"";

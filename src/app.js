@@ -174,7 +174,7 @@ function ageGate(){
 }
 
 /* ===== hooks ===== */
-function appAfterRoute(){tabbarRender();favDecorate();if(typeof uxCollapse!=="undefined")setTimeout(uxCollapse,0);{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
+function appAfterRoute(){tabbarRender();favDecorate();if(typeof uxCollapse!=="undefined")setTimeout(()=>{uxCollapse();if(typeof xaPlayerChipsInject!=="undefined")xaPlayerChipsInject();if(typeof uxJump!=="undefined")uxJump()},0);{const ms=document.getElementById("moresheet");if(ms)ms.className=""}
   const h=(location.hash||"").slice(1),host=document.getElementById("banner");
   if(host&&(h==="nba"||h==="games"||h==="nba-props"||h==="nba-best"||h==="props")){host.innerHTML=updatedHtml(h.startsWith("nba")?"nba":"nfl")}
 }
@@ -464,6 +464,17 @@ const GLOSS=[
  ["USG%","Usage rate: the share of his team's plays he finishes while on the court. Higher = more chances to hit overs.",0],
  ["USG","Usage rate: the share of his team's plays he finishes while on the court. Higher = more chances to hit overs.",0],
  ["edge","Our chance of winning minus the chance the odds imply. +8% means we think it wins 8 points more often than the price says — bigger is better.",1],
+ ["PRA","Points + Rebounds + Assists added together.",0],
+ ["P+R","Points + Rebounds added together.",0],["P+A","Points + Assists added together.",0],["R+A","Rebounds + Assists added together.",0],
+ ["S+B","Steals + Blocks added together.",0],
+ ["PDO","Shooting % + save % (×100). Normal is about 100 — well above usually means luck that fades, well below usually means bad luck that turns.",0],
+ ["SOG","Shots on goal: shots that would have gone in if the goalie hadn't stopped them (goals count too).",0],
+ ["TOI","Time on ice: minutes a hockey player was on the ice.",0],
+ ["PP","Power play: playing with one more skater because the other team has a player in the penalty box.",0],
+ ["PK","Penalty kill: playing short-handed. PK% = how often a team stops the other side's power play.",0],
+ ["expected goals","How many goals an average shooter would score from the same spots. Scoring far above it usually cools off.",1],
+ ["usage","The share of his team's plays he finishes while on the court (shots, free-throw trips, turnovers). Rising usage = more chances.",1],
+ ["pass rate over expected","How much more (or less) a team throws than an average team would in the same down, distance and score.",1],
  ["our chance","Our estimated chance this bet wins, from his recent games, this season, the matchup and his minutes. Compare it with what the odds need.",1],
  ["odds need","The win rate the price needs just to break even. −128 needs 56%; +120 needs 45%.",1],
  ["closing line","The last odds before the game starts — the market's best guess. Getting a better price than the close is the best sign of a real edge.",1],

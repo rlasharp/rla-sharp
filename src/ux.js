@@ -33,8 +33,9 @@ function uxCollapse(){const h=(location.hash||"").slice(1);if(!/^(nba-player-|nh
   deep[0].before(btn);set(open)}
 
 /* 👋 first visit: three quick cards (after the age check). Betting 101 can show it again. */
-const UX_TOUR=[["🎯","How to read a prop","Every prop shows the <b>line</b> (Over 19.5 points), the <b>odds</b> (−128), and how often he'd have hit it — <b>“Hit 9 of last 10”</b>. The bar fills with his hit rate. Tap any prop for charts, game logs and alt lines."],
- ["📈","Our chance vs. the odds","<b>Our chance</b> is our estimate that the bet wins. <b>Odds need</b> is the chance the price implies (−128 needs 56%). When our chance beats what the odds need, that gap is the <b>edge</b> — bigger is better. Leans, not guarantees."],
+const UX_TOUR=[["🎯","How to read a prop","Every prop shows the <b>line</b> (Over 19.5 points), the <b>odds</b> (−128), how often he'd have hit it — <b>“Hit 9 of last 10”</b> — and a one-line <b>verdict</b>: ✅ Leans over when most signals agree, ➖ Mixed when they don't."],
+ ["📈","Our chance vs. the odds","<b>Our chance</b> (and the NBA <b>📐 projection</b>) is our estimate that the bet wins. <b>Odds need</b> is the chance the price implies (−128 needs 56%). When our chance beats it, that gap is the <b>edge</b>. Leans, not guarantees."],
+ ["📐","Dig deeper when you want","Open <b>📐 Deeper splits</b> on any prop for tabs: Projection · Matchup · Role · History. Game pages start with <b>🔑 Key takeaways</b>, and long pages have a <b>☰ Jump to</b> button. Tap any chart bar to see that game."],
  ["🎟️","Track your bets","Tap <b>＋</b> on any prop or game line to save it to <b>My Bets</b>. Bets grade themselves after the game — usually within minutes of the final. Everything stays on this device."]];
 function uxTour(force){if(!force&&(LS.get("tour_done",false)||navigator.webdriver))return;let i=0;
   const d=document.createElement("div");d.id="uxtour";document.body.appendChild(d);
@@ -50,3 +51,15 @@ function uxBetsCount(){try{return betsLoad().filter(b=>gradeBet(b).r==="pending"
 
 window.addEventListener("load",()=>{uxThemeBtn();const tb=document.getElementById("themeBtn");if(tb)tb.onclick=uxThemeCycle;uxTourWhenReady();
   const mt=document.querySelector('meta[name=theme-color]');if(mt&&document.documentElement.dataset.theme==="light")mt.content="#f6f7f9"});
+
+/* ☰ Jump to: on long pages, a floating button listing the sections currently on screen */
+function uxJumpList(){const v=[...document.querySelectorAll("main > section, .view")].find(x=>x.offsetParent)||document;
+  return [...v.querySelectorAll(".card > h2, .section > h2, h2.tsh, details.drawer > summary")].filter(h=>h.offsetParent&&!h.closest("#moresheet,#uxjump,details.xa")&&h.textContent.trim().length>1)}
+function uxJump(){let b=document.getElementById("uxjumpb");const n=uxJumpList().length;
+  if(n<5){if(b)b.hidden=true;return}
+  if(!b){b=document.createElement("button");b.id="uxjumpb";b.textContent="☰ Jump to";b.onclick=uxJumpOpen;document.body.appendChild(b)}b.hidden=false}
+function uxJumpOpen(){const L=uxJumpList();let s=document.getElementById("uxjump");if(!s){s=document.createElement("div");s.id="uxjump";document.body.appendChild(s)}
+  s.innerHTML=`<div class="ujback"></div><div class="ujpanel"><div class="msgrab"></div><h3>Jump to</h3>${L.map((h,i)=>`<button data-uj="${i}">${(h.textContent||"").replace(/[›ⓘ]/g,"").replace(/\s+/g," ").trim().slice(0,60)}</button>`).join("")}<button class="btn" data-ujx="1" style="width:100%;margin-top:10px">Close</button></div>`;
+  s.className="open";const close=()=>{s.className=""};s.querySelector(".ujback").onclick=close;s.querySelector("[data-ujx]").onclick=close;
+  s.querySelectorAll("[data-uj]").forEach(x=>x.onclick=()=>{const h=L[+x.dataset.uj];close();if(h){const y=h.getBoundingClientRect().top+scrollY-(innerWidth<700?150:90);scrollTo({top:y,behavior:"smooth"});if(h.tagName==="SUMMARY"&&!h.parentElement.open)h.parentElement.open=true}})}
+document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-nhtab],[data-nbgt],[data-nfgt],[data-xinst],[data-tt]"))setTimeout(uxJump,80)},true);

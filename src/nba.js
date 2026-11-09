@@ -505,7 +505,7 @@ function nbaPropCard(r,idx){
   ${alt?"":`${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}`}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${(idx||0)<100?nbaMateSel(nm):""}
   ${pxSideTg()}<div class="nbtabs hrt">${tab("l5","L5",rate(S.l5))}${tab("l10","L10",rate(S.l10))}${tab("season","Season",rate(S.season))}${tab("h2h","H2H",rate(S.h2h))}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
   <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
-  ${typeof xaProjLine!=="undefined"?xaProjLine(nm,k,line):""}${typeof xaSitChips!=="undefined"?xaSitChips(nm,k,line):""}
+  ${typeof xaVerdictHtml!=="undefined"?xaVerdictHtml("nba",nm,k,line):""}${typeof xaProjLine!=="undefined"?xaProjLine(nm,k,line):""}${typeof xaSitChips!=="undefined"?xaSitChips(nm,k,line):""}
   ${(idx||0)<100?`<a href="#nba-player-${encodeURIComponent(nm)}" class="gopl" data-gopl="${nbaEsc(nm)}|${k}">📊 ${nbaEsc(nm.split(" ").filter(w=>!/^(Jr\.?|Sr\.?|II|III|IV)$/.test(w)).slice(-1)[0])}'s stats &amp; all his lines →</a>`:""}
   ${opp&&p.p5?(()=>{const d=nbaDvp(opp,p.p5,k,5);if(!d.rows.length)return "";const av=d.rows.reduce((s,r)=>s+r.v,0)/d.rows.length;return `<div class="small" style="margin-top:6px">${opp} last 5: allowed ${nbaF(av)} ${NBA_MK[k][2]} a game to ${nbaPosWord(p.p5)} (NBA avg ${nbaF(d.lg)}) — <b class="${av>d.lg?"up":"dn"}">${av>d.lg?"easier":"tougher"}</b></div>`})():""}
   ${typeof xaPanel!=="undefined"?xaPanel("nba",nm,k,line,PXSIDE):""}
@@ -903,7 +903,7 @@ function nbaMiniBars(vals,line,labs){
   if(!vals.length)return "";const top=Math.max(line,...vals),mx=(top>0?top:1)*1.12,pct=v=>v<=0?0:Math.max(4,v/mx*100);
   const ln=(line/mx*100).toFixed(1),grid=[.25,.5,.75,1].map(f=>`<div class="mbg" style="bottom:${f*100}%"></div>`).join("");
   return `<div class="mb${vals.length<=6?" few":""}" role="img" aria-label="Last ${vals.length} games vs line ${line}"><div class="mbp">${grid}<div class="mbline" style="bottom:${ln}%"><span class="mbll">${line}</span></div>
-   ${vals.map((v,i)=>{const c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="mbc"><span class="mbv ${c}">${v}</span><i class="${c}${v<=0?" z":""}" style="height:${pct(v).toFixed(1)}%"></i></div>`}).join("")}</div>
+   ${vals.map((v,i)=>{const c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="mbc" title="${labs&&labs[i]!=null?String(labs[i]).replace(/<[^>]+>/g,"").replace(/"/g,"")+": ":""}${v} (line ${line})"><span class="mbv ${c}">${v}</span><i class="${c}${v<=0?" z":""}" style="height:${pct(v).toFixed(1)}%"></i></div>`}).join("")}</div>
    ${labs?`<div class="mbx">${labs.map(l=>`<span>${l}</span>`).join("")}</div>`:""}</div>`;
 }
 function nbaLineRow(nm,r){

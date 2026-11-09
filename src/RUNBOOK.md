@@ -360,3 +360,10 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
   Poisson for 3PM / STL / BLK / S+B. Shown on each prop card and as a line/alt-line table in the drawer. Usage %
   per game ((FGA + .44 FTA + TOV) share of team plays scaled to minutes; chart + last-5 vs season). Free-throw
   matchup (opp FTA allowed × tonight's referee crew). "🔁 Who gains with a star out" card on the game page.
+- **Easier to read (Nov 9):** ✅ verdict line on every NBA / NHL / NFL prop (xaVerdict: last 10, season, projection
+  [NBA], matchup tier, defense trend, minutes — "Leans over/under — N of M signals agree" when one side has 2+ more
+  and twice as many signals, else "Mixed"); 🔑 Key takeaways (Quick read renamed, + xaTakeaways: defense trends,
+  pace, referees, luck, penalties, PROE, division); drawer split into tabs (Projection · Matchup · Role · History);
+  ☰ Jump to button on long pages (ux.js uxJump, 5+ sections); tap a chart bar/dot for the game (#xatip); player
+  summary chips under the name (🔥 hot / ❄️ cold, minutes, matchup, usage, 3s, PP unit, projected saves);
+  glossary: PRA, P+R, P+A, R+A, S+B, PDO, SOG, TOI, PP, PK, expected goals, usage, PROE; 4-card first-visit tour.

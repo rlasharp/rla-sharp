@@ -46,17 +46,19 @@ function nbaAnglesCard(){const HC=nbaHotCold(),R=typeof nbaRoleList!=="undefined
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-nbang]");if(!b)return;NB_ANG=b.dataset.nbang;const y=scrollY;if(typeof route!=="undefined")route();scrollTo(0,y)});
 
 /* ---------- 🧠 quick reads for NBA and NFL game pages ---------- */
-function xQuickHtml(items,foot){if(!items.length)return "";return `<div class="card nhquick" style="margin:12px 0"><h2 style="margin-bottom:6px">🧠 Quick read</h2>${items.slice(0,6).map(x=>`<div class="nhq ${x.c}"><span>${x.ic}</span><div>${x.t}</div></div>`).join("")}<div class="small" style="margin-top:6px">${foot||"Automatic notes from this season's numbers — reasons to look closer, not picks."}</div></div>`}
+function xQuickHtml(items,foot){if(!items.length)return "";return `<div class="card nhquick" style="margin:12px 0"><h2 style="margin-bottom:6px">🔑 Key takeaways</h2>${items.slice(0,7).map(x=>`<div class="nhq ${x.c}"><span>${x.ic}</span><div>${x.t}</div></div>`).join("")}<div class="small" style="margin-top:6px">${foot||"Automatic notes from this season's numbers — reasons to look closer, not picks."}</div></div>`}
 function nbaQuick(g){const out=[],S=(c,ic,t)=>out.push({c,ic,t});const ra=(typeof NBA_REST!=="undefined"&&NBA_REST)||{};
   for(const [t,o] of [[g.a,g.h],[g.h,g.a]]){const r=ra[t],ro=ra[o];if(r&&ro&&r.rest===0&&ro.rest>0)S("dn","😴",`<b>${nbaEsc(nbaShort(t))}</b> are on a back-to-back — ${nbaEsc(nbaShort(o))} are rested.`)}
   const k=typeof nbaKeyOutAll!=="undefined"?nbaKeyOutAll(g):[];if(k.length)S("dn","🚑",`Out: <b>${k.map(nbaEsc).join(", ")}</b> — lines usually already account for it; player props for teammates may not.`);
   const E=nbaOddsEdges(g).filter(e=>e.edge>=.04);for(const e of E.slice(0,2))S("up","💰",`Our numbers like <b>${e.pick}</b> (${e.mk.toLowerCase()}) — ${Math.round(e.me*100)}% vs ${Math.round(e.bk*100)}% from the odds.`);
   const M=typeof nbaEdges!=="undefined"?nbaEdges(g):[];for(const m of M.slice(0,3))S(m.c,m.c==="up"?"🎯":"🧱",m.t);
+  if(typeof xaTakeaways!=="undefined")out.push(...xaTakeaways("nba",g));
   return xQuickHtml(out)}
 function nflQuick(g){const out=[],S=(c,ic,t)=>out.push({c,ic,t});
   const E=nflOddsEdges(g).filter(e=>e.edge>=.04);for(const e of E.slice(0,2))S("up","💰",`Our projection likes <b>${esc(e.pick)}</b> (${e.mk.toLowerCase()}) — ${Math.round(e.me*100)}% vs ${Math.round(e.bk*100)}% from the odds.`);
   const M=typeof nflEdges!=="undefined"?nflEdges(g):[];for(const m of M.slice(0,3))S(m.e>0?"up":"dn",m.e>0?"🎯":"🧱",m.t);
   if(typeof OUT!=="undefined"){const o=Object.keys(OUT).filter(n=>{const P=PINFO[n];return P&&(P.team===g.away||P.team===g.home)}).slice(0,4);if(o.length)S("dn","🚑",`Out: <b>${o.map(esc).join(", ")}</b>.`)}
+  if(typeof xaTakeaways!=="undefined")out.push(...xaTakeaways("nfl",g));
   return xQuickHtml(out)}
 
 /* ---------- 📉 closing-line check for tracked bets ---------- */
