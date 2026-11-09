@@ -4,7 +4,9 @@
    page, otherwise a "tap to update" button appears. You stay on the same page and scroll spot. */
 const FRESH={at:typeof BUILD_AT!=="undefined"?BUILD_AT:"",live:"",last:Date.now()};
 function freshAge(iso){const m=Math.max(0,Math.round((Date.now()-Date.parse(iso))/60000));return m<1?"just now":m<60?m+" min ago":m<1440?Math.floor(m/60)+" h ago":Math.floor(m/1440)+" d ago"}
-function freshNew(){return FRESH.live&&FRESH.at&&FRESH.live>FRESH.at}
+/* already reloaded for this version and the page is still older → the server copy can't get newer right now; don't nag again */
+function freshStuck(){try{return !!FRESH.live&&sessionStorage.getItem("freshTry")===FRESH.live&&sessionStorage.getItem("freshFrom")===FRESH.at}catch(e){return false}}
+function freshNew(){return !!(FRESH.live&&FRESH.at&&FRESH.live>FRESH.at)&&!freshStuck()}
 function freshPaint(){const el=document.getElementById("fresh");if(!el||!FRESH.at)return;const m=(Date.now()-Date.parse(FRESH.at))/60000;
   const cls=freshNew()?"new":m<150?"ok":m<360?"old":"bad";
   for(const e of [el,document.getElementById("freshM")]){if(!e)continue;e.className=(e===el?"fresh ":"fresh freshm ")+cls;e.hidden=false;
@@ -13,12 +15,12 @@ function freshPaint(){const el=document.getElementById("fresh");if(!el||!FRESH.a
   el.title=freshNew()?"A newer update is out — tap to load it":`Stats & results updated ${freshAge(FRESH.at)}${cls==="bad"?" — the automatic update may be stuck":""}. Live scores and odds refresh on their own.`}
 function freshIdle(){return document.hidden||Date.now()-FRESH.last>90000}
 ["pointerdown","keydown","touchstart","wheel"].forEach(ev=>addEventListener(ev,()=>{FRESH.last=Date.now()},{passive:true}));
-async function freshGo(){try{sessionStorage.setItem("freshY",JSON.stringify({h:location.hash,y:scrollY}));sessionStorage.setItem("freshTry",FRESH.live)}catch(e){}
+async function freshGo(){try{sessionStorage.setItem("freshY",JSON.stringify({h:location.hash,y:scrollY}));sessionStorage.setItem("freshTry",FRESH.live);sessionStorage.setItem("freshFrom",FRESH.at)}catch(e){}
   try{await fetch(location.pathname,{cache:"reload"})}catch(e){}   /* refresh the browser's saved copy, then reload */
   location.reload()}
 async function freshCheck(){if(location.protocol==="file:"||!FRESH.at)return;
   try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(r.ok){const j=await r.json();if(j&&j.at)FRESH.live=j.at}}catch(e){}
-  freshPaint();if(!freshNew())return;
+  freshPaint();if(!freshNew()){const b=document.getElementById("freshPill");if(b)b.remove();return}
   let tried="";try{tried=sessionStorage.getItem("freshTry")||""}catch(e){}
   const busy=document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)||document.getElementById("agegate");
   if(tried!==FRESH.live&&freshIdle()&&!busy){freshGo();return}
