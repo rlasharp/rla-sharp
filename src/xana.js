@@ -101,6 +101,13 @@ function xaPanelBody(sp,nm,k,line,side){const over=xaOver(side),word=over?"Over"
     if(["pts","3pm","3pa","pa","pr","pra"].includes(k)){const t=xa3PSay(nm);if(t)rows.push(`<h4>🎯 3-point shooting</h4><div class="small">${t}</div>`)}
     const f=xaFoulSay(nm);if(f)rows.push(`<h4>🟨 Fouls</h4><div class="small">${f}</div>`);
     const q=xaQ1Body(nm,k);if(q)rows.push(q)}
+  /* NFL extras */
+  if(sp==="nfl"){const P=PINFO[nm]||{};
+    if(k==="anyTD"){const t=xaTdSay(nm);if(t)rows.push(`<h4>🎯 Anytime TD estimate</h4><div class="small">${t}</div>`)}
+    if(P.pos==="QB"&&["passYds","passAtt","comp","passTD","int"].includes(k)){const t=xaQBVolSay(nm);if(t)rows.push(`<h4>📈 Pass volume tonight</h4><div class="small">${t}</div>`)}
+    if(P.pos==="QB"&&["rushYds","rushAtt","anyTD"].includes(k)){const t=xaQBRunSay(nm);if(t)rows.push(`<h4>🏃 Designed runs vs scrambles</h4><div class="small">${t}</div>`)}
+    if(["rec","recYds","rushRec"].includes(k)){const t=xaLocSay(nm);if(t)rows.push(`<h4>↔️ Middle vs outside</h4><div class="small">${t}</div>`)}
+    const X=xaNflGame(nm),pr=X&&typeof NFL_PROE!=="undefined"&&NFL_PROE[X.P.team];if(pr&&pr[0]!=null)rows.push(`<div class="small" style="margin-top:6px">🧠 ${xaEsc(X.P.team)} pass ${pr[0]>0?"+":""}${pr[0]}% over expected (${xaOrd(xaProeRank(X.P.team))} of 32).</div>`)}
   /* power play + NHL extras */
   if(sp==="nhl"){const s=[xaPPSay(nm),["hpts","hast","hgoals","hanyG","hppp"].includes(k)?xaPPSplitSay(nm):""].filter(Boolean).join(" ");if(s)rows.push(`<h4>⚡ Power play</h4><div class="small">${s}</div>`);
     if(["hgoals","hanyG","hpts","hsog"].includes(k)){const f=xaFinishSay(nm);if(f)rows.push(`<h4>🎯 Finishing (expected goals)</h4><div class="small">${f}</div>`)}
@@ -401,3 +408,62 @@ function xaBenchCard(g){const R=[g.a,g.h].map(t=>[t,xaRot(t)]).filter(x=>x[1]);i
    <tr><td>Bench points</td>${R.map(([t,x])=>`<td><b>${x.bn.toFixed(1)}</b><div class="small">${xaOrd(rk(t))} of ${all.length}</div></td>`).join("")}</tr>
    <tr><td>Bench, last 5 games</td>${R.map(([,x])=>`<td>${x.bn5.toFixed(1)}</td>`).join("")}</tr>
    <tr><td>Players with 10+ min</td>${R.map(([,x])=>`<td>${x.rot.toFixed(1)}</td>`).join("")}</tr></tbody></table></div></div>`}
+
+/* ================= NFL extras (nfl_x2.js from nflverse) ================= */
+function xaNflGame(nm){const P=PINFO[nm];if(!P||typeof oppOf==="undefined")return null;const o=oppOf(P.team);if(!o)return null;const L=LINES[o.g.id];
+  const imp=L&&L.sp!=null&&L.tot!=null?(o.home?L.tot/2-L.sp/2:L.tot/2+L.sp/2):null,sp=L&&L.sp!=null?(o.home?L.sp:-L.sp):null;return {P,o,L,imp,sp}}
+/* 🎯 anytime TD estimate: his share of the team's red-zone + goal-line touches and TDs × tonight's expected team TDs */
+function xaTdEst(nm){if(typeof NFL_RZ==="undefined")return null;const X=xaNflGame(nm),R=NFL_RZ[nm];if(!X||!R||X.imp==null)return null;const T=NFL_RZT[X.P.team];if(!T||!T[0]||!T[4])return null;
+  const touch=(R[0]+R[1])/Math.max(1,T[0]+T[1]),td=T[2]?R[2]/T[2]:0,share=.6*touch+.4*td,expTD=X.imp*(T[2]/T[4]),lam=expTD*share;
+  return {p:1-Math.exp(-lam),share,expTD,imp:X.imp,R,T}}
+function xaTdSay(nm){const e=xaTdEst(nm);if(!e)return "";const R=e.R;
+  return `Inside the 20 he has <b>${R[0]}</b> touches (${R[1]} inside the 5) and ${R[2]} TDs — about <b>${Math.round(e.share*100)}%</b> of his team's red-zone work. Tonight's implied points ${e.imp.toFixed(1)} ≈ ${e.expTD.toFixed(1)} offensive TDs → <b>${Math.round(e.p*100)}%</b> chance he scores.`}
+/* 📈 QB pass volume from tonight's spread */
+function xaQBSlope(){if(XA.qbs!=null)return XA.qbs;const pts=[];for(const r of Object.values(typeof NFL_QBV!=="undefined"?NFL_QBV:{}))for(const x of r)pts.push([x[2],x[1]]);if(pts.length<20)return XA.qbs=0;
+  const mx=pts.reduce((s,p)=>s+p[0],0)/pts.length,my=pts.reduce((s,p)=>s+p[1],0)/pts.length,c=pts.reduce((s,p)=>s+(p[0]-mx)*(p[1]-my),0),v=pts.reduce((s,p)=>s+(p[0]-mx)**2,0);return XA.qbs=v?c/v:0}
+function xaQBVol(nm){const R=typeof NFL_QBV!=="undefined"&&NFL_QBV[nm];const X=xaNflGame(nm);if(!R||R.length<3||!X||X.sp==null)return null;
+  const avA=R.reduce((s,x)=>s+x[1],0)/R.length,avS=R.reduce((s,x)=>s+x[2],0)/R.length,b=xaQBSlope(),exp=avA+b*(X.sp-avS);return {exp,avA,b,sp:X.sp}}
+function xaQBVolSay(nm){const v=xaQBVol(nm);if(!v)return "";
+  const weak=Math.abs(v.b)<.1;
+  return `Expected pass attempts tonight ≈ <b>${v.exp.toFixed(1)}</b> (his average ${v.avA.toFixed(1)}; ${v.sp>0?`underdog by ${v.sp}`:v.sp<0?`favoured by ${-v.sp}`:"pick'em"}). ${weak?"So far this season the pre-game spread has barely changed how much QBs throw — his own average is the better guide.":`This season each point of spread has moved QB attempts by about ${Math.abs(v.b).toFixed(2)} (${v.b>0?"underdogs throw more":"favourites throw more"}).`}`}
+/* ↔️ middle vs outside targets + what tonight's defense allows */
+function xaLocSay(nm){if(typeof NFL_LOC==="undefined")return "";const L=NFL_LOC[nm],X=xaNflGame(nm);if(!L||!X)return "";const pos=X.P.pos;const D=(NFL_DLOC[X.o.opp]||{})[pos];
+  const t=L.m[0]+L.o[0],ypt=a=>a[0]?a[1]/a[0]:0;
+  const lg={m:[0,0],o:[0,0]};for(const v of Object.values(NFL_DLOC))if(v[pos])for(const s of ["m","o"]){lg[s][0]+=v[pos][s][0];lg[s][1]+=v[pos][s][1]}
+  return `${Math.round(L.m[0]/t*100)}% of his targets are over the middle (${ypt(L.m).toFixed(1)} yds/target) and ${Math.round(L.o[0]/t*100)}% outside (${ypt(L.o).toFixed(1)}).${D?` ${xaEsc(X.o.opp)} allow ${pos}s <b>${ypt(D.m).toFixed(1)}</b> yds/target over the middle (league ${ypt(lg.m).toFixed(1)}) and <b>${ypt(D.o).toFixed(1)}</b> outside (league ${ypt(lg.o).toFixed(1)}).`:""}`}
+/* 🏃 QB designed runs vs scrambles */
+function xaQBRunSay(nm){const R=typeof NFL_QBRUN!=="undefined"&&NFL_QBRUN[nm];if(!R||R.length<2)return "";const n=R.length,s=(i)=>R.reduce((a,x)=>a+x[i],0),l3=R.slice(-3),s3=i=>l3.reduce((a,x)=>a+x[i],0);
+  const d=s(1)/n,sc=s(3)/n;return `Designed runs <b>${d.toFixed(1)}</b> a game (${(s(2)/n).toFixed(0)} yds) and scrambles <b>${sc.toFixed(1)}</b> (${(s(4)/n).toFixed(0)} yds); last ${l3.length}: ${(s3(1)/l3.length).toFixed(1)} designed, ${(s3(3)/l3.length).toFixed(1)} scrambles. ${d>=sc?"Mostly called runs — steadier week to week.":"Mostly scrambles — they swing with the pass rush and coverage."}`}
+/* 🧠 pass rate over expected */
+function xaProeRank(t){const L=Object.entries(typeof NFL_PROE!=="undefined"?NFL_PROE:{}).filter(x=>x[1][0]!=null).sort((a,b)=>b[1][0]-a[1][0]);return L.findIndex(x=>x[0]===t)+1}
+function xaProeCard(g){if(typeof NFL_PROE==="undefined")return "";const R=[g.away,g.home].map(t=>[t,NFL_PROE[t]]).filter(x=>x[1]);if(R.length<2)return "";
+  const w=v=>v>=3?"pass-heavy":v<=-3?"run-heavy":"balanced";
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🧠 Pass-heavy or run-heavy?</h2><div class="small" style="margin-bottom:8px">How much more (or less) each team throws than an average team would in the same down, distance and score (competitive situations only).</div>
+   <div class="nbatbl"><table class="bxt xat xaflow"><thead><tr><th></th>${R.map(([t])=>`<th>${xaEsc(t)}</th>`).join("")}</tr></thead><tbody>
+   <tr><td>Pass rate over expected</td>${R.map(([t,x])=>`<td><b>${x[0]>0?"+":""}${x[0]}%</b><div class="small">${xaOrd(xaProeRank(t))} · ${w(x[0])}</div></td>`).join("")}</tr>
+   <tr><td>Pass rate</td>${R.map(([,x])=>`<td>${x[1]}%</td>`).join("")}</tr><tr><td>Plays per game</td>${R.map(([,x])=>`<td>${x[2]}</td>`).join("")}</tr></tbody></table></div>
+   <div class="small" style="margin-top:6px">Pass-heavy teams lift QB and receiver volume; run-heavy teams lift RB carries and usually mean fewer plays and points.</div></div>`}
+/* 🤝 division games */
+function xaDivCard(g){if(typeof NFL_DIVX==="undefined"||!NFL_DIVX||typeof NFL_DIVG==="undefined")return "";const wk=g.wk||(typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:null);
+  if(!NFL_DIVG.some(k=>k.endsWith("|"+g.away+"|"+g.home)))return "";const L=NFL_DIVX.lg,N=NFL_DIVX.non,pc=(a,b)=>b?Math.round(a/b*100)+"%":"–",T=NFL_DIVX.tm;
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🤝 Division game</h2><div class="small" style="margin-bottom:8px">Teams that play twice a year know each other well — scoring tends to dip and underdogs keep it closer.</div>
+   <div class="small">Since ${NFL_DIVX.since}: division games went <b>under ${pc(L[1],L[1]+L[2])}</b> of the time (other games ${pc(N[1],N[1]+N[2])}); underdogs covered <b>${pc(L[3],L[3]+L[4])}</b> (other games ${pc(N[3],N[3]+N[4])}) — ${L[0]} games.</div>
+   <div class="nbatbl" style="margin-top:8px"><table class="bxt xat xaflow"><thead><tr><th>In division games, last 3+ seasons</th><th>${xaEsc(g.away)}</th><th>${xaEsc(g.home)}</th></tr></thead><tbody>
+   ${[["Won-lost",0,1],["Against the spread",2,3],["Over-under",4,5]].map(([l,i,j])=>`<tr><td>${l}</td>${[g.away,g.home].map(t=>{const x=T[t];return `<td>${x?x[i]+"-"+x[j]:"–"}</td>`}).join("")}</tr>`).join("")}</tbody></table></div></div>`}
+/* 🦵 kickers: field goals / kicking points, plus any posted lines */
+function xaKickCard(g){if(typeof NFL_K==="undefined")return "";const rows=[];const D=typeof LO!=="undefined"&&LO.data&&LO.data.nfl;
+  const lines={};if(D&&D.props)for(const r of D.props)if(["fgm","kpts","xpm"].includes(r[1]))lines[loNorm(r[0])+"|"+r[1]]=r;
+  for(const t of [g.away,g.home]){const K=Object.entries(NFL_K).filter(([,k])=>k.tm===t).sort((a,b)=>b[1].g.length-a[1].g.length)[0];if(!K)continue;const [nm,k]=K,G=k.g,n=G.length,s=i=>G.reduce((a,x)=>a+x[i],0);
+    const X={sp:null};const L=LINES[g.id],imp=L&&L.sp!=null&&L.tot!=null?(t===g.home?L.tot/2-L.sp/2:L.tot/2+L.sp/2):null;
+    const ln=r=>r?`${r[2]} <span class="small">(o ${oddsFmt(r[3])}${r[4]!=null?" / u "+oddsFmt(r[4]):""})</span>`:"–";
+    const hit=(i,l)=>l==null?"":` · over ${l} in ${G.filter(x=>x[i]>l).length}/${n}`;const fl=lines[loNorm(nm)+"|fgm"],kl=lines[loNorm(nm)+"|kpts"];
+    rows.push(`<tr><td><b>${xaEsc(nm)}</b> <span class="small">${t}</span></td><td>${(s(1)/n).toFixed(1)} <span class="small">(${s(1)}/${s(2)}, long ${Math.max(...G.map(x=>x[5]))})</span><div class="small">line ${ln(fl)}${hit(1,fl&&fl[2])}</div></td><td>${(s(4)/n).toFixed(1)}<div class="small">line ${ln(kl)}${hit(4,kl&&kl[2])}</div></td></tr>`)}
+  if(!rows.length)return "";
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🦵 Kickers</h2><div class="small" style="margin-bottom:8px">Field goals made and kicking points per game this season (nflverse), with the books' lines when posted. Kickers score more when drives stall in field-goal range — low red-zone TD rates and domes help.</div>
+   <div class="nbatbl"><table class="bxt xat"><thead><tr><th>Kicker</th><th>FG made / game</th><th>Kicking pts / game</th></tr></thead><tbody>${rows.join("")}</tbody></table></div></div>`}
+function xaTdCard(g){if(typeof REAL_PROPS==="undefined"||typeof NFL_RZ==="undefined")return "";const L=[];
+  for(const [key,v] of Object.entries(REAL_PROPS)){const [nm,k]=key.split("|");if(k!=="anyTD")continue;const P=PINFO[nm];if(!P||(P.team!==g.away&&P.team!==g.home))continue;const e=xaTdEst(nm);if(!e)continue;const need=xaImp(v[1]);L.push({nm,P,e,odds:v[1],need,edge:need!=null?e.p-need:null})}
+  if(!L.length)return "";L.sort((a,b)=>(b.edge??-1)-(a.edge??-1));
+  return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">🎯 Anytime TD estimates</h2><div class="small" style="margin-bottom:8px">His share of his team's red-zone and goal-line touches and TDs × tonight's expected team TDs (from the implied points), vs what the odds need.</div>
+   ${L.slice(0,12).map(x=>`<div class="nher"><span><span>${typeof badge!=="undefined"?badge(x.P.team):""} <b>${xaEsc(x.nm)}</b> <span class="small">${x.P.pos}</span></span><span class="small">${x.e.R[0]} red-zone touches · ${x.e.R[2]} TDs · ${Math.round(x.e.share*100)}% of team</span></span><span class="nhedv"><b class="${x.edge>.03?"up":x.edge<-.03?"dn":""}">${Math.round(x.e.p*100)}%</b><span class="small">${x.odds!=null?amTxt(x.odds)+" needs "+Math.round(x.need*100)+"%":""}</span></span></div>`).join("")}
+   <div class="small" style="margin-top:6px">A rough guide — touchdowns are streaky and small samples swing a lot.</div></div>`}

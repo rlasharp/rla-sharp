@@ -345,3 +345,12 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
   fetch_odds.py: player_double_double (dd), player_triple_double (td), player_first_basket (fb) as yes-only markets;
   liveprops.py skips them (they are read straight from the feed). "🎯 Double-doubles & first basket" card (game page +
   Best props page) and "🪑 Bench & rotation" card (game page).
+- **NFL extras (Nov 9):** tools/nflx2.py (weekly with nflfetch, Tuesday) → nfl_x2.js: NFL_RZ / NFL_RZT (red-zone +
+  goal-line touches, TDs), NFL_LOC / NFL_DLOC (middle vs outside targets, what defenses allow), NFL_QBRUN (designed
+  runs vs scrambles), NFL_QBV (QB attempts + spread + implied points per week), NFL_PROE (pass rate over expected,
+  competitive situations), NFL_DIVX / NFL_DIVG (division-game trends since 2021 + team records; NFL_DIV already exists
+  = division membership), NFL_K (kickers). Client (xana.js): drawer sections (anytime TD estimate, pass volume,
+  designed runs vs scrambles, middle vs outside, PROE line) + game-page cards (🎯 Anytime TD estimates, 🧠 Pass-heavy
+  or run-heavy, 🤝 Division game, 🦵 Kickers). fetch_odds.py: + player_pass_attempts (passAtt market added to
+  MARKETS), player_field_goals_made (fgm), player_kicking_points (kpts), player_extra_points_made (xpm); anytime TD
+  now allowed for QBs. FORCE=markets prints the markets books offer.

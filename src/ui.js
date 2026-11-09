@@ -2,7 +2,7 @@
 /* ============================================================
    SIMPLE UI
    ============================================================ */
-Object.assign(MARKETS.passYds,{n:"Passing yards",u:"pass yds"});Object.assign(MARKETS.comp,{n:"Completions",u:"completions"});
+Object.assign(MARKETS.passYds,{n:"Passing yards",u:"pass yds"});Object.assign(MARKETS.passAtt,{n:"Pass attempts",u:"pass att"});Object.assign(MARKETS.comp,{n:"Completions",u:"completions"});
 Object.assign(MARKETS.passTD,{n:"Passing TDs",u:"pass TDs"});Object.assign(MARKETS.int,{n:"Interceptions",u:"INTs"});
 Object.assign(MARKETS.rushYds,{n:"Rushing yards",u:"rush yds"});Object.assign(MARKETS.rushAtt,{n:"Rushing attempts",u:"rush att"});
 Object.assign(MARKETS.rec,{n:"Receptions",u:"receptions"});Object.assign(MARKETS.recYds,{n:"Receiving yards",u:"rec yds"});
@@ -160,7 +160,7 @@ function viewGame(id){
     if(T==="inj")return nav+`<div class="section">${injWxSection(g)}</div>`;
     return nav+`   <div class="section"><h2>Offense vs defense</h2><p class="small" style="margin-top:-6px">Per-game averages this season. Rank 1st = best in the NFL (most gained for offenses, least allowed for defenses). <span class="tag real">Real</span> Offense from ESPN, yards allowed from NFL.com, points allowed from CBS scores.</p>
     <div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>
-   ${nfPressCard(g)}${nfShareCard(g)}${typeof xaKeyOutCard!=="undefined"?`<div class="section">${xaKeyOutCard("nfl",g.away,g.home)}${xaDefTrendCard("nfl",g.away,g.home)}</div>`:""}
+   ${nfPressCard(g)}${nfShareCard(g)}${typeof xaKeyOutCard!=="undefined"?`<div class="section">${xaKeyOutCard("nfl",g.away,g.home)}${xaDefTrendCard("nfl",g.away,g.home)}${xaTdCard(g)}${xaProeCard(g)}${xaDivCard(g)}${xaKickCard(g)}</div>`:""}
    <div class="section"><h2>Run game: yards per rushing attempt</h2><p class="small" style="margin-top:-6px">How well each offense runs the ball against how well the other defense stops it. <span class="tag real">Real</span> <a href="${RUN_SRC.att}" target="_blank" rel="noopener">StatRankings</a> rushing attempts and YPC allowed (2026, through Oct 27) with ESPN rushing yards.</p>
     <div class="grid g2">${runGameHtml(g.away,g.home)}${runGameHtml(g.home,g.away)}</div></div>
    <div class="section"><h2>Coverage: man vs zone</h2><p class="small" style="margin-top:-6px"><b>Man</b> = each defender follows one receiver. <b>Zone</b> = defenders guard areas of the field. Some offenses and receivers are much better against one than the other.</p>
