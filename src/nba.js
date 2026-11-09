@@ -1115,10 +1115,10 @@ function nbaDetailEnsure(cb){if(NBA_DET.ok||(NBA_DET.fail&&Date.now()-NBA_DET.fa
   const sc=document.createElement("script");sc.src="nba_detail.js?v="+(typeof BUILD_AT!=="undefined"?BUILD_AT.replace(/\D/g,""):Date.now());
   const done=ok=>{NBA_DET.busy=0;if(ok)NBA_DET.ok=true;else NBA_DET.fail=Date.now();NBA_DET.cb.splice(0).forEach(f=>{try{f()}catch(e){console.error(e)}})};
   sc.onload=()=>done(true);sc.onerror=()=>done(false);document.head.appendChild(sc)}
-if(typeof window!=="undefined")window.addEventListener("load",()=>setTimeout(()=>nbaDetailEnsure(),1200));
+if(typeof window!=="undefined"&&typeof window.addEventListener==="function")window.addEventListener("load",()=>setTimeout(()=>nbaDetailEnsure(),1200));
 function nbaRoute(h){
   const el=document.getElementById("v-nba");
-  if(!NBA_DET.ok&&!/^(nba|nba-best|nba-scores|nba-teams|nba-injuries|nba-tomorrow.*)$/.test(h)){const y=scrollY;el.innerHTML=`<div class="small" style="padding:30px 0;text-align:center">Loading…</div>`;return nbaDetailEnsure(()=>{const now=(location.hash||"").slice(1);let dn=now;try{dn=decodeURIComponent(now)}catch(e){}if(now===h||dn===h){if(typeof route!=="undefined")route();else nbaRoute(h);scrollTo(0,y)}})}
+  if(!NBA_DET.ok&&!/^(nba|nba-best|nba-scores|nba-teams|nba-injuries|nba-tomorrow.*)$/.test(h)){const y=scrollY;el.innerHTML=`<div class="small" style="padding:30px 0;text-align:center">Loading…</div>`;return nbaDetailEnsure(()=>{if(!NBA_DET.ok){el.innerHTML=`<div class="small" style="padding:30px 0;text-align:center">Couldn't load NBA details — check your connection and refresh.</div>`;return}const now=(location.hash||"").slice(1);let dn=now;try{dn=decodeURIComponent(now)}catch(e){}if(now===h||dn===h){if(typeof route!=="undefined")route();else nbaRoute(h);scrollTo(0,y)}})}
   if(h.startsWith("nba-game-"))return nbaGame(el,h.slice(9));
   if(h.startsWith("nba-player-"))return nbaPlayer(el,h.slice(11));
   if(h.startsWith("nba-team-"))return nbaTeamPage(el,h.slice(9));
