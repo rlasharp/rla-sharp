@@ -382,12 +382,15 @@ function nflEval(name,k,side){
   if(cur.length<3)return null;
   const hit=a=>a.filter(l=>side==="o"?stat(l,k)>line:stat(l,k)<line).length;
   const l5=cur.slice(-5),r5=hit(l5)/l5.length,rS=hit(cur)/cur.length,rH=vs.length>=2?hit(vs)/vs.length:rS;
-  let sc=.45*r5+.35*rS+.2*rH;
+  const raw=.45*r5+.35*rS+.2*rH;
   const dv=dvpFor(o.opp,pl.pos,k).rank;let dvOk=null;
-  if(Number.isFinite(dv)){const easy=dv<=8,hard=dv>=25;dvOk=side==="o"?(easy?1:hard?-1:0):(hard?1:easy?-1:0);sc+=.05*dvOk}
-  sc=Math.max(0,Math.min(.97,sc));
+  if(Number.isFinite(dv)){const easy=dv<=8,hard=dv>=25;dvOk=side==="o"?(easy?1:hard?-1:0):(hard?1:easy?-1:0)}
   const be=odds!=null?nflImpl(odds):NFL_BE;
-  return {name,k,side,line,odds,book:rp[3],pl,opp:o.opp,home:o.home,g:o.g,sc,be,edge:sc-be,dvOk,dv,
+  /* calibrated chance (same method as NBA): fair price from both sides (vig removed), moved toward his hit rates only partway */
+  const fair=rp[1]!=null&&rp[2]!=null?(()=>{const io=nflImpl(rp[1]),iu=nflImpl(rp[2]);return side==="o"?io/(io+iu):iu/(io+iu)})():be/1.045;
+  const nEff=Math.min(25,l5.length+.5*cur.length),w=.4*nEff/(nEff+10);
+  let sc=Math.max(.03,Math.min(.9,fair+w*(raw-fair)+(dvOk?.02*dvOk:0)));
+  return {name,k,side,line,odds,book:rp[3],pl,opp:o.opp,home:o.home,g:o.g,sc,raw,fair,be,edge:sc-be,dvOk,dv,
     c3:[hit(cur.slice(-3)),cur.slice(-3).length],c5:[hit(l5),l5.length],c10:(()=>{const a=L.filter(l=>Number.isFinite(stat(l,k))).slice(-10);return [hit(a),a.length]})(),cS:[hit(cur),cur.length],cH:[hit(vs),vs.length]};
 }
 let NFL_BEST_C=null;

@@ -49,7 +49,10 @@ function nhScore(nm,k,line,side){const VA=nhVals(nm,k),V=VA.filter(o=>!o.prev).m
 function nhPropRows(){return (NHL_PROPS||[]).filter(r=>NH_MK[r[1]]&&nhWho(r[0]))}
 function nhOutNow(nm){const r=typeof nhInjOf!=="undefined"&&nhInjOf(nm);return !!(r&&/out|reserve|ir\b|suspen/i.test(r[2]))}
 function nhBest(){const out=[];for(const r of nhPropRows()){const [nm,k,line,o,u]=r,w=nhWho(nm),g=w&&nhGameOf(w.tm);if(!g||nhStarted(g)||!NH_MK[k][3]||nhOutNow(nm))continue;
-  for(const [side,odds] of [["o",o],["u",u]]){if(odds==null)continue;const s=nhScore(nm,k,line,side);if(!s||s.ns<5)continue;const imp=nhImp(odds);if(s.p-imp>0)out.push({nm,k,line,side,odds,s,edge:s.p-imp,g})}}
+  for(const [side,odds] of [["o",o],["u",u]]){if(odds==null)continue;const s=nhScore(nm,k,line,side);if(!s||s.ns<5)continue;const imp=nhImp(odds);
+    /* calibrated chance (same method as NBA): fair price from both sides (vig removed), moved toward his hit rates only partway */
+    const fair=o!=null&&u!=null?(side==="o"?nhImp(o)/(nhImp(o)+nhImp(u)):nhImp(u)/(nhImp(o)+nhImp(u))):imp/1.045,nEff=Math.min(25,s.n10+.5*s.ns),w=.4*nEff/(nEff+10);
+    const sc=Object.assign({},s,{raw:s.p,fair,p:Math.max(.03,Math.min(.9,fair+w*(s.p-fair)))});if(sc.p-imp>0)out.push({nm,k,line,side,odds,s:sc,edge:sc.p-imp,g})}}
   return out.sort((a,b)=>b.edge-a.edge)}
 function nhBestFilter(L){const f=NH.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||(f.pos==="G"?!!NHL_G[b.nm]:f.pos==="D"?(NHL_P[b.nm]||{}).pos==="D":NHL_P[b.nm]&&NHL_P[b.nm].pos!=="D"))&&(!f.min||b.s.p>=f.min/100)&&(typeof hotOk==="undefined"||hotOk({c3:b.s.c3,c5:b.s.c5,c10:b.s.c10},f.hot)))}
 function nhBestFilterUI(L0){const f=NH.bf||(NH.bf={}),games=[...new Map(L0.map(b=>[b.g.id,b.g])).values()],mks=[...new Set(L0.map(b=>b.k))];
