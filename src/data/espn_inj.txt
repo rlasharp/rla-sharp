@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 16:47Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 17:33Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Roy Lopez|DT|Questionable|Toe|Nov 15
@@ -72,8 +72,8 @@ Cashius Howell|DE|IR|Wrist|Dec 6
 Andrei Iosivas|WR|IR|Thumb|Nov 15
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
-Taylen Green|QB|Out|Coach's Decision|Nov 15
 Deshaun Watson|QB|Out|Concussion|Nov 15
+Taylen Green|QB|Out|Coach's Decision|Nov 15
 Noah Igbinoghene|CB|Out|Coach's Decision|Nov 15
 Justin Jefferson|LB|Out|Coach's Decision|Nov 15
 Parker Brailsford|C|Out|Coach's Decision|Nov 15
@@ -93,8 +93,8 @@ George Pickens|WR|Out|Hamstring|Nov 15
 Jonathan Bullard|DT|IR|Calf|Nov 15
 Malachi Lawrence|LB|IR|Ankle|Dec 7
 #DEN
-Riley Moss|CB|Questionable|Concussion|Nov 22
 Jaylen Waddle|WR|Questionable|Concussion|Nov 22
+Riley Moss|CB|Questionable|Concussion|Nov 22
 Lil'Jordan Humphrey|WR|Out|Coach's Decision|Nov 22
 Talanoa Hufanga|S|Out|Ankle|Nov 22
 Sam Ehlinger|QB|Out|Coach's Decision|Nov 22
@@ -214,14 +214,14 @@ Jauan Jennings|WR|Out|Calf|Nov 15
 Kyler Murray|QB|Out|Hamstring|Nov 15
 Jay Ward|S|Questionable|Knee|Nov 9
 #NE
+A.J. Brown|WR|Out|Knee|Nov 15
+Rhamondre Stevenson|RB|Questionable|Knee|Nov 15
 Ben Brown|C|Questionable|Knee|Nov 15
 Brenden Schooler|S|Questionable|Hamstring|Nov 15
 Will Campbell|OT|Questionable|Knee|Nov 15
-Rhamondre Stevenson|RB|Questionable|Knee|Nov 15
 Carlton Davis III|CB|Questionable|Knee|Nov 15
 Behren Morton|QB|Out|Coach's Decision|Nov 15
 TreVeyon Henderson|RB|Out|Illness|Nov 15
-A.J. Brown|WR|Out|Knee|Nov 15
 Dametrious Crownover|OT|Out|Coach's Decision|Nov 15
 Charles Woods|CB|Out|Hamstring|Nov 15
 Greg Van Roten|G|IR|Hamstring|Nov 15
@@ -236,9 +236,9 @@ Christen Miller|DT|Out|Coach's Decision|Nov 15
 CJ Donaldson|RB|Out|Shoulder|Nov 15
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 #NYG
-J.J. McCarthy|QB|Questionable|Undisclosed|
-Thomas Fidone II|TE|Out|Coach's Decision|Nov 12
 Cam Skattebo|RB|Out|Hamstring|Nov 12
+J.J. McCarthy|QB|Questionable|Hip|Nov 12
+Thomas Fidone II|TE|Out|Coach's Decision|Nov 12
 CJ Okoye|DT|Out|Coach's Decision|Nov 12
 Nikko Reed|CB|Out|Coach's Decision|Nov 12
 Josh Sills|G|Out|Coach's Decision|Nov 12
