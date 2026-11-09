@@ -4,7 +4,7 @@
    Routes: #soccer (matches) · #soccer-game-<id> · #soccer-props · #soccer-table · #soccer-player-<espn id>
    Focus markets: match result, goals over/under, both teams to score, corners, cards. Player: shots, shots on target,
    goals, goal or assist, fouls committed, fouls won. Real data only — where no US book posts a line we say so. */
-const SC={lgs:(()=>{try{return JSON.parse(localStorage.getItem("ge_soclgs")||"[]")}catch(e){return []}})(),cc:"cor",lg:"all",day:"",tab:"game",pmk:"all",plg:"all",tlg:"epl"};
+const SC={lgs:(()=>{try{return JSON.parse(localStorage.getItem("ge_soclgs")||"[]").slice(0,1)}catch(e){return []}})(),cc:"cor",lg:"all",day:"",tab:"game",pmk:"all",plg:"all",tlg:"epl"};
 let SOC_READY=false,SOC_WAIT=[],SOCP_READY=false,SOCP_WAIT=[];
 function socLoad(file,okVar,W,done,cb){if(window[okVar]){done();cb&&cb();return}if(W.fail&&Date.now()-W.fail<60000){cb&&cb();return}if(cb)W.push(cb);if(W.loading)return;W.loading=1;
   const sc=document.createElement("script");sc.src=file+"?v="+(typeof BUILD_AT!=="undefined"&&BUILD_AT?BUILD_AT.replace(/\D/g,""):Math.floor(Date.now()/600000));
@@ -144,8 +144,8 @@ function socCard(f){const O=f.odds||{},P=f.proj,st=socStarted(f),fin=f.state==="
    <div class="small scsum">${P&&P.cor?`🚩 Corners: we expect <b>${P.cor.t.toFixed(1)}</b>${mc?` (line ${mc})`:""}`:""}${P&&P.card?` · 🟨 Cards: <b>${P.card.t.toFixed(1)}</b>${f.ref?` · ref ${socE(f.ref)}`:""}`:""}</div>
    ${st?"":socPredShort(f)+socVerdictHtml(f)}${st?"":`<div style="margin-top:4px">${socMoveChip(f)}</div>`}
    ${O.ml||P?`<div class="small scpct">Odds = best US book · % = our estimate</div>`:`<div class="small">No odds yet — books usually post 2–3 days before kickoff.</div>`}</a>`}
-function socLgFilter(){return `<div class="seg sclgf"><button class="btn${SC.lgs.length?"":" on"}" data-sclg="all">All</button>${Object.entries(SOC_LG).map(([k,v])=>`<button class="btn${SC.lgs.includes(k)?" on":""}" data-sclg="${k}">${socE(v.sh)}</button>`).join("")}</div><div class="small" style="margin:-2px 0 6px">${SC.lgs.length?"⭐ Showing your leagues — remembered on this device. Tap a league to add or remove it.":"Tap leagues to show only those — your choice is remembered."}</div>`}
-function socLgWire(el,redraw){el.querySelectorAll("[data-sclg]").forEach(b=>b.onclick=()=>{const k=b.dataset.sclg;if(k==="all")SC.lgs=[];else SC.lgs=SC.lgs.includes(k)?SC.lgs.filter(x=>x!==k):[...SC.lgs,k];socLgSave();redraw()})}
+function socLgFilter(){return `<div class="seg sclgf"><button class="btn${SC.lgs.length?"":" on"}" data-sclg="all">All</button>${Object.entries(SOC_LG).map(([k,v])=>`<button class="btn${SC.lgs.includes(k)?" on":""}" data-sclg="${k}">${socE(v.sh)}</button>`).join("")}</div><div class="small" style="margin:-2px 0 6px">${SC.lgs.length?`⭐ Showing ${socE((SOC_LG[SC.lgs[0]]||{}).n||"")} only — remembered on this device. Tap another league to switch, or All.`:"Tap a league to show only that one — your choice is remembered."}</div>`}
+function socLgWire(el,redraw){el.querySelectorAll("[data-sclg]").forEach(b=>b.onclick=()=>{const k=b.dataset.sclg;SC.lgs=k==="all"||(SC.lgs.length===1&&SC.lgs[0]===k)?[]:[k];socLgSave();redraw()})}
 function socDays(){const d0=socToday();return [...new Set((SOC_FX||[]).filter(f=>socLgOk(f.c)).map(f=>socDay(f.t)).filter(d=>d>=d0))].sort().slice(0,7)}
 function socDayTabs(D,cur){const d0=socToday();return `<div class="gtabs scdays">${D.map(d=>{const c=(SOC_FX||[]).filter(f=>socDay(f.t)===d&&socLgOk(f.c)).length,n=Math.round((Date.parse(d)-Date.parse(d0))/864e5);
   return `<a href="#" data-scday="${d}" class="${d===cur?"on":""}">${n===0?"Today":n===1?"Tomorrow":new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"short",day:"numeric"})}<small>${c}</small></a>`}).join("")}</div>`}
