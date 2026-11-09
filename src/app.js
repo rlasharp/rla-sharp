@@ -38,7 +38,7 @@ function searchIndex(){
     for(const [n,p] of Object.entries(NHL_G))L.push({k:n.toLowerCase(),l:n,s:"NHL",sub:`${p.tm} · G`,h:"nhl-player-"+encodeURIComponent(n),w:5});
     for(const [t,v] of Object.entries(NHL_TEAM))L.push({k:((v.n||"")+" "+t).toLowerCase(),l:v.n||t,s:"NHL",sub:"Team",h:"nhl-team-"+t,w:99})}
   if(typeof PINFO!=="undefined")for(const [n,p] of Object.entries(PINFO))L.push({k:n.toLowerCase(),l:n,s:"NFL",sub:`${p.team} · ${p.pos}`,nfl:n,w:50});
-  if(typeof TEAMS!=="undefined")for(const [t,v] of Object.entries(TEAMS))L.push({k:(v[0]+" "+t).toLowerCase(),l:v[0],s:"NFL",sub:"Team",h:"standings",w:99});
+  if(typeof TEAMS!=="undefined")for(const [t,v] of Object.entries(TEAMS))L.push({k:(v[0]+" "+t).toLowerCase(),l:v[0],s:"NFL",sub:"Team",h:"team-"+t,w:99});
   if(window.SOC_OK)for(const [id,t] of Object.entries(SOC_TM)){if(!(t[4]||[]).length)continue;L.push({k:(t[0]+" "+t[1]+" "+t[2]).toLowerCase(),l:t[0],s:"SOC",sub:"Team · "+(t[4]||[]).map(c=>(SOC_LG[c]||{}).sh||c).join(", "),h:"soccer-team-"+id,w:90})}
   if(window.SOC_P_OK)for(const [aid,P] of Object.entries(SOC_P)){if(P[3].length<2)continue;L.push({k:P[0].toLowerCase(),l:P[0],s:"SOC",sub:`${typeof socTm!=="undefined"?socTm(P[1]):""} · ${P[2]||""}`,h:"soccer-player-"+aid,w:P[3].length})}
   for(const x of L){x.n=srchNorm(x.l+(x.sub==="Team"?" "+x.k:""));x.tk=x.n.split(" ").filter(Boolean);x.ini=srchNorm(x.l).split(/[ -]+/).filter(Boolean).map(w=>w[0]).join("")}

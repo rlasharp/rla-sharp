@@ -11,7 +11,7 @@ n = len(runs); ok = sum(r["ok"] for r in runs); pub = sum(r.get("published", Fal
 chk = sum(r.get("check_failed", False) for r in runs); site_bad = [r for r in runs if not r.get("site_ok", True)]
 
 def key(l):   # group similar failure lines: drop numbers / names after the first ':' or '—'
-    l = re.split(r"\s[—:]\s?|: ", l, 1)[0]; return re.sub(r"\d+", "#", l).strip()[:90]
+    l = re.split(r"\s[—:]\s?|: ", l, maxsplit=1)[0]; return re.sub(r"\d+", "#", l).strip()[:90]
 F = collections.Counter(); ex = {}
 for r in runs:
     for l in set(r.get("fails", [])): k = key(l); F[k] += 1; ex.setdefault(k, l)
@@ -46,6 +46,23 @@ else:
     out += ["", "### Steps that failed (old data was kept each time)"]
     out += [f"- **{c}×** {ex[k]}" for k, c in F.most_common(12)] or ["- None 🎉"]
 out += ["", "### Data timestamps right now"] + [f"- {a}: {b}" for a, b in ages]
+# did our stated chances come true? flag any group with 20+ graded picks that is more than 10 points off
+try:
+    tj = open(os.path.join(R, "src/track_data.js"), encoding="utf8").read(); TR = json.loads(tj[tj.index("=") + 1:].strip().rstrip(";"))
+    drift, okg = [], []
+    for sp, nm in (("nba", "NBA"), ("nhl", "NHL"), ("nfl", "NFL")):
+        cal = ((TR.get("sum") or {}).get(sp) or {}).get("cal") or {}
+        for kind, lab in (("props", "props we gave"), ("edges", "game edges")):
+            for b, B in (cal.get(kind) or {}).items():
+                n, w, said = B[0], B[1], B[2]
+                if n < 20: continue
+                got, exp = w / n, said / n
+                (drift if abs(got - exp) > 0.10 else okg).append(f"{nm} {lab} {b}: we said {exp:.0%}, they hit {got:.0%} ({w}-{n - w}, {B[3]:+.1f}u)")
+    out += ["", "### Did our chances come true? (groups with 20+ graded picks)"]
+    out += [f"- ⚠️ **Off by more than 10 points** — {d}" for d in drift] + [f"- ✅ {d}" for d in okg] or ["- No group has 20 graded picks yet — too early to judge."]
+    if drift: out[0] = out[0].replace("✅ Healthy", "⚠️ Needs a look")
+except Exception as e:
+    out += ["", f"_(chance check skipped: {e})_"]
 if alerts:
     out += ["", "### Site alerts this week"] + [f"- #{a['number']} {a['title']} — {'closed' if a.get('closedAt') else 'still open'}" for a in alerts]
 out += ["", "_Automatic weekly report (tools/weekly_health.py). Real run logs only. Last week's report is closed when this one opens._"]

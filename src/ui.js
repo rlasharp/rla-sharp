@@ -700,14 +700,14 @@ function route(){
   }
   document.querySelectorAll("#nbaNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===h));
   if(h.startsWith("props/")){const [,nm,mk]=h.split("/");if(nm&&(!S.prop||S.prop.player!==nm||!S.prop.open))S.prop={player:nm,market:mk||null,open:true};else if(S.prop&&mk)S.prop.market=mk}
-  let v=h.startsWith("game-")?"game":h.startsWith("props/")?"props":h;
+  let v=h.startsWith("game-")?"game":h.startsWith("props/")?"props":h.startsWith("team-")?"nflteam":h;
   if(v==="slate")v="games";
-  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek"].includes(v))v="today";
+  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam"].includes(v))v="today";
   if(v!=="props"&&S.prop)S.prop.open=false;
   document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));
-  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v||((v==="game"||v==="nextweek")&&a.dataset.v==="games")));
+  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v||((v==="game"||v==="nextweek")&&a.dataset.v==="games")||(v==="nflteam"&&a.dataset.v==="standings")));
   banner();if(typeof updateBetsBadge!=="undefined")updateBetsBadge();
-  ({games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
+  ({nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",route);
