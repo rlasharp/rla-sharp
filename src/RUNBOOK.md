@@ -330,3 +330,10 @@ NFL (built by tools/nflgen.py from nflverse → nfl_extra.js; run on both NFL sc
   Polymarket winner prices per event (`events[].pm`), shown as a second opinion under the odds — never as a bet line.
 - **⚡ NHL power-play time:** tools/nhlpp.py (after nhlfetch, cache src/data/nhl_pp.json, ESPN box scores PPTOI)
   appends `var NHL_PP` to nhl_data.js → PP time chart + "top unit" note. No free pre-game source for linemates.
+- **NHL extras (Nov 9):** nhlfetch.py PBP_V 4 adds per game `ppp` (PP goals / PP assists / SH points per player from
+  situationCode), `x4` (empty-net goals, penalties taken / drawn per team), `fom` (faceoff winner|loser counts) →
+  TEAM[t].pen / eng / a2 (W-L-OTL leading / tied / trailing after 2), P[nm].ppp, var NHL_FOM. Client (xana.js):
+  expected goals from shot zones × league goal rate per zone (NHL_LZ), shooting % vs last season, PP vs even-strength
+  points + tonight's opponent penalties, faceoff matchups vs tonight's centres, projected saves (opp shots for × own
+  shots against / league, × blended save %), and the "🧮 Game flow" card on the NHL Trends tab. Scoring first was
+  already on the Matchup tab ("First goal").

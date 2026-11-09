@@ -383,7 +383,7 @@ function nhlGame(el,id){
   const g=nhGame(id);if(!g){el.innerHTML=`<h1>Game not found</h1><p><a href="#nhl">← NHL games</a></p>`;return}
   const tab=NH.tab||"matchup",nInj=nhInjList(g.a).length+nhInjList(g.h).length,nP=nhPropRows().filter(r=>[g.a,g.h].includes(nhWho(r[0]).tm)).length;
   const T=[["matchup","📊 Matchup"],["trends","📈 Trends"],["goalies","🥅 Goalies"],["injuries",`🚑 Injuries${nInj?` <small>${nInj}</small>`:""}`],["props",`🎯 Props${nP?` <small>${nP}</small>`:""}`]];
-  const body={matchup:()=>nhMatchup(g)+(typeof xaLuckCard!=="undefined"?xaLuckCard(g)+xaKeyOutCard("nhl",g.a,g.h)+xaDefTrendCard("nhl",g.a,g.h):""),trends:()=>nhTrends(g),goalies:()=>nhGoalieTab(g),injuries:()=>nhInjCard(g),props:()=>`<div id="nhGP">${nhGameProps(g)}</div>`}[tab]||(()=>nhMatchup(g));
+  const body={matchup:()=>nhMatchup(g)+(typeof xaLuckCard!=="undefined"?xaLuckCard(g)+xaKeyOutCard("nhl",g.a,g.h)+xaDefTrendCard("nhl",g.a,g.h):""),trends:()=>nhTrends(g)+(typeof xaFlowCard!=="undefined"?xaFlowCard(g):""),goalies:()=>nhGoalieTab(g),injuries:()=>nhInjCard(g),props:()=>`<div id="nhGP">${nhGameProps(g)}</div>`}[tab]||(()=>nhMatchup(g));
   el.innerHTML=`<p class="small"><a href="#${g.d===NHL_DATE?"nhl":g.d===NHL_TOM?"nhl-tomorrow":"nhl-tomorrow-"+Math.round((Date.parse(g.d)-Date.parse(NHL_DATE))/864e5)}">← NHL games</a></p>
    ${nhHero(g)}${typeof xaGoalieNote!=="undefined"?xaGoalieNote(g)+xaPmLine("nhl",g.a,g.h):""}${nhQuick(g)}
    <div class="gtabs nhtabs" style="margin-top:12px">${T.map(([k,l])=>`<a href="#" data-nhtab="${k}" class="${k===tab?"on":""}">${l}</a>`).join("")}</div>

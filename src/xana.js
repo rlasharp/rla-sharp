@@ -96,8 +96,11 @@ function xaPanelBody(sp,nm,k,line,side){const over=xaOver(side),word=over?"Over"
       <table class="bxt xat"><thead><tr><th>His team…</th><th>${word} ${line}</th><th>Avg</th></tr></thead><tbody>${cell(xaGrp(Wb,line,over),`won by ${X}+ ${u}`,b&&b.big&&fav)}${cell(xaGrp(Cl,line,over),`close (≤${XA_CLOSE[sp]})`,b&&!b.some)}${cell(xaGrp(Lb,line,over),`lost by ${X}+ ${u}`,b&&b.big&&!fav)}</tbody></table>`)}
   /* teammates */
   const WO=xaWithout(sp,nm,k,line,side);if(WO.length)rows.push(`<h4>👥 With / without teammates who are out now</h4><table class="bxt xat"><thead><tr><th>Teammate</th><th>With him</th><th>Without</th></tr></thead><tbody>${WO.map(o=>`<tr class="xame"><td>${xaEsc(o.m)}</td><td>${o.w.h}/${o.w.n} · ${o.w.av.toFixed(1)}</td><td><b>${o.wo.h}/${o.wo.n} · ${o.wo.av.toFixed(1)}</b></td></tr>`).join("")}</tbody></table><div class="small">${word} ${line} hits / games · average.</div>`);
-  /* power play */
-  if(sp==="nhl"){const s=xaPPSay(nm);if(s)rows.push(`<h4>⚡ Power play</h4><div class="small">${s}</div>`)}
+  /* power play + NHL extras */
+  if(sp==="nhl"){const s=[xaPPSay(nm),["hpts","hast","hgoals","hanyG","hppp"].includes(k)?xaPPSplitSay(nm):""].filter(Boolean).join(" ");if(s)rows.push(`<h4>⚡ Power play</h4><div class="small">${s}</div>`);
+    if(["hgoals","hanyG","hpts","hsog"].includes(k)){const f=xaFinishSay(nm);if(f)rows.push(`<h4>🎯 Finishing (expected goals)</h4><div class="small">${f}</div>`)}
+    if(k==="hfow"){const f=xaFOSay(nm);if(f)rows.push(`<h4>🔁 Faceoff matchups</h4><div class="small">${f}</div>`)}
+    if(k==="hsaves"){const f=xaSavesSay(nm,line);if(f)rows.push(`<h4>🧤 Projected saves</h4><div class="small">${f}</div>`)}}
   /* minutes */
   const t=xaMinTrend(sp,nm);if(t)rows.push(`<h4>⏱️ ${sp==="nba"?"Minutes":"Ice time"}</h4><div class="small">${t.n} straight games ${t.dir==="up"?"above":"below"} his season average (${t.avg.toFixed(1)} min): ${t.last.map(v=>v.toFixed(1)).join(", ")}. Lines often lag a role change.</div>`);
   rows.push(`<h4>📉 Closing line vs result</h4><div class="xahw">${XA.hist?xaHistHtml(sp,nm,k,side):"Loading…"}</div>`);
@@ -144,7 +147,7 @@ function xaRefCard(g){if(typeof NBA_REFS==="undefined"||!NBA_REFS)return "";cons
 /* ---------- 🧤 NHL saves & hits when books haven't posted lines yet ---------- */
 function xaNhlNoLine(k){const L=[];
   for(const g of NHL_SLATE.filter(g=>!nhStarted(g)))for(const t of [g.a,g.h]){const opp=g.a===t?g.h:g.a;
-    if(k==="hsaves"){const p=typeof nhProbable!=="undefined"?nhProbable(t):null;if(!p)continue;const G=xaGames("nhl",p.nm,"hsaves");if(G.length<3)continue;L.push({nm:p.nm,t,opp,G,ctx:`${opp} average ${(NHL_TEAM[opp]||{}).sf||"–"} shots (${(NHL_TEAM[opp]||{}).sfR||"–"} of 32)`})}
+    if(k==="hsaves"){const p=typeof nhProbable!=="undefined"?nhProbable(t):null;if(!p)continue;const G=xaGames("nhl",p.nm,"hsaves");if(G.length<3)continue;const PJ=xaSavesProj(p.nm);L.push({nm:p.nm,t,opp,G,ctx:PJ?`projected ${PJ.saves.toFixed(1)} saves on ${PJ.shots.toFixed(1)} shots`:`${opp} average ${(NHL_TEAM[opp]||{}).sf||"–"} shots`})}
     else for(const [n,p] of Object.entries(NHL_P)){if(p.tm!==t)continue;const G=xaGames("nhl",n,k);if(G.length<5)continue;const av=G.reduce((s,x)=>s+x.v,0)/G.length;if(av<(k==="hhit"?2:1))continue;L.push({nm:n,t,opp,G})}}
   const out=L.map(x=>{const v=x.G.map(z=>z.v).sort((a,b)=>a-b),med=v[Math.floor(v.length/2)],ln=Math.max(.5,Math.round(med)-.5),l10=x.G.slice(-10);
     return {...x,ln,av:x.G.reduce((s,z)=>s+z.v,0)/x.G.length,l10:[l10.filter(z=>z.v>ln).length,l10.length]}}).sort((a,b)=>b.av-a.av).slice(0,20);
@@ -260,7 +263,8 @@ function xaGoalieVs(x,g){if(!g)return "";const t=x.tm||(NHL_G[x.nm]||{}).tm,opp=
   const sv=a=>{const sa=a.reduce((s,z)=>s+z[3],0),v=a.reduce((s,z)=>s+z[4],0);return sa?(v/sa).toFixed(3).slice(1):"–"};
   const cur=st.filter(z=>z[9]!==1),rest=[];for(let i=1;i<cur.length;i++){const d=(Date.parse(cur[i][0])-Date.parse(cur[i-1][0]))/864e5;rest.push({d,z:cur[i]})}
   const r1=rest.filter(o=>o.d>=3).map(o=>o.z),r0=rest.filter(o=>o.d===2).map(o=>o.z);
-  return `<div class="small" style="margin-top:6px">vs ${xaEsc(opp)}: <b>${vs.length?sv(vs):"–"}</b> save % in ${vs.length} start${vs.length===1?"":"s"}${vs.some(z=>z[9]===1)?" (incl. last season)":""} · on 2+ days' rest <b>${r1.length?sv(r1):"–"}</b> (${r1.length}) · 1 day's rest <b>${r0.length?sv(r0):"–"}</b> (${r0.length})</div>`}
+  const PJ=xaSavesProj(x.nm);
+  return `${PJ?`<div class="small" style="margin-top:6px">🧤 Projected tonight: <b>${PJ.saves.toFixed(1)} saves</b> on ${PJ.shots.toFixed(1)} shots.</div>`:""}<div class="small" style="margin-top:6px">vs ${xaEsc(opp)}: <b>${vs.length?sv(vs):"–"}</b> save % in ${vs.length} start${vs.length===1?"":"s"}${vs.some(z=>z[9]===1)?" (incl. last season)":""} · on 2+ days' rest <b>${r1.length?sv(r1):"–"}</b> (${r1.length}) · 1 day's rest <b>${r0.length?sv(r0):"–"}</b> (${r0.length})</div>`}
 
 /* ---------- 🔮 prediction markets (Kalshi / Polymarket via the odds feed) ---------- */
 function xaPmProb(p){if(p==null)return null;p=+p;if(p>0&&p<1)return p;if(Math.abs(p)>=100)return p<0?-p/(-p+100):100/(p+100);if(p>1&&p<50)return 1/p;return null}
@@ -281,3 +285,39 @@ function xaPPRank(nm){const w=nhWho(nm);if(!w||typeof NHL_PP==="undefined")retur
 function xaPPSay(nm){const r=xaPP(nm);if(!r||r.length<3)return "";const av=a=>a.reduce((s,x)=>s+x[1],0)/a.length/60,l5=r.slice(-5),rk=xaPPRank(nm);
   const unit=rk==null?"":rk<=5?" — <b>on the top power-play unit</b>":rk<=10?" — on the second unit":" — little power-play time";
   return `Power-play time last ${l5.length}: <b>${av(l5).toFixed(1)} min/game</b> (last ${r.length}: ${av(r).toFixed(1)})${rk?` · ${rk}${rk===1?"st":rk===2?"nd":rk===3?"rd":"th"} on his team over the last 3 games`:""}${unit}.`}
+
+/* ---------- 🏒 NHL extras: expected goals, shooting %, PP vs even-strength points, faceoff matchups, projected saves, game flow ---------- */
+function xaXG(nm){const w=NHL_P[nm];if(!w||!w.sz||typeof NHL_LZ==="undefined"||!NHL_LZ.length)return null;
+  let att=0,xg=0,g=0,sog=0;w.sz.forEach((z,i)=>{const L=NHL_LZ[i];const r=L&&L[0]?L[2]/L[0]:0;att+=z[0];xg+=z[0]*r;g+=z[2];sog+=z[1]});return att>=10?{att,xg,g,sog}:null}
+function xaShPct(nm){const w=NHL_P[nm];if(!w)return null;const cur=w.g.filter(x=>x[16]!==1),prev=w.g.filter(x=>x[16]===1);
+  const f=a=>{const s=a.reduce((t,x)=>t+(x[6]||0),0),g=a.reduce((t,x)=>t+(x[3]||0),0);return s?{g,s,p:g/s*100}:null};return {cur:f(cur),prev:f(prev)}}
+function xaFinishSay(nm){const X=xaXG(nm),S=xaShPct(nm);if(!X&&!S)return "";const out=[];
+  if(X){const d=X.g-X.xg;out.push(`From where he shoots, an average NHL shooter would have about <b>${X.xg.toFixed(1)}</b> goals on his ${X.att} unblocked attempts — he has <b>${X.g}</b>${Math.abs(d)>=2?` (${d>0?"running hot — likely to cool off":"running cold — goals likely to come"})`:" (about what you'd expect)"}.`)}
+  if(S&&S.cur&&S.cur.s>=15){out.push(`Shooting ${S.cur.p.toFixed(1)}% this season${S.prev&&S.prev.s>=20?` vs ${S.prev.p.toFixed(1)}% in his last-season games`:""} (league average ≈ ${NHL_LZ&&NHL_LZ.length?(NHL_LZ.reduce((a,z)=>a+z[2],0)/Math.max(1,NHL_LZ.reduce((a,z)=>a+z[1],0))*100).toFixed(1):"10"}%).`)}
+  return out.join(" ")}
+function xaPPSplitSay(nm){const w=NHL_P[nm];if(!w||!w.ppp||!w.s)return "";const [pg,pa,sh,n]=w.ppp,pts=w.s[3],pp=pg+pa;if(!pts)return "";
+  const g=nhGameOf(w.tm),opp=g?(g.a===w.tm?g.h:g.a):null,O=opp&&NHL_TEAM[opp];
+  return `<b>${pp}</b> of his ${pts} points on the power play (${Math.round(pp/pts*100)}%)${sh?`, ${sh} short-handed`:""}, ${pts-pp-sh} at even strength.${O&&O.pen?` Tonight ${xaEsc(opp)} take <b>${O.pen[0].toFixed(1)}</b> penalties a game${O.pkR?` and rank ${O.pkR}${O.pkR===1?"st":O.pkR===2?"nd":O.pkR===3?"rd":"th"} on the penalty kill`:""}${pp/pts>=.4&&O.pen[0]<=2.8?" — fewer power plays likely, a knock on his points":pp/pts>=.4&&O.pen[0]>=3.6?" — lots of power plays likely, good for his points":""}.`:""}`}
+function xaFOSay(nm){const w=NHL_P[nm];if(!w||!w.s||!(w.s[9]+w.s[10]))return "";const g=nhGameOf(w.tm),opp=g?(g.a===w.tm?g.h:g.a):null;if(!opp)return "";
+  const M=(typeof NHL_FOM!=="undefined"&&NHL_FOM[nm])||{};
+  const cs=Object.entries(NHL_P).filter(([n,p])=>p.tm===opp&&p.s&&p.s[0]&&(p.s[9]+p.s[10])/p.s[0]>=5).sort((a,b)=>(b[1].s[9]+b[1].s[10])-(a[1].s[9]+a[1].s[10])).slice(0,4);
+  if(!cs.length)return "";const pct=(w_,l_)=>w_+l_?Math.round(w_/(w_+l_)*100)+"%":"–";
+  return `His faceoffs: ${pct(w.s[9],w.s[10])} won, ${((w.s[9]+w.s[10])/w.s[0]).toFixed(1)} a game. ${xaEsc(opp)} centres: ${cs.map(([n,p])=>{const r=M[n];return `${xaEsc(n)} ${pct(p.s[9],p.s[10])}${r?` (he's <b>${r[0]}-${r[1]}</b> vs him)`:""}`}).join(" · ")}.`}
+function xaSavesProj(nm){const G=NHL_G[nm];if(!G)return null;const g=nhGameOf(G.tm);if(!g)return null;const opp=g.a===G.tm?g.h:g.a,O=NHL_TEAM[opp],T=NHL_TEAM[G.tm];if(!O||!T||!O.sf||!T.sa)return null;
+  const lg=Object.values(NHL_TEAM).reduce((a,t)=>a+(t.sf||0),0)/Math.max(1,Object.values(NHL_TEAM).filter(t=>t.sf).length);
+  const shots=O.sf*T.sa/lg,sv=G.svp!=null&&G.gs>=3?(G.svp/100*Math.min(1,G.gs/20)+.9*(1-Math.min(1,G.gs/20))):.9;
+  return {shots,saves:shots*sv,sv,opp,osf:O.sf,tsa:T.sa,lg}}
+function xaSavesSay(nm,line){const P=xaSavesProj(nm);if(!P)return "";
+  return `Projected about <b>${P.shots.toFixed(1)} shots</b> faced (${xaEsc(P.opp)} average ${P.osf} shots, his team allows ${P.tsa}, league ${P.lg.toFixed(1)}) × ${(P.sv*100).toFixed(1)}% save rate ≈ <b>${P.saves.toFixed(1)} saves</b>${line!=null?` vs the line of ${line} (${P.saves>line+1?"leans over":P.saves<line-1?"leans under":"close to the line"})`:""}. Blowouts and empty nets move this a lot.`}
+function xaFlowCard(g){const R=[g.a,g.h].map(t=>[t,NHL_TEAM[t]]).filter(x=>x[1]);if(!R.length)return "";const rc=a=>a?`${a[0]}-${a[1]}-${a[2]}`:"–",f=v=>v==null?"–":(+v).toFixed(2);
+  const A=NHL_TEAM[g.a],H=NHL_TEAM[g.h];const ppA=A&&H&&A.pen&&H.pen?(A.pen[1]+H.pen[0])/2:null,ppH=A&&H&&A.pen&&H.pen?(H.pen[1]+A.pen[0])/2:null;
+  return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🧮 Game flow</h2><div class="small" style="margin-bottom:8px">Penalties, empty-net goals and how each team plays the 3rd period this season.</div>
+   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th>${R.map(([t])=>`<th>${xaEsc(t)}</th>`).join("")}</tr></thead><tbody>
+   <tr><td>Penalties taken / drawn per game</td>${R.map(([,T])=>`<td>${T.pen?`${T.pen[0].toFixed(1)} / ${T.pen[1].toFixed(1)}`:"–"}</td>`).join("")}</tr>
+   <tr><td>Power play / penalty kill</td>${R.map(([,T])=>`<td>${T.pp!=null?T.pp+"%":"–"} / ${T.pk!=null?T.pk+"%":"–"}</td>`).join("")}</tr>
+   <tr><td>Empty-net goals for / against per game</td>${R.map(([,T])=>`<td>${T.eng?`${f(T.eng[0])} / ${f(T.eng[1])}`:"–"}<div class="small">${T.eng?`ENG in ${T.eng[4]}% of games`:""}</div></td>`).join("")}</tr>
+   <tr><td>3rd-period goals for / against</td>${R.map(([,T])=>`<td>${T.per?`${f(T.per[2][0])} / ${f(T.per[2][1])}`:"–"}</td>`).join("")}</tr>
+   <tr><td>Leading after 2 (W-L-OTL)</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.lead)}</td>`).join("")}</tr>
+   <tr><td>Tied after 2</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.tied)}</td>`).join("")}</tr>
+   <tr><td>Trailing after 2</td>${R.map(([,T])=>`<td>${rc(T.a2&&T.a2.trail)}</td>`).join("")}</tr>
+   </tbody></table></div>${ppA!=null?`<div class="small" style="margin-top:8px">Expected power plays tonight: <b>${xaEsc(g.a)} ${ppA.toFixed(1)}</b> · <b>${xaEsc(g.h)} ${ppH.toFixed(1)}</b> (each side's penalties drawn blended with the other's penalties taken). More whistles = more power-play points and usually more goals.</div>`:""}</div>`}

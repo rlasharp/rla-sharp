@@ -98,7 +98,7 @@ for gid, g in sorted(SCHED.items()):
     C["games"][gid] = rec; new += 1
 # play-by-play pass (box scores lack these): faceoffs won/lost, shot attempts (SAT = goals + shots on goal + missed + blocked),
 # goals by period, who scored first, and high-danger attempts (unblocked attempts from within 20 ft of the net)
-PBP_V = 3
+PBP_V = 4   # 4: + power-play / short-handed points, empty-net goals, penalties taken, faceoff matchups
 nfo = 0
 for gid, rec in sorted(C["games"].items()):
     if rec.get("xv") == PBP_V: continue
@@ -113,13 +113,31 @@ for gid, rec in sorted(C["games"].items()):
     fo, sat, sz = {}, {}, {}   # sz: player -> 4 zones x [unblocked attempts, shots on goal incl. goals, goals]
     tm = {rec["a"]: [0, 0, 0, 0, 0, 0], rec["h"]: [0, 0, 0, 0, 0, 0]}   # [SAT, HD attempts, goals P1, P2, P3, scored first]
     first = None
+    ppp, x4, fom = {}, {rec["a"]: [0, 0, 0], rec["h"]: [0, 0, 0]}, {}   # ppp: pid -> [PP goals, PP assists, SH points]; x4: team -> [empty-net goals, penalties taken, penalties drawn]
     for pl in pbp.get("plays") or []:
         k = pl.get("typeDescKey"); dd = pl.get("details") or {}
         if k == "faceoff":
             w, l_ = dd.get("winningPlayerId"), dd.get("losingPlayerId")
             if w: fo.setdefault(str(w), [0, 0])[0] += 1
             if l_: fo.setdefault(str(l_), [0, 0])[1] += 1
+            if w and l_: fom[f"{w}|{l_}"] = fom.get(f"{w}|{l_}", 0) + 1
             continue
+        if k == "penalty":
+            pt = tid.get(str(dd.get("eventOwnerTeamId")))
+            if pt in x4 and str(dd.get("typeCode", "")).upper() in ("MIN", "MAJ", "BEN"):
+                x4[pt][1] += 1; x4[rec["h"] if pt == rec["a"] else rec["a"]][2] += 1
+            continue
+        if k == "goal":
+            sc = str(pl.get("situationCode") or ""); gt = tid.get(str(dd.get("eventOwnerTeamId")))
+            if len(sc) == 4 and gt in x4:
+                home = gt == rec["h"]; my_g, my_s = (sc[3], int(sc[2])) if home else (sc[0], int(sc[1])); op_g, op_s = (sc[0], int(sc[1])) if home else (sc[3], int(sc[2]))
+                if op_g == "0": x4[gt][0] += 1
+                pp_, sh_ = my_g == "1" and op_g == "1" and my_s > op_s, my_s < op_s
+                for j, who in enumerate((dd.get("scoringPlayerId"), dd.get("assist1PlayerId"), dd.get("assist2PlayerId"))):
+                    if not who: continue
+                    a = ppp.setdefault(str(who), [0, 0, 0])
+                    if pp_: a[0 if j == 0 else 1] += 1
+                    elif sh_: a[2] += 1
         if k not in ("goal", "shot-on-goal", "missed-shot", "blocked-shot"): continue
         shooter = dd.get("scoringPlayerId") if k == "goal" else dd.get("shootingPlayerId")
         t = team_of.get(str(shooter)) if shooter else None
@@ -141,7 +159,7 @@ for gid, rec in sorted(C["games"].items()):
             per = ((pl.get("periodDescriptor") or {}).get("number")) or 0
             if 1 <= per <= 3: tm[t][1 + per] += 1
             if first is None: first = t; tm[t][5] = 1
-    rec["fo"] = fo; rec["sat"] = sat; rec["tm"] = tm; rec["sz"] = sz; rec["xv"] = PBP_V; nfo += 1
+    rec["fo"] = fo; rec["sat"] = sat; rec["tm"] = tm; rec["sz"] = sz; rec["ppp"] = ppp; rec["x4"] = x4; rec["fom"] = fom; rec["xv"] = PBP_V; nfo += 1
 log(f"NHL: {new} new box scores, {nfo} play-by-play logs, {len(C['games'])} cached, {NREQ[0]} requests so far")
 # ---------- last season (2025-26) box scores, cached once in src/data/nhl_prev.json: longer player histories + H2H ----------
 PREV_F = os.path.join(ROOT, "src", "data", "nhl_prev.json")
@@ -389,6 +407,11 @@ for _, g in games:
         res = 0 if gf > ga else (2 if g["ot"] else 1)            # 0 win, 1 reg loss, 2 OT/SO loss
         if me[5]: Z["sf"] += 1; Z["first"][res] += 1
         elif op[5]: Z["firstA"][res] += 1
+        a2 = (me[2] + me[3]) - (op[2] + op[3]); Z.setdefault("a2", {"lead": [0, 0, 0], "tied": [0, 0, 0], "trail": [0, 0, 0]})["lead" if a2 > 0 else "tied" if a2 == 0 else "trail"][res] += 1
+        x4 = g.get("x4") or {}
+        if t in x4 and o in x4:
+            Z.setdefault("x4n", 0); Z["x4n"] += 1; X4 = Z.setdefault("x4", [0, 0, 0, 0, 0])   # ENG for, ENG against, pen taken, pen drawn, games with an ENG
+            X4[0] += x4[t][0]; X4[1] += x4[o][0]; X4[2] += x4[t][1]; X4[3] += x4[t][2]; X4[4] += 1 if x4[t][0] + x4[o][0] else 0
 for t, Z in X.items():
     if t not in TEAM or not Z["n"]: continue
     n = Z["n"]; fa = TEAM[t].setdefault("fa", {})
@@ -398,6 +421,10 @@ for t, Z in X.items():
     fa["hd"] = [round(Z["hd"][0] / n, 1), round(Z["hd"][1] / n, 1)]
     TEAM[t]["per"] = [[round(Z["p"][i][0] / n, 2), round(Z["p"][i][1] / n, 2)] for i in range(3)]   # goals for/against per game, P1..P3
     TEAM[t]["p1o"] = Z["p1o"]; TEAM[t]["sfp"] = round(Z["sf"] / n * 100); TEAM[t]["recF"] = Z["first"]; TEAM[t]["recFA"] = Z["firstA"]; TEAM[t]["pbpn"] = n
+    if Z.get("a2"): TEAM[t]["a2"] = Z["a2"]
+    if Z.get("x4n"):
+        m_ = Z["x4n"]; X4 = Z["x4"]; TEAM[t]["eng"] = [round(X4[0] / m_, 2), round(X4[1] / m_, 2), X4[0], X4[1], round(X4[4] / m_ * 100)]
+        TEAM[t]["pen"] = [round(X4[2] / m_, 2), round(X4[3] / m_, 2)]
 # ---- close games: OT/SO rate, one-goal games, regulation record ----
 for t in TEAM:
     R_ = [r for _, r in games if t in (r["a"], r["h"])]
@@ -491,6 +518,12 @@ for pid, L in SK.items():
     P[nm] = {"id": int(pid), "tm": tm, "pos": C["pos"].get(pid) or "", "gp": n,
              "s": [n, tot[0], tot[1], tot[2], tot[3], tot[4], tot[5], tot[8], round(tot[7] / n / 60, 1), fw, fl],  # gp,g,a,pts,sog,blk,hits,ppg,toi min,fow,fol
              "g": (SKP.get(pid, []) + LL)[-30:], "ppt": PPT.get(pid), "sz": zs if any(z[0] for z in zs) else None}
+    pp3 = [0, 0, 0]; npp = 0
+    for _, g in games:
+        if "ppp" not in g: continue
+        if any(r[0] == pid for r in g["p"]): npp += 1
+        for j, v in enumerate((g["ppp"].get(pid)) or [0, 0, 0]): pp3[j] += v
+    if npp: P[nm]["ppp"] = pp3 + [npp]   # [PP goals, PP assists, SH points, games covered]
 # PP unit: rank by PP time per game within each team (top 5 = PP1, next 5 = PP2)
 by_t = {}
 for nm, v in P.items():
@@ -743,4 +776,15 @@ print(f"var NHL_MODEL={J(MODEL)}; /* our estimate graded vs finals: win pick, to
 print(f"var NHL_PRES={J(PRES)},NHL_PRES_D={J(PRES_D)}; /* props of {PRES_D} graded at the closing line: [name, team, mk, line, over, under, book, result value, over/under/push] */")
 print(f"var NHL_RECENT={J(RECENT)};")
 print(f"var NHL_PROPS={J(PROPS)}; /* [name, market, line, over, under, book] */")
+# faceoff matchups for players on today's / tomorrow's teams: name -> {opponent name: [won, lost]} (3+ draws)
+FOM = {}
+pid_nm = {str(v["id"]): k for k, v in P.items()}
+for _, g in games:
+    for key, n_ in (g.get("fom") or {}).items():
+        w, l_ = key.split("|")
+        for me, op, i in ((w, l_, 0), (l_, w, 1)):
+            if me in pid_nm:
+                on = C["names"].get(op) or op; FOM.setdefault(pid_nm[me], {}).setdefault(on, [0, 0])[i] += n_
+FOM = {k: {o: v for o, v in d.items() if v[0] + v[1] >= 3} for k, d in FOM.items()}
+print(f"var NHL_FOM={J({k: v for k, v in FOM.items() if v})}; /* faceoff results vs each opposing player this season */")
 log(f"NHL data: {len(SLATE)} games today, {len(NEXT)} tomorrow, {len(TEAM)} teams, {len(P)} skaters, {len(G)} goalies, {len(PROPS)} props, {len(RES)} finals, {NREQ[0]} requests")
