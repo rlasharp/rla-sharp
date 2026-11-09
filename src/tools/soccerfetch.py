@@ -140,7 +140,7 @@ for comp, *_ in COMPS:
     def disp(vals):
         if len(vals) < 15: return None
         mu = sum(vals) / len(vals); var = sum((x - mu) ** 2 for x in vals) / (len(vals) - 1); return round(var / mu, 3) if mu else None
-    LG[comp] = {"n": len(M), "hg": hg, "ag": ag, "conv": ((hg or 0) + (ag or 0)) / sot if sot else None, "hc": hc, "ac": ac, "hk": hk, "ak": ak,
+    LG[comp] = {"m": len(M), "hg": hg, "ag": ag, "conv": ((hg or 0) + (ag or 0)) / sot if sot else None, "hc": hc, "ac": ac, "hk": hk, "ak": ak,
                 "cdisp": disp(tot(lambda e: None if tstat(e, e["h"], "wonCorners") is None else tstat(e, e["h"], "wonCorners") + (tstat(e, e["a"], "wonCorners") or 0))),
                 "kdisp": disp(tot(lambda e: None if cards(e, e["h"]) is None else cards(e, e["h"]) + (cards(e, e["a"]) or 0))),
                 "o25": sum(1 for e in M if e["hs"] + e["as"] > 2.5) / len(M), "btts": sum(1 for e in M if e["hs"] and e["as"]) / len(M),
@@ -189,7 +189,7 @@ def nb_cdf_over(line, mu, disp):
 def shrink(v, n, k=5): return (v * n + k) / (n + k)
 def project(f):
     c = f["c"]; L = LG.get(c); A, B = TN.get((c, f["h"])), TN.get((c, f["a"]))
-    if not L or not A or not B or A["n"] < 3 or B["n"] < 3 or L["n"] < 12: return None
+    if not L or not A or not B or A["n"] < 3 or B["n"] < 3 or L["m"] < 12: return None
     lgpg = (L["hg"] + L["ag"]) / 2; conv = L["conv"] or 0.3
     def att(T): return shrink((0.5 * T["gf"] + 0.5 * (T["sot"] * conv if T["ns"] else T["gf"])) / T["n"] / lgpg, T["n"])
     def dfn(T): return shrink((0.5 * T["ga"] + 0.5 * (T["sota"] * conv if T["ns"] else T["ga"])) / T["n"] / lgpg, T["n"])
@@ -267,8 +267,8 @@ PL = {}
 for e in DONE:
     for row in BOX[e["id"]]["p"]:
         tid, aid, nm, pos, stt, mins = row[:6]; v = row[6:]
-        P = PL.setdefault(aid, {"n": nm, "t": tid, "pos": pos, "g": []})
-        P["t"] = tid; P["pos"] = pos or P["pos"]
+        P = PL.setdefault(aid, {"n": nm, "t": tid, "pos": "" if pos == "SUB" else pos, "g": []})
+        P["t"] = tid; P["pos"] = pos if pos and pos != "SUB" else P["pos"]
         P["g"].append([e["id"], stt, mins] + v)
 # missing regulars / red-card bans for each fixture team
 def team_players(tid):
@@ -276,15 +276,17 @@ def team_players(tid):
 for f in FX:
     miss = {}
     for tid in (f["h"], f["a"]):
-        Ls = [e for e in DONE if tid in (e["h"], e["a"])][-6:]
-        if len(Ls) < 3: continue
-        last = Ls[-1]; inlast = {r[1] for r in BOX[last["id"]]["p"] if r[0] == tid}
+        Ls = [e for e in DONE if tid in (e["h"], e["a"])][-7:]
+        if len(Ls) < 4: continue
+        last = Ls[-1]; last2 = Ls[-2:]; prior = Ls[:-2]
+        in2 = {r[1] for e in last2 for r in BOX[e["id"]]["p"] if r[0] == tid}
+        pids = {e["id"] for e in prior}
         out = []
         for aid, P in team_players(tid).items():
-            starts = sum(1 for g_ in P["g"] if g_[0] in {e["id"] for e in Ls[:-1]} and g_[1] == 1)
+            starts = sum(1 for g_ in P["g"] if g_[0] in pids and g_[1] == 1)
             lg_ = next((g_ for g_ in P["g"] if g_[0] == last["id"]), None)
             if lg_ and lg_[10] > 0: out.append([P["n"], "red", "Sent off last match — likely suspended"])
-            elif starts >= 3 and aid not in inlast: out.append([P["n"], "miss", f"Started {starts} of the {len(Ls) - 1} matches before, not in the squad last match"])
+            elif starts >= max(3, len(prior) - 1) and aid not in in2: out.append([P["n"], "miss", f"Started {starts} of {len(prior)} before, missed the last 2 matches"])
         if out: miss[tid] = out
     if miss: f["miss"] = miss
 for f in FX: f["proj"] = project(f)

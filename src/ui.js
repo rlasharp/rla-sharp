@@ -675,10 +675,16 @@ function viewWeeks(){
 /* ---------- Router ---------- */
 function route(){
   const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
-  const SHARED=["calc","record","guide","today","bets","favs"],isNhl=h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl"),isNba=!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
-  if(h.startsWith("nba"))LS.set("sport","nba");else if(h.startsWith("nhl"))LS.set("sport","nhl");else if(!SHARED.includes(h))LS.set("sport","nfl");
-  document.getElementById("nav").hidden=isNba||isNhl;document.getElementById("nbaNav").hidden=!isNba;const nhN=document.getElementById("nhlNav");if(nhN)nhN.hidden=!isNhl;
-  document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===(isNhl?"nhl":isNba?"nba":"nfl")));
+  const SHARED=["calc","record","guide","today","bets","favs"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
+  if(h.startsWith("nba"))LS.set("sport","nba");else if(h.startsWith("nhl"))LS.set("sport","nhl");else if(h.startsWith("soccer"))LS.set("sport","soc");else if(!SHARED.includes(h))LS.set("sport","nfl");
+  document.getElementById("nav").hidden=isNba||isNhl||isSoc;document.getElementById("nbaNav").hidden=!isNba;const nhN=document.getElementById("nhlNav");if(nhN)nhN.hidden=!isNhl;const scN=document.getElementById("socNav");if(scN)scN.hidden=!isSoc;
+  document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===(isSoc?"soc":isNhl?"nhl":isNba?"nba":"nfl")));
+  if(h.startsWith("soccer")&&typeof soccerRoute!=="undefined"){
+    document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-soccer"));
+    const nv=h.startsWith("soccer-props")?"soccer-props":h.startsWith("soccer-table")?"soccer-table":"soccer";
+    document.querySelectorAll("#socNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
+    document.getElementById("banner").innerHTML="";soccerRoute(h);window.scrollTo(0,0);return;
+  }
   if(h.startsWith("nhl")&&typeof nhlRoute!=="undefined"){
     document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-nhl"));
     const nv=h.startsWith("nhl-props")?"nhl-props":h.startsWith("nhl-standings")?"nhl-standings":h.startsWith("nhl-injuries")?"nhl-injuries":h.startsWith("nhl-scores")?"nhl-scores":"nhl";

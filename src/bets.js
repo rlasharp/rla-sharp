@@ -7,6 +7,7 @@ function betsLoad(){return LS.get("bets",[])}
 function betsSave(a){LS.set("bets",a)}
 function betStakeDefault(){return LS.get("betStake",10)}
 function betTitle(b){
+  if(b.k==="soc")return b.title||"Soccer bet";
   if(b.k==="nbaprop"){const m=typeof NBA_MK!=="undefined"&&NBA_MK[b.market];return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1]:b.market}`}
   if(b.k==="nhlprop"){const m=typeof NH_MK!=="undefined"&&NH_MK[b.market];if(b.market==="hanyG")return `${b.player} anytime goal`;return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1].toLowerCase():b.market}`}
   if(b.k==="parlay")return `${b.legs.length}-leg parlay`;
@@ -24,6 +25,7 @@ const betDec=a=>a>0?1+a/100:1+100/(-a);
 /* our own data first; if it has no result yet, a game ESPN already marked final is graded live (finals.js) */
 function gradeBet(b){const g=gradeBetCore(b);if(g.r!=="pending"||b.k==="parlay"||typeof finBet==="undefined")return g;return finBet(b)||g}
 function gradeBetCore(b){
+  if(b.k==="soc")return typeof socGrade!=="undefined"?socGrade(b):{r:"pending"};
   if(b.k==="nhlprop"){if(typeof NH_MK==="undefined")return {r:"pending"};const m=NH_MK[b.market],w=nhWho(b.player);
     const fin=(NHL_RES||[]).some(z=>z[0]===b.date&&(z[1]===b.team||z[3]===b.team));
     const row=w&&w.g.find(x=>x[0]===b.date);if(!row||!m||!m[3])return fin?(w&&!row?{r:"void",why:"Did not play — no action"}:{r:"pending",why:"Result not in our data"}):{r:"pending"};

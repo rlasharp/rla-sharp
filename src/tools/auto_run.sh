@@ -41,6 +41,11 @@ if want nhl; then   # NHL: official NHL API + PropLine feed (box scores cached i
     cp "$WORK/nhl.js" nhl_data.js; log "$(tail -1 "$WORK/nhl.log")"
   else log "NHL data FAILED — kept old: $(tail -3 "$WORK/nhl.log" | tr '\n' ' ')"; fi
 fi
+if want soc; then   # Soccer: ESPN box scores (cached in data/soccer_box.json) + PropLine odds/referees (data/live_odds.json) + Open-Meteo weather
+  if python3 tools/soccerfetch.py "$ROOT" > "$WORK/soc.js" 2> "$WORK/soc.log" && grep -q "^var SOC_OK=1" "$WORK/soc.js"; then
+    cp "$WORK/soc.js" soccer_data.js; log "$(tail -1 "$WORK/soc.log")"
+  else log "Soccer data FAILED — kept old: $(tail -3 "$WORK/soc.log" | tr '\n' ' ')"; fi
+fi
 bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 # tracker: snapshot best props / game numbers / NHL plays before games, grade after (uses the site's own functions)
 if node tools/track.js "$ROOT/src/index.html" > "$WORK/track.log" 2>&1; then log "$(tail -1 "$WORK/track.log")"; bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }

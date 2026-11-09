@@ -4,7 +4,7 @@
    Routes: #soccer (matches) · #soccer-game-<id> · #soccer-props · #soccer-table · #soccer-player-<espn id>
    Focus markets: match result, goals over/under, both teams to score, corners, cards. Player: shots, shots on target,
    goals, goal or assist, fouls committed, fouls won. Real data only — where no US book posts a line we say so. */
-const SC={lg:"all",day:0,tab:"game",pmk:"all",plg:"all",tlg:"epl"};
+const SC={lg:"all",day:"",tab:"game",pmk:"all",plg:"all",tlg:"epl"};
 let SOC_READY=false,SOC_WAIT=[],SOCP_READY=false,SOCP_WAIT=[];
 function socLoad(file,okVar,W,done,cb){if(window[okVar]){done();cb&&cb();return}if(W.fail&&Date.now()-W.fail<60000){cb&&cb();return}if(cb)W.push(cb);if(W.loading)return;W.loading=1;
   const sc=document.createElement("script");sc.src=file+"?v="+(typeof BUILD_AT!=="undefined"&&BUILD_AT?BUILD_AT.replace(/\D/g,""):Math.floor(Date.now()/600000));
@@ -22,7 +22,7 @@ const SOC_MK={sgoal:["Goal","Anytime goal","goals",5],s2g:["2+ G","2+ goals","go
 function socTm(id){const t=typeof SOC_TM!=="undefined"&&SOC_TM[id];return t?t[1]||t[0]:"Team"}
 function socTmFull(id){const t=SOC_TM[id];return t?t[0]:"Team"}
 function socBadge(id,big){const t=SOC_TM[id]||["","","?","#555"],c=t[3]||"#555",k=typeof xInkOn!=="undefined"?xInkOn(c):"#fff";
-  return `<span class="nbbdg${big?" scbig":""}" style="background:${c};color:${k}${k==="#111"?";text-shadow:none":""}">${socE(t[2]||"?")}</span>`}
+  return `<span class="nbbdg${big?" scbig":""}" style="background:${c};color:${k}${k==="#111"?";text-shadow:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)":""}">${socE(t[2]||"?")}</span>`}
 function socLgChip(c){const L=SOC_LG[c]||{};return `<span class="sclg" style="--lc:${L.col||"#555"}">${socE(L.sh||c)}</span>`}
 function socDay(iso){return new Date(iso).toLocaleDateString("en-CA",{timeZone:"America/Toronto"})}
 function socTime(iso){return new Date(iso).toLocaleTimeString("en-US",{timeZone:"America/Toronto",hour:"numeric",minute:"2-digit"})}
@@ -112,16 +112,17 @@ function socCard(f){const O=f.odds||{},P=f.proj,st=socStarted(f),fin=f.state==="
    ${be&&be.e>=.04?`<div class="scedge">💡 Our best angle: <b>${socE(be.t)}</b> ${socO(be.o)} · our ${socPct(be.e+socImp(be.o))} vs ${socPct(socImp(be.o))} needed</div>`:""}
    ${O.ml||P?`<div class="small scpct">Odds = best US book · % = our estimate</div>`:`<div class="small">No odds yet — books usually post 2–3 days before kickoff.</div>`}</a>`}
 function socLgFilter(){const used=[...new Set((SOC_FX||[]).map(f=>f.c))];return `<div class="seg sclgf">${[["all","All"],...Object.entries(SOC_LG).filter(([k])=>used.includes(k)).map(([k,v])=>[k,v.sh])].map(([k,l])=>`<button class="btn${SC.lg===k?" on":""}" data-sclg="${k}">${socE(l)}</button>`).join("")}</div>`}
-function socDayTabs(){const d0=socToday();return `<div class="gtabs">${[0,1,2,3,4,5,6].map(n=>{const d=socAddDays(d0,n),c=(SOC_FX||[]).filter(f=>socDay(f.t)===d&&(SC.lg==="all"||f.c===SC.lg)).length;
-  return `<a href="#" data-scday="${n}" class="${SC.day===n?"on":""}">${n===0?"Today":n===1?"Tomorrow":new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"short"})}<small>${c}</small></a>`}).join("")}</div>`}
-function socMatches(el){const d=socAddDays(socToday(),SC.day),F=socFxOn(d);
-  let next="";if(!F.length){const nx=(SOC_FX||[]).find(f=>socDay(f.t)>d&&(SC.lg==="all"||f.c===SC.lg));if(nx)next=`<p class="small">Next match: <a href="#soccer-game-${nx.id}">${socE(socTm(nx.h))} v ${socE(socTm(nx.a))}</a> · ${socDayS(socDay(nx.t))}</p>`}
+function socDays(){const d0=socToday();return [...new Set((SOC_FX||[]).filter(f=>SC.lg==="all"||f.c===SC.lg).map(f=>socDay(f.t)).filter(d=>d>=d0))].sort().slice(0,7)}
+function socDayTabs(D,cur){const d0=socToday();return `<div class="gtabs scdays">${D.map(d=>{const c=(SOC_FX||[]).filter(f=>socDay(f.t)===d&&(SC.lg==="all"||f.c===SC.lg)).length,n=Math.round((Date.parse(d)-Date.parse(d0))/864e5);
+  return `<a href="#" data-scday="${d}" class="${d===cur?"on":""}">${n===0?"Today":n===1?"Tomorrow":new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"short",day:"numeric"})}<small>${c}</small></a>`}).join("")}</div>`}
+function socMatches(el){const D=socDays();if(!D.includes(SC.day))SC.day=D[0]||socToday();const d=SC.day,F=socFxOn(d);
   const byLg={};F.forEach(f=>(byLg[f.c]=byLg[f.c]||[]).push(f));
-  el.innerHTML=`<h1>⚽ Soccer · ${socE(socDayS(d))}</h1>${socDayTabs()}${socLgFilter()}
+  const gap=D.length&&D[0]>socAddDays(socToday(),1)?`<div class="card small" style="margin:8px 0">No matches in the next couple of days (international break) — the next ones are below.</div>`:"";
+  el.innerHTML=`<h1>⚽ Soccer · ${socE(socDayS(d))}</h1>${socDayTabs(D,d)}${socLgFilter()}${gap}
   <p class="sub">Premier League, La Liga, Serie A, Bundesliga, Ligue 1 and the three European cups. Every match shows the best US odds and <b>our estimate</b> — tap one for corners, cards, referee, weather and player props.</p>
-  ${F.length?Object.entries(byLg).map(([c,L])=>`<h2 class="tsh">${socLgChip(c)} ${socE((SOC_LG[c]||{}).n||c)}</h2><div class="grid g2">${L.map(socCard).join("")}</div>`).join(""):`<div class="card"><p>No matches on this day${SC.lg!=="all"?" in "+socE((SOC_LG[SC.lg]||{}).n):""}.</p>${next}</div>`}
+  ${F.length?Object.entries(byLg).map(([c,L])=>`<h2 class="tsh">${socLgChip(c)} ${socE((SOC_LG[c]||{}).n||c)}</h2><div class="grid g2">${L.map(socCard).join("")}</div>`).join(""):`<div class="card"><p>No upcoming matches${SC.lg!=="all"?" in "+socE((SOC_LG[SC.lg]||{}).n):""} in the next 2 weeks.</p></div>`}
   ${socFoot()}`;
-  el.querySelectorAll("[data-scday]").forEach(a=>a.onclick=e=>{e.preventDefault();SC.day=+a.dataset.scday;socMatches(el)});
+  el.querySelectorAll("[data-scday]").forEach(a=>a.onclick=e=>{e.preventDefault();SC.day=a.dataset.scday;socMatches(el)});
   el.querySelectorAll("[data-sclg]").forEach(b=>b.onclick=()=>{SC.lg=b.dataset.sclg;socMatches(el)})}
 function socFoot(){return `<p class="small" style="margin-top:14px">Stats: ESPN box scores of every match this season (all 8 competitions). Odds: licensed US books via PropLine${typeof SOC_ODDS_AT!=="undefined"&&SOC_ODDS_AT?` (read ${typeof freshAge!=="undefined"?freshAge(SOC_ODDS_AT):SOC_ODDS_AT})`:""}. Referee card numbers: PropLine. Weather: Open-Meteo. Data updated ${socE(SOC_GEN||"")}. Estimates are leans from past numbers, not guarantees.</p>`}
 
@@ -138,12 +139,12 @@ function socQuick(f){const out=[],S=(c,ic,t)=>out.push({c,ic,t}),P=f.proj,A=socT
     S("","🤝",`Both teams scored in ${A[14]}/${A[0]} ${hN} and ${B[14]}/${B[0]} ${aN} games · clean sheets: ${A[13]} and ${B[13]}.`)}
   if(P&&P.cor){const [h1,n1]=socHit(f.h,"cor",9.5),[h2,n2]=socHit(f.a,"cor",9.5);S(P.cor.t>=10.5?"good":P.cor.t<=8.5?"bad":"","🚩",`Corners: we expect <b>${P.cor.t.toFixed(1)}</b> (${hN} ${P.cor.h.toFixed(1)}, ${aN} ${P.cor.a.toFixed(1)}). Over 9.5 hit in ${h1}/${n1} of ${hN}'s and ${h2}/${n2} of ${aN}'s last games.`)}
   if(P&&P.card){const r=socRefRow(f.c,f.ref),avg=socRefAvg(f.c);S(P.card.t>=5?"good":P.card.t<=3.5?"bad":"","🟨",`Cards: we expect <b>${P.card.t.toFixed(1)}</b>${r&&avg?` — referee <b>${socE(f.ref)}</b> averages ${r[4].toFixed(2)} a match (${(SOC_LG[f.c]||{}).sh} refs ${avg.toFixed(2)})`:f.ref?"":" — referee not announced yet"}.`)}
-  if(f.miss)for(const [tid,L] of Object.entries(f.miss)){const red=L.filter(x=>x[1]==="red"),ms=L.filter(x=>x[1]==="miss");if(red.length)S("bad","🟥",`${socE(socTm(tid))}: ${red.map(x=>`<b>${socE(x[0])}</b>`).join(", ")} sent off last match — likely suspended.`);if(ms.length)S("bad","🚑",`${socE(socTm(tid))}: ${ms.slice(0,3).map(x=>`<b>${socE(x[0])}</b>`).join(", ")} missed the last match after starting regularly.`)}
+  if(f.miss)for(const [tid,L] of Object.entries(f.miss)){const red=L.filter(x=>x[1]==="red"),ms=L.filter(x=>x[1]==="miss");if(red.length)S("bad","🟥",`${socE(socTm(tid))}: ${red.map(x=>`<b>${socE(x[0])}</b>`).join(", ")} sent off last match — likely suspended.`);if(ms.length)S("bad","🚑",`${socE(socTm(tid))}: ${ms.slice(0,3).map(x=>`<b>${socE(x[0])}</b>`).join(", ")} missed the last 2 matches after starting regularly.`)}
   if(f.wx&&f.wx[3]>=30)S("bad","💨",`Windy at kickoff (${Math.round(f.wx[3])} km/h) — a small knock on goals and crossing.`);
   return out}
 function socRowEst(lab,our,o,ob,spec){const im=socImp(o),e=our!=null&&im!=null?our-im:null;
-  return `<tr><td>${lab}</td><td><b>${socPct(our)}</b></td><td>${o!=null?`${socO(o)} <span class="small">${socE(ob||"")}</span>`:`<span class="small">no US line</span>`}</td><td>${im!=null?socPct(im):"–"}</td><td class="${socEdgeCls(e)}">${e!=null?(e>0?"+":"")+Math.round(e*100)+"%":"–"}</td><td>${spec&&o!=null?socBetBtn(spec):""}</td></tr>`}
-function socEstTable(f){const P=f.proj,O=f.odds||{};if(!P&&!f.odds)return "";const rows=[];const head=t=>rows.push(`<tr class="scth"><td colspan="6">${t}</td></tr>`);
+  return `<tr><td>${lab}</td><td><b>${socPct(our)}</b></td><td>${o!=null?`<div class="scob"><span><b>${socO(o)}</b><div class="small">${socE(ob||"")}</div></span>${spec?socBetBtn(spec):""}</div>`:`<span class="small">no US line</span>`}</td><td class="${socEdgeCls(e)}">${e!=null?`${e>0?"+":""}${Math.round(e*100)}%<div class="small">needs ${socPct(im)}</div>`:"–"}</td></tr>`}
+function socEstTable(f){const P=f.proj,O=f.odds||{};if(!P&&!f.odds)return "";const rows=[];const head=t=>rows.push(`<tr class="scth"><td colspan="4">${t}</td></tr>`);
   head("🏆 Match result");[["h",0,socTm(f.h)+" win"],["d",1,"Draw"],["a",2,socTm(f.a)+" win"]].forEach(([k,i,l])=>rows.push(socRowEst(socE(l),P&&P.p[i],O.ml&&O.ml[k],O.ml&&O.ml[k+"b"],socSpec(f,"ml",k,null,O.ml&&O.ml[k],O.ml&&O.ml[k+"b"]))));
   head("⚽ Total goals");for(const ln of ["1.5","2.5","3.5"]){const T=O.tot&&O.tot[ln];rows.push(socRowEst(`Over ${ln}`,P&&P.o[ln],T&&T[0],T&&T[1],socSpec(f,"tot","o",+ln,T&&T[0],T&&T[1])));rows.push(socRowEst(`Under ${ln}`,P&&P.o[ln]!=null?1-P.o[ln]:null,T&&T[2],T&&T[3],socSpec(f,"tot","u",+ln,T&&T[2],T&&T[3])))}
   head("🤝 Both teams to score");rows.push(socRowEst("Yes",P&&P.btts,O.btts&&O.btts.y,O.btts&&O.btts.yb,socSpec(f,"btts","y",null,O.btts&&O.btts.y,O.btts&&O.btts.yb)));rows.push(socRowEst("No",P&&P.btts!=null?1-P.btts:null,O.btts&&O.btts.n,O.btts&&O.btts.nb,socSpec(f,"btts","n",null,O.btts&&O.btts.n,O.btts&&O.btts.nb)));
@@ -153,7 +154,7 @@ function socEstTable(f){const P=f.proj,O=f.odds||{};if(!P&&!f.odds)return "";con
     for(const ln of ["2.5","3.5","4.5","5.5"]){const T=X&&X[1][ln],p=P.card.o[ln];rows.push(socRowEst(`Over ${ln}`,p,T&&T[0],T&&T[1],socSpec(f,"card","o",+ln,T&&T[0],T&&T[1])));rows.push(socRowEst(`Under ${ln}`,p!=null?1-p:null,T&&T[2],T&&T[3],socSpec(f,"card","u",+ln,T&&T[2],T&&T[3])))}}
   const mv=O.open&&O.ml&&O.open.ml?((a,b)=>a!=null&&b!=null&&a!==b?`<div class="small" style="margin-top:6px">📈 Opened ${socTm(f.h)} ${socO(O.open.ml[0])} · draw ${socO(O.open.ml[1])} · ${socTm(f.a)} ${socO(O.open.ml[2])} → now ${socO(O.ml.h)} / ${socO(O.ml.d)} / ${socO(O.ml.a)}</div>`:"")(O.open.ml[0],O.ml.h):"";
   return `<div class="card"><h2>💰 Our estimate vs the books</h2><div class="xasub">“Needs” = the chance the price implies. Green edge = our estimate beats it by 5%+. Lean, not a lock.</div>
-   <div class="alw"><table class="altt sctbl"><thead><tr><th>Bet</th><th>Our chance</th><th>Best odds</th><th>Needs</th><th>Edge</th><th></th></tr></thead><tbody>${rows.join("")}</tbody></table></div>${mv}
+   <div class="alw"><table class="altt sctbl est"><thead><tr><th>Bet</th><th>Ours</th><th>Best odds</th><th>Edge</th></tr></thead><tbody>${rows.join("")}</tbody></table></div>${mv}
    ${P?`<div class="small" style="margin-top:6px">How: each team's goals and shots on target for/against this season (in ${socE((SOC_LG[f.c]||{}).n||"")}), home advantage, and a standard goals model. Corners and cards: each team's for/against averages, the referee when he's known, and how spread out those counts really are in this league.</div>`:`<div class="small" style="margin-top:6px">Not enough matches yet for our estimate (we need 3+ per team in this competition).</div>`}</div>`}
 function socTeamCmp(f){const A=socTN(f.c,f.h),B=socTN(f.c,f.a);if(!A||!B)return "";const c=f.c,lg=i=>socLgAvg(c,i);
   const row=(lab,i,dec,asc,tip)=>{const ra=socRankOf(c,i,f.h,asc),rb=socRankOf(c,i,f.a,asc),fa=x=>x==null?"–":(+x).toFixed(dec);
@@ -184,9 +185,9 @@ function socFormCard(f){const side=tid=>{const R=socTeamRes(tid).slice(-6).rever
   return `<div class="scfr"><i class="scf ${x}">${x}</i><span>${me?"vs":"@"} ${socE(socTm(op))}</span><b>${r[5]}-${r[6]}</b><span class="small">${socE((SOC_LG[r[2]]||{}).sh||"")} · 🚩${socMatchVal(r,"cor")??"–"} · 🟨${socMatchVal(r,"card")??"–"}</span></div>`}).join("")||`<div class="small">No matches yet</div>`}</div>`};
   const H=(SOC_RES||[]).filter(r=>(r[3]===f.h&&r[4]===f.a)||(r[3]===f.a&&r[4]===f.h));
   return `<div class="card"><h2>📅 Recent form</h2><div class="sc2">${side(f.h)}${side(f.a)}</div>${H.length?`<div class="small" style="margin-top:8px">This season head to head: ${H.map(r=>`${socTm(r[3])} ${r[5]}-${r[6]} ${socTm(r[4])}`).join(" · ")}</div>`:""}</div>`}
-function socMissCard(f){const L=f.lu,M=f.miss||{};if(!L&&!Object.keys(M).length)return `<div class="card xacard xadeep"><h2>🚑 Team news</h2><div class="small">Nobody who started regularly missed either team's last match, and no one was sent off. Lineups appear here about an hour before kickoff. (ESPN publishes no injury list for soccer, so this is what the match data shows.)</div></div>`;
+function socMissCard(f){const L=f.lu,M=f.miss||{};if(!L&&!Object.keys(M).length)return `<div class="card xacard xadeep"><h2>🚑 Team news</h2><div class="small">Nobody who started regularly has missed the last 2 matches, and no one was sent off. Lineups appear here about an hour before kickoff. (ESPN publishes no injury list for soccer, so this is what the match data shows.)</div></div>`;
   const side=tid=>`<div><h3 style="margin:0 0 6px">${socBadge(tid)} ${socE(socTm(tid))}</h3>${(M[tid]||[]).map(x=>`<div class="small">${x[1]==="red"?"🟥":"🚑"} <b>${socE(x[0])}</b> — ${socE(x[2])}</div>`).join("")||`<div class="small">No regular starters missing.</div>`}${L&&L[tid]?`<div class="small" style="margin-top:6px"><b>Starting XI:</b> ${L[tid].map(socE).join(", ")}</div>`:""}</div>`;
-  return `<div class="card"><h2>🚑 Team news &amp; lineups</h2><div class="xasub">${L?"Confirmed lineups":"Lineups appear about an hour before kickoff"} · ESPN has no soccer injury list, so we flag regular starters who missed the last match and red-card bans</div><div class="sc2">${side(f.h)}${side(f.a)}</div></div>`}
+  return `<div class="card"><h2>🚑 Team news &amp; lineups</h2><div class="xasub">${L?"Confirmed lineups":"Lineups appear about an hour before kickoff"} · ESPN has no soccer injury list, so we flag regular starters who missed the last 2 matches and red-card bans</div><div class="sc2">${side(f.h)}${side(f.a)}</div></div>`}
 function socGame(el,id){const f=socFx(id);if(!f){el.innerHTML=`<p><a href="#soccer">← All matches</a></p><div class="card">This match isn't in our list any more (finished matches move to the results). <a href="#soccer">See today's matches</a>.</div>`;return}
   const tab=SC.tab==="props"?"props":"game",np=(SOC_PROPS||[]).filter(r=>r[5]===f.id).length;
   el.innerHTML=`<p><a href="#soccer">← All matches</a></p>${socHero(f)}
@@ -229,7 +230,7 @@ function socTable(el){const c=SC.tlg,L=(SOC_ST||{})[c]||[];
   el.innerHTML=`<h1>📊 Soccer standings</h1><div class="seg">${Object.entries(SOC_LG).map(([k,v])=>`<button class="btn${c===k?" on":""}" data-sctl="${k}">${socE(v.sh)}</button>`).join("")}</div>
   <div class="card" style="margin-top:10px"><h2>${socLgChip(c)} ${socE((SOC_LG[c]||{}).n||"")}</h2><div class="alw"><table class="altt sctbl"><thead><tr><th>#</th><th>Team</th><th>P</th><th>W-D-L</th><th>GD</th><th>Pts</th><th>Form</th><th>🚩/g</th><th>🟨/g</th></tr></thead><tbody>
   ${L.map(r=>{const T=socTN(c,r[0]);return `<tr><td>${r[1]}</td><td>${socBadge(r[0])} ${socE(socTm(r[0]))}</td><td>${r[2]}</td><td>${r[3]}-${r[4]}-${r[5]}</td><td>${r[6]-r[7]>0?"+":""}${r[6]-r[7]}</td><td><b>${r[8]}</b></td><td class="scfm">${socForm(r[0])}</td><td>${T&&T[7]!=null?T[7].toFixed(1):"–"}</td><td>${T&&T[9]!=null?T[9].toFixed(1):"–"}</td></tr>`}).join("")||`<tr><td colspan="9" class="small">No table yet.</td></tr>`}</tbody></table></div>
-  ${SOC_LG[c]&&SOC_LG[c].n?`<div class="small" style="margin-top:8px">League this season: ${SOC_LG[c].n} matches · home wins ${socPct(SOC_LG[c].hw)} · draws ${socPct(SOC_LG[c].draw)} · over 2.5 goals ${socPct(SOC_LG[c].o25)} · both teams scored ${socPct(SOC_LG[c].btts)}</div>`:""}</div>${socFoot()}`;
+  ${SOC_LG[c]&&SOC_LG[c].m?`<div class="small" style="margin-top:8px">League this season: ${SOC_LG[c].m} matches · home wins ${socPct(SOC_LG[c].hw)} · draws ${socPct(SOC_LG[c].draw)} · over 2.5 goals ${socPct(SOC_LG[c].o25)} · both teams scored ${socPct(SOC_LG[c].btts)}</div>`:""}</div>${socFoot()}`;
   el.querySelectorAll("[data-sctl]").forEach(b=>b.onclick=()=>{SC.tlg=b.dataset.sctl;socTable(el)})}
 
 /* ---------- player page ---------- */

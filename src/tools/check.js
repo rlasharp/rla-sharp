@@ -10,6 +10,10 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
  const ids=await p.evaluate(()=>({nfl:(SLATE.find(g=>!g.final)||SLATE[0]||{}).id,nba:(NBA_SLATE[0]||{}).id,nbaP:Object.keys(NBA_LOGS).sort((a,b)=>NBA_LOGS[b].g.length-NBA_LOGS[a].g.length)[0],nflP:Object.keys(PINFO)[0],nhl:typeof NHL_SLATE!=='undefined'?((NHL_SLATE[0]||NHL_NEXT[0]||{}).id):null,nhlP:typeof NHL_P!=='undefined'?Object.keys(NHL_P).sort((a,b)=>NHL_P[b].g.length-NHL_P[a].g.length)[0]:null,nhlG:typeof NHL_G!=='undefined'?Object.keys(NHL_G)[0]:null}));
  const H=['today','games','weeks','props','plays','injuries','record','nba','nba-best','nba-props','nba-players','nba-teams','nba-scores','nba-injuries','nhl','nhl-props','nhl-standings','nhl-tomorrow','nhl-tomorrow-2','nhl-tomorrow-3','nhl-injuries','nhl-team-TOR','nhl-scores'];
  if(ids.nfl!=null)H.push('game-'+ids.nfl,'game-'+ids.nfl+'-props');if(ids.nba!=null)H.push('nba-game-'+ids.nba,'nba-game-'+ids.nba+'-props');if(ids.nbaP)H.push('nba-player-'+encodeURIComponent(ids.nbaP));if(ids.nhl!=null)H.push('nhl-game-'+ids.nhl);if(ids.nhlP)H.push('nhl-player-'+encodeURIComponent(ids.nhlP));if(ids.nhlG)H.push('nhl-player-'+encodeURIComponent(ids.nhlG));
+ H.push('soccer','soccer-props','soccer-table');
+ {const sc=await p.evaluate(()=>new Promise(r=>{if(typeof socEnsure==='undefined')return r(null);socEnsure(()=>socPEnsure(()=>{const f=(window.SOC_FX||[])[0],P=window.SOC_P||{},a=Object.keys(P).sort((x,y)=>P[y][3].length-P[x][3].length)[0];r({g:f&&f.id,p:a})}))}));
+  if(sc&&sc.g)H.push('soccer-game-'+sc.g,'soccer-game-'+sc.g+'-props');if(sc&&sc.p)H.push('soccer-player-'+sc.p);
+  if(sc===null)errs.push('soccer section missing');else if(!sc.g&&vw===390)console.log('note: no upcoming soccer matches in the data')}
  for(const h of H){await p.goto('file://'+f+'#'+h);await p.waitForTimeout(350);
   const r=await p.evaluate(()=>({w:document.documentElement.scrollWidth,t:(document.querySelector('section:not([hidden]),main')||document.body).innerText.length}));
   if(r.w>vw+1)errs.push(`overflow #${h} @${vw}: ${r.w}`)}

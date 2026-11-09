@@ -16,7 +16,7 @@ F = collections.Counter(); ex = {}
 for r in runs:
     for l in set(r.get("fails", [])): k = key(l); F[k] += 1; ex.setdefault(k, l)
 # per sport: runs that included it and had no failure line naming it
-SP = {"NBA": "nba", "NFL": "nfl", "NHL": "nhl"}
+SP = {"NBA": "nba", "NFL": "nfl", "NHL": "nhl", "Soccer": "soc"}
 sp_rows = []
 for lab, w in SP.items():
     inc = [r for r in runs if r["what"] == "all" or w in r["what"].split(",")]
