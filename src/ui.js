@@ -193,7 +193,7 @@ function nflGameProps(g){
   const P2=P1.filter(p=>NFL_GPP==="all"||p.pos===NFL_GPP),mkL=Object.keys(MARKETS).filter(m=>P2.some(p=>marketsFor(p.pos).includes(m)&&realProp(p.name,m)));if(!mkL.includes(NFL_GPM))NFL_GPM="all";
   const list=P2.filter(p=>NFL_GPM==="all"||(marketsFor(p.pos).includes(NFL_GPM)&&realProp(p.name,NFL_GPM)));
   const nMk=m=>P2.filter(p=>marketsFor(p.pos).includes(m)&&realProp(p.name,m)).length;
-  return `${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best props in this game</h2><div class="small" style="margin-bottom:8px">Ranked by how far our chance of winning beats the chance the odds imply.</div><div class="bpc">${best.map(nflBestRow).join("")}</div></div>`:""}
+  return `${typeof xParlayCard!=="undefined"?xParlayCard(nflParlayLegs(g),"",1):""}${best.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best props in this game</h2><div class="small" style="margin-bottom:8px">Ranked by how far our chance of winning beats the chance the odds imply.</div><div class="bpc">${best.map(nflBestRow).join("")}</div></div>`:""}
   <div class="info" style="margin-top:10px"><span>🔗 <b>Building a same-game parlay?</b> Tap a price → <b>Add to parlay</b>. Your parlay slip checks past games to show which legs tend to hit together and which work against each other.</span></div>
   <div class="gpf"><div class="seg"><button class="btn${tf==="all"?" on":""}" data-ngpt="all">Both teams</button>${tms.map(t=>`<button class="btn${tf===t?" on":""}" data-ngpt="${t}">${badge(t)} ${esc(short(t))}</button>`).join("")}</div></div>
   <div class="gpf gpmk"><div class="seg"><button class="btn${NFL_GPP==="all"?" on":""}" data-ngpp="all">All positions</button>${posL.map(x=>`<button class="btn${NFL_GPP===x?" on":""}" data-ngpp="${x}">${x}</button>`).join("")}</div></div>
@@ -448,7 +448,7 @@ function nflLineRow(pl,m,L){L=L||pLogs(pl.name).filter(l=>l.season===CUR);
      let rp=realProp(pl.name,m);const main=rp[0],td=m==="anyTD",alt=!td&&typeof loAltOdds!=="undefined"?loAltOdds(pl.name,m):null;if(alt)rp=[alt.line,alt.o,alt.u,alt.ob||alt.ub||""];const line=rp[0];const G=L.filter(l=>Number.isFinite(stat(l,m))).slice(-6),vals=G.map(l=>stat(l,m)),ov=vals.filter(v=>v>line).length;
      const lean=G.length?(ov/G.length>=.67?["o",td?"Scores often":"Leans over"]:ov/G.length<=.33?["u",td?"Rarely scores":"Leans under"]:["n","Split"]):["n",""];
      return `<div class="pl" data-m="${m}" data-lrow="nfl|${esc(pl.name+"|"+m)}"><div class="plh"><div><b>${MARKETS[m].n}</b> ${td?"":`<span class="plv">${line}</span>${typeof loStep!=="undefined"?loStep(pl.name,m,main):""}`}${typeof loMoveTag!=="undefined"?loMoveTag(pl.name,m,line):""}</div>
-       <div class="small">${rp[1]!=null?(td?"Yes ":"O ")+amTxt(rp[1]):""}${rp[2]!=null?" · U "+amTxt(rp[2]):""}${rp[1]==null&&rp[2]==null?"odds not listed":""}${rp[3]?" · "+esc(rp[3]):""}</div></div>${!alt&&typeof nflVerdict!=="undefined"?nflVerdict(pl.name,m,1):""} ${!alt&&typeof actBtn!=="undefined"?(()=>{const o=specProp(pl.name,m,"over"),u=specProp(pl.name,m,"under");return `<div class="obrow">${o.odds!=null?actBtn(o,`${td?"Yes":"Over "+line} <b>${oddsFmt(o.odds)}</b>`,"ov"):""}${!td&&u.odds!=null?actBtn(u,`Under ${line} <b>${oddsFmt(u.odds)}</b>`,"un"):""}${snapBtn("nfl",pl.name,m)}</div>`})():""}
+       <div class="small">${rp[1]!=null?(td?"Yes ":"O ")+amTxt(rp[1]):""}${rp[2]!=null?" · U "+amTxt(rp[2]):""}${rp[1]==null&&rp[2]==null?(alt&&typeof loFairTxt!=="undefined"?loFairTxt(pl.name,m,line):"odds not listed"):""}${rp[3]?" · "+esc(rp[3]):""}</div></div>${!alt&&typeof nflVerdict!=="undefined"?nflVerdict(pl.name,m,1):""} ${!alt&&typeof actBtn!=="undefined"?(()=>{const o=specProp(pl.name,m,"over"),u=specProp(pl.name,m,"under");return `<div class="obrow">${o.odds!=null?actBtn(o,`${td?"Yes":"Over "+line} <b>${oddsFmt(o.odds)}</b>`,"ov"):""}${!td&&u.odds!=null?actBtn(u,`Under ${line} <b>${oddsFmt(u.odds)}</b>`,"un"):""}${snapBtn("nfl",pl.name,m)}</div>`})():""}
        ${(()=>{const A=pLogs(pl.name).filter(l=>Number.isFinite(stat(l,m))).slice(-10);if(!A.length||!Number.isFinite(line)||typeof nbaMiniBars==="undefined")return "";const v=A.map(l=>stat(l,m)),o=v.filter(x=>pxHit(x,line)).length;return `<div class="mbw">${nbaMiniBars(v,line,A.map(l=>(l.season!==CUR?"'"+String(l.season).slice(2):"")+(l.home?"":"@")+l.opp))}<div class="small mbs">Last ${A.length}: <b class="${o/A.length>=.5?"up":"dn"}">${o}/${A.length} ${td?(PXSIDE==="u"?"without a TD":"with a TD"):pxSW()}</b> · avg <b>${(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1)}</b>${td?"":` vs line ${line}`}</div></div>`})()}
        ${!td&&typeof loAltHtml!=="undefined"?loAltHtml(pl.name,m,main,pLogs(pl.name).filter(l=>Number.isFinite(stat(l,m))).slice(-10).map(l=>stat(l,m))):""}
        ${G.length?`<div class="plg">${G.map((l,i)=>{const v=vals[i],c=v>line?"o":v<line?"u":"p";return `<div class="lc ${c}" title="Week ${l.week} ${l.home?"vs":"@"} ${l.opp}"><b>${v}</b><span>${l.home?"":"@"}${l.opp}</span></div>`}).join("")}</div>
@@ -477,7 +477,7 @@ function viewProps(){
   const P=allPlayers().sort((a,b)=>a.team.localeCompare(b.team)||POS.indexOf(a.pos)-POS.indexOf(b.pos));
   $("#v-props").innerHTML=`<h1>Player props</h1><p class="sub">Every player prop line we found for this week, with each player's recent games and how the defense handles his position. We don't make picks. ${srcTag("player")}</p>
    <div class="row" style="margin-bottom:18px">${seg("tab",[["top","🔥 Best this week"],["best","All props"],["def","Defense rankings"]])}<span class="sp"></span>
-    <select id="find"><option value="">Find a player…</option>${P.map(p=>`<option value="${esc(p.name)}">${p.team} · ${esc(p.name)}</option>`).join("")}</select></div>${body}`;
+    <select id="find"><option value="">Find a player…</option>${P.map(p=>{const st=nflOutStatus(p.name);return `<option value="${esc(p.name)}">${p.team} · ${esc(p.name)}${st?` — 🚑 ${esc(st)}`:""}</option>`}).join("")}</select></div>${body}`;
   document.querySelectorAll("#v-props .seg button").forEach(b=>b.onclick=()=>{propFilter[b.dataset.f]=b.dataset.v;if(b.dataset.f!=="dir")propFilter.n=30;viewProps()});
   if($("#sortBy"))$("#sortBy").onchange=e=>{propFilter.sort=e.target.value;propFilter.dir=["ssn","l5","l3"].includes(e.target.value)?"desc":"asc";propFilter.n=30;viewProps()};
   if($("#more"))$("#more").onclick=()=>{propFilter.n+=30;viewProps()};
@@ -599,7 +599,8 @@ function viewPlayer(){
   const defWord=!Number.isFinite(dv.rank)?"":`the ${ordinal(dv.rank)} most in the NFL`;
   const sim=opp?S.playerLogs.filter(l=>l.opp===opp&&l.pos===pl.pos&&l.season===CUR).sort((a,b)=>b.week-a.week).slice(0,8):[];
   const ouTag=v=>v>line?'<span class="ou o">OVER</span>':v<line?'<span class="ou u">UNDER</span>':'<span class="ou p">PUSH</span>';
-  $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← All props</a>
+  const outSt=nflOutStatus(pl.name);
+  $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← All props</a>${outSt?`<div class="info" style="margin-top:12px"><span>🚑 <b>${esc(pl.name)} is ruled out (${esc(outSt)})</b> — he has no props this week. His past games are below for reference.</span></div>`:""}
    <div class="row" style="margin:16px 0 6px">${badge(pl.team)}<h1 style="margin:0">${esc(pl.name)}</h1>${typeof INJ_P!=="undefined"&&INJ_P[pl.name]?injTag(pl.name):(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[pl.name]?`<span class="tag" style="background:#3a2a10;color:#fab219">⚠ ${QUESTIONABLE[pl.name]}</span>`:"")}</div>
    <div class="pline">${(()=>{const U=(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name])||null,su=U&&U.s;return [pl.pos+" · "+short(pl.team),o?`${o.home?"vs":"@"} ${short(opp)} · ${o.g.when}`:"No game this week",su&&su.snap!=null?su.snap+"% snaps":"",su&&su.tpg?fmt(su.tpg,1)+" targets/game":"",su&&su.cpg&&pl.pos!=="WR"&&pl.pos!=="TE"?fmt(su.cpg,1)+" carries/game":""].filter(Boolean).map(x=>`<span>${x}</span>`).join("")})()}</div>
    <div class="qbrow">${typeof nflQbChip!=="undefined"?nflQbChip(pl)+nflWxChip(pl)+(typeof nfRushChip!=="undefined"?nfRushChip(pl):""):""}</div>${typeof nflUseBars!=="undefined"?nflUseBars(pl):""}
@@ -756,8 +757,11 @@ function nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA){
   return `<div class="section"><div class="card xtc nodz"><div class="nbtabs pmk xtt">${T.map(([id,l])=>`<button data-xt="${id}" class="${id===cur?"on":""}">${l}</button>`).join("")}</div>
    ${T.map(([id,,h])=>`<div class="xtp" data-xtp="${id}"${id===cur?"":" hidden"}>${h}</div>`).join("")}</div></div>`}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-xt]");if(!b)return;S.prop.xt=b.dataset.xt;const c=b.closest(".xtc");c.querySelectorAll("[data-xt]").forEach(x=>x.classList.toggle("on",x===b));c.querySelectorAll("[data-xtp]").forEach(p=>p.hidden=p.dataset.xtp!==b.dataset.xt)});
+window.addEventListener("hashchange",()=>{if(!/^#props\//.test(location.hash))S._topFor=null});
+
+/* injury-report status for a player who is not playing (Out / IR / PUP / suspended) — "" otherwise */
+function nflOutStatus(nm){if(typeof INJ==="undefined")return "";const n=typeof loNorm!=="undefined"?loNorm(nm):nm;
+  for(const L of Object.values(INJ))for(const r of L)if((typeof loNorm!=="undefined"?loNorm(r[0]):r[0])===n&&/^(out|ir\b|ir-|pup|nfi|suspen)/i.test(String(r[2]||"")))return /^ir/i.test(r[2])?"IR":String(r[2]).toUpperCase();return ""}
 </script>
 </body>
 </html>
-
-window.addEventListener("hashchange",()=>{if(!/^#props\//.test(location.hash))S._topFor=null});

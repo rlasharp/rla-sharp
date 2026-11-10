@@ -134,19 +134,25 @@ async function nhlLiveDecorate(){if(typeof NHL_DATE==="undefined"||!NHL_DATE)ret
   if((location.hash||"").slice(1)==="bets"&&typeof betsLoad!=="undefined")for(const b of betsLoad()){if(b.k!=="nhlprop"||b.date!==NHL_DATE)continue;const el=document.querySelector(`[data-clv="${b.id}"]`);if(el)await nhlLiveLine(el.parentElement,{nm:b.player,k:b.market,side:b.side==="over"?"o":"u",line:b.line,tm:b.team})}}
 
 /* ---------- 🎟 smart parlays: same-game legs that tend to hit together ---------- */
-function xParlays(legs,max){/* legs: [{spec, label}] — spec as used by the parlay slip (nbaprop / nhlprop) */
+function xParlays(legs,max,sameTeam){/* legs: [{spec, label}] — spec as used by the parlay slip (nbaprop / nhlprop / prop) */
   if(typeof sgpPair==="undefined"||legs.length<2)return [];const dec=o=>o>0?1+o/100:1+100/(-o),out=[];
   for(let i=0;i<legs.length;i++)for(let j=i+1;j<legs.length;j++){const A=legs[i],B=legs[j];if(A.spec.player===B.spec.player)continue;
+    if(sameTeam&&A.spec.team!==B.spec.team)continue;   /* NFL: past games are matched by week, so only teammates share the same games */
     const r=sgpPair(A.spec,B.spec);if(!r||!r.n||r.n<6||r.lift==null)continue;const joint=r.both/r.n,price=dec(A.spec.odds)*dec(B.spec.odds),need=1/price;
     if(joint<.4||r.lift<1.05)continue;out.push({A,B,n:r.n,both:r.both,joint,price,need,edge:joint-need,lift:r.lift})}
   return out.sort((a,b)=>b.edge-a.edge).slice(0,max||3)}
-function xParlayCard(legs,title){const P=xParlays(legs,3);if(!P.length)return "";const am=d=>d>=2?"+"+Math.round((d-1)*100):"−"+Math.round(100/(d-1));
-  return `<div class="card" style="margin:10px 0"><h2 style="margin-bottom:2px">🎟 Smart parlays${title?" · "+title:""}</h2><div class="small" style="margin-bottom:8px">Two strong legs from this game that hit together more often than chance, from the games both players played.</div>
+function xParlayCard(legs,title,sameTeam){const P=xParlays(legs,3,sameTeam);
+  if(!P.length)return legs.length>=2?`<div class="card" style="margin:10px 0"><h2 style="margin-bottom:2px">🎟 Smart parlays${title?" · "+title:""}</h2><div class="small">No two strong legs in this game have hit together often enough in the games both players played — nothing to suggest right now.</div></div>`:"";const am=d=>d>=2?"+"+Math.round((d-1)*100):"−"+Math.round(100/(d-1));
+  return `<div class="card" style="margin:10px 0"><h2 style="margin-bottom:2px">🎟 Smart parlays${title?" · "+title:""}</h2><div class="small" style="margin-bottom:8px">Two strong legs from this game that hit together more often than chance, from the games both players played${sameTeam?" (teammates)":""}.</div>
    ${P.map(p=>`<div class="sgr t"><b>🤝 ${p.A.label} + ${p.B.label}</b><span class="small">Both hit in <b>${p.both} of ${p.n}</b> shared games (${Math.round(p.joint*100)}%) · priced as two separate bets ≈ ${am(p.price)}, which needs ${Math.round(p.need*100)}%.</span>
      <div class="obrow" style="margin-top:4px">${typeof actBtn!=="undefined"?actBtn(p.A.spec,`＋ ${p.A.label}`,"ov")+actBtn(p.B.spec,`＋ ${p.B.label}`,"ov"):""}</div></div>`).join("")}
    <div class="small" style="margin-top:6px">Books price same-game parlays lower because they know legs are linked — check the real parlay price; small samples, bet small.</div></div>`}
 function nhlParlayLegs(g){if(typeof nhBest==="undefined"||typeof nhlSpec==="undefined")return [];const L=nhBest().filter(b=>b.g.id===g.id&&b.s.p>=.6&&b.k!=="hanyG").slice(0,12),out=[];
   for(const b of L){const s=nhlSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NH_MK[b.k][0]}`})}return out}
+function nflParlayLegs(g){if(typeof nflBest==="undefined"||typeof specProp==="undefined")return [];const tms=[g.away,g.home];
+  const L=nflBest().filter(b=>tms.includes(b.pl.team)&&b.sc>=.55&&b.odds!=null).slice(0,14),out=[];
+  for(const b of L){const s=specProp(b.name,b.k,b.side==="o"?"over":"under");if(!s||s.odds==null)continue;s.line=b.line;
+    out.push({spec:s,label:`${b.name.split(" ").filter(w=>!/^(Jr\.?|Sr\.?|II|III|IV)$/.test(w)).slice(-1)[0]} ${b.k==="anyTD"?"TD":`${b.side==="o"?"o":"u"}${b.line} ${MARKETS[b.k].n.toLowerCase()}`}`})}return out}
 function nbaParlayLegs(g){if(typeof nbaBest==="undefined"||typeof nbaSpec==="undefined")return [];const L=nbaBest().filter(b=>b.g&&b.g.id===g.id&&b.sc>=.6).slice(0,12),out=[];
   for(const b of L){const s=nbaSpec(b.nm,b.k,b.side==="o"?"over":"under");if(s)out.push({spec:s,label:`${b.nm.split(" ").slice(-1)[0]} ${b.side==="o"?"o":"u"}${b.line} ${NBA_MK[b.k]?NBA_MK[b.k][2]:b.k}`})}return out}
 
@@ -184,3 +190,27 @@ function xCalCard(){if(typeof TRACK==="undefined"||!TRACK||!TRACK.sum)return "";
    ${G.map(([nm,R])=>`<tr class="calh"><td colspan="4">${nm}</td></tr>${R.map(([l,B])=>row(l,B[2]/B[0],B)).join("")}`).join("")}
    ${sp&&sp.w+sp.l?`<tr class="calh"><td colspan="4">⚽ Soccer</td></tr>${row("Plays of the day",null,[sp.w+sp.l,sp.w,0,sp.u])}`:""}</tbody></table>
    <div class="small" style="margin-top:6px">✅ within 5 points of what we said · ⬇️ hit less often · ⬆️ hit more often · “·” fewer than 20 graded picks, too early to judge. (n) = graded picks. 1 unit each at the posted odds. Tracking started Nov 8, 2026.</div></div>`}
+
+/* ---------- 🎟 Soccer smart parlays: match-result, goals and both-teams-to-score legs that go together.
+   Joint chance from our score model (Poisson + Dixon-Coles, the same lh / la / rho as the estimate): our chance of the
+   first leg × our model's chance of the second given the first. Compared with the two book prices multiplied. ---------- */
+function socParlays(f){const P=f.proj,O=f.odds||{};if(!P||P.lh==null||P.la==null)return [];const rho=P.rho||0,N=11,M=[];let tot=0;
+  const pois=(l,k)=>{let v=Math.exp(-l);for(let i=1;i<=k;i++)v*=l/i;return v};
+  for(let i=0;i<N;i++){M[i]=[];for(let j=0;j<N;j++){let t=1;if(i===0&&j===0)t=1-P.lh*P.la*rho;else if(i===0&&j===1)t=1+P.lh*rho;else if(i===1&&j===0)t=1+P.la*rho;else if(i===1&&j===1)t=1-rho;
+    M[i][j]=Math.max(0,pois(P.lh,i)*pois(P.la,j)*t);tot+=M[i][j]}}
+  const pr=fn=>{let s=0;for(let i=0;i<N;i++)for(let j=0;j<N;j++)if(fn(i,j))s+=M[i][j];return s/tot};
+  const L=[],add=(mk,lab,fn,odds,kind,side,line,book,ours)=>{if(odds!=null)L.push({mk,lab,fn,odds,ours:ours!=null?ours:pr(fn),spec:socSpec(f,kind,side,line,odds,book)})};
+  if(O.ml){add("ml",`${socTm(f.h)} to win`,(i,j)=>i>j,O.ml.h,"ml","h",null,O.ml.hb,P.p&&P.p[0]);add("ml","Draw",(i,j)=>i===j,O.ml.d,"ml","d",null,O.ml.db,P.p&&P.p[1]);add("ml",`${socTm(f.a)} to win`,(i,j)=>i<j,O.ml.a,"ml","a",null,O.ml.ab,P.p&&P.p[2])}
+  const mt=O.main_tot;if(mt&&O.tot&&O.tot[mt]){const [o,ob,u,ub]=O.tot[mt],ln=+mt;add("tot",`Over ${mt} goals`,(i,j)=>i+j>ln,o,"tot","o",ln,ob,P.o&&P.o[mt]);add("tot",`Under ${mt} goals`,(i,j)=>i+j<ln,u,"tot","u",ln,ub,P.o&&P.o[mt]!=null?1-P.o[mt]:null)}
+  if(O.btts){add("btts","Both teams score",(i,j)=>i>0&&j>0,O.btts.y,"btts","y",null,O.btts.yb,P.btts);add("btts","Not both teams score",(i,j)=>!(i>0&&j>0),O.btts.n,"btts","n",null,O.btts.nb,P.btts!=null?1-P.btts:null)}
+  const dec=o=>o>0?1+o/100:1+100/(-o),out=[];
+  for(let a=0;a<L.length;a++)for(let b=a+1;b<L.length;b++){const A=L[a],B=L[b];if(A.mk===B.mk)continue;
+    const pA=pr(A.fn),pAB=pr((i,j)=>A.fn(i,j)&&B.fn(i,j));if(!pA||pAB<=0)continue;const joint=A.ours*(pAB/pA);if(joint<.3)continue;
+    const price=dec(A.odds)*dec(B.odds),need=1/price,lift=pAB/(pA*pr(B.fn));if(lift<1.05)continue;out.push({A,B,joint,price,need,edge:joint-need,lift})}
+  return out.filter(x=>x.edge>0).sort((a,b)=>b.edge-a.edge).slice(0,3)}
+function socParlayCard(f){if(!f||socStarted(f)||!f.proj||!f.odds)return "";const P=socParlays(f),am=d=>d>=2?"+"+Math.round((d-1)*100):"−"+Math.round(100/(d-1));
+  return `<div class="card" style="margin:12px 0"><h2 style="margin-bottom:2px">🎟 Smart parlays</h2><div class="small" style="margin-bottom:8px">Two picks from this match that go together (one makes the other more likely), where our estimate for both beats the two prices multiplied.</div>
+   ${P.length?P.map(p=>`<div class="sgr t"><b>🤝 ${socE(p.A.lab)} + ${socE(p.B.lab)}</b><span class="small">Our chance both hit: <b>${Math.round(p.joint*100)}%</b> (${p.lift.toFixed(2)}× more likely together than apart) · as two separate bets ≈ ${am(p.price)}, which needs ${Math.round(p.need*100)}%.</span>
+     <div class="obrow" style="margin-top:4px">${socBetBtn(p.A.spec)} <span class="small">${socE(p.A.lab)}</span> ${socBetBtn(p.B.spec)} <span class="small">${socE(p.B.lab)}</span></div></div>`).join("")
+     :`<div class="small">No pair from this match beats the prices right now.</div>`}
+   <div class="small" style="margin-top:6px">Books price same-game parlays lower because they know these go together — check the real parlay price; it's our estimate, not a sure thing.</div></div>`}

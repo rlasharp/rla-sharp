@@ -112,8 +112,19 @@ function loSwapCards(key){try{
     plan.push([h,html,wire])}
   for(const [h,html,wire] of plan){const w=document.createElement("div");w.innerHTML=html;const n=w.firstElementChild;if(!n)return false;h.replaceWith(n);wire(n)}
   return true}catch(e){return false}}
+/* no book price at this alt line: a fair price from how often he cleared it in his last 20 games (shrunk toward 50/50
+   for small samples) — what the over / under "should" pay, to compare with your own book */
+function loFair(nm,k,line){let V=[];
+  try{if(typeof NBA_MK!=="undefined"&&NBA_MK[k]&&typeof nbaAllG!=="undefined")V=nbaAllG(nm).slice(-20).map(o=>nbaVal(o.x,k));
+    else if(typeof NH_MK!=="undefined"&&NH_MK[k]&&typeof nhVals!=="undefined")V=nhVals(nm,k).slice(-20).map(o=>o.v);
+    else if(typeof MARKETS!=="undefined"&&MARKETS[k]&&typeof pLogs!=="undefined")V=pLogs(nm).filter(l=>Number.isFinite(stat(l,k))).slice(-20).map(l=>stat(l,k))}catch(e){}
+  V=V.filter(Number.isFinite);if(V.length<5||line==null)return null;const o=V.filter(v=>v>line).length,u=V.filter(v=>v<line).length,n=V.length;
+  const po=(o+1)/(n+2),pu=(u+1)/(n+2),am=p=>p>=.5?-Math.round(p/(1-p)*100):Math.round((1-p)/p*100);
+  return {o,u,n,po,pu,ao:am(po),au:am(pu)}}
+function loFairTxt(nm,k,line){const F=loFair(nm,k,line);if(!F)return "";const f=x=>typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x;
+  return `<span class="altfair" title="No book price at this line. Fair price = how often he went over / under it in his last ${F.n} games (${F.o} over, ${F.u} under), adjusted a little toward 50/50 for the small sample. A book paying better than this is value.">⚖️ Fair: O <b>${f(F.ao)}</b> · U <b>${f(F.au)}</b> <span class="small">(${F.o}/${F.n} over)</span></span>`}
 function loAltChip(nm,k){const a=loAltOdds(nm,k);if(!a)return "";
-  return `<span class="altc">🪜 Alt line${a.o==null&&a.u==null?" · no book odds":""}<button class="altx" data-altkey="${esc(nm+"|"+k)}" onclick="event.stopPropagation();loAltPick(this.dataset.altkey,null)" title="Back to the main line">✕ main</button></span>`}
+  return `${a.o==null&&a.u==null?loFairTxt(nm,k,a.line):""}<span class="altc">🪜 Alt line${a.o==null&&a.u==null?" · no book odds":""}<button class="altx" data-altkey="${esc(nm+"|"+k)}" onclick="event.stopPropagation();loAltPick(this.dataset.altkey,null)" title="Back to the main line">✕ main</button></span>`}
 function loAltPick(key,line,keepClosed){if(line==null)delete LO.pick[key];else LO.pick[key]=line;LO.openAlt=keepClosed?LO.openAlt:key;if(!loSwapCards(key))loRerender(key)}
 /* every new page starts from the normal (main) line */
 window.addEventListener("hashchange",()=>{clearTimeout(LO.stepT);LO.pick={};LO.openAlt=null});
@@ -164,11 +175,39 @@ function loOutSet(sp){const S=new Set(),add=(L,re)=>{for(const r of L||[])if(re.
   if(sp==="nhl"&&typeof NHL_INJ!=="undefined")for(const L of Object.values(NHL_INJ))add(L,/^(out|injured reserve|ir\b|ltir|long[- ]term|suspen)/i);
   if(sp==="nfl"&&typeof INJ!=="undefined")for(const L of Object.values(INJ))add(L,/^(out|ir\b|ir-|pup|nfi|suspen)/i);
   return S}
-function loDropOut(){try{
-  const drop=(sp,A)=>{const O=loOutSet(sp);if(!O.size||!A)return;for(let i=A.length-1;i>=0;i--)if(O.has(loNorm(A[i][0]))){OUT_DROP[sp].add(A[i][0]);A.splice(i,1)}};
+var OUT_STASH={nba:[],nhl:[],nfl:{}};   /* removed rows, put back if the player comes off the report */
+function loDropOut(){let changed=0;try{
+  const drop=(sp,A)=>{if(!A)return;const O=loOutSet(sp),keep=[];
+    for(const r of OUT_STASH[sp])if(O.has(loNorm(r[0])))keep.push(r);else if(!A.some(x=>x[0]===r[0]&&x[1]===r[1])){A.push(r);OUT_DROP[sp].delete(r[0]);changed=1}
+    OUT_STASH[sp]=keep;for(let i=A.length-1;i>=0;i--)if(O.has(loNorm(A[i][0]))){OUT_DROP[sp].add(A[i][0]);OUT_STASH[sp].push(A[i]);A.splice(i,1);changed=1}};
   if(typeof NBA_PROPS!=="undefined")drop("nba",NBA_PROPS);
   if(typeof NHL_PROPS!=="undefined")drop("nhl",NHL_PROPS);
-  if(typeof REAL_PROPS!=="undefined"){const O=loOutSet("nfl");for(const k of Object.keys(REAL_PROPS)){const n=k.slice(0,k.lastIndexOf("|"));if(O.has(loNorm(n))){OUT_DROP.nfl.add(n);delete REAL_PROPS[k]}}}
+  if(typeof REAL_PROPS!=="undefined"){const O=loOutSet("nfl");
+    for(const [k,v] of Object.entries(OUT_STASH.nfl)){const n=k.slice(0,k.lastIndexOf("|"));if(!O.has(loNorm(n))){if(!REAL_PROPS[k])REAL_PROPS[k]=v;delete OUT_STASH.nfl[k];OUT_DROP.nfl.delete(n);changed=1}}
+    for(const k of Object.keys(REAL_PROPS)){const n=k.slice(0,k.lastIndexOf("|"));if(O.has(loNorm(n))){OUT_DROP.nfl.add(n);OUT_STASH.nfl[k]=REAL_PROPS[k];delete REAL_PROPS[k];changed=1}}}
   if(typeof LO!=="undefined"&&LO.move)for(const k of Object.keys(LO.move)){const m=LO.move[k];if(m&&OUT_DROP[m.sp]&&OUT_DROP[m.sp].has(m.nm)){delete LO.move[k];delete LO.alt[k]}}
-  if(typeof NB!=="undefined")NB._best=null}catch(e){}}
+  if(changed&&typeof NB!=="undefined")NB._best=null}catch(e){}return changed}
 loDropOut();
+
+/* 🚑 late scratches: NBA teams rule players out in the last hour or two. While any of today's NBA games hasn't started,
+   the page re-reads ESPN's injury report every 10 minutes (and when you come back to the tab); anyone newly ruled out has
+   his props removed right away and the page tells you. Fails quietly — the site's own refresh (every ~20 min before
+   tip-off) does the same thing. */
+var LO_INJ={t:0,busy:0};
+async function loInjLive(force){if(location.protocol==="file:"||typeof NBA_INJ==="undefined"||typeof NBA_SLATE==="undefined"||typeof NBA_LOGS==="undefined")return;
+  if(!NBA_SLATE.some(g=>!nbaStarted(g))||LO_INJ.busy||(!force&&Date.now()-LO_INJ.t<9.5*60e3))return;LO_INJ.busy=1;
+  try{const r=await fetch("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",{cache:"no-store"});if(!r.ok)throw 0;const d=await r.json();
+    const idx={};for(const [n,p] of Object.entries(NBA_LOGS))idx[loNorm(n)]=[n,p.tm];const T={};let n=0;
+    for(const t of d.injuries||[])for(const i of t.injuries||[]){const st=i.status||"";if(!/^(Out|Day-To-Day|Doubtful|Questionable|Suspension)$/i.test(st))continue;
+      const a=i.athlete||{},hit=idx[loNorm(a.displayName)];if(!hit)continue;const det=i.details||{};
+      (T[hit[1]]=T[hit[1]]||[]).push([hit[0],(a.position||{}).abbreviation||"",st,((det.type||"")+" "+(det.detail||"")).trim().toLowerCase()||"undisclosed",det.returnDate?new Date(det.returnDate).toLocaleDateString("en-US",{month:"short",day:"numeric"}):""]);n++}
+    if(n<20)throw 0;   /* feed looks wrong: keep what we have */
+    const before=new Set(OUT_DROP.nba);
+    for(const k of Object.keys(NBA_INJ))if(/^[A-Z]{2,4}$/.test(k))NBA_INJ[k]=T[k]||[];for(const k of Object.keys(T))NBA_INJ[k]=T[k];
+    LO_INJ.t=Date.now();
+    if(loDropOut()){const nw=[...OUT_DROP.nba].filter(x=>!before.has(x));
+      if(typeof route==="function"){const y=scrollY;route();scrollTo(0,y)}
+      if(nw.length&&typeof toast!=="undefined")toast(`🚑 Ruled out: ${nw.slice(0,3).join(", ")}${nw.length>3?` +${nw.length-3}`:""} — props removed`)}}
+  catch(e){LO_INJ.t=Date.now()}finally{LO_INJ.busy=0}}
+window.addEventListener("load",()=>{setTimeout(()=>loInjLive(1),4000);setInterval(()=>loInjLive(0),60e3)});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)loInjLive(0)});

@@ -36,5 +36,14 @@ def stamp(txt, pat):
 for name, f, pat in (("NBA data", "nba_data.js", r'NBA_GEN="([^"]+)"'), ("NHL data", "nhl_data.js", r'NHL_GEN="([^"]+)"'), ("Soccer data", "soccer_data.js", r'SOC_GEN="([^"]+)"')):
     t = stamp(rd(f), pat)
     if t and (now - t).total_seconds() > 12 * 3600: out.append(f"{name}: last refreshed {t:%a %b %-d %-I:%M %p} ET ({(now - t).total_seconds() / 3600:.0f} h ago)")
+# injury reports: ruled-out players' props are removed from the site using these, so they must stay fresh
+for name, f, hrs in (("NBA injury report (data/nba_inj.txt)", "data/nba_inj.txt", 8), ("NFL injury report (data/espn_inj.txt)", "data/espn_inj.txt", 12)):
+    m = re.search(r"(\d{4}-\d\d-\d\d \d\d:\d\d)Z", rd(f)[:200])
+    if not m: out.append(f"{name}: no timestamp — file missing or broken"); continue
+    t = dt.datetime.strptime(m.group(1), "%Y-%m-%d %H:%M").replace(tzinfo=dt.timezone.utc)
+    age = (now - t).total_seconds() / 3600
+    if age > hrs: out.append(f"{name}: last refreshed {t.astimezone(ET):%a %b %-d %-I:%M %p} ET ({age:.0f} h ago)")
+nh = rd("nhl_data.js")
+if nh and re.search(r"var NHL_INJ=\{\};", nh): out.append("NHL injury report: empty in the last NHL refresh (ESPN feed failed?)")
 for l in out: print(l)
 sys.exit(2 if nfl_behind else 1 if out else 0)

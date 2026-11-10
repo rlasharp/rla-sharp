@@ -65,6 +65,8 @@ def main():
         if g["st"] != "pre" or not g["start"]: continue
         mins = (g["start"] - now).total_seconds() / 60
         key = f"{g['id']}:90" if 55 <= mins <= 100 else f"{g['id']}:30" if 10 <= mins <= 45 else None
+        # NBA / NHL: players are ruled out (and goalies confirmed) in the last 2 hours — refresh every ~20 min until tip-off
+        if g["sp"] in ("nba", "nhl") and 3 <= mins <= 125: key = f"{g['id']}:b{int(mins // 20)}"
         if not key: continue
         pre.add(key)
         if key not in pre0:

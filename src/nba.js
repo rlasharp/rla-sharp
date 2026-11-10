@@ -922,7 +922,7 @@ function nbaLineRow(nm,r){
       const V0=typeof xaVerdict!=="undefined"?xaVerdict("nba",nm,k,line):null;const lean=V0?(V0.v==="o"?["o","Leans over"]:V0.v==="u"?["u","Leans under"]:["n","Mixed"]):l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
       return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p" data-lrow="nba|${nbaEsc(nm+"|"+k)}">
         <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span>${typeof loStep!=="undefined"?loStep(nm,k,main):""}${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
-          <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${alt?"":(typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):"")+nbaShopHtml(r)}
+          <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div>${alt&&op==null&&up==null&&typeof loFairTxt!=="undefined"?`<div class="small">${loFairTxt(nm,k,line)}</div>`:""}</div>${alt?"":(typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):"")+nbaShopHtml(r)}
         ${(()=>{const L10=nbaAllG(nm).slice(-10),v10=L10.map(o=>nbaVal(o.x,k)),o10=v10.filter(v=>pxHit(v,line)).length;return L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>(o.x[3]==="H"?"":"@")+o.x[2]))}<div class="small mbs">Last ${L10.length}: <b class="${o10/L10.length>=.5?"up":"dn"}">${o10}/${L10.length} ${pxSW()}</b> · avg <b>${nbaF(v10.reduce((a,b)=>a+b,0)/v10.length)}</b> vs line ${line}</div></div>`:""})()}
         ${typeof loAltHtml!=="undefined"?loAltHtml(nm,k,main,nbaAllG(nm).slice(-10).map(o=>nbaVal(o.x,k))):""}
         ${nbaChanceHtml(nm,k)}

@@ -66,7 +66,7 @@ async function liveBox(id){
   const b=LIVE.box[id];if(b&&Date.now()-b.t<25000)return b.p;
   try{const r=await fetch(LIVE_SUM+id,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json(),p={};
     for(const tm of ((j.boxscore||{}).players||[]))for(const st of tm.statistics||[]){const lab=st.labels||st.names||[];
-      for(const a of st.athletes||[]){const nm=a.athlete&&a.athlete.displayName;if(!nm||!a.stats||!a.stats.length)continue;const o={};lab.forEach((l,i)=>o[l]=a.stats[i]);p[nm]=o}}
+      for(const a of st.athletes||[]){const nm=a.athlete&&a.athlete.displayName;if(nm&&(a.didNotPlay||(a.stats&&!a.stats.length&&a.reason))){if(!p[nm])p[nm]={_dnp:1};continue}if(!nm||!a.stats||!a.stats.length)continue;const o={};lab.forEach((l,i)=>o[l]=a.stats[i]);p[nm]=o}}
     LIVE.box[id]={t:Date.now(),p};return p}catch(e){return b?b.p:null}
 }
 function liveVal(o,k){

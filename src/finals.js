@@ -25,10 +25,10 @@ function finGameOf(sp,d,tm){if(!finRecent(d)||!tm)return null;const c=FIN.sb[sp+
 function finScore(sp,d,a,h){if(!finRecent(d))return null;const c=FIN.sb[sp+d];if(!c){FIN.want.add(sp+"|"+d);return null}
   if(!c.done)FIN.want.add(sp+"|"+d);const g=c.g.find(g=>g.a===a&&g.h===h);return g&&g.st==="post"?[g.as,g.hs]:null}
 function finStat(sp,d,tm,nm,k){const g=finGameOf(sp,d,tm);if(!g||g.st!=="post")return null;const B=FIN.box[sp+g.id];
-  if(!B){FIN.want.add(sp+"|"+d+"|"+g.id);return null}const o=B[finNorm(nm)];if(!o)return null;
+  if(!B){FIN.want.add(sp+"|"+d+"|"+g.id);return null}const o=B[finNorm(nm)];if(!o)return null;if(o._dnp)return "dnp";
   const v=sp==="nba"?liveVal(o,k):sp==="nfl"?(FIN_NFLK.has(k)?liveNflVal(o,k):null):nhlLiveVal(o,k);return v==null||!Number.isFinite(+v)?null:+v}
 /* prop result: side "o"/"over" or "u"/"under" */
-function finProp(sp,d,tm,nm,k,side,line){if(line==null&&(k==="hanyG"||k==="anyTD"))line=.5;if(line==null)return null;const v=finStat(sp,d,tm,nm,k);if(v==null)return null;
+function finProp(sp,d,tm,nm,k,side,line){if(line==null&&(k==="hanyG"||k==="anyTD"))line=.5;if(line==null)return null;const v=finStat(sp,d,tm,nm,k);if(v==null)return null;if(v==="dnp")return {r:"void",v:"DNP"};
   const over=side==="o"||side==="over";return {r:v===+line?"push":(over===(v>+line))?"win":"loss",v}}
 function finEdge(mk,pick,a,h,F){const [as,hs]=F,pk=String(pick);
   if(mk==="Moneyline")return (pk===h)===(hs>as)?"win":"loss";
@@ -41,7 +41,7 @@ function finItem(sp,d,x){if(x.r)return null;
 /* My Bets (called from gradeBet when our data has no result yet) */
 function finBet(b){try{
   const why=v=>`Final: ${v} · ⚡ graded from ESPN's box score`;
-  if(b.k==="nbaprop"||b.k==="nhlprop"){const g=finProp(b.k==="nbaprop"?"nba":"nhl",b.date,b.team,b.player,b.market,b.side,b.line);return g?{r:g.r,why:why(g.v),live:1}:null}
+  if(b.k==="nbaprop"||b.k==="nhlprop"){const g=finProp(b.k==="nbaprop"?"nba":"nhl",b.date,b.team,b.player,b.market,b.side,b.line);return g?{r:g.r,why:g.r==="void"?"Did not play — no action · ⚡ from ESPN's box score":why(g.v),live:1}:null}
   if(b.k==="prop"){if(b.wk!==BETS_WEEK||typeof oppOf==="undefined")return null;const o=oppOf(b.team),d=o&&nflDate(o.g);const g=d&&finProp("nfl",d,b.team,b.player,b.market,b.side,b.line);return g?{r:g.r,why:why(g.v),live:1}:null}
   if(b.k==="ml"||b.k==="spread"||b.k==="total"){if(b.wk!==BETS_WEEK)return null;const gm=SLATE.find(x=>x.id===b.game),d=gm&&nflDate(gm),F=d&&finScore("nfl",d,b.away,b.home);if(!F)return null;
     const [ap,hp]=F,w=`Final: ${short(b.away)} ${ap}, ${short(b.home)} ${hp} · ⚡ from ESPN`;
