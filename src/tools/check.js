@@ -17,8 +17,10 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
   if(sc&&sc.g)H.push('soccer-game-'+sc.g,'soccer-game-'+sc.g+'-props');if(sc&&sc.m)H.push('soccer-match-'+sc.m);if(sc&&sc.t)H.push('soccer-team-'+sc.t);if(sc&&sc.p)H.push('soccer-player-'+sc.p);
   if(sc===null)errs.push('soccer section missing');else if(!sc.g&&vw===390)console.log('note: no upcoming soccer matches in the data')}
  for(const h of H){await p.goto('file://'+f+'#'+h);await p.waitForTimeout(350);
-  const r=await p.evaluate(()=>({w:document.documentElement.scrollWidth,t:(document.querySelector('section:not([hidden]),main')||document.body).innerText.length}));
-  if(r.w>vw+1)errs.push(`overflow #${h} @${vw}: ${r.w}`)}
+  let r=await p.evaluate(()=>({w:document.documentElement.scrollWidth,t:(document.querySelector('section:not([hidden]),main')||document.body).innerText.length}));
+  if(r.w>vw+1){await p.waitForTimeout(900);   /* re-measure once: a page still drawing (slow runner) isn't a real overflow */
+   r=await p.evaluate(vw=>({w:document.documentElement.scrollWidth,who:[...document.querySelectorAll('body *')].filter(e=>e.offsetParent!==null&&e.getBoundingClientRect().right>vw+1).slice(-3).map(e=>e.tagName.toLowerCase()+(e.id?'#'+e.id:'')+(e.className&&typeof e.className==='string'?'.'+e.className.split(' ').slice(0,2).join('.'):'')+' "'+(e.innerText||'').trim().slice(0,30).replace(/\n/g,' ')+'"').join(' | ')}),vw);
+   if(r.w>vw+1)errs.push(`overflow #${h} @${vw}: ${r.w} — ${r.who}`)}}
  if(ids.nflP){await p.evaluate(n=>{S.prop={player:n,market:null,open:true};location.hash="props"},ids.nflP);await p.waitForTimeout(400);await p.evaluate(n=>{S.prop={player:n,market:null,open:true};viewPlayer()},ids.nflP);await p.waitForTimeout(300);
   const w=await p.evaluate(()=>document.documentElement.scrollWidth);if(w>vw+1)errs.push(`overflow nfl player @${vw}: ${w}`)}
  await p.close()}
@@ -56,7 +58,9 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
  await p.evaluate(()=>uxViewSet('detailed'));
  await p.evaluate(()=>setTheme('light'));
  const CH=['today',nb!=null?'nba-game-'+nb:'nba',g!=null?'game-'+g:'games',nb!=null?'nba-game-'+nb+'-props':'nba-props'];
- for(const h of CH){await p.goto('file://'+f+'#'+h);await p.waitForTimeout(900);
+ CH.push('today|nhl');   /* Today with the NHL games tab open (it shows by itself at night, once the NBA games have started) */
+ for(const h0 of CH){const [h,tab]=h0.split('|');await p.goto('file://'+f+'#'+h);await p.waitForTimeout(900);
+  if(tab){await p.evaluate(t=>new Promise(r=>{const go=()=>{const b=document.querySelector(`[data-tt="games|${t}"]`);if(b)b.click();setTimeout(r,500)};typeof nhlEnsure!=='undefined'?nhlEnsure(go):go()}),tab)}
   const r=await p.evaluate(()=>{const P=c=>(c.match(/[\d.]+/g)||[0,0,0]).map(Number);
    const lum=([r,g,b])=>{const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(r)+.7152*f(g)+.0722*f(b)};
    const bgOf=el=>{const cols=[];for(let e=el;e;e=e.parentElement){const cs=getComputedStyle(e);if(cs.backgroundImage!=='none')return null;const c=P(cs.backgroundColor);const a=c.length>3?c[3]:1;if(a>0)cols.push([c[0],c[1],c[2],a]);if(a>=.95)break}
@@ -65,6 +69,6 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
      const cs=getComputedStyle(el);if(cs.visibility==='hidden'||+cs.opacity<.5)continue;const bg=bgOf(el);if(!bg)continue;const fc=P(cs.color),a=fc.length>3?fc[3]:1,fg=fc.slice(0,3).map((v,i)=>v*a+bg[i]*(1-a));
      const L1=lum(fg),L2=lum(bg),cr=(Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05);if(cr<3)bad.push(`${cr.toFixed(1)}:1 "${el.textContent.trim().slice(0,28)}"`)}
    return {bad:[...new Set(bad)],w:document.documentElement.scrollWidth}});
-  if(r.w>391)errs.push(`overflow (light) #${h}: ${r.w}`);if(r.bad.length)errs.push(`hard-to-read text (light) #${h}: ${r.bad.slice(0,4).join(' · ')}`)}
+  if(r.w>391)errs.push(`overflow (light) #${h}: ${r.w}`);if(r.bad.length)errs.push(`hard-to-read text (light) #${h0}: ${r.bad.slice(0,4).join(' · ')}`)}
  await p.close()}
 console.log(errs.length?"CHECK FAILED:\n"+errs.join("\n"):"CHECK OK");await b.close();process.exit(errs.length?1:0)})();

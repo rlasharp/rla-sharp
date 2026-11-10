@@ -17,7 +17,7 @@ const NH_MK={hpts:["PTS","Points","pts",x=>x[5]],hgoals:["G","Goals","goals",x=>
 const nhE=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const nhOdds=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
 function nhTm(a){return (NHL_TEAM[a]&&NHL_TEAM[a].cn)||a}
-function nhBadge(a){return `<span class="nbbdg" style="background:${NH_COL[a]||"#444"}">${nhE(a)}</span>`}
+function nhBadge(a){const c=NH_COL[a]||"#444",k=typeof xInkOn!=="undefined"?xInkOn(c):"#fff";return `<span class="nbbdg" style="background:${c};color:${k}${k==="#111"?";text-shadow:none":""}">${nhE(a)}</span>`}
 function nhRec(a){const t=NHL_TEAM[a];return t?`${t.w}-${t.l}-${t.otl}`:""}
 function nhRecA(r){return r&&r[0]!=null?`${r[0]}-${r[1]}-${r[2]}`:"–"}
 function nhAllGames(){return [...(NHL_SLATE||[]),...(NHL_NEXT||[]),...((typeof NHL_LATER!=="undefined"&&NHL_LATER)||[])]}
