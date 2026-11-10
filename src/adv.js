@@ -81,6 +81,19 @@ function restMini(g){if(!ADVOK)return "";const t=[];[g.away,g.home].forEach(tm=>
 
 /* ⏱ NFL player game logs right after the games: ESPN box scores (nfl_box.js) fill in weeks the nflverse logs don't have yet,
    so prop hit rates include last Sunday. The official nflverse rows replace them on Tuesday. */
+/* 📒 official nflverse game logs (tools/nfllogs.py, weekly): replace the typed-in numbers for the same game and add the
+   weeks the typed-in logs never got (they stopped at Week 8). Matched by name (+ position when two players share a name).
+   Typed-in rows nflverse doesn't have (games with no stats at all) are kept. Runs before the ESPN fill below. */
+(function(){if(typeof NFLV_LOGS==="undefined"||!NFLV_LOGS||typeof REAL_LOGS==="undefined"||typeof PINFO==="undefined")return;
+  const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv)\b\.?/g,"").replace(/[^a-z]/g,"");
+  const by={};for(const r of NFLV_LOGS.rows)(by[norm(r[0])]=by[norm(r[0])]||[]).push(r);
+  const cur={};REAL_LOGS.forEach((l,i)=>{if(l.season===CUR)cur[l.player+"|"+l.week]=l});let upd=0,add=0;
+  for(const [name,P] of Object.entries(PINFO)){let R=by[norm(name)];if(!R)continue;
+    if(new Set(R.map(r=>r[2])).size>1){const R2=R.filter(r=>r[2]===P.pos);if(R2.length)R=R2}
+    for(const r of R){const [,tm,pos,wk,opp,home,att,comp,py,ptd,int,ra,ry,rtd,rec,tgt,cy,ctd]=r;
+      const v={team:tm,opp,home,passAtt:att,comp,passYds:py,passTD:ptd,int,rushAtt:ra,rushYds:ry,rushTD:rtd,rec,tgt,recYds:cy,recTD:ctd};
+      const ex=cur[name+"|"+wk];if(ex){Object.assign(ex,v,{src:"nflverse"});upd++}else{const x=Object.assign({player:name,pos:P.pos,season:CUR,week:wk,src:"nflverse"},v);REAL_LOGS.push(x);cur[name+"|"+wk]=x;add++}}}
+  window.NFLV_ON={upd,add,wk:NFLV_LOGS.week}})();
 (function(){if(typeof BOX_ESPN==="undefined"||typeof REAL_LOGS==="undefined"||typeof PINFO==="undefined")return;
   const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv)\b\.?/g,"").replace(/[^a-z]/g,"");
   const idx={};for(const n in PINFO)idx[norm(n)+"|"+PINFO[n].team]=n;const have=new Set(REAL_LOGS.map(l=>l.player+"|"+l.week));let n=0;

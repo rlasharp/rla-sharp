@@ -224,6 +224,10 @@ for g in SLATE + NEXT + LATER:  # finals / scores for today's games
     r = C["games"].get(str(g["id"]))
     if r: g["as"], g["hs"], g["ot"] = r["as"], r["hs"], r["ot"]
 teams = {g[k] for g in SLATE + NEXT for k in ("a", "h")}
+# + teams that played in the last 2 days: their players' last games must stay in the data so yesterday's tracked picks
+#   (graded after the late games end, when the slate has already moved to the next day) and My Bets can be graded
+RECENT = [g for k in (1, 2) for g in slate_for((today - dt.timedelta(days=k)).isoformat())]
+teams |= {g[k] for g in RECENT for k in ("a", "h")}
 teams4 = teams | {g[k] for g in LATER for k in ("a", "h")}  # goalies for the next 3 days too
 
 # ---------- full names + positions from current rosters (teams playing today/tomorrow) ----------

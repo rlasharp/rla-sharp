@@ -15,7 +15,7 @@ out, nfl_behind = [], False
 res = rd("real.js"); m = re.search(r"const RESULTS=\[(.*?)\];", res, re.S)
 latest = max((int(x) for x in re.findall(r"\[(\d+),\"[A-Z]{2,3}\"", m.group(1))), default=0) if m else 0
 # NFL weekly sources should catch up by Tuesday after a week's games; flag from Wednesday, or anytime when 2+ weeks behind
-for name, f in (("NFL box scores / red zone (adv_data.js)", "adv_data.js"), ("NFL usage (usage_data.js)", "usage_data.js"), ("NFL defense vs position / QB1 / head to head (nfl_weekly.js)", "nfl_weekly.js")):
+for name, f in (("NFL box scores / red zone (adv_data.js)", "adv_data.js"), ("NFL usage (usage_data.js)", "usage_data.js"), ("NFL defense vs position / QB1 / head to head (nfl_weekly.js)", "nfl_weekly.js"), ("NFL player game logs (nfl_logs.js)", "nfl_logs.js")):
     w = week_of(rd(f))
     if w is None: out.append(f"{name}: no data"); nfl_behind = True; continue
     lag = latest - w

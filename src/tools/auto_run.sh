@@ -39,6 +39,7 @@ if want nfl; then
     python3 tools/nflgen.py "$WORK/nflv" > "$WORK/extra.js" 2>> "$WORK/summary.txt" && grep -q "NFL_STAND" "$WORK/extra.js" && cp "$WORK/extra.js" nfl_extra.js && log "NFL standings / schedule / shares (nflverse) refreshed"
     python3 tools/usagegen.py "$WORK/nflv" > "$WORK/usage.js" 2>> "$WORK/summary.txt" && grep -q "USAGE_RAW" "$WORK/usage.js" && cp "$WORK/usage.js" usage_data.js && log "NFL usage (snaps / targets / carries) refreshed"
     python3 tools/nflweekly.py "$WORK/nflv" > "$WORK/weekly.js" 2>> "$WORK/summary.txt" && grep -q "^var NFLW" "$WORK/weekly.js" && cp "$WORK/weekly.js" nfl_weekly.js && log "NFL defense vs position / recent players / QB1 / head to head refreshed"
+    python3 tools/nfllogs.py "$WORK/nflv" > "$WORK/logs.js" 2>> "$WORK/summary.txt" && grep -q "^var NFLV_LOGS" "$WORK/logs.js" && cp "$WORK/logs.js" nfl_logs.js && log "NFL player game logs (nflverse) refreshed"
     python3 tools/advgen.py "$WORK/nflv" auto > "$WORK/adv.js" 2>> "$WORK/summary.txt" && grep -q "^const BOX=" "$WORK/adv.js" && cp "$WORK/adv.js" adv_data.js && log "NFL box scores / red zone / pace (nflverse) refreshed"
     python3 tools/nflx2.py "$WORK/nflv" > "$WORK/x2.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_K" "$WORK/x2.js" && cp "$WORK/x2.js" nfl_x2.js && log "NFL red zone / QB runs / PROE / division / kickers refreshed"; fi
 fi
