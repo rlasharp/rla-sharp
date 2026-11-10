@@ -1,13 +1,13 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 22:38Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 23:15Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Brooklyn Nets
-Mikel Brown Jr.|G|Day-To-Day|rest|Nov 11
-Grant Nelson|F|Day-To-Day|knee|Nov 10
+Nolan Traore|G|Day-To-Day|calf soreness|Nov 11
 Egor Demin|G|Out|leg bruise|Nov 11
+Grant Nelson|F|Day-To-Day|knee|Nov 10
 #Charlotte Hornets
 Brandon Miller|F|Day-To-Day|groin soreness|Nov 12
 Moussa Diabate|F|Day-To-Day|quadriceps|Nov 12
@@ -19,7 +19,7 @@ Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 11
 Tobe Awaka|F|Day-To-Day|back|Nov 11
 Zach Collins|F|Day-To-Day|illness|Nov 11
 #Cleveland Cavaliers
-Sam Merrill|G|Out|elbow|Nov 13
+Sam Merrill|G|Out|elbow|Nov 16
 Jaylon Tyson|G|Out|ankle sprain|Nov 11
 #Dallas Mavericks
 Morez Johnson Jr.|F|Day-To-Day|leg|Nov 12
@@ -53,12 +53,11 @@ Cam Christie|G|Day-To-Day|ankle|Nov 10
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Austin Reaves|G|Day-To-Day|illness|Nov 11
 Quentin Grimes|G|Day-To-Day|finger|Nov 11
 #Memphis Grizzlies
+Quinten Post|C|Out|head|Nov 13
 Isaiah Stewart|C|Day-To-Day|knee bruise|Nov 11
-Quinten Post|C|Day-To-Day|head|Nov 11
-Scotty Pippen Jr.|G|Out|back soreness|Nov 11
+Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
 Giannis Antetokounmpo|F|Day-To-Day|wrist sprain|Nov 10
@@ -73,7 +72,7 @@ Trendon Watford|F|Out|ankle|Nov 13
 Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 11
 Yves Missi|C|Out|knee bruise|Nov 16
 #New York Knicks
-Josh Hart|G|Day-To-Day|illness|Nov 10
+Josh Hart|G|Out|illness|Nov 11
 #Oklahoma City Thunder
 Jaylin Williams|F|Out|back spasms|Nov 11
 Thomas Sorber|C|Out|knee|Nov 13
@@ -102,7 +101,7 @@ Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
 Devin Vassell|G|Day-To-Day|groin|Nov 11
-Tobias Harris|F|Out|calf strain|Nov 11
+Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
 Trayce Jackson-Davis|F|Day-To-Day|illness|Nov 11

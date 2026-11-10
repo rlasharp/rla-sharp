@@ -1,12 +1,12 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 21:55Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 23:15Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Michael Wilson|WR|IR|Neck|Feb 15
+Gardner Minshew II|QB|IR|Elbow|Dec 20
 Jayden Williams|OT|Questionable|Knee|Nov 15
 Bam Knight|RB|Questionable|Concussion|Nov 15
 Jon Gaines II|G|Questionable|Ankle|Nov 15
 Hjalte Froholdt|C|Questionable|Concussion|Nov 15
-Gardner Minshew II|QB|Doubtful|Elbow|Nov 15
-Michael Wilson|WR|Out|Neck|Feb 15
 Roy Lopez|DT|Questionable|Toe|Nov 15
 James Conner|RB|IR|Foot|Nov 15
 #ATL
@@ -79,12 +79,12 @@ Jaylen Waddle|WR|Questionable|Concussion|Nov 22
 Riley Moss|CB|Questionable|Concussion|Nov 22
 Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 #DET
+Kerby Joseph|S|Out|Knee|Nov 22
 DJ Wonnum|LB|Questionable|Concussion|Nov 15
 D.J. Reed|CB|Questionable|Hip|Nov 15
 Jacob Saylors|RB|Questionable|Neck|Nov 15
 Cade Mays|C|Questionable|Ankle|Nov 15
 Jack Campbell|LB|IR|Neck|Dec 6
-Kerby Joseph|S|Out|Knee|Nov 22
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
@@ -148,7 +148,6 @@ Malik Willis|QB|IR|Groin|Dec 13
 Zach Sieler|DT|IR|Biceps|Feb 15
 Jaylen Wright|RB|Questionable|Quadriceps|Nov 15
 Will Kacmarek|TE|Questionable|Quadriceps|Nov 15
-Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
 #MIN
 Kyler Murray|QB|Doubtful|Hamstring|Nov 15
 Jauan Jennings|WR|Questionable|Calf|Nov 15
@@ -166,12 +165,14 @@ Will Campbell|OT|Questionable|Knee|Nov 15
 Carlton Davis III|CB|Questionable|Knee|Nov 15
 Greg Van Roten|G|IR|Hamstring|Nov 15
 #NO
+Stone Smartt|TE|Questionable|Undisclosed|Nov 22
 Erik McCoy|C|Doubtful|Biceps|Nov 15
 CJ Donaldson|RB|Questionable|Shoulder|Nov 15
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 #NYG
-Darnell Mooney|WR|Questionable|Chest|Nov 12
-Charlie Jones|WR|Questionable|Thumb|Nov 12
+Colton Hood|CB|Questionable|Finger|Nov 12
+J.J. McCarthy|QB|Questionable|Undisclosed|
+Cam Skattebo|RB|Out|Undisclosed|
 Malik Harrison|LB|Questionable|Groin|Nov 12
 Abdul Carter|LB|Questionable|Knee|Nov 12
 #NYJ
@@ -196,13 +197,13 @@ Brandin Echols|CB|Questionable|Hamstring|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Gracen Halton|DT|IR|Ankle|Feb 15
 Mike Evans|WR|Questionable|Achilles|Nov 15
 Deebo Samuel Sr.|WR|Questionable|Hamstring|Nov 15
 C.J. West|DT|IR|Knee|Nov 15
 Deommodore Lenoir|CB|Questionable|Foot|Nov 15
 Renardo Green|CB|Questionable|Back|Nov 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
-Gracen Halton|DT|Out|Ankle|Feb 15
 Nate Hobbs|CB|IR|Groin|Nov 15
 Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
 #SEA
