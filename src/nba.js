@@ -211,7 +211,7 @@ function nbaGames(el){
   <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today${(()=>{const f=NBA_SLATE.filter(g=>nbaFinalHtml(g)).length;return f?`, ${f} final`:""})()}. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
   <div class="grid g2">${[...NBA_SLATE.filter(g=>!nbaFinalHtml(g)),...NBA_SLATE.filter(g=>nbaFinalHtml(g))].map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
   ${typeof xInsights!=="undefined"?xInsights("nba","🧠 Tonight's insights",[["edges","💰 Odds gaps",xEdgesCard("nba")],["ang","🧭 Player angles",typeof nbaAnglesCard!=="undefined"?nbaAnglesCard():""],["moves","📈 Line moves",typeof loMovesCard!=="undefined"?loMovesCard("nba",8):""],["min","⏱️ Minutes",typeof xaTrendCard!=="undefined"?`<div class="card">${xaTrendCard("nba")}</div>`:""]]):""}
-  <div style="margin-top:14px">${nbaPlaysCard()}</div>
+  <div style="margin-top:14px">${nbaPlaysCard()}</div>${typeof prlSportHtml!=="undefined"?prlSportHtml("nba"):""}
   ${typeof loMovesCard!=="undefined"&&loMovesCard("nba",8)?`<div style="margin-top:14px">${loMovesCard("nba",8)}</div>`:""}
   <div style="margin-top:14px">${nbaRecordCard(0)}</div>
   ${typeof nbaRoleCard!=="undefined"&&NBA_SLATE.some(g=>!nbaStarted(g))?`<div style="margin-top:14px">${nbaRoleCard(8)}</div>`:""}
@@ -932,7 +932,7 @@ function nbaLineRow(nm,r){
       </div>`}
 
 /* ---------- Game page: every player prop from this game ---------- */
-function nbaGameProps(g){return (nbaStarted(g)||typeof xParlayCard==="undefined"?"":xParlayCard(nbaParlayLegs(g)))+nbaGameProps0(g)}
+function nbaGameProps(g){return (nbaStarted(g)||typeof xParlayCard==="undefined"?"":xParlayCard(nbaParlayLegs(g))+(typeof prlGameHtml!=="undefined"?prlGameHtml("nba",g.id):""))+nbaGameProps0(g)}
 function nbaGameProps0(g){
   if(nbaStarted(g))return `<div class="info"><span>🔒 This game has started — pregame player props are closed.</span></div>`;
   const tms=[g.a,g.h],all=NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&tms.includes(p.tm)&&NBA_MK[r[1]]});

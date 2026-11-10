@@ -96,6 +96,7 @@ function viewPlays(){
   $("#v-plays").innerHTML=`<h1>Plays of the Week</h1>
    <p class="sub">Week ${PLAYS_WEEK} · our ${PLAYS.length} favourite spots based on the matchup data on this site — two player props, a spread, a moneyline and a total. Lines as of ${PLAYS_ASOF}; check your sportsbook before betting, prices move.</p>
    <div class="row" style="gap:8px;margin:-4px 0 10px;flex-wrap:wrap"><button class="btn" id="nflShare">📤 Share this week's plays</button><a class="btn" href="#record">📒 Full record</a></div>
+   ${typeof prlSportHtml!=="undefined"?prlSportHtml("nfl"):""}
    ${recordPanel()}
    <div class="grid g2">${cards}</div>
    <div class="card" style="margin-top:14px;padding:14px 18px"><p class="note" style="margin:0"><b>How these are chosen:</b> props need a strong season hit rate against the posted line plus a matchup that doesn't work against it (defense vs position rank). Game plays come from our score model disagreeing with the betting line by a meaningful margin. These are data-based leans, <b>not guarantees</b> — football is high-variance and even good plays lose often. Never bet more than you can afford to lose. Must be 21+ (18+ in some states). Gambling problem? Call or text 1-800-GAMBLER (24/7, free). In Canada: Quebec 18+, Jeu : aide et référence 1-800-461-0140 · Ontario 19+, ConnexOntario 1-866-531-2600.</p></div>`;

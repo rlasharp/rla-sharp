@@ -152,7 +152,7 @@ function socDayTabs(D,cur){const d0=socToday();return `<div class="gtabs scdays"
 function socMatches(el){const D=socDays();if(!D.includes(SC.day))SC.day=D[0]||socToday();const d=SC.day,F=socFxOn(d);
   const byLg={};F.forEach(f=>(byLg[f.c]=byLg[f.c]||[]).push(f));
   const gap=D.length&&D[0]>socAddDays(socToday(),1)?`<div class="card small" style="margin:8px 0">No matches in the next couple of days (international break) — the next ones are below.</div>`:"";
-  el.innerHTML=`<h1>⚽ Soccer · ${socE(socDayS(d))}</h1>${socPlaysCard()}${socDayTabs(D,d)}${socLgFilter()}${gap}${socMovesCard()}
+  el.innerHTML=`<h1>⚽ Soccer · ${socE(socDayS(d))}</h1>${socPlaysCard()}${typeof prlSportHtml!=="undefined"?prlSportHtml("soc"):""}${socDayTabs(D,d)}${socLgFilter()}${gap}${socMovesCard()}
   <p class="sub">Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Championship, Eredivisie, Portugal, MLS and the three European cups. Every match shows the best US odds and <b>our estimate</b> — tap one for corners, cards, referee, weather and player props.</p>
   ${F.length?Object.entries(byLg).map(([c,L])=>`<h2 class="tsh">${socLgChip(c)} ${socE((SOC_LG[c]||{}).n||c)}</h2><div class="grid g2">${L.map(socCard).join("")}</div>`).join(""):`<div class="card"><p>No upcoming matches${SC.lgs.length?" in your leagues":""} in the next 2 weeks.</p></div>`}
   ${socFoot()}`;

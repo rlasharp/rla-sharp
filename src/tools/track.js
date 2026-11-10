@@ -51,6 +51,17 @@ for(const s of ['nba','nfl','nhl','soc'])T[s]=T[s]||{};
       const save=window.socDay;window.socDay=et;let P=[];try{P=socPickPlays(d)}finally{window.socDay=save}
       if(P.length){S.plays=P;S.locked=1;log.push(`soc ${d}: locked ${P.length} plays`)}}
     for(const S of Object.values(T.soc))for(const x of S.plays||[])if(!x.r||x.r==="pending"){const g=socGrade(x);if(g&&g.r&&g.r!=="pending"){x.r=g.r;x.v=g.why}}}
+  /* ---------- 🎟 parlay of the day (parlay.js): saved while none of that day's games has started, frozen after ---------- */
+  if(typeof prlLegs!=="undefined"){const legOf=l=>Object.assign({nm:l.player,k:l.k,side:l.side,line:l.line,odds:l.odds,tm:l.team,label:l.label,p:Math.round(l.p*1000)/1000},l.sp==="soc"?{spec:l.spec}:{});
+    const snap=(sp,d,L)=>{const S=T[sp][d]||(T[sp][d]={});if(S.parlayLocked)return;const P=prlPick(L,PRL.lo,PRL.hi,false);
+      S.parlay=P?{dec:Math.round(P.dec*100)/100,p:Math.round(P.p*1000)/1000,legs:P.legs.map(legOf)}:null};
+    const lock=(sp,d)=>{const S=T[sp][d];if(S&&S.parlay&&!S.parlayLocked){S.parlayLocked=1;log.push(`${sp} ${d}: parlay locked (${S.parlay.legs.length} legs @ ${S.parlay.dec})`)}};
+    if(typeof NBA_SLATE!=="undefined"&&NBA_SLATE.length){const d=NBA_SLATE_DATE;if(!NBA_SLATE.some(nbaStarted))snap("nba",d,prlLegs("nba"));else lock("nba",d)}
+    if(typeof NHL_SLATE!=="undefined"&&NHL_DATE&&NHL_SLATE.length){const d=NHL_DATE;if(!NHL_SLATE.some(nhStarted))snap("nhl",d,prlLegs("nhl"));else lock("nhl",d)}
+    if(typeof SLATE!=="undefined"){const by={};for(const g of SLATE){const d=nflDate(g);if(d)(by[d]=by[d]||[]).push(g)}
+      for(const [d,G] of Object.entries(by)){if(G.some(g=>g.final||nflStarted(g))){lock("nfl",d);continue}const ids=new Set(G.map(g=>String(g.id)));if(!T.nfl[d])continue;snap("nfl",d,prlLegs("nfl").filter(l=>ids.has(l.g)))}}
+    if(window.SOC_OK){const et=iso=>new Intl.DateTimeFormat("en-CA",{timeZone:"America/Toronto"}).format(new Date(iso)),by={};for(const f of SOC_FX||[])if(f.odds)(by[et(f.t)]=by[et(f.t)]||[]).push(f);
+      for(const [d,F] of Object.entries(by)){if(F.some(socStarted)){lock("soc",d);continue}if(Math.min(...F.map(f=>Date.parse(f.t)))-Date.now()>36*3600e3)continue;const ids=new Set(F.map(f=>String(f.id)));snap("soc",d,prlLegs("soc").filter(l=>ids.has(l.g)))}}}
   /* ---------- grading ---------- */
   const side=(v,line,s)=>v===line?"push":((s==="o")===(v>line))?"win":"loss";
   const gradeProp=(sp,d,x)=>{
@@ -73,11 +84,17 @@ for(const s of ['nba','nfl','nhl','soc'])T[s]=T[s]||{};
     for(const x of S.best||[])if(!x.r||x.r==="void"){const g=gradeProp(sp,d,x);if(g&&!(x.r==="void"&&g.r==="void")){x.r=g.r;if(g.v!=null)x.v=g.v}}
     for(const x of S.plays||[])if(!x.r||(x.r==="void"&&x.type==="prop")){if(x.type==="prop"){const g=gradeProp(sp,d,x);if(g&&!(x.r==="void"&&g.r==="void")){x.r=g.r;if(g.v!=null)x.v=g.v}}else{const F=final(sp,d,x.a,x.h);if(F){x.r=gradeEdge({mk:x.mk,pick:x.pick},x.a,x.h,F);x.f=F}}}
     for(const G of S.games||[])if(!G.f){const F=final(sp,d,G.a,G.h);if(F){G.f=F;G.win=(G.p>=.5)===(F[1]>F[0]);if(G.L&&G.L.tot!=null&&F[0]+F[1]!==G.L.tot)G.tw=(G.tot>G.L.tot)===(F[0]+F[1]>G.L.tot);for(const e of G.edges||[])e.r=gradeEdge(e,G.a,G.h,F)}}}
+  /* parlays: every leg graded like a pick; any loss = loss; void/push legs drop out (payout from the legs that won) */
+  const gradeParlay=(sp,d,P)=>{if(!P||P.r)return;for(const x of P.legs){if(x.r&&x.r!=="void")continue;
+      if(sp==="soc"){const g=x.spec&&typeof socGrade!=="undefined"?socGrade(x.spec):null;if(g&&g.r&&g.r!=="pending")x.r=g.r}else{const g=gradeProp(sp,d,x);if(g&&!(x.r==="void"&&g.r==="void")){x.r=g.r;if(g.v!=null)x.v=g.v}}}
+    if(P.legs.some(x=>x.r==="loss"))P.r="loss";else if(P.legs.every(x=>x.r)){const W=P.legs.filter(x=>x.r==="win");P.r=W.length?"win":"void";P.paid=Math.round(W.reduce((a,x)=>a*(x.odds>0?1+x.odds/100:1+100/(-x.odds)),1)*100)/100}};
+  for(const sp of ['nba','nfl','nhl','soc'])for(const [d,S] of Object.entries(T[sp]))if(S.parlay&&S.parlayLocked)gradeParlay(sp,d,S.parlay);
   /* ---------- summaries ---------- */
   const SUM={};for(const sp of ['nba','nfl','nhl']){const s={best:{w:0,l:0,u:0,n:0},win:[0,0],tot:[0,0],edge:{},plays:{w:0,l:0,p:0,u:0},recent:[]};
     for(const [d,S] of Object.entries(T[sp])){for(const x of S.best||[]){if(x.r==="win"){s.best.w++;s.best.u+=pay(x.odds)}else if(x.r==="loss"){s.best.l++;s.best.u-=1}if(x.r)s.best.n++}
       for(const G of S.games||[])if(G.f){s.win[G.win?0:1]++;if(G.tw!=null)s.tot[G.tw?0:1]++;for(const e of G.edges||[])if(e.r==="win"||e.r==="loss"){const E=s.edge[e.mk]||(s.edge[e.mk]=[0,0,0]);if(e.r==="win"){E[0]++;E[2]+=pay(e.odds)}else{E[1]++;E[2]-=1}}}
-      for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r)s.plays.p++;s.recent.push({d,...x})}}
+      for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r)s.plays.p++;s.recent.push({d,...x})}
+      const P=S.parlay;if(P&&S.parlayLocked&&P.r){const q=s.parlay||(s.parlay={w:0,l:0,p:0,u:0});if(P.r==="win"){q.w++;q.u+=P.paid-1}else if(P.r==="loss"){q.l++;q.u-=1}else q.p++;q.u=Math.round(q.u*100)/100}}
     /* calibration — did our stated chances come true? props bucketed by our chance, game edges by edge size */
     const cal={props:{},edges:{}},pb=x=>x>=.8?"80%+":x>=.7?"70–79%":x>=.6?"60–69%":"50–59%",eb=e=>e>=.1?"10%+":e>=.07?"7–9%":"4–6%";
     for(const [d,S] of Object.entries(T[sp])){for(const x of S.best||[]){if(x.r!=="win"&&x.r!=="loss"||x.sc==null)continue;const B=cal.props[pb(x.sc)]||(cal.props[pb(x.sc)]=[0,0,0,0]);B[0]++;B[1]+=x.r==="win";B[2]+=x.sc;B[3]+=x.r==="win"?pay(x.odds):-1}
@@ -87,6 +104,7 @@ for(const s of ['nba','nfl','nhl','soc'])T[s]=T[s]||{};
     s.best.u=Math.round(s.best.u*100)/100;s.plays.u=Math.round(s.plays.u*100)/100;for(const E of Object.values(s.edge))E[2]=Math.round(E[2]*100)/100;
     s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM[sp]=s}
   {const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T.soc))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}
+   for(const S of Object.values(T.soc)){const P=S.parlay;if(P&&S.parlayLocked&&P.r){const q=s.parlay||(s.parlay={w:0,l:0,p:0,u:0});if(P.r==="win"){q.w++;q.u+=P.paid-1}else if(P.r==="loss"){q.l++;q.u-=1}else q.p++;q.u=Math.round(q.u*100)/100}}
    s.plays.u=Math.round(s.plays.u*100)/100;s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM.soc=s}
   const today=(typeof NHL_DATE!=="undefined"&&NHL_DATE&&T.nhl[NHL_DATE])||null;
   /* tonight's snapshots (latest 1 day for NBA/NHL, this week's game days for NFL) so the site can grade them live as games end */
