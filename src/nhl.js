@@ -192,7 +192,7 @@ function nhLineRow(nm,r){
   if(alt){line=alt.line;op=alt.o;up=alt.u;book=alt.ob||alt.ub||""}
   const VA=nhVals(nm,k),V=VA.filter(o=>!o.prev),VP=VA.filter(o=>o.prev),L10=VA.slice(-10),v10=L10.map(o=>o.v),hit=a=>a.filter(o=>pxHit(o.v,line)).length,w=nhWho(nm),g=nhGameOf(w.tm),opp=g?(g.a===w.tm?g.h:g.a):null,vs=opp?VA.filter(o=>o.x[1]===opp):[];
   const avg=a=>a.length?(a.reduce((s,o)=>s+o.v,0)/a.length).toFixed(1):"–";
-  return `<div class="pl"><div class="plh"><div><b>${m[1]}</b> ${yes?"":`<span class="plv">${line}</span>${typeof loStep!=="undefined"&&m[3]?loStep(nm,k,main):""}`}${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
+  return `<div class="pl" data-lrow="nhl|${nhE(nm+"|"+k)}"><div class="plh"><div><b>${m[1]}</b> ${yes?"":`<span class="plv">${line}</span>${typeof loStep!=="undefined"&&m[3]?loStep(nm,k,main):""}`}${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
     <div class="small">${op==null&&up==null&&!book?"no sportsbook line — his season average":`${yes?"Yes ":"O "}${nhOdds(op)}${up!=null?" · U "+nhOdds(up):""}${book?" · "+nhE(book):""}`}</div></div>
    ${op!=null&&typeof actBtn!=="undefined"&&typeof nhlSpec!=="undefined"?(()=>{const so=nhlSpec(nm,k,"over"),su=yes?null:nhlSpec(nm,k,"under");return so||su?`<div class="obrow">${so?actBtn(so,`${yes?"Scores":"Over "+so.line} <b>${oddsFmt(so.odds)}</b>`,"ov"):""}${su?actBtn(su,`Under ${su.line} <b>${oddsFmt(su.odds)}</b>`,"un"):""}</div>`:""})():""}
    ${m[3]&&!yes&&typeof loAltHtml!=="undefined"?loAltHtml(nm,k,main,v10):""}
@@ -208,16 +208,17 @@ function nhlProps(el){
   const mks=[...new Set([...rows.map(r=>r[1]),...(NHL_SLATE.some(g=>!nhStarted(g))?["hsaves","hhit"]:[])])].sort((x,y)=>Object.keys(NH_MK).indexOf(x)-Object.keys(NH_MK).indexOf(y)),mf=mks.includes(NH.mk)?NH.mk:"all";
   const best0=nhBest(),best=nhBestFilter(best0),showN=NH.bn||15;
   const by={};rows.filter(r=>mf==="all"||r[1]===mf).forEach(r=>(by[r[0]]=by[r[0]]||[]).push(r));
-  const names=Object.keys(by).sort((a,b)=>{const ga=nhGameOf(nhWho(a).tm),gb=nhGameOf(nhWho(b).tm);return (ga.iso>gb.iso?1:ga.iso<gb.iso?-1:0)||a.localeCompare(b)}).slice(0,60);
+  const names=Object.keys(by).sort((a,b)=>{const ga=nhGameOf(nhWho(a).tm),gb=nhGameOf(nhWho(b).tm);return (ga.iso>gb.iso?1:ga.iso<gb.iso?-1:0)||a.localeCompare(b)});
   el.innerHTML=`<h1>🎯 NHL player props</h1><p class="sub">${rows.length} lines from licensed US books · ${nhE(NHL_GEN?`stats updated ${NHL_GEN}`:"")}</p>
    <div class="seg" style="margin-bottom:10px">${[["all","All"],...mks.map(m=>[m,NH_MK[m][1]])].map(([v,l])=>`<button class="btn${mf===v?" on":""}" data-nhmk="${v}">${l}</button>`).join("")}</div>
    ${best0.length?`<div class="card"><h2 style="margin-bottom:2px">🔥 Best edges</h2><div class="small" style="margin-bottom:8px">${best.length} of ${best0.length} lines with an edge — hit rate (last 10 60%, season 40%) vs the probability the odds imply. Filter by game, market, position or streak.</div>${nhBestFilterUI(best0)}
      <div class="nhbp">${best.slice(0,showN).map(nhBestRow).join("")||`<div class="small" style="padding:8px 0">Nothing matches these filters.</div>`}</div>${best.length>showN?`<button class="btn" data-nhmore="1" style="width:100%;margin-top:8px">Show ${Math.min(15,best.length-showN)} more</button>`:""}</div>`:""}
-   ${(mf==="hsaves"||mf==="hhit")&&!Object.keys(by).length&&typeof xaNhlNoLineCard!=="undefined"?xaNhlNoLineCard(mf):rows.length?names.map(nm=>nhPlayerLines(nm,by[nm],true)).join(""):`<div class="card small">No NHL props posted yet — books usually post them the morning of the game.</div>`}
-   ${Object.keys(by).length>60?`<p class="small">Showing 60 players — pick a market above to narrow it down.</p>`:""}${nhFoot()}`;
+   ${(mf==="hsaves"||mf==="hhit")&&!Object.keys(by).length&&typeof xaNhlNoLineCard!=="undefined"?xaNhlNoLineCard(mf):rows.length?`<div id="nhPList">${names.slice(0,typeof uxMoreN!=="undefined"?uxMoreN("nhp|"+mf,names.length,12):names.length).map(nm=>nhPlayerLines(nm,by[nm],true)).join("")}</div>`:`<div class="card small">No NHL props posted yet — books usually post them the morning of the game.</div>`}
+   ${nhFoot()}`;
   el.querySelectorAll("[data-nhbf]").forEach(x=>x.onchange=()=>{NH.bf[x.dataset.nhbf]=x.value;NH.bn=15;const y=scrollY;nhlProps(el);scrollTo(0,y)});
   el.querySelectorAll("[data-nhmore]").forEach(x=>x.onclick=()=>{NH.bn=(NH.bn||15)+15;const y=scrollY;nhlProps(el);scrollTo(0,y)});
-  nhWire(el,()=>nhlProps(el))}
+  nhWire(el,()=>nhlProps(el));
+  if(typeof uxMoreAttach!=="undefined")uxMoreAttach(document.getElementById("nhPList"),names,uxMoreN("nhp|"+mf,names.length,12),nm=>nhPlayerLines(nm,by[nm],true),w=>nhWire(w,()=>nhlProps(el)),"nhp|"+mf,12)}
 
 /* ---------- Player page ---------- */
 function nhlPlayer(el,nm){

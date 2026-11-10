@@ -92,18 +92,29 @@ function loAltStep(key,d,main,btn){const cur=LO.pick[key]!=null?LO.pick[key]:mai
     if(v)v.textContent=String(nx);if(card)card.classList.add("lopend")}
   clearTimeout(LO.stepT);LO.stepT=setTimeout(()=>{if(!loSwapCards(key))loRerender(key)},btn?250:0)}
 /* redraw only the card(s) for this prop (NBA prop cards) instead of the whole page: no lag, and nothing else moves */
-function loSwapCards(key){if(typeof nbaPropCard==="undefined"||typeof NBA_PROPS==="undefined")return false;
-  const i=key.lastIndexOf("|"),nm=key.slice(0,i),k=key.slice(i+1),r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k);if(!r)return false;
-  const C=[...document.querySelectorAll(".card.prop[data-k]")].filter(c=>c.dataset.k===k&&c.dataset.nm===nm&&/^pc_/.test(c.id));
-  if(!C.length)return false;
-  /* this prop shows up elsewhere on the page too (a row on a game page, the alt-lines table) — those need the full redraw */
-  if([...document.querySelectorAll(".alsb")].some(b=>b.dataset.altkey===key&&!C.some(c=>c.contains(b))))return false;
-  try{for(const c of C){const w=document.createElement("div");w.innerHTML=nbaPropCard(r,/_p$/.test(c.id)?100:0);const n=w.firstElementChild;if(!n)return false;
-      c.replaceWith(n);if(typeof nbaWireCharts!=="undefined")nbaWireCharts(n,()=>loRerender(key));if(typeof nbaWireBest!=="undefined")nbaWireBest(n)}
-    return true}catch(e){return false}}
+/* redraw only what shows this prop — the NBA prop cards and the one-line rows on game / player pages (NBA, NHL, NFL) —
+   instead of the whole page: no lag, nothing else moves. Falls back to the full redraw for anything else. */
+function loSwapCards(key){try{
+  const B=[...document.querySelectorAll(".alsb")].filter(b=>b.dataset.altkey===key);if(!B.length)return false;
+  const H=new Set();for(const b of B){const h=b.closest('.card.prop[id^="pc_"],.pl[data-lrow]');if(!h)return false;H.add(h)}
+  const i=key.lastIndexOf("|"),nm=key.slice(0,i),k=key.slice(i+1),plan=[];
+  for(const h of H){let html=null,wire=null;
+    if(h.classList.contains("prop")){if(typeof nbaPropCard==="undefined")return false;const r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k);if(!r)return false;
+      html=nbaPropCard(r,/_p$/.test(h.id)?100:0);wire=n=>{if(typeof nbaWireCharts!=="undefined")nbaWireCharts(n,()=>loRerender(key));if(typeof nbaWireBest!=="undefined")nbaWireBest(n)}}
+    else{const sp=h.dataset.lrow.split("|")[0];
+      /* rows whose inner parts were wired one by one (not by the page-wide click handler) need the page's own wiring */
+      if([...h.querySelectorAll("*")].some(e=>e.onclick&&!e.hasAttribute("onclick")))return false;
+      if(sp==="nba"&&typeof nbaLineRow!=="undefined"){const r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k);if(!r)return false;html=nbaLineRow(nm,r)}
+      else if(sp==="nhl"&&typeof nhLineRow!=="undefined"&&typeof NHL_PROPS!=="undefined"){const r=NHL_PROPS.find(x=>x[0]===nm&&x[1]===k);if(!r)return false;html=nhLineRow(nm,r)}
+      else if(sp==="nfl"&&typeof nflLineRow!=="undefined"&&typeof PINFO!=="undefined"&&PINFO[nm]){html=nflLineRow(PINFO[nm],k)}
+      else return false;
+      const oc=h.onclick,jump=h.hasAttribute("data-jump");wire=n=>{if(oc)n.onclick=oc;if(!jump)n.removeAttribute("data-jump")}}
+    plan.push([h,html,wire])}
+  for(const [h,html,wire] of plan){const w=document.createElement("div");w.innerHTML=html;const n=w.firstElementChild;if(!n)return false;h.replaceWith(n);wire(n)}
+  return true}catch(e){return false}}
 function loAltChip(nm,k){const a=loAltOdds(nm,k);if(!a)return "";
   return `<span class="altc">🪜 Alt line${a.o==null&&a.u==null?" · no book odds":""}<button class="altx" data-altkey="${esc(nm+"|"+k)}" onclick="event.stopPropagation();loAltPick(this.dataset.altkey,null)" title="Back to the main line">✕ main</button></span>`}
-function loAltPick(key,line,keepClosed){if(line==null)delete LO.pick[key];else LO.pick[key]=line;LO.openAlt=keepClosed?LO.openAlt:key;loRerender()}
+function loAltPick(key,line,keepClosed){if(line==null)delete LO.pick[key];else LO.pick[key]=line;LO.openAlt=keepClosed?LO.openAlt:key;if(!loSwapCards(key))loRerender(key)}
 /* every new page starts from the normal (main) line */
 window.addEventListener("hashchange",()=>{clearTimeout(LO.stepT);LO.pick={};LO.openAlt=null});
 function loAltClick(e){e.stopPropagation();const tr=e.target.closest("[data-alt]");if(!tr)return;

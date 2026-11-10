@@ -740,7 +740,7 @@ function nbaProps(el){
   ${props.length?`<div class="nbsort"><span class="small">Sort by over hit rate</span>
     <div class="seg">${[["hi","High → low"],["lo","Low → high"]].map(([v,l])=>`<button class="btn${NB.ps===v?" on":""}" data-ps="${v}">${l}</button>`).join("")}</div>
     <select id="nbaPB">${[["l5","Last 5"],["l10","Last 10"],["season","This season"],["h2h","vs opponent"]].map(([v,l])=>`<option value="${v}"${NB.pb===v?" selected":""}>${l}</option>`).join("")}</select></div>
-  <p class="sub">How often each player went over today's line. ${NB.ps==="lo"?"Lowest over rates first — those lean under.":"Highest over rates first."}</p><div class="grid g2">${props.map((r,i)=>nbaPropCard(r,i)).join("")}</div>`
+  <p class="sub">How often each player went over today's line. ${NB.ps==="lo"?"Lowest over rates first — those lean under.":"Highest over rates first."}</p><div class="grid g2" id="nbaPGrid">${props.slice(0,typeof uxMoreN!=="undefined"?uxMoreN("nbap|"+k,props.length,20):props.length).map((r,i)=>nbaPropCard(r,i)).join("")}</div>`
    :`<p class="sub">${NBA_PROPS.length&&NBA_SLATE.length&&NBA_SLATE.every(nbaStarted)?"Every game today has started — pregame lines are closed. New lines come out tomorrow morning.":NBA_PROPS.length?`No ${lbl.toLowerCase()} lines open right now.`:"Today's prop lines aren't out yet — books post them in the morning."} Here's how tonight's players have been doing.</p>`}
 
   <div class="card" style="margin-top:14px"><h2>${lbl} · playing tonight</h2>${nbaMinOn()?`<div class="small" style="margin:-6px 0 8px">Filtered: ${nbaFiltTxt()}.</div>`:""}
@@ -749,6 +749,7 @@ function nbaProps(el){
     return `<tr><td>${nbaLink(nm)} <span class="small">${p.tm}</span>${nbaInjChip(nbaInjOf(nm))}</td><td>${nbaF(nbaAvg(p,"min"))}</td><td><b>${nbaF(s)}</b></td><td class="${Math.abs(d)<Math.max(1,s*.15)?"":d>0?"up":"dn"}">${nbaF(l5)}</td><td>${hi}</td></tr>`}).join("")}</tbody></table></div></div>`;
   const sel=document.getElementById("nbaMk");sel.value=k;sel.onchange=()=>{NB.mk=sel.value;nbaProps(el)};nbaWireCharts(el,()=>nbaProps(el));nbaWireMin(el,()=>nbaProps(el));
   nbaWireBest(el);
+  if(typeof uxMoreAttach!=="undefined")uxMoreAttach(document.getElementById("nbaPGrid"),props,uxMoreN("nbap|"+k,props.length,20),(r,i)=>nbaPropCard(r,i),w=>{nbaWireCharts(w,()=>nbaProps(el));nbaWireBest(w)},"nbap|"+k,20);
   const saveS=()=>{try{LS.set("nbaPS",[NB.ps,NB.pb])}catch(e){}const y=window.scrollY;nbaProps(el);window.scrollTo(0,y)};
   el.querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{NB.ps=b.dataset.ps;saveS()});
   const pb=document.getElementById("nbaPB");if(pb)pb.onchange=()=>{NB.pb=pb.value;saveS()};
@@ -919,7 +920,7 @@ function nbaLineRow(nm,r){
       let [,k,line,op,up,book]=r;const main=line,alt=typeof loAltOdds!=="undefined"?loAltOdds(nm,k):null;if(alt){line=alt.line;op=alt.o;up=alt.u;book=alt.ob||alt.ub||""}
       const l6=nbaAllG(nm).slice(-6),vals=l6.map(o=>nbaVal(o.x,k)),ov=vals.filter(v=>v>line).length;
       const V0=typeof xaVerdict!=="undefined"?xaVerdict("nba",nm,k,line):null;const lean=V0?(V0.v==="o"?["o","Leans over"]:V0.v==="u"?["u","Leans under"]:["n","Mixed"]):l6.length?(ov/l6.length>=.67?["o","Leans over"]:ov/l6.length<=.33?["u","Leans under"]:["n","Split"]):["n",""];
-      return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p">
+      return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p" data-lrow="nba|${nbaEsc(nm+"|"+k)}">
         <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span>${typeof loStep!=="undefined"?loStep(nm,k,main):""}${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
           <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div></div>${alt?"":(typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):"")+nbaShopHtml(r)}
         ${(()=>{const L10=nbaAllG(nm).slice(-10),v10=L10.map(o=>nbaVal(o.x,k)),o10=v10.filter(v=>pxHit(v,line)).length;return L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>(o.x[3]==="H"?"":"@")+o.x[2]))}<div class="small mbs">Last ${L10.length}: <b class="${o10/L10.length>=.5?"up":"dn"}">${o10}/${L10.length} ${pxSW()}</b> · avg <b>${nbaF(v10.reduce((a,b)=>a+b,0)/v10.length)}</b> vs line ${line}</div></div>`:""})()}

@@ -88,3 +88,22 @@ function uxFoldCards(){const h=(location.hash||"").slice(1);if(!/^(nba-game-|nhl
     c.classList.add("xfold");if(open[key])c.classList.add("open");t.classList.add("xfoldh");t.setAttribute("role","button");t.tabIndex=0;
     const tog=()=>{const o=c.classList.toggle("open");open[key]=o?1:0;try{localStorage.setItem("ge_fold",JSON.stringify(open))}catch(e){}};t.onclick=tog;t.onkeydown=e=>{if(e.key==="Enter")tog()}})}
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-nhtab],[data-nbgt],[data-nfgt]"))setTimeout(uxFoldCards,120)},true);
+/* ---------- Long lists load as you scroll: the first `step` items render, the next ones are added when you get near
+   the bottom (or tap "Show more"). Keeps big pages (NBA / NHL props: hundreds of cards) quick on phones.
+   uxMoreN(key,len,step) -> how many to render now (remembers how far you got, so a redraw keeps your place);
+   uxMoreAttach(host,items,n,render,wire,key,step) after the page is drawn. ---------- */
+var UXMORE={};
+function uxMoreN(key,len,step){return Math.min(len,Math.max(step||20,UXMORE[key]||0))}
+function uxMoreAttach(host,items,n,render,wire,key,step){if(!host)return;step=step||20;UXMORE[key]=n;
+  const old=host.parentElement&&host.parentElement.querySelector(`.uxmore[data-k="${CSS.escape(key)}"]`);if(old)old.remove();
+  if(n>=items.length)return;
+  const b=document.createElement("button");b.className="btn uxmore";b.dataset.k=key;b.style.cssText="width:100%;margin:12px 0";
+  const lab=()=>{b.textContent=`Show more (${items.length-UXMORE[key]} left)`};lab();host.after(b);
+  const more=()=>{const a=UXMORE[key];if(a>=items.length)return;const z=Math.min(items.length,a+step),w=document.createElement("div");
+    w.innerHTML=items.slice(a,z).map((x,j)=>render(x,a+j)).join("");try{wire&&wire(w)}catch(e){}
+    while(w.firstChild)host.appendChild(w.firstChild);UXMORE[key]=z;if(z>=items.length){io&&io.disconnect();b.remove()}else lab()};
+  b.onclick=more;
+  let io=null;if("IntersectionObserver" in window){io=new IntersectionObserver(E=>{if(E.some(e=>e.isIntersecting)&&b.isConnected)more()},{rootMargin:"700px 0px"});io.observe(b)}}
+/* redraw without the page jumping: keeps the element matching `sel` (the thing you tapped) at the same spot on screen */
+function uxKeep(sel,fn){const o=document.querySelector(sel),top=o?o.getBoundingClientRect().top:null,y=scrollY;fn();scrollTo(0,y);
+  const n=document.querySelector(sel);if(n&&top!=null)scrollBy(0,n.getBoundingClientRect().top-top)}
