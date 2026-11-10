@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 17:27Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 19:32Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -68,9 +68,8 @@ Tyler Herro|G|Day-To-Day|knee bruise|Nov 10
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Trendon Watford|F|Day-To-Day|ankle|Nov 11
+Trendon Watford|F|Out|ankle|Nov 13
 Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 11
-Zion Williamson|F|Day-To-Day|rest|Nov 11
 Yves Missi|C|Out|knee bruise|Nov 16
 #New York Knicks
 Josh Hart|G|Day-To-Day|ankle|Nov 10
@@ -108,14 +107,14 @@ Devin Vassell|G|Day-To-Day|groin|Nov 11
 Tobias Harris|F|Out|calf strain|Nov 11
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Immanuel Quickley|G|Day-To-Day|hamstring|Nov 11
 Collin Murray-Boyles|F|Day-To-Day|illness|Nov 11
 Scottie Barnes|F|Day-To-Day|groin soreness|Nov 11
 Nate Bittle|C|Out|foot fracture|Nov 15
-Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
+Lauri Markkanen|F|Out|wrist sprain|Nov 11
 Keyonte George|G|Out|ankle sprain|Nov 11
-Lauri Markkanen|F|Day-To-Day|wrist sprain|Nov 10
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards

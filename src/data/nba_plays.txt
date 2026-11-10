@@ -21,3 +21,6 @@
 2026-11-09|Royce O'Neale|pts|u|8.5|-104|DraftKings|CHA|CLE
 2026-11-09|RJ Barrett|stl|u|0.5|133|Unibet|TOR|MEM
 2026-11-09|Ziaire Williams|pts|o|8.5|-118|BetRivers|LAL|ATL
+2026-11-10|Klay Thompson|stl|u|0.5|-108|Unibet|MIA|UTAH
+2026-11-10|Brayden Burries|3pm|u|1.5|-125|Unibet|MIL|NY
+2026-11-10|Jase Richardson|pr|u|12.5|-148|Unibet|ORL|SAC

@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 17:27Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 19:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Questionable|Knee|Nov 15
@@ -104,8 +104,8 @@ David Montgomery|RB|Questionable|Groin|Nov 15
 Reed Blankenship|S|Questionable|Concussion|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
-Justin Walley|CB|Questionable|Knee|Nov 15
 Jalen Travis|OT|Doubtful|Knee|Nov 29
+Justin Walley|CB|Questionable|Knee|Nov 15
 Akeem Davis-Gaither|LB|Questionable|Knee|Nov 15
 A.J. Haulcy|S|Questionable|Ankle|Nov 15
 Mo Alie-Cox|TE|Questionable|Groin|Nov 15
@@ -151,9 +151,9 @@ Malik Willis|QB|Questionable|Groin|Nov 15
 Will Kacmarek|TE|Questionable|Quadriceps|Nov 15
 Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
 #MIN
-Tyrion Ingram-Dawkins|DE|Questionable|Ankle|Nov 15
 Jauan Jennings|WR|Questionable|Calf|Nov 15
 Kyler Murray|QB|Questionable|Hamstring|Nov 15
+Tyrion Ingram-Dawkins|DE|Questionable|Ankle|Nov 15
 Demond Claiborne|RB|IR|Knee|Dec 6
 Theo Jackson|S|Questionable|Undisclosed|
 #NE
@@ -172,11 +172,11 @@ CJ Donaldson|RB|Questionable|Shoulder|Nov 15
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 #NYG
 Cam Skattebo|RB|Questionable|Hamstring|Nov 12
+J.J. McCarthy|QB|Questionable|Hip|Nov 12
 Darnell Mooney|WR|Questionable|Chest|Nov 12
 Charlie Jones|WR|Questionable|Thumb|Nov 12
 Malik Harrison|LB|Questionable|Groin|Nov 12
 Abdul Carter|LB|Questionable|Knee|Nov 12
-J.J. McCarthy|QB|Questionable|Hip|Nov 12
 #NYJ
 Trevin Wallace|LB|Questionable|Groin|Nov 15
 Garrett Wilson|WR|Questionable|Concussion|Nov 15
