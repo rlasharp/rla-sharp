@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 19:32Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 21:20Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -38,7 +38,6 @@ Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
-Oscar Tshiebwe|C|Day-To-Day|illness|Nov 11
 Clint Capela|C|Out|ankle sprain|Nov 15
 Steven Adams|C|Out|calf strain|Nov 15
 #Indiana Pacers
@@ -91,7 +90,6 @@ Adem Bona|C|Out|back sprain|Nov 12
 Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
-Jordan Goodwin|G|Out|calf not specified|Nov 10
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Ja Morant|G|Out|hamstring not specified|Dec 1
@@ -99,8 +97,6 @@ Vit Krejci|G|Out|ankle|Jan 2
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
-Keegan Murray|F|Day-To-Day|wrist soreness|Nov 10
-Domantas Sabonis|F|Day-To-Day|knee soreness|Nov 10
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
 Devin Vassell|G|Day-To-Day|groin|Nov 11
