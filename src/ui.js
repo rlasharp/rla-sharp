@@ -9,7 +9,7 @@ Object.assign(MARKETS.rec,{n:"Receptions",u:"receptions"});Object.assign(MARKETS
 Object.assign(MARKETS.rushRec,{n:"Rush + rec yards",u:"rush+rec yds"});Object.assign(MARKETS.anyTD,{n:"Anytime TD",u:"TDs"});
 const POSNAME={QB:"quarterbacks",RB:"running backs",WR:"wide receivers",TE:"tight ends"};
 const short=t=>TEAMS[t][0].split(" ").slice(-1)[0];
-const badge=t=>`<span class="ab" style="background:${TEAMS[t][3]}">${t}</span>`;
+const badge=t=>`<span class="ab" style="background:${TEAMS[t][3]};color:${typeof xInkOn!=="undefined"?xInkOn(TEAMS[t][3]):"#fff"}">${t}</span>`;   /* white or black text, whichever reads on the team colour */
 const recTxt=t=>TEAMS[t][1]+"-"+TEAMS[t][2]+(TEAMS[t].ties?"-"+TEAMS[t].ties:"");
 const ordinal=n=>{const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])};
 const sideLine=v=>(v>0?"+":"")+v;
@@ -294,7 +294,7 @@ function units(){
     [...TEAM_IDS].sort((a,b)=>u[a].d[k]-u[b].d[k]).forEach((t,i)=>u[t].d[k+"R"]=i+1)});
     return unitCache=u;
 }
-function rankPill(r){const c=r<=10?"#11301d;color:#7fdc95":r>=23?"#3a1618;color:#ff9a9d":"#24272c;color:#b9bdc4";return `<span style="background:${c};font-size:11.5px;font-weight:700;padding:2px 7px;border-radius:6px">${ordinal(r)}</span>`}
+function rankPill(r){return `<span class="rkp ${r<=10?"g":r>=23?"r":"n"}">${ordinal(r)}</span>`}   /* colours in CSS (.rkp) so the light theme can adjust them */
 /* ---------- NFL biggest edges: where an offense's rank and the other defense's rank are far apart ---------- */
 function nflEdges(g){
   const u=units(),out=[],ps=t=>{const n=short(t);return n.endsWith("s")?n+"'":n+"'s"};if(!u[g.away]||!u[g.home])return out;

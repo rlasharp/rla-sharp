@@ -58,7 +58,7 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
  await p.evaluate(()=>uxViewSet('detailed'));
  await p.evaluate(()=>setTheme('light'));
  const CH=['today',nb!=null?'nba-game-'+nb:'nba',g!=null?'game-'+g:'games',nb!=null?'nba-game-'+nb+'-props':'nba-props'];
- CH.push('today|nhl');   /* Today with the NHL games tab open (it shows by itself at night, once the NBA games have started) */
+ CH.push('today|nhl','plays','injuries','standings','trends','nba-injuries','team-BUF');{const x=await p.evaluate(()=>({pl:Object.keys(NBA_LOGS).sort((a,b)=>NBA_LOGS[b].g.length-NBA_LOGS[a].g.length)[0]}));if(x.pl)CH.push('nba-player-'+encodeURIComponent(x.pl))}   /* Today with the NHL games tab open (it shows by itself at night, once the NBA games have started) */
  for(const h0 of CH){const [h,tab]=h0.split('|');await p.goto('file://'+f+'#'+h);await p.waitForTimeout(900);
   if(tab){await p.evaluate(t=>new Promise(r=>{const go=()=>{const b=document.querySelector(`[data-tt="games|${t}"]`);if(b)b.click();setTimeout(r,500)};typeof nhlEnsure!=='undefined'?nhlEnsure(go):go()}),tab)}
   const r=await p.evaluate(()=>{const P=c=>(c.match(/[\d.]+/g)||[0,0,0]).map(Number);

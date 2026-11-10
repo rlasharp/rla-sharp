@@ -232,7 +232,7 @@ function nhlPlayer(el,nm){
    <div class="phead"><div>${nhBadge(w.tm)}</div><div><h1 style="margin:0">${nhE(nm)}${nhInjChip(nm)}</h1><div class="small">${nhE(nhTm(w.tm))} · ${nhE(isG?"G":w.pos)}${g?` · next: ${g.a===w.tm?"@":"vs"} ${nhE(nhTm(opp))} ${g.d===NHL_DATE?"today":"tomorrow"} ${nhE(g.t)}`:""}</div></div></div>
    ${typeof pxSideTg!=="undefined"?pxSideTg():""}
    ${(()=>{const M=nhPMarkets(nm,rows,isG);if(!M.length)return `<div class="card small" style="margin-top:12px">No props or stats to chart yet.</div>`;const cur=M.find(x=>x.k===NH.pm)||M[0];
-     return `<div class="nbtabs pmk nhpmk" style="margin-top:12px">${M.map(x=>`<button data-nhpm="${x.k}" class="${x.k===cur.k?"on":""}">${NH_MK[x.k][0]==="Goal"?"Goal":NH_MK[x.k][1].replace("Shots on goal","Shots").replace("Blocked shots","Blocks").replace("Faceoffs won","Faceoffs").replace("Anytime goal","Goal").replace("Power-play points","PP pts")}<small>${x.r?(x.k==="hanyG"?nhOdds(x.r[3]):x.r[2]):"avg"}</small></button>`).join("")}</div>
+     return `<div class="nbtabs pmk nhpmk" style="margin-top:12px">${M.map(x=>`<button data-nhpm="${x.k}" class="${x.k===cur.k?"on":""}">${x.k==="hanyG"?"Anytime goal":NH_MK[x.k][1].replace("Shots on goal","Shots").replace("Blocked shots","Blocks").replace("Faceoffs won","Faceoffs").replace("Anytime goal","Goal").replace("Power-play points","PP pts")}<small>${x.r?(x.k==="hanyG"?nhOdds(x.r[3]):x.r[2]):"avg"}</small></button>`).join("")}</div>
       <div class="card plines" style="margin-top:8px">${cur.r?"":`<div class="small" style="margin-bottom:4px">No sportsbook line in our feed for this one — the line starts at his season average. Use − / + to set your book's line.</div>`}${nhLineRow(nm,cur.r||cur.syn)}</div>`})()}
    <div class="card" style="margin-top:12px"><b>This season</b><div class="small">${head}</div></div>
    ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nhl",nm):""}
@@ -244,7 +244,10 @@ function nhlPlayer(el,nm){
 function nhPMarkets(nm,rows,isG){const out=[],seen=new Set();for(const r of rows){if(seen.has(r[1]))continue;seen.add(r[1]);out.push({k:r[1],r})}
   const extra=isG?["hsaves"]:["hpts","hgoals","hast","hsog","hblk","hhit","hfow"];
   for(const k of extra){if(seen.has(k))continue;const V=nhVals(nm,k).filter(o=>!o.prev).map(o=>o.v);if(V.length<3)continue;const a=V.reduce((x,y)=>x+y,0)/V.length;if(k==="hfow"&&a<1.5)continue;if(k!=="hfow"&&k!=="hsaves"&&a<.15)continue;
-    out.push({k,syn:[nm,k,Math.max(.5,Math.floor(a)+.5),null,null,""]})}
+    const ln=Math.max(.5,Math.floor(a)+.5);
+    /* goals over 0.5 = anytime goal: don't add a second "Goal" tab when the book's anytime-goal line is there */
+    if(k==="hgoals"&&ln===.5&&seen.has("hanyG"))continue;
+    out.push({k,syn:[nm,k,ln,null,null,""]})}
   return out}
 
 /* ---------- Standings ---------- */
