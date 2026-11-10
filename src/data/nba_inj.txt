@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-09 23:57Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 00:16Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -44,17 +44,17 @@ Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
-Oscar Tshiebwe|C|Out|illness|Nov 11
 Clint Capela|C|Out|ankle sprain|Nov 15
-Steven Adams|C|Out|calf strain|Nov 11
+Steven Adams|C|Out|calf strain|Nov 15
+Oscar Tshiebwe|C|Out|illness|Nov 11
 #Indiana Pacers
 Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
-Isaiah Jackson|F|Day-To-Day|groin soreness|Nov 10
-Brandon Ingram|F|Out|achilles surgery|Nov 10
-Yanic Konan Niederhauser|C|Out|foot surgery|Nov 10
+Brandon Ingram|F|Out|achilles surgery|Nov 13
+Cam Christie|G|Day-To-Day|ankle|Nov 10
+Yanic Konan Niederhauser|C|Out|foot surgery|Nov 13
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
@@ -118,8 +118,8 @@ Scottie Barnes|F|Out|groin soreness|Nov 11
 Nate Bittle|C|Out|foot fracture|Nov 15
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
+Keyonte George|G|Out|ankle sprain|Nov 11
 Lauri Markkanen|F|Day-To-Day|wrist sprain|Nov 10
-Keyonte George|G|Day-To-Day|ankle|Nov 10
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards

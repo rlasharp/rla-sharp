@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-09 23:57Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 00:16Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Gardner Minshew II|QB|Doubtful|Elbow|Nov 15
@@ -27,7 +27,7 @@ Tyler Huntley|QB|IR|Toe|Feb 15
 Adam Randall|RB|IR|Neck|Nov 16
 #BUF
 Jalon Kilgore|S|Out|Coach's Decision|Nov 15
-Mike Danna|DE|Out|Coach's Decision|
+Mike Danna|DE|Out|Coach's Decision|Nov 15
 Dion Dawkins|OT|Out|Ribs|Nov 15
 Greg Gaines|DT|Out|Calf|Nov 15
 Alec Anderson|OT|Out|Ankle|Nov 15
@@ -128,12 +128,12 @@ Omarr Norman-Lott|DT|Out|Knee - ACL|Nov 15
 Thomas Booker IV|DT|Out|Ankle|Nov 15
 Trey Zuhn III|C|Questionable|Concussion|Nov 15
 #LAC
+Ladd McConkey|WR|Questionable|Back|Nov 16
+Justin Herbert|QB|Questionable|Finger|Nov 16
 Kendall Williamson|S|Out|Calf|Nov 16
 Brenen Thompson|WR|Out|Quadriceps|Nov 16
 Deane Leonard|CB|Out|Concussion|Nov 16
 Kayode Awosika|G|Out|Lower Leg|Nov 16
-Ladd McConkey|WR|Questionable|Back|Nov 16
-Justin Herbert|QB|Questionable|Finger|Nov 16
 Isas Waxter|CB|Questionable|Ankle|Nov 16
 Justin Eboigbe|DT|Questionable|Ankle|Nov 16
 Denzel Perryman|LB|IR|Undisclosed|Nov 16
@@ -151,6 +151,7 @@ Jaylen Wright|RB|Out|Quadriceps|Nov 15
 Malik Willis|QB|Questionable|Groin|Nov 15
 Will Kacmarek|TE|Questionable|Quadriceps|Nov 15
 #MIN
+Theo Jackson|S|Questionable|Undisclosed|
 Jakobe Thomas|S|Out|Coach's Decision|Nov 15
 Kyler Murray|QB|Out|Hamstring|Nov 15
 Charles Demmings|CB|Out|Coach's Decision|Nov 15
@@ -173,6 +174,10 @@ Erik McCoy|C|Doubtful|Biceps|Nov 15
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 #NYG
 Cam Skattebo|RB|Out|Hamstring|Nov 12
+Charlie Jones|WR|Questionable|Thumb|Nov 12
+Darnell Mooney|WR|Questionable|Chest|Nov 12
+Malik Harrison|LB|Questionable|Groin|Nov 12
+Abdul Carter|LB|Questionable|Knee|Nov 12
 J.J. McCarthy|QB|Questionable|Hip|Nov 12
 #NYJ
 Garrett Wilson|WR|Out|Concussion|Nov 15
