@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 05:30Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 06:21Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 15
