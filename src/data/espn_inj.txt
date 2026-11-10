@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 13:44Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 15:22Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 15
@@ -63,12 +63,12 @@ Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 Maliek Collins|DT|Out|Elbow|Nov 15
 Deshaun Watson|QB|Out|Concussion|Nov 15
 #DAL
+Tyler Goodson|RB|Out|Knee|Nov 22
 Jake Ferguson|TE|Out|Knee|Nov 22
 Donovan Ezeiruaku|LB|Questionable|Ankle|Nov 15
 P.J. Locke|S|Out|Concussion|Nov 22
 Joey Porter Jr.|CB|Out|Ankle|Nov 15
 George Pickens|WR|Out|Hamstring|Nov 15
-Tyler Goodson|RB|Out|Knee|Nov 22
 KaVontae Turpin|WR|Out|Ribs|Nov 15
 DeMarvion Overshown|LB|Out|Hamstring|Nov 15
 Luke Schoonmaker|TE|Out|Groin|Nov 15
