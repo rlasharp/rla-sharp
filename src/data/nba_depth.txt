@@ -13,7 +13,7 @@ PF|Jordan Walsh|Jayson Tatum|Paul George|Sam Hauser|Hugo Gonzalez
 C|Mitchell Robinson|Neemias Queta|Luka Garza|Chris Cenac Jr.|Amari Williams
 #BKN
 PG|Egor Demin|Mikel Brown Jr.|Nolan Traore|Keon Ellis|Ben Saraf
-SG|Nolan Traore|Keon Ellis|Egor Demin|Mikel Brown Jr.|Drake Powell
+SG|Keon Ellis|Nolan Traore|Egor Demin|Mikel Brown Jr.|Drake Powell
 SF|Michael Porter Jr.|Chaney Johnson|Keon Ellis|Noah Clowney|Josh Minott
 PF|Julius Randle|Noah Clowney|Josh Minott|Danny Wolf|Chaney Johnson
 C|Day'Ron Sharpe|Moritz Wagner|Danny Wolf|Josh Minott|Chaney Johnson
@@ -44,7 +44,7 @@ C|Daniel Gafford|Dereck Lively II|Moussa Cisse|Santi Aldama|Morez Johnson Jr.
 #DEN
 PG|Jamal Murray|Tyus Jones|RJ Nembhard Jr.
 SG|Christian Braun|DeMar DeRozan|Julian Strawther|Spencer Jones|Tyus Jones
-SF|Cameron Johnson|Bryce Hopkins|DeMar DeRozan|Julian Strawther|Alpha Diallo
+SF|Cameron Johnson|DeMar DeRozan|Julian Strawther|Alpha Diallo|Spencer Jones
 PF|Aaron Gordon|DeMar DeRozan|Spencer Jones|Alpha Diallo|Trevon Brazile
 C|Nikola Jokic|Marvin Bagley III|DaRon Holmes II|Trevon Brazile|Aaron Gordon
 #DET
