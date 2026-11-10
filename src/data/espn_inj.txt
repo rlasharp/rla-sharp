@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 21:23Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 21:55Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Questionable|Knee|Nov 15
@@ -135,8 +135,8 @@ Justin Eboigbe|DT|Questionable|Ankle|Nov 16
 Denzel Perryman|LB|IR|Undisclosed|Nov 16
 David Njoku|TE|IR|Lower Leg|Nov 16
 #LAR
+Jordan Whittington|WR|IR|Back|Dec 20
 Puka Nacua|WR|Doubtful|Knee - MCL|Nov 15
-Jordan Whittington|WR|Questionable|Back|Nov 15
 Trent McDuffie|CB|Questionable|Back|Nov 15
 Joe Cardona|LS|Questionable|Ankle|Nov 15
 Terrance Ferguson|TE|IR|Hamstring|Nov 25
@@ -145,7 +145,7 @@ Jaylen Watson|CB|IR|Shoulder|Feb 15
 Dean Connors|RB|IR|Hand|Dec 13
 #MIA
 Malik Willis|QB|IR|Groin|Dec 13
-Zach Sieler|DT|Out|Biceps|Feb 15
+Zach Sieler|DT|IR|Biceps|Feb 15
 Jaylen Wright|RB|Questionable|Quadriceps|Nov 15
 Will Kacmarek|TE|Questionable|Quadriceps|Nov 15
 Darrell Baker Jr.|CB|Out|Undisclosed|Nov 15
@@ -170,8 +170,6 @@ Erik McCoy|C|Doubtful|Biceps|Nov 15
 CJ Donaldson|RB|Questionable|Shoulder|Nov 15
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 #NYG
-Cam Skattebo|RB|Questionable|Hamstring|Nov 12
-J.J. McCarthy|QB|Questionable|Hip|Nov 12
 Darnell Mooney|WR|Questionable|Chest|Nov 12
 Charlie Jones|WR|Questionable|Thumb|Nov 12
 Malik Harrison|LB|Questionable|Groin|Nov 12

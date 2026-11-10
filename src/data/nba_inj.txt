@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 21:23Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 21:55Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -31,9 +31,9 @@ Julian Strawther|G|Out|knee sprain|Nov 29
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
-Gary Payton II|G|Day-To-Day|knee inflammation|Nov 11
-Brandon Williams|G|Day-To-Day|hamstring not specified|Nov 11
-Will Richard|G|Out|thumb|Nov 16
+Gary Payton II|G|Out|knee inflammation|Nov 13
+Will Richard|G|Out|thumb|Nov 11
+Brandon Williams|G|Out|hamstring not specified|Nov 22
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
@@ -71,7 +71,7 @@ Trendon Watford|F|Out|ankle|Nov 13
 Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 11
 Yves Missi|C|Out|knee bruise|Nov 16
 #New York Knicks
-Josh Hart|G|Day-To-Day|ankle|Nov 10
+Josh Hart|G|Day-To-Day|illness|Nov 10
 #Oklahoma City Thunder
 Jaylin Williams|F|Out|back spasms|Nov 11
 Thomas Sorber|C|Out|knee|Nov 13
@@ -103,10 +103,11 @@ Devin Vassell|G|Day-To-Day|groin|Nov 11
 Tobias Harris|F|Out|calf strain|Nov 11
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Kawhi Leonard|F|Out|knee inflammation|Nov 23
-Immanuel Quickley|G|Day-To-Day|hamstring|Nov 11
+Trayce Jackson-Davis|F|Day-To-Day|illness|Nov 11
 Collin Murray-Boyles|F|Day-To-Day|illness|Nov 11
-Scottie Barnes|F|Day-To-Day|groin soreness|Nov 11
+Immanuel Quickley|G|Day-To-Day|hamstring|Nov 11
+Scottie Barnes|F|Out|groin soreness|Nov 12
+Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 15
 #Utah Jazz
 Lauri Markkanen|F|Out|wrist sprain|Nov 11
