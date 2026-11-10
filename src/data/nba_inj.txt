@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 21:55Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-10 22:38Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -16,9 +16,10 @@ Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
 Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 11
+Tobe Awaka|F|Day-To-Day|back|Nov 11
 Zach Collins|F|Day-To-Day|illness|Nov 11
 #Cleveland Cavaliers
-Sam Merrill|G|Day-To-Day|elbow|Nov 11
+Sam Merrill|G|Out|elbow|Nov 13
 Jaylon Tyson|G|Out|ankle sprain|Nov 11
 #Dallas Mavericks
 Morez Johnson Jr.|F|Day-To-Day|leg|Nov 12
@@ -41,6 +42,7 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 15
 Steven Adams|C|Out|calf strain|Nov 15
 #Indiana Pacers
+T.J. McConnell|G|Day-To-Day|hamstring|Nov 11
 Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -115,7 +117,6 @@ Keyonte George|G|Out|ankle sprain|Nov 11
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
-Bilal Coulibaly|G|Day-To-Day|hand|Nov 11
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 16
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
