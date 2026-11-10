@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 01:01Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 01:44Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Gardner Minshew II|QB|Doubtful|Elbow|Nov 15
@@ -25,14 +25,14 @@ Adisa Isaac|LB|Questionable|Hamstring|Nov 16
 Tyler Huntley|QB|IR|Toe|Feb 15
 Adam Randall|RB|IR|Neck|Nov 16
 #BUF
-Greg Gaines|DT|Questionable|Calf|Nov 15
-Alec Anderson|OT|Questionable|Ankle|Nov 15
-Dion Dawkins|OT|Questionable|Ribs|Nov 15
+Dion Dawkins|OT|Out|Ribs|Nov 15
+Greg Gaines|DT|Out|Calf|Nov 15
+Alec Anderson|OT|Out|Ankle|Nov 15
 Tyrell Shavers|WR|Out|Knee - ACL|Nov 15
 Jalon Kilgore|S|Out|Coach's Decision|Nov 15
 Mike Danna|DE|Out|Coach's Decision|Nov 15
 Skyler Bell|WR|Out|Coach's Decision|Nov 15
-Joshua Palmer|WR|IR|Hamstring|Dec 6
+Joshua Palmer|WR|Out|Hamstring|Dec 6
 Jordan Hancock|CB|IR|Hamstring|Nov 15
 #CAR
 Jaycee Horn|CB|IR|Quadriceps|Nov 15
@@ -62,16 +62,16 @@ Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 Maliek Collins|DT|Out|Elbow|Nov 15
 Deshaun Watson|QB|Out|Concussion|Nov 15
 #DAL
+Donovan Ezeiruaku|LB|Questionable|Ankle|Nov 15
 George Pickens|WR|Out|Hamstring|Nov 15
-Tyler Goodson|RB|Out|Knee|Nov 22
 P.J. Locke|S|Out|Concussion|Nov 22
-Jake Ferguson|TE|Out|Knee|Nov 22
+Joey Porter Jr.|CB|Out|Ankle|Nov 15
+Tyler Goodson|RB|Out|Knee|Nov 22
+Jake Ferguson|TE|Questionable|Knee|Nov 22
 KaVontae Turpin|WR|Out|Ribs|Nov 15
 DeMarvion Overshown|LB|Out|Hamstring|Nov 15
-Joey Porter Jr.|CB|Out|Ankle|Nov 15
 Luke Schoonmaker|TE|Out|Groin|Nov 15
 Jonathan Mingo|WR|Questionable|Ankle|Nov 15
-Donovan Ezeiruaku|LB|Questionable|Ankle|Nov 15
 Jonathan Bullard|DT|IR|Calf|Nov 15
 Malachi Lawrence|LB|IR|Ankle|Dec 7
 #DEN
@@ -92,7 +92,7 @@ Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
 Chris Brooks|RB|IR|Ankle|Nov 15
-Josh Jacobs|RB|Out|Finger|Nov 25
+Josh Jacobs|RB|Questionable|Finger|Nov 25
 Josh Whyle|TE|Out|Concussion|Nov 15
 Sean Rhyan|G|Out|Ankle|Nov 15
 MarShawn Lloyd|RB|Out|Knee|Nov 15
@@ -102,8 +102,8 @@ Bo Melton|WR|Questionable|Head|Nov 15
 Ty'Ron Hopper|LB|Questionable|Chest|Nov 15
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 #HOU
-David Montgomery|RB|Out|Groin|Nov 15
 Reed Blankenship|S|Out|Concussion|Nov 15
+David Montgomery|RB|Out|Groin|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
 Justin Walley|CB|Out|Knee|Nov 15
@@ -150,7 +150,7 @@ Jaylen Wright|RB|Out|Quadriceps|Nov 15
 Malik Willis|QB|Questionable|Groin|Nov 15
 Will Kacmarek|TE|Questionable|Quadriceps|Nov 15
 #MIN
-Demond Claiborne|RB|Out|Knee|Dec 6
+Demond Claiborne|RB|IR|Knee|Dec 6
 Theo Jackson|S|Questionable|Undisclosed|
 Jakobe Thomas|S|Out|Coach's Decision|Nov 15
 Kyler Murray|QB|Out|Hamstring|Nov 15
@@ -158,10 +158,10 @@ Charles Demmings|CB|Out|Coach's Decision|Nov 15
 Jauan Jennings|WR|Out|Calf|Nov 15
 Caleb Banks|DT|Out|Coach's Decision|Nov 15
 #NE
+Ben Brown|C|Questionable|Knee|Nov 15
 A.J. Brown|WR|Out|Knee|Nov 15
 Charles Woods|CB|Out|Hamstring|Nov 15
 TreVeyon Henderson|RB|Out|Illness|Nov 15
-Ben Brown|C|Doubtful|Knee|Nov 15
 Rhamondre Stevenson|RB|Questionable|Knee|Nov 15
 Brenden Schooler|S|Questionable|Hamstring|Nov 15
 Will Campbell|OT|Questionable|Knee|Nov 15
@@ -200,11 +200,11 @@ Brandin Echols|CB|Out|Hamstring|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Deommodore Lenoir|CB|Questionable|Foot|Nov 15
+Renardo Green|CB|Questionable|Back|Nov 15
 Deebo Samuel Sr.|WR|Out|Hamstring|Nov 15
 Mike Evans|WR|Out|Achilles|Nov 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
-Deommodore Lenoir|CB|Questionable|Foot|Nov 15
-Renardo Green|CB|Questionable|Back|Nov 15
 Gracen Halton|DT|Out|Ankle|Feb 15
 Nate Hobbs|CB|IR|Groin|Nov 15
 Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
@@ -231,8 +231,8 @@ Peter Skoronski|G|Questionable|Hamstring|Nov 15
 JC Latham|OT|Questionable|Finger|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 #WAS
-Chig Okonkwo|TE|Questionable|Hip|Nov 12
 Treylon Burks|WR|Out|Foot|Nov 12
+Chig Okonkwo|TE|Questionable|Hip|Nov 12
 Shy Tuttle|DT|Questionable|Shoulder|Nov 12
 Colson Yankoff|TE|Questionable|Knee|Nov 12
 Lucas Patrick|G|Questionable|Concussion|Nov 12
