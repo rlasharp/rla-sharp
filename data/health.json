@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-10T04:20:46+00:00",
-  "ok": false,
-  "summary": "NBA finals from ESPN: 81 games kept (6 new), 1826 player lines\nNBA injuries refreshed\nNBA lines checked\nNBA refs: 0 summaries checked, 146 games cached\nNBA refs: 8 crews posted today\nlive feed is not from 2026-11-09 - nothing merged\nNBA data: teams 30, results 146 (through 2026-11-08), players 461, slate 8, lines 8, props 1062, inj teams 30, prev-season players 216, play log 21, adv 376, qtr games 146, h2h 2/4/4/2/2/4/4/3\nNHL PP time: 677 players, 0 ESPN requests this run\nNHL data: 3 games today, 7 tomorrow, 32 teams, 427 skaters, 66 goalies, 522 props, 275 finals, 40 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 3-4, best props NBA 6-10 NFL 0-0 NHL 3-5\nSITE CHECK FAILED \u2014 live site left unchanged\n"
+  "at": "2026-11-10T05:23:00+00:00",
+  "ok": true,
+  "summary": "A data: teams 30, results 146 (through 2026-11-08), players 461, slate 6, lines 6, props 307, inj teams 30, prev-season players 157, play log 21, adv 376, qtr games 146, h2h 3/11/4/2/2/4\nnfl-update: 0 lines refreshed, 1 new finals (weeks [8, 9])\n213 players, 32 teams\nnfl-inj: 213 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 1 new ESPN box scores, 16 waiting for nflverse\nnfltgt: 322 players, 32 defenses, weeks 1-9, ftn plays 20723\nnfltgt: 136 games with spreads\nNFL targets/spreads/rest refreshed\nteams 32, QBs 37, weeks 1-9\nNFL pass rush vs O-line refreshed\nteams 32, through week 9, share players 387, upcoming 96\nNFL standings / schedule / shares (nflverse) refreshed\nNFL usage (snaps / targets / carries) refreshed\nnflweekly: through Week 9, 32 QB1s, 151 matchups with history\nNFL defense vs position / recent players / QB1 / head to head refreshed\nNFL box scores / red zone / pace (nflverse) refreshed\nnflx2: 391 RZ players, 49 QBs, 32 teams PROE, 96 division games, 37 kickers\nNFL red zone / QB runs / PROE / division / kickers refreshed\nNHL PP time: 678 players, 3 ESPN requests this run\nNHL data: 7 games today, 6 tomorrow, 32 teams, 537 skaters, 66 goalies, 522 props, 276 finals, 42 requests\nsoccer: 109 upcoming matches (0 with odds, 107 with estimates, 0 with weather, 0 with referee), 0 player props, 5880 players\ntrack: nba 2026-11-10: snapshot 10 props, 6 games \u00b7 graded: NHL plays 3-5, best props NBA 6-11 NFL 0-0 NHL 5-7\nSite check OK \u2014 published (2026-11-10T05:22:16Z)\n"
  },
  "site": {
-  "at": "2026-11-10T04:20:46+00:00",
+  "at": "2026-11-10T05:23:00+00:00",
   "ok": false,
   "issue": "live page fails the site check: CHECK FAILED: hard-to-read text (light) #today: 1.6:1 \"NYR\" \u00b7 1.0:1 \"VAN\" \u00b7 2.1:1 \"NYI\" \u00b7 2.6:1 \"SJS\" "
  },
  "nhl": {
-  "at": "2026-11-10T04:20:46+00:00",
+  "at": "2026-11-10T05:23:00+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Mon Nov 9 9:06 PM ET",
+  "gen": "Tue Nov 10 12:22 AM ET",
   "odds_at": "2026-11-10T03:52:13+00:00",
   "backfill": "1312/1312"
  },
@@ -274,6 +274,16 @@
    ],
    "check_failed": true,
    "published": false
+  },
+  {
+   "at": "2026-11-10T05:23:00+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": false,
+   "site_issue": "live page fails the site check: CHECK FAILED: hard-to-read text (light) #today: 1.6:1 \"NYR\" \u00b7 1.0:1 \"VAN\" \u00b7 2.1:1 \"NYI\" \u00b7 2.6:1 \"SJS\" ",
+   "fails": [],
+   "check_failed": false,
+   "published": true
   }
  ]
 }
