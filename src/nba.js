@@ -955,7 +955,7 @@ function nbaGameProps0(g){
 }
 function nbaGamePropCount(g){if(nbaStarted(g))return 0;return NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&(p.tm===g.a||p.tm===g.h)&&NBA_MK[r[1]]}).length}
 function nbaPlayer(el,nm){
-  if(NB.lastPl!==nm){{NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;NB.tmf={};NB._best=null;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(e){}}NB.lastPl=nm}
+  if(NB.lastPl!==nm){{NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;NB.tmf={};NB._best=null;NB.fOpen=false;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(e){}}NB.lastPl=nm}   /* new player: filters reset, and the filter panel starts closed */
   const p=NBA_LOGS[nm];
   if(!p){el.innerHTML=`<a href="#nba-players" class="small" style="color:var(--text2)">← Players</a><h1>${nbaEsc(nm)}</h1><p class="sub">No games played yet this season.</p>`;return}
   const g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):"",inj=nbaInjOf(nm);
