@@ -400,7 +400,7 @@ function drawerize(){
   const h=decodeURIComponent((location.hash||"").slice(1));const rule=DZ_RULES.find(r=>r[0].test(h));if(!rule)return;
   const root=document.querySelector(rule[1]);if(!root)return;dzRepair(root);
   root.querySelectorAll("h2,h3").forEach(hd=>{
-    const t=hd.textContent.trim();if(!rule[2].some(re=>re.test(t))||hd.closest(".nodz"))return;
+    const t=hd.textContent.trim();if(!rule[2].some(re=>re.test(t))||hd.closest(".nodz,.xacard,.wocard,.xfcard"))return;   /* cards that fold themselves (or must stay open) never get a second drawer */
     let tgt=hd.closest(".section")||hd.closest(".card");if(!tgt||tgt===root||tgt.closest("details.drawer")||tgt.querySelector("canvas")||tgt.querySelector(".plines,.vbox"))return;
     if(tgt.classList.contains("section")&&(tgt.querySelectorAll(":scope > .card").length>1||tgt.querySelector("details.drawer"))){const c=hd.closest(".card");if(!c)return;tgt=c}
     if(hd.classList.contains("dzh")||tgt.closest("details.drawer"))return;
