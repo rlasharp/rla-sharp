@@ -120,7 +120,7 @@ function nhlGames0(el){
   const today=NHL_SLATE||[],best=nhBest().slice(0,6);
   el.innerHTML=`<h1>🏒 NHL · ${nhE(nhDayS(NHL_DATE))}</h1>${nhDayTabs("nhl")}<p class="sub">${nhE(NHL_GEN?`Updated ${NHL_GEN}`:"")} · official NHL stats + live sportsbook lines. Tap a game for the matchup, goalies and every player prop.</p>
 
-   ${typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():""}${typeof prlSportHtml!=="undefined"?prlSportHtml("nhl"):""}
+   ${typeof potdTeaser!=="undefined"?potdTeaser("nhl"):""}${typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():""}${typeof prlSportHtml!=="undefined"?prlSportHtml("nhl"):""}
    <h2 style="margin:16px 0 8px">Today${today.length?` · ${today.length} game${today.length>1?"s":""}`:""}</h2>
    ${today.length?`<div class="grid g2">${today.map(nhCard).join("")}</div>`:`<div class="card small">No NHL games today — see the next days above.</div>`}
    ${typeof xInsights!=="undefined"?xInsights("nhl","🧠 Tonight's insights",[["best","🔥 Best props",best.length?`<div class="card"><h2></h2><div class="nhbp">${best.map(nhBestRow).join("")}</div><a href="#nhl-props" class="small" style="display:block;margin-top:8px">All NHL props →</a></div>`:""],["edges","💰 Odds gaps",nhEdgesCard()],["ang","🧭 Player angles",nhAnglesCard()],["moves","📈 Line moves",nhMovesCard()],["min","⏱️ Ice time",typeof xaTrendCard!=="undefined"?`<div class="card">${xaTrendCard("nhl")}</div>`:""],["model","📊 Our record",nhModelCard(false)]]):""}

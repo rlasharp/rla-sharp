@@ -163,14 +163,20 @@ function nbaPills(g){
   return `<div class="nbl"><span>Spread <b>${fav} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`;
 }
 function nbaKeyOutAll(g){return [...nbaKeyOut(g.a),...nbaKeyOut(g.h)]}
-/* every game gets our pick: the lean when the model clears the edge bar, otherwise the model's own winner/margin/total (labelled as an estimate) */
-function nbaPickTxt(g){
-  const le=nbaLean(g);
-  if(le.length)return `<div class="nbpick">Our pick: ${le.map(x=>nbaEsc(x.txt)).join(" · ")}</div>`;
-  const M=nbaModel(g.a,g.h);if(!M)return "";
-  const w=M.m>=0?g.h:g.a,mg=Math.max(.5,Math.abs(M.m)),pw=Math.round((M.m>=0?M.p:1-M.p)*100),ko=nbaKeyOut(g.a).length||nbaKeyOut(g.h).length;
-  return `<div class="nbpick est">🔮 Our pick: ${nbaEsc(w)} by ${mg} (${pw}%) · total ${M.tot}<span class="small"> · ${ko?"key player out — estimate only, no bet":"no edge vs the line — estimate only"}</span></div>`;
-}
+/* every game gets our pick — moneyline, spread or over/under, whichever our model likes most against the posted price.
+   Chances from the model's margin/total with the usual spread of results (sd ≈ 12 pts margin, 17 pts total; logistic approx). */
+function nbaGamePick(g){const L=NBA_LINES[g.a+"@"+g.h],M=nbaModel(g.a,g.h);if(!L||!M)return null;
+  const P=z=>1/(1+Math.exp(-1.702*z)),C=[];
+  if(L.sp!=null){const ph=P((M.m+L.sp)/12),home=ph>=.5,pr=home?(L.spx||-110):-110;C.push({k:"Spread",txt:`${home?g.h:g.a} ${nbaSg(home?L.sp:-L.sp)}`,ch:home?ph:1-ph,odds:pr})}
+  if(L.tot!=null){const po=P((M.tot-L.tot)/17),ov=po>=.5;C.push({k:"Total",txt:`${ov?"Over":"Under"} ${L.tot}`,ch:ov?po:1-po,odds:(ov?L.ox:L.ux)||-110})}
+  if(L.mla&&L.mlh){const home=M.p-nbaImpl(L.mlh)>=(1-M.p)-nbaImpl(L.mla);C.push({k:"Moneyline",txt:`${home?g.h:g.a} to win`,ch:home?M.p:1-M.p,odds:home?L.mlh:L.mla})}
+  for(const c of C){c.need=nbaImpl(c.odds);c.edge=c.ch-c.need}
+  const le=nbaLean(g);let best=C.sort((x,y)=>y.edge-x.edge)[0];
+  if(le.length){const k=le[0].k==="sp"?"Spread":"Total";best=C.find(c=>c.k===k)||best;best.strong=1}
+  return best?Object.assign(best,{ko:nbaKeyOut(g.a).length+nbaKeyOut(g.h).length,M}):null}
+function nbaPickTxt(g){const x=nbaGamePick(g);
+  if(!x){const M=nbaModel(g.a,g.h);return M?`<div class="nbpick est">🔮 Our estimate: ${nbaEsc(M.m>=0?g.h:g.a)} by ${Math.max(.5,Math.abs(M.m))} · total ${M.tot}<span class="small"> · our pick posts with the lines</span></div>`:""}
+  return `<div class="nbpick${x.strong?"":" est"}">${x.strong?"⭐":"🔮"} Our pick: <b>${nbaEsc(x.txt)}</b> <span class="small">${x.k.toLowerCase()} · ${oddsFmt(x.odds)} · our chance ${Math.round(x.ch*100)}%${x.strong?" · strong lean":x.edge>0?"":" · small lean"}${x.ko?" · key player out, bet light":""}</span></div>`}
 /* line movement: ESPN opening number vs now (home spread stored) */
 function nbaMove(g){
   const L=NBA_LINES[g.a+"@"+g.h];if(!L||!L.open)return null;
@@ -211,7 +217,7 @@ function nbaGameCard(g){
   </div>`;
 }
 function nbaGames(el){
-  el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nba",4):""}${nbaDayTabs("nba")}
+  el.innerHTML=`<h1>NBA · ${nbaDay(NBA_SLATE_DATE)}</h1>${typeof pxRecentHtml!=="undefined"?pxRecentHtml("nba",4):""}${nbaDayTabs("nba")}${typeof potdTeaser!=="undefined"?potdTeaser("nba"):""}
   <p class="sub">${NBA_SLATE.length} game${NBA_SLATE.length===1?"":"s"} today${(()=>{const f=NBA_SLATE.filter(g=>nbaFinalHtml(g)).length;return f?`, ${f} final`:""})()}. Tap a game for the matchup, or <b>🎯 player props</b> to see every prop from that game.</p>
   <div class="grid g2">${[...NBA_SLATE.filter(g=>!nbaFinalHtml(g)),...NBA_SLATE.filter(g=>nbaFinalHtml(g))].map(nbaGameCard).join("")||`<div class="card">No NBA games today.</div>`}</div>
   ${typeof xInsights!=="undefined"?xInsights("nba","🧠 Tonight's insights",[["edges","💰 Odds gaps",xEdgesCard("nba")],["ang","🧭 Player angles",typeof nbaAnglesCard!=="undefined"?nbaAnglesCard():""],["moves","📈 Line moves",typeof loMovesCard!=="undefined"?loMovesCard("nba",8):""],["min","⏱️ Minutes",typeof xaTrendCard!=="undefined"?`<div class="card">${xaTrendCard("nba")}</div>`:""]]):""}
@@ -644,7 +650,9 @@ function nbaWireBest(root){
 function nbaPlays(){
   const out=[],games=new Set(),used=new Set();
   const ok=b=>b.c10[0]>=7&&b.edge>=.07&&b.odds>=-200&&b.odds<=150&&!/day|quest|doubt|out/i.test((nbaInjOf(b.nm)||[])[2]||"")&&b.cS[1]>=3&&b.cS[0]/b.cS[1]>=.6;
-  const L=nbaBest().filter(ok);
+  /* second tier (Nov 11 2026) so a full slate always has a play of the day: 6+ of the last 10, 55%+ this season, a 4-point edge */
+  const ok2=b=>b.c10[0]>=6&&b.edge>=.04&&b.odds>=-200&&b.odds<=150&&!/day|quest|doubt|out/i.test((nbaInjOf(b.nm)||[])[2]||"")&&b.cS[1]>=3&&b.cS[0]/b.cS[1]>=.55;
+  const B=nbaBest();let L=B.filter(ok);if(!L.length)L=B.filter(ok2);
   for(const pass of [0,1])for(const b of L){if(out.length>=3)break;if(used.has(b.nm))continue;if(!pass&&games.has(b.g.id))continue;out.push(b);used.add(b.nm);games.add(b.g.id)}
   return out;
 }
