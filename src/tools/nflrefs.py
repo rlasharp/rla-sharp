@@ -14,13 +14,14 @@ except Exception: C = {}
 wk = int(re.search(r"PLAYS_WEEK=(\d+)", open("plays.js", encoding="utf-8").read()).group(1))
 slate = {(a, h): int(i) for i, a, h in re.findall(r'\{id:(\d+),away:"(\w+)",home:"(\w+)"', open("engine.js", encoding="utf-8").read())}
 def ref_of(s): return next((o.get("displayName") for o in ((s.get("gameInfo") or {}).get("officials") or []) if ((o.get("position") or {}).get("name") == "Referee")), None)
-UP, newg = {}, 0
+UP, newg, KD = {}, 0, {}
 for w in range(1, wk + 1):
     try: sb = get(B + f"football/nfl/scoreboard?week={w}&seasontype=2")
     except SystemExit: continue
     for e in sb.get("events") or []:
         eid, st = e["id"], ((e.get("status") or {}).get("type") or {}).get("name")
         c = e["competitions"][0]; a, h, T = teams_of(c, FIX_NFL)
+        for tm in (a, h): KD.setdefault(tm, {})[str(w)] = e.get("date")   # kickoff times (rest days between games)
         if st == "STATUS_FINAL":
             if eid in C and len(C[eid]) >= 6 and all(len(v) >= 4 for v in C[eid][5].values()): continue   # older cache rows (no sack / red-zone numbers) are read again once
             try: s = get(B + "football/nfl/summary?event=" + eid)
@@ -59,7 +60,7 @@ for g in G:
 for w, r, p, y, t, *_ in G:
     x = R.setdefault(r, [0, 0, 0, 0]); x[0] += 1; x[1] += p; x[2] += y; x[3] += t
 out = {"r": {r: {"n": n, "pen": round(p / n, 2), "yds": round(y / n, 1), "pts": round(t / n, 1)} for r, (n, p, y, t) in R.items()},
-       "lg": {"pen": round(sum(g[2] for g in G) / len(G), 2), "pts": round(sum(g[4] for g in G) / len(G), 1)}, "g": UP, "wk": wk, "sk": SKT}
+       "lg": {"pen": round(sum(g[2] for g in G) / len(G), 2), "pts": round(sum(g[4] for g in G) / len(G), 1)}, "g": UP, "wk": wk, "sk": SKT, "kd": KD}
 print(f"/* NFL referee crews — ESPN officials + team penalties (tools/nflrefs.py), {len(G)} games */")
 print("var NFL_REFS=" + json.dumps(out, separators=(",", ":"), ensure_ascii=False) + ";")
 print(f"nflrefs: {len(G)} games ({newg} new), {len(R)} referees, {len(UP)} of this week's crews posted", file=sys.stderr)

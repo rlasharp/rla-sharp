@@ -596,6 +596,13 @@ function nbaBoostNote(nm,k){
 
 /* ---------- Best props tonight: every posted line, both sides, ranked ---------- */
 /* score one side of one line (shared by the ranking and the locked plays) */
+function nbaLastNm(n){const w=String(n).split(" ");return /^(Jr\.?|Sr\.?|II|III|IV|V)$/i.test(w[w.length-1])&&w.length>1?w[w.length-2]:w[w.length-1]}
+/* share of this season's games with a similar closing spread (±2) that were decided by 15+ points (needs 15+ games) */
+let NBA_BLOWC={};function nbaBlowP(spA){const key=Math.round(spA);if(key in NBA_BLOWC)return NBA_BLOWC[key];const S=typeof NBA_SPR!=="undefined"?Object.values(NBA_SPR):[];
+  const L=S.filter(x=>x[3]!=null&&x[5]!=null&&Math.abs(Math.abs(x[3])-spA)<=2);return NBA_BLOWC[key]=L.length>=15?L.filter(x=>Math.abs(x[5]-x[6])>=15).length/L.length:null}
+/* his minutes in blowouts (decided by 15+) vs other games this season — needs 2+ blowouts and 3+ others */
+function nbaBlowMin(p){const M={};for(const r of NBA_RES)M[r[0]]=Math.abs(r[4]-r[5]);const b=p.g.filter(x=>M[x[0]]>=15),c=p.g.filter(x=>M[x[0]]!=null&&M[x[0]]<15);if(b.length<2||c.length<3)return null;
+  const a=z=>z.reduce((t,x)=>t+x[4],0)/z.length;return Math.max(.5,Math.min(1.1,a(b)/a(c)))}
 function nbaEval(nm,k,line,side,odds,book,oppIn){
   const p=NBA_LOGS[nm];if(!p||!NBA_MK[k]||odds==null)return null;
   const g=nbaGameOf(p.tm),opp=oppIn||(g?(g.a===p.tm?g.h:g.a):"");
@@ -614,8 +621,17 @@ function nbaEval(nm,k,line,side,odds,book,oppIn){
   let fair=row?(()=>{const io=nbaImpl(row[3]),iu=nbaImpl(row[4]);return side==="o"?io/(io+iu):iu/(io+iu)})():be/1.045;
   const nEff=Math.min(25,l10.length+.5*ss.length),w=.4*nEff/(nEff+10)*(typeof xCalK!=="undefined"?xCalK("nba"):1);   /* × what the record says (xsport.js) */
   let sc=fair+w*(raw-fair)+(dvOk?.02*dvOk:0);
+  /* usage bump (Nov 2026): key teammates out tonight -> his hit rate in this season's games without them, blended in by sample size */
+  let bump=null;try{const so=nbaStarsOut(p.tm).filter(n=>n!==nm);if(so.length){const outIds=so.map(n=>new Set((NBA_LOGS[n]||{g:[]}).g.map(x=>x[0]))),TG=new Set(NBA_RES.filter(r=>r[2]===p.tm||r[3]===p.tm).map(r=>r[0]));
+    const wo=p.g.filter(x=>TG.has(x[0])&&outIds.every(S=>!S.has(x[0])));if(wo.length>=3){const rW=hit(wo.map(x=>({x})))/wo.length,ww=.35*wo.length/(wo.length+5);sc+=Math.max(-.06,Math.min(.06,ww*(rW-r10)));
+      bump={who:so,n:wo.length,rW,avg:wo.reduce((t,x)=>t+nbaVal(x,k),0)/wo.length,base:p.g.reduce((t,x)=>t+nbaVal(x,k),0)/p.g.length}}}}catch(e){}
+  /* blowout risk (Nov 2026): big spread -> chance the game is decided by 15+ (this season's games with a similar closing spread)
+     × how much his minutes drop in blowouts (his own games) -> his last 10 re-scored at the reduced minutes */
+  let blow=null;try{const Lg=g&&NBA_LINES[g.a+"@"+g.h],spA=Lg?Math.abs(Lg.sp):0,mn=nbaAvg(p,"min");
+    if(spA>=9&&mn>=24&&NBA_MK[k]&&!["stl","blk"].includes(k)){const pB=nbaBlowP(spA),r=nbaBlowMin(p);
+      if(pB!=null&&r!=null&&r<.97){const f=pB*(1-r),r10s=l10.filter(o=>{const v=nbaVal(o.x,k)*(1-f);return side==="o"?v>line:v<line}).length/l10.length,d=Math.max(-.06,Math.min(.06,.4*(r10s-r10)));sc+=d;blow={pB,r,f,d}}}}catch(e){}
   sc=Math.max(.03,Math.min(.9,sc));
-  return {nm,k,line,side,odds,book,p,opp,g,sc,raw,fair,be,edge:sc-be,dvOk,n10:l10.length,
+  return {nm,k,line,side,odds,book,p,opp,g,sc,raw,fair,be,edge:sc-be,dvOk,n10:l10.length,bump,blow,
     c3:[hit(l10.slice(-3)),l10.slice(-3).length],c5:[hit(l5),l5.length],c10:[hit(l10),l10.length],cS:[hit(ss),ss.length],cH:[hit(h2),h2.length],
     id:"pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k};
 }
@@ -641,7 +657,7 @@ function nbaBest(){
 }
 function nbaBestRow(b,i){const mk=NBA_MK[b.k][1];
   return xPropRow({i,attrs:`data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}"`,badge:nbaBadge(b.p.tm),name:nbaEsc(b.nm),sub:`${b.g.a===b.p.tm?"@":"vs"} ${b.opp}`,
-    chips:nbaInjChip(nbaInjOf(b.nm))+(typeof newsFlag!=="undefined"?newsFlag("nba",b.nm):"")+(b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nba",b.nm,b.k,b.side):""),
+    chips:nbaInjChip(nbaInjOf(b.nm))+(typeof newsFlag!=="undefined"?newsFlag("nba",b.nm):"")+(b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nba",b.nm,b.k,b.side):"")+(b.bump?`<span class="pll o" title="This season without ${nbaEsc(b.bump.who.join(", "))}: ${b.bump.avg.toFixed(1)} a game in ${b.bump.n} games (season ${b.bump.base.toFixed(1)})">📈 without ${nbaEsc(b.bump.who.map(nbaLastNm).join(", "))}</span>`:"")+(b.blow?`<span class="pll u" title="${Math.round(b.blow.pB*100)}% of games with this spread were blowouts; his minutes drop to ${Math.round(b.blow.r*100)}% in those">📉 blowout risk</span>`:""),
     pick:`${b.side==="o"?"Over":"Under"} ${b.line} ${mk}`,odds:oddsFmt(b.odds),book:b.book?nbaEsc(b.book):"",l10:b.c10[1]?b.c10:b.c5,
     hits:[b.cS[1]>=3&&[b.cS[0],b.cS[1],"this season"],b.cH[1]&&[b.cH[0],b.cH[1],"vs "+b.opp]],why:b.dvOk===1?"matchup helps":b.dvOk===-1?"tough matchup":"",
     chance:Math.round(b.sc*100),need:Math.round(b.be*100),act:typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""})}
@@ -735,14 +751,13 @@ function nbaBestFilterUI(L0){const f=NB.bf||(NB.bf={});const games=NBA_SLATE.fil
 function nbaBestPage(el){
   const L0=nbaBest(),L=nbaBestFilter(L0);
   el.innerHTML=`<h1>NBA Best Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>${nbaPropTabs("best")}
-  ${nbaPlaysCard()}
-  <div style="margin-top:14px">${nbaRecordCard(1)}</div>
   ${L0.length?`<div class="card bpc" style="margin-top:14px"><h2 style="margin-bottom:2px">🔥 Every line, ranked</h2>
     <div class="small" style="margin-bottom:8px">${L.length} of ${L0.length} posted lines with an edge, over or under, ranked by how often they would have hit vs what the odds need. Tap one for the player's stats and charts.</div>
     ${nbaBestFilterUI(L0)}${L.length?"":`<div class="small" style="padding:8px 0">Nothing matches these filters.</div>`}
     ${L.map(nbaBestRow).join("")}
     <div class="small" style="margin-top:8px">Hit score blends last 10 (45%), this season (35%) and vs tonight's opponent (20%), ±5 for the position matchup. A lean, not a guarantee.</div></div>`
    :`<div class="card" style="margin-top:14px">${NBA_PROPS.length&&NBA_SLATE.length&&NBA_SLATE.every(nbaStarted)?"🔒 Every game today has started — pregame lines are closed. New lines come out tomorrow morning.":NBA_PROPS.length?"No open line shows an edge right now.":"Today's prop lines aren't out yet — books post them in the morning."}</div>`}`;
+  el.insertAdjacentHTML("beforeend",`<details class="tmore" style="margin-top:12px"><summary>Plays of the day &amp; our record</summary>${nbaPlaysCard()}<div style="margin-top:12px">${nbaRecordCard(1)}</div></details>`);
   if(typeof xaYesCard!=="undefined"){const h=xaYesCard(null);if(h)el.insertAdjacentHTML("beforeend",h)}
   nbaWireBest(el);
   el.querySelectorAll("[data-bf]").forEach(s=>s.onchange=()=>{NB.bf[s.dataset.bf]=s.value;const y=window.scrollY;nbaBestPage(el);window.scrollTo(0,y)});

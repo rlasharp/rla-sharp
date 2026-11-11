@@ -113,7 +113,7 @@ function xfReturn(g){const out=[];
       else if(back===0){let m2=0;for(let i=seq.length-1;i>=0&&!seq[i];i--)m2++;
         if(m2>=3&&/quest|probable|day|game-time|gtd/i.test(st))out.push({ic:"⏱️",c:"y",h:`${xfE(n)} could return tonight`,t:`Missed the last ${m2} games (${xfE(st)}). Players are often on a minutes limit in their first game back.`})}}}
   return out.slice(0,4)}
-function xfNba(g){try{const R=(typeof NBA_REST!=="undefined"&&NBA_REST)||{};return xfCard([xfAlt("nba",g.a,g.h,{b2b:R[g.a]&&R[g.a].rest===0,name:nbaShort(g.a)}),...xfReturn(g),...xfRevenge(g)])}catch(e){return ""}}
+function xfNba(g){try{const R=(typeof NBA_REST!=="undefined"&&NBA_REST)||{};return xfCard([xfBlow(g),...xfBump(g),xfAlt("nba",g.a,g.h,{b2b:R[g.a]&&R[g.a].rest===0,name:nbaShort(g.a)}),...xfReturn(g),...xfRevenge(g)])}catch(e){return ""}}
 
 /* ---- NFL: backup QB, divisional rematch, pass rush vs offensive line ---- */
 function xfQB(t){try{const Q=(typeof QB1_STATUS!=="undefined"&&QB1_STATUS[t])||null;
@@ -135,7 +135,7 @@ function xfRush(g){const R=typeof NFL_REFS!=="undefined"&&NFL_REFS&&NFL_REFS.sk;
     const bad=r1>=22&&r2<=10,good=r1<=10&&r2>=22;
     out.push({ic:"💥",c:bad?"dn":good?"up":"",h:`${xfE(short(o))} O-line vs ${xfE(short(d))} pass rush`,t:`${xfE(short(o))} allow a sack on <b>${ol.toFixed(1)}%</b> of dropbacks (${nbaOrd?nbaOrd(r1):r1} fewest); ${xfE(short(d))} get one on <b>${pr.toFixed(1)}%</b> (${nbaOrd?nbaOrd(r2):r2} most).${bad?" A mismatch — more sacks and hurried throws for the QB.":good?" His protection should hold up.":""}`})}
   return out}
-function xfNfl(g){try{return xfCard([xfQB(g.away),xfQB(g.home),xfScript(g),xfDiv(g),...xfRush(g),xfOline(g.away),xfOline(g.home),xfRef(g),xfAlt("nfl",g.away,g.home,{name:short(g.away)})])}catch(e){return ""}}
+function xfNfl(g){try{return xfCard([...xfRest(g),xfQB(g.away),xfQB(g.home),xfScript(g),xfDiv(g),...xfRush(g),xfOline(g.away),xfOline(g.home),xfRef(g),xfAlt("nfl",g.away,g.home,{name:short(g.away)})])}catch(e){return ""}}
 
 /* ---- Soccer ---- */
 function xfSeasonStart(c){return c==="mls"?"2026-01-01":"2026-07-01"}
@@ -210,3 +210,29 @@ function xfLinesCard(g){const T=[g.a,g.h].filter(xfLn);if(!T.length)return "";co
     return `<div class="lnt"><h3 class="nhh3">${nhBadge(t)} ${xfE(nhTm(t))}</h3>${f.map(row).join("")}${d.map(row).join("")}${pp.length?`<div class="small lnsub">Power play</div>${pp.map(row).join("")}`:""}<div class="small" style="margin-top:4px">Updated ${typeof newsAge!=="undefined"?newsAge(L.at):xfE(L.at)} · ${xfE(L.src)}</div></div>`};
   return `<div class="card xacard lncard" style="margin-top:12px"><h2>🧩 Lines &amp; power play</h2><div class="xasub">Expected forward lines, defence pairs and power-play units (Daily Faceoff). ❓ = game-time decision.</div><div class="grid g2">${T.map(team).join("")}</div></div>`}
 function xfNhl(g){try{return xfCard([xfAlt("nhl",g.a,g.h,{b2b:typeof nhB2B!=="undefined"&&nhB2B(g.a,g.d),name:nhTm(g.a)}),...xfLineMoves(g.a),...xfLineMoves(g.h)])}catch(e){return ""}}
+
+/* ---- NBA: blowout risk + usage bump (the same numbers the prop chances now use) ---- */
+function xfBlow(g){try{const L=NBA_LINES[g.a+"@"+g.h];if(!L||Math.abs(L.sp)<9)return null;const spA=Math.abs(L.sp),pB=nbaBlowP(spA);if(pB==null)return null;const fav=L.sp<=0?g.h:g.a;
+  const st=Object.entries(NBA_LOGS).filter(([,p])=>(p.tm===g.a||p.tm===g.h)&&nbaAvg(p,"min")>=28).map(([n,p])=>[n,nbaBlowMin(p)]).filter(x=>x[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,4);
+  return {ic:"📉",c:"y",h:`Blowout risk: ${xfE(nbaShort(fav))} favored by ${spA}`,t:`${Math.round(pB*100)}% of this season's games with a similar spread were decided by 15+ points.${st.length?` Minutes in blowouts vs other games: ${st.map(([n,r])=>`${xfE(nbaLastNm(n))} ${Math.round(r*100)}%`).join(", ")}.`:""} Our chances on starters' overs are lowered to match.`}}catch(e){return null}}
+function xfBump(g){const out=[];try{for(const t of [g.a,g.h]){const so=nbaStarsOut(t);if(!so.length)continue;const S=so.map(n=>new Set((NBA_LOGS[n]||{g:[]}).g.map(x=>x[0]))),TG=new Set(NBA_RES.filter(r=>r[2]===t||r[3]===t).map(r=>r[0]));
+  const R=Object.entries(NBA_LOGS).filter(([n,p])=>p.tm===t&&!so.includes(n)).map(([n,p])=>{const wo=p.g.filter(x=>TG.has(x[0])&&S.every(z=>!z.has(x[0]))),w=p.g.filter(x=>!wo.includes(x));if(wo.length<3||w.length<3)return null;
+    const a=(z,i)=>z.reduce((s,x)=>s+(x[i]||0),0)/z.length;return {n,wo:wo.length,dp:a(wo,5)-a(w,5),df:a(wo,11)-a(w,11)}}).filter(x=>x&&x.dp>=2).sort((a,b)=>b.dp-a.dp).slice(0,3);
+  if(R.length)out.push({ic:"📈",c:"up",h:`Usage bump: ${xfE(nbaShort(t))} without ${xfE(so.map(nbaLastNm).join(", "))}`,t:R.map(x=>`<b>${xfE(x.n)}</b> +${x.dp.toFixed(1)} pts, ${x.df>=0?"+":""}${x.df.toFixed(1)} shots a game (${x.wo} games without)`).join(" · ")+". Their prop chances use these games."})}}catch(e){}return out}
+
+/* ---- NFL: rest and travel (kickoff dates from ESPN via NFL_REFS.kd; stadium time zones) ---- */
+const XF_TZ={ATL:-5,BAL:-5,BUF:-5,CAR:-5,CIN:-5,CLE:-5,DET:-5,IND:-5,JAX:-5,MIA:-5,NE:-5,NYG:-5,NYJ:-5,PHI:-5,PIT:-5,TB:-5,WAS:-5,CHI:-6,DAL:-6,GB:-6,HOU:-6,KC:-6,MIN:-6,NO:-6,TEN:-6,DEN:-7,ARI:-7,LAR:-8,LAC:-8,LV:-8,SF:-8,SEA:-8};
+function xfRest(g){const K=typeof NFL_REFS!=="undefined"&&NFL_REFS&&NFL_REFS.kd;if(!K)return [];const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:null,out=[],info={};
+  for(const t of [g.away,g.home]){const D=K[t]||{},now=D[wk]?Date.parse(D[wk]):null;if(!now)continue;const prevW=Object.keys(D).map(Number).filter(w=>w<wk&&D[w]).sort((a,b)=>b-a)[0];if(prevW==null)continue;
+    const days=Math.round((now-Date.parse(D[prevW]))/864e5);info[t]={days,bye:prevW<wk-1};}
+  const lbl=t=>{const x=info[t];return x?(x.bye?`off a bye (${x.days} days)`:x.days<=5?`<b>short week</b> (${x.days} days)`:x.days>=9?`extra rest (${x.days} days)`:`${x.days} days`):"–"};
+  const A=info[g.away],H=info[g.home];
+  if(A&&H&&(A.bye||H.bye||A.days<=5||H.days<=5||A.days>=9||H.days>=9||Math.abs(A.days-H.days)>=3))
+    out.push({ic:"🛌",c:Math.abs(A.days-H.days)>=3?"y":"",h:"Rest",t:`${xfE(short(g.away))}: ${lbl(g.away)} · ${xfE(short(g.home))}: ${lbl(g.home)}.${Math.abs(A.days-H.days)>=3?` A ${Math.abs(A.days-H.days)}-day rest edge for ${xfE(short(A.days>H.days?g.away:g.home))}.`:""}`});
+  /* travel: away team's home time zone vs the game's (international games noted) */
+  const W=typeof WX!=="undefined"&&WX[g.id],intl=W&&W.city&&!/,\s*[A-Z]{2}$/.test(W.city)&&!W.dome;
+  const ta=XF_TZ[g.away],th=XF_TZ[g.home],tm=String(g.when||"").match(/(\d+):(\d+)\s*(AM|PM)/i),etH=tm?((+tm[1]%12)+(tm[3].toUpperCase()==="PM"?12:0)):null;
+  if(intl)out.push({ic:"✈️",c:"y",h:"International game",t:`Played in ${xfE(W.city)} — both teams travel overseas; body clocks and routines are off for everyone.`});
+  else if(ta!=null&&th!=null&&ta!==th){const dz=th-ta;if(dz>=2&&etH!=null&&etH<=13)out.push({ic:"🕐",c:"y",h:`Early body clock for ${xfE(short(g.away))}`,t:`A ${tm[0]} ET kickoff feels like ${((etH+ta+5+24)%12)||12}:${tm[2]} ${etH+ta+5>=12?"PM":"AM"} back home — West-coast teams playing early in the East is a classic tough spot.`});
+    else if(Math.abs(dz)>=2)out.push({ic:"✈️",h:`${xfE(short(g.away))} cross ${Math.abs(dz)} time zones`,t:`Long trip ${dz>0?"east":"west"} for the road team.`})}
+  return out}

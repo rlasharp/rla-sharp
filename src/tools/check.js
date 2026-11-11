@@ -56,11 +56,19 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
   const r=await p.evaluate(()=>({deep:[...document.querySelectorAll('.xadeep')].filter(e=>e.offsetParent).length,w:document.documentElement.scrollWidth,simple:document.body.classList.contains('simple')}));
   if(!r.simple)errs.push('simple view not applied #'+h);if(r.deep)errs.push(`simple view still shows ${r.deep} detail blocks #${h}`);if(r.w>391)errs.push(`overflow (simple) #${h}: ${r.w}`)}
  await p.evaluate(()=>uxViewSet('detailed'));
- await p.evaluate(()=>setTheme('light'));
+ const nhId=await p.evaluate(()=>new Promise(r=>{const go=()=>r(typeof NHL_SLATE!=='undefined'&&NHL_SLATE[0]?NHL_SLATE[0].id:null);typeof nhlEnsure!=='undefined'?nhlEnsure(go):go();setTimeout(()=>r(null),4000)}));
  const CH=['today',nb!=null?'nba-game-'+nb:'nba',g!=null?'game-'+g:'games',nb!=null?'nba-game-'+nb+'-props':'nba-props'];
- CH.push('today|nhl','plays','injuries','standings','trends','nba-injuries','team-BUF');{const x=await p.evaluate(()=>({pl:Object.keys(NBA_LOGS).sort((a,b)=>NBA_LOGS[b].g.length-NBA_LOGS[a].g.length)[0]}));if(x.pl)CH.push('nba-player-'+encodeURIComponent(x.pl))}   /* Today with the NHL games tab open (it shows by itself at night, once the NBA games have started) */
- for(const h0 of CH){const [h,tab]=h0.split('|');await p.goto('file://'+f+'#'+h);await p.waitForTimeout(900);
-  if(tab){await p.evaluate(t=>new Promise(r=>{const go=()=>{const b=document.querySelector(`[data-tt="games|${t}"]`);if(b)b.click();setTimeout(r,500)};typeof nhlEnsure!=='undefined'?nhlEnsure(go):go()}),tab)}
+ CH.push('today|nhl','plays','injuries','standings','trends','nba-injuries','team-BUF','potd','week','record','nba-best','nhl-props','props');{const x=await p.evaluate(()=>({pl:Object.keys(NBA_LOGS).sort((a,b)=>NBA_LOGS[b].g.length-NBA_LOGS[a].g.length)[0]}));if(x.pl)CH.push('nba-player-'+encodeURIComponent(x.pl))}   /* Today with the NHL games tab open (it shows by itself at night, once the NBA games have started) */
+ /* every tab of each game page, with all folded cards opened (so their contents are checked too) */
+ if(nb!=null)for(const t of ['mu','tr','h2h'])CH.push('nba-game-'+nb+'|gt:[data-nbgt="'+t+'"]');
+ if(g!=null)for(const t of ['mu','tr','h2h'])CH.push('game-'+g+'|gt:[data-nfgt="'+t+'"]');
+ if(nhId!=null){CH.push('nhl-game-'+nhId);for(const t of ['matchup','trends','h2h'])CH.push('nhl-game-'+nhId+'|gt:[data-nhtab="'+t+'"]')}
+ const DARK=['today',nb!=null?'nba-game-'+nb:'nba',g!=null?'game-'+g:'games','potd','nba-best','record'];if(nb!=null)DARK.push('nba-game-'+nb+'|gt:[data-nbgt="mu"]');if(nhId!=null)DARK.push('nhl-game-'+nhId);
+ for(const theme of ['light','dark']){await p.evaluate(t=>setTheme(t),theme);
+ for(const h0 of (theme==='light'?CH:DARK)){const [h,tab]=h0.split('|');await p.goto('file://'+f+'#'+h);await p.waitForTimeout(900);
+  if(tab&&tab.startsWith('gt:')){await p.evaluate(sel=>{const a=[...document.querySelectorAll(sel)].find(x=>x.offsetParent);a&&a.click()},tab.slice(3));await p.waitForTimeout(700)}
+  else if(tab){await p.evaluate(t=>new Promise(r=>{const go=()=>{const b=document.querySelector(`[data-tt="games|${t}"]`);if(b)b.click();setTimeout(r,500)};typeof nhlEnsure!=='undefined'?nhlEnsure(go):go()}),tab)}
+  await p.evaluate(()=>{document.querySelectorAll('main>section:not(.hide) .xfold').forEach(c=>c.classList.add('open'));document.querySelectorAll('main>section:not(.hide) .gplazy > h2').forEach(h=>h.click());document.querySelectorAll('main>section:not(.hide) details:not(.pxfd)').forEach(d=>d.open=true)});await p.waitForTimeout(300);
   const r=await p.evaluate(()=>{const P=c=>(c.match(/[\d.]+/g)||[0,0,0]).map(Number);
    const lum=([r,g,b])=>{const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(r)+.7152*f(g)+.0722*f(b)};
    const bgOf=el=>{const cols=[];for(let e=el;e;e=e.parentElement){const cs=getComputedStyle(e);if(cs.backgroundImage!=='none')return null;const c=P(cs.backgroundColor);const a=c.length>3?c[3]:1;if(a>0)cols.push([c[0],c[1],c[2],a]);if(a>=.95)break}
@@ -69,6 +77,6 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
      const cs=getComputedStyle(el);if(cs.visibility==='hidden'||+cs.opacity<.5)continue;const bg=bgOf(el);if(!bg)continue;const fc=P(cs.color),a=fc.length>3?fc[3]:1,fg=fc.slice(0,3).map((v,i)=>v*a+bg[i]*(1-a));
      const L1=lum(fg),L2=lum(bg),cr=(Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05);if(cr<3)bad.push(`${cr.toFixed(1)}:1 "${el.textContent.trim().slice(0,28)}"`)}
    return {bad:[...new Set(bad)],w:document.documentElement.scrollWidth}});
-  if(r.w>391)errs.push(`overflow (light) #${h}: ${r.w}`);if(r.bad.length)errs.push(`hard-to-read text (light) #${h0}: ${r.bad.slice(0,4).join(' · ')}`)}
+  if(r.w>391)errs.push(`overflow (${theme}) #${h0}: ${r.w}`);if(r.bad.length)errs.push(`hard-to-read text (${theme}) #${h0}: ${r.bad.slice(0,4).join(' · ')}`)}}
  await p.close()}
 console.log(errs.length?"CHECK FAILED:\n"+errs.join("\n"):"CHECK OK");await b.close();process.exit(errs.length?1:0)})();

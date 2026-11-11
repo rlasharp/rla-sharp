@@ -49,7 +49,19 @@ function gpPost(){const root=document.querySelector("main>section:not(.hide)");i
   root.querySelectorAll(".card.prop").forEach(c=>{if(c.dataset.gpc)return;c.dataset.gpc=1;const ch=c.querySelector(".nbchw,.pchart,.chartw,.nhch,.pxchw");if(!ch)return;
     const rest=[];let n=ch.nextElementSibling;while(n){const nx=n.nextElementSibling;if(!n.matches(".pxbet,.betrow,.prop-actions,[data-keep]"))rest.push(n);n=nx}
     if(rest.length<1)return;const d=document.createElement("details");d.className="gpmore";d.innerHTML="<summary>More detail</summary>";rest.forEach(x=>d.appendChild(x));c.appendChild(d)});
+  root.querySelectorAll(".bfil").forEach(gpQuick);
   if(typeof uxFoldCards!=="undefined")uxFoldCards()}
+
+/* ---------- Props pages: quick chips on top of the filter dropdowns (dropdowns move under "More filters") ---------- */
+const GP_QM=["pts","reb","ast","3pm","pra","hpts","hsog","hanyG","hsaves","passYds","rushYds","recYds","rec","anyTD","sgoal","ssot"];
+function gpQuick(box){if(box.dataset.gpq)return;box.dataset.gpq=1;const sel=k=>box.querySelector(`select[data-bf="${k}"],select[data-nhbf="${k}"],select[data-nbf="${k}"]`);
+  const M=sel("m"),Sd=sel("s"),Mn=sel("min");if(!M&&!Sd)return;
+  const mk=M?[...M.options].filter(o=>o.value).sort((a,b)=>{const i=GP_QM.indexOf(a.value),j=GP_QM.indexOf(b.value);return (i<0?99:i)-(j<0?99:j)}).slice(0,5):[];
+  const chips=[["all","All",!(M&&M.value)&&!(Sd&&Sd.value)&&!(Mn&&Mn.value)],...mk.map(o=>["m|"+o.value,o.textContent.replace(/^3-Pointers made$/,"3s").replace(/^Points \+ Rebounds \+ Assists$/,"PRA").replace(/ yards$/," yds"),M.value===o.value]),...(Sd?[["s|o","Overs",Sd.value==="o"],["s|u","Unders",Sd.value==="u"]]:[]),...(Mn?[["min|60","60%+",Mn.value==="60"]]:[])];
+  const bar=document.createElement("div");bar.className="gpchips";bar.innerHTML=chips.map(([k,l,on])=>`<button type="button" class="${on?"on":""}" data-gpqc="${gpE(k)}">${gpE(l)}</button>`).join("");
+  const det=document.createElement("details");det.className="gpmf";det.innerHTML="<summary>More filters</summary>";box.parentNode.insertBefore(bar,box);box.parentNode.insertBefore(det,box);det.appendChild(box);
+  bar.onclick=e=>{const b=e.target.closest("[data-gpqc]");if(!b)return;const k=b.dataset.gpqc,set=(s,v)=>{if(s){s.value=v;s.dispatchEvent(new Event("change",{bubbles:true}))}};
+    if(k==="all"){[M,Sd,Mn].forEach(s=>set(s,""));return}const [f,v]=k.split("|"),s=sel(f);set(s,s&&s.value===v?"":v)}}
 let GP_T=0;const gpSoon=()=>{clearTimeout(GP_T);GP_T=setTimeout(gpPost,60)};
 window.addEventListener("load",()=>{gpSoon();try{new MutationObserver(m=>{if(m.some(x=>x.addedNodes.length))gpSoon()}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}catch(e){}});
 window.addEventListener("hashchange",gpSoon);
@@ -89,3 +101,8 @@ document.addEventListener("toggle",e=>{const d=e.target;if(!(d.matches&&d.matche
   if(d.open&&!d.querySelector(".gpdone")){const b=document.createElement("button");b.className="btn gpdone";b.type="button";b.textContent="Done";b.onclick=ev=>{ev.preventDefault();d.open=false};d.appendChild(b)}},true);
 document.addEventListener("click",e=>{if(!document.body.classList.contains("gpsheet"))return;if(e.target.closest&&e.target.closest("details.pxfd"))return;const d=document.querySelector("details.pxfd[open]");if(d){e.preventDefault();e.stopPropagation();d.open=false}},true);
 window.addEventListener("hashchange",()=>document.body.classList.remove("gpsheet"));
+
+/* opening a game (from anywhere else) always starts on Overview; switching tabs inside the same game keeps your tab */
+function gpGameKey(h){h=String(h||"").replace(/^.*#/,"");const m=h.match(/^(nba-game-|nhl-game-|game-|soccer-game-)([^-]+)/);return m?m[1]+m[2]:null}
+window.addEventListener("hashchange",e=>{const n=gpGameKey(e.newURL),o=gpGameKey(e.oldURL);if(!n||n===o)return;
+  try{if(typeof NB!=="undefined")NB.gtab="ov"}catch(x){}try{if(typeof NH!=="undefined")NH.tab="overview"}catch(x){}try{if(typeof S!=="undefined")S.gtab="ov"}catch(x){}try{if(typeof SC!=="undefined")SC.tab="ov"}catch(x){}});
