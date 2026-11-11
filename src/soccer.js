@@ -470,14 +470,21 @@ function socXICard(f){const L=socLuOf(f),conf=!!L;const side=tid=>{let X;if(conf
    <div class="sc2">${side(f.h)}${side(f.a)}</div></div>`}
 
 /* 🔮 our prediction: most likely score + the side of each main market we favour (from the same estimates) */
-function socPred(f){const P=f.proj;if(!P)return null;const pz=(k,l)=>Math.exp(-l)*Math.pow(l,k)/[1,1,2,6,24,120,720][k];let best=[0,0,0],top=[];
-  for(let i=0;i<=6;i++)for(let j=0;j<=6;j++){const q=pz(i,P.lh)*pz(j,P.la);top.push([i,j,q]);if(q>best[2])best=[i,j,q]}top.sort((a,b)=>b[2]-a[2]);
+/* predicted score: the single most likely exact score is almost always a 1-goal game (1-0, 2-1…) even when lots of goals
+   are expected, and it often contradicted our own goals / both-teams-score picks. So the score shown is the most likely
+   exact score that agrees with all three of our picks — result, over/under 2.5 and both teams to score
+   (same Poisson + Dixon-Coles model as every other number on the page). */
+function socPred(f){const P=f.proj;if(!P)return null;const pz=(k,l)=>Math.exp(-l)*Math.pow(l,k)/[1,1,2,6,24,120,720,5040,40320][k],rho=P.rho||0;
+  const tau=(i,j)=>i===0&&j===0?1-P.lh*P.la*rho:i===0&&j===1?1+P.lh*rho:i===1&&j===0?1+P.la*rho:i===1&&j===1?1-rho:1;let top=[],tot=0;
+  for(let i=0;i<=8;i++)for(let j=0;j<=8;j++){const q=Math.max(0,pz(i,P.lh)*pz(j,P.la)*tau(i,j));top.push([i,j,q]);tot+=q}top.forEach(t=>t[2]/=tot);top.sort((a,b)=>b[2]-a[2]);
   const r=P.p.indexOf(Math.max(...P.p)),res=r===0?socTm(f.h)+" win":r===2?socTm(f.a)+" win":"Draw";
-  best=top.find(t=>r===0?t[0]>t[1]:r===2?t[0]<t[1]:t[0]===t[1])||best;   // the score shown always matches the predicted result
-  return {score:best,top:top.slice(0,3),res,rp:P.p[r],ou:P.o["2.5"]>=.5?["Over 2.5",P.o["2.5"]]:["Under 2.5",1-P.o["2.5"]],btts:P.btts>=.5?["Yes",P.btts]:["No",1-P.btts],cor:P.cor&&P.cor.t,card:P.card&&P.card.t}}
-function socPredShort(f){const x=socPred(f);return x?`<div class="small scpred1">🔮 Prediction: <b>${socE(socTm(f.h))} ${x.score[0]}–${x.score[1]} ${socE(socTm(f.a))}</b> · ${socE(x.res)}</div>`:""}
+  const ou=P.o["2.5"]>=.5?["Over 2.5",P.o["2.5"]]:["Under 2.5",1-P.o["2.5"]],bt=P.btts>=.5?["Yes",P.btts]:["No",1-P.btts];
+  const okR=t=>r===0?t[0]>t[1]:r===2?t[0]<t[1]:t[0]===t[1],okO=t=>(ou[0]==="Over 2.5")===(t[0]+t[1]>2.5),okB=t=>(bt[0]==="Yes")===(t[0]>0&&t[1]>0);
+  const best=top.find(t=>okR(t)&&okO(t)&&okB(t))||top.find(t=>okR(t)&&okO(t))||top.find(okR)||top[0];
+  return {score:best,top:top.slice(0,3),res,rp:P.p[r],ou,btts:bt,cor:P.cor&&P.cor.t,card:P.card&&P.card.t}}
+function socPredShort(f){const x=socPred(f);return x?`<div class="small scpred1">🔮 Prediction: <b>${socE(socTm(f.h))} ${x.score[0]}–${x.score[1]} ${socE(socTm(f.a))}</b> · ${socE(x.res)} · xG ${f.proj.lh.toFixed(1)}–${f.proj.la.toFixed(1)}</div>`:""}
 function socPredCard(f){const x=socPred(f);if(!x)return "";const c=(lab,v,p)=>`<div class="scpc"><span>${lab}</span><b>${v}</b>${p!=null?`<em>${socPct(p)}</em>`:""}</div>`;
-  return `<div class="card scpredc"><h2>🔮 Our prediction</h2><div class="scpscore">${socBadge(f.h)} <b>${x.score[0]} – ${x.score[1]}</b> ${socBadge(f.a)}<span class="small">predicted score (exact score ${socPct(x.score[2])}) · most common scores: ${x.top.map(t=>`${t[0]}-${t[1]}`).join(", ")}</span></div>
+  return `<div class="card scpredc"><h2>🔮 Our prediction</h2><div class="scpscore">${socBadge(f.h)} <b>${x.score[0]} – ${x.score[1]}</b> ${socBadge(f.a)}<span class="small">expected goals <span style="font-weight:700;color:var(--text)">${f.proj.lh.toFixed(1)} – ${f.proj.la.toFixed(1)}</span> · predicted score — fits our result, goals and both-teams-score picks (this exact score: ${socPct(x.score[2])}) · single most common scores: ${x.top.map(t=>`${t[0]}-${t[1]}`).join(", ")}</span></div>
    <div class="scpcs">${c("Result",socE(x.res),x.rp)}${c("Goals",x.ou[0],x.ou[1])}${c("Both score",x.btts[0],x.btts[1])}${x.cor!=null?c("Corners","~"+x.cor.toFixed(1)):""}${x.card!=null?c("Cards","~"+x.card.toFixed(1)):""}</div>
    <div class="small" style="margin-top:6px">Our numbers, not a bet tip — the verdict above says whether any price is worth it.</div></div>`}
 
