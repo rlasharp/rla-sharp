@@ -334,7 +334,7 @@ function nbaGame(el,id){
     <div class="card"><h2>${nbaShort(g.a)} last 5</h2>${nbaLast5(g.a)}<div class="small" style="margin-top:8px">${restTxt(g.a)}</div>${nbaSpotHtml(g.a)}</div>
     <div class="card"><h2>${nbaShort(g.h)} last 5</h2>${nbaLast5(g.h)}<div class="small" style="margin-top:8px">${restTxt(g.h)}</div>${nbaSpotHtml(g.h)}</div>
   </div>
-  ${nbaQtrCard(g)}
+  ${nbaQtrCard(g)}${typeof woCard!=="undefined"?woCard("nba",g.a,g.h,nbaShort):""}
 
 `;
     if(T==="h2h")return nav+`<div class="nodz">${nbaH2HCard(g)}</div>`;

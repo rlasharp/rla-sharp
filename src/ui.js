@@ -153,7 +153,7 @@ function viewGame(id){
     const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nfgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#game-${g.id}-props">🎯 Props</a></div>`;
     if(T==="tr")return nav+`   <div class="section">${nflGsHtml(g)}</div>
    ${paceRestSection(g)}${marketSection(g)}
-   <div class="section">${trendsBox(g)}</div>
+   <div class="section">${trendsBox(g)}</div>${typeof woCard!=="undefined"?woCard("nfl",g.away,g.home,short):""}
    ${typeof xaNflQtrCard!=="undefined"?xaNflQtrCard(g):""}
    <div class="section">
     <div class="card"><h2>Recent form</h2><p class="small" style="margin-top:-6px">Every 2026 game, newest first. Green = won, red = lost. The bar shows how much they won or lost by. Source: CBS Sports scores.</p>${formHtml(g.away)}${formHtml(g.home)}</div>
