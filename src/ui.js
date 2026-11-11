@@ -144,16 +144,19 @@ function viewGame(id){
     </div></div>
    ${nflGameTabs(g,tabP)}
    ${tabP?`<div id="gpBody">${nflGameProps(g)}</div>`:`
-   ${typeof nflQuick!=="undefined"?nflQuick(g):""}${typeof xfNfl!=="undefined"?xfNfl(g):""}
-   <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
+   ${(()=>{const T=({inj:"ov"}[S.gtab]||S.gtab||"ov"),nav="";
+    if(T==="ov"){const pj=typeof projScore!=="undefined"?projScore(g):null,bp=(typeof nflBest!=="undefined"?nflBest():[]).filter(b=>b.g&&b.g.id===g.id&&b.sc>=.45).slice(0,2);
+      return gpSummary({pick:pj?`<b>${esc(short(pj.win))} ${Math.max(pj.a,pj.h)}–${Math.min(pj.a,pj.h)}</b> <span class="small">our projected score</span>`:"",
+        props:bp.map(b=>gpPropLine(b.name,b.side==="o"?"Over":"Under",b.line,(MARKETS[b.k]||{n:b.k}).n,b.odds,b.sc,"#props/"+encodeURIComponent(b.name)+"/"+b.k))})
+      +`   <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
     <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p>${typeof xaPmLine!=="undefined"?xaPmLine("nfl",g.away,g.home):""}</div>
-   ${nflEdgesCard(g)}
-   ${typeof fxNfl!=="undefined"?fxCard(fxNfl(g),"Meetings since 2002 and this season's results."):""}${typeof newsCard!=="undefined"?newsCard("nfl",{teams:[g.away,g.home]},"Latest news: "+short(g.away)+" & "+short(g.home)):""}
-   ${(()=>{const T=S.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["h2h","🆚 H2H"],["inj","🩹 Injuries"]];
-    const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nfgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#game-${g.id}-props">🎯 Props</a></div>`;
+${nflEdgesCard(g)}`
+      +gpMerge("What matters","gpwm",[(typeof nflQuick!=="undefined"?nflQuick(g):""),(typeof xfNfl!=="undefined"?xfNfl(g):""),`${typeof fxNfl!=="undefined"?fxCard(fxNfl(g),"Meetings since 2002 and this season's results."):""}`])
+      +gpMerge("Injuries","gpinj",[injWxSection(g),(typeof xaKeyOutCard!=="undefined"?xaKeyOutCard("nfl",g.away,g.home):""),(typeof woCard!=="undefined"?woCard("nfl",g.away,g.home,short):"")])
+      +gpMerge("Latest news","gpone",[`${typeof newsCard!=="undefined"?newsCard("nfl",{teams:[g.away,g.home]},"Latest news: "+short(g.away)+" & "+short(g.home)):""}`])}
     if(T==="tr")return nav+`   <div class="section">${nflGsHtml(g)}</div>
    ${paceRestSection(g)}${marketSection(g)}
-   <div class="section">${trendsBox(g)}</div>${typeof woCard!=="undefined"?woCard("nfl",g.away,g.home,short):""}${typeof vxSched!=="undefined"?vxSched("nfl",g.away,g.home,short,null,typeof nflDate!=="undefined"?nflDate(g):null):""}
+   <div class="section">${trendsBox(g)}</div>${typeof gpLazy!=="undefined"?gpLazy("Upcoming schedule",()=>vxSched("nfl",g.away,g.home,short,null,typeof nflDate!=="undefined"?nflDate(g):null)):""}
    ${typeof xaNflQtrCard!=="undefined"?xaNflQtrCard(g):""}
    <div class="section">
     <div class="card"><h2>Recent form</h2><p class="small" style="margin-top:-6px">Every 2026 game, newest first. Green = won, red = lost. The bar shows how much they won or lost by. Source: CBS Sports scores.</p>${formHtml(g.away)}${formHtml(g.home)}</div>
@@ -163,8 +166,8 @@ function viewGame(id){
     if(T==="h2h")return nav+`<div class="section nodz"><div class="card"><h2>🆚 Head-to-head</h2>${h2hHtml(g)}<p class="small" style="margin:6px 0 0">Tap 📋 Box score on any of the last 5 meetings for the full stats.</p></div></div>`;
     if(T==="inj")return nav+`<div class="section">${injWxSection(g)}</div>`;
     return nav+`   <div class="section"><h2>Offense vs defense</h2><p class="small" style="margin-top:-6px">Per-game averages this season. Rank 1st = best in the NFL (most gained for offenses, least allowed for defenses). <span class="tag real">Real</span> Offense from ESPN, yards allowed from NFL.com, points allowed from CBS scores.</p>
-    <div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>${typeof vxHeat!=="undefined"?vxHeat("nfl",g.away,g.home,short)+vxRz(g):""}
-   ${nfPressCard(g)}${nfShareCard(g)}${typeof xaKeyOutCard!=="undefined"?`<div class="section">${xaKeyOutCard("nfl",g.away,g.home)}${xaDefTrendCard("nfl",g.away,g.home)}${xaTdCard(g)}${xaProeCard(g)}${xaDivCard(g)}${xaKickCard(g)}</div>`:""}
+    <div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>${typeof gpLazy!=="undefined"?gpLazy("Matchup heat map",()=>vxHeat("nfl",g.away,g.home,short))+gpLazy("Red zone",()=>vxRz(g)):""}
+   ${nfPressCard(g)}${nfShareCard(g)}${typeof xaKeyOutCard!=="undefined"?`<div class="section">${xaDefTrendCard("nfl",g.away,g.home)}${xaTdCard(g)}${xaProeCard(g)}${xaDivCard(g)}${xaKickCard(g)}</div>`:""}
    <div class="section"><h2>Run game: yards per rushing attempt</h2><p class="small" style="margin-top:-6px">How well each offense runs the ball against how well the other defense stops it. <span class="tag real">Real</span> <a href="${RUN_SRC.att}" target="_blank" rel="noopener">StatRankings</a> rushing attempts and YPC allowed (2026, through Oct 27) with ESPN rushing yards.</p>
     <div class="grid g2">${runGameHtml(g.away,g.home)}${runGameHtml(g.home,g.away)}</div></div>
    <div class="section"><h2>Coverage: man vs zone</h2><p class="small" style="margin-top:-6px"><b>Man</b> = each defender follows one receiver. <b>Zone</b> = defenders guard areas of the field. Some offenses and receivers are much better against one than the other.</p>
@@ -173,7 +176,7 @@ function viewGame(id){
 `})()}
    <a class="btn" href="#game-${g.id}-props" style="display:block;text-align:center;margin-top:14px">🎯 See every player prop in this game →</a>`}`;
   if(tabP)nflWireGameProps(g);else nflGsWire(g);
-  document.querySelectorAll("#v-game [data-nfgt]").forEach(a=>a.onclick=e=>{e.preventDefault();const y=scrollY;S.gtab=a.dataset.nfgt;viewGame(id);scrollTo(0,y)});
+  document.querySelectorAll("#v-game [data-nfgt]").forEach(a=>a.onclick=e=>{e.preventDefault();S.gtab=a.dataset.nfgt;if(tabP){location.hash="game-"+id;return}const y=scrollY;viewGame(id);scrollTo(0,y)});
   window.scrollTo(0,0);
 }
 function nflGsHtml(g){const L=LINES[g.id];return gsCard("nfl|"+g.id,"nfl",[g.away,g.home],gsRowsNfl,t=>gsH2hNfl(g,t),{sp:L?L.sp:null,tot:L?L.tot:null},[35,57,3])}
@@ -182,8 +185,8 @@ function nflGamePlayers(g){const tms=[g.away,g.home];
   return Object.values(PINFO).filter(p=>tms.includes(p.team)&&marketsFor(p.pos).some(m=>realProp(p.name,m)))
    .sort((a,b)=>tms.indexOf(a.team)-tms.indexOf(b.team)||POS.indexOf(a.pos)-POS.indexOf(b.pos)||a.name.localeCompare(b.name))}
 function nflGamePropCount(g){if(g.final||nflStarted(g))return 0;return nflGamePlayers(g).reduce((n,p)=>n+marketsFor(p.pos).filter(m=>realProp(p.name,m)).length,0)}
-function nflGameTabs(g,tabP){if(g.final)return "";const n=nflGamePropCount(g);
-  return `<div class="gtabs" style="margin-top:12px"><a href="#game-${g.id}" class="${tabP?"":"on"}">📊 Game</a><a href="#game-${g.id}-props" class="${tabP?"on":""}">🎯 Player props${n?` <small>${n}</small>`:""}</a></div>`}
+function nflGameTabs(g,tabP){if(g.final)return "";const n=nflGamePropCount(g),T=tabP?"props":({inj:"ov"}[S.gtab]||S.gtab||"ov"),h=`#game-${g.id}`;
+  return gpTabs(T,[["ov","Overview",h,'data-nfgt="ov"'],["mu","Matchup",h,'data-nfgt="mu"'],["tr","Trends",h,'data-nfgt="tr"'],["h2h","H2H",h,'data-nfgt="h2h"'],["props",`Props${n?` <small>${n}</small>`:""}`,h+"-props"]])}
 let NFL_GPT="all",NFL_GPP="all",NFL_GPM="all";   /* game props filters: team, position, prop */
 function nflGameProps(g){
   if(nflStarted(g))return `<div class="info"><span>🔒 This game has kicked off — pregame player props are closed.</span></div>`;

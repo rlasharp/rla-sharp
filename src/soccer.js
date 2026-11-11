@@ -244,15 +244,24 @@ function socMissCard(f){const L=f.lu,M=f.miss||{};if(!L&&!Object.keys(M).length)
   const side=tid=>`<div><h3 style="margin:0 0 6px">${socBadge(tid)} ${socE(socTm(tid))}</h3>${(M[tid]||[]).map(x=>`<div class="small">${x[1]==="red"?"🟥":"🚑"} <b>${socE(x[0])}</b> — ${socE(x[2])}</div>`).join("")||`<div class="small">No regular starters missing.</div>`}</div>`;
   return `<div class="card"><h2>🚑 Team news &amp; lineups</h2><div class="xasub">${L?"Confirmed lineups":"Lineups appear about an hour before kickoff"} · ESPN has no soccer injury list, so we flag regular starters who missed the last 2 matches and red-card bans</div><div class="sc2">${side(f.h)}${side(f.a)}</div></div>`}
 function socGame(el,id){const f=socFx(id);if(!f){el.innerHTML=`<p><a href="#soccer">← All matches</a></p><div class="card">This match isn't in our list any more (finished matches move to the results). <a href="#soccer">See today's matches</a>.</div>`;return}
-  const tab=SC.tab==="props"?"props":"game",np=(SOC_PROPS||[]).filter(r=>r[5]===f.id).length;
-  el.innerHTML=`<p><a href="#soccer">← All matches</a></p>${socHero(f)}
-   <div class="seg nbgtabs" style="margin:12px 0"><button class="btn${tab==="game"?" on":""}" data-sctab="game">📊 Match</button><button class="btn${tab==="props"?" on":""}" data-sctab="props">🎯 Player props ${np?`<small class="pcnt">${np}</small>`:""}</button></div>
-   <div id="scBody"></div>`;
-  const body=el.querySelector("#scBody");
-  const draw=()=>{if(SC.tab==="props"){body.innerHTML=`<div class="small">Loading players…</div>`;socPEnsure(()=>{body.innerHTML=socGameProps(f);socWire(body)},[f.h,f.a])}
-    else{body.innerHTML=`<div id="scLiveBox" data-id="${f.id}">${socLiveStats(f)}</div>${socVerdictHtml(f,1)}${typeof xfSoc!=="undefined"?xfSoc(f):""}${typeof vxSocPos!=="undefined"?vxSocPos(f)+vxSched("soc",f.h,f.a,socTm,f.c,new Date(Date.parse(f.t)-5*36e5).toISOString().slice(0,10)):""}${socPredCard(f)}${typeof fxSoc!=="undefined"?fxCard(fxSoc(f),"Past meetings in our data and this season's results."):""}${typeof xQuickHtml!=="undefined"?xQuickHtml(socQuick(f),"Automatic notes from this season's numbers — reasons to look closer, not picks."):""}${socEstTable(f)}${typeof socParlayCard!=="undefined"?socParlayCard(f):""}${socCornerCard(f)}${socCardCard(f)}${socMissCard(f)}<div id="scXIbox">${window.SOC_P_OK||socLuOf(f)?socXICard(f):""}</div>
-     ${socFold("📅 Recent form",socFormCard(f))}${socFold("🆚 Head to head",socH2HCard(f))}<div id="scGKf">${socFold("🧤 Goalkeepers",socGKCard(f))}</div>${socFold("📊 Team numbers",socTeamCmp(f))}${f.wx?socFold("🌦️ Weather at kickoff",socWx(f,1)):""}${socFoot()}`;socWire(body);if(!(window.SOC_P_OK&&socPKeys([f.h,f.a]).every(k=>SOCPL.have[k]||SOCPL.have.all)))socPEnsure(()=>{const g=body.querySelector("#scGKf");if(g)g.innerHTML=socFold("🧤 Goalkeepers",socGKCard(f));const x=body.querySelector("#scXIbox");if(x)x.innerHTML=socXICard(f)},[f.h,f.a])}};
-  el.querySelectorAll("[data-sctab]").forEach(b=>b.onclick=()=>{SC.tab=b.dataset.sctab;el.querySelectorAll("[data-sctab]").forEach(x=>x.classList.toggle("on",x===b));draw()});draw()}
+  const tab=({game:"ov"}[SC.tab]||SC.tab||"ov"),np=(SOC_PROPS||[]).filter(r=>r[5]===f.id).length;
+  const T=[["ov","Overview"],["mu","Matchup"],["tr","Trends"],["h2h","H2H"],["props",`Props${np?` <small>${np}</small>`:""}`]];
+  el.innerHTML=`<p><a href="#soccer">← All matches</a></p>${socHero(f)}${gpTabs(tab,T.map(([k,l])=>[k,l,"#",`data-sctab="${k}"`]))}<div id="scBody"></div>`;
+  const body=el.querySelector("#scBody"),LZ=(t,fn)=>typeof gpLazy!=="undefined"?gpLazy(t,fn):fn();
+  const summary=()=>{let pick="",props=[];try{const x=socPred(f);if(x)pick=`<b>${socE(socTm(f.h))} ${x.score[0]}–${x.score[1]} ${socE(socTm(f.a))}</b> <span class="small">${socE(x.res)}</span>`}catch(e){}
+    try{props=socBestProps().filter(x=>x.f&&x.f.id===f.id&&x.our>=.45).slice(0,2).map(x=>`<b>${socE(x.nm)}</b> ${socE((SOC_MK[x.mk]||[])[1]||x.mk)}${x.line!=null?" "+x.line:""} <span class="small">${x.price!=null?oddsFmt(x.price):""}${x.our!=null?` · our chance ${Math.round(x.our*100)}%`:""}</span>`)}catch(e){}
+    return gpSummary({pick,props})};
+  const draw=()=>{const t=({game:"ov"}[SC.tab]||SC.tab||"ov");
+    if(t==="props"){body.innerHTML=`<div class="small">Loading players…</div>`;socPEnsure(()=>{body.innerHTML=(typeof socParlayCard!=="undefined"?socParlayCard(f):"")+socGameProps(f);socWire(body)},[f.h,f.a]);return}
+    if(t==="ov")body.innerHTML=`${summary()}<div id="scLiveBox" data-id="${f.id}">${socLiveStats(f)}</div>${socVerdictHtml(f,1)}${socPredCard(f)}`
+      +gpMerge("What matters","gpwm",[(typeof xQuickHtml!=="undefined"?xQuickHtml(socQuick(f),"Automatic notes from this season's numbers — reasons to look closer, not picks."):""),(typeof xfSoc!=="undefined"?xfSoc(f):""),(typeof fxSoc!=="undefined"?fxCard(fxSoc(f),"Past meetings in our data and this season's results."):"")])
+      +gpMerge("Injuries &amp; lineups","gpinj",[socMissCard(f),`<div id="scXIbox">${window.SOC_P_OK||socLuOf(f)?socXICard(f):""}</div>`])
+      +(f.wx?socFold("🌦️ Weather at kickoff",socWx(f,1)):"")+socFoot();
+    if(t==="mu")body.innerHTML=`${socEstTable(f)}${socCornerCard(f)}${socCardCard(f)}${socFold("📊 Team numbers",socTeamCmp(f))}<div id="scGKf">${socFold("🧤 Goalkeepers",socGKCard(f))}</div>`+LZ("Where the goals come from",()=>typeof vxSocPos!=="undefined"?vxSocPos(f):"")+socFoot();
+    if(t==="tr")body.innerHTML=`${socFold("📅 Recent form",socFormCard(f))}`+LZ("Upcoming schedule",()=>typeof vxSched!=="undefined"?vxSched("soc",f.h,f.a,socTm,f.c,new Date(Date.parse(f.t)-5*36e5).toISOString().slice(0,10)):"")+socFoot();
+    if(t==="h2h")body.innerHTML=socH2HCard(f)+socFoot();
+    socWire(body);if(!(window.SOC_P_OK&&socPKeys([f.h,f.a]).every(k=>SOCPL.have[k]||SOCPL.have.all)))socPEnsure(()=>{const g=body.querySelector("#scGKf");if(g)g.innerHTML=socFold("🧤 Goalkeepers",socGKCard(f));const x=body.querySelector("#scXIbox");if(x)x.innerHTML=socXICard(f)},[f.h,f.a])};
+  el.querySelectorAll("[data-sctab]").forEach(b=>b.onclick=e=>{e.preventDefault();SC.tab=b.dataset.sctab;el.querySelectorAll("[data-sctab]").forEach(x=>x.classList.toggle("on",x===b));const y=scrollY;draw();scrollTo(0,y)});draw()}
 function socWire(el){el.querySelectorAll("[data-scx]").forEach(b=>b.onclick=()=>{const c=b.closest(".scest");b.dataset.t0=b.dataset.t0||b.textContent;const on=c.classList.toggle("open");b.textContent=on?"Show main lines only":b.dataset.t0})}
 
 /* ---------- player props ---------- */

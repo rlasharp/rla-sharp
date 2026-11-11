@@ -4,7 +4,7 @@
    record counts (locked before the first game by the site update; until then a preview using the same rules).
    Everything comes from real posted lines and box scores — nothing invented. */
 let POTD_SP=null;
-function potdSp(){if(POTD_SP)return POTD_SP;let s=null;try{s=LS.get("potdSp")||LS.get("sport")}catch(e){}return s==="nhl"?"nhl":"nba"}
+function potdSp(){if(POTD_SP)return POTD_SP;let s=null;try{s=LS.get("potdSp")||LS.get("sport")}catch(e){}return s==="nhl"?"nhl":s==="soc"?"soc":"nba"}
 function potdE(s){return typeof esc!=="undefined"?esc(String(s)):String(s).replace(/[<&"]/g,c=>({"<":"&lt;","&":"&amp;",'"':"&quot;"})[c])}
 function potdPct(x){return Math.round(x*100)+"%"}
 /* last-10 strip: each game's number, green when it beat the line on our side */
@@ -82,13 +82,16 @@ function potdNhl(){if(typeof NHL_DATE==="undefined"||!NHL_DATE){if(typeof nhlEns
 
 function viewPotd(){const el=document.getElementById("v-potd");if(!el)return;const sp=potdSp();
   el.innerHTML=`<h1>⭐ Plays of the Day</h1><p class="sub">Our strongest leans for today's games, written up like the NFL Plays of the Week — every day, locked before the games and graded after.</p>
-   <div class="seg ttabs" style="margin-bottom:10px">${[["nba","🏀 NBA"],["nhl","🏒 NHL"]].map(([k,l])=>`<button class="btn${sp===k?" on":""}" data-pdsp="${k}">${l}</button>`).join("")}<a class="btn" href="#plays">🏈 NFL week</a></div>
-   <div id="pdBody">${sp==="nhl"?potdNhl():potdNba()}</div>`;
+   <div class="seg ttabs" style="margin-bottom:10px">${[["nba","🏀 NBA"],["nhl","🏒 NHL"],["soc","⚽ Soccer"]].map(([k,l])=>`<button class="btn${sp===k?" on":""}" data-pdsp="${k}">${l}</button>`).join("")}<a class="btn" href="#plays">🏈 NFL week</a></div>
+   <div id="pdBody">${sp==="nhl"?potdNhl():sp==="soc"?potdSoc():potdNba()}</div>`;
   el.querySelectorAll("[data-pdsp]").forEach(b=>b.onclick=()=>{POTD_SP=b.dataset.pdsp;try{LS.set("potdSp",POTD_SP)}catch(e){}viewPotd()});
   el.querySelectorAll("[data-pdnba]").forEach(c=>c.onclick=e=>{if(e.target.closest("[data-act],button,a"))return;const [nm,k]=c.dataset.pdnba.split("|");nbaGoPlayer(typeof nbaUnesc!=="undefined"?nbaUnesc(nm):nm,k)});
   el.querySelectorAll("[data-pdnhl]").forEach(c=>c.onclick=e=>{if(e.target.closest("[data-act],button,a"))return;location.hash="#nhl-player-"+encodeURIComponent(c.dataset.pdnhl.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&lt;/g,"<"))});
   el.querySelectorAll("[data-pdgame]").forEach(c=>c.onclick=e=>{if(e.target.closest("[data-act],button,a"))return;location.hash=c.dataset.pdgame});
   if(typeof actBind!=="undefined")try{actBind(el)}catch(e){}}
+function potdSoc(){if(!window.SOC_OK){if(typeof socEnsure!=="undefined")socEnsure(()=>{if(location.hash==="#potd")viewPotd()});return `<div class="card small">Loading soccer…</div>`}
+  const c=typeof socPlaysCard!=="undefined"?socPlaysCard():"";
+  return `${c||`<div class="card small">No soccer plays right now — they're picked 1–2 days before kickoff once odds are posted (club matches return after the international break).</div>`}${typeof prlSportHtml!=="undefined"?prlSportHtml("soc"):""}<div class="small" style="margin-top:8px">Picked automatically from posted odds where our estimate beats the price; locked before kickoff and graded after.</div>`}
 /* a one-line teaser at the top of the NBA / NHL games pages */
 function potdTeaser(sp){try{let t="";
   if(sp==="nba"&&typeof nbaTodayPlays!=="undefined"){const b=nbaTodayPlays().P[0];if(b)t=`${potdE(b.nm)} ${b.side==="o"?"Over":"Under"} ${b.line} ${potdE(NBA_MK[b.k][1])} <span class="small">${oddsFmt(b.odds)}</span>`}

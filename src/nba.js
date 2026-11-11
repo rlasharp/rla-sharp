@@ -284,7 +284,7 @@ function nbaEdges(g){
     for(const [k,l,u] of NBA_MU){if(k==="pts"||k==="rtg")continue;
       const s=(31-O.oR[k])-(31-D.dR[k]);
       if(O.oR[k]<=10&&D.dR[k]>=21)out.push({s:s,t:`<b>${nbaShort(off)}</b> rank ${nbaOrd(O.oR[k])} in ${l.toLowerCase()} (${O.o[k]}${u}) and ${nbaShort(def)} rank ${nbaOrd(D.dR[k])} at stopping it (${D.d[k]}${u} allowed).`,c:"up"});
-      else if(D.dR[k]<=10&&O.oR[k]>=21)out.push({s:-s,t:`<b>${nbaShort(def)}</b>'s defense is ${nbaOrd(D.dR[k])} in ${l.toLowerCase()} allowed (${D.d[k]}${u}) — tough spot for ${nbaShort(off)} (${nbaOrd(O.oR[k])}).`,c:"dn"});
+      else if(D.dR[k]<=10&&O.oR[k]>=21)out.push({s:-s,t:`<b>${nbaShort(def)}</b>${/s$/.test(nbaShort(def))?"'":"'s"} defense is ${nbaOrd(D.dR[k])} in ${l.toLowerCase()} allowed (${D.d[k]}${u}) — tough spot for ${nbaShort(off)} (${nbaOrd(O.oR[k])}).`,c:"dn"});
     }
   }
   const S=nbaTst();if(S)for(const [off,def] of [[g.a,g.h],[g.h,g.a]]){const O=S[off],D=S[def];if(!O||!D)continue;
@@ -318,24 +318,26 @@ function nbaGame(el,id){
     <div class="ght">${nbaBadge(g.h)}<b>${nbaTeamLink(g.h,nbaEsc(nbaShort(g.h)))}</b><span class="small">${nbaRec(g.h)}</span></div>
   </div>
   ${nbaGameTabs(g,tabP)}
-  ${tabP?"":(typeof nbaQuick!=="undefined"?nbaQuick(g):"")+(typeof xfNba!=="undefined"?xfNba(g):"")}
-  ${tabP?`<div id="gpBody">${nbaGameProps(g)}</div>`:`<div class="card">
-    ${L?`<div class="nbl" style="justify-content:center"><span>Spread <b>${L.sp<=0?g.h:g.a} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`:`<div class="small">Lines not posted yet.</div>`}
+  ${tabP?`<div id="gpBody">${nbaGameProps(g)}</div>`:`
+  ${(()=>{const T=({inj:"ov"}[NB.gtab]||NB.gtab||"ov"),nav="";
+    if(T==="ov"){const pk=typeof nbaGamePick!=="undefined"?nbaGamePick(g):null,bp=(typeof nbaBest!=="undefined"?nbaBest():[]).filter(b=>b.g&&String(b.g.id)===String(g.id)&&b.sc>=.45).slice(0,2);
+      return gpSummary({pick:pk?`<b>${nbaEsc(pk.txt)}</b> <span class="small">${pk.k.toLowerCase()} · ${oddsFmt(pk.odds)} · our chance ${Math.round(pk.ch*100)}%${pk.strong?" · strong lean":""}</span>`:(M?`Our estimate: <b>${nbaEsc(nbaShort(M.m>=0?g.h:g.a))} by ${Math.max(.5,Math.abs(M.m))}</b>, total ${M.tot} <span class="small">(lines not posted yet)</span>`:""),
+        props:bp.map(b=>gpPropLine(b.nm,b.side==="o"?"Over":"Under",b.line,NBA_MK[b.k][1],b.odds,b.sc,"#nba-player-"+encodeURIComponent(b.nm)))})
+      +`<div class="card gplines">    ${L?`<div class="nbl" style="justify-content:center"><span>Spread <b>${L.sp<=0?g.h:g.a} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`:`<div class="small">Lines not posted yet.</div>`}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>
     <div class="nbwpl"><span>${g.a} ${Math.round(W.a*100)}%</span><span class="small">chance to win (from the odds)</span><span>${g.h} ${Math.round(W.h*100)}%</span></div>`:""}
     ${typeof xaPmLine!=="undefined"?xaPmLine("nba",g.a,g.h,W&&W.a,W&&W.h):""}
     ${nbaMoveHtml(g,1)}
-    ${nbaPickTxt(g)}${say?`<p style="margin:10px 0 0;font-size:14px;color:var(--text2)">${say}</p>`:""}
-  </div>
-  ${typeof fxNba!=="undefined"?fxCard(fxNba(g),"Meetings last season and this season, and this season's results."):""}${nbaLuCard(g)}${typeof newsCard!=="undefined"?newsCard("nba",{teams:[g.a,g.h]},"Latest news: "+nbaShort(g.a)+" & "+nbaShort(g.h)):""}
-  ${(()=>{const T=NB.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["h2h","🆚 H2H"],["inj","🚑 Injuries"]];
-    const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nbgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#nba-game-${g.id}-props">🎯 Props</a></div>`;
+  </div>`
+      +gpMerge("What matters","gpwm",[(typeof nbaQuick!=="undefined"?nbaQuick(g):""),(typeof xfNba!=="undefined"?xfNba(g):""),`${typeof fxNba!=="undefined"?fxCard(fxNba(g),"Meetings last season and this season, and this season's results."):""}`])
+      +gpMerge("Injuries","gpinj",[`<div class="grid g2"><div><h3 class="nhh3">${nbaShort(g.a)}</h3>${nbaInjTable(g.a)}</div><div><h3 class="nhh3">${nbaShort(g.h)}</h3>${nbaInjTable(g.h)}</div></div>`,(typeof xaKeyOutCard!=="undefined"?xaKeyOutCard("nba",g.a,g.h):""),(typeof woCard!=="undefined"?woCard("nba",g.a,g.h,nbaShort):"")])
+      +gpMerge("Starting lineups","gpone",[nbaLuCard(g)])+gpMerge("Latest news","gpone",[typeof newsCard!=="undefined"?newsCard("nba",{teams:[g.a,g.h]},"Latest news: "+nbaShort(g.a)+" & "+nbaShort(g.h)):""])}
     if(T==="tr")return nav+`  <div style="margin-top:14px">${nbaGsHtml(g)}</div>
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${nbaShort(g.a)} last 5</h2>${nbaLast5(g.a)}<div class="small" style="margin-top:8px">${restTxt(g.a)}</div>${nbaSpotHtml(g.a)}</div>
     <div class="card"><h2>${nbaShort(g.h)} last 5</h2>${nbaLast5(g.h)}<div class="small" style="margin-top:8px">${restTxt(g.h)}</div>${nbaSpotHtml(g.h)}</div>
   </div>
-  ${nbaQtrCard(g)}${typeof woCard!=="undefined"?woCard("nba",g.a,g.h,nbaShort):""}${typeof vxSched!=="undefined"?vxSched("nba",g.a,g.h,nbaShort,null,NBA_SLATE_DATE):""}
+  ${nbaQtrCard(g)}${typeof gpLazy!=="undefined"?gpLazy("Upcoming schedule",()=>vxSched("nba",g.a,g.h,nbaShort,null,NBA_SLATE_DATE)):""}
 
 `;
     if(T==="h2h")return nav+`<div class="nodz">${nbaH2HCard(g)}</div>`;
@@ -349,9 +351,9 @@ function nbaGame(el,id){
     ${tile(nbaShort(g.a)+" defense",nbaF(A.d.rtg),nbaOrd(A.dR.rtg)+" of 30 · allowed/100")}
     ${tile(nbaShort(g.h)+" defense",nbaF(H.d.rtg),nbaOrd(H.dR.rtg)+" of 30 · allowed/100")}
   </div>`:""}
-  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}${typeof xaKeyOutCard!=="undefined"?xaKeyOutCard("nba",g.a,g.h)+xaDefTrendCard("nba",g.a,g.h)+xaGainCard(g)+xaBenchCard(g)+xaYesCard(g):""}
+  ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}${typeof xaKeyOutCard!=="undefined"?xaDefTrendCard("nba",g.a,g.h)+xaGainCard(g)+xaBenchCard(g)+xaYesCard(g):""}
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.a)} have the ball</h2>${nbaMatchup(g.a,g.h)}</div>
-  <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>${typeof vxHeat!=="undefined"?vxHeat("nba",g.a,g.h,nbaShort)+vxDvp(g):""}
+  <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>${typeof gpLazy!=="undefined"?gpLazy("Matchup heat map",()=>vxHeat("nba",g.a,g.h,nbaShort))+gpLazy("Defense vs position",()=>vxDvp(g)):""}
   <p class="note" style="margin-top:6px">Longer bar = better rank (1st of 30). <span class="rkg">Green</span> = top 8, <span class="rkb">red</span> = bottom 8. Highlighted rows are mismatches. Season to date.</p>
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${nbaShort(g.a)} players</h2>${nbaPlayerTable(nbaTopPlayers(g.a,7),{no3:1,nonote:1})}</div>
@@ -359,12 +361,12 @@ function nbaGame(el,id){
   </div><p class="note" style="margin-top:8px">Per-game averages this season. ▲▼ = much hotter or colder over the last 5 games.</p>
 `})()}`}`;
   if(tabP)nbaWireGameProps(el,g);else nbaGsWire(el,g);
-  el.querySelectorAll("[data-nbgt]").forEach(a=>a.onclick=e=>{e.preventDefault();const y=scrollY;NB.gtab=a.dataset.nbgt;nbaGame(el,id);scrollTo(0,y)});
+  el.querySelectorAll("[data-nbgt]").forEach(a=>a.onclick=e=>{e.preventDefault();NB.gtab=a.dataset.nbgt;if(tabP){location.hash="nba-game-"+id;return}const y=scrollY;nbaGame(el,id);scrollTo(0,y)});
 }
 function nbaGsHtml(g){const L=NBA_LINES[g.a+"@"+g.h];return gsCard("nba|"+g.id,"nba",[g.a,g.h],gsRowsNba,t=>gsRowsNba(t).filter(r=>r.opp===(t===g.a?g.h:g.a)),{sp:L?L.sp:null,tot:L?L.tot:null},[195,255,5])}
 function nbaGsWire(el,g){gsWire(el,()=>{const c=el.querySelector(".gsc");if(!c)return;const y=scrollY;c.outerHTML=nbaGsHtml(g);nbaGsWire(el,g);scrollTo(0,y)})}
-function nbaGameTabs(g,tabP){const n=nbaGamePropCount(g);
-  return `<div class="gtabs"><a href="#nba-game-${g.id}" class="${tabP?"":"on"}">📊 Game</a><a href="#nba-game-${g.id}-props" class="${tabP?"on":""}">🎯 Player props${n?` <small>${n}</small>`:""}</a></div>`}
+function nbaGameTabs(g,tabP){const n=nbaGamePropCount(g),T=tabP?"props":({inj:"ov"}[NB.gtab]||NB.gtab||"ov"),h=`#nba-game-${g.id}`;
+  return gpTabs(T,[["ov","Overview",h,'data-nbgt="ov"'],["mu","Matchup",h,'data-nbgt="mu"'],["tr","Trends",h,'data-nbgt="tr"'],["h2h","H2H",h,'data-nbgt="h2h"'],["props",`Props${n?` <small>${n}</small>`:""}`,h+"-props"]])}
 function nbaWireGameProps(el,g){
   const redraw=()=>{const y=scrollY;const b=document.getElementById("gpBody");if(b){b.innerHTML=nbaGameProps(g);nbaWireGameProps(el,g)}scrollTo(0,y)};
   el.querySelectorAll("[data-gpt]").forEach(b=>b.onclick=()=>{NB.gpt=b.dataset.gpt;redraw()});
@@ -511,7 +513,7 @@ function nbaOppAllows(opp,k,title){
   const A=nbaAllowIdx()[opp];if(!A)return "";const rel=k?(NBA_ALLOW_REL[k]||[]):null;
   const tile=(key,lab,sub)=>{const [v,r,n]=A[key];const c=r<=8?"g":r>=n-7?"r":"";
     return `<div class="oat ${c}${rel&&rel.includes(key)?" rel":""}"><span class="l">${lab}</span><b>${nbaF(v)}</b><span class="r">${nbaOrd(r)} most${sub?` · ${sub}`:""}</span></div>`};
-  return `<div class="oa"><div class="oah">${title||`What ${nbaEsc(nbaShort(opp))}'s defense allows`} <span class="small">per game · of 30 teams</span></div>
+  return `<div class="oa"><div class="oah">${title||`What ${nbaEsc(nbaShort(opp))}${/s$/.test(nbaShort(opp))?"'":"'s"} defense allows`} <span class="small">per game · of 30 teams</span></div>
    <div class="oag">${tile("paint","Paint pts")}${tile("tp","3-pt pts",nbaF(A.tpm)+" made")}${tile("ft","Free-throw pts",nbaF(A.fta)+" FTA")}${tile("reb","Rebounds")}${tile("fb","Fast-break pts")}</div>
    <div class="small oan"><span class="lg g"></span> gives up a lot (good for overs) · <span class="lg r"></span> stingy${rel&&rel.length?" · ★ = matters most for this prop":""}</div></div>`;
 }

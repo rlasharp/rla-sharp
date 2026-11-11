@@ -173,14 +173,14 @@ function viewToday(){
   const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].map(sp=>loMovesCard(sp,5)).join(""):"";
   const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
   host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p>
-  <div class="tsum"><a href="#nba"><b>${nbaGames.length}</b><span>NBA games</span></a><a href="#nhl"><b>${nhlGames.length||"–"}</b><span>NHL games</span></a><a href="#games"><b>${nflUp.length}</b><span>NFL games left</span></a>${typeof socTodayCount!=="undefined"&&socTodayCount()?`<a href="#soccer"><b>${socTodayCount()}</b><span>Soccer matches</span></a>`:""}${T?`<a href="#record"><b class="${T.u>0?"up":T.u<0?"dn":""}">${recLine(T)}</b><span>our record · ${(T.u>0?"+":"")+T.u.toFixed(1)}u</span></a>`:""}${typeof finTonightTile!=="undefined"?finTonightTile():""}</div>
   ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}
-  ${PT.length?`<h2 class="tsh">⭐ Today's plays</h2>${PT.length>1?todayTabs("plays",PT,pc):""}<div class="tsec">${(PT.find(x=>x[0]===pc)||PT[0])[2]}</div>`:""}
-  <h2 class="tsh">🔥 Best of tonight</h2><div id="xTonight" class="tsec tcap5">${typeof xTonightCard!=="undefined"?xTonightCard().replace(/<h2[^>]*>.*?<\/h2>/,""):""}</div>
-  <h2 class="tsh">🗓️ Games</h2>${todayTabs("games",GT,gc)}<div class="card tsec tcap5">${(GT.find(x=>x[0]===gc)||GT[0])[2]()}<button class="btn tmorebtn" data-tcap="1">Show all</button>
-   <a href="${gc==="nba"?"#nba":gc==="nhl"?"#nhl":gc==="soc"?"#soccer":"#games"}" class="small" style="display:block;margin-top:8px">All ${gc==="soc"?"soccer matches":gc.toUpperCase()+" games"}, matchups &amp; props →</a></div>
+  ${PT.length?`<h2 class="tsh">Plays of the day</h2>${PT.length>1?todayTabs("plays",PT,pc):""}<div class="tsec">${(PT.find(x=>x[0]===pc)||PT[0])[2]}</div>`:""}
+  <h2 class="tsh">Today's games <span class="small">· every sport, with our pick</span></h2>${typeof tdGamesCard!=="undefined"?tdGamesCard():""}
+  <details class="tmore"><summary>Best of tonight <span class="small">— top props &amp; edges</span></summary><div id="xTonight" class="tsec tcap5" style="margin-top:8px">${typeof xTonightCard!=="undefined"?xTonightCard().replace(/<h2[^>]*>.*?<\/h2>/,""):""}</div></details>
+  <details class="tmore"><summary>Games by sport <span class="small">— lines and details</span></summary>${todayTabs("games",GT,gc)}<div class="card tsec tcap5">${(GT.find(x=>x[0]===gc)||GT[0])[2]()}<button class="btn tmorebtn" data-tcap="1">Show all</button>
+   <a href="${gc==="nba"?"#nba":gc==="nhl"?"#nhl":gc==="soc"?"#soccer":"#games"}" class="small" style="display:block;margin-top:8px">All ${gc==="soc"?"soccer matches":gc.toUpperCase()+" games"}, matchups &amp; props →</a></div></details>
   ${moves||role?`<details class="tmore"><summary>📈 Line moves${role?" &amp; role changes":""} <span class="small">— tap to open</span></summary><div class="grid g2" style="margin-top:10px">${moves}${role}</div></details>`:""}
   ${favs().length?"":`<p class="small" style="margin-top:14px">⭐ Tip: tap ☆ Save on any player or team page to pin them here every day.</p>`}
   <details class="tmore"><summary>🕒 When the data was updated</summary><div style="margin-top:8px">${updatedHtml("nba")}${updatedHtml("nfl")}</div></details>`;

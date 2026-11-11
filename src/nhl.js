@@ -319,7 +319,7 @@ const nhPos=n=>/s$/i.test(n)?n+"'":n+"'s";
 const nhImpP=o=>o==null?null:o<0?-o/(-o+100):100/(o+100);
 function nhMove_unused(now,op,i){if(!op||!now)return "";const a=op[i],b=now[i];if(a==null||b==null||a===b)return "";return ` <span class="nhmv" title="opened ${a>0&&i!==0?"+":""}${a}">${b>a?"▲":"▼"} from ${a>0&&!(now===NH_TOTK)?nhOdds(a):a}</span>`}
 const NH_TOTK={};
-function nhHero(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},fin=g.as!=null&&["OFF","FINAL"].includes(g.st),pr=fin?null:nhProject(g),op=g.open||{};
+function nhHero(g,part){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},fin=g.as!=null&&["OFF","FINAL"].includes(g.st),pr=fin?null:nhProject(g),op=g.open||{};
   const side=(t,T,s)=>`<div class="nhhs ${s}">${nhBadge(t)}<b><a href="#nhl-team-${t}" style="color:inherit">${nhE(nhTm(t))}</a></b><span class="small">${nhRec(t)} · ${s==="a"?"road "+nhRecA(T.road):"home "+nhRecA(T.home)}</span>${nhB2B(t,g.d)&&!fin?`<span class="pll u">back-to-back</span>`:""}${fin?`<b class="nhhsc">${s==="a"?g.as:g.hs}</b>`:""}</div>`;
   const chip=(lab,main,sub)=>`<div class="nhlc"><span class="small">${lab}</span><b>${main}</b>${sub?`<span class="small">${sub}</span>`:""}</div>`;
   const mv=(k,i,fmt)=>{const a=op[k]&&op[k][i],b=g[k]&&g[k][i];if(a==null||b==null||a===b)return "";return `<span class="nhmv">opened ${fmt(a)}</span>`};
@@ -330,8 +330,9 @@ function nhHero(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},fin=g.as!=null&
     ${g.p1&&g.p1.ml?chip("1st period winner",`${nhE(g.a)} ${nhOdds(g.p1.ml[0])} · ${nhE(g.h)} ${nhOdds(g.p1.ml[1])}${g.p1.ml[3]!=null?` · tie ${nhOdds(g.p1.ml[3])}`:""}`,(()=>{const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{};return A.per&&H.per?`1st-period goal diff: ${nhE(g.a)} ${(A.per[0][0]-A.per[0][1]>=0?"+":"")+(A.per[0][0]-A.per[0][1]).toFixed(2)} · ${nhE(g.h)} ${(H.per[0][0]-H.per[0][1]>=0?"+":"")+(H.per[0][0]-H.per[0][1]).toFixed(2)}`:""})()):""}${!g.ml&&!g.tot?`<div class="small">Lines not posted yet — usually the day before.</div>`:""}</div>`;
   const est=pr?`<div class="nhest">🧮 <b>Our estimate:</b> ${nhE(g.a)} ${pr.la.toFixed(1)} – ${pr.lh.toFixed(1)} ${nhE(g.h)} · <b>${nhE(pr.hwin>=.5?g.h:g.a)} wins ${Math.round(Math.max(pr.hwin,1-pr.hwin)*100)}%</b>${g.ml?` <span class="small">(books: ${Math.round(nhImpP(pr.hwin>=.5?g.ml[1]:g.ml[0])*100)}%)</span>`:""} · ${pr.tot.toFixed(1)} goals${g.tot?` — over ${pr.line} ${Math.round(pr.over*100)}%`:""}<div class="small">From goals, chances near the net and shots (for and against), special teams, home ice, rest and the probable goalie${pr.fa?` · attack × defence: ${nhE(g.a)} ${(pr.fa.aA*pr.fa.dH).toFixed(2)}, ${nhE(g.h)} ${(pr.fa.aH*pr.fa.dA).toFixed(2)}`:""}. A rough guide, not a sportsbook line.</div></div>`:"";
   const ed=fin?[]:nhEdges(g).filter(e=>e.edge>=.02).slice(0,3),edh=ed.length?`<div class="nhedges"><div class="small" style="font-weight:700;margin-bottom:2px">💰 Where we disagree with the books</div>${ed.map(e=>nhEdgeRow(e,false)).join("")}</div>`:"";
+  if(part==="lines")return lines||est||edh?`<div class="card gplines">${lines}${est}${edh}</div>`:"";
   return `<div class="card nhhero"><div class="nhhw"><span class="small">${g.d===NHL_DATE?"Today":g.d===NHL_TOM?"Tomorrow":nhE(nhDayS(g.d))} · ${nhE(g.t)} ET${g.tv?" · "+nhE(g.tv):""}</span>${fin?`<b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b>`:""}</div>
-   <div class="nhht">${side(g.a,A,"a")}<div class="nhat">@</div>${side(g.h,H,"h")}</div>${lines}${est}${edh}</div>`}
+   <div class="nhht">${side(g.a,A,"a")}<div class="nhat">@</div>${side(g.h,H,"h")}</div>${part==="head"?"":lines+est+edh}</div>`}
 /* plain-English key points */
 function nhQuick(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},out=[];const S=(c,ic,t)=>out.push({c,ic,t});
   for(const [t,T,o,O] of [[g.a,A,g.h,H],[g.h,H,g.a,A]]){
@@ -406,13 +407,25 @@ function nhGoalieTab(g){const lsv=NH_LGSV();
   return `<div class="grid g2">${side(g.a)}${side(g.h)}</div><p class="small">League average save % this season: ${lsv.toFixed(3).slice(1)} — green above, red below.</p>`}
 function nhlGame(el,id){
   const g=nhGame(id);if(!g){el.innerHTML=`<h1>Game not found</h1><p><a href="#nhl">← NHL games</a></p>`;return}
-  const tab=NH.tab||"matchup",nInj=nhInjList(g.a).length+nhInjList(g.h).length,nP=nhPropRows().filter(r=>[g.a,g.h].includes(nhWho(r[0]).tm)).length;
-  const T=[["matchup","📊 Matchup"],["trends","📈 Trends"],["h2h","🆚 H2H"],["goalies","🥅 Goalies"],["injuries",`🚑 Injuries${nInj?` <small>${nInj}</small>`:""}`],["props",`🎯 Props${nP?` <small>${nP}</small>`:""}`]];
-  const body={matchup:()=>nhMatchup(g)+(typeof vxHeat!=="undefined"?vxHeat("nhl",g.a,g.h,nhTm):"")+(typeof xaLuckCard!=="undefined"?xaLuckCard(g)+xaKeyOutCard("nhl",g.a,g.h)+xaDefTrendCard("nhl",g.a,g.h):""),trends:()=>nhTrends(g)+(typeof woCard!=="undefined"?woCard("nhl",g.a,g.h,nhTm):"")+(typeof vxSched!=="undefined"?vxSched("nhl",g.a,g.h,nhTm,null,g.d):"")+(typeof xaFlowCard!=="undefined"?xaFlowCard(g):""),h2h:()=>nhH2HCard(g),goalies:()=>nhGoalieTab(g)+(typeof vxGoalie!=="undefined"?vxGoalie(g):""),injuries:()=>nhInjCard(g),props:()=>`<div id="nhGP">${nhGameProps(g)}</div>`}[tab]||(()=>nhMatchup(g));
+  const tab=({goalies:"matchup",injuries:"overview"}[NH.tab]||NH.tab||"overview"),nP=nhPropRows().filter(r=>[g.a,g.h].includes(nhWho(r[0]).tm)).length;
+  const T=[["overview","Overview"],["matchup","Matchup"],["trends","Trends"],["h2h","H2H"],["props",`Props${nP?` <small>${nP}</small>`:""}`]];
+  const LZ=(t,f)=>typeof gpLazy!=="undefined"?gpLazy(t,f):f();
+  const summary=()=>{const pr=nhProject(g),e=(nhEdges(g)||[]).find(x=>x.edge>=.03),bp=nhBest().filter(b=>b.g&&b.g.id===g.id&&b.s.p>=.45).slice(0,2);let pick="";
+    if(pr){const hw=pr.hwin>=.5,w=hw?g.h:g.a;let ws=Math.round(hw?pr.lh:pr.la),ls=Math.round(hw?pr.la:pr.lh);if(ws<=ls)ws=ls+1;
+      pick=`<b>${nhE(nhTm(w))} ${ws}–${ls}</b> <span class="small">${Math.round((hw?pr.hwin:1-pr.hwin)*100)}% to win</span>${e?`<div class="small">Best edge vs the books: <b>${e.mk==="Moneyline"?"":nhE(e.mk.replace(/ total$/,""))+" "}${nhE(e.pick)}</b> ${nhOdds(e.odds)} · our ${Math.round(e.me*100)}% vs ${Math.round(e.bk*100)}%</div>`:""}`}
+    return gpSummary({pick,props:bp.map(b=>gpPropLine(b.nm,b.k==="hanyG"?(b.side==="o"?"to score":"no goal"):(b.side==="o"?"Over":"Under"),b.k==="hanyG"?"":b.line,b.k==="hanyG"?"":NH_MK[b.k][1],b.odds,b.s.p,"#nhl-player-"+encodeURIComponent(b.nm)))})};
+  const body={
+    overview:()=>summary()+nhHero(g,"lines")+(typeof xaGoalieNote!=="undefined"?xaGoalieNote(g)+xaPmLine("nhl",g.a,g.h):"")
+      +gpMerge("What matters","gpwm",[nhQuick(g),(typeof xfNhl!=="undefined"?xfNhl(g):""),(typeof fxNhl!=="undefined"?fxCard(fxNhl(g),"Meetings last season and this season, and this season's results."):"")])
+      +gpMerge("Injuries","gpinj",[nhInjCard(g),(typeof xaKeyOutCard!=="undefined"?xaKeyOutCard("nhl",g.a,g.h):""),(typeof woCard!=="undefined"?woCard("nhl",g.a,g.h,nhTm):"")])
+      +gpMerge("Latest news","gpone",[typeof newsCard!=="undefined"?newsCard("nhl",{teams:[g.a,g.h]},"Latest news: "+nhTm(g.a)+" & "+nhTm(g.h)):""]),
+    matchup:()=>nhMatchup(g)+gpMerge("Goalies","gpone",[nhGoalieTab(g)])+LZ("Goalie form",()=>typeof vxGoalie!=="undefined"?vxGoalie(g):"")+LZ("Lines & power play",()=>typeof xfLinesCard!=="undefined"?xfLinesCard(g):"")+LZ("Matchup heat map",()=>typeof vxHeat!=="undefined"?vxHeat("nhl",g.a,g.h,nhTm):"")+(typeof xaLuckCard!=="undefined"?xaLuckCard(g)+xaDefTrendCard("nhl",g.a,g.h):""),
+    trends:()=>nhTrends(g)+LZ("Upcoming schedule",()=>typeof vxSched!=="undefined"?vxSched("nhl",g.a,g.h,nhTm,null,g.d):"")+(typeof xaFlowCard!=="undefined"?xaFlowCard(g):""),
+    h2h:()=>nhH2HCard(g),props:()=>`<div id="nhGP">${nhGameProps(g)}</div>`}[tab]||(()=>"");
   el.innerHTML=`<p class="small"><a href="#${g.d===NHL_DATE?"nhl":g.d===NHL_TOM?"nhl-tomorrow":"nhl-tomorrow-"+Math.round((Date.parse(g.d)-Date.parse(NHL_DATE))/864e5)}">← NHL games</a></p>
-   ${nhHero(g)}${typeof xaGoalieNote!=="undefined"?xaGoalieNote(g)+xaPmLine("nhl",g.a,g.h):""}${nhQuick(g)}${typeof xfNhl!=="undefined"&&tab!=="props"?xfNhl(g):""}${typeof fxNhl!=="undefined"&&tab!=="props"?fxCard(fxNhl(g),"Meetings last season and this season, and this season's results.")+(typeof newsCard!=="undefined"?newsCard("nhl",{teams:[g.a,g.h]},"Latest news: "+nhTm(g.a)+" & "+nhTm(g.h)):""):""}
-   <div class="gtabs nhtabs" style="margin-top:12px">${T.map(([k,l])=>`<a href="#" data-nhtab="${k}" class="${k===tab?"on":""}">${l}</a>`).join("")}</div>
-   <div style="margin-top:10px">${body()}</div>${nhFoot()}`;
+   ${nhHero(g,"head")}
+   ${gpTabs(tab,T.map(([k,l])=>[k,l,"#",`data-nhtab="${k}"`]))}
+   <div>${body()}</div>${nhFoot()}`;
   el.querySelectorAll("[data-nhtab]").forEach(a=>a.onclick=e=>{e.preventDefault();const y=scrollY;NH.tab=a.dataset.nhtab;nhlGame(el,id);scrollTo(0,y)});
   el.querySelectorAll("[data-nhmm]").forEach(b=>b.onclick=()=>{const y=scrollY;NH.mm=b.dataset.nhmm;nhlGame(el,id);scrollTo(0,y)});
   const redraw=()=>{const y=scrollY,b=document.getElementById("nhGP");if(b)b.innerHTML=nhGameProps(g);nhWire(el,redraw);scrollTo(0,y)};nhWire(el,redraw)}
