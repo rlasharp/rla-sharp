@@ -356,6 +356,10 @@ for (const [n, p] of Object.entries(LOGS)) {
   const keep = [...new Map([...vs, ...tail].map(r => [r.game_id, r])).values()].sort((a, b) => a.game_date_time < b.game_date_time ? -1 : 1);
   PREV[n] = keep.map(rowOf);
 }
+// former teams (revenge games): every team a current player played for last season or earlier this season, other than his team now
+const FORMER = {};
+{ const T = {}; for (const r of [...prevPlayed, ...rows]) { const t = r.team_abbreviation; if (!t) continue; const m = T[r.athlete_id] || (T[r.athlete_id] = {}); const x = m[t] || (m[t] = [0, ""]); x[0]++; const d = etDay(r.game_date_time); if (d > x[1]) x[1] = d; }
+  for (const [n, p] of Object.entries(LOGS)) { const m = T[p.id]; if (!m) continue; const f = Object.entries(m).filter(([t, x]) => t !== p.tm && x[0] >= 5).map(([t, x]) => [t, x[0], x[1]]); if (f.length) FORMER[n] = f; } }
 // tonight's rosters (by minutes) + which of those teammates played alongside in each last-season game we keep
 const ROS = {};
 for (const t of Object.keys(oppTonight)) ROS[t] = Object.entries(LOGS).filter(([n, p]) => p.tm === t)
@@ -433,6 +437,7 @@ const NBA_PROPS=${JSON.stringify(PROPS)};
 const NBA_INJ=${JSON.stringify(INJ)};
 const NBA_LOGS=${JSON.stringify(LOGS)};
 const NBA_PREV=${JSON.stringify(PREV)};
+const NBA_FORMER=${JSON.stringify(FORMER)}; /* player -> [[former team, games for them, last game date]] (last season + earlier this season) */
 const NBA_H2H=${JSON.stringify(H2H)};
 const NBA_ROS=${JSON.stringify(ROS)};
 const NBA_TADV=${JSON.stringify(TADV)};

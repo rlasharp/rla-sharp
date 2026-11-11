@@ -22,16 +22,21 @@ for w in range(1, wk + 1):
         eid, st = e["id"], ((e.get("status") or {}).get("type") or {}).get("name")
         c = e["competitions"][0]; a, h, T = teams_of(c, FIX_NFL)
         if st == "STATUS_FINAL":
-            if eid in C: continue
+            if eid in C and len(C[eid]) >= 6: continue   # older cache rows (no sack numbers) are read again once
             try: s = get(B + "football/nfl/summary?event=" + eid)
             except SystemExit: continue
-            r = ref_of(s); pen = yds = 0; ok = False
+            r = ref_of(s); pen = yds = 0; ok = False; SK = {}
             for t in (s.get("boxscore") or {}).get("teams") or []:
+                ab = FIX_NFL.get(t["team"]["abbreviation"], t["team"]["abbreviation"]); sk = att = None
                 for x in t.get("statistics") or []:
-                    if x.get("name") == "totalPenaltiesYards" and "-" in str(x.get("displayValue")):
-                        n, y = str(x["displayValue"]).split("-", 1); pen += int(n); yds += int(y); ok = True
+                    v = str(x.get("displayValue") or "")
+                    if x.get("name") == "totalPenaltiesYards" and "-" in v:
+                        n, y = v.split("-", 1); pen += int(n); yds += int(y); ok = True
+                    if x.get("name") == "sacksYardsLost" and "-" in v: sk = int(v.split("-", 1)[0])
+                    if x.get("name") == "completionAttempts" and "/" in v: att = int(v.split("/", 1)[1])
+                if sk is not None and att is not None: SK[ab] = [sk, att + sk]   # sacks taken, dropbacks (passes + sacks)
             pts = sum(int(T[k].get("score") or 0) for k in ("away", "home"))
-            if r and ok: C[eid] = [w, r, pen, yds, pts]; newg += 1
+            if r and ok: C[eid] = [w, r, pen, yds, pts, SK]; newg += 1
         elif w == wk and (a, h) in slate:
             try: r = ref_of(get(B + "football/nfl/summary?event=" + eid))
             except SystemExit: r = None
@@ -40,10 +45,18 @@ json.dump(C, open(CF, "w"), separators=(",", ":"))
 G = list(C.values())
 if not G: sys.exit("nflrefs: no games — keeping the old file")
 R = {}
-for w, r, p, y, t in G:
+SKT = {}
+for g in G:
+    if len(g) < 6: continue
+    T2 = list(g[5].items())
+    for i, (ab, (sk, db)) in enumerate(T2):
+        o = SKT.setdefault(ab, {"osk": 0, "odb": 0, "dsk": 0, "ddb": 0}); o["osk"] += sk; o["odb"] += db
+        if len(T2) == 2:
+            d = SKT.setdefault(T2[1 - i][0], {"osk": 0, "odb": 0, "dsk": 0, "ddb": 0}); d["dsk"] += sk; d["ddb"] += db
+for w, r, p, y, t, *_ in G:
     x = R.setdefault(r, [0, 0, 0, 0]); x[0] += 1; x[1] += p; x[2] += y; x[3] += t
 out = {"r": {r: {"n": n, "pen": round(p / n, 2), "yds": round(y / n, 1), "pts": round(t / n, 1)} for r, (n, p, y, t) in R.items()},
-       "lg": {"pen": round(sum(g[2] for g in G) / len(G), 2), "pts": round(sum(g[4] for g in G) / len(G), 1)}, "g": UP, "wk": wk}
+       "lg": {"pen": round(sum(g[2] for g in G) / len(G), 2), "pts": round(sum(g[4] for g in G) / len(G), 1)}, "g": UP, "wk": wk, "sk": SKT}
 print(f"/* NFL referee crews — ESPN officials + team penalties (tools/nflrefs.py), {len(G)} games */")
 print("var NFL_REFS=" + json.dumps(out, separators=(",", ":"), ensure_ascii=False) + ";")
 print(f"nflrefs: {len(G)} games ({newg} new), {len(R)} referees, {len(UP)} of this week's crews posted", file=sys.stderr)

@@ -49,6 +49,7 @@ if want nfl; then
     python3 tools/nflx2.py "$WORK/nflv" > "$WORK/x2.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_K" "$WORK/x2.js" && cp "$WORK/x2.js" nfl_x2.js && log "NFL red zone / QB runs / PROE / division / kickers refreshed"; fi
 fi
 if want nhl; then   # NHL: official NHL API + PropLine feed (box scores cached in data/nhl_box.json)
+  python3 tools/nhllines.py > "$WORK/nhllines.js" 2>> "$WORK/summary.txt" && grep -q "^var NHL_LINES" "$WORK/nhllines.js" && cp "$WORK/nhllines.js" nhl_lines.js || log "NHL lines (Daily Faceoff): kept old"
   if python3 tools/nhlfetch.py "$ROOT" "$TODAY" > "$WORK/nhl.js" 2> "$WORK/nhl.log" && grep -q "^var NHL_PROPS" "$WORK/nhl.js"; then
     python3 tools/nhlpp.py >> "$WORK/nhl.js" 2>> "$WORK/summary.txt" || log "NHL power-play time: skipped"
     cp "$WORK/nhl.js" nhl_data.js; log "$(tail -1 "$WORK/nhl.log")"

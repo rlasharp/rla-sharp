@@ -64,7 +64,7 @@ function nhBestFilterUI(L0){const f=NH.bf||(NH.bf={}),games=[...new Map(L0.map(b
    ${typeof hotSelect!=="undefined"?hotSelect('data-nhbf="hot"',f.hot):""}${typeof xResetChip!=="undefined"?xResetChip("nhl"):""}</div>`}
 function nhBestRow(b,i){const m=NH_MK[b.k],tm=nhWho(b.nm).tm;
   return xPropRow({i:typeof i==="number"?i:null,href:`#nhl-player-${encodeURIComponent(b.nm)}`,badge:nhBadge(tm),name:nhE(b.nm),sub:b.g?`${b.g.a===tm?"@":"vs"} ${nhE(b.g.a===tm?b.g.h:b.g.a)}`:"",
-    chips:(typeof nhInjChip!=="undefined"?nhInjChip(b.nm):"")+(b.s.c5&&b.s.c5[1]>=5&&b.s.c5[0]>=4?` <span class="bfire">🔥 ${b.s.c5[0]}/${b.s.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nhl",b.nm,b.k,b.side):""),
+    chips:(typeof nhInjChip!=="undefined"?nhInjChip(b.nm):"")+(typeof xfLineChip!=="undefined"?xfLineChip(b.nm):"")+(b.s.c5&&b.s.c5[1]>=5&&b.s.c5[0]>=4?` <span class="bfire">🔥 ${b.s.c5[0]}/${b.s.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nhl",b.nm,b.k,b.side):""),
     pick:b.k==="hanyG"?(b.side==="o"?"Scores a goal":"No goal"):`${b.side==="o"?"Over":"Under"} ${b.line} ${m[1]}`,odds:nhOdds(b.odds),l10:[b.s.l10,b.s.n10],
     hits:[[b.s.hs,b.s.ns,"this season"]],chance:Math.round(b.s.p*100),need:Math.round(nhImp(b.odds)*100)})}
 

@@ -61,7 +61,7 @@ jobs:
           git config user.name "rla-sharp-bot"
           git config user.email "actions@users.noreply.github.com"
           if [ -n "$GATE_STATE" ]; then mkdir -p data; printf '%s\n' "$GATE_STATE" > data/quick.json; git add data/quick.json; fi
-          git add -A index.html nhl_data.js nba_detail.js lines_hist.js 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json
+          git add -A index.html nhl_data.js nba_detail.js lines_hist.js 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json data/nhl_lines.json
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -qm "Auto refresh $(TZ=America/Toronto date '+%a %b %-d %-I:%M %p ET')"
           for i in 1 2 3; do { git pull --rebase -X theirs -q origin main || { git rebase --abort; false; }; } && git push -q origin HEAD:main && exit 0; sleep 7; done   # -X theirs: on a clash in generated files keep this run's fresh copy
