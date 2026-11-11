@@ -258,6 +258,68 @@ def nfl_qtr():
     open("nfl_qtr.js", "w").write("/* NFL quarter scores (ESPN) — tools/auto_espn.py nfl-qtr */\nvar NFL_QTR=" + json.dumps(C["q"], separators=(",", ":")) + ";\n")
     print(f"nfl-qtr: {len(C['q'])} games with quarter scores")
 
+def nfl_roll(force=False):
+    """New NFL week: once every game of the site's week is final, archive this week's Plays of the Week into the record
+    (PLAY_ARCHIVE, same format as before), and replace SLATE / LINES with next week's games from ESPN (kickoff times ET,
+    TNF / SNF / MNF, DraftKings lines via ESPN when posted). Player props then attach on their own (PropLine feed)."""
+    js = open("engine.js", encoding="utf-8").read(); pj = open("plays.js", encoding="utf-8").read()
+    m = re.search(r"const SLATE = \[\n(.*?)\n\];", js, re.S)
+    rows = re.findall(r'\{id:("?[\w]+"?),away:"(\w+)",home:"(\w+)"([^}]*)\}', m.group(1))
+    if not rows: raise SystemExit("nfl-roll: SLATE not found")
+    if not force and any("final:" not in r[3] for r in rows): print("nfl-roll: this week still has games to play"); return
+    wk = int(re.search(r"PLAYS_WEEK=(\d+)", pj).group(1)); nw = wk + 1
+    d = get(B + f"football/nfl/scoreboard?week={nw}&seasontype=2"); ev = d.get("events") or []
+    if len(ev) < 8: raise SystemExit(f"nfl-roll: ESPN has only {len(ev)} games for Week {nw} — not rolling")
+    # --- archive this week's plays (titles / odds / lines frozen as they were) ---
+    TN = dict(re.findall(r'(\w+):\["([^"]+)"', js.split("const TEAM_IDS")[0]))
+    MK = dict(re.findall(r'(\w+):\{n:"([^"]+)"', js))
+    OL = {}
+    for gid, sp, mla, mlh, tot in re.findall(r'\n\s*"?(\w+)"?:\{sp:([-\d.]+)(?:,ml:\[([-\d.]+),([-\d.]+)\])?,tot:([-\d.]+)\}', js.split("const LINES")[1].split("};")[0]):
+        OL[gid] = {"sp": float(sp), "ml": [int(float(mla)), int(float(mlh))] if mla else None, "tot": float(tot)}
+    RP = {k: json.loads(v) for k, v in re.findall(r'"([^"]+\|\w+)":\s*(\[[^\]]*\])', js.split("const REAL_PROPS=")[1].split("\n")[0])}
+    G = {r[0].strip('"'): (r[1], r[2]) for r in rows}
+    pm = re.search(r"const PLAYS=\[\n(.*?)\n\];", pj, re.S); arch = []
+    for typ, body in re.findall(r'\{type:"(\w+)",(.*?)\n\s*why:', pm.group(1), re.S) if pm else []:
+        f_ = dict(re.findall(r'(\w+):"([^"]*)"', body)); gm = re.search(r"game:(\w+)", body)
+        if typ == "prop":
+            rp = RP.get(f'{f_.get("player")}|{f_.get("market")}')
+            if not rp: continue
+            side = f_.get("side", "over")
+            arch.append({"type": "prop", "title": f'{f_["player"]} {side.title()} {rp[0]} {MK.get(f_["market"], f_["market"]).lower()}', "odds": rp[1] if side == "over" else rp[2],
+                         "player": f_["player"], "market": f_["market"], "side": side, "line": rp[0], "book": rp[3] if len(rp) > 3 else ""})
+        elif gm:
+            gid = gm.group(1); a, h = G.get(gid, (None, None)); L = OL.get(gid)
+            if not a or not L: continue
+            e = {"type": typ, "game": int(gid) if gid.isdigit() else gid, "away": a, "home": h, "L": L}
+            if typ == "total": e.update(side=f_.get("side", "over"), title=f'{TN.get(a, a).split()[-1]} @ {TN.get(h, h).split()[-1]} {f_.get("side", "over").title()} {L["tot"]}', odds=-110)
+            else:
+                t = f_.get("team"); sp = L["sp"] if t == h else -L["sp"]
+                e.update(team=t, title=f'{TN.get(t, t)} {"+" if sp > 0 else ""}{sp:g}' if typ == "spread" else f"{TN.get(t, t)} moneyline",
+                         odds=-110 if typ == "spread" else (L["ml"][1] if t == h else L["ml"][0]) if L.get("ml") else None)
+            arch.append(e)
+    # --- next week's games and lines ---
+    from zoneinfo import ZoneInfo
+    ET = ZoneInfo("America/Toronto"); games = []
+    for e in sorted(ev, key=lambda e: e.get("date", "")):
+        c = e["competitions"][0]; a, h, _ = teams_of(c, FIX_NFL)
+        t = datetime.datetime.fromisoformat(e["date"].replace("Z", "+00:00")).astimezone(ET)
+        tv = "TNF" if t.weekday() == 3 else "MNF" if t.weekday() == 0 else "SNF" if t.weekday() == 6 and t.hour >= 20 else ""
+        games.append((a, h, t, tv, odds_of(c)))
+    sl = ",\n".join(f' {{id:{i},away:"{a}",home:"{h}",when:"{t:%a %b} {t.day} · {t:%-I:%M %p}",wp:null{"," + chr(116) + "v:" + json.dumps(tv) if tv else ""}}}' for i, (a, h, t, tv, o) in enumerate(games, 1))
+    ln = ",\n".join(f' {i}:{{sp:{fmt(o["sp"])},{"ml:[" + fmt(o["mla"]) + "," + fmt(o["mlh"]) + "]," if o.get("mla") is not None and o.get("mlh") is not None else ""}tot:{fmt(o["tot"])}}}'
+                     for i, (a, h, t, tv, o) in enumerate(games, 1) if o and o.get("sp") is not None and o.get("tot") is not None)
+    now = datetime.datetime.now(ET)
+    js = re.sub(r"// Week \d+ slate[^\n]*\nconst SLATE = \[\n.*?\n\];", lambda _: f"// Week {nw} slate (ESPN schedule, kickoff times ET; set up automatically by tools/auto_espn.py nfl-roll). wp = home win probability from feed (null = not provided)\nconst SLATE = [\n{sl}\n];", js, count=1, flags=re.S)
+    js = re.sub(r"// REAL lines[^\n]*\nconst LINES = \{.*?\n\};", lambda _: f"// REAL lines: DraftKings via ESPN, {now:%a %b} {now.day} {now:%Y} (updated by every automatic run until kickoff). sp = HOME spread, ml = [away, home]\nconst LINES = {{\n{ln}\n}};", js, count=1, flags=re.S)
+    js = re.sub(r"const SPLITS = \{.*?\};", "const SPLITS = {};", js, count=1, flags=re.S)
+    # --- plays.js: archive + empty plays for the new week ---
+    if arch:
+        pj = re.sub(r"(const PLAY_ARCHIVE=\{\n)", lambda m_: m_.group(1) + f" {wk}:" + json.dumps(arch, ensure_ascii=False) + ",\n", pj, count=1)
+    pj = re.sub(r"const PLAYS_WEEK=\d+, PLAYS_ASOF=\"[^\"]*\";", f'const PLAYS_WEEK={nw}, PLAYS_ASOF="{now:%a %b} {now.day}";', pj, count=1)
+    pj = re.sub(r"const PLAYS=\[\n.*?\n\];", "const PLAYS=[\n];", pj, count=1, flags=re.S)
+    open("engine.js", "w", encoding="utf-8").write(js); open("plays.js", "w", encoding="utf-8").write(pj)
+    print(f"nfl-roll: Week {wk} -> Week {nw}: {len(games)} games, {ln.count('sp:')} with lines; {len(arch)} plays archived")
+
 if __name__ == "__main__":
     cmd = sys.argv[1]
     if cmd == "nba-inj": nba_inj()
@@ -266,4 +328,5 @@ if __name__ == "__main__":
     elif cmd == "nfl-inj": nfl_inj(sys.argv[2])
     elif cmd == "nfl-update": nfl_update()
     elif cmd == "nfl-qtr": nfl_qtr()
+    elif cmd == "nfl-roll": nfl_roll(len(sys.argv) > 2 and sys.argv[2] == "force")
     else: raise SystemExit("unknown command")

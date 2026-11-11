@@ -29,7 +29,7 @@ function nhB2B(t,d){const p=nhAddDays(d,-1);return (NHL_RES||[]).some(r=>r[0]===
 function nhDayTabs(cur){const T=[0,1,2,3].map(n=>{const d=nhAddDays(NHL_DATE,n);return [n?`nhl-tomorrow${n>1?"-"+n:""}`:"nhl",n===0?"Today":n===1?"Tomorrow":new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"short"}),d]});
   return `<div class="gtabs">${T.map(([h,l,d])=>`<a href="#${h}" class="${h===cur?"on":""}">${l}<small>${nhGamesOn(d).length}</small></a>`).join("")}</div>`}
 function nhGame(id){return nhAllGames().find(g=>String(g.id)===String(id))}
-function nhStarted(g){if(!g)return false;const L=typeof LIVE!=="undefined"&&LIVE.nhl&&LIVE.nhl[g.a+"@"+g.h];if(L&&L.st!=="pre"&&g.d===NHL_DATE)return true;return (g.st&&!["FUT","PRE"].includes(g.st))||Date.parse(g.iso)<=Date.now()}
+function nhStarted(g){if(!g)return false;const L=typeof LIVE!=="undefined"&&LIVE.nhl&&LIVE.nhl[g.a+"@"+g.h],Ld=L&&L.date?new Intl.DateTimeFormat("en-CA",{timeZone:"America/Toronto"}).format(new Date(L.date)):null;if(L&&L.st!=="pre"&&g.d===NHL_DATE&&(!Ld||Ld===g.d))return true;   /* same date only: back-to-back meetings */return (g.st&&!["FUT","PRE"].includes(g.st))||Date.parse(g.iso)<=Date.now()}
 function nhGameOf(tm){return nhAllGames().find(g=>(g.a===tm||g.h===tm)&&!nhStarted(g))||nhAllGames().find(g=>g.a===tm||g.h===tm)}
 function nhWho(nm){return NHL_P[nm]||NHL_G[nm]||null}
 function nhIsG(nm){return !!NHL_G[nm]&&!NHL_P[nm]}

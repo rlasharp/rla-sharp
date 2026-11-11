@@ -94,7 +94,7 @@ function viewPlays(){
       <p style="margin:12px 0 0;line-height:1.55">${pl.why(pl.type==="prop"?d:d)}</p>
       <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap"><a href="#" class="btn plink" data-i="${i}">${pl.type==="prop"?"Open player page →":"Open matchup →"}</a>${betBtn(specFromPlay(pl))}${shareBtn(specFromPlay(pl))}</div></div>`}).join("");
   $("#v-plays").innerHTML=`<h1>Plays of the Week</h1>
-   <p class="sub">Week ${PLAYS_WEEK} · our ${PLAYS.length} favourite spots based on the matchup data on this site — two player props, a spread, a moneyline and a total. Lines as of ${PLAYS_ASOF}; check your sportsbook before betting, prices move.</p>
+   <p class="sub">${PLAYS.length?`Week ${PLAYS_WEEK} · our ${PLAYS.length} favourite spots based on the matchup data on this site — two player props, a spread, a moneyline and a total. Lines as of ${PLAYS_ASOF}; check your sportsbook before betting, prices move.`:`Week ${PLAYS_WEEK}: this week's Plays of the Week aren't posted yet. Last week's results are in the record below; the ${typeof prlSportHtml!=="undefined"?"parlay of the day and ":""}best props are on the Props page.`}</p>
    <div class="row" style="gap:8px;margin:-4px 0 10px;flex-wrap:wrap"><button class="btn" id="nflShare">📤 Share this week's plays</button><a class="btn" href="#record">📒 Full record</a></div>
    ${typeof prlSportHtml!=="undefined"?prlSportHtml("nfl"):""}
    ${recordPanel()}

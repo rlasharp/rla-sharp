@@ -12,7 +12,7 @@ function startedAt(d,t){const n=etNow(),tm=tipMin(t);if(!d)return false;if(n.d>d
 const MON={Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
 function nflDate(g){const m=/([A-Z][a-z]{2})\s+(\d+)/.exec(String(g.when||"").replace(/^[A-Z][a-z]{2}\s+/,""));if(!m||!MON[m[1]])return null;
   const mo=MON[m[1]],y=(typeof CUR!=="undefined"?CUR:2026)+(mo<=7?1:0);return `${y}-${String(mo).padStart(2,"0")}-${String(+m[2]).padStart(2,"0")}`}
-function nbaStarted(g){if(!g)return false;const L=typeof LIVE!=="undefined"&&LIVE.nba&&(LIVE.nba[String(g.id)]||LIVE.nba[g.a+"@"+g.h]);if(L&&L.st!=="pre")return true;return startedAt(NBA_SLATE_DATE,g.t)}
+function nbaStarted(g){if(!g)return false;const L=typeof LIVE!=="undefined"&&LIVE.nba&&liveGet("nba",g.a,g.h,g.id);if(L&&L.st!=="pre")return true;return startedAt(NBA_SLATE_DATE,g.t)}
 function nflStarted(g){if(!g)return false;if(g.final)return true;const L=typeof LIVE!=="undefined"&&LIVE.nfl&&LIVE.nfl[g.away+"@"+g.home];if(L&&L.st!=="pre")return true;return startedAt(nflDate(g),String(g.when||"").split("·")[1])}
 function startedKey(){try{return (typeof NBA_SLATE!=="undefined"?NBA_SLATE.filter(nbaStarted).map(g=>g.id).join(","):"")+"|"+(typeof SLATE!=="undefined"?SLATE.filter(nflStarted).map(g=>g.id).join(","):"")}catch(e){return ""}}
 const LIVE={nba:{},nfl:{},nhl:{},ok:{nba:0,nfl:0,nhl:0},box:{},timer:null,busy:0};
@@ -46,7 +46,9 @@ async function liveFetch(sp){
     LIVE[sp]=m;LIVE.ok[sp]=1;
   }catch(e){LIVE.ok[sp]=0}
 }
-function liveGet(sp,a,h,id){const m=LIVE[sp]||{};return (id!=null&&m[String(id)])||m[a+"@"+h]||null}
+/* by game id first; the team-pair fallback only when we don't know the game's id, or it's the same game —
+   two meetings on back-to-back days (OKC@POR Nov 10 and Nov 11) must not borrow each other's score */
+function liveGet(sp,a,h,id){const m=LIVE[sp]||{};if(id!=null&&m[String(id)])return m[String(id)];const x=m[a+"@"+h]||null;return x&&id!=null&&x.id&&String(x.id)!==String(id)?null:x}
 function liveBar(sp,g){
   if(!g||g.st==="pre")return "";
   const lead=g.as===g.hs?"":g.as>g.hs?g.a:g.h;
