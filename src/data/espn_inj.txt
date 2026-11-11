@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 01:44Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 03:52Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Michael Wilson|WR|IR|Neck|Feb 15
@@ -29,7 +29,6 @@ Greg Gaines|DT|Questionable|Calf|Nov 15
 Alec Anderson|OT|Questionable|Ankle|Nov 15
 Dion Dawkins|OT|Questionable|Ribs|Nov 15
 Tyrell Shavers|WR|Out|Knee - ACL|Nov 15
-Jordan Hancock|CB|IR|Hamstring|Nov 15
 #CAR
 Jaelan Phillips|LB|Questionable|Hamstring|Nov 15
 Will Lee III|CB|Questionable|Hamstring|Nov 15
@@ -111,6 +110,7 @@ Jaylon Carlies|LB|Questionable|Neck|Nov 15
 Alec Pierce|WR|IR|Heel|Nov 29
 #JAX
 Cam'Ron Silmon-Craig|S|Out|Coach's Decision|Nov 15
+Eric Murray|S|IR|Elbow|Feb 15
 #KC
 Peter Woods|DT|Questionable|Neck|Nov 15
 Mansoor Delane|CB|Questionable|Shoulder|Nov 15
@@ -194,7 +194,7 @@ Brandin Echols|CB|Questionable|Hamstring|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
-Gracen Halton|DT|Out|Ankle|Feb 15
+Gracen Halton|DT|IR|Ankle|Feb 15
 Mike Evans|WR|Questionable|Achilles|Nov 15
 Deebo Samuel Sr.|WR|Questionable|Hamstring|Nov 15
 C.J. West|DT|IR|Knee|Nov 15
@@ -227,9 +227,9 @@ Peter Skoronski|G|Questionable|Hamstring|Nov 15
 JC Latham|OT|Questionable|Finger|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 #WAS
+Colson Yankoff|TE|Questionable|Knee|Nov 12
 Treylon Burks|WR|Questionable|Foot|Nov 12
 Lucas Patrick|G|Doubtful|Concussion|Nov 12
-Colson Yankoff|TE|Questionable|Knee|Nov 12
 Dyami Brown|WR|IR|Calf|Dec 6
 Daron Payne|DT|IR|Foot|Feb 15
 Jeremy McNichols|RB|IR|Foot|Feb 15
