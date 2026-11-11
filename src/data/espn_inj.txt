@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 13:43Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 16:59Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Michael Wilson|WR|IR|Neck|Feb 15
@@ -11,7 +11,6 @@ Roy Lopez|DT|Questionable|Toe|Nov 15
 James Conner|RB|IR|Foot|Nov 15
 #ATL
 Zachariah Branch|WR|Doubtful|Hamstring|Nov 15
-Cameron Williams|OL|IR|Ankle|Nov 15
 Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 Anterio Thompson|DT|Out|Undisclosed|Feb 15
@@ -43,7 +42,7 @@ Brady Christensen|G|IR|Hamstring|Nov 15
 Kyle Monangai|RB|Out|Toe|Nov 22
 Malik Muhammad II|CB|Out|Toe|Nov 22
 Luther Burden III|WR|Questionable|Concussion|Nov 22
-Tyrique Stevenson Sr.|CB|Questionable|Hand|Nov 8
+Tyrique Stevenson Sr.|CB|Questionable|Hand|Nov 22
 Case Keenum|QB|Out|Undisclosed|
 Zavier Scott|RB|IR|Wrist|Dec 13
 Kentavius Street|DT|IR|Knee|Feb 15
@@ -54,7 +53,7 @@ Andrei Iosivas|WR|IR|Thumb|Nov 15
 Cashius Howell|DE|IR|Wrist|Dec 6
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
-Deshaun Watson|QB|Questionable|Concussion|Nov 15
+Deshaun Watson|QB|Out|Undisclosed|
 Maliek Collins|DT|Questionable|Elbow|Nov 15
 #DAL
 DeMarvion Overshown|LB|Questionable|Hamstring|Nov 15
@@ -97,10 +96,12 @@ Bo Melton|WR|Questionable|Head|Nov 15
 Ty'Ron Hopper|LB|Questionable|Chest|Nov 15
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 #HOU
+Cade Stover|TE|Out|Undisclosed|
 David Montgomery|RB|Questionable|Groin|Nov 15
 Reed Blankenship|S|Questionable|Concussion|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
+Luke Rhodes|LS|Questionable|Hamstring|Nov 15
 Jalen Travis|OT|Doubtful|Knee|Nov 29
 Justin Walley|CB|Questionable|Knee|Nov 15
 Akeem Davis-Gaither|LB|Questionable|Knee|Nov 15
@@ -134,8 +135,8 @@ Justin Eboigbe|DT|Questionable|Ankle|Nov 16
 Denzel Perryman|LB|IR|Undisclosed|Nov 16
 David Njoku|TE|IR|Lower Leg|Nov 16
 #LAR
-Jordan Whittington|WR|IR|Back|Dec 20
 Puka Nacua|WR|Doubtful|Knee - MCL|Nov 15
+Jordan Whittington|WR|IR|Back|Dec 20
 Trent McDuffie|CB|Questionable|Back|Nov 15
 Joe Cardona|LS|Questionable|Ankle|Nov 15
 Terrance Ferguson|TE|IR|Hamstring|Nov 25
@@ -227,8 +228,8 @@ Peter Skoronski|G|Questionable|Hamstring|Nov 15
 JC Latham|OT|Questionable|Finger|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 #WAS
-Colson Yankoff|TE|Questionable|Knee|Nov 12
 Treylon Burks|WR|Questionable|Foot|Nov 12
+Colson Yankoff|TE|Questionable|Knee|Nov 12
 Lucas Patrick|G|Doubtful|Concussion|Nov 12
 Dyami Brown|WR|IR|Calf|Dec 6
 Daron Payne|DT|IR|Foot|Feb 15

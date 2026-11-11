@@ -1,13 +1,13 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 13:43Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 16:59Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Brooklyn Nets
+Mikel Brown Jr.|G|Out|illness not specified|Nov 14
 Nolan Traore|G|Day-To-Day|calf soreness|Nov 11
 Egor Demin|G|Out|leg bruise|Nov 11
-Grant Nelson|F|Day-To-Day|knee|Nov 10
 #Charlotte Hornets
 Brandon Miller|F|Day-To-Day|groin soreness|Nov 12
 Moussa Diabate|F|Day-To-Day|quadriceps|Nov 12
@@ -29,6 +29,7 @@ Dereck Lively II|C|Out|foot surgery|Nov 12
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
+Ugonna Onyenso|C|Day-To-Day|foot|Nov 13
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
@@ -47,7 +48,7 @@ Tyrese Haliburton|G|Out|hamstring strain|Nov 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
-Cam Christie|G|Out|ankle|Nov 13
+Cam Christie|G|Day-To-Day|ankle|Nov 13
 Yanic Konan Niederhauser|C|Out|foot surgery|Nov 17
 Brandon Ingram|F|Out|achilles surgery|Nov 13
 Bradley Beal|G|Out|knee inflammation|Nov 29
@@ -60,12 +61,13 @@ Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Quinten Post|C|Out|head|Nov 13
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Milwaukee Bucks
-Tyler Herro|G|Out|knee bruise|Nov 11
+Tyler Herro|G|Day-To-Day|knee bruise|Nov 11
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Trendon Watford|F|Out|ankle|Nov 13
+Bennedict Mathurin|G|Out|thumb sprain|Nov 13
+Trendon Watford|F|Out|ankle sprain|Nov 13
 Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 11
 Yves Missi|C|Out|knee bruise|Nov 16
 #New York Knicks
@@ -77,7 +79,7 @@ Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
-Tristan da Silva|F|Out|calf strain|Nov 11
+Tristan da Silva|F|Day-To-Day|calf strain|Nov 11
 Jalen Suggs|G|Out|knee|Nov 16
 Jonathan Isaac|F|Out|knee not specified|Nov 16
 Paolo Banchero|F|Out|ankle sprain|Nov 22
@@ -94,7 +96,7 @@ Ja Morant|G|Out|hamstring not specified|Dec 1
 Vit Krejci|G|Out|ankle|Jan 2
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Precious Achiuwa|F|Out|lower leg bruise|Nov 13
+Precious Achiuwa|F|Day-To-Day|lower leg bruise|Nov 13
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
@@ -109,8 +111,8 @@ Scottie Barnes|F|Out|groin soreness|Nov 12
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 15
 #Utah Jazz
-Lauri Markkanen|F|Out|wrist sprain|Nov 11
-Keyonte George|G|Out|ankle sprain|Nov 11
+Keyonte George|G|Day-To-Day|ankle sprain|Nov 11
+Lauri Markkanen|F|Day-To-Day|wrist sprain|Nov 11
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
