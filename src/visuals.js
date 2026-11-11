@@ -23,19 +23,24 @@ function vxHeat(sp,a,h,name){try{const R=vxHeatRows(sp);if(!R.length)return "";
    <div class="nbatbl"><table class="bxt vxht"><thead><tr><th></th><th>${vxE(name(a))} attack<br><span class="small">vs ${vxE(name(h))} D</span></th><th>${vxE(name(h))} attack<br><span class="small">vs ${vxE(name(a))} D</span></th></tr></thead>
    <tbody>${R.map(row=>`<tr><td>${vxE(row.l)}</td>${cell(row,a,h)}${cell(row,h,a)}</tr>`).join("")}</tbody></table></div></div>`}catch(e){return ""}}
 
-/* ===== 28. Minutes vs stat scatter (NBA player, per prop market) ===== */
-function vxScatter(nm,k,line){try{const p=NBA_LOGS[nm];if(!p||!NBA_MK[k])return "";const G=p.g.map(x=>[x[4],nbaVal(x,k),x[1]]).filter(x=>x[0]>0);if(G.length<4)return "";
-  const W=320,H=170,pl=30,pb=22,pt=8,pr=8,mx=Math.max(40,...G.map(x=>x[0])),my=Math.max(line*1.4,...G.map(x=>x[1]),1),X=v=>pl+v/mx*(W-pl-pr),Y=v=>H-pb-v/my*(H-pb-pt);
-  const n=G.length,sx=G.reduce((s,x)=>s+x[0],0),sy=G.reduce((s,x)=>s+x[1],0),sxy=G.reduce((s,x)=>s+x[0]*x[1],0),sxx=G.reduce((s,x)=>s+x[0]*x[0],0),b=(n*sxy-sx*sy)/(n*sxx-sx*sx||1),a0=(sy-b*sx)/n;
-  const need=b>0?(line-a0)/b:null,yt=[0,Math.round(my/2),Math.round(my)];
-  return `<div class="vxsc"><div class="small" style="margin:8px 0 2px"><b>Minutes vs ${vxE(NBA_MK[k][1].toLowerCase())}</b> — each dot is a game this season (<span style="color:#16a34a">●</span> over ${line}, <span style="color:#e5484d">●</span> under). Dashed = the line, grey = his trend.</div>
-   <svg viewBox="0 0 ${W} ${H}" class="vxsvg" role="img" aria-label="Minutes vs ${vxE(NBA_MK[k][1])} scatter">
-    ${yt.map(v=>`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" class="vxgrid"/><text x="${pl-4}" y="${Y(v)+3}" class="vxax" text-anchor="end">${v}</text>`).join("")}
-    ${[0,12,24,36,48].filter(v=>v<=mx).map(v=>`<text x="${X(v)}" y="${H-6}" class="vxax" text-anchor="middle">${v}</text>`).join("")}<text x="${W-pr}" y="${H-6}" class="vxax" text-anchor="end">min</text>
-    <line x1="${X(Math.max(0,(0-a0)/(b||1)))}" x2="${X(mx)}" y1="${Y(Math.max(0,a0+b*Math.max(0,(0-a0)/(b||1))))}" y2="${Y(Math.max(0,a0+b*mx))}" class="vxtrend"/>
-    <line x1="${pl}" x2="${W-pr}" y1="${Y(line)}" y2="${Y(line)}" class="vxline"/>
-    ${G.map(x=>`<circle cx="${X(x[0]).toFixed(1)}" cy="${Y(x[1]).toFixed(1)}" r="4" fill="${x[1]>line?"#16a34a":x[1]<line?"#e5484d":"#9aa0a6"}" opacity=".85"><title>${vxE(x[2])}: ${x[0]} min, ${x[1]}</title></circle>`).join("")}
-   </svg>${need!=null&&need>0&&need<48?`<div class="small">At his usual rate he needs about <b>${Math.round(need)} minutes</b> to clear ${line} (season ${(sx/n).toFixed(0)} min a game).</div>`:""}</div>`}catch(e){return ""}}
+/* ===== 28. Minutes vs stat (NBA player, per prop market): a clean dot chart — green zone above the line, red below,
+   his last 5 games ringed, and the one number that matters: how often he clears it when he plays his usual minutes ===== */
+function vxScatter(nm,k,line){try{const p=NBA_LOGS[nm];if(!p||!NBA_MK[k]||line==null)return "";const G=p.g.map((x,i)=>({m:x[4],v:nbaVal(x,k),d:x[1],o:x[2],r:i>=p.g.length-5})).filter(x=>x.m>0);if(G.length<5)return "";
+  const W=340,H=150,pl=26,pr=34,pt=10,pb=20,m0=Math.max(0,Math.floor((Math.min(...G.map(x=>x.m))-4)/2)*2),m1=Math.min(48,Math.ceil((Math.max(...G.map(x=>x.m))+4)/2)*2),ymax=Math.max(line*1.35,...G.map(x=>x.v))*1.08;
+  const X=v=>pl+(v-m0)/(m1-m0)*(W-pl-pr),Y=v=>H-pb-v/ymax*(H-pb-pt),yl=Y(line);
+  const avg=G.reduce((s,x)=>s+x.m,0)/G.length,cut=Math.round(avg-3),hi=G.filter(x=>x.m>=cut),lo=G.filter(x=>x.m<cut),hit=a=>a.filter(x=>x.v>line).length;
+  const ticks=[];for(let v=Math.ceil(m0/6)*6;v<=m1;v+=6)ticks.push(v);const yt=[0,Math.round(ymax/2)];
+  const chip=(a,lab)=>a.length?`<span class="vxchip ${hit(a)/a.length>=.6?"g":hit(a)/a.length<=.4?"r":""}">${lab}: <b>${hit(a)}/${a.length}</b> over</span>`:"";
+  return `<div class="vxsc"><div class="vxsch"><b>⏱️ Minutes vs ${vxE(NBA_MK[k][2]||NBA_MK[k][1])}</b><span class="small">${G.length} games · line ${line}</span></div>
+   <svg viewBox="0 0 ${W} ${H}" class="vxsvg" role="img" aria-label="Minutes played vs ${vxE(NBA_MK[k][1])}, each game this season">
+    <rect x="${pl}" y="${pt}" width="${W-pl-pr}" height="${(yl-pt).toFixed(1)}" class="vxzg"/><rect x="${pl}" y="${yl.toFixed(1)}" width="${W-pl-pr}" height="${(H-pb-yl).toFixed(1)}" class="vxzr"/>
+    ${yt.map(v=>`<text x="${pl-5}" y="${(Y(v)+3).toFixed(1)}" class="vxax" text-anchor="end">${v}</text>`).join("")}
+    ${ticks.map(v=>`<line x1="${X(v).toFixed(1)}" x2="${X(v).toFixed(1)}" y1="${pt}" y2="${H-pb}" class="vxgrid"/><text x="${X(v).toFixed(1)}" y="${H-6}" class="vxax" text-anchor="middle">${v}</text>`).join("")}
+    <line x1="${X(cut).toFixed(1)}" x2="${X(cut).toFixed(1)}" y1="${pt}" y2="${H-pb}" class="vxcut"/>
+    <line x1="${pl}" x2="${W-pr}" y1="${yl.toFixed(1)}" y2="${yl.toFixed(1)}" class="vxline2"/><rect x="${W-pr+3}" y="${(yl-8).toFixed(1)}" width="${pr-5}" height="16" rx="8" class="vxlpill"/><text x="${(W-pr/2+1).toFixed(1)}" y="${(yl+3.5).toFixed(1)}" class="vxlpt" text-anchor="middle">${line}</text>
+    ${G.map(x=>`<circle cx="${X(x.m).toFixed(1)}" cy="${Y(x.v).toFixed(1)}" r="${x.r?5.5:4.5}" class="${x.v>line?"vxdg":x.v<line?"vxdr":"vxdn"}${x.r?" vxlast":""}"><title>${vxE(x.d)} vs ${vxE(x.o)}: ${x.v} in ${x.m} min</title></circle>`).join("")}
+   </svg>
+   <div class="vxchips">${chip(hi,`${cut}+ min`)}${chip(lo,`under ${cut} min`)}<span class="small">minutes played → · ◯ last 5 games · ┆ his usual minutes</span></div></div>`}catch(e){return ""}}
 
 /* ===== 29. Defense vs position: what tonight's defense allows to each starting position vs the league ===== */
 const VX_POS=["PG","SG","SF","PF","C"];
