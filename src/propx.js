@@ -298,7 +298,7 @@ function nflQbChip(pl){if(pl.pos==="QB")return "";const q=typeof QB1_STATUS!=="u
   const bad=/out|reserve|doubt/i.test(now)||(inj&&/out|reserve|doubt/i.test(inj.s||"")),mid=!bad&&(/quest/i.test(now)||(inj&&/quest/i.test(inj.s||"")));
   return `<span class="qbc ${bad?"r":mid?"y":"g"}" title="${esc(now||(inj?inj.s:"No injury listed"))}">QB: ${esc(pxLast(qb))} ${bad?"⚠️ out":mid?"❓ questionable":"✅"}</span>`}
 function nflWxChip(pl){const o=oppOf(pl.team);if(!o||typeof WX==="undefined")return "";const x=WX[o.g.id];if(!x)return "";if(x.dome)return `<span class="qbc">🏟️ Indoors</span>`;
-  const ic=x.lvl>=3?"⛈️":x.rain&&/[1-9]/.test(x.rain)&&x.lvl>=1?"🌧️":"🌤️";return `<span class="qbc ${x.lvl>=2?"r":x.lvl>=1?"y":""}">${ic} ${esc(x.t)} · wind ${esc(x.wind)}</span>`}
+  const l=wxLvl(x);return `<span class="qbc ${l>=2?"r":l>=1?"y":""}">${wxLine(x,o.g)}</span>`}
 function nflUseBars(pl){const u=typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name];if(!u||!u.wk)return "";const W=Object.keys(u.wk).map(Number).sort((a,b)=>a-b).slice(-4);if(!W.length)return "";
   const tg=pl.pos==="QB"?null:(pl.pos==="RB"?2:1),lab=pl.pos==="RB"?"car":"tgt";
   return `<div class="small" style="margin:0 0 4px">Snap share · his last ${W.length} games</div><div class="ubar" title="Snap share by week">${W.map(w=>{const r=u.wk[w];return `<div><i style="height:${Math.max(4,r[0])}%"></i><b>${r[0]}%</b><span>Wk ${w}${tg!=null?`<small>${r[tg]} ${lab}${pl.pos==="RB"&&r[1]?` · ${r[1]} tgt`:""}</small>`:""}</span></div>`}).join("")}</div>`}

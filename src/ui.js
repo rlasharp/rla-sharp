@@ -132,7 +132,7 @@ function viewGame(id){
   const tabP=/-props$/.test(String(id));id=String(id).replace(/-props$/,"");
   const g=SLATE.find(x=>x.id==id);if(!g){location.hash="games";return}
   const head=`<a class="btn" href="#games">← All games</a>
-   <div class="card section" style="margin-top:14px"><div class="small" style="text-align:center">${g.when}${g.tv?" · "+g.tv:""} ${typeof cdChip!=="undefined"?cdChip("nfl",g):""}</div>`;
+   <div class="card section" style="margin-top:14px"><div class="small" style="text-align:center">${g.when}${g.tv?" · "+g.tv:""} ${typeof cdChip!=="undefined"?cdChip("nfl",g):""}</div>${g.final?"":wxHead(g)}`;
   if(g.final){$("#v-game").innerHTML=head+`<div class="scoreboard"><div class="sbteam">${badge(g.away)}<div class="nm">${TEAMS[g.away][0]}</div></div><div class="sbscore">${g.final[0]}</div><div class="sbmid">FINAL</div><div class="sbscore">${g.final[1]}</div><div class="sbteam">${badge(g.home)}<div class="nm">${TEAMS[g.home][0]}</div></div></div></div>
     ${typeof nflFinalBlock!=="undefined"?`<div class="card" style="margin-top:12px">${nflFinalBlock(g,g.final[0],g.final[1])}</div>`:""}
     <h2 style="margin:18px 0 8px">📋 Box score</h2>${typeof boxScoreHtml!=="undefined"?boxScoreHtml(g.wk||(typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:0),g.away,g.home)||`<div class="card"><p class="note" style="margin:0">Box score not available yet.</p></div>`:""}`;return}
@@ -149,17 +149,18 @@ function viewGame(id){
     <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p>${typeof xaPmLine!=="undefined"?xaPmLine("nfl",g.away,g.home):""}</div>
    ${nflEdgesCard(g)}
    ${typeof fxNfl!=="undefined"?fxCard(fxNfl(g),"Meetings since 2002 and this season's results."):""}${typeof newsCard!=="undefined"?newsCard("nfl",{teams:[g.away,g.home]},"Latest news: "+short(g.away)+" & "+short(g.home)):""}
-   ${(()=>{const T=S.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["inj","🩹 Injuries & weather"]];
+   ${(()=>{const T=S.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["h2h","🆚 H2H"],["inj","🩹 Injuries"]];
     const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nfgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#game-${g.id}-props">🎯 Props</a></div>`;
     if(T==="tr")return nav+`   <div class="section">${nflGsHtml(g)}</div>
    ${paceRestSection(g)}${marketSection(g)}
    <div class="section">${trendsBox(g)}</div>
    ${typeof xaNflQtrCard!=="undefined"?xaNflQtrCard(g):""}
-   <div class="section grid g2">
+   <div class="section">
     <div class="card"><h2>Recent form</h2><p class="small" style="margin-top:-6px">Every 2026 game, newest first. Green = won, red = lost. The bar shows how much they won or lost by. Source: CBS Sports scores.</p>${formHtml(g.away)}${formHtml(g.home)}</div>
-    <div class="card"><h2>Head-to-head</h2>${h2hHtml(g)}</div></div>
+</div>
    ${nfNextCard(g)}
    `;
+    if(T==="h2h")return nav+`<div class="section nodz"><div class="card"><h2>🆚 Head-to-head</h2>${h2hHtml(g)}<p class="small" style="margin:6px 0 0">Tap 📋 Box score on any of the last 5 meetings for the full stats.</p></div></div>`;
     if(T==="inj")return nav+`<div class="section">${injWxSection(g)}</div>`;
     return nav+`   <div class="section"><h2>Offense vs defense</h2><p class="small" style="margin-top:-6px">Per-game averages this season. Rank 1st = best in the NFL (most gained for offenses, least allowed for defenses). <span class="tag real">Real</span> Offense from ESPN, yards allowed from NFL.com, points allowed from CBS scores.</p>
     <div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>
@@ -344,7 +345,7 @@ function h2hHtml(g){const R=typeof nflH2hRows!=="undefined"?nflH2hRows(g):((type
    <div class="grid g3" style="margin-bottom:12px;gap:8px"><div class="stat" style="padding:10px"><div class="l">Series</div><div class="v" style="font-size:19px">${lead}</div></div>
    <div class="stat" style="padding:10px"><div class="l">Avg total pts</div><div class="v" style="font-size:19px">${fmt(avgT,1)}</div></div>
    <div class="stat" style="padding:10px"><div class="l">Over ${tl}</div><div class="v" style="font-size:19px">${ov} of ${G.length}</div></div></div>
-   <table><tbody>${G.map(x=>`<tr><td class="small">${fmtD(x.d)}${x.po?' <span class="tag">Playoff</span>':""}</td>
+   <table><tbody>${G.map((x,i)=>`<tr data-bxrow><td class="small">${fmtD(x.d)}${i<5&&typeof bxBtn!=="undefined"?"<br>"+bxBtn("nfl",x.d,x.a,x.h):""}${x.po?' <span class="tag">Playoff</span>':""}</td>
      <td>${x.win===x.a?"<b>":""}${short(x.a)} ${x.ap}${x.win===x.a?"</b>":""} <span class="small">@</span> ${x.win===x.h?"<b>":""}${short(x.h)} ${x.hp}${x.win===x.h?"</b>":""}</td>
      <td class="r">${badge(x.win)}</td><td class="r small">${x.tot} pts ${x.tot>tl?'<span class="ou o">O</span>':x.tot<tl?'<span class="ou u">U</span>':""}</td></tr>`).join("")}</tbody></table>
    <p class="note" style="margin-top:8px">O/U compares each final total with this week's total (${tl}).</p>`}

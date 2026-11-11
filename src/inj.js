@@ -76,22 +76,23 @@ function viewInjuries(){const V=window.INJV,el=document.getElementById("v-injuri
   const q=el.querySelector("#injQ");q.oninput=e=>{V.q=e.target.value;clearTimeout(q._t);q._t=setTimeout(()=>{viewInjuries();const n=document.getElementById("injQ");n.focus();n.setSelectionRange(n.value.length,n.value.length)},250)};
 }
 
-/* ---------- Week 9 game-time weather ----------
-   Forecasts are added on the Saturday run. Roofs/domes listed now. */
-const WX={
-  3:{dome:"Dome (Caesars Superdome)"},
-  4:{dome:"Retractable roof (Lucas Oil Stadium)"},
-  10:{dome:"Covered (SoFi Stadium)"},
-  15:{dome:"Dome (U.S. Bank Stadium)"},
-};
+/* ---------- kickoff weather (nfl_wx.js: ESPN venue + Open-Meteo forecast for the kickoff hour; refreshed every NFL update) ---------- */
+/* read at render time (PLAYS_WEEK is defined later in the page); only this week's forecasts count */
+const WX=new Proxy({},{get:(t,k)=>{const W=typeof NFL_WX!=="undefined"&&NFL_WX;let wk=null;try{wk=PLAYS_WEEK}catch(e){}return W&&W.g&&(wk==null||W.wk===wk)?W.g[k]:undefined}});
+function wxNight(g){const m=String(g&&g.when||"").match(/(\d+):\d+\s*(AM|PM)/i);return m?(m[2].toUpperCase()==="PM"&&+m[1]%12>=6):false}
+function wxIcon(x,g){const c=x.wc,n=wxNight(g);
+  return c==null?"🌡️":c===0?(n?"🌙":"☀️"):c===1?(n?"🌙":"🌤️"):c===2?"⛅":c===3?"☁️":c<=48?"🌫️":c<=57?"🌦️":c<=67?"🌧️":c<=77?"❄️":c<=82?"🌧️":c<=86?"🌨️":"⛈️"}
+function wxWord(x){const c=x.wc;return c==null?"":c<=1?"Clear":c===2?"Partly cloudy":c===3?"Cloudy":c<=48?"Fog":c<=57?"Drizzle":c<=67?"Rain":c<=77?"Snow":c<=82?"Showers":c<=86?"Snow showers":"Thunderstorms"}
+/* how much the weather matters for passing/kicking: wind is the big one, then snow / heavy rain, then cold */
+function wxLvl(x){if(x.dome)return 0;let l=0;if(x.ws>=20||x.wg>=30)l=3;else if(x.ws>=15||x.wg>=25)l=2;else if(x.ws>=10)l=1;
+  if(x.sn>=1||(x.wc>=63&&x.wc<=67)||x.wc>=95)l=Math.max(l,2);else if(x.pp>=50)l=Math.max(l,1);if(x.t<=20)l=Math.max(l,1);return l}
 const WX_LVL=["Low impact","Minor impact","Moderate impact","High impact"],WX_COL=["#22c55e","#a3e635","#fab219","#f05252"];
-function wxMini(g){const x=WX[g.id];if(!x)return "";if(x.dome)return `<div class="pubmini">🏟️ ${x.dome} — weather not a factor</div>`;
-  const ic=x.lvl>=3?"⛈️":x.rain&&/[1-9]/.test(x.rain)&&x.lvl>=1?"🌧️":x.lvl<0?"❔":"🌤️";
-  return `<div class="pubmini">${ic} ${esc(x.w)} · ${esc(x.t)} · wind ${esc(x.wind)}${x.lvl>=0?` · <b style="color:${WX_COL[x.lvl]}">${WX_LVL[x.lvl]}</b>`:""}</div>`}
-function wxCard(g){const x=WX[g.id];if(!x)return "";
-  if(x.dome)return `<div class="card"><h2>Weather</h2><p style="margin:0">🏟️ ${x.dome} — played indoors, weather is not a factor.</p></div>`;
-  return `<div class="card"><h2>Weather at kickoff</h2>${x.lvl>=0?`<span class="tag" style="background:${WX_COL[x.lvl]}22;color:${WX_COL[x.lvl]}">${WX_LVL[x.lvl]}</span>`:""}
-   <div class="pgrid" style="margin-top:10px"><div><small>Conditions</small><b>${esc(x.w)}</b><small>${esc(x.t)}</small></div><div><small>Wind · Rain chance</small><b>${esc(x.wind)}</b><small>rain ${esc(x.rain)}</small></div></div>
-   <p class="small" style="margin:10px 0 0">${esc(x.note)} Forecasts change — recheck on game day.</p></div>`}
-function injWxSection(g){return `<div class="section"><h2>Injuries & weather</h2><p class="small" style="margin-top:-6px">ESPN injury report as of ${INJ_ASOF} — every listed player; reserve lists are folded. <a href="#injuries">Full league report →</a></p>
-  <div class="grid g3"><div class="card"><h2>${badge(g.away)} ${short(g.away)}</h2>${injList(g.away)}</div><div class="card"><h2>${badge(g.home)} ${short(g.home)}</h2>${injList(g.home)}</div>${wxCard(g)}</div></div>`}
+function wxLine(x,g){if(x.dome)return `🏟️ Indoors`;const sn=x.sn>0?` · snow ${(x.sn/2.54).toFixed(1)}"`:"";
+  return `${wxIcon(x,g)} ${x.t}°F · 💨 ${x.ws} mph${x.wg>=x.ws+8?` (gusts ${x.wg})`:""}${x.pp>=20?` · ${x.wc>=71&&x.wc<=86?"snow":"rain"} ${x.pp}%`:""}${sn}`}
+function wxMini(g){const x=WX[g.id];if(!x)return "";const l=wxLvl(x);
+  return `<div class="pubmini">${wxLine(x,g)}${x.dome?" — weather not a factor":` · ${wxWord(x)}`}${l>=2?` · <b style="color:${WX_COL[l]}">${WX_LVL[l]}</b>`:""}</div>`}
+/* the chip next to the kickoff time at the top of the game page */
+function wxHead(g){const x=WX[g.id];if(!x)return "";const l=wxLvl(x);
+  return `<div class="wxhead${l>=2?" hi":""}" title="${x.dome?esc(x.dome):`Forecast for kickoff at ${esc(x.stad||"")}${x.city?", "+esc(x.city):""} (Open-Meteo)`}">${x.dome?`🏟️ Indoors · ${esc(x.dome)}`:`${wxLine(x,g)} · ${wxWord(x)}${l>=2?` · <b>${WX_LVL[l]}</b>`:""}`}</div>`}
+function injWxSection(g){return `<div class="section"><h2>Injuries</h2><p class="small" style="margin-top:-6px">ESPN injury report as of ${INJ_ASOF} — every listed player; reserve lists are folded. <a href="#injuries">Full league report →</a></p>
+  <div class="grid g2"><div class="card"><h2>${badge(g.away)} ${short(g.away)}</h2>${injList(g.away)}</div><div class="card"><h2>${badge(g.home)} ${short(g.home)}</h2>${injList(g.home)}</div></div></div>`}

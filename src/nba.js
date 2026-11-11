@@ -314,7 +314,7 @@ function nbaGame(el,id){
     ${nbaPickTxt(g)}${say?`<p style="margin:10px 0 0;font-size:14px;color:var(--text2)">${say}</p>`:""}
   </div>
   ${typeof fxNba!=="undefined"?fxCard(fxNba(g),"Meetings last season and this season, and this season's results."):""}${nbaLuCard(g)}${typeof newsCard!=="undefined"?newsCard("nba",{teams:[g.a,g.h]},"Latest news: "+nbaShort(g.a)+" & "+nbaShort(g.h)):""}
-  ${(()=>{const T=NB.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["inj","🚑 Injuries"]];
+  ${(()=>{const T=NB.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["h2h","🆚 H2H"],["inj","🚑 Injuries"]];
     const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nbgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#nba-game-${g.id}-props">🎯 Props</a></div>`;
     if(T==="tr")return nav+`  <div style="margin-top:14px">${nbaGsHtml(g)}</div>
   <div class="grid g2" style="margin-top:14px">
@@ -322,9 +322,9 @@ function nbaGame(el,id){
     <div class="card"><h2>${nbaShort(g.h)} last 5</h2>${nbaLast5(g.h)}<div class="small" style="margin-top:8px">${restTxt(g.h)}</div>${nbaSpotHtml(g.h)}</div>
   </div>
   ${nbaQtrCard(g)}
-  ${nbaH2HCard(g)}
 
 `;
+    if(T==="h2h")return nav+`<div class="nodz">${nbaH2HCard(g)}</div>`;
     if(T==="inj")return nav+`  <div class="grid g2" style="margin-top:8px">
     <div class="card"><h2>${nbaShort(g.a)} injuries</h2>${nbaInjTable(g.a)}</div>
     <div class="card"><h2>${nbaShort(g.h)} injuries</h2>${nbaInjTable(g.h)}</div></div>`;
@@ -397,9 +397,9 @@ function nbaH2HCard(g){
   const ov=L?all.filter(m=>m.as+m.hs>L.tot).length:null;
   return `<div class="card" style="margin-top:14px"><h2>Head to head</h2>
   <div class="hr3"><div><b>${win(g.a)}-${win(g.h)}</b>${nbaShort(g.a)} record</div><div><b>${nbaF(avgT)}</b>Avg total</div><div><b>${ov!=null?ov+"/"+all.length:"–"}</b>${L?"Over "+L.tot:"Over"}</div></div>
-  ${all.map(m=>{const aw=m.as>m.hs;return `<div class="nbarow" style="grid-template-columns:minmax(0,1fr) auto"><div><span class="small">${nbaDayS(m.d)}${m.t==="PO"?" · playoffs":m.t==="PI"?" · play-in":""}</span><br>
-    <span style="${aw?"font-weight:700":""}">${nbaShort(m.a)} ${m.as}</span> @ <span style="${!aw?"font-weight:700":""}">${nbaShort(m.h)} ${m.hs}</span></div><div class="small">Total ${m.as+m.hs}</div></div>`}).join("")}
-  <p class="note" style="margin:8px 0 0">Last season and this season.</p></div>`;
+  ${all.map((m,i)=>{const aw=m.as>m.hs;return `<div class="nbarow" data-bxrow style="grid-template-columns:minmax(0,1fr) auto"><div><span class="small">${nbaDayS(m.d)}${m.t==="PO"?" · playoffs":m.t==="PI"?" · play-in":""}</span><br>
+    <span style="${aw?"font-weight:700":""}">${nbaShort(m.a)} ${m.as}</span> @ <span style="${!aw?"font-weight:700":""}">${nbaShort(m.h)} ${m.hs}</span></div><div class="small" style="text-align:right">Total ${m.as+m.hs}${i<5&&typeof bxBtn!=="undefined"?"<br>"+bxBtn("nba",m.d,m.a,m.h):""}</div></div>`}).join("")}
+  <p class="note" style="margin:8px 0 0">Last season and this season, newest first. Tap 📋 Box score on any of the last 5 for the full stats.</p></div>`;
 }
 
 /* ---------- Props ---------- */
