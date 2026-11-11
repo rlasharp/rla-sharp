@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-10T23:56:35+00:00",
+  "at": "2026-11-11T01:04:25+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1646 player lines\nNBA injuries refreshed\nNBA lines checked\nNBA refs: 0 summaries checked, 154 games cached\nNBA refs: 5 crews posted today\nliveprops: 814 feed lines merged (0 skipped from other days), 804 total, unmatched names: []\nNBA data: teams 30, results 154 (through 2026-11-09), players 462, slate 6, lines 6, props 804, inj teams 30, prev-season players 157, play log 24, adv 381, qtr games 154, h2h 3/11/4/2/2/4\nNHL PP time: 678 players, 0 ESPN requests this run\nNHL data: 7 games today, 6 tomorrow, 32 teams, 600 skaters, 66 goalies, 1107 props, 277 finals, 38 requests\ntrack: nba 2026-11-10: snapshot 10 props, 6 games \u00b7 graded: NHL plays 5-5, best props NBA 9-11 NFL 8-2 NHL 7-8\nSite check OK \u2014 published (2026-11-10T23:55:43Z)\n"
+  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1646 player lines\nNBA injuries refreshed\nNBA lines checked\nNBA refs: 0 summaries checked, 154 games cached\nNBA refs: 5 crews posted today\nlive feed is not from 2026-11-10 - nothing merged\nNBA data: teams 30, results 154 (through 2026-11-09), players 462, slate 6, lines 6, props 804, inj teams 30, prev-season players 157, play log 24, adv 381, qtr games 154, h2h 3/11/4/2/2/4\nNHL PP time: 678 players, 0 ESPN requests this run\nNHL data: 7 games today, 6 tomorrow, 32 teams, 600 skaters, 66 goalies, 1107 props, 277 finals, 38 requests\ntrack: nhl 2026-11-10: parlay locked (3 legs @ 5.74) \u00b7 graded: NHL plays 5-5, best props NBA 9-11 NFL 8-2 NHL 7-8\nSite check OK \u2014 published (2026-11-11T01:03:33Z)\n"
  },
  "site": {
-  "at": "2026-11-10T23:56:35+00:00",
+  "at": "2026-11-11T01:04:25+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-10T23:56:35+00:00",
+  "at": "2026-11-11T01:04:25+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Tue Nov 10 6:55 PM ET",
+  "gen": "Tue Nov 10 8:03 PM ET",
   "odds_at": "2026-11-10T22:17:09+00:00",
   "backfill": "1312/1312"
  },
@@ -470,6 +470,16 @@
    "fails": [
     "liveprops: 814 feed lines merged (0 skipped from other days), 804 total, unmatched names: []"
    ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-11T01:04:25+00:00",
+   "what": "nba,nhl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
    "check_failed": false,
    "published": true
   }
