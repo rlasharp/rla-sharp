@@ -163,9 +163,13 @@ function nbaPills(g){
   return `<div class="nbl"><span>Spread <b>${fav} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`;
 }
 function nbaKeyOutAll(g){return [...nbaKeyOut(g.a),...nbaKeyOut(g.h)]}
+/* every game gets our pick: the lean when the model clears the edge bar, otherwise the model's own winner/margin/total (labelled as an estimate) */
 function nbaPickTxt(g){
   const le=nbaLean(g);
-  return le.length?`<div class="nbpick">Our pick: ${le.map(x=>nbaEsc(x.txt)).join(" · ")}</div>`:"";
+  if(le.length)return `<div class="nbpick">Our pick: ${le.map(x=>nbaEsc(x.txt)).join(" · ")}</div>`;
+  const M=nbaModel(g.a,g.h);if(!M)return "";
+  const w=M.m>=0?g.h:g.a,mg=Math.max(.5,Math.abs(M.m)),pw=Math.round((M.m>=0?M.p:1-M.p)*100),ko=nbaKeyOut(g.a).length||nbaKeyOut(g.h).length;
+  return `<div class="nbpick est">🔮 Our pick: ${nbaEsc(w)} by ${mg} (${pw}%) · total ${M.tot}<span class="small"> · ${ko?"key player out — estimate only, no bet":"no edge vs the line — estimate only"}</span></div>`;
 }
 /* line movement: ESPN opening number vs now (home spread stored) */
 function nbaMove(g){

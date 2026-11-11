@@ -109,7 +109,12 @@ function nhCard(g){const A=NHL_TEAM[g.a]||{},H=NHL_TEAM[g.h]||{},pa=nhProbable(g
   const ln=[g.ml?`<span><span class="small">ML</span> <b>${nhOdds(g.ml[0])}</b> / <b>${nhOdds(g.ml[1])}</b></span>`:"",g.pl?`<span><span class="small">PL</span> <b>${nhE(g.h)} ${g.pl[0]>0?"+":""}${g.pl[0]}</b> ${nhOdds(g.pl[2])}</span>`:"",g.tot?`<span><span class="small">O/U</span> <b>${g.tot[0]}</b></span>`:""].filter(Boolean).join("");
   return `<a class="card nhg" href="#nhl-game-${g.id}" data-nhg="${g.id}"><div class="nhgh"><span><b>${nhE(g.t)}</b> <span class="small">ET${g.tv?" · "+nhE(g.tv.split(", ").slice(0,2).join(", ")):""}</span></span>${fin?`<b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b>`:nhStarted(g)?`<b class="up">LIVE</b>`:`<span class="small">${g.d===NHL_DATE?"":nhE(nhDayS(g.d).split(",")[0])}</span>`}</div>
    ${row("a",g.a,A,pa)}${row("h",g.h,H,ph)}
-   ${fin?"":`${ln?`<div class="nhln2">${ln}</div>`:`<div class="small" style="margin-top:6px">Lines not posted yet.</div>`}${out.length?`<div class="small" style="margin-top:4px">🚑 Out: ${nhE(out.slice(0,4).join(", "))}</div>`:""}`}</a>`}
+   ${fin?"":`${nhPickTxt(g)}${ln?`<div class="nhln2">${ln}</div>`:`<div class="small" style="margin-top:6px">Lines not posted yet.</div>`}${out.length?`<div class="small" style="margin-top:4px">🚑 Out: ${nhE(out.slice(0,4).join(", "))}</div>`:""}`}</a>`}
+/* our pick on every game card: projected winner, likeliest score that agrees with it, win chance; plus the best edge when one clears 3 pts */
+function nhPickTxt(g){const pr=nhProject(g);if(!pr)return "";const hw=pr.hwin>=.5,w=hw?g.h:g.a,pw=Math.round((hw?pr.hwin:1-pr.hwin)*100);
+  let ws=Math.round(hw?pr.lh:pr.la),ls=Math.round(hw?pr.la:pr.lh);if(ws<=ls)ws=ls+1;
+  const e=(nhEdges(g)||[]).find(x=>x.edge>=.03);
+  return `<div class="nbpick nhpick">🔮 Our pick: ${nhE(nhTm(w))} ${ws}–${ls} <span class="small">(${pw}% to win)</span>${e?` · <span class="up">edge: ${e.mk==="Moneyline"?"":nhE(e.mk.replace(/ total$/,""))+" "}${nhE(e.pick)} ${nhOdds(e.odds)}</span>`:""}</div>`}
 function nhlGamesW(el){nhlGames0(el);el.querySelectorAll("[data-nhang]").forEach(b=>b.onclick=()=>{const y=scrollY;NH.ang=b.dataset.nhang;nhlGamesW(el);scrollTo(0,y)})}
 function nhlGames0(el){
   const today=NHL_SLATE||[],best=nhBest().slice(0,6);

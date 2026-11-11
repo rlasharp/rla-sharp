@@ -52,18 +52,21 @@ function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){
     ${G.map(([k,t])=>`<tr><td><b>${esc(k)}</b></td><td>${recLine(t)}</td><td>${t.g?Math.round(t.win/t.g*100)+"%":"–"}</td><td class="${uCls(t.u)}">${uTxt(t.u)}</td><td>${t.pending||""}</td></tr>`).join("")}</tbody></table></div></div>`;
   const chip={win:["W","o"],loss:["L","u"],push:["P","p"],void:["Void","p"],pending:["Pending","p"]};
   const recent=R.slice().sort((a,b)=>(b.st==="pending")-(a.st==="pending")||b.sort.localeCompare(a.sort));
+  const bySp=grp(r=>r.sport),play=r=>`<div class="rcr"><span class="lc ${chip[r.st]?chip[r.st][1]:"p"} rcc">${chip[r.st]?chip[r.st][0]:r.st}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)}${r.odds!=null?" · "+oddsFmt(r.odds):""}${r.v!=null?" · finished "+r.v:""}${r.lv?` <span class="livegr" title="Graded from ESPN's final box score — made official at the next site update">⚡</span>`:""}</div></div><span class="${uCls(r.u)}">${r.st==="pending"?"":uTxt(r.u)}</span></div>`;
+  const ic={NFL:"🏈",NBA:"🏀",NHL:"🏒",Soccer:"⚽"};
   host.innerHTML=`<h1>Our record</h1>
-  <p class="sub">Every NFL Play of the Week, NBA Play of the day and NHL Play of the day, graded automatically from official results. Wins and losses both stay on the board. 1 unit per play.</p>
+  <p class="sub">Every pick we post, graded from official results. Wins and losses both stay up · 1 unit per play.</p>
   <div class="card rec"><div class="recs">${tile("Record",recLine(T))}${tile("Hit rate",T.g?Math.round(T.win/T.g*100)+"%":"–")}${tile("Units",uTxt(T.u),uCls(T.u))}</div>
-   <div class="small" style="margin-top:6px">${T.pending?`${T.pending} play${T.pending>1?"s":""} still pending. `:""}Pushes and players who didn't play don't count.</div>
-   <div class="row" style="gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn" id="recShare">📤 Share our record</button></div></div>
-  <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">📈 Profit over time</h2>${recChart(R)}</div>${typeof xCalCard!=="undefined"?xCalCard():""}
-  <div id="clvCard" style="margin-top:14px">${clvCardHtml(R)}</div>
-  ${typeof xTrackCard!=="undefined"?xTrackCard():""}
-  <div class="grid g2" style="margin-top:14px">${tbl("By sport",grp(r=>r.sport))}${tbl("By bet type",grp(r=>r.sport+" · "+r.type))}</div>
-  <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">Every play</h2>
-   ${recent.map(r=>`<div class="rcr"><span class="lc ${chip[r.st]?chip[r.st][1]:"p"} rcc">${chip[r.st]?chip[r.st][0]:r.st}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)} · ${esc(r.type)}${r.odds!=null?" · "+oddsFmt(r.odds):""}${r.v!=null?" · finished with "+r.v:""}${r.lv?` <span class="livegr" title="Graded from ESPN's final box score — made official at the next site update">⚡ live</span>`:""}</div></div><span class="${uCls(r.u)}">${r.st==="pending"?"":uTxt(r.u)}</span></div>`).join("")||`<div class="small">No plays yet.</div>`}</div>
-  <p class="note" style="margin-top:10px">Past results don't guarantee future results. Bet small and only what you can afford to lose.</p>`;
+   <div class="recsp">${bySp.map(([k,t])=>`<span class="recchip">${ic[k]||""} <b>${esc(k)}</b> ${recLine(t)} <em class="${uCls(t.u)}">${uTxt(t.u)}</em></span>`).join("")}</div>
+   <div class="row" style="gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center"><button class="btn" id="recShare">📤 Share</button><span class="small">${T.pending?`${T.pending} pending · `:""}pushes and no-plays don't count</span></div></div>
+  <div class="card" style="margin-top:14px"><h2 style="margin-bottom:6px">📈 Profit over time</h2>${recChart(R)}</div>
+  ${typeof xInsights!=="undefined"?xInsights("rec","📒 The details",[
+    ["plays","📋 Plays",`<div class="card"><h2>x</h2><div id="recList" class="reclist">${recent.map(play).join("")||`<div class="small">No plays yet.</div>`}</div>${recent.length>12?`<button class="btn" id="recMore" style="width:100%;margin-top:8px">Show all ${recent.length}</button>`:""}</div>`],
+    ["sport","📊 By sport",`<div class="card"><h2>x</h2>${tbl("By sport",bySp).replace(/^<div class="card">/,"<div>")}${tbl("By bet type",grp(r=>r.sport+" · "+r.type)).replace(/^<div class="card">/,'<div style="margin-top:12px">')}</div>`],
+    ["nums","🎯 Our numbers",(typeof xTrackCard!=="undefined"?xTrackCard():"")+(typeof xCalCard!=="undefined"?xCalCard().replace(/^\s*<div class="card[^"]*"[^>]*>/,'<div style="margin-top:14px">'):"")],
+    ["clv","💹 Closing line",`<div class="card"><h2>x</h2><div id="clvCard">${clvCardHtml(R)}</div></div>`]]):""}
+  <p class="note" style="margin-top:10px">Past results don't guarantee future results. Bet small.</p>`;
+  {const m=document.getElementById("recMore");if(m)m.onclick=()=>{document.getElementById("recList").classList.add("all");m.remove()}}
   clvLoad(R).then(ch=>{if(ch){const c=document.getElementById("clvCard");if(c)c.innerHTML=clvCardHtml(R)}});
   document.getElementById("recShare").onclick=()=>shareImage({title:"Our record",sub:"NFL Plays of the Week + NBA Plays of the day",
     rows:[{a:"Overall",b:recLine(T),c:uTxt(T.u)},...grp(r=>r.sport).map(([k,t])=>({a:k,b:recLine(t),c:uTxt(t.u)}))],file:"rla-sharp-record.png"});
