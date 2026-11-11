@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 22:36Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 23:29Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -18,7 +18,7 @@ Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
 Tobe Awaka|F|Out|back|Nov 13
 Caleb Wilson|F|Day-To-Day|hip soreness|Nov 11
-Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 11
+Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 13
 Zach Collins|F|Day-To-Day|illness|Nov 11
 #Cleveland Cavaliers
 Sam Merrill|G|Out|elbow|Nov 16
@@ -45,8 +45,7 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 15
 Steven Adams|C|Out|calf strain|Nov 15
 #Indiana Pacers
-T.J. McConnell|G|Day-To-Day|hamstring|Nov 11
-Tyrese Haliburton|G|Out|hamstring strain|Nov 13
+Tyrese Haliburton|G|Out|hamstring strain|Nov 22
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
@@ -106,13 +105,13 @@ Precious Achiuwa|F|Day-To-Day|lower leg bruise|Nov 13
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-Devin Vassell|G|Day-To-Day|groin|Nov 11
+Devin Vassell|G|Day-To-Day|groin|Nov 13
 Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Trayce Jackson-Davis|F|Out|illness|Nov 12
 Scottie Barnes|F|Out|groin soreness|Nov 12
-Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 15
 #Utah Jazz
 Keyonte George|G|Day-To-Day|ankle sprain|Nov 11
