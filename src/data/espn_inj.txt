@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 18:01Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 18:09Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Michael Wilson|WR|IR|Neck|Feb 15
@@ -231,9 +231,9 @@ Peter Skoronski|G|Questionable|Hamstring|Nov 15
 JC Latham|OT|Questionable|Finger|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 #WAS
-Colson Yankoff|TE|Out|Knee|Nov 23
 Lucas Patrick|G|Out|Concussion|Nov 23
 Treylon Burks|WR|Questionable|Foot|Nov 12
+Colson Yankoff|TE|Out|Knee|Nov 23
 Dyami Brown|WR|IR|Calf|Dec 6
 Daron Payne|DT|IR|Foot|Feb 15
 Jeremy McNichols|RB|IR|Foot|Feb 15
