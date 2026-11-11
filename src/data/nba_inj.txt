@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 05:42Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 06:46Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -94,6 +94,7 @@ Ja Morant|G|Out|hamstring not specified|Dec 1
 Vit Krejci|G|Out|ankle|Jan 2
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
+Precious Achiuwa|F|Out|lower leg bruise|Nov 13
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
