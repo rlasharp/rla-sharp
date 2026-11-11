@@ -2,18 +2,8 @@
 /* ---------- Plays of the Week (Week 9) ----------
    Matchup-based leans built from this site's own data (game logs, defense vs position,
    score model). Numbers in each card are computed live from the loaded data. */
-const PLAYS_WEEK=9, PLAYS_ASOF="Mon Nov 2 (evening)";
+const PLAYS_WEEK=10, PLAYS_ASOF="Wed Nov 11";
 const PLAYS=[
-  {type:"prop",player:"Bhayshul Tuten",market:"rushYds",side:"over",
-   why:p=>{const u=typeof USAGE_RAW!=="undefined"&&USAGE_RAW["Bhayshul Tuten"];return `He's gone over ${p.line} in ${p.ov} of ${p.n} games (avg ${p.avg}, median ${p.med}), including ${p.last} last week.${u?` He handles about ${Math.round(u.s.csh)}% of Jacksonville's carries (${u.s.cpg} a game), so the volume is steady.`:""} Baltimore allows the ${p.rankTxt} rushing yards to running backs — a little better than average, but not a matchup that has slowed him so far.`}},
-  {type:"prop",player:"Zay Flowers",market:"recYds",side:"over",
-   why:p=>`${p.ov} of ${p.n} games over ${p.line} (avg ${p.avg}), and Jacksonville allows the ${p.rankTxt} receiving yards to wide receivers. In Tyler Huntley's three starts (Weeks 5–7) he had 53, 66 and 137 yards. Risk: Lamar Jackson is out after thumb surgery, Baltimore hasn't named a starter, and Flowers had 0 catches on 5 targets after Jackson got hurt last week.`},
-  {type:"spread",game:1,team:"JAX",
-   why:g=>`Jacksonville is ${g.rec.JAX}, scoring ${TEAM_STATS.JAX.ppg} points a game and allowing ${teamRec("JAX").pa}. Baltimore (${g.rec.BAL}) has lost three straight, scoring 10, 13 and 10 points, and now plays without Lamar Jackson. Our model has the Jaguars winning by ${g.x.margin}, ${(g.x.margin-g.L.sp).toFixed(1)} points more than the current ${g.L.sp}-point spread. Risk: the line has swung from Baltimore −4.5 at open to Jacksonville −${g.L.sp} since Jackson's injury, so much of the edge is already priced in — a Jaguars win by ${Math.ceil(g.L.sp)-1} or fewer points loses.`},
-  {type:"ml",game:8,team:"NYG",
-   why:g=>`The Giants are ${g.rec.NYG} (plus a tie) and allow just ${TEAM_STATS.NYG.dpass} passing yards a game, ${ordinal(rankOf("dpass","NYG",true))}-fewest in the NFL. Philadelphia is ${g.rec.PHI}, has lost three in a row and scores ${TEAM_STATS.PHI.ppg} points a game (${ordinal(rankOf("ppg","PHI"))}). Our model gives New York ${g.x.winP}% to win; the ${fmtOdds(g.L.ml[0])} price implies about ${impl(g.L.ml[0])}%. Both teams are without their starting quarterback (Dart and Hurts are on injured reserve).`},
-  {type:"total",game:11,side:"over",
-   why:g=>`Both offenses are top-6 in scoring: San Francisco ${TEAM_STATS.SF.ppg} points a game (${g.rec.SF}) and Las Vegas ${TEAM_STATS.LV.ppg}. The Raiders also allow ${teamRec("LV").pa} points a game. Our model projects ${g.x.total} total points, ${(g.x.total-g.L.tot).toFixed(1)} over the line. Risk: if the 49ers build a big lead they may run out the clock; the weather forecast is added Saturday.`},
 ];
 
 function impl(o){return Math.round((o>0?100/(o+100):-o/(-o+100))*100)}
@@ -47,6 +37,7 @@ function playData(pl){
 /* ---------- Track record: auto-graded from final scores + game logs ---------- */
 // Past weeks' plays are archived here when a new week is added: PLAY_ARCHIVE[week]=[{type,...,title,odds,line}]
 const PLAY_ARCHIVE={
+ 9:[{"type": "prop", "title": "Bhayshul Tuten Over 63.5 rush yds", "odds": null, "player": "Bhayshul Tuten", "market": "rushYds", "side": "over", "line": 63.5, "book": "FanDuel (via Football Nation USA, Nov 2)"}, {"type": "prop", "title": "Zay Flowers Over 45.5 rec yds", "odds": null, "player": "Zay Flowers", "market": "recYds", "side": "over", "line": 45.5, "book": "Football Nation USA (Nov 2)"}, {"type": "spread", "game": 1, "away": "JAX", "home": "BAL", "L": {"sp": 10.0, "ml": [-535, 400], "tot": 39.5}, "team": "JAX", "title": "Jacksonville Jaguars -10", "odds": -110}, {"type": "ml", "game": 8, "away": "NYG", "home": "PHI", "L": {"sp": 3.0, "ml": [-162, 136], "tot": 38.5}, "team": "NYG", "title": "New York Giants moneyline", "odds": -162}, {"type": "total", "game": 11, "away": "LV", "home": "SF", "L": {"sp": -8.5, "ml": [340, -440], "tot": 51.5}, "side": "over", "title": "Raiders @ 49ers Over 51.5", "odds": -110}],
  8:[{"type": "prop", "title": "Jaxon Smith-Njigba Over 97.5 receiving yards", "odds": -112, "player": "Jaxon Smith-Njigba", "market": "recYds", "side": "over", "line": 97.5, "team": "SEA", "away": "CHI", "home": "SEA", "book": "DraftKings (via FTN)"}, {"type": "prop", "title": "Tee Higgins Over 68.5 receiving yards", "odds": -114, "player": "Tee Higgins", "market": "recYds", "side": "over", "line": 68.5, "team": "CIN", "away": "TEN", "home": "CIN", "book": "DraftKings (via FTN)"}, {"type": "prop", "title": "Kirk Cousins Over 1.5 passing TDs", "odds": -115, "player": "Kirk Cousins", "market": "passTD", "side": "over", "line": 1.5, "team": "LV", "away": "LV", "home": "NYJ", "book": "FOX Sports Radio NJ"}, {"type": "spread", "title": "Los Angeles Rams -6.5", "odds": -110, "game": 10, "team": "LAR", "away": "LAC", "home": "LAR", "L": {"sp": -6.5, "ml": [250, -278], "tot": 45.5}}, {"type": "spread", "title": "Minnesota Vikings +3", "odds": -110, "game": 5, "team": "MIN", "away": "MIN", "home": "DET", "L": {"sp": -3, "ml": [152, -170], "tot": 46.5}}, {"type": "total", "title": "Titans @ Bengals Under 46.5", "odds": -110, "game": 3, "side": "under", "away": "TEN", "home": "CIN", "L": {"sp": -12.5, "ml": [570, -675], "tot": 46.5}}]
 };
 function gradeOne(pl,wk,d){

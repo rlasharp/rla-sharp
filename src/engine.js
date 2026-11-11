@@ -15,41 +15,39 @@ const TEAMS = {
  TEN:["Tennessee Titans",1,6,"#4B92DB"], WAS:["Washington Commanders",1,4,"#5A1414"]
 };
 const TEAM_IDS = Object.keys(TEAMS);
-// Week 9 slate (nflverse schedule; kickoff times ET from ESPN). wp = home win probability from feed (null = not provided)
+// Week 10 slate (ESPN schedule, kickoff times ET; set up automatically by tools/auto_espn.py nfl-roll). wp = home win probability from feed (null = not provided)
 const SLATE = [
- {id:1,away:"JAX",home:"BAL",final:[33,10],when:"Thu Nov 5 · 8:15 PM",wp:null,tv:"TNF"},
- {id:2,away:"CIN",home:"ATL",final:[34,17],when:"Sun Nov 8 · 9:30 AM",wp:null},
- {id:3,away:"CLE",home:"NO",final:[22,23],when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:4,away:"DAL",home:"IND",final:[27,23],when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:5,away:"DEN",home:"CAR",final:[26,21],when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:6,away:"DET",home:"MIA",final:[19,9],when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:7,away:"LAR",home:"WAS",final:[20,13],when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:8,away:"NYG",home:"PHI",final:[19,11],when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:9,away:"NYJ",home:"KC",final:[12,35],when:"Sun Nov 8 · 1:00 PM",wp:null},
- {id:10,away:"HOU",home:"LAC",final:[44,22],when:"Sun Nov 8 · 4:05 PM",wp:null},
- {id:11,away:"LV",home:"SF",final:[17,38],when:"Sun Nov 8 · 4:25 PM",wp:null},
- {id:12,away:"ARI",home:"SEA",final:[3,17],when:"Sun Nov 8 · 4:25 PM",wp:null},
- {id:13,away:"GB",home:"NE",final:[45,27],when:"Sun Nov 8 · 4:25 PM",wp:null},
- {id:14,away:"TB",home:"CHI",final:[24,27],when:"Sun Nov 8 · 8:20 PM",wp:null,tv:"SNF"},
- {id:15,away:"BUF",home:"MIN",final:[23,6],when:"Mon Nov 9 · 8:15 PM",wp:null,tv:"MNF"}
+ {id:1,away:"WAS",home:"NYG",when:"Thu Nov 12 · 8:15 PM",wp:null,tv:"TNF"},
+ {id:2,away:"NE",home:"DET",when:"Sun Nov 15 · 9:30 AM",wp:null},
+ {id:3,away:"KC",home:"ATL",when:"Sun Nov 15 · 1:00 PM",wp:null},
+ {id:4,away:"HOU",home:"CLE",when:"Sun Nov 15 · 1:00 PM",wp:null},
+ {id:5,away:"MIN",home:"GB",when:"Sun Nov 15 · 1:00 PM",wp:null},
+ {id:6,away:"JAX",home:"TEN",when:"Sun Nov 15 · 1:00 PM",wp:null},
+ {id:7,away:"MIA",home:"IND",when:"Sun Nov 15 · 1:00 PM",wp:null},
+ {id:8,away:"CAR",home:"NO",when:"Sun Nov 15 · 1:00 PM",wp:null},
+ {id:9,away:"BUF",home:"NYJ",when:"Sun Nov 15 · 1:00 PM",wp:null},
+ {id:10,away:"SEA",home:"LV",when:"Sun Nov 15 · 4:05 PM",wp:null},
+ {id:11,away:"LAR",home:"ARI",when:"Sun Nov 15 · 4:05 PM",wp:null},
+ {id:12,away:"SF",home:"DAL",when:"Sun Nov 15 · 4:25 PM",wp:null},
+ {id:13,away:"PIT",home:"CIN",when:"Sun Nov 15 · 8:20 PM",wp:null,tv:"SNF"},
+ {id:14,away:"LAC",home:"BAL",when:"Mon Nov 16 · 8:15 PM",wp:null,tv:"MNF"}
 ];
-// REAL lines: DraftKings current lines on ESPN's NFL odds page, Mon Nov 2 2026 (evening refresh). sp = HOME spread, ml = [away, home]
+// REAL lines: DraftKings via ESPN, Wed Nov 11 2026 (updated by every automatic run until kickoff). sp = HOME spread, ml = [away, home]
 const LINES = {
- 1:{sp:10,ml:[-535,400],tot:39.5},
- 2:{sp:3,ml:[-180,150],tot:52.5},
- 3:{sp:-4.5,ml:[170,-205],tot:42.5},
- 4:{sp:4.5,ml:[-218,180],tot:51.5},
- 5:{sp:3,ml:[-155,130],tot:44.5},
- 6:{sp:6.5,ml:[-305,245],tot:49.5},
- 7:{sp:4.5,ml:[-225,185],tot:48.5},
- 8:{sp:3,ml:[-162,136],tot:38.5},
- 9:{sp:-9.5,ml:[380,-500],tot:47.5},
- 10:{sp:5.5,ml:[-225,185],tot:40.5},
- 11:{sp:-8.5,ml:[340,-440],tot:51.5},
- 12:{sp:-8.5,ml:[350,-455],tot:39.5},
- 13:{sp:-3,ml:[154,-185],tot:44.5},
- 14:{sp:-6,ml:[220,-270],tot:47.5},
- 15:{sp:3,ml:[-185,154],tot:45.5}
+ 1:{sp:-2.5,ml:[114,-135],tot:41.5},
+ 2:{sp:-2.5,ml:[130,-155],tot:51.5},
+ 3:{sp:3.5,ml:[-185,154],tot:45.5},
+ 4:{sp:4.5,ml:[-230,190],tot:39.5},
+ 5:{sp:-3.5,ml:[142,-170],tot:41.5},
+ 6:{sp:10.5,ml:[-535,400],tot:46.5},
+ 7:{sp:-3.5,ml:[160,-192],tot:38.5},
+ 8:{sp:-2.5,ml:[110,-130],tot:48.5},
+ 9:{sp:8.5,ml:[-410,320],tot:50.5},
+ 10:{sp:6.5,ml:[-290,235],tot:40.5},
+ 11:{sp:9.5,ml:[-425,330],tot:39.5},
+ 12:{sp:3.5,ml:[-205,170],tot:55.5},
+ 13:{sp:-3.5,ml:[150,-180],tot:49.5},
+ 14:{sp:-4.5,ml:[180,-218],tot:38.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
 const SPLITS = {};
