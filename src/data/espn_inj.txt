@@ -1,8 +1,8 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-10 23:15Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 01:44Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Michael Wilson|WR|IR|Neck|Feb 15
-Gardner Minshew II|QB|IR|Elbow|Dec 20
+Gardner Minshew II|QB|IR|Elbow|Feb 15
 Jayden Williams|OT|Questionable|Knee|Nov 15
 Bam Knight|RB|Questionable|Concussion|Nov 15
 Jon Gaines II|G|Questionable|Ankle|Nov 15
@@ -16,10 +16,10 @@ Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 Anterio Thompson|DT|Out|Undisclosed|Feb 15
 #BAL
+Kyle Hamilton|S|Questionable|Hip|Nov 16
 Nate Wiggins|CB|Questionable|Illness|Nov 16
 Jaylinn Hawkins|S|Questionable|Knee|Nov 16
 Lamar Jackson|QB|IR|Thumb|Dec 13
-Kyle Hamilton|S|Questionable|Hip|Nov 16
 Adisa Isaac|LB|Questionable|Hamstring|Nov 16
 Tyler Huntley|QB|IR|Toe|Feb 15
 Adam Randall|RB|IR|Neck|Nov 16
@@ -31,7 +31,6 @@ Dion Dawkins|OT|Questionable|Ribs|Nov 15
 Tyrell Shavers|WR|Out|Knee - ACL|Nov 15
 Jordan Hancock|CB|IR|Hamstring|Nov 15
 #CAR
-Ihmir Smith-Marsette|WR|Out|Undisclosed|Dec 13
 Jaelan Phillips|LB|Questionable|Hamstring|Nov 15
 Will Lee III|CB|Questionable|Hamstring|Nov 15
 Damien Lewis|G|Questionable|Knee|Nov 15
@@ -142,7 +141,6 @@ Joe Cardona|LS|Questionable|Ankle|Nov 15
 Terrance Ferguson|TE|IR|Hamstring|Nov 25
 Steve Avila|G|Questionable|Hamstring|Nov 15
 Jaylen Watson|CB|IR|Shoulder|Feb 15
-Dean Connors|RB|IR|Hand|Dec 13
 #MIA
 Malik Willis|QB|IR|Groin|Dec 13
 Zach Sieler|DT|IR|Biceps|Feb 15
@@ -165,10 +163,9 @@ Will Campbell|OT|Questionable|Knee|Nov 15
 Carlton Davis III|CB|Questionable|Knee|Nov 15
 Greg Van Roten|G|IR|Hamstring|Nov 15
 #NO
-Stone Smartt|TE|Questionable|Undisclosed|Nov 22
+Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 Erik McCoy|C|Doubtful|Biceps|Nov 15
 CJ Donaldson|RB|Questionable|Shoulder|Nov 15
-Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 #NYG
 Colton Hood|CB|Questionable|Finger|Nov 12
 J.J. McCarthy|QB|Questionable|Undisclosed|
@@ -197,7 +194,7 @@ Brandin Echols|CB|Questionable|Hamstring|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 15
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
-Gracen Halton|DT|IR|Ankle|Feb 15
+Gracen Halton|DT|Out|Ankle|Feb 15
 Mike Evans|WR|Questionable|Achilles|Nov 15
 Deebo Samuel Sr.|WR|Questionable|Hamstring|Nov 15
 C.J. West|DT|IR|Knee|Nov 15
@@ -230,10 +227,8 @@ Peter Skoronski|G|Questionable|Hamstring|Nov 15
 JC Latham|OT|Questionable|Finger|Nov 15
 Marcus Harris|CB|Questionable|Ankle|Nov 15
 #WAS
-Lucas Patrick|G|Doubtful|Concussion|Nov 12
 Treylon Burks|WR|Questionable|Foot|Nov 12
-Chig Okonkwo|TE|Questionable|Hip|Nov 12
-Shy Tuttle|DT|Questionable|Shoulder|Nov 12
+Lucas Patrick|G|Doubtful|Concussion|Nov 12
 Colson Yankoff|TE|Questionable|Knee|Nov 12
 Dyami Brown|WR|IR|Calf|Dec 6
 Daron Payne|DT|IR|Foot|Feb 15
