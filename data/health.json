@@ -1,16 +1,16 @@
 {
  "auto": {
-  "at": "2026-11-11T18:07:25+00:00",
+  "at": "2026-11-11T18:11:14+00:00",
   "ok": true,
-  "summary": "\nnbalineups: 10 games, 0 confirmed / 100 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nNBA refs: 0 summaries checked, 160 games cached\nNBA refs: 9 crews posted today\nliveprops: 1110 feed lines merged (0 skipped from other days), 1041 total, unmatched names: []\nLocked 3 plays for 2026-11-11: Brayden Burries U1.5 3pm; Andre Drummond O6.5 reb; Ajay Mitchell U1.5 stl\nNBA data: teams 30, results 160 (through 2026-11-10), players 462, slate 10, lines 10, props 1041, inj teams 29, prev-season players 272, play log 27, adv 384, qtr games 160, h2h 4/7/4/2/4/2/2/2/3/4\nnfl-update: 14 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 8 with a forecast\nnflrefs: 136 games (0 new), 18 referees, 0 of this week's crews posted\n206 players, 32 teams\nnfl-inj: 206 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 679 players, 0 ESPN requests this run\nNHL data: 6 games today, 11 tomorrow, 32 teams, 690 skaters, 66 goalies, 666 props, 284 finals, 38 requests\nsocmgr: 5 new headlines, 13 clubs with manager news\nsoccer: 145 upcoming matches (0 with odds, 143 with estimates, 125 with weather, 0 with referee), 0 player props, 5880 players\ntrack: nba 2026-11-11: snapshot 10 props, 10 games; nhl 2026-11-11: locked 2 plays \u00b7 graded: NHL plays 6-9, best props NBA 12-18 NFL 8-2 NHL 10-20\nSite check OK \u2014 published (2026-11-11T18:05:49Z)\n"
+  "summary": "nfl-update: 14 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 8 with a forecast\nnflrefs: 136 games (0 new), 18 referees, 0 of this week's crews posted\n206 players, 32 teams\nnfl-inj: 206 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\ntrack: nba 2026-11-11: snapshot 10 props, 10 games; nhl 2026-11-11: locked 2 plays \u00b7 graded: NHL plays 6-9, best props NBA 12-18 NFL 8-2 NHL 10-20\nSite check OK \u2014 published (2026-11-11T18:09:37Z)\n"
  },
  "site": {
-  "at": "2026-11-11T18:07:25+00:00",
+  "at": "2026-11-11T18:11:14+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-11T18:07:25+00:00",
+  "at": "2026-11-11T18:11:14+00:00",
   "ok": true,
   "issue": "",
   "gen": "Wed Nov 11 1:01 PM ET",
@@ -812,6 +812,16 @@
    "fails": [
     "liveprops: 1110 feed lines merged (0 skipped from other days), 1041 total, unmatched names: []"
    ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-11T18:11:14+00:00",
+   "what": "nfl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
    "check_failed": false,
    "published": true
   }
