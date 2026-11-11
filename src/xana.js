@@ -251,7 +251,7 @@ function xaTeamSplit(sp,t,k){const G=[];try{
   return {w:S(G.filter(x=>x.in)),wo:S(G.filter(x=>!x.in))}}
 function xaKeyOutCard(sp,a,h){const rows=[];
   for(const t of [a,h])for(const k of xaKeyOut(sp,t)){const s=xaTeamSplit(sp,t,k);if(s.wo.n<1)continue;const f=v=>v.toFixed(sp==="nhl"?2:1);
-    rows.push(`<tr><td><b>${xaEsc(t)}</b> without <b>${xaEsc(k.n)}</b><div class="small">${xaEsc(k.why)}</div></td><td>${s.wo.w}-${s.wo.l}<div class="small">${f(s.wo.me)}–${f(s.wo.op)}</div></td><td>${s.w.w}-${s.w.l}<div class="small">${f(s.w.me)}–${f(s.w.op)}</div></td></tr>`)}
+    rows.push(`<tr><td><b>${xaEsc(t)}</b> without <b>${xaEsc(k.n)}</b><div class="small">${xaEsc(k.why)}</div></td><td>${s.wo.w}-${s.wo.l}<div class="small">${f(s.wo.me)}–${f(s.wo.op)}</div></td><td>${s.w.w}-${s.w.l}<div class="small">${f(s.w.me)}–${f(s.w.op)}</div></td></tr>`+(typeof vxMeter!=="undefined"&&s.w.n?`<tr class="vximr"><td colspan="3">${vxMeter(sp,t,k,s)}</td></tr>`:""))}
   if(!rows.length)return "";
   return `<div class="card xacard xadeep"><h2>🚑 Without their key players</h2><div class="xasub">Key players listed out tonight, and how the team did this season in games he missed vs games he played (record · average score for–against).</div>
    <div class="nbatbl"><table class="bxt xat xaflow"><thead><tr><th></th><th>Without him</th><th>With him</th></tr></thead><tbody>${rows.join("")}</tbody></table></div><div class="small" style="margin-top:6px">Few games without him = small sample.</div></div>`}

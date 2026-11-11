@@ -22,19 +22,20 @@ for w in range(1, wk + 1):
         eid, st = e["id"], ((e.get("status") or {}).get("type") or {}).get("name")
         c = e["competitions"][0]; a, h, T = teams_of(c, FIX_NFL)
         if st == "STATUS_FINAL":
-            if eid in C and len(C[eid]) >= 6: continue   # older cache rows (no sack numbers) are read again once
+            if eid in C and len(C[eid]) >= 6 and all(len(v) >= 4 for v in C[eid][5].values()): continue   # older cache rows (no sack / red-zone numbers) are read again once
             try: s = get(B + "football/nfl/summary?event=" + eid)
             except SystemExit: continue
             r = ref_of(s); pen = yds = 0; ok = False; SK = {}
             for t in (s.get("boxscore") or {}).get("teams") or []:
-                ab = FIX_NFL.get(t["team"]["abbreviation"], t["team"]["abbreviation"]); sk = att = None
+                ab = FIX_NFL.get(t["team"]["abbreviation"], t["team"]["abbreviation"]); sk = att = None; rz = [0, 0]
                 for x in t.get("statistics") or []:
                     v = str(x.get("displayValue") or "")
                     if x.get("name") == "totalPenaltiesYards" and "-" in v:
                         n, y = v.split("-", 1); pen += int(n); yds += int(y); ok = True
                     if x.get("name") == "sacksYardsLost" and "-" in v: sk = int(v.split("-", 1)[0])
                     if x.get("name") == "completionAttempts" and "/" in v: att = int(v.split("/", 1)[1])
-                if sk is not None and att is not None: SK[ab] = [sk, att + sk]   # sacks taken, dropbacks (passes + sacks)
+                    if x.get("name") == "redZoneAttempts" and "-" in v: rz = [int(z) for z in v.split("-", 1)]   # red-zone TDs - trips
+                if sk is not None and att is not None: SK[ab] = [sk, att + sk, rz[0], rz[1]]   # sacks taken, dropbacks (passes + sacks)
             pts = sum(int(T[k].get("score") or 0) for k in ("away", "home"))
             if r and ok: C[eid] = [w, r, pen, yds, pts, SK]; newg += 1
         elif w == wk and (a, h) in slate:
@@ -49,10 +50,12 @@ SKT = {}
 for g in G:
     if len(g) < 6: continue
     T2 = list(g[5].items())
-    for i, (ab, (sk, db)) in enumerate(T2):
-        o = SKT.setdefault(ab, {"osk": 0, "odb": 0, "dsk": 0, "ddb": 0}); o["osk"] += sk; o["odb"] += db
+    for i, (ab, v) in enumerate(T2):
+        sk, db = v[0], v[1]; rt, ra = (v[2], v[3]) if len(v) >= 4 else (0, 0)
+        z = {"osk": 0, "odb": 0, "dsk": 0, "ddb": 0, "ort": 0, "ora": 0, "drt": 0, "dra": 0}
+        o = SKT.setdefault(ab, dict(z)); o["osk"] += sk; o["odb"] += db; o["ort"] += rt; o["ora"] += ra
         if len(T2) == 2:
-            d = SKT.setdefault(T2[1 - i][0], {"osk": 0, "odb": 0, "dsk": 0, "ddb": 0}); d["dsk"] += sk; d["ddb"] += db
+            d = SKT.setdefault(T2[1 - i][0], dict(z)); d["dsk"] += sk; d["ddb"] += db; d["drt"] += rt; d["dra"] += ra
 for w, r, p, y, t, *_ in G:
     x = R.setdefault(r, [0, 0, 0, 0]); x[0] += 1; x[1] += p; x[2] += y; x[3] += t
 out = {"r": {r: {"n": n, "pen": round(p / n, 2), "yds": round(y / n, 1), "pts": round(t / n, 1)} for r, (n, p, y, t) in R.items()},
