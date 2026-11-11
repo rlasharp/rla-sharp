@@ -262,10 +262,19 @@ function nbaMURow(lbl,ov,orr,dv,dr,unit,lowGood){
     <div class="mud"><i style="width:${pct((31-dr)/30*100)}%"></i><span>${dv}${unit||""} <em class="${nbaRkCls(dr)}">${nbaOrd(dr)}</em></span></div></div></div>`;
 }
 const NBA_MU=[["pts","Points per game",""],["rtg","Points per 100 possessions",""],["fg","Field goal %","%"],["tp","3-point %","%"],["tpa","3-point attempts",""],["paint","Points in the paint",""],["fta","Free throw attempts",""],["oreb","Offensive rebounds",""],["tov","Turnovers",""],["fb","Fast-break points",""]];
+/* shot types by team (NBA_TSTYPE from ESPN play-by-play): catch & shoot and pull-up jumpers — taken per game + FG%, and allowed */
+const NBA_STK=[["csA","Catch & shoot attempts",""],["csP","Catch & shoot FG%","%"],["puA","Pull-up attempts",""],["puP","Pull-up FG%","%"]];
+let NBA_TSTC=null;function nbaTst(){if(NBA_TSTC)return NBA_TSTC;const T=typeof NBA_TSTYPE!=="undefined"&&NBA_TSTYPE,G=typeof NBA_DZG!=="undefined"&&NBA_DZG;if(!T||!G)return null;
+  const V={};for(const [t,x] of Object.entries(T)){const g=G[t];if(!g)continue;const f=a=>({csA:+(a[0][0]/g).toFixed(1),csP:a[0][0]?+(a[0][1]/a[0][0]*100).toFixed(1):0,puA:+(a[1][0]/g).toFixed(1),puP:a[1][0]?+(a[1][1]/a[1][0]*100).toFixed(1):0});V[t]={o:f(x.o),d:f(x.d)}}
+  const rk=(side,k,hi)=>{const L=Object.entries(V).sort((a,b)=>hi?b[1][side][k]-a[1][side][k]:a[1][side][k]-b[1][side][k]);const m={};L.forEach(([t],i)=>m[t]=i+1);return m};
+  for(const [k] of NBA_STK){const ro=rk("o",k,true),rd=rk("d",k,false);for(const t in V){(V[t].oR=V[t].oR||{})[k]=ro[t];(V[t].dR=V[t].dR||{})[k]=rd[t]}}
+  return NBA_TSTC=V}
 function nbaMatchup(off,def){
   const O=NBA_TADV[off],D=NBA_TADV[def];if(!O||!D)return `<div class="small">Not enough games yet.</div>`;
+  const S=nbaTst(),so=S&&S[off],sd=S&&S[def];
   return `<div class="muhead"><span>${nbaBadge(off)} ${nbaShort(off)} offense</span><span>${nbaShort(def)} defense allows ${nbaBadge(def)}</span></div>`+
-    NBA_MU.map(([k,l,u])=>nbaMURow(l,O.o[k],O.oR[k],D.d[k],D.dR[k],u)).join("");
+    NBA_MU.map(([k,l,u])=>nbaMURow(l,O.o[k],O.oR[k],D.d[k],D.dR[k],u)).join("")+
+    (so&&sd?`<div class="small mush">Jump shots by type</div>`+NBA_STK.map(([k,l,u])=>nbaMURow(l,so.o[k],so.oR[k],sd.d[k],sd.dR[k],u)).join(""):"");
 }
 function nbaEdges(g){
   const out=[];
@@ -277,6 +286,10 @@ function nbaEdges(g){
       else if(D.dR[k]<=10&&O.oR[k]>=21)out.push({s:-s,t:`<b>${nbaShort(def)}</b>'s defense is ${nbaOrd(D.dR[k])} in ${l.toLowerCase()} allowed (${D.d[k]}${u}) — tough spot for ${nbaShort(off)} (${nbaOrd(O.oR[k])}).`,c:"dn"});
     }
   }
+  const S=nbaTst();if(S)for(const [off,def] of [[g.a,g.h],[g.h,g.a]]){const O=S[off],D=S[def];if(!O||!D)continue;
+    for(const [k,l,u] of NBA_STK){const s=(31-O.oR[k])-(31-D.dR[k]);
+      if(O.oR[k]<=8&&D.dR[k]>=23)out.push({s,t:`<b>${nbaShort(off)}</b> rank ${nbaOrd(O.oR[k])} in ${l.toLowerCase()} (${O.o[k]}${u}) and ${nbaShort(def)} allow the ${nbaOrd(31-D.dR[k])} most (${D.d[k]}${u}).`,c:"up"});
+      else if(D.dR[k]<=8&&O.oR[k]>=23)out.push({s:-s,t:`<b>${nbaShort(def)}</b> take away ${l.toLowerCase().replace(/ attempts| fg%/,"")} shots (${nbaOrd(D.dR[k])}, ${D.d[k]}${u} allowed) — ${nbaShort(off)} rely on them less anyway (${nbaOrd(O.oR[k])}).`,c:"dn"})}}
   return out.sort((a,b)=>b.s-a.s).slice(0,5);
 }
 function nbaLast5(t){

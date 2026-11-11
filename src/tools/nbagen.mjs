@@ -222,7 +222,7 @@ const zoneOf = (x, y, pts) => {
   if (Math.abs(dx) < 8 && y < 14.5) return 1;
   const ang = Math.atan2(dx, dy) * 180 / Math.PI; return ang < -30 ? 2 : ang > 30 ? 4 : 3;
 };
-const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const CHANCE = {}; const QTR = {}; const DZONE = {}; const DZG = {};
+const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const CHANCE = {}; const QTR = {}; const DZONE = {}; const DZG = {}; const TST = {};
 const pbpFile = path.join(dir, "pbp_2027.json");
 if (fs.existsSync(pbpFile)) {
   const pbp = JSON.parse(fs.readFileSync(pbpFile));
@@ -241,6 +241,9 @@ if (fs.existsSync(pbpFile)) {
     const fm = /(\d+)-foot/.exec(r.text || ""), dist = fm ? +fm[1] : Math.sqrt((x - 25) ** 2 + (y - 0.75) ** 2);
     const tt = String(r.type_text || ""), st = dist < 10 ? 2 : /Pullup|Step Back/i.test(tt) ? 1 : /^Jump Shot( Bank)?$/i.test(tt) ? 0 : 3, th = r.points_attempted === 3 ? 1 : 0;
     const LT = LGST || (LGST = [0, 1, 2, 3].map(() => [0, 0, 0, 0])); LT[st][0]++; LT[st][1] += made; LT[st][2] += th; LT[st][3] += th && made;
+    // team shot types: what each offense takes and what each defense allows (catch & shoot, pull-up, ...)
+    const off = String(r.team_id) === String(r.home_team_id) ? r.home_team_abbrev : r.away_team_abbrev;
+    for (const [tm, side] of [[off, "o"], [def, "d"]]) { if (!tm) continue; const T = TST[tm] || (TST[tm] = { o: [0, 1, 2, 3].map(() => [0, 0, 0, 0]), d: [0, 1, 2, 3].map(() => [0, 0, 0, 0]) }); const q = T[side][st]; q[0]++; q[1] += made; q[2] += th; q[3] += th && made; }
     const n = idToName[r.athlete_id_1]; if (!n) continue;
     const s = SHOT[n] || (SHOT[n] = ZONES.map(() => [0, 0])); s[z][0]++; s[z][1] += made;
     const t = STYPE[n] || (STYPE[n] = [0, 1, 2, 3].map(() => [0, 0, 0, 0])); t[st][0]++; t[st][1] += made; t[st][2] += th; t[st][3] += th && made;
@@ -443,6 +446,7 @@ const NBA_FB=${JSON.stringify(FB)}; /* game id -> [first-basket scorer, his team
 const NBA_Q1=${JSON.stringify(Q1)}; /* player -> [[date, 1st-quarter pts, reb, ast], ...] last 25 games */
 const NBA_GPACE=${JSON.stringify(GPACE)}; /* game id -> possessions per team */
 const NBA_CHANCE=${JSON.stringify(CHANCE)}; /* rebound + assist chances rebuilt from ESPN play-by-play lineups: s/l10/l5 = [games, ownMiss, oppMiss, oreb, dreb, teammateFGM, ast, min] */
+const NBA_TSTYPE=${JSON.stringify(TST)}; /* per team: o = shots taken, d = shots allowed; [catch&shoot, pull-up, <10 ft, other 10+ ft] each [FGA, FGM, 3PA, 3PM] */
 const NBA_DZONE=${JSON.stringify(DZONE)};
 const NBA_DZG=${JSON.stringify(Object.fromEntries(Object.entries(DZG).map(([t, g]) => [t, g.size])))};
 const NBA_BIO=${JSON.stringify(BIO)};
