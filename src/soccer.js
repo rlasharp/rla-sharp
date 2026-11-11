@@ -68,9 +68,11 @@ function socRefRow(c,name){if(!name)return null;const L=(SOC_REF||{})[c]||[];ret
 function socRefAvg(c){const L=((SOC_REF||{})[c]||[]).filter(x=>x[1]&&x[4]!=null);const m=L.reduce((a,x)=>a+x[1],0);return m?L.reduce((a,x)=>a+x[1]*x[4],0)/m:null}
 const SOC_WX={0:"☀️ Clear",1:"🌤️ Mostly clear",2:"⛅ Partly cloudy",3:"☁️ Cloudy",45:"🌫️ Fog",48:"🌫️ Fog",51:"🌦️ Light drizzle",53:"🌦️ Drizzle",55:"🌧️ Heavy drizzle",56:"🌧️ Freezing drizzle",57:"🌧️ Freezing drizzle",
   61:"🌧️ Light rain",63:"🌧️ Rain",65:"🌧️ Heavy rain",66:"🌧️ Freezing rain",67:"🌧️ Freezing rain",71:"🌨️ Light snow",73:"🌨️ Snow",75:"❄️ Heavy snow",77:"🌨️ Snow grains",80:"🌦️ Showers",81:"🌧️ Showers",82:"⛈️ Heavy showers",85:"🌨️ Snow showers",86:"❄️ Snow showers",95:"⛈️ Thunderstorm",96:"⛈️ Thunderstorm, hail",99:"⛈️ Thunderstorm, hail"};
-function socWx(f,long){const w=f.wx;if(!w)return "";const [t,pp,pr,ws,wc]=w;const s=`${SOC_WX[wc]||"🌡️"} · ${Math.round(t)}°C${pp!=null?` · ${pp}% rain`:""} · wind ${Math.round(ws)} km/h`;
+function socWx(f,long){const w=f.wx;if(!w)return "";const [t,pp,pr,ws,wc,wg,sn]=w,snow=wc>=71&&wc<=86;
+  const s=`${SOC_WX[wc]||"🌡️"} · ${Math.round(t)}°C · 💨 ${Math.round(ws)} km/h${wg&&wg>=ws+12?` (gusts ${Math.round(wg)})`:""}${pp!=null&&pp>=20?` · ${snow?"snow":"rain"} ${pp}%`:""}${sn?` · ${sn} cm snow`:""}`;
+  if(long==="head"){const hi=ws>=35||(wg||0)>=55||(pr||0)>=2||(sn||0)>=1;return `<div class="wxhead${hi?" hi":""}" title="Kickoff-hour forecast at ${socE(f.city||"")} (Open-Meteo)">${s}${hi?" · <b>Weather could matter</b>":""}</div>`}
   if(!long)return `<span class="scwx" title="Kickoff-hour forecast (Open-Meteo)">${s}</span>`;
-  const notes=[];if(ws>=35)notes.push("Strong wind — long balls and crosses get harder; it can slow scoring");else if(ws>=25)notes.push("Breezy — worth a small note for long-range shooting and crosses");
+  const notes=[];if((wg||0)>=55&&ws<35)notes.push("Strong gusts — the ball can hold up or run away on long passes");if(sn>=1)notes.push("Snow on the pitch — expect a slower, scrappier game");if(ws>=35)notes.push("Strong wind — long balls and crosses get harder; it can slow scoring");else if(ws>=25)notes.push("Breezy — worth a small note for long-range shooting and crosses");
   if((pr||0)>=2||(pp||0)>=70&&[63,65,81,82].includes(wc))notes.push("Wet pitch likely — the ball skids; slips and fouls can go up");if(t<=2)notes.push("Near freezing — a heavy, slower pitch is possible");if(t>=28)notes.push("Hot — teams tend to slow the tempo late on");
   return `<div class="card xacard"><h2>🌦️ Weather at kickoff</h2><div class="xasub">${socE(f.city||"")} · forecast for the kickoff hour (Open-Meteo)</div><div style="font-size:15px;margin-top:6px">${s}${pr?` · ${pr} mm`:""}</div>${notes.length?`<ul class="small" style="margin:8px 0 0 18px">${notes.map(n=>`<li>${n}</li>`).join("")}</ul>`:`<div class="small" style="margin-top:6px">No weather worries for this one.</div>`}</div>`}
 
@@ -136,7 +138,7 @@ function socCard(f){const O=f.odds||{},P=f.proj,st=socStarted(f),fin=f.state==="
   const cell=(lab,o,p)=>`<div class="scod"><span>${lab}</span><b>${socO(o)}</b>${p!=null?`<em class="${o!=null&&p-socImp(o)>=.05?"up":""}">${socPct(p)}</em>`:""}</div>`;
   const mt=O.main_tot||"2.5",mc=O.main_cor,be=!st&&socBestEdge(f);
   return `<a class="card sccard" href="#soccer-game-${f.id}">
-   <div class="row" style="align-items:center;gap:6px">${socLgChip(f.c)}<span class="small">${fin?"<b>FINAL</b>":st?"<b class='up'>LIVE</b>":socTime(f.t)+" "+socTZ()}</span>${socCountdown(f)}<span class="sp"></span><span data-sclive="${f.id}">${typeof socLiveChip!=="undefined"?socLiveChip(f):""}</span>${socWx(f)}</div>
+   <div class="row" style="align-items:center;gap:6px">${socLgChip(f.c)}<span class="small">${fin?"<b>FINAL</b>":st?"<b class='up'>LIVE</b>":socTime(f.t)+" "+socTZ()}</span>${socCountdown(f)}<span class="sp"></span><span data-sclive="${f.id}">${typeof socLiveChip!=="undefined"?socLiveChip(f):""}</span></div>${!fin&&!st&&f.wx?`<div class="small" style="margin-top:3px">${socWx(f)}</div>`:""}
    <div class="scteams"><div>${socBadge(f.h)} <b>${socE(socTm(f.h))}</b>${rh?` <span class="small">${socOrd(rh)}</span>`:""}<span class="scfm">${socForm(f.h)}</span></div>
      <div>${socBadge(f.a)} <b>${socE(socTm(f.a))}</b>${ra?` <span class="small">${socOrd(ra)}</span>`:""}<span class="scfm">${socForm(f.a)}</span></div></div>
    ${O.ml||P?`<div class="scodds">${cell("1",O.ml&&O.ml.h,P&&P.p[0])}${cell("X",O.ml&&O.ml.d,P&&P.p[1])}${cell("2",O.ml&&O.ml.a,P&&P.p[2])}
@@ -162,11 +164,11 @@ function socFoot(){return `<p class="small" style="margin-top:14px">Stats: ESPN 
 
 /* ---------- game page ---------- */
 function socHero(f){const st=socStarted(f),fin=f.state==="post";
-  return `<div class="card nhhero"><div class="small">${socLgChip(f.c)} ${socE(socDayS(socDay(f.t)))} · ${socTime(f.t)} ${socTZ()}${f.ven?" · "+socE(f.ven):""} ${socCountdown(f)}</div>
+  return `<div class="card nhhero"><div class="small">${socLgChip(f.c)} ${socE(socDayS(socDay(f.t)))} · ${socTime(f.t)} ${socTZ()}${f.ven?" · "+socE(f.ven):""} ${socCountdown(f)}</div>${fin?"":socWx(f,"head")}
   <div class="nhht" style="margin-top:10px"><div class="ght">${socBadge(f.h,1)}${socTL(f.h,`<b>${socE(socTmFull(f.h))}</b>`)}<span class="small">${socRank(f.c,f.h)?socOrd(socRank(f.c,f.h))+" · ":""}home</span><span class="scfm">${socForm(f.h,6)}</span></div>
    <div class="ght"><b style="font-size:22px">${fin||st?`${f.hs??""} – ${f.as??""}`:"v"}</b><span class="small">${fin?"Final":st?socE(f.detail||"Live"):""}</span></div>
    <div class="ght">${socBadge(f.a,1)}${socTL(f.a,`<b>${socE(socTmFull(f.a))}</b>`)}<span class="small">${socRank(f.c,f.a)?socOrd(socRank(f.c,f.a))+" · ":""}away</span><span class="scfm">${socForm(f.a,6)}</span></div></div>
-  <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:10px"><span data-sclive="${f.id}">${typeof socLiveChip!=="undefined"?socLiveChip(f):""}</span>${socWx(f)}${f.ref?`<span class="pill">🧑‍⚖️ Ref: ${socE(f.ref)}</span>`:""}${f.lu?`<span class="pill">📋 Lineups confirmed</span>`:""}</div></div>`}
+  <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:10px"><span data-sclive="${f.id}">${typeof socLiveChip!=="undefined"?socLiveChip(f):""}</span>${f.ref?`<span class="pill">🧑‍⚖️ Ref: ${socE(f.ref)}</span>`:""}${f.lu?`<span class="pill">📋 Lineups confirmed</span>`:""}</div></div>`}
 function socQuick(f){const out=[],S=(c,ic,t)=>out.push({c,ic,t}),P=f.proj,A=socTN(f.c,f.h),B=socTN(f.c,f.a),hN=socE(socTm(f.h)),aN=socE(socTm(f.a)),L=SOC_LG[f.c]||{};
   if(P){const fav=P.p[0]>P.p[2]?[hN,P.p[0]]:[aN,P.p[2]];S(fav[1]>=.55?"good":"",fav[1]>=.55?"✅":"⚖️",`We make <b>${fav[0]}</b> ${socPct(fav[1])} to win (draw ${socPct(P.p[1])}) — expected score ${P.lh.toFixed(1)}–${P.la.toFixed(1)}.`)}
   if(A&&B){const ov=(A[15]+B[15])/(A[0]+B[0]);S(ov>=.6?"good":ov<=.4?"bad":"","⚽",`Over 2.5 goals landed in <b>${A[15]}/${A[0]}</b> ${hN} games and <b>${B[15]}/${B[0]}</b> ${aN} games this season (${L.sh||""} average ${socPct(L.o25)}).`);

@@ -330,21 +330,23 @@ CC = {"England": "GB", "Scotland": "GB", "Wales": "GB", "Spain": "ES", "Italy": 
       "Ireland": "IE", "Northern Ireland": "GB", "USA": "US", "United States": "US", "Canada": "CA", "Kazakhstan": "KZ", "Azerbaijan": "AZ", "Finland": "FI", "Iceland": "IS", "Moldova": "MD", "Armenia": "AM"}
 WX = {}
 for f in FX:
-    if not f.get("city") or ts(f["t"]) > NOW + dt.timedelta(days=7): continue
+    if not f.get("city") or ts(f["t"]) > NOW + dt.timedelta(days=15): continue   # Open-Meteo forecasts reach 16 days
     key = f"{f['city']}|{f.get('ctry') or ''}"
     if key not in GEO:
-        r_ = get("https://geocoding-api.open-meteo.com/v1/search?count=5&name=" + urllib.parse.quote(f["city"]))
-        res = (r_ or {}).get("results") or []; cc = CC.get(f.get("ctry") or "")
-        pick = next((x for x in res if cc and x.get("country_code") == cc), res[0] if res else None)
+        nm, _, hint = f["city"].partition(",")   # ESPN gives "Orlando, Florida" / "London, England": search the town, use the rest as a hint
+        r_ = get("https://geocoding-api.open-meteo.com/v1/search?count=10&name=" + urllib.parse.quote(nm.strip()))
+        res = (r_ or {}).get("results") or []; hint = hint.strip(); cc = CC.get(f.get("ctry") or "") or CC.get(hint)
+        pick = next((x for x in res if hint and hint in (x.get("admin1"), x.get("country"))), None) or next((x for x in res if cc and x.get("country_code") == cc), None) or (res[0] if res else None)
         GEO[key] = [pick["latitude"], pick["longitude"]] if pick else None
     if not GEO.get(key): continue
     if key not in WX:
         la, lo = GEO[key]
-        WX[key] = get(f"https://api.open-meteo.com/v1/forecast?latitude={la}&longitude={lo}&hourly=temperature_2m,precipitation_probability,precipitation,wind_speed_10m,weather_code&forecast_days=8&timezone=UTC") or {}
+        WX[key] = get(f"https://api.open-meteo.com/v1/forecast?latitude={la}&longitude={lo}&hourly=temperature_2m,precipitation_probability,precipitation,wind_speed_10m,weather_code,wind_gusts_10m,snowfall&forecast_days=16&timezone=UTC") or {}
     h = WX[key].get("hourly") or {}; tt = ts(f["t"]).replace(minute=0, second=0); k = tt.strftime("%Y-%m-%dT%H:%M")
     if k in (h.get("time") or []):
         i = h["time"].index(k)
-        f["wx"] = [h["temperature_2m"][i], h["precipitation_probability"][i], h["precipitation"][i], h["wind_speed_10m"][i], h["weather_code"][i]]
+        f["wx"] = [h["temperature_2m"][i], h["precipitation_probability"][i], h["precipitation"][i], h["wind_speed_10m"][i], h["weather_code"][i],
+                   max([x for x in (h.get("wind_gusts_10m") or [])[i:i + 2] if x is not None] or [0]), round(sum(x for x in (h.get("snowfall") or [])[i:i + 2] if x is not None), 1)]   # + gusts, snow (cm) over the 2 match hours
 json.dump(GEO, open(GEOF, "w"), separators=(",", ":"), ensure_ascii=False)
 # confirmed lineups (posted ~1 hour before kickoff) for matches in the next 3 hours — the game-day check re-runs this
 # ~60 and ~10-45 minutes before kickoff, so late changes (warm-up injuries) are picked up
