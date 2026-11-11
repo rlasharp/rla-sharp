@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 19:39Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 21:58Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -77,12 +77,14 @@ Yves Missi|C|Out|knee bruise|Nov 16
 Karl-Anthony Towns|C|Day-To-Day|calf soreness|Nov 11
 Josh Hart|G|Out|illness|Nov 11
 #Oklahoma City Thunder
-Jaylin Williams|F|Out|back spasms|Nov 11
+Jaylin Williams|F|Out|back spasms|Nov 15
+Ajay Mitchell|G|Out|ankle|Nov 13
 Thomas Sorber|C|Out|knee|Nov 13
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
+Jamal Cain|F|Day-To-Day|shoulder bruise|Nov 11
 Tristan da Silva|F|Day-To-Day|calf strain|Nov 11
 Jalen Suggs|G|Out|knee|Nov 16
 Jonathan Isaac|F|Out|knee not specified|Nov 16
@@ -96,8 +98,9 @@ Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
+Chris Youngblood|G|Out|foot bruise|Nov 13
+Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
-Vit Krejci|G|Out|ankle|Jan 2
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
 Precious Achiuwa|F|Day-To-Day|lower leg bruise|Nov 13
@@ -115,8 +118,8 @@ Scottie Barnes|F|Out|groin soreness|Nov 12
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 15
 #Utah Jazz
-Lauri Markkanen|F|Out|hand fracture|Jan 4
 Keyonte George|G|Day-To-Day|ankle sprain|Nov 11
+Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
