@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 07:18Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 07:30Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Michael Wilson|WR|IR|Neck|Feb 15
