@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-11T03:53:36+00:00",
+  "at": "2026-11-11T03:56:29+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 75 games kept (1 new), 1697 player lines\nNBA injuries refreshed\nnbalineups: 6 games, 60 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nNBA refs: 0 summaries checked, 154 games cached\nNBA refs: 5 crews posted today\nlive feed is not from 2026-11-10 - nothing merged\nNBA data: teams 30, results 154 (through 2026-11-09), players 462, slate 6, lines 6, props 804, inj teams 29, prev-season players 157, play log 24, adv 381, qtr games 154, h2h 3/11/4/2/2/4\nnfl-update: 0 lines refreshed, 0 new finals (weeks [8, 9])\n202 players, 32 teams\nnfl-inj: 202 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nNHL PP time: 678 players, 0 ESPN requests this run\nNHL data: 7 games today, 6 tomorrow, 32 teams, 603 skaters, 66 goalies, 489 props, 283 finals, 40 requests\nsoccer: 145 upcoming matches (0 with odds, 143 with estimates, 0 with weather, 0 with referee), 0 player props, 5880 players\ntrack: no new snapshots \u00b7 graded: NHL plays 5-8, best props NBA 11-12 NFL 8-2 NHL 10-19\nSite check OK \u2014 published (2026-11-11T03:52:43Z)\n"
+  "summary": "NBA finals from ESPN: 75 games kept (1 new), 1697 player lines\nNBA injuries refreshed\nnbalineups: 6 games, 60 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nNBA refs: 0 summaries checked, 154 games cached\nNBA refs: 5 crews posted today\nlive feed is not from 2026-11-10 - nothing merged\nNBA data: teams 30, results 154 (through 2026-11-09), players 462, slate 6, lines 6, props 804, inj teams 29, prev-season players 157, play log 24, adv 381, qtr games 154, h2h 3/11/4/2/2/4\nnfl-update: 0 lines refreshed, 0 new finals (weeks [8, 9])\n202 players, 32 teams\nnfl-inj: 202 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nNHL PP time: 678 players, 0 ESPN requests this run\nNHL data: 7 games today, 6 tomorrow, 32 teams, 603 skaters, 66 goalies, 489 props, 283 finals, 40 requests\nsoccer: 145 upcoming matches (0 with odds, 143 with estimates, 0 with weather, 0 with referee), 0 player props, 5880 players\ntrack: no new snapshots \u00b7 graded: NHL plays 5-8, best props NBA 11-12 NFL 8-2 NHL 10-19\nSite check OK \u2014 published (2026-11-11T03:55:36Z)\n"
  },
  "site": {
-  "at": "2026-11-11T03:53:36+00:00",
+  "at": "2026-11-11T03:56:29+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-11T03:53:36+00:00",
+  "at": "2026-11-11T03:56:29+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Tue Nov 10 10:52 PM ET",
+  "gen": "Tue Nov 10 10:55 PM ET",
   "odds_at": "2026-11-11T01:04:37+00:00",
   "backfill": "1312/1312"
  },
@@ -527,6 +527,16 @@
   },
   {
    "at": "2026-11-11T03:53:36+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-11T03:56:29+00:00",
    "what": "all",
    "ok": true,
    "site_ok": true,
