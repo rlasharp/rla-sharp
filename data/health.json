@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-11T05:43:30+00:00",
+  "at": "2026-11-11T06:48:07+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1603 player lines\nNBA injuries refreshed\nnbalineups: HTTP Error 404: Not Found \u2014 keeping the old file\nNBA starting lineups: kept old\nNBA lines checked\nNBA refs: 0 summaries checked, 154 games cached\nNBA refs: 5 crews posted today\nliveprops: 733 feed lines merged (0 skipped from other days), 710 total, unmatched names: []\nFirst tip is 1098 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 154 (through 2026-11-09), players 462, slate 10, lines 9, props 710, inj teams 29, prev-season players 271, play log 24, adv 381, qtr games 154, h2h 4/7/4/2/4/2/2/2/3/4\ntrack: nba 2026-11-11: snapshot 10 props, 10 games \u00b7 graded: NHL plays 5-8, best props NBA 12-15 NFL 8-2 NHL 10-19\nSite check OK \u2014 published (2026-11-11T05:42:38Z)\n"
+  "summary": "NBA finals from ESPN: 72 games kept (1 new), 1626 player lines\nNBA injuries refreshed\nnbalineups: HTTP Error 404: Not Found \u2014 keeping the old file\nNBA starting lineups: kept old\nNBA lines checked\nNBA refs: 0 summaries checked, 154 games cached\nNBA refs: 5 crews posted today\nliveprops: 733 feed lines merged (0 skipped from other days), 710 total, unmatched names: []\nFirst tip is 1034 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 154 (through 2026-11-09), players 462, slate 10, lines 10, props 710, inj teams 29, prev-season players 271, play log 24, adv 381, qtr games 154, h2h 4/7/4/2/4/2/2/2/3/4\nnfl-update: 0 lines refreshed, 0 new finals (weeks [8, 9])\n202 players, 32 teams\nnfl-inj: 202 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nNHL PP time: 679 players, 8 ESPN requests this run\nNHL data: 6 games today, 11 tomorrow, 32 teams, 691 skaters, 66 goalies, 383 props, 284 finals, 40 requests\nsoccer: 145 upcoming matches (0 with odds, 143 with estimates, 0 with weather, 0 with referee), 0 player props, 5880 players\ntrack: nba 2026-11-11: snapshot 10 props, 10 games \u00b7 graded: NHL plays 6-9, best props NBA 12-18 NFL 8-2 NHL 10-20\nSite check OK \u2014 published (2026-11-11T06:47:14Z)\n"
  },
  "site": {
-  "at": "2026-11-11T05:43:30+00:00",
+  "at": "2026-11-11T06:48:07+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-11T05:43:30+00:00",
+  "at": "2026-11-11T06:48:07+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Wed Nov 11 12:34 AM ET",
+  "gen": "Wed Nov 11 1:47 AM ET",
   "odds_at": "2026-11-11T03:56:42+00:00",
   "backfill": "1312/1312"
  },
@@ -572,6 +572,20 @@
   {
    "at": "2026-11-11T05:43:30+00:00",
    "what": "nba",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [
+    "nbalineups: HTTP Error 404: Not Found \u2014 keeping the old file",
+    "NBA starting lineups: kept old",
+    "liveprops: 733 feed lines merged (0 skipped from other days), 710 total, unmatched names: []"
+   ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-11T06:48:07+00:00",
+   "what": "all",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
