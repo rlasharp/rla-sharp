@@ -303,6 +303,7 @@ function nbaGame(el,id){
     ${nbaMoveHtml(g,1)}
     ${nbaPickTxt(g)}${say?`<p style="margin:10px 0 0;font-size:14px;color:var(--text2)">${say}</p>`:""}
   </div>
+  ${typeof fxNba!=="undefined"?fxCard(fxNba(g),"Meetings last season and this season, and this season's results."):""}
   ${(()=>{const T=NB.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["inj","🚑 Injuries"]];
     const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nbgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#nba-game-${g.id}-props">🎯 Props</a></div>`;
     if(T==="tr")return nav+`  <div style="margin-top:14px">${nbaGsHtml(g)}</div>

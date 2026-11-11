@@ -393,7 +393,7 @@ function nhlGame(el,id){
   const T=[["matchup","📊 Matchup"],["trends","📈 Trends"],["goalies","🥅 Goalies"],["injuries",`🚑 Injuries${nInj?` <small>${nInj}</small>`:""}`],["props",`🎯 Props${nP?` <small>${nP}</small>`:""}`]];
   const body={matchup:()=>nhMatchup(g)+(typeof xaLuckCard!=="undefined"?xaLuckCard(g)+xaKeyOutCard("nhl",g.a,g.h)+xaDefTrendCard("nhl",g.a,g.h):""),trends:()=>nhTrends(g)+(typeof xaFlowCard!=="undefined"?xaFlowCard(g):""),goalies:()=>nhGoalieTab(g),injuries:()=>nhInjCard(g),props:()=>`<div id="nhGP">${nhGameProps(g)}</div>`}[tab]||(()=>nhMatchup(g));
   el.innerHTML=`<p class="small"><a href="#${g.d===NHL_DATE?"nhl":g.d===NHL_TOM?"nhl-tomorrow":"nhl-tomorrow-"+Math.round((Date.parse(g.d)-Date.parse(NHL_DATE))/864e5)}">← NHL games</a></p>
-   ${nhHero(g)}${typeof xaGoalieNote!=="undefined"?xaGoalieNote(g)+xaPmLine("nhl",g.a,g.h):""}${nhQuick(g)}
+   ${nhHero(g)}${typeof xaGoalieNote!=="undefined"?xaGoalieNote(g)+xaPmLine("nhl",g.a,g.h):""}${nhQuick(g)}${typeof fxNhl!=="undefined"&&tab!=="props"?fxCard(fxNhl(g),"Meetings last season and this season, and this season's results."):""}
    <div class="gtabs nhtabs" style="margin-top:12px">${T.map(([k,l])=>`<a href="#" data-nhtab="${k}" class="${k===tab?"on":""}">${l}</a>`).join("")}</div>
    <div style="margin-top:10px">${body()}</div>${nhFoot()}`;
   el.querySelectorAll("[data-nhtab]").forEach(a=>a.onclick=e=>{e.preventDefault();const y=scrollY;NH.tab=a.dataset.nhtab;nhlGame(el,id);scrollTo(0,y)});

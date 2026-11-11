@@ -148,6 +148,7 @@ function viewGame(id){
    <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
     <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p>${typeof xaPmLine!=="undefined"?xaPmLine("nfl",g.away,g.home):""}</div>
    ${nflEdgesCard(g)}
+   ${typeof fxNfl!=="undefined"?fxCard(fxNfl(g),"Meetings since 2002 and this season's results."):""}
    ${(()=>{const T=S.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["inj","🩹 Injuries & weather"]];
     const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nfgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#game-${g.id}-props">🎯 Props</a></div>`;
     if(T==="tr")return nav+`   <div class="section">${nflGsHtml(g)}</div>
