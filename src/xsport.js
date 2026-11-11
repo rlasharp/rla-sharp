@@ -95,6 +95,7 @@ function xTrackCard(){if(typeof TRACK==="undefined"||!TRACK)return "";const S=TR
   return `<div class="card" style="margin-top:14px"><h2 style="margin-bottom:2px">📊 How our numbers are doing</h2><div class="small" style="margin-bottom:8px">Saved before every game and graded after — nothing is picked after the fact. Best props = each day's top 10 by our chance of winning, 1 unit each at the posted odds.</div>${typeof finTonightHtml!=="undefined"?finTonightHtml():""}
    <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Top-10 best props</th><th>Winner picked</th><th>Total O/U</th><th>Odds edges ≥ 4%</th><th>🎟 Parlay of the day</th></tr></thead><tbody>
    ${rows.map(([nm,b,w,t,e])=>`<tr><td><b>${nm}</b></td><td>${b.w}-${b.l} <span class="small">${pc(b.w,b.l)} · <span class="${b.u>0?"up":b.u<0?"dn":""}">${u(b.u)}</span></span></td><td>${w[0]}-${w[1]} <span class="small">${pc(w[0],w[1])}</span></td><td>${t[0]}-${t[1]} <span class="small">${pc(t[0],t[1])}</span></td><td>${e[0]}-${e[1]} <span class="small ${e[2]>0?"up":e[2]<0?"dn":""}">${u(e[2])}</span></td><td>${(()=>{const q=(S[{NBA:"nba",NHL:"nhl",NFL:"nfl"}[nm]]||{}).parlay;return q?`${q.w}-${q.l} <span class="small ${q.u>0?"up":q.u<0?"dn":""}">${u(q.u)}</span>`:`<span class="small">starts today</span>`})()}</td></tr>`).join("")}</tbody></table></div>
+   <div class="small" style="margin-top:6px">🎯 <b>Self-check</b> — ${[["nba","NBA"],["nhl","NHL"],["nfl","NFL"]].map(([sp,n])=>{const t=xCalNote(sp);return t?`<div style="margin-top:3px"><b>${n}:</b> ${t}</div>`:""}).join("")}</div>
    <div class="small" style="margin-top:6px">Tracking started Nov 8, 2026 — give it a few weeks before trusting any of these.</div></div>`}
 
 /* ---------- 🔥 one list for tonight, all sports ---------- */
@@ -127,7 +128,7 @@ function nhlLiveVal(o,k){if(!o)return null;const n=l=>{for(const x of l){const v
 async function nhlLiveLine(host,x){if(!host||typeof liveGet==="undefined"||typeof nhGameOf==="undefined")return;const w=nhWho(x.nm),g=w&&nhGameOf(w.tm);const lg=g&&g.d===NHL_DATE&&liveGet("nhl",g.a,g.h);let el=host.querySelector(".lvp");
   if(!lg||lg.st==="pre"){if(el)el.remove();return}const bx=await nhlLiveBox(lg.id),v=bx&&nhlLiveVal(bx[loNorm(x.nm)],x.k);if(v==null){if(el)el.remove();return}
   const over=x.side!=="u",line=x.k==="hanyG"?.5:x.line,hit=over?v>line:v<line,fin=lg.st==="post",u=NH_MK[x.k]?NH_MK[x.k][2]:"";
-  const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${fin?`${hit?"✅ Hit":"❌ Missed"} — finished with <b>${v}</b> ${u}`:`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${u} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${+(line-v+.5).toFixed(1)} more`):(v>line?" · already over ❌":"")}`}</div>`;
+  const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${fin?`${hit?"✅ Hit":"❌ Missed"} — finished with <b>${v}</b> ${u}`:`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${u} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${+(line-v+.5).toFixed(1)} more`):(v>line?" · already over ❌":"")}${typeof livePace!=="undefined"?livePace("nhl",x.nm,x.k,v,line,over,lg):""}`}</div>`;
   el=host.querySelector(".lvp");if(el)el.outerHTML=html;else host.insertAdjacentHTML("beforeend",html)}
 async function nhlLiveDecorate(){if(typeof NHL_DATE==="undefined"||!NHL_DATE)return;
   for(const el of document.querySelectorAll("[data-nhlp]")){try{await nhlLiveLine(el,JSON.parse(el.dataset.nhlp))}catch(e){}}
@@ -214,3 +215,13 @@ function socParlayCard(f){if(!f||socStarted(f)||!f.proj||!f.odds)return "";const
      <div class="obrow" style="margin-top:4px">${socBetBtn(p.A.spec)} <span class="small">${socE(p.A.lab)}</span> ${socBetBtn(p.B.spec)} <span class="small">${socE(p.B.lab)}</span></div></div>`).join("")
      :`<div class="small">No pair from this match beats the prices right now.</div>`}
    <div class="small" style="margin-top:6px">Books price same-game parlays lower because they know these go together — check the real parlay price; it's our estimate, not a sure thing.</div></div>`}
+
+/* ---------- 🎯 The model learns from its record ----------
+   For each sport: of the edge we claimed on the tracked best props (our chance − the price's chance), how much showed up
+   in real results? If we've been overconfident, "our chance" moves less far from the book's fair price (and more if we've
+   been under-confident), blended in gradually — no change until 25 graded props, full weight only after ~100.
+   Returns the multiplier for the "how far to move toward the player's hit rates" weight. */
+function xCalK(sp){try{const K=typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].calk;if(!K||K.n<25)return 1;
+  const E=(K.sc-K.imp)/K.n,R=(K.hit-K.imp)/K.n;if(E<=.005)return 1;const ratio=Math.max(.25,Math.min(1.25,R/E));return Math.round((1+(ratio-1)*K.n/(K.n+80))*1000)/1000}catch(e){return 1}}
+function xCalNote(sp){const K=typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].calk;if(!K||!K.n)return "";const k=xCalK(sp),p=x=>Math.round(x/K.n*100)+"%";
+  return K.n<25?`${K.n} graded props so far — the model starts adjusting itself at 25.`:`Our best props: we said <b>${p(K.sc)}</b>, the prices said <b>${p(K.imp)}</b>, they hit <b>${p(K.hit)}</b> (${K.n} props). ${k<.98?`So "our chance" now moves <b>${Math.round((1-k)*100)}% less</b> away from the book's price.`:k>1.02?`So "our chance" now trusts the hit rates <b>${Math.round((k-1)*100)}% more</b>.`:"No adjustment needed."}`}

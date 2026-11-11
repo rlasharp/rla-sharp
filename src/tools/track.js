@@ -101,6 +101,9 @@ for(const s of ['nba','nfl','nhl','soc'])T[s]=T[s]||{};
       for(const G of S.games||[])for(const e of G.edges||[]){if(e.r!=="win"&&e.r!=="loss"||e.me==null||e.bk==null)continue;const k=eb(e.me-e.bk),B=cal.edges[k]||(cal.edges[k]=[0,0,0,0]);B[0]++;B[1]+=e.r==="win";B[2]+=e.me;B[3]+=e.r==="win"?pay(e.odds):-1}}
     for(const g of [cal.props,cal.edges])for(const B of Object.values(g)){B[2]=Math.round(B[2]*1000)/1000;B[3]=Math.round(B[3]*100)/100}
     s.cal=cal;
+    /* claimed vs real edge on the graded best props: sum of our chance, of the price's chance (vig removed ~4.5%), and wins */
+    {const K={n:0,hit:0,sc:0,imp:0};for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){if((x.r!=="win"&&x.r!=="loss")||x.sc==null||x.odds==null)continue;K.n++;K.hit+=x.r==="win";K.sc+=x.sc;K.imp+=imp(x.odds)/1.045}
+     K.sc=Math.round(K.sc*1000)/1000;K.imp=Math.round(K.imp*1000)/1000;s.calk=K}
     s.best.u=Math.round(s.best.u*100)/100;s.plays.u=Math.round(s.plays.u*100)/100;for(const E of Object.values(s.edge))E[2]=Math.round(E[2]*100)/100;
     s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM[sp]=s}
   {const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T.soc))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}

@@ -586,7 +586,7 @@ function nbaEval(nm,k,line,side,odds,book,oppIn){
      toward the player's hit rates only part of the way — more with more games behind them. */
   const row=NBA_PROPS.find(r=>r[0]===nm&&r[1]===k&&r[2]===line&&r[3]!=null&&r[4]!=null);
   let fair=row?(()=>{const io=nbaImpl(row[3]),iu=nbaImpl(row[4]);return side==="o"?io/(io+iu):iu/(io+iu)})():be/1.045;
-  const nEff=Math.min(25,l10.length+.5*ss.length),w=.4*nEff/(nEff+10);
+  const nEff=Math.min(25,l10.length+.5*ss.length),w=.4*nEff/(nEff+10)*(typeof xCalK!=="undefined"?xCalK("nba"):1);   /* × what the record says (xsport.js) */
   let sc=fair+w*(raw-fair)+(dvOk?.02*dvOk:0);
   sc=Math.max(.03,Math.min(.9,sc));
   return {nm,k,line,side,odds,book,p,opp,g,sc,raw,fair,be,edge:sc-be,dvOk,n10:l10.length,

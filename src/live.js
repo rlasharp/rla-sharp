@@ -38,7 +38,7 @@ async function liveFetch(sp){
       if(!home||!away)continue;
       const sit=c.situation||{};let poss=null;
       if(sit.possession)poss=[home,away].find(o=>String(o.id)===String(sit.possession));
-      const g={id:String(e.id),a:away.ab,h:home.ab,as:away.sc,hs:home.sc,st:t.state||"pre",det:t.shortDetail||t.detail||"",
+      const S0=c.status||e.status||{},g={id:String(e.id),a:away.ab,h:home.ab,as:away.sc,hs:home.sc,st:t.state||"pre",det:t.shortDetail||t.detail||"",per:+S0.period||0,clk:S0.displayClock||"",
         poss:poss?poss.ab:null,dd:sit.shortDownDistanceText||"",rz:!!sit.isRedZone,date:e.date||"",
         ar:away.rec,hr:home.rec,pg:(away.pg||home.pg)?[away.pg||null,home.pg||null]:null,als:away.ls,hls:home.ls,ald:away.ldr||null,hld:home.ldr||null,tv:((c.broadcasts||[])[0]||{}).names?.[0]||""};
       m[g.id]=g;m[g.a+"@"+g.h]=g;
@@ -97,6 +97,7 @@ function liveNflGame(t){const o=typeof oppOf!=="undefined"?oppOf(t):null;if(!o)r
 async function liveDecorate(){
   const h=decodeURIComponent((location.hash||"#games").slice(1));
   if(typeof nhlLiveDecorate!=="undefined"&&(h.startsWith("nhl")||h==="today"||h==="bets"))try{await nhlLiveDecorate()}catch(e){}
+  if(h==="bets")try{await liveBetsDecorate()}catch(e){}
   /* NHL game cards + game page */
   if(h.startsWith("nhl")&&typeof nhGame!=="undefined"){
     document.querySelectorAll("#v-nhl [data-nhg]").forEach(c=>{const g=nhGame(c.dataset.nhg);if(!g)return;livePut(c,liveBar("nhl",liveGet("nhl",g.a,g.h)),c.querySelector(".nhgh")&&c.querySelector(".nhgh").nextSibling)});
@@ -118,7 +119,7 @@ async function liveDecorate(){
     const bx=await liveBox(lg.id);const v=bx&&liveVal(bx[nm],k);if(v==null){if(el)el.remove();continue}
     const m=/(Over|Under)\s+([\d.]+)/.exec(pd.querySelector(".bpl").innerText);if(!m)continue;
     const line=+m[2],over=m[1]==="Over",hit=over?v>line:v<line,fin=lg.st==="post";
-    const txt=fin?(hit?`✅ Hit — finished with <b>${v}</b>`:`❌ Missed — finished with <b>${v}</b>`):`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${NBA_MK[k][2]} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${Math.floor(line-v)+1} more`):(v>line?" · already over ❌":"")}`;
+    const txt=fin?(hit?`✅ Hit — finished with <b>${v}</b>`:`❌ Missed — finished with <b>${v}</b>`):`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${NBA_MK[k][2]} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${Math.floor(line-v)+1} more`):(v>line?" · already over ❌":"")}${livePace("nba",nm,k,v,line,over,lg)}`;
     const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${txt}</div>`;el=pd.querySelector(".lvp");
     if(el)el.outerHTML=html;else pd.children[1].insertAdjacentHTML("beforeend",html);
   }
@@ -131,7 +132,7 @@ async function liveDecorate(){
         if(lg&&lg.st!=="pre"&&rp){const bx=await liveNflBox(lg.id);const v=bx&&liveNflVal(bx[pl.player]||{},pl.market),line=rp[0],over=pl.side==="over",fin=lg.st==="post";
           if(v!=null){const hit=over?v>line:v<line,u=MARKETS[pl.market]?MARKETS[pl.market].n:pl.market;
             html=fin?`<div class="lvp ${hit?"w":"l"}">${hit?"✅ Hit":"❌ Missed"} — finished with <b>${v}</b> ${esc(u)}</div>`
-              :`<div class="lvp on"><span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${esc(u)} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${+(line-v+0.5).toFixed(1)} more`):(v>line?" · already over ❌":"")}</div>`}}}
+              :`<div class="lvp on"><span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${esc(u)} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${+(line-v+0.5).toFixed(1)} more`):(v>line?" · already over ❌":"")}${livePace("nfl",pl.player,pl.market,v,line,over,lg)}</div>`}}}
       else{const g=SLATE.find(x=>x.id==pl.game),lg=g&&liveGet("nfl",g.away,g.home);const L=g&&LINES[g.id];
         if(lg&&lg.st!=="pre"&&L){const fin=lg.st==="post",tot=lg.as+lg.hs;let txt="";
           if(pl.type==="total"){txt=`<b>${tot}</b> points${fin?"":" so far"} (line ${L.tot}, ${pl.side})`}
@@ -204,3 +205,32 @@ function nbaTodayHtml(){
    <div class="grid g2">${G.map(card).join("")}</div>
    <div class="small" style="margin-top:6px">${LIVE.ok.nba?"Live scores from ESPN · updates every 30 seconds.":"Live scores load when ESPN can be reached."} Full box scores appear below after the morning update.</div></div>`;
 }
+
+/* ---------- 📈 Live "on pace": the chance a prop still hits, from where the player is now ----------
+   Remaining expected = his average per game (last 15 games, NFL last 10) × the share of the game still to play.
+   Counts (rebounds, assists, shots, receptions…) use a Poisson model; bigger totals (points, yards) a normal with
+   real-game spread. Estimates only — shown next to the live "so far" line. */
+function livePace(sp,nm,k,v,line,over,lg){try{if(!lg||lg.st!=="in"||v==null||line==null)return "";
+  const per=lg.per||0,mm=String(lg.clk||"").match(/(\d+):(\d+)/),secs=mm?(+mm[1])*60+(+mm[2]):0;
+  const REG={nba:[4,12],nhl:[3,20],nfl:[4,15]}[sp];if(!REG||!per)return "";const tot=REG[0]*REG[1]*60,el=Math.min(tot,(Math.min(per,REG[0])-1)*REG[1]*60+(REG[1]*60-secs));const left=Math.max(0,1-el/tot);
+  let mu=null;
+  if(sp==="nba"){const p=NBA_LOGS[nm];if(!p)return "";const G=p.g.slice(-15),vals=G.map(x=>nbaVal(x,k)),m=G.reduce((a,x)=>a+(x[4]||0),0);if(!m||vals.some(x=>x==null))return "";mu=vals.reduce((a,b)=>a+b,0)/G.length*left}
+  else if(sp==="nhl"){const V=nhVals(nm,k).slice(-15).map(o=>o.v).filter(Number.isFinite);if(V.length<5)return "";mu=V.reduce((a,b)=>a+b,0)/V.length*left}
+  else if(sp==="nfl"){const L=pLogs(nm).filter(l=>Number.isFinite(stat(l,k))).slice(-10);if(L.length<3)return "";mu=L.reduce((a,l)=>a+stat(l,k),0)/L.length*left}
+  if(mu==null)return "";const need=over?Math.floor(line-v)+1:null;  /* over: needs this many more; under: must add at most line-v (fractional) */
+  const big=/Yds|yds|^pts$|^pra$|^pr$|^pa$|rushRec|passYds/.test(k);
+  const cdf=x=>{if(big){const sd=Math.max(1,Math.sqrt(mu*(sp==="nfl"?18:2.2)));const z=(x+.5-mu)/sd;return .5*(1+Math.tanh(z*0.7978845608*(1+0.044715*z*z)))}   /* P(X<=x) */
+    let s=0,t=Math.exp(-mu);for(let i=0;i<=x;i++){s+=t;t*=mu/(i+1)}return Math.min(1,s)};
+  let p;if(over){if(v>line)return "";p=1-cdf(need-1)}else{if(v>line)return "";p=cdf(Math.floor(line-v-1e-9))}
+  p=Math.max(.01,Math.min(.99,p));return ` · <b>~${Math.round(p*100)}%</b> to ${over?"get there":"stay under"} at his usual pace`}catch(e){return ""}}
+
+/* My Bets: live progress + "on pace" chance for NBA and NFL props (NHL has its own, xsport.js) */
+async function liveBetsDecorate(){if((location.hash||"").slice(1)!=="bets"||typeof betsLoad==="undefined")return;
+  for(const b of betsLoad()){try{const el=document.querySelector(`[data-clv="${b.id}"]`);if(!el)continue;const host=el.parentElement,over=b.side!=="under";let lg=null,v=null,u="",sp="";
+    if(b.k==="nbaprop"&&typeof NBA_SLATE_DATE!=="undefined"&&b.date===NBA_SLATE_DATE){const g=nbaGameOf(b.team);lg=g&&liveGet("nba",g.a,g.h,g.id);if(lg&&lg.st!=="pre"){const bx=await liveBox(lg.id);v=bx&&liveVal(bx[b.player],b.market)}u=NBA_MK[b.market]?NBA_MK[b.market][2]:"";sp="nba"}
+    else if(b.k==="prop"&&typeof liveNflGame!=="undefined"){lg=liveNflGame(b.team);if(lg&&lg.st!=="pre"){const bx=await liveNflBox(lg.id);v=bx&&liveNflVal(bx[b.player]||{},b.market)}u=MARKETS[b.market]?MARKETS[b.market].n:"";sp="nfl"}
+    else continue;
+    let x=host.querySelector(".lvp");if(!lg||lg.st==="pre"||v==null){if(x)x.remove();continue}
+    const line=b.line,hit=over?v>line:v<line,fin=lg.st==="post";
+    const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${fin?`${hit?"✅ Hit":"❌ Missed"} — finished with <b>${v}</b> ${esc(u)}`:`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${esc(u)} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${Math.floor(line-v)+1} more`):(v>line?" · already over ❌":"")}${livePace(sp,b.player,b.market,v,line,over,lg)}`}</div>`;
+    x=host.querySelector(".lvp");if(x)x.outerHTML=html;else host.insertAdjacentHTML("beforeend",html)}catch(e){}}}

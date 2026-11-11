@@ -400,7 +400,7 @@ function nflEval(name,k,side){
   const be=odds!=null?nflImpl(odds):NFL_BE;
   /* calibrated chance (same method as NBA): fair price from both sides (vig removed), moved toward his hit rates only partway */
   const fair=rp[1]!=null&&rp[2]!=null?(()=>{const io=nflImpl(rp[1]),iu=nflImpl(rp[2]);return side==="o"?io/(io+iu):iu/(io+iu)})():be/1.045;
-  const nEff=Math.min(25,l5.length+.5*cur.length),w=.4*nEff/(nEff+10);
+  const nEff=Math.min(25,l5.length+.5*cur.length),w=.4*nEff/(nEff+10)*(typeof xCalK!=="undefined"?xCalK("nfl"):1);
   let sc=Math.max(.03,Math.min(.9,fair+w*(raw-fair)+(dvOk?.02*dvOk:0)));
   return {name,k,side,line,odds,book:rp[3],pl,opp:o.opp,home:o.home,g:o.g,sc,raw,fair,be,edge:sc-be,dvOk,dv,
     c3:[hit(cur.slice(-3)),cur.slice(-3).length],c5:[hit(l5),l5.length],c10:(()=>{const a=L.filter(l=>Number.isFinite(stat(l,k))).slice(-10);return [hit(a),a.length]})(),cS:[hit(cur),cur.length],cH:[hit(vs),vs.length]};
@@ -698,7 +698,7 @@ function viewWeeks(){
 /* ---------- Router ---------- */
 function route(){
   const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
-  const SHARED=["calc","record","guide","today","bets","favs"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
+  const SHARED=["calc","record","guide","today","bets","favs","week"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
   if(h.startsWith("nba"))LS.set("sport","nba");else if(h.startsWith("nhl"))LS.set("sport","nhl");else if(h.startsWith("soccer"))LS.set("sport","soc");else if(!SHARED.includes(h))LS.set("sport","nfl");
   document.getElementById("nav").hidden=isNba||isNhl||isSoc;document.getElementById("nbaNav").hidden=!isNba;const nhN=document.getElementById("nhlNav");if(nhN)nhN.hidden=!isNhl;const scN=document.getElementById("socNav");if(scN)scN.hidden=!isSoc;
   document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===(isSoc?"soc":isNhl?"nhl":isNba?"nba":"nfl")));
@@ -725,12 +725,12 @@ function route(){
   if(h.startsWith("props/")){const [,nm,mk]=h.split("/");if(nm&&(!S.prop||S.prop.player!==nm||!S.prop.open))S.prop={player:nm,market:mk||null,open:true};else if(S.prop&&mk)S.prop.market=mk}
   let v=h.startsWith("game-")?"game":h.startsWith("props/")?"props":h.startsWith("team-")?"nflteam":h;
   if(v==="slate")v="games";
-  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam"].includes(v))v="today";
+  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam","week"].includes(v))v="today";
   if(v!=="props"&&S.prop)S.prop.open=false;
   document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));
   document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v||((v==="game"||v==="nextweek")&&a.dataset.v==="games")||(v==="nflteam"&&a.dataset.v==="standings")));
   banner();if(typeof updateBetsBadge!=="undefined")updateBetsBadge();
-  ({nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
+  ({week:()=>typeof viewWeek!=="undefined"&&viewWeek(),nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",route);
