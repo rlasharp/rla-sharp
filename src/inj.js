@@ -1,6 +1,6 @@
 /* ---------- Injuries: ESPN NFL injury report (espn.com/nfl/injuries + ESPN team injury pages) ----------
    Every player ESPN lists, incl. injured reserve / PUP / NFI. Regenerate with tools/injgen.py data/espn_inj.txt "<date>". */
-const INJ_ASOF="Tue Nov 10";
+const INJ_ASOF="Wed Nov 11";
 const INJ={
   ARI:[["Michael Wilson", "WR", "IR", "Neck", "Feb 15"], ["Gardner Minshew II", "QB", "IR", "Elbow", "Feb 15"], ["Jayden Williams", "OT", "Questionable", "Knee", "Nov 15"], ["Bam Knight", "RB", "Questionable", "Concussion", "Nov 15"], ["Jon Gaines II", "G", "Questionable", "Ankle", "Nov 15"], ["Hjalte Froholdt", "C", "Questionable", "Concussion", "Nov 15"], ["Roy Lopez", "DT", "Questionable", "Toe", "Nov 15"], ["James Conner", "RB", "IR", "Foot", "Nov 15"]],
   ATL:[["Zachariah Branch", "WR", "Doubtful", "Hamstring", "Nov 15"], ["Cameron Williams", "OL", "IR", "Ankle", "Nov 15"], ["Brian Robinson Jr.", "RB", "IR", "Hamstring", "Dec 13"], ["Samson Ebukam", "DE", "IR", "Hamstring", "Dec 13"], ["Anterio Thompson", "DT", "Out", "Undisclosed", "Feb 15"]],
