@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""NFL referee crews -> nfl_refs.js (var NFL_REFS). Runs with the NFL site update.
+  Every final regular-season game this season (ESPN summary, cached in data/nfl_refs.json so each game is read once):
+  the referee, both teams' penalties + penalty yards, total points. Per referee: games, flags a game, yards, points.
+  This week's games: the referee once ESPN lists the crew (usually late in the week). Real data only.
+usage (from src/): python3 tools/nflrefs.py > nfl_refs.js"""
+import json, re, sys, os
+sys.path.insert(0, os.path.dirname(__file__))
+from auto_espn import get, teams_of, FIX_NFL, B
+ROOT = os.environ.get("REPO", os.path.abspath(".."))
+CF = os.path.join(ROOT, "data/nfl_refs.json")
+try: C = json.load(open(CF))
+except Exception: C = {}
+wk = int(re.search(r"PLAYS_WEEK=(\d+)", open("plays.js", encoding="utf-8").read()).group(1))
+slate = {(a, h): int(i) for i, a, h in re.findall(r'\{id:(\d+),away:"(\w+)",home:"(\w+)"', open("engine.js", encoding="utf-8").read())}
+def ref_of(s): return next((o.get("displayName") for o in ((s.get("gameInfo") or {}).get("officials") or []) if ((o.get("position") or {}).get("name") == "Referee")), None)
+UP, newg = {}, 0
+for w in range(1, wk + 1):
+    try: sb = get(B + f"football/nfl/scoreboard?week={w}&seasontype=2")
+    except SystemExit: continue
+    for e in sb.get("events") or []:
+        eid, st = e["id"], ((e.get("status") or {}).get("type") or {}).get("name")
+        c = e["competitions"][0]; a, h, T = teams_of(c, FIX_NFL)
+        if st == "STATUS_FINAL":
+            if eid in C: continue
+            try: s = get(B + "football/nfl/summary?event=" + eid)
+            except SystemExit: continue
+            r = ref_of(s); pen = yds = 0; ok = False
+            for t in (s.get("boxscore") or {}).get("teams") or []:
+                for x in t.get("statistics") or []:
+                    if x.get("name") == "totalPenaltiesYards" and "-" in str(x.get("displayValue")):
+                        n, y = str(x["displayValue"]).split("-", 1); pen += int(n); yds += int(y); ok = True
+            pts = sum(int(T[k].get("score") or 0) for k in ("away", "home"))
+            if r and ok: C[eid] = [w, r, pen, yds, pts]; newg += 1
+        elif w == wk and (a, h) in slate:
+            try: r = ref_of(get(B + "football/nfl/summary?event=" + eid))
+            except SystemExit: r = None
+            if r: UP[slate[(a, h)]] = r
+json.dump(C, open(CF, "w"), separators=(",", ":"))
+G = list(C.values())
+if not G: sys.exit("nflrefs: no games — keeping the old file")
+R = {}
+for w, r, p, y, t in G:
+    x = R.setdefault(r, [0, 0, 0, 0]); x[0] += 1; x[1] += p; x[2] += y; x[3] += t
+out = {"r": {r: {"n": n, "pen": round(p / n, 2), "yds": round(y / n, 1), "pts": round(t / n, 1)} for r, (n, p, y, t) in R.items()},
+       "lg": {"pen": round(sum(g[2] for g in G) / len(G), 2), "pts": round(sum(g[4] for g in G) / len(G), 1)}, "g": UP, "wk": wk}
+print(f"/* NFL referee crews — ESPN officials + team penalties (tools/nflrefs.py), {len(G)} games */")
+print("var NFL_REFS=" + json.dumps(out, separators=(",", ":"), ensure_ascii=False) + ";")
+print(f"nflrefs: {len(G)} games ({newg} new), {len(R)} referees, {len(UP)} of this week's crews posted", file=sys.stderr)

@@ -32,6 +32,7 @@ if want nfl; then
   python3 tools/auto_espn.py nfl-roll >> "$WORK/summary.txt" 2>&1 || log "NFL new week: not set up yet (kept this week)"   # writes nothing unless it completes   # once every game of the week is final: next week's games + lines, plays archived
   grep -q "nfl-roll: Week" "$WORK/summary.txt" && python3 tools/auto_espn.py nfl-update >> "$WORK/summary.txt" 2>&1   # fill the new week's lines right away
   python3 tools/nflwx.py > "$WORK/nflwx.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_WX" "$WORK/nflwx.js" && cp "$WORK/nflwx.js" nfl_wx.js || log "NFL weather: kept old"   # kickoff forecast for every outdoor game, refreshed each NFL update
+  python3 tools/nflrefs.py > "$WORK/nflrefs.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_REFS" "$WORK/nflrefs.js" && cp "$WORK/nflrefs.js" nfl_refs.js || log "NFL referees: kept old"   # referee crew tendencies + this week's crews once posted
   python3 tools/auto_espn.py nfl-inj "$NOWS" >> "$WORK/summary.txt" 2>&1 || log "NFL injuries: kept old"
   python3 tools/auto_espn.py nfl-qtr >> "$WORK/summary.txt" 2>&1 || log "NFL quarter scores: kept old"
   python3 tools/nflbox.py "$ROOT" > "$WORK/nflbox.js" 2>> "$WORK/summary.txt" && grep -q "^var BOX_ESPN" "$WORK/nflbox.js" && cp "$WORK/nflbox.js" nfl_box.js || log "NFL box scores (ESPN): kept old"
@@ -54,6 +55,7 @@ if want nhl; then   # NHL: official NHL API + PropLine feed (box scores cached i
   else log "NHL data FAILED — kept old: $(tail -3 "$WORK/nhl.log" | tr '\n' ' ')"; fi
 fi
 if want soc; then   # Soccer: ESPN box scores (cached in data/soccer_box.json) + PropLine odds/referees (data/live_odds.json) + Open-Meteo weather
+  python3 tools/socmgr.py > "$WORK/socmgr.js" 2>> "$WORK/summary.txt" && grep -q "^var SOC_MGR" "$WORK/socmgr.js" && cp "$WORK/socmgr.js" soccer_mgr.js || log "Soccer manager news: kept old"
   if python3 tools/soccerfetch.py "$ROOT" > "$WORK/soc.js" 2> "$WORK/soc.log" && grep -q "^var SOC_OK=1" "$WORK/soc.js"; then
     cp "$WORK/soc.js" soccer_data.js; log "$(tail -1 "$WORK/soc.log")"
   else log "Soccer data FAILED — kept old: $(tail -3 "$WORK/soc.log" | tr '\n' ' ')"; fi

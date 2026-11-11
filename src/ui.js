@@ -144,7 +144,7 @@ function viewGame(id){
     </div></div>
    ${nflGameTabs(g,tabP)}
    ${tabP?`<div id="gpBody">${nflGameProps(g)}</div>`:`
-   ${typeof nflQuick!=="undefined"?nflQuick(g):""}
+   ${typeof nflQuick!=="undefined"?nflQuick(g):""}${typeof xfNfl!=="undefined"?xfNfl(g):""}
    <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
     <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p>${typeof xaPmLine!=="undefined"?xaPmLine("nfl",g.away,g.home):""}</div>
    ${nflEdgesCard(g)}
@@ -605,7 +605,7 @@ function viewPlayer(){
   $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← All props</a>${outSt?`<div class="info" style="margin-top:12px"><span>🚑 <b>${esc(pl.name)} is ruled out (${esc(outSt)})</b> — he has no props this week. His past games are below for reference.</span></div>`:""}${typeof newsCard!=="undefined"?newsCard("nfl",{player:pl.name,hrs:72},"News about "+esc(pl.name)):""}
    <div class="row" style="margin:16px 0 6px">${badge(pl.team)}<h1 style="margin:0">${esc(pl.name)}</h1>${typeof INJ_P!=="undefined"&&INJ_P[pl.name]?injTag(pl.name):(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[pl.name]?`<span class="tag" style="background:#3a2a10;color:#fab219">⚠ ${QUESTIONABLE[pl.name]}</span>`:"")}</div>
    <div class="pline">${(()=>{const U=(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name])||null,su=U&&U.s;return [pl.pos+" · "+short(pl.team),o?`${o.home?"vs":"@"} ${short(opp)} · ${o.g.when}`:"No game this week",su&&su.snap!=null?su.snap+"% snaps":"",su&&su.tpg?fmt(su.tpg,1)+" targets/game":"",su&&su.cpg&&pl.pos!=="WR"&&pl.pos!=="TE"?fmt(su.cpg,1)+" carries/game":""].filter(Boolean).map(x=>`<span>${x}</span>`).join("")})()}</div>
-   <div class="qbrow">${typeof nflQbChip!=="undefined"?nflQbChip(pl)+nflWxChip(pl)+(typeof nfRushChip!=="undefined"?nfRushChip(pl):""):""}</div>${typeof nflUseBars!=="undefined"?nflUseBars(pl):""}
+   <div class="qbrow">${typeof nflQbChip!=="undefined"?nflQbChip(pl)+nflWxChip(pl)+(typeof xfScriptChip!=="undefined"?xfScriptChip(pl):"")+(typeof nfRushChip!=="undefined"?nfRushChip(pl):""):""}</div>${typeof nflUseBars!=="undefined"?nflUseBars(pl):""}
    ${o&&nflStarted(o.g)?`<div class="info" style="margin:12px 0"><span>🔒 His game has kicked off — this week's pregame lines are closed.</span></div>`:""}
    ${opp?`<div class="card" style="margin-top:12px;padding:12px">${nflAllowTiles(opp,pl.pos,k)}</div>`:""}
    <h2 class="noglo" style="margin:16px 0 10px">Prop charts · this week</h2>

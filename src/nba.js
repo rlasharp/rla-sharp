@@ -304,7 +304,7 @@ function nbaGame(el,id){
     <div class="ght">${nbaBadge(g.h)}<b>${nbaTeamLink(g.h,nbaEsc(nbaShort(g.h)))}</b><span class="small">${nbaRec(g.h)}</span></div>
   </div>
   ${nbaGameTabs(g,tabP)}
-  ${tabP?"":(typeof nbaQuick!=="undefined"?nbaQuick(g):"")}
+  ${tabP?"":(typeof nbaQuick!=="undefined"?nbaQuick(g):"")+(typeof xfNba!=="undefined"?xfNba(g):"")}
   ${tabP?`<div id="gpBody">${nbaGameProps(g)}</div>`:`<div class="card">
     ${L?`<div class="nbl" style="justify-content:center"><span>Spread <b>${L.sp<=0?g.h:g.a} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`:`<div class="small">Lines not posted yet.</div>`}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>
