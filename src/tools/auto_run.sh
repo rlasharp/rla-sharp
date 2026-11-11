@@ -12,6 +12,7 @@ if want nba; then
   python3 tools/auto_espn.py nba-finals "$TODAY" >> "$WORK/summary.txt" 2>&1 || log "NBA finals (ESPN): kept old"
   if bash tools/nbafetch.sh > "$WORK/nbafetch.log" 2>&1; then
     python3 tools/auto_espn.py nba-inj 2>>"$WORK/summary.txt" && log "NBA injuries refreshed" || log "NBA injuries: kept old"
+    python3 tools/nbalineups.py "$TODAY" > "$WORK/lu.js" 2>>"$WORK/summary.txt" && grep -q "^var NBA_LU" "$WORK/lu.js" && cp "$WORK/lu.js" nba_lu.js && log "NBA starting lineups refreshed" || log "NBA starting lineups: kept old"
     python3 tools/auto_espn.py nba-lines "$TODAY" 2>>"$WORK/summary.txt" && log "NBA lines checked" || log "NBA lines: kept old"
     python3 tools/nbarefs.py "$ROOT" > "$WORK/refs.js" 2>> "$WORK/summary.txt" && grep -q "^var NBA_REFS" "$WORK/refs.js" && cp "$WORK/refs.js" nba_refs.js || log "NBA referees: kept old"
     if ! grep -q "^# day: $TODAY" data/nba_props.txt; then   # new day: drop yesterday's props

@@ -599,6 +599,28 @@ for day in sorted({g["d"] for g in SLATE + NEXT}):
                 if ab and nm: EG[(day, ab)] = nm
     except Exception as e: log("ESPN probable goalies failed", day, e)
 log(f"ESPN listed starters: {len(EG)} teams")
+# ---- Daily Faceoff starting goalies: Confirmed / Likely / Unconfirmed, with the news source (beat reporters) ----
+DG = {}   # (day, team) -> {"n", "s", "d", "src", "at"}
+for day in sorted({g["d"] for g in SLATE + NEXT}):
+    try:
+        req = urllib.request.Request(f"https://www.dailyfaceoff.com/starting-goalies/{day}", headers={"User-Agent": "Mozilla/5.0 (rla-sharp research site)", "Accept": "text/html"})
+        with urllib.request.urlopen(req, timeout=30) as r: h_ = r.read().decode("utf8", "replace")
+        m_ = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', h_, re.S)
+        for x in ((json.loads(m_.group(1)).get("props") or {}).get("pageProps") or {}).get("data") or [] if m_ else []:
+            for side in ("home", "away"):
+                ab = byn0.get(norm(x.get(side + "TeamName") or "")); nm = x.get(side + "GoalieName")
+                if ab and nm: DG[(day, ab)] = {"n": nm, "s": x.get(side + "NewsStrengthName") or "", "d": (x.get(side + "NewsDetails") or "").strip()[:160],
+                                               "src": x.get(side + "NewsSourceName") or "", "at": x.get(side + "NewsCreatedAt") or ""}
+    except Exception as e: log("Daily Faceoff goalies failed", day, e)
+log(f"Daily Faceoff starters: {len(DG)} teams ({sum(1 for v in DG.values() if v['s'] == 'Confirmed')} confirmed)")
+def dfo_goalie(t, d):
+    x = DG.get((d, t))
+    if not x: return None, None
+    k = next((k for k in G if norm(k) == norm(x["n"]) and G[k]["tm"] == t), None)
+    return k, x
+for g in SLATE + NEXT:
+    df = [DG.get((g["d"], g["a"])), DG.get((g["d"], g["h"]))]
+    if any(df): g["dfo"] = df
 def espn_goalie(t, d):
     nm = EG.get((d, t))
     if not nm: return None
@@ -609,8 +631,12 @@ for g in SLATE + NEXT:
 def probable(t, d):
     L_ = [(nm, g_) for nm, g_ in G.items() if g_["tm"] == t and not out_inj(nm)]
     if not L_: return None
+    # order: Daily Faceoff "Confirmed" (team / beat reporter) > ESPN's listed starter > Daily Faceoff "Likely" > recent starts
+    dk, dx = dfo_goalie(t, d)
+    if dk and dx["s"] == "Confirmed" and not out_inj(dk): return dk, f"Confirmed starter ({dx['src'] or 'Daily Faceoff'})"
     eg = espn_goalie(t, d)
-    if eg and not out_inj(eg): return eg, "ESPN lists him as the starter (teams confirm closer to puck drop)"
+    if eg and not out_inj(eg): return eg, "ESPN lists him as the starter" + (f" · Daily Faceoff: {dx['s'].lower()} {dk}" if dk and dk != eg and dx["s"] else "")
+    if dk and dx["s"] == "Likely" and not out_inj(dk): return dk, f"Likely starter ({dx['src'] or 'Daily Faceoff'})"
     lined = next((nm for nm, _ in L_ if any(r[0] == nm and r[1] == "hsaves" for r in PROPS)), None)
     st = sorted([(x[0], nm) for nm, g_ in L_ for x in g_["g"] if x[7] and x[9] != 1], reverse=True)[:5]
     cnt = {}

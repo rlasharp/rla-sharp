@@ -303,7 +303,7 @@ function nbaGame(el,id){
     ${nbaMoveHtml(g,1)}
     ${nbaPickTxt(g)}${say?`<p style="margin:10px 0 0;font-size:14px;color:var(--text2)">${say}</p>`:""}
   </div>
-  ${typeof fxNba!=="undefined"?fxCard(fxNba(g),"Meetings last season and this season, and this season's results."):""}
+  ${typeof fxNba!=="undefined"?fxCard(fxNba(g),"Meetings last season and this season, and this season's results."):""}${nbaLuCard(g)}${typeof newsCard!=="undefined"?newsCard("nba",{teams:[g.a,g.h]},"Latest news: "+nbaShort(g.a)+" & "+nbaShort(g.h)):""}
   ${(()=>{const T=NB.gtab||"mu",tabs=[["mu","📊 Matchup"],["tr","📈 Trends"],["inj","🚑 Injuries"]];
     const nav=`<div class="gtabs nhtabs" style="margin-top:12px">${tabs.map(([k,l])=>`<a href="#" data-nbgt="${k}" class="${k===T?"on":""}">${l}</a>`).join("")}<a href="#nba-game-${g.id}-props">🎯 Props</a></div>`;
     if(T==="tr")return nav+`  <div style="margin-top:14px">${nbaGsHtml(g)}</div>
@@ -500,7 +500,7 @@ function nbaPropCard(r,idx){
   const tab=(t,l,n)=>{const c=typeof n==="string"&&n.includes("/")?(()=>{const [a,b]=n.split("/").map(Number);return a/b>=.6?"up":a/b<=.4?"dn":""})():"";return `<button data-pct="${id}|${t}" class="${t==="l10"?"on":""}">${l}${n!=null?`<small class="${c}">${n}</small>`:""}</button>`};
   const rate=a=>{if(!a.length)return "–";const o=a.filter(z=>pxHit(nbaVal(z.x,k),line)).length;return `${o}/${a.length}`};
   return `<div class="card prop" id="${id}" data-k="${k}" data-nm="${nbaEsc(nm)}" data-line="${line}" data-opp="${opp}" data-pos="${p.p5||""}">
-  <div class="pcw"><span class="pcb" style="background:${nbaCol(p.tm)};color:${xInkOn(nbaCol(p.tm))}">${p.tm}</span><div style="min-width:0"><b class="pcn">${nbaLink(nm)}</b>${nbaInjChip(inj)}
+  <div class="pcw"><span class="pcb" style="background:${nbaCol(p.tm)};color:${xInkOn(nbaCol(p.tm))}">${p.tm}</span><div style="min-width:0"><b class="pcn">${nbaLink(nm)}</b>${nbaInjChip(inj)}${typeof newsFlag!=="undefined"?newsFlag("nba",nm):""}
     <div class="small">${p.p5||p.pos} · ${opp?(g.a===p.tm?"@ ":"vs ")+nbaEsc(nbaShort(opp)):"no game"} · ${nbaF(nbaAvg(p,"min"))} min/game</div></div></div>
   <div class="pcl noglo"><div class="pcv">${line}<small>${NBA_MK[k]?NBA_MK[k][2]:""}</small>${typeof loStep!=="undefined"?loStep(nm,k,main):""}</div>
     <div class="pcm"><b>${NBA_MK[k]?NBA_MK[k][1]:nbaEsc(k)}</b>${alt&&typeof loAltChip!=="undefined"?loAltChip(nm,k):""}<div class="pco">${op!=null?`<span class="o">Over ${oddsFmt(op)}</span>`:""}${up!=null?`<span class="u">Under ${oddsFmt(up)}</span>`:""}${book?`<span class="bk">${nbaEsc(book)}</span>`:""}</div></div></div>
@@ -615,7 +615,7 @@ function nbaBest(){
 }
 function nbaBestRow(b,i){const mk=NBA_MK[b.k][1];
   return xPropRow({i,attrs:`data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}"`,badge:nbaBadge(b.p.tm),name:nbaEsc(b.nm),sub:`${b.g.a===b.p.tm?"@":"vs"} ${b.opp}`,
-    chips:nbaInjChip(nbaInjOf(b.nm))+(b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nba",b.nm,b.k,b.side):""),
+    chips:nbaInjChip(nbaInjOf(b.nm))+(typeof newsFlag!=="undefined"?newsFlag("nba",b.nm):"")+(b.c5[1]>=5&&b.c5[0]>=4?`<span class="bfire">🔥 ${b.c5[0]}/${b.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nba",b.nm,b.k,b.side):""),
     pick:`${b.side==="o"?"Over":"Under"} ${b.line} ${mk}`,odds:oddsFmt(b.odds),book:b.book?nbaEsc(b.book):"",l10:b.c10[1]?b.c10:b.c5,
     hits:[b.cS[1]>=3&&[b.cS[0],b.cS[1],"this season"],b.cH[1]&&[b.cH[0],b.cH[1],"vs "+b.opp]],why:b.dvOk===1?"matchup helps":b.dvOk===-1?"tough matchup":"",
     chance:Math.round(b.sc*100),need:Math.round(b.be*100),act:typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""})}
@@ -981,6 +981,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
   <div class="pline">${[bio&&bio[0]?nbaEsc(bio[0]):"",bio&&bio[1]?nbaEsc(String(bio[1]).replace(" lbs",""))+" lbs":"",bio&&bio[2]?nbaEsc(bio[2])+" yrs":"",bio&&bio[4]!==""&&bio[4]!=null?nbaEsc(bio[4])+" NBA seasons":"",p.g.length+" games",nbaF(nbaAvg(p,"min"))+" min/game"].filter(Boolean).map(x=>`<span>${x}</span>`).join("")}</div>
   ${g?`<div class="info"><span>Today ${g.a===p.tm?"@":"vs"} <b>${nbaTm(opp)}</b>, ${g.t} ET${dvpAvg!=null?`. ${opp} has allowed ${nbaF(dvpAvg)} points a game to ${nbaPosWord(p.p5)} over its last 5 (NBA average ${nbaF(dvp.lg)}).`:""}</span></div>`:""}
   ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}
+  ${typeof newsCard!=="undefined"?newsCard("nba",{player:nm,hrs:72},"News about "+nbaEsc(nm)):""}
   ${linesTbl}
   ${inj?`<div class="info">Injury report: <b style="color:${nbaInjCol(inj[2])}">${nbaEsc(inj[2])}</b> — ${nbaEsc(inj[3])}${inj[4]?", est. return "+nbaEsc(inj[4]):""}</div>`:""}
   <div class="grid g4" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">${tile("pts","Points")}${tile("reb","Rebounds")}${tile("ast","Assists")}${tile("3pm","3-Pointers")}</div>
@@ -1170,3 +1171,17 @@ function nbaUpcoming(el,h){
   <div class="grid g2">${G.map(card).join("")||`<div class="card">No NBA games scheduled.</div>`}</div>
   <p class="note" style="margin-top:8px">"Our early number" comes from each team's scoring margin this season plus home court. Injuries are today's report and can change.</p>`;
 }
+
+/* ---------- 🏀 Starting lineups (NBA.com, refreshed every ~20 min before tip-off): Confirmed / Expected starters,
+   and a warning when a player who started most of the team's last 5 games isn't in tonight's five ---------- */
+function nbaLuCard(g){const L=typeof NBA_LU!=="undefined"&&NBA_LU&&NBA_LU.g&&NBA_LU.g[g.a+"@"+g.h];if(!L||nbaStarted(g))return "";
+  const usual=t=>{const S={};let n=0;const last=NBA_RES.filter(r=>r[2]===t||r[3]===t).sort((x,y)=>x[1]<y[1]?1:-1).slice(0,5).map(r=>r[1]);n=last.length;
+    for(const [nm,p] of Object.entries(NBA_LOGS))if(p.tm===t)for(const x of p.g)if(last.includes(x[1])&&(x[9]===1||x[9]===true))S[nm]=(S[nm]||0)+1;return Object.keys(S).filter(k=>S[k]>=3&&n>=3)};
+  const side=(t,X)=>{if(!X||!X.st.length)return `<div><h3 style="margin:0 0 6px">${nbaBadge(t)} ${nbaEsc(nbaShort(t))}</h3><div class="small">Not posted yet — teams announce about 30 minutes before tip-off.</div></div>`;
+    const conf=X.st.every(p=>p[2]==="Confirmed"),inl=new Set(X.st.map(p=>typeof newsNorm!=="undefined"?newsNorm(p[0]):p[0])),miss=usual(t).filter(n=>!inl.has(typeof newsNorm!=="undefined"?newsNorm(n):n));
+    return `<div><h3 style="margin:0 0 6px">${nbaBadge(t)} ${nbaEsc(nbaShort(t))} <span class="gkt ${conf?"c":"l"}">${conf?"✅ Confirmed":"🟡 Expected"}</span></h3>
+      ${X.st.map(p=>`<div class="lur"><span class="small lup">${nbaEsc(p[1])}</span>${NBA_LOGS[p[0]]?nbaLink(p[0]):nbaEsc(p[0])}</div>`).join("")}
+      ${X.st.length>=5&&miss.length?`<div class="small lumiss">⚠️ Not in the lineup: <b>${miss.map(nbaEsc).join(", ")}</b> (started most of the last 5)</div>`:""}
+      ${X.out&&X.out.length?`<div class="small" style="margin-top:4px">Inactive: ${X.out.slice(0,8).map(nbaEsc).join(", ")}</div>`:""}</div>`};
+  return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:6px">🏀 Starting lineups</h2><div class="grid g2">${side(g.a,L.a)}${side(g.h,L.h)}</div>
+   <div class="small" style="margin-top:6px">From NBA.com · checked ${new Date(NBA_LU.at).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})} · the site re-checks about every 20 minutes before tip-off.</div></div>`}

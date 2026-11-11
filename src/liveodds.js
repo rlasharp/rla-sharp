@@ -193,21 +193,46 @@ loDropOut();
    the page re-reads ESPN's injury report every 10 minutes (and when you come back to the tab); anyone newly ruled out has
    his props removed right away and the page tells you. Fails quietly — the site's own refresh (every ~20 min before
    tip-off) does the same thing. */
-var LO_INJ={t:0,busy:0};
-async function loInjLive(force){if(location.protocol==="file:"||typeof NBA_INJ==="undefined"||typeof NBA_SLATE==="undefined"||typeof NBA_LOGS==="undefined")return;
-  if(!NBA_SLATE.some(g=>!nbaStarted(g))||LO_INJ.busy||(!force&&Date.now()-LO_INJ.t<9.5*60e3))return;LO_INJ.busy=1;
-  try{const r=await fetch("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",{cache:"no-store"});if(!r.ok)throw 0;const d=await r.json();
-    const idx={};for(const [n,p] of Object.entries(NBA_LOGS))idx[loNorm(n)]=[n,p.tm];const T={};let n=0;
-    for(const t of d.injuries||[])for(const i of t.injuries||[]){const st=i.status||"";if(!/^(Out|Day-To-Day|Doubtful|Questionable|Suspension)$/i.test(st))continue;
-      const a=i.athlete||{},hit=idx[loNorm(a.displayName)];if(!hit)continue;const det=i.details||{};
-      (T[hit[1]]=T[hit[1]]||[]).push([hit[0],(a.position||{}).abbreviation||"",st,((det.type||"")+" "+(det.detail||"")).trim().toLowerCase()||"undisclosed",det.returnDate?new Date(det.returnDate).toLocaleDateString("en-US",{month:"short",day:"numeric"}):""]);n++}
-    if(n<20)throw 0;   /* feed looks wrong: keep what we have */
-    const before=new Set(OUT_DROP.nba);
-    for(const k of Object.keys(NBA_INJ))if(/^[A-Z]{2,4}$/.test(k))NBA_INJ[k]=T[k]||[];for(const k of Object.keys(T))NBA_INJ[k]=T[k];
-    LO_INJ.t=Date.now();
-    if(loDropOut()){const nw=[...OUT_DROP.nba].filter(x=>!before.has(x));
+var LO_INJ={nba:{t:0},nhl:{t:0},nfl:{t:0},busy:0};
+/* per sport: ESPN feed, the site's injury table, how a team name maps to our abbreviation, and when to check */
+const LO_INJ_CFG={
+  nba:{url:"basketball/nba/injuries",min:20,tbl:()=>typeof NBA_INJ!=="undefined"?NBA_INJ:null,open:()=>typeof NBA_SLATE!=="undefined"&&NBA_SLATE.some(g=>!nbaStarted(g)),
+    team:()=>{const m={};if(typeof NBA_TEAMS!=="undefined")for(const [a,n] of Object.entries(NBA_TEAMS))m[loNorm(n)]=a;return m},st:s=>/^(Out|Day-To-Day|Doubtful|Questionable|Suspension)$/i.test(s)?s:null},
+  nhl:{url:"hockey/nhl/injuries",min:15,tbl:()=>typeof NHL_INJ!=="undefined"&&NHL_DATE?NHL_INJ:null,open:()=>typeof NHL_SLATE!=="undefined"&&NHL_SLATE.some(g=>!nhStarted(g)),
+    team:()=>{const m={};for(const [a,t] of Object.entries(typeof NHL_TEAM!=="undefined"?NHL_TEAM:{}))if(t.n)m[loNorm(t.n)]=a;return m},st:s=>s||null},
+  nfl:{url:"football/nfl/injuries",min:100,tbl:()=>typeof INJ!=="undefined"?INJ:null,open:()=>typeof SLATE!=="undefined"&&SLATE.some(g=>!g.final&&!nflStarted(g)),
+    team:()=>{const m={};for(const [a,t] of Object.entries(typeof TEAMS!=="undefined"?TEAMS:{}))m[loNorm(t[0])]=a;return m},st:s=>({"Out":"Out","Doubtful":"Doubtful","Questionable":"Questionable","Injured Reserve":"IR"})[s]||null}};
+async function loInjSport(sp,force){const C=LO_INJ_CFG[sp],S=LO_INJ[sp],T0=C.tbl();if(!T0||!C.open()||S.busy||(!force&&Date.now()-S.t<9.5*60e3))return 0;S.busy=1;
+  try{const r=await fetch("https://site.api.espn.com/apis/site/v2/sports/"+C.url,{cache:"no-store"});if(!r.ok)throw 0;const d=await r.json(),TM=C.team(),T={};let n=0;
+    const pt=nm=>{try{nm=String(nm||"");if(sp==="nba")return (NBA_LOGS[nm]||{}).tm;if(sp==="nhl"){const w=nhWho(nm);return w&&w.tm}return (typeof PINFO!=="undefined"&&PINFO[nm]||{}).team}catch(e){return null}};
+    for(const t of d.injuries||[]){let ab=TM[loNorm(t.displayName)];
+      if(!ab){const c={};for(const i of t.injuries||[]){const x=pt((i.athlete||{}).displayName);if(x)c[x]=(c[x]||0)+1}ab=Object.keys(c).sort((x,y)=>c[y]-c[x])[0]}   /* team name spelled differently: go by its players */
+      if(!ab)continue;T[ab]=[];
+      for(const i of t.injuries||[]){const st=C.st(i.status||"");if(!st)continue;const a=i.athlete||{},det=i.details||{};
+        T[ab].push([a.displayName||"",(a.position||{}).abbreviation||"",st,(((det.type||"")+" "+(det.detail||"")).trim()||"Undisclosed"),det.returnDate?new Date(det.returnDate).toLocaleDateString("en-US",{month:"short",day:"numeric"}):""]);n++}}
+    if(n<C.min)throw 0;   /* feed looks wrong: keep what we have */
+    for(const k of Object.keys(T))T0[k]=T[k];S.t=Date.now();return 1}
+  catch(e){S.t=Date.now();return 0}finally{S.busy=0}}
+/* 🥅 NHL starting goalies, live: ESPN's listed starters for today's games, re-read every 10 minutes before puck drop.
+   If ESPN now lists someone other than the goalie the site shows (and the site's pick isn't confirmed), the page switches
+   to ESPN's goalie and says so. */
+var NH_GKLIVE={},LO_GK={t:0};
+async function loNhlGoalies(force){if(typeof NHL_SLATE==="undefined"||!NHL_DATE||!NHL_SLATE.some(g=>!nhStarted(g))||(!force&&Date.now()-LO_GK.t<9.5*60e3))return 0;LO_GK.t=Date.now();
+  try{const r=await fetch("https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard?dates="+NHL_DATE.replace(/-/g,""),{cache:"no-store"});if(!r.ok)return 0;const d=await r.json();
+    const TM={};for(const [a,t] of Object.entries(NHL_TEAM||{}))if(t.n)TM[loNorm(t.n)]=a;let ch=0;const at=new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+    for(const e of d.events||[])for(const x of ((e.competitions||[{}])[0].competitors||[])){const tm=TM[loNorm((x.team||{}).displayName)];if(!tm)continue;
+      const pr=(x.probables||[]).find(q=>/goalie/i.test(q.name||""));const nm=pr&&pr.athlete&&pr.athlete.displayName;if(!nm)continue;
+      const k=Object.keys(NHL_G||{}).find(n=>loNorm(n)===loNorm(nm)&&NHL_G[n].tm===tm);if(!k)continue;
+      const g=NHL_SLATE.find(z=>z.a===tm||z.h===tm);if(!g||nhStarted(g))continue;const shown=g.proj&&(g.a===tm?g.proj.ga:g.proj.gh);
+      const key=g.d+"|"+tm,prev=NH_GKLIVE[key];if(k!==shown){if(!prev||prev.nm!==k){NH_GKLIVE[key]={nm:k,at};ch++}}else if(prev){delete NH_GKLIVE[key];ch++}}
+    return ch}catch(e){return 0}}
+async function loInjLive(force){if(location.protocol==="file:"||LO_INJ.busy)return;LO_INJ.busy=1;
+  try{const before={nba:new Set(OUT_DROP.nba),nhl:new Set(OUT_DROP.nhl),nfl:new Set(OUT_DROP.nfl)};let got=0;
+    for(const sp of ["nba","nhl","nfl"])got+=await loInjSport(sp,force);
+    const gk=await loNhlGoalies(force);if(gk&&!got&&/^#nhl/.test(location.hash)&&typeof route==="function"){const y=scrollY;route();scrollTo(0,y);if(typeof toast!=="undefined")toast("🥅 Starting goalie updated from ESPN")}
+    if(got&&loDropOut()){const nw=["nba","nhl","nfl"].flatMap(sp=>[...OUT_DROP[sp]].filter(x=>!before[sp].has(x)));
       if(typeof route==="function"){const y=scrollY;route();scrollTo(0,y)}
       if(nw.length&&typeof toast!=="undefined")toast(`🚑 Ruled out: ${nw.slice(0,3).join(", ")}${nw.length>3?` +${nw.length-3}`:""} — props removed`)}}
-  catch(e){LO_INJ.t=Date.now()}finally{LO_INJ.busy=0}}
+  finally{LO_INJ.busy=0}}
 window.addEventListener("load",()=>{setTimeout(()=>loInjLive(1),4000);setInterval(()=>loInjLive(0),60e3)});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)loInjLive(0)});
