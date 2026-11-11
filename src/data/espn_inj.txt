@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 18:09Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-11 19:40Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Michael Wilson|WR|IR|Neck|Feb 15
@@ -58,8 +58,8 @@ Denzel Boston|WR|Questionable|Toe|Nov 15
 Deshaun Watson|QB|Out|Undisclosed|
 Maliek Collins|DT|Questionable|Elbow|Nov 15
 #DAL
-DeMarvion Overshown|LB|Questionable|Hamstring|Nov 15
 George Pickens|WR|Questionable|Hamstring|Nov 15
+DeMarvion Overshown|LB|Questionable|Hamstring|Nov 15
 Joey Porter Jr.|CB|Questionable|Ankle|Nov 15
 Luke Schoonmaker|TE|Questionable|Groin|Nov 15
 KaVontae Turpin|WR|Questionable|Ribs|Nov 15
@@ -87,19 +87,19 @@ Jack Campbell|LB|IR|Neck|Dec 6
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
+Micah Parsons|DE|Out|Knee - ACL|Nov 25
+Josh Jacobs|RB|Out|Finger|Nov 25
 Josh Whyle|TE|Questionable|Concussion|Nov 15
 Sean Rhyan|G|Questionable|Ankle|Nov 15
 MarShawn Lloyd|RB|Questionable|Knee|Nov 15
 Zaire Franklin|LB|Doubtful|Shin|Nov 15
 Travis Glover|OT|Questionable|Knee|Nov 15
-Josh Jacobs|RB|Out|Finger|Nov 25
 Chris Brooks|RB|IR|Ankle|Nov 15
 Bo Melton|WR|Questionable|Head|Nov 15
 Ty'Ron Hopper|LB|Questionable|Chest|Nov 15
-Micah Parsons|DE|Out|Knee - ACL|Nov 25
 #HOU
-Cade Stover|TE|Out|Undisclosed|
 David Montgomery|RB|Questionable|Groin|Nov 15
+Cade Stover|TE|Out|Undisclosed|
 Reed Blankenship|S|Questionable|Concussion|Nov 15
 Jaylin Noel|WR|IR|Toe|Feb 15
 #IND
@@ -115,14 +115,15 @@ Jaylon Carlies|LB|Questionable|Neck|Nov 15
 Cam'Ron Silmon-Craig|S|Out|Coach's Decision|Nov 15
 Eric Murray|S|IR|Elbow|Feb 15
 #KC
+Patrick Mahomes|QB|Questionable|Elbow|Nov 15
+Xavier Worthy|WR|Questionable|Hamstring|Nov 15
 Peter Woods|DT|Questionable|Neck|Nov 15
 Mansoor Delane|CB|Questionable|Shoulder|Nov 15
 Jaylon Moore|OT|Questionable|Ankle|Nov 15
-Xavier Worthy|WR|Questionable|Hamstring|Nov 15
-Patrick Mahomes|QB|Questionable|Elbow|Nov 15
 L'Jarius Sneed|CB|IR|Knee|Nov 26
 Omarr Norman-Lott|DT|Out|Knee - ACL|Nov 15
 #LV
+Aidan O'Connell|QB|Out|Undisclosed|
 Thomas Booker IV|DT|Questionable|Ankle|Nov 15
 Trey Zuhn III|C|Questionable|Concussion|Nov 15
 #LAC
@@ -145,11 +146,13 @@ Terrance Ferguson|TE|IR|Hamstring|Nov 25
 Steve Avila|G|Questionable|Hamstring|Nov 15
 Jaylen Watson|CB|IR|Shoulder|Feb 15
 #MIA
-Malik Willis|QB|Questionable|Abdomen|Dec 13
+Malik Willis|QB|IR|Abdomen|Dec 13
 Zach Sieler|DT|IR|Biceps|Feb 15
 Jaylen Wright|RB|Questionable|Quadriceps|Nov 15
 Will Kacmarek|TE|Questionable|Quadriceps|Nov 15
 #MIN
+Carson Wentz|QB|Questionable|Ankle|Nov 15
+Blake Cashman|LB|Questionable|Concussion|Nov 15
 Kyler Murray|QB|Doubtful|Hamstring|Nov 15
 Jauan Jennings|WR|Questionable|Calf|Nov 15
 Tyrion Ingram-Dawkins|DE|Questionable|Ankle|Nov 15

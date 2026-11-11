@@ -1,9 +1,11 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 18:01Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 19:39Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
+#Boston Celtics
+Paul George|F|Out|illness|Nov 15
 #Brooklyn Nets
 Mikel Brown Jr.|G|Out|illness not specified|Nov 14
 Nolan Traore|G|Day-To-Day|calf soreness|Nov 11
@@ -14,8 +16,9 @@ Grant Williams|F|Out|hamstring|Nov 12
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Tobe Awaka|F|Out|back|Nov 13
+Caleb Wilson|F|Day-To-Day|hip soreness|Nov 11
 Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 11
-Tobe Awaka|F|Day-To-Day|back|Nov 11
 Zach Collins|F|Day-To-Day|illness|Nov 11
 #Cleveland Cavaliers
 Sam Merrill|G|Out|elbow|Nov 16
@@ -53,7 +56,7 @@ Brandon Ingram|F|Out|achilles surgery|Nov 13
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Quentin Grimes|G|Day-To-Day|finger|Nov 11
+Quentin Grimes|G|Out|finger|Nov 15
 #Memphis Grizzlies
 Isaiah Stewart|C|Day-To-Day|knee bruise|Nov 11
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
@@ -61,6 +64,7 @@ Quinten Post|C|Out|head|Nov 13
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Milwaukee Bucks
 Tyler Herro|G|Day-To-Day|knee bruise|Nov 11
+Myles Turner|C|Out|rest|Nov 13
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
@@ -70,6 +74,7 @@ Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 11
 Trendon Watford|F|Out|ankle sprain|Nov 13
 Yves Missi|C|Out|knee bruise|Nov 16
 #New York Knicks
+Karl-Anthony Towns|C|Day-To-Day|calf soreness|Nov 11
 Josh Hart|G|Out|illness|Nov 11
 #Oklahoma City Thunder
 Jaylin Williams|F|Out|back spasms|Nov 11
@@ -110,8 +115,8 @@ Scottie Barnes|F|Out|groin soreness|Nov 12
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 15
 #Utah Jazz
+Lauri Markkanen|F|Out|hand fracture|Jan 4
 Keyonte George|G|Day-To-Day|ankle sprain|Nov 11
-Lauri Markkanen|F|Day-To-Day|wrist sprain|Nov 11
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
