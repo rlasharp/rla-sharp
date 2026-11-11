@@ -6,7 +6,7 @@ function pxSideTg(){return `<div class="sidetg noglo"><span>Show hits for</span>
 if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("click",e=>{const r=e.target.closest&&e.target.closest("[data-frst]");if(!r)return;e.preventDefault();e.stopPropagation();
   const f=r.closest("[data-pxf]");
   if(f&&typeof PXS!=="undefined"){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot;/g,'"'),S0=PXS[key]||{},D=typeof PXG!=="undefined"&&PXG[key];PXS[key]={lo:-15,hi:15,mlo:0,mhi:D&&D.MN?D.MN.max:100,set:S0.set,open:S0.open}}
-  else if(r.closest(".nbmin")){const box=r.closest(".nbmin"),nm=box.dataset.nm?nbaUnesc(box.dataset.nm):null;NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;if(nm)delete NB.tmf[nm];NB._best=null;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(x){}}
+  else if(r.closest(".nbmin")){const box=r.closest(".nbmin"),nm=box.dataset.nm?nbaUnesc(box.dataset.nm):null;NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;if(nm)delete NB.tmf[nm];NB._best=null;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(x){}}
   else return;const y=window.scrollY;if(typeof route!=="undefined")route();window.scrollTo(0,y)},true);
 if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-side]");if(!b)return;e.preventDefault();e.stopPropagation();
   if(b.dataset.side===PXSIDE)return;PXSIDE=b.dataset.side;try{LS.set("pxside",PXSIDE)}catch(x){}const y=window.scrollY;if(typeof route!=="undefined")route();window.scrollTo(0,y)},true);
@@ -36,7 +36,7 @@ function nbaFinalHtml(g){const r=NBA_RES.find(z=>z[0]===g.id||(z[1]===NBA_SLATE_
 /* ---------- NBA section (separate from NFL; all globals prefixed nba / NB) ---------- */
 const NB={date:null,sel:null,team:"tonight",q:"",sort:"pts",ij:"tonight"};
 (()=>{const m=(typeof LS!=="undefined"&&LS.get("nbaMin"))||null;NB.mlo=m?m[0]:0;NB.mhi=m?m[1]:48;
-  const f=(typeof LS!=="undefined"&&LS.get("nbaGF"))||null;NB.gf=Object.assign({lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,ven:"",rest:"",role:""},f&&f.length===4?{lo:f[0],hi:f[1],tlo:f[2],thi:f[3]}:(f&&typeof f==="object"&&!Array.isArray(f)?f:{}))})();
+  const f=(typeof LS!=="undefined"&&LS.get("nbaGF"))||null;NB.gf=Object.assign({lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:""},f&&f.length===4?{lo:f[0],hi:f[1],tlo:f[2],thi:f[3]}:(f&&typeof f==="object"&&!Array.isArray(f)?f:{}))})();
 /* game filters for every prop chart: minutes, his team's spread (− = favored) and the game total — closing lines from NBA_SPR */
 function nbaGameLine(x){const S=typeof NBA_SPR!=="undefined"?NBA_SPR:null,s=S&&S[x[0]];if(!s)return null;return {sp:x[3]==="H"?s[3]:-s[3],tot:s[4]}}
 function nbaSpOn(){return NB.gf.lo>-15||NB.gf.hi<15}
@@ -49,19 +49,19 @@ function nbaSitOn(){return !!(NB.gf.ven||NB.gf.rest||NB.gf.role)}
 function nbaInR(x){if(x[4]<NB.mlo||(NB.mhi<48&&x[4]>NB.mhi))return false;
   const f0=NB.gf;if(f0.ven&&x[3]!==f0.ven)return false;if(f0.role&&((f0.role==="st")!==(x[9]===1||x[9]===true)))return false;
   if(f0.rest){const rd=nbaRestOf(x);if(rd==null)return false;if(f0.rest==="b2b"?rd!==0:rd<1)return false}
-  {const f=NB.gf;if((f.flo>0&&(x[11]||0)<f.flo)||(f.fhi<35&&(x[11]||0)>f.fhi))return false;
+  {const f=NB.gf;if((f.flo>0&&(x[11]||0)<f.flo)||(f.fhi<35&&(x[11]||0)>f.fhi))return false;if(((f.plo||0)>0&&(x[15]||0)<f.plo)||((f.phi??20)<20&&(x[15]||0)>f.phi))return false;
    if(f.ilo>95||f.ihi<135){const L=nbaGameLine(x);if(!L||L.tot==null)return false;const it=L.tot/2-L.sp/2;if((f.ilo>95&&it<f.ilo)||(f.ihi<135&&it>f.ihi))return false}}
   if(nbaSpOn()||nbaTtOn()){const L=nbaGameLine(x);if(!L)return false;const f=NB.gf;
     if(nbaSpOn()&&((f.lo>-15&&L.sp<f.lo)||(f.hi<15&&L.sp>f.hi)))return false;
     if(nbaTtOn()&&(L.tot==null||(f.tlo>195&&L.tot<f.tlo)||(f.thi<255&&L.tot>f.thi)))return false}
   return true}
-function nbaMinOn(){const f=NB.gf;return NB.mlo>0||NB.mhi<48||nbaSpOn()||nbaTtOn()||nbaSitOn()||f.flo>0||f.fhi<35||f.ilo>95||f.ihi<135}
+function nbaMinOn(){const f=NB.gf;return NB.mlo>0||NB.mhi<48||nbaSpOn()||nbaTtOn()||nbaSitOn()||f.flo>0||f.fhi<35||(f.plo||0)>0||(f.phi??20)<20||f.ilo>95||f.ihi<135}
 function nbaFiltTxt(){const a=[];if(NB.mlo>0||NB.mhi<48)a.push(`${NB.mlo}–${NB.mhi} minutes`);const f=NB.gf;if(nbaSpOn())a.push(pxSpRange(f.lo,f.hi));if(nbaTtOn())a.push(`total ${f.tlo}–${f.thi}`);for(const g of ["ven","rest","role"])if(f[g])a.push(NBA_SIT[g][1][f[g]]);return a.join(" · ")}
 const NBA_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{b2b:"Back-to-back",rest:"1+ days off"}],role:["Role",{st:"Starter",bn:"Bench"}]};
 function nbaMinUI(id,tn){
   const f=NB.gf,spPre=[[-15,-7,"Fav 7+"],[-15,-.5,"Favored"],[.5,15,"Underdog"],[7,15,"Dog 7+"]].concat(tn&&tn.sp!=null?[[Math.max(-15,tn.sp-3),Math.min(15,tn.sp+3),"Near tonight"]]:[]).concat([[-15,15,"Any"]]);
   const ttPre=[[195,255,"Any"]].concat(tn&&tn.tot!=null?[[Math.max(195,tn.tot-5),Math.min(255,tn.tot+5),`Near tonight (${tn.tot})`]]:[]).concat([[195,225,"Low (225 or less)"],[225,255,"High (225+)"]]);
-  const mnPre=[[0,48,"Any"],[10,48,"10+"],[20,48,"20+"],[25,48,"25+"],[30,48,"30+"]];
+  const mnPre=[[0,48,"Any"],[10,48,"10+"],[20,48,"20+"],[25,48,"25+"],[30,48,"30+"]].concat(tn&&tn.min!=null?[[Math.max(0,tn.min-4),Math.min(48,tn.min+4),`His usual (${tn.min}±4)`]]:[]);
   return `<div class="card nbmin pxf" id="${id}"${tn&&tn.nm?` data-nm="${nbaEsc(tn.nm)}"`:""}${tn&&tn.ha?` data-tn='${JSON.stringify({ven:tn.ha,rest:tn.rest,role:tn.role})}'`:""}><details class="pxfd"${NB.fOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary><div class="pxrw"><button type="button" class="pxrst" data-frst>↺ Reset all filters</button></div>
    ${tn&&tn.sp!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">Tonight: ${pxSpTxt(tn.sp)}${tn.tot!=null?" · O/U "+tn.tot:""}</span></div>`:""}
    <div class="pxfr"><div class="pxfl"><span>Situation</span>${tn&&tn.ha?`<button class="likeT" data-like="1">🎯 Like tonight</button>`:""}</div>
@@ -71,13 +71,14 @@ function nbaMinUI(id,tn){
    ${pxDual("it","Team total (implied points)",95,135,.5,f.ilo,f.ihi,["95","115","135"],[[95,135,"Any"]].concat(tn&&tn.it!=null?[[Math.max(95,tn.it-4),Math.min(135,tn.it+4),`Near tonight (${tn.it})`]]:[]).concat([[95,112,"112 or less"],[118,135,"118+"]]))}
    ${pxDual("mn","Minutes played",0,48,1,NB.mlo,NB.mhi,["0","24","48"],mnPre)}
    ${pxDual("fa","Field-goal attempts",0,35,1,f.flo,f.fhi,["0","17","35"],[[0,35,"Any"],[10,35,"10+"],[15,35,"15+"],[20,35,"20+"]].concat(tn&&tn.fga!=null?[[Math.max(0,tn.fga-3),Math.min(35,tn.fga+3),`His usual (${tn.fga}±3)`]]:[]))}
+   ${pxDual("pa","3-point attempts",0,20,1,f.plo??0,f.phi??20,["0","10","20"],[[0,20,"Any"],[3,20,"3+"],[5,20,"5+"],[8,20,"8+"]].concat(tn&&tn.tpa!=null?[[Math.max(0,tn.tpa-2),Math.min(20,tn.tpa+2),`His usual (${tn.tpa}±2)`]]:[]))}
    ${tn&&tn.nm?`<div class="pxfr"><div class="pxfl"><span>Teammates</span><span class="small">pick as many as you want</span></div>${nbaMateMulti(tn.nm)}</div>`:""}
    <div class="small">Applies to every chart and hit rate (L5, L10, Season, H2H). Spreads and totals are DraftKings closing lines; older games have none, so they drop out when those filters are on.</div></details></div>`;
 }
 function nbaWireMin(root,redraw){
   const box=root.querySelector(".nbmin");if(!box)return;
-  const st={sp:[NB.gf.lo,NB.gf.hi],tt:[NB.gf.tlo,NB.gf.thi],it:[NB.gf.ilo,NB.gf.ihi],mn:[NB.mlo,NB.mhi],fa:[NB.gf.flo,NB.gf.fhi]},R={sp:[-15,15],tt:[195,255],it:[95,135],mn:[0,48],fa:[0,35]};
-  const txt={sp:pxSpRange,tt:(x,y)=>x<=195&&y>=255?"Any total":x<=195?`${y} or less`:y>=255?`${x} or more`:`${x} to ${y}`,mn:(x,y)=>x<=0&&y>=48?"Any minutes":`${x} to ${y} min`,it:(x,y)=>x<=95&&y>=135?"Any team total":x<=95?`Team total ≤${y}`:y>=135?`Team total ${x}+`:`Team total ${x}–${y}`,fa:(x,y)=>x<=0&&y>=35?"Any FGA":y>=35?`${x}+ FGA`:`${x}–${y} FGA`};
+  const st={sp:[NB.gf.lo,NB.gf.hi],tt:[NB.gf.tlo,NB.gf.thi],it:[NB.gf.ilo,NB.gf.ihi],mn:[NB.mlo,NB.mhi],fa:[NB.gf.flo,NB.gf.fhi],pa:[NB.gf.plo??0,NB.gf.phi??20]},R={sp:[-15,15],tt:[195,255],it:[95,135],mn:[0,48],fa:[0,35],pa:[0,20]};
+  const txt={sp:pxSpRange,tt:(x,y)=>x<=195&&y>=255?"Any total":x<=195?`${y} or less`:y>=255?`${x} or more`:`${x} to ${y}`,mn:(x,y)=>x<=0&&y>=48?"Any minutes":`${x} to ${y} min`,it:(x,y)=>x<=95&&y>=135?"Any team total":x<=95?`Team total ≤${y}`:y>=135?`Team total ${x}+`:`Team total ${x}–${y}`,fa:(x,y)=>x<=0&&y>=35?"Any FGA":y>=35?`${x}+ FGA`:`${x}–${y} FGA`,pa:(x,y)=>x<=0&&y>=20?"Any 3PA":y>=20?`${x}+ 3PA`:`${x}–${y} 3PA`};
   const paint=()=>{for(const nm in st){const [a,b]=st[nm],x=Math.min(a,b),y=Math.max(a,b),[mn,mx]=R[nm];if(!box.querySelector(`[data-out="${nm}"]`))continue;
     box.querySelector(`[data-out="${nm}"]`).textContent=txt[nm](x,y);const fl=box.querySelector(`[data-fill="${nm}"]`);fl.style.left=(x-mn)/(mx-mn)*100+"%";fl.style.right=(100-(y-mn)/(mx-mn)*100)+"%";
     box.querySelector(`[data-r="${nm}|lo"]`).value=a;box.querySelector(`[data-r="${nm}|hi"]`).value=b;
@@ -88,7 +89,7 @@ function nbaWireMin(root,redraw){
     const fs=box.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.join("")+`<span class="fchip frst" data-frst>↺ Reset</span>`:`<span class="fany">No filters — all games${mnm?" · all teammates":""}</span>`;
     box.querySelectorAll("[data-fclr]").forEach(c=>c.onclick=e=>{e.preventDefault();e.stopPropagation();if(c.dataset.fclr.startsWith("mate|")){const who=nbaUnesc(c.dataset.fclr.slice(5));if(NB.tmf[mnm]&&typeof NB.tmf[mnm]==="object"){delete NB.tmf[mnm][who];if(!Object.keys(NB.tmf[mnm]).length)delete NB.tmf[mnm]}apply();return}if(c.dataset.fclr.startsWith("sit|")){NB.gf[c.dataset.fclr.slice(4)]="";apply();return}st[c.dataset.fclr]=[...R[c.dataset.fclr]];paint();apply()})};
   const dd=box.querySelector("details");if(dd)dd.ontoggle=()=>{NB.fOpen=dd.open};
-  const apply=()=>{const o=(nm)=>[Math.min(...st[nm]),Math.max(...st[nm])];[NB.gf.lo,NB.gf.hi]=o("sp");[NB.gf.tlo,NB.gf.thi]=o("tt");[NB.mlo,NB.mhi]=o("mn");[NB.gf.ilo,NB.gf.ihi]=o("it");[NB.gf.flo,NB.gf.fhi]=o("fa");
+  const apply=()=>{const o=(nm)=>[Math.min(...st[nm]),Math.max(...st[nm])];[NB.gf.lo,NB.gf.hi]=o("sp");[NB.gf.tlo,NB.gf.thi]=o("tt");[NB.mlo,NB.mhi]=o("mn");[NB.gf.ilo,NB.gf.ihi]=o("it");[NB.gf.flo,NB.gf.fhi]=o("fa");[NB.gf.plo,NB.gf.phi]=o("pa");
     try{LS.set("nbaMin",[NB.mlo,NB.mhi]);LS.set("nbaGF",NB.gf)}catch(e){}NB._best=null;const y=window.scrollY;redraw();window.scrollTo(0,y)};
   box.querySelectorAll("input[data-r]").forEach(inp=>{const [nm,w]=inp.dataset.r.split("|");inp.oninput=()=>{st[nm][w==="lo"?0:1]=+inp.value;paint()};inp.onchange=apply});
   box.querySelectorAll("[data-pre]").forEach(b=>b.onclick=()=>{const [nm,a,c]=b.dataset.pre.split("|");st[nm]=[+a,+c];paint();apply()});
@@ -981,7 +982,7 @@ function nbaGameProps0(g){
 }
 function nbaGamePropCount(g){if(nbaStarted(g))return 0;return NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&(p.tm===g.a||p.tm===g.h)&&NBA_MK[r[1]]}).length}
 function nbaPlayer(el,nm){
-  if(NB.lastPl!==nm){{NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;NB.tmf={};NB._best=null;NB.fOpen=false;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(e){}}NB.lastPl=nm}   /* new player: filters reset, and the filter panel starts closed */
+  if(NB.lastPl!==nm){{NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;NB.tmf={};NB._best=null;NB.fOpen=false;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(e){}}NB.lastPl=nm}   /* new player: filters reset, and the filter panel starts closed */
   const p=NBA_LOGS[nm];
   if(!p){el.innerHTML=`<a href="#nba-players" class="small" style="color:var(--text2)">← Players</a><h1>${nbaEsc(nm)}</h1><p class="sub">No games played yet this season.</p>`;return}
   const g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):"",inj=nbaInjOf(nm);
@@ -995,7 +996,7 @@ function nbaPlayer(el,nm){
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
   const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk","sb"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div><div class="small swh">👆 Swipe the chart left or right for the next prop</div>
-${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null;return {fga:fg0,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":"rest"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
+${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null,mn0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[4]||0),0)/p.g.length):null,tp0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[15]||0),0)/p.g.length):null;return {fga:fg0,min:mn0,tpa:tp0>0?tp0:null,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":"rest"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
     <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":(typeof OUT_DROP!=="undefined"&&OUT_DROP.nba.has(nm)?"🚑 He's ruled out — his props are removed.":"No prop lines posted for him today.")}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">

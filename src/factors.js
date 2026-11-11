@@ -94,6 +94,6 @@ function xfDerby(f){const a=xfNm(f.h),b=xfNm(f.a),eq=(x,y)=>x.toLowerCase()===y.
 /* manager news (ESPN, tools/soccerfetch.py -> SOC_MGR: last 60 days of sackings / appointments / suspensions per team) */
 function xfMgr(f){const M=(typeof SOC_MGR!=="undefined"&&SOC_MGR)||{},out=[];
   for(const t of [f.h,f.a])for(const x of (M[t]||[]).slice(0,2)){const d=Math.round((Date.now()-Date.parse(x.at))/864e5);if(!(d>=0)||d>60)continue;
-    out.push({ic:"🧑‍💼",c:"y",h:`${xfE(socTm(t))}: ${x.k==="sacked"?"manager change":x.k==="suspended"?"manager suspended":"new manager"}`,t:`<a href="${xfE(x.url)}" target="_blank" rel="noopener">${xfE(x.h)}</a> · ${d===0?"today":d+" day"+(d>1?"s":"")+" ago"}${x.k!=="suspended"&&d<=30?". Teams often get a short-term lift right after a new manager comes in.":""}`})}
+    out.push({ic:"🧑‍💼",c:"y",h:`${xfE(socTm(t))}: ${({sacked:"manager change",suspended:"manager suspended",appointed:"new manager",interim:"interim manager",pressure:"manager under pressure"})[x.k]||"manager news"}`,t:`<a href="${xfE(x.url)}" target="_blank" rel="noopener">${xfE(x.h)}</a> · ${d===0?"today":d+" day"+(d>1?"s":"")+" ago"}${["sacked","appointed","interim"].includes(x.k)&&d<=30?". Teams often get a short-term lift right after a new manager comes in.":""}`})}
   return out}
 function xfSoc(f){try{return xfCard([...xfMgr(f),xfDerby(f),...xfMotiv(f),...xfCongest(f)],"Situations that can swing this match beyond the numbers.")}catch(e){return ""}}
