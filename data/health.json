@@ -1,16 +1,16 @@
 {
  "auto": {
-  "at": "2026-11-11T07:34:37+00:00",
+  "at": "2026-11-11T07:50:34+00:00",
   "ok": true,
-  "summary": "nfl-update: 14 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 8 with a forecast\n202 players, 32 teams\nnfl-inj: 202 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\ntrack: nba 2026-11-11: snapshot 10 props, 10 games \u00b7 graded: NHL plays 6-9, best props NBA 12-18 NFL 8-2 NHL 10-20\nSite check OK \u2014 published (2026-11-11T07:33:42Z)\n"
+  "summary": "soccer: 145 upcoming matches (0 with odds, 143 with estimates, 107 with weather, 0 with referee), 0 player props, 5880 players\ntrack: nba 2026-11-11: snapshot 10 props, 10 games \u00b7 graded: NHL plays 6-9, best props NBA 12-18 NFL 8-2 NHL 10-20\nSite check OK \u2014 published (2026-11-11T07:49:40Z)\n"
  },
  "site": {
-  "at": "2026-11-11T07:34:37+00:00",
+  "at": "2026-11-11T07:50:34+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-11T07:34:37+00:00",
+  "at": "2026-11-11T07:50:34+00:00",
   "ok": true,
   "issue": "",
   "gen": "Wed Nov 11 2:30 AM ET",
@@ -652,6 +652,16 @@
   {
    "at": "2026-11-11T07:34:37+00:00",
    "what": "nfl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-11T07:50:34+00:00",
+   "what": "soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
