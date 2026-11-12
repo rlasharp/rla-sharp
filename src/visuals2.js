@@ -81,6 +81,10 @@ function vxNbaZones(g){if(typeof NBA_OZONE==="undefined"||typeof NBA_DZONE==="un
      ${vxTabs(id,[["ao",`${vxE(nbaShort(a))} shoot`],["hd",`${vxE(nbaShort(h))} allow`],["ho",`${vxE(nbaShort(h))} shoot`],["ad",`${vxE(nbaShort(a))} allow`]],"ao")}
      ${nbaCourtFor(S,side==="o"?"this season":`by opponents this season`,side==="o"?`${vxE(nbaShort(att))} shooting`:`What ${vxE(nbaShort(def))} allow`)}
      ${ed.length?`<div class="shx">${ed.map(r=>`<div class="${r.e>0?"g":"r"}"><b>${r.e>0?"✅":"⚠️"} ${r.zn}</b> — ${Math.round(r.sh)}% of ${vxE(nbaShort(att))} shots; ${vxE(nbaShort(def))} allow <b>${Math.round(r.dp)}%</b> there (NBA ${Math.round(r.lp)}%).</div>`).join("")}</div>`:""}
+     ${(()=>{const A=vxE(nbaShort(att)),Dn=vxE(nbaShort(def)),cls=(v,l,n,min)=>v==null||l==null||n<min?"":v-l>=3?"g":v-l<=-3?"r":"";
+       return `<h3 style="margin:12px 0 6px">Zone by zone</h3><table class="mxt shz"><thead><tr><th>Zone</th><th>${A} shots</th><th>${A} FG%</th><th>${Dn} allow FG%</th><th>NBA FG%</th></tr></thead><tbody>${NBA_ZONES.map((zn,i)=>{const sh=O[i][0]/Math.max(1,oT)*100,op=pc(O[i]),dp=pc(D[i]),lp=pc(NBA_LGZ[i]);
+        return `<tr><td>${zn}</td><td>${Math.round(sh)}%</td><td class="${cls(op,lp,O[i][0],15)}">${op==null?"–":Math.round(op)+"%"}</td><td class="${cls(dp,lp,D[i][0],15)}">${dp==null?"–":Math.round(dp)+"%"}</td><td>${lp==null?"–":Math.round(lp)+"%"}</td></tr>`}).join("")}</tbody></table>
+       <div class="small" style="margin-top:6px"><span class="up">Green</span> = above the NBA average (good for the shooting team), <span class="dn">red</span> = below. "${Dn} allow" = what every opponent shot against them this season.</div>`})()}
      <div class="small" style="margin-top:6px">From ESPN play-by-play shot locations, this season. ✅ / ⚠️ = a zone ${vxE(nbaShort(att))} use a lot where ${vxE(nbaShort(def))} are worse / better than average.</div></div>`})}
 
 /* ===== 6. NHL team shot map: unblocked attempts by area, for and against, per game ===== */
