@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 15:32Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 17:32Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -34,8 +34,8 @@ Ugonna Onyenso|C|Day-To-Day|foot|Nov 13
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
+Stephen Curry|G|Out|abdomen|Dec 1
 Gary Payton II|G|Day-To-Day|knee inflammation|Nov 13
-Stephen Curry|G|Day-To-Day|abdomen soreness|Nov 13
 Brandon Williams|G|Out|hamstring not specified|Nov 22
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
@@ -90,10 +90,10 @@ Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
+Dominick Barlow|F|Out|back fracture|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
 Joel Embiid|C|Day-To-Day|foot|Nov 12
 LeBron James|F|Day-To-Day|back|Nov 12
-Dominick Barlow|F|Out|back fracture|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
@@ -116,6 +116,7 @@ Kawhi Leonard|F|Out|knee inflammation|Nov 23
 Scottie Barnes|F|Out|groin soreness|Nov 12
 Nate Bittle|C|Out|foot fracture|Nov 15
 #Utah Jazz
+Trey Alexander|G|Out|ankle sprain|Nov 16
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
