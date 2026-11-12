@@ -68,7 +68,7 @@ function potdNhl(){if(typeof NHL_DATE==="undefined"||!NHL_DATE){if(typeof nhlEns
         strip:potdStrip(vals,x.line,x.side),why,r:x.r,v:x.v,attr:`data-pdnhl="${potdE(x.nm)}"`,foot:`<div class="pdft"><span class="small">Tap for his full game log →</span></div>`},i)}
     const g=(NHL_SLATE||[]).find(y=>y.a===x.a&&y.h===x.h),e=x.e||(g?nhEdges(g).find(y=>y.mk===x.mk&&y.pick===x.pick):null),pr=g&&nhProject(g);
     const why=[];if(pr)why.push(`Our model: ${potdE(nhTm(g.h))} win ${potdPct(pr.hwin)} of the time; expected score ${potdE(nhTm(g.a))} ${pr.la.toFixed(1)} – ${pr.lh.toFixed(1)} ${potdE(nhTm(g.h))}.`);
-    if(g){const pa=nhProbable(g.a),ph=nhProbable(g.h);if(pa||ph)why.push(`Goalies: ${potdE(pa?pa.nm:"TBD")} vs ${potdE(ph?ph.nm:"TBD")}.`)}
+    if(g){const pa=nhProbable(g.a,g),ph=nhProbable(g.h,g);if(pa||ph)why.push(`Goalies: ${potdE(pa?pa.nm:"TBD")} vs ${potdE(ph?ph.nm:"TBD")}.`)}
     if(x.why&&!e)why.push(potdE(x.why));
     return potdCard({title:`${potdE(x.pick)} <span class="small">${potdE(x.mk)}</span>`,sub:`${potdE(nhTm(x.a))} @ ${potdE(nhTm(x.h))}${g?" · "+potdE(g.t)+" ET":""}`,odds:x.odds,ch:e?e.me:null,need:e?e.bk:imp(x.odds),why,r:x.r,v:x.v,
       attr:g?`data-pdgame="#nhl-game-${g.id}"`:"",foot:g?`<div class="pdft"><span class="small">Tap for the full matchup →</span></div>`:""},i)}).join("");

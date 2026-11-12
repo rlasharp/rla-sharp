@@ -19,9 +19,11 @@ function vxHeatRows(sp){
 function vxHeat(sp,a,h,name){try{const R=vxHeatRows(sp);if(!R.length)return "";
   const cell=(row,off,def)=>{const O=row.o(off),D=row.d(def);if(!O||!D||!O[1]||!D[1])return `<td class="vxhc">–</td>`;const n=row.n,e=(n+1-O[1])-(n+1-D[1]);
     return `<td class="vxhc" style="background:${vxEdgeBg(e,n*.75)}"><b>${vxOrd(O[1])}</b> <span class="small">vs</span> <b>${vxOrd(D[1])}</b><div class="small">${(+O[0]).toFixed(1)}${row.u||""} · ${(+D[0]).toFixed(1)}${row.u||""}</div></td>`};
+  const col=(row,off,def)=>{const O=row.o(off),D=row.d(def);if(!O||!D||!O[1]||!D[1])return `<div class="vxhc vxna">–</div>`;const n=row.n,e=(n+1-O[1])-(n+1-D[1]);
+    return `<div class="vxhc" style="background:${vxEdgeBg(e,n*.75)}"><b>${vxOrd(O[1])}</b> <span class="small">vs</span> <b>${vxOrd(D[1])}</b><span class="small vxhv">${(+O[0]).toFixed(1)}${row.u||""} · ${(+D[0]).toFixed(1)}${row.u||""}</span></div>`};
   return `<div class="card xacard vxheat" style="margin-top:12px"><h2>🌡️ Matchup heat map</h2><div class="xasub">Each cell: the attack's rank vs the defense's rank (1st = best). <span style="color:#16a34a">Green</span> = the attack has the edge, <span style="color:#e5484d">red</span> = the defense does. Darker = bigger gap.</div>
-   <div class="nbatbl"><table class="bxt vxht"><thead><tr><th></th><th>${vxE(name(a))} attack<br><span class="small">vs ${vxE(name(h))} D</span></th><th>${vxE(name(h))} attack<br><span class="small">vs ${vxE(name(a))} D</span></th></tr></thead>
-   <tbody>${R.map(row=>`<tr><td>${vxE(row.l)}</td>${cell(row,a,h)}${cell(row,h,a)}</tr>`).join("")}</tbody></table></div></div>`}catch(e){return ""}}
+   <div class="vxhg vxhh"><div>${vxE(name(a))} attack <span class="small">vs ${vxE(name(h))} D</span></div><div>${vxE(name(h))} attack <span class="small">vs ${vxE(name(a))} D</span></div></div>
+   ${R.map(row=>`<div class="vxhl">${vxE(row.l)}</div><div class="vxhg">${col(row,a,h)}${col(row,h,a)}</div>`).join("")}</div>`}catch(e){return ""}}
 
 /* ===== 28. Minutes vs stat (NBA player, per prop market): a clean dot chart — green zone above the line, red below,
    his last 5 games ringed, and the one number that matters: how often he clears it when he plays his usual minutes ===== */
@@ -50,7 +52,7 @@ function vxDvpInner(def,k){const rows=VX_POS.map(ps=>{const d=nbaDvp(def,ps,k,10
 function vxDvp(g){try{const k=(window.VX_DK)||"pts",tab=`<div class="vxtabs">${[["pts","PTS"],["reb","REB"],["ast","AST"],["3pm","3PM"]].map(([x,l])=>`<button data-vxdk="${x}" class="${x===k?"on":""}">${l}</button>`).join("")}</div>`;
   const side=def=>`<div><div class="small" style="margin:6px 0 4px"><b>${vxE(nbaShort(def))} defense</b> — what starters at each position scored against them (last 10 games) vs the league average</div>${vxDvpInner(def,k)}</div>`;
   return `<div class="card xacard vxdvc" style="margin-top:12px" data-vxg="${g.a}|${g.h}"><h2>🛡️ Defense vs position</h2><div class="xasub">Bars right (green) = they allow more than average to that position — good for those players' overs. Left (red) = they shut it down.</div>${tab}<div class="grid g2 vxdvbody">${side(g.h)}${side(g.a)}</div></div>`}catch(e){return ""}}
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-vxdk]");if(!b)return;e.preventDefault();e.stopPropagation();window.VX_DK=b.dataset.vxdk;const c=b.closest(".vxdvc"),[a,h]=c.dataset.vxg.split("|"),n=document.createElement("div");n.innerHTML=vxDvp({a,h});const nc=n.firstElementChild;if(c.classList.contains("open"))nc.classList.add("open","xfold");c.replaceWith(nc);if(typeof uxFoldCards!=="undefined")uxFoldCards()});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-vxdk]");if(!b)return;e.preventDefault();e.stopPropagation();window.VX_DK=b.dataset.vxdk;const c=b.closest(".vxdvc"),[a,h]=c.dataset.vxg.split("|"),n=document.createElement("div");n.innerHTML=vxDvp({a,h});const nc=n.firstElementChild;const inLazy=c.parentElement&&c.parentElement.classList.contains("gplzin");if(!inLazy&&c.classList.contains("open"))nc.classList.add("open","xfold");c.replaceWith(nc);if(!inLazy&&typeof uxFoldCards!=="undefined")uxFoldCards()});
 
 /* ===== 30. Injury impact meter: team margin with vs without each key player listed out ===== */
 function vxMeter(sp,t,k,s){const f=v=>v.toFixed(sp==="nhl"?2:1),mw=s.w.me-s.w.op,mo=s.wo.me-s.wo.op,d=mo-mw,rng=sp==="nhl"?2:sp==="nfl"?14:15,w=Math.min(50,Math.abs(d)/rng*50);

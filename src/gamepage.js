@@ -27,7 +27,7 @@ function gpFill(c){const fn=GP_LZ[c.dataset.lz];if(!fn)return;delete GP_LZ[c.dat
   const b=c.querySelector(".gplzb");if(!h){b.textContent="Nothing to show for this game yet.";return}
   const t=document.createElement("div");t.innerHTML=h;const inner=t.firstElementChild;
   /* keep our folded frame + title; take the built card's body */
-  if(inner&&inner.classList.contains("card")){const h2=inner.querySelector("h2");if(h2)h2.remove();b.className="gplzin";b.innerHTML=inner.innerHTML}else{b.className="gplzin";b.innerHTML=h}}
+  b.className="gplzin";b.innerHTML=h}   /* the built card stays whole (its buttons keep working); CSS flattens its frame and hides its title */
 document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest(".gplazy > h2");if(h){const c=h.parentElement;if(GP_LZ[c.dataset.lz])gpFill(c)}},true);
 
 /* ---------- after every render: fill the summary, fold, shorten, tidy ---------- */
@@ -72,7 +72,7 @@ function tdAllGames(){const R=[];const today=typeof etNow!=="undefined"?etNow().
   try{for(const g of (typeof NBA_SLATE!=="undefined"&&NBA_SLATE_DATE===today?NBA_SLATE:[])){if(nbaStarted(g))continue;const x=typeof nbaGamePick!=="undefined"?nbaGamePick(g):null,M=nbaModel(g.a,g.h);
     R.push({ic:"🏀",t:g.t,m:`${g.a} @ ${g.h}`,href:`#nba-game-${g.id}`,pick:x?`${x.txt} <span class="small">· ${Math.round(x.ch*100)}%</span>`:M?`${nbaShort(M.m>=0?g.h:g.a)} by ${Math.max(.5,Math.abs(M.m))} <span class="small">(estimate)</span>`:""})}}catch(e){}
   try{for(const g of (typeof NHL_SLATE!=="undefined"&&NHL_DATE===today?NHL_SLATE:[])){if(nhStarted(g))continue;const pr=nhProject(g);let pk="";
-    if(pr){const hw=pr.hwin>=.5,w=hw?g.h:g.a;let ws=Math.round(hw?pr.lh:pr.la),ls=Math.round(hw?pr.la:pr.lh);if(ws<=ls)ws=ls+1;pk=`${nhTm(w)} ${ws}–${ls} <span class="small">· ${Math.round((hw?pr.hwin:1-pr.hwin)*100)}%</span>`}
+    if(pr){const hw=pr.hwin>=.5,w=hw?g.h:g.a;let [ws,ls]=nhPredScore(pr,hw,g);pk=`${nhTm(w)} ${ws}–${ls} <span class="small">· ${Math.round((hw?pr.hwin:1-pr.hwin)*100)}%</span>`}
     R.push({ic:"🏒",t:g.t+" ET",m:`${g.a} @ ${g.h}`,href:`#nhl-game-${g.id}`,pick:pk})}}catch(e){}
   try{for(const g of (typeof SLATE!=="undefined"?SLATE:[])){if(g.final||nflStarted(g)||nflDate(g)!==today)continue;const pj=projScore(g);
     R.push({ic:"🏈",t:String(g.when||"").split("·").pop().trim(),m:`${g.away} @ ${g.home}`,href:`#game-${g.id}`,pick:pj?`${short(pj.win)} ${Math.max(pj.a,pj.h)}–${Math.min(pj.a,pj.h)}`:""})}}catch(e){}
