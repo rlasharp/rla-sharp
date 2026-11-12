@@ -73,17 +73,29 @@ function srchFind(q0){const q=srchNorm(q0),W=q.split(" ").filter(Boolean),I=sear
       const m=w.length>=7?2:1;if(!x.tk.some(t=>srchLev(w,t,m)<=m||(t.length>w.length&&srchLev(w,t.slice(0,w.length),m)<=m))){ok=false;break}}
     if(ok)put(x,2)}
   return [...out.values()].sort((a,b)=>a._t-b._t||(/^Team/.test(b.sub)-/^Team/.test(a.sub))||b.w-a.w).slice(0,10)}
+/* recent searches (this device) and "next game" results for teams */
+function srchRecent(){try{return LS.get("srchRecent")||[]}catch(e){return []}}
+function srchRemember(x){if(!x||x.game)return;try{const R=srchRecent().filter(r=>r.h!==x.h||r.nfl!==x.nfl);R.unshift({l:x.l,sub:x.sub,h:x.h,nfl:x.nfl||null,s:x.s});LS.set("srchRecent",R.slice(0,6))}catch(e){}}
+function srchGames(hits){const out=[];const T=hits.filter(x=>/^Team/.test(x.sub||"")).slice(0,2);
+  for(const x of T){const h=String(x.h||"");let m;
+    try{if((m=h.match(/^#?nba-team-(\w+)/))){const t=m[1],g=NBA_SLATE.find(z=>(z.a===t||z.h===t)&&!nbaStarted(z));if(g)out.push({game:1,s:"NBA",l:`${g.a} @ ${g.h}`,sub:`Next game · ${g.t} ET today`,h:"#nba-game-"+g.id});
+        else{const n=(typeof NBA_NEXT!=="undefined"&&NBA_NEXT[t]||[])[0];if(n){const a=n[2]==="H"?n[1]:t,hh=n[2]==="H"?t:n[1];out.push({game:1,s:"NBA",l:`${a} @ ${hh}`,sub:`Next game · ${nbaDayS(n[0])}`,h:"#nba-game-"+nbaFutId(n[0],a,hh)})}}}
+      else if((m=h.match(/^#?nhl-team-(\w+)/))){const t=m[1],g=nhAllGames().find(z=>(z.a===t||z.h===t)&&!nhStarted(z));if(g)out.push({game:1,s:"NHL",l:`${g.a} @ ${g.h}`,sub:`Next game · ${nhDayS(g.d)}`,h:"#nhl-game-"+g.id})}
+      else if((m=h.match(/^#?team-(\w+)/))){const t=m[1],g=SLATE.find(z=>(z.away===t||z.home===t)&&!z.final&&!nflStarted(z));if(g)out.push({game:1,s:"NFL",l:`${g.away} @ ${g.home}`,sub:`Next game · ${g.when}`,h:"#game-"+g.id})}}catch(e){}}
+  return out}
 function appSearchSetup(){
   const inp=document.getElementById("plSearch"),box=document.getElementById("plRes");if(!inp)return;
   inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure();if(typeof socEnsure!=="undefined"){socEnsure();setTimeout(()=>socPEnsure(),1200)}});
   inp.placeholder="🔍 Search any player or team (all sports)";
-  const draw=()=>{const q=inp.value.trim().toLowerCase();if(q.length<2){box.innerHTML="";box.hidden=true;return}
-    const hit=srchFind(q);const fz=hit.length&&hit[0]._t===2;
+  const draw=()=>{const q=inp.value.trim().toLowerCase();if(q.length<2){const R=srchRecent();if(!R.length||document.activeElement!==inp){box.innerHTML="";box.hidden=true;return}
+      box.innerHTML='<div class="small" style="padding:6px 8px 2px">Recent</div>'+R.map((x,i)=>`<button data-r="${i}"><span class="small">🕘</span> ${esc(x.l)} <span class="small">${esc(x.sub||"")}</span></button>`).join("");box._rec=R;box._hits=[];box.hidden=false;return}
+    const hit0=srchFind(q),hit=hit0.concat(srchGames(hit0));const fz=hit.length&&hit[0]._t===2;
     box.innerHTML=hit.length?(fz?'<div class="small" style="padding:6px 8px 2px">No exact match — did you mean:</div>':"")+hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":x.s==="NHL"?"nh":x.s==="SOC"?"sc":"nf"}">${x.s==="SOC"?"⚽":x.s}</span> <span>${/^Team/.test(x.sub)?"🛡️ ":""}${esc(x.l)}</span><small>${esc(x.sub)}${x._via?` · “${esc(x._via)}”`:""}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found — try a last name or team</div>';
     box.hidden=false;box._hits=hit};
   inp.oninput=draw;inp.onfocus=draw;
   inp.onkeydown=e=>{if(e.key==="Enter"){const b=box.querySelector("button");if(b)b.click()}if(e.key==="Escape"){inp.value="";draw();inp.blur()}};
-  box.onclick=e=>{const b=e.target.closest("button");if(!b)return;const x=box._hits[+b.dataset.i];inp.value="";draw();inp.blur();
+  box.onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.r!=null){const r=box._rec[+b.dataset.r];inp.value="";box.hidden=true;inp.blur();if(r.nfl){LS.set("sport","nfl");if(typeof goPlayer!=="undefined")goPlayer(r.nfl)}else location.hash=r.h;return}
+    const x=box._hits[+b.dataset.i];srchRemember(x);inp.value="";draw();inp.blur();
     if(x.nfl){LS.set("sport","nfl");if(typeof goPlayer!=="undefined")goPlayer(x.nfl)}else location.hash=x.h};
   document.addEventListener("click",e=>{if(!e.target.closest(".psearch"))box.hidden=true});
 }

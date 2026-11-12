@@ -48,7 +48,7 @@ function prlCard(sp,P,title,note,same){const nm={nba:"NBA",nhl:"NHL",nfl:"NFL",s
    <div class="prlh"><div><b>${P.dec.toFixed(2)}</b><span>payout (${prlAm(P.dec)>0?"+":""}${prlAm(P.dec)})</span></div><div><b>${pct(P.p)}</b><span>our chance all hit</span></div><div><b>${pct(P.need)}</b><span>the price needs</span></div></div>
    ${P.legs.map(l=>`<div class="prll"><span>${typeof esc!=="undefined"?esc(l.label):l.label}</span><span class="small">${typeof oddsFmt!=="undefined"?oddsFmt(l.odds):l.odds} · our ${pct(l.p)}</span></div>`).join("")}
    ${same&&P.legs._n?`<div class="small" style="margin-top:4px">All ${P.legs.length} hit in <b>${P.legs._all} of ${P.legs._n}</b> shared games.</div>`:""}
-   <button class="btn" data-prl="${key}" style="width:100%;margin-top:8px">🎟 Load into my parlay slip</button>
+   <button class="btn" data-prl="${key}" style="width:100%;margin-top:8px">🎟 Load into my parlay slip</button><button class="btn" data-prlsh="${key}" style="width:100%;margin-top:6px">📤 Share this parlay</button>
    <div class="small" style="margin-top:6px">${same?"Books price same-game parlays lower than the legs multiplied — check your book's real parlay price. ":""}Even a good parlay misses most of the time (${pct(1-P.p)} here) — bet small.</div></div>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-prl]");if(!b)return;e.preventDefault();const P=window.PRL_LAST&&window.PRL_LAST[b.dataset.prl];if(!P||typeof slipSet==="undefined")return;
   slipSet(P.legs.map(l=>Object.assign({},l.spec)));if(typeof toast!=="undefined")toast(`Parlay loaded — ${P.legs.length} legs`);if(typeof slipOpen!=="undefined")slipOpen()});

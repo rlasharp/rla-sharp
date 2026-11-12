@@ -50,6 +50,7 @@ function gpPost(){const root=document.querySelector("main>section:not(.hide)");i
     const rest=[];let n=ch.nextElementSibling;while(n){const nx=n.nextElementSibling;if(!n.matches(".pxbet,.betrow,.prop-actions,[data-keep]"))rest.push(n);n=nx}
     if(rest.length<1)return;const d=document.createElement("details");d.className="gpmore";d.innerHTML="<summary>More detail</summary>";rest.forEach(x=>d.appendChild(x));c.appendChild(d)});
   root.querySelectorAll(".bfil").forEach(gpQuick);
+  try{plTimelinePost(root)}catch(e){}
   if(typeof uxFoldCards!=="undefined")uxFoldCards()}
 
 /* ---------- Props pages: quick chips on top of the filter dropdowns (dropdowns move under "More filters") ---------- */
@@ -106,3 +107,39 @@ window.addEventListener("hashchange",()=>document.body.classList.remove("gpsheet
 function gpGameKey(h){h=String(h||"").replace(/^.*#/,"");const m=h.match(/^(nba-game-|nhl-game-|game-|soccer-game-)([^-]+)/);return m?m[1]+m[2]:null}
 window.addEventListener("hashchange",e=>{const n=gpGameKey(e.newURL),o=gpGameKey(e.oldURL);if(!n||n===o)return;
   try{if(typeof NB!=="undefined")NB.gtab="ov"}catch(x){}try{if(typeof NH!=="undefined")NH.tab="overview"}catch(x){}try{if(typeof S!=="undefined")S.gtab="ov"}catch(x){}try{if(typeof SC!=="undefined")SC.tab="ov"}catch(x){}});
+
+/* ---------- confidence levels: Strong / Medium / Small, with how picks at that level have actually done (tracker) ---------- */
+function confTier(sc,edge){return sc>=.62&&edge>=.07?"strong":sc>=.56&&edge>=.04?"medium":"small"}
+function confChip(sp,sc,edge){const t=confTier(sc,edge),L={strong:"Strong",medium:"Medium",small:"Small"}[t];
+  const R=sp&&typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].tier&&TRACK.sum[sp].tier[t],rec=R&&R[0]+R[1]>=5?`${R[0]}-${R[1]}`:"";
+  return ` <span class="cfc ${t}" title="${L} pick${rec?` — our ${L.toLowerCase()} ${sp.toUpperCase()} picks have gone ${rec} so far`:""}">${L}${rec?` · ${rec}`:""}</span>`}
+
+/* ---------- share a single pick or a parlay as an image (same card style as "Share today's plays") ---------- */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-shp],[data-prlsh]");if(!b||typeof shareImage==="undefined")return;e.preventDefault();e.stopPropagation();
+  const day=new Date().toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric"});
+  if(b.dataset.shp){let x={};try{x=JSON.parse(b.dataset.shp)}catch(z){return}
+    shareImage({title:"My pick",kicker:day,sub:`Our chance ${x.ch}% · the odds need ${x.nd}% — a lean, not a guarantee.`,file:"pick.png",rows:[{a:x.a,b:x.b,c:x.c,col:/^Under/.test(x.b)?"#ff9a9d":"#7ee2a0"}]});return}
+  const P=(window.PRL_LAST||{})[b.dataset.prlsh];if(!P)return;
+  shareImage({title:`${P.legs.length}-leg parlay`,kicker:day,sub:`Pays ${P.dec.toFixed(2)}× · our chance all hit ${Math.round(P.p*100)}% — bet small.`,file:"parlay.png",
+    rows:P.legs.map(l=>({a:String(l.label).replace(/<[^>]+>/g,""),b:`our ${Math.round(l.p*100)}%`,c:typeof oddsFmt!=="undefined"?oddsFmt(l.odds):String(l.odds),col:"#8cc0ff"}))})},true);
+
+/* ---------- player timeline: news, injury status, line changes and his last games, newest first ---------- */
+function plTimeline(sp,nm){const ev=[],nn=x=>typeof newsNorm!=="undefined"?newsNorm(x):String(x).toLowerCase();
+  try{if(typeof newsFor!=="undefined")for(const x of newsFor(sp,{player:nm,hrs:24*14}).slice(0,5))ev.push({t:Date.parse(x.at),ic:x.bad?"🚑":x.q?"⚠️":"📰",h:x.h,s:x.d?x.d.slice(0,120):"",url:x.url})}catch(e){}
+  try{const inj=sp==="nba"?nbaInjOf(nm):sp==="nhl"?nhInjOf(nm):(()=>{for(const t in INJ){const r=INJ[t].find(z=>z[0]===nm);if(r)return [r[0],r[1],r[2],r[3],r[4]]}return null})();
+    if(inj)ev.push({t:Date.now()+1,ic:"🩺",h:`Injury report: ${inj[2]||"listed"}`,s:[sp==="nhl"&&typeof nhInjTxt!=="undefined"?nhInjTxt(inj[3]):inj[3],inj[4]?"est. return "+inj[4]:""].filter(Boolean).join(" · ")})}catch(e){}
+  try{const H=typeof LINE_HIST!=="undefined"?LINE_HIST:(typeof XA!=="undefined"&&XA.hist)||null;if(H){const pre=sp+"|"+nm+"|";for(const [k,L] of Object.entries(H)){if(!k.startsWith(pre))continue;const mk=k.slice(pre.length),lab=sp==="nba"&&typeof NBA_MK!=="undefined"&&NBA_MK[mk]?NBA_MK[mk][1]:sp==="nhl"&&typeof NH_MK!=="undefined"&&NH_MK[mk]?NH_MK[mk][1]:mk;
+      for(let i=Math.max(1,L.length-6);i<L.length;i++)if(L[i][1]!==L[i-1][1])ev.push({d:L[i][0],t:Date.parse(L[i][0]+"T12:00:00Z"),ic:L[i][1]>L[i-1][1]?"📈":"📉",h:`${lab} line ${L[i-1][1]} → ${L[i][1]}`,s:"closing line, books"})}}}catch(e){}
+  try{if(sp==="nba"&&NBA_LOGS[nm])for(const x of NBA_LOGS[nm].g.slice(-4))ev.push({d:x[1],t:Date.parse(x[1]+"T23:00:00Z"),ic:"🏀",h:`${x[3]==="H"?"vs":"@"} ${x[2]}: ${x[5]} pts, ${x[6]} reb, ${x[7]} ast`,s:`${x[4]} min${x[9]===1||x[9]===true?" · started":" · bench"}`});
+    if(sp==="nhl"&&NHL_P[nm])for(const x of NHL_P[nm].g.filter(z=>z[16]!==1).slice(-4))ev.push({d:x[0],t:Date.parse(x[0]+"T23:00:00Z"),ic:"🏒",h:`${x[2]==="H"?"vs":"@"} ${x[1]}: ${x[3]} G, ${x[4]} A, ${x[6]} shots`,s:x[10]?`${Math.floor(x[10]/60)}:${String(x[10]%60).padStart(2,"0")} TOI`:""});
+    if(sp==="nhl"&&NHL_G[nm])for(const x of NHL_G[nm].g.filter(z=>z[9]!==1&&z[7]).slice(-4))ev.push({d:x[0],t:Date.parse(x[0]+"T23:00:00Z"),ic:"🥅",h:`${x[2]==="H"?"vs":"@"} ${x[1]}: ${x[4]} saves on ${x[3]} shots`,s:x[3]?`${(x[4]/x[3]).toFixed(3).slice(1)} save %`:""})}catch(e){}
+  if(!ev.length)return "";const now=Date.now();
+  const td=typeof etNow!=="undefined"?etNow().d:new Date().toISOString().slice(0,10);
+  const when=(t,d0)=>{if(d0){const n=Math.round((Date.parse(td)-Date.parse(d0))/864e5);return n<=0?"today":n===1?"yesterday":n+" days ago"}const d=(now-t)/864e5;return t>now?"now":d<1/24?"just now":d<1?Math.round(d*24)+" h ago":d<2?"yesterday":Math.round(d)+" days ago"};
+  return `<div class="card xacard tlcard" style="margin-top:12px"><h2>🗞️ Timeline</h2><div class="xasub">News, injury status, line changes and his last games — newest first.</div>
+   ${ev.sort((a,b)=>b.t-a.t).slice(0,12).map(x=>`<div class="tlr"><span class="tli">${x.ic}</span><div class="tlb"><div>${x.url?`<a href="${gpE(x.url)}" target="_blank" rel="noopener">${gpE(x.h)}</a>`:gpE(x.h)}</div>${x.s?`<div class="small">${gpE(x.s)}</div>`:""}</div><span class="small tlw">${when(x.t,x.d)}</span></div>`).join("")}</div>`}
+function plTimelinePost(root){const h=decodeURIComponent((location.hash||"").slice(1));let sp=null,nm=null;
+  if(h.startsWith("nba-player-")){sp="nba";nm=h.slice(11)}else if(h.startsWith("nhl-player-")){sp="nhl";nm=h.slice(11)}else if(h.startsWith("props/")){sp="nfl";nm=h.split("/")[1]}
+  if(!sp||!nm||root.querySelector(".tlcard"))return;const put=()=>{if(root.querySelector(".tlcard"))return;const html=plTimeline(sp,nm);if(!html)return;const first=root.querySelector(".card");if(first)first.insertAdjacentHTML("afterend",html)};
+  if(typeof LINE_HIST==="undefined"&&typeof xaHistEnsure!=="undefined")xaHistEnsure(put);else put();
+  if(typeof newsLoad!=="undefined"&&NEWS&&!NEWS[sp])newsLoad(sp).then(()=>{const c=root.querySelector(".tlcard");if(c){c.remove();put()}})}

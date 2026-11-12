@@ -654,13 +654,16 @@ function nbaShopHtml(r){
   const save=(best,main)=>main==null?"":` <span class="up">+${Math.round((nbaPayout(best)-nbaPayout(main))*100)}¢ per $1</span>`;
   return `<div class="shop">🛒 <b>Best price</b> ${bo?`<b>O ${oddsFmt(bo[0])}</b> ${nbaEsc(bo[1])}${save(bo[0],r[3])}`:""}${bo&&bu?" · ":""}${bu?`<b>U ${oddsFmt(bu[0])}</b> ${nbaEsc(bu[1])}${save(bu[0],r[4])}`:""}</div>`;
 }
+/* Nov 12 2026 review of our tracked record: steals/blocks (0-4), lines of 2.5 or less (4-10), long shots and picks under
+   a 52% chance lost almost all the money — those aren't ranked any more (they still show in the full props list) */
+function nbaQualOk(e){return !["stl","blk"].includes(e.k)&&e.line>2.5&&e.odds<=150&&e.sc>=.52}
 function nbaBest(){
   const ck=NB.mlo+"|"+NB.mhi+"|"+JSON.stringify(NB.gf)+"|"+startedKey();if(NB._best&&NB._best.v===ck)return NB._best.L;
   const out=[];
   for(const r of NBA_PROPS){
     const [nm,k,line,op,up,book]=r,p=NBA_LOGS[nm];if(!p||!NBA_MK[k])continue;
     const g=nbaGameOf(p.tm);if(!g||nbaStarted(g)||/out/i.test((nbaInjOf(nm)||[])[2]||""))continue;
-    for(const side of ["o","u"]){const bs=nbaBestPrice(r,side),e=nbaEval(nm,k,line,side,bs?bs[0]:(side==="o"?op:up),bs?bs[1]:book);if(e&&e.n10>=5)out.push(e)}
+    for(const side of ["o","u"]){const bs=nbaBestPrice(r,side),e=nbaEval(nm,k,line,side,bs?bs[0]:(side==="o"?op:up),bs?bs[1]:book);if(e&&e.n10>=5&&nbaQualOk(e))out.push(e)}
   }
   const seen=new Set(),per={},top=[],rest=[];
   for(const x of out.sort((a,b)=>b.edge-a.edge)){const key=x.nm+"|"+x.k;if(seen.has(key)||x.edge<=0)continue;seen.add(key);per[x.nm]=(per[x.nm]||0)+1;(per[x.nm]<=2?top:rest).push(x)}
@@ -763,7 +766,7 @@ function nbaBestPage(el){
   const L0=nbaBest(),L=nbaBestFilter(L0);
   el.innerHTML=`<h1>NBA Best Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>${nbaPropTabs("best")}
   ${L0.length?`<div class="card bpc" style="margin-top:14px"><h2 style="margin-bottom:2px">🔥 Every line, ranked</h2>
-    <div class="small" style="margin-bottom:8px">${L.length} of ${L0.length} posted lines with an edge, over or under, ranked by how often they would have hit vs what the odds need. Tap one for the player's stats and charts.</div>
+    <div class="small" style="margin-bottom:8px">Not ranked (they lost money in our tracking): steals, blocks, lines of 2.5 or less, long shots over +150.</div><div class="small" style="margin-bottom:8px">${L.length} of ${L0.length} posted lines with an edge, over or under, ranked by how often they would have hit vs what the odds need. Tap one for the player's stats and charts.</div>
     ${nbaBestFilterUI(L0)}${L.length?"":`<div class="small" style="padding:8px 0">Nothing matches these filters.</div>`}
     ${L.map(nbaBestRow).join("")}
     <div class="small" style="margin-top:8px">Hit score blends last 10 (45%), this season (35%) and vs tonight's opponent (20%), ±5 for the position matchup. A lean, not a guarantee.</div></div>`

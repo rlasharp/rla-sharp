@@ -172,10 +172,10 @@ function xPropRow(o){const L=o.l10&&o.l10[1]?o.l10:null,pc=L?Math.round(L[0]/L[1
   const more=(o.hits||[]).filter(h=>h&&h[1]).map(h=>`${h[0]}/${h[1]} ${h[2]}`).join(" · ");
   return `<${tag} class="bp xp"${o.href?` href="${o.href}"`:""} ${o.attrs||""}>${o.i!=null?`<div class="bpn">${o.i+1}</div>`:""}
    <div class="bpm"><div class="bpw">${o.badge||""}<b>${o.name}</b> <span class="small">${o.sub||""}</span>${o.chips||""}</div>
-    <div class="bpl"><b class="xpk">${o.pick}</b> <span class="xpo">${o.odds}</span>${o.book?` <span class="small">${o.book}</span>`:""}</div>
+    <div class="bpl"><b class="xpk">${o.pick}</b> <span class="xpo">${o.odds}</span>${o.book?` <span class="small">${o.book}</span>`:""}${typeof confChip!=="undefined"&&o.chance!=null&&o.need!=null?confChip(o.sp||(/data-bp=/.test(o.attrs||"")?"nba":/#nhl-/.test(o.href||"")?"nhl":/data-nflp=/.test(o.attrs||"")?"nfl":null),o.chance/100,(o.chance-o.need)/100):""}</div>
     ${L?`<div class="xph"><span class="xpbar" aria-hidden="true"><i style="width:${pc}%"></i></span><span>Hit <b>${L[0]} of last ${L[1]}</b></span></div>`:""}
     ${more||o.why?`<div class="xpw small">${[more,o.why].filter(Boolean).join(" · ")}</div>`:""}</div>
-   <div class="bps"><b>${o.chance}%</b><span>our chance</span><span class="small">odds need ${o.need}%</span>${o.act||""}</div></${tag}>`}
+   <div class="bps"><b>${o.chance}%</b><span>our chance</span><span class="small">odds need ${o.need}%</span>${o.act||""}<button class="shpk" type="button" aria-label="Share this pick" data-shp="${String(JSON.stringify({a:String(o.name||"").replace(/<[^>]+>/g,""),b:String(o.pick||"").replace(/<[^>]+>/g,""),c:String(o.odds||"").replace(/<[^>]+>/g,""),ch:o.chance,nd:o.need})).replace(/&/g,"&amp;").replace(/"/g,"&quot;")}">📤</button></div></${tag}>`}
 
 /* ---------- 🎯 did our chances come true? (calibration from the tracker) ---------- */
 function xCalCard(){if(typeof TRACK==="undefined"||!TRACK||!TRACK.sum)return "";const S=TRACK.sum,G=[];const u=x=>(x>0?"+":"")+(+x).toFixed(1)+"u";

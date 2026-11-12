@@ -39,5 +39,16 @@ for ab, nm in sorted(TEAMS.items()):
 json.dump(C, open(CF, "w"), separators=(",", ":"), ensure_ascii=False)
 if not C: sys.exit("nhllines: nothing — keeping the old file")
 print(f"/* NHL line combinations + power-play units — Daily Faceoff (tools/nhllines.py), {now} */")
-print("var NHL_LINES=" + json.dumps(C, separators=(",", ":"), ensure_ascii=False) + ";")
+# the site only needs: forward lines, D pairs, power-play units (name, position, game-time decision); and for "who moved",
+# just the previous top line + PP units, and only when they changed in the last 3 days
+KEEP = ("f1", "f2", "f3", "f4", "d1", "d2", "d3", "pp1", "pp2")
+def slim(c, keys=KEEP): return {"at": c.get("at"), "src": c.get("src"), "g": {g: [[p[0], p[1], p[2]] for p in P] for g, P in (c.get("g") or {}).items() if g in keys}}
+S = {}
+for t, X in C.items():
+    if not X.get("cur"): continue
+    o = {"cur": slim(X["cur"])}
+    if X.get("prev") and X.get("chg") and (NOW - dt.datetime.fromisoformat(X["chg"])).total_seconds() < 3 * 86400:
+        o["prev"] = slim(X["prev"], ("f1", "pp1", "f2", "pp2")); o["chg"] = X["chg"]
+    S[t] = o
+print("var NHL_LINES=" + json.dumps(S, separators=(",", ":"), ensure_ascii=False) + ";")
 print(f"nhllines: {ok}/{len(TEAMS)} teams", file=sys.stderr)

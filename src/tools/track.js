@@ -90,8 +90,11 @@ for(const s of ['nba','nfl','nhl','soc'])T[s]=T[s]||{};
     if(P.legs.some(x=>x.r==="loss"))P.r="loss";else if(P.legs.every(x=>x.r)){const W=P.legs.filter(x=>x.r==="win");P.r=W.length?"win":"void";P.paid=Math.round(W.reduce((a,x)=>a*(x.odds>0?1+x.odds/100:1+100/(-x.odds)),1)*100)/100}};
   for(const sp of ['nba','nfl','nhl','soc'])for(const [d,S] of Object.entries(T[sp]))if(S.parlay&&S.parlayLocked)gradeParlay(sp,d,S.parlay);
   /* ---------- summaries ---------- */
+  function confTier(sc,edge){return sc>=.62&&edge>=.07?'strong':sc>=.56&&edge>=.04?'medium':'small'}
   const SUM={};for(const sp of ['nba','nfl','nhl']){const s={best:{w:0,l:0,u:0,n:0},win:[0,0],tot:[0,0],edge:{},plays:{w:0,l:0,p:0,u:0},recent:[]};
-    for(const [d,S] of Object.entries(T[sp])){for(const x of S.best||[]){if(x.r==="win"){s.best.w++;s.best.u+=pay(x.odds)}else if(x.r==="loss"){s.best.l++;s.best.u-=1}if(x.r)s.best.n++}
+    s.tier={strong:[0,0],medium:[0,0],small:[0,0]};
+    for(const [d,S] of Object.entries(T[sp])){for(const x of S.best||[]){if(x.r==="win"){s.best.w++;s.best.u+=pay(x.odds)}else if(x.r==="loss"){s.best.l++;s.best.u-=1}if(x.r)s.best.n++;
+        if((x.r==="win"||x.r==="loss")&&x.sc!=null){const t=confTier(x.sc,x.sc-imp(x.odds));s.tier[t][x.r==="win"?0:1]++}}
       for(const G of S.games||[])if(G.f){s.win[G.win?0:1]++;if(G.tw!=null)s.tot[G.tw?0:1]++;for(const e of G.edges||[])if(e.r==="win"||e.r==="loss"){const E=s.edge[e.mk]||(s.edge[e.mk]=[0,0,0]);if(e.r==="win"){E[0]++;E[2]+=pay(e.odds)}else{E[1]++;E[2]-=1}}}
       for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r)s.plays.p++;s.recent.push({d,...x})}
       const P=S.parlay;if(P&&S.parlayLocked&&P.r){const q=s.parlay||(s.parlay={w:0,l:0,p:0,u:0});if(P.r==="win"){q.w++;q.u+=P.paid-1}else if(P.r==="loss"){q.l++;q.u-=1}else q.p++;q.u=Math.round(q.u*100)/100}}

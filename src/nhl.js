@@ -48,8 +48,10 @@ function nhScore(nm,k,line,side){const VA=nhVals(nm,k),V=VA.filter(o=>!o.prev).m
   const L10=VA.map(o=>o.v).slice(-10),cnt=a=>[a.filter(v=>side==="u"?v<line:v>line).length,a.length];return {c3:cnt(V.slice(-3)),c5:cnt(V.slice(-5)),c10:cnt(L10),p:hit(L10)*.6+hit(V)*.4,l10:L10.filter(v=>side==="u"?v<line:v>line).length,n10:L10.length,ns:V.length,hs:V.filter(v=>side==="u"?v<line:v>line).length,avg:V.reduce((a,b)=>a+b,0)/V.length}}
 function nhPropRows(){return (NHL_PROPS||[]).filter(r=>NH_MK[r[1]]&&nhWho(r[0]))}
 function nhOutNow(nm){const r=typeof nhInjOf!=="undefined"&&nhInjOf(nm);return !!(r&&/out|reserve|ir\b|suspen/i.test(r[2]))}
+/* Nov 12 2026 review: anytime-goal props went 2-14 and plus-money long shots 5-19 in our tracking — not ranked any more */
+function nhQualOk(k,odds){return k!=="hanyG"&&k!=="hgoals"&&odds<=150}
 function nhBest(){const out=[];for(const r of nhPropRows()){const [nm,k,line,o,u]=r,w=nhWho(nm),g=w&&nhGameOf(w.tm);if(!g||nhStarted(g)||!NH_MK[k][3]||nhOutNow(nm))continue;
-  for(const [side,odds] of [["o",o],["u",u]]){if(odds==null)continue;const s=nhScore(nm,k,line,side);if(!s||s.ns<5)continue;const imp=nhImp(odds);
+  for(const [side,odds] of [["o",o],["u",u]]){if(odds==null||!nhQualOk(k,odds))continue;const s=nhScore(nm,k,line,side);if(!s||s.ns<5)continue;const imp=nhImp(odds);
     /* calibrated chance (same method as NBA): fair price from both sides (vig removed), moved toward his hit rates only partway */
     const fair=o!=null&&u!=null?(side==="o"?nhImp(o)/(nhImp(o)+nhImp(u)):nhImp(u)/(nhImp(o)+nhImp(u))):imp/1.045,nEff=Math.min(25,s.n10+.5*s.ns),w=.4*nEff/(nEff+10)*(typeof xCalK!=="undefined"?xCalK("nhl"):1);
     const sc=Object.assign({},s,{raw:s.p,fair,p:Math.max(.03,Math.min(.9,fair+w*(s.p-fair)))});if(sc.p-imp>0)out.push({nm,k,line,side,odds,s:sc,edge:sc.p-imp,g})}}

@@ -1,0 +1,51 @@
+name: Daily health email
+# Every morning: a short report on whether the site updates ran and the data is fresh, posted as a comment on the
+# "Daily site health" issue with an @mention of the owner, so GitHub emails it (and it shows on the phone app).
+on:
+  schedule:
+    - cron: "17 12 * * *"        # 7:17 AM ET (12:17 UTC in winter, 8:17 AM ET in summer)
+  workflow_dispatch: {}
+permissions:
+  contents: read
+  issues: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build the report
+        run: |
+          python3 - <<'PY' > report.md
+          import json, datetime as dt
+          h = json.load(open("data/health.json"))
+          now = dt.datetime.now(dt.timezone.utc); day = now - dt.timedelta(hours=24)
+          ts = lambda s: dt.datetime.fromisoformat(s.replace("Z", "+00:00"))
+          H = [x for x in h.get("hist", []) if ts(x["at"]) >= day]
+          bad = [x for x in H if not x.get("ok")]; chk = [x for x in H if x.get("check_failed")]; pub = sum(1 for x in H if x.get("published"))
+          last = h.get("auto", {}); site = h.get("site", {}); nhl = h.get("nhl", {})
+          age = lambda s: f"{(now - ts(s)).total_seconds() / 3600:.0f} h ago" if s else "unknown"
+          ok = not bad and not chk and site.get("ok", True) and last.get("ok", True)
+          print(("✅ **All good.**" if ok else "⚠️ **Something needs a look.**") + f" Last 24 hours: {len(H)} updates, {pub} published, {len(bad)} failed, {len(chk)} blocked by the site check.\n")
+          print(f"- Last update: {age(last.get('at'))} — {'OK' if last.get('ok') else 'FAILED'}")
+          print(f"- Live site check: {'OK' if site.get('ok') else 'problem: ' + (site.get('issue') or '?')[:200]}")
+          if nhl: print(f"- NHL data: built {nhl.get('gen', '?')} · odds {age(nhl.get('odds_at'))}{'' if nhl.get('ok', True) else ' · ' + nhl.get('issue', '')}")
+          fails = sorted({f for x in H for f in (x.get("fails") or [])})
+          if fails:
+              print("\n**Steps that kept old data (the site stayed up with the previous numbers):**")
+              for f in fails[:12]: print(f"- {f}")
+          if bad or chk:
+              print("\n**Runs that didn't publish:**")
+              for x in (bad + chk)[:8]: print(f"- {x['at'][:16].replace('T', ' ')} UTC · {x.get('what', '')} · {x.get('site_issue') or 'see the Actions log'}")
+          print("\n_Sent automatically every morning by .github/workflows/daily-health.yml._")
+          PY
+          cat report.md
+      - name: Post it (GitHub emails the mention)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          n=$(gh issue list --state open --search "Daily site health in:title" --json number --jq '.[0].number')
+          if [ -z "$n" ]; then n=$(gh issue create --title "Daily site health" --body "One comment here every morning with how the site updates went. Close this issue to stop the emails." | grep -o '[0-9]*$'); fi
+          { echo "@$OWNER — site health for $(TZ=America/Toronto date '+%a %b %-d')"; echo; cat report.md; } > body.md
+          gh issue comment "$n" --body-file body.md
