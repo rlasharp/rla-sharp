@@ -31,6 +31,7 @@ for v in BOX.values():
 idname={r["player_id"]:r["player_display_name"] for r in st}
 rz=collections.defaultdict(lambda:collections.Counter());team_rz=collections.defaultdict(collections.Counter)
 pace=collections.defaultdict(lambda:{"plays":0,"games":set(),"np":0,"nr":0,"poe":0.0,"poen":0})
+BOXQ=collections.defaultdict(lambda:collections.defaultdict(lambda:{"p":{},"r":{},"c":{}}))
 rd=csv.DictReader(gzip.open(pick("play_by_play_2026.csv.gz","pbp.csv.gz"),"rt"))
 for p in rd:
     if p.get("season_type","REG")!="REG":continue
@@ -38,6 +39,19 @@ for p in rd:
     if pt not in ("pass","run"):continue
     if p["two_point_attempt"]=="1" or p["qb_kneel"]=="1" or p["qb_spike"]=="1":continue
     tm=t(p["posteam"]);yl=n(p["yardline_100"]);wk=p["week"]
+    # per-quarter box score (quarter 5 = overtime)
+    g_=gid.get(p["game_id"])
+    if g_ and p.get("qtr"):
+        bq=BOXQ[f'{g_["week"]}|{t(g_["away_team"])}|{t(g_["home_team"])}'][p["qtr"]]
+        if pt=="pass" and p.get("passer_player_id") and p.get("sack")!="1":
+            nm_=idname.get(p["passer_player_id"],p.get("passer_player_name") or "");a_=bq["p"].setdefault((nm_,tm),[0,0,0,0,0])
+            a_[1]+=1;a_[0]+=p["complete_pass"]=="1";a_[2]+=i(p.get("passing_yards"));a_[3]+=p.get("pass_touchdown")=="1";a_[4]+=p.get("interception")=="1"
+            if p.get("receiver_player_id"):
+                rn_=idname.get(p["receiver_player_id"],p.get("receiver_player_name") or "");c_=bq["c"].setdefault((rn_,tm),[0,0,0,0])
+                c_[1]+=1;c_[0]+=p["complete_pass"]=="1";c_[2]+=i(p.get("receiving_yards"));c_[3]+=p.get("pass_touchdown")=="1"
+        if pt=="run" and p.get("rusher_player_id"):
+            rn_=idname.get(p["rusher_player_id"],p.get("rusher_player_name") or "");r_=bq["r"].setdefault((rn_,tm),[0,0,0])
+            r_[0]+=1;r_[1]+=i(p.get("rushing_yards"));r_[2]+=p.get("rush_touchdown")=="1"
     pc=pace[tm];pc["plays"]+=1;pc["games"].add(p["game_id"])
     try:
         wp=float(p["wp"]);dn=int(float(p["down"] or 0));hs=float(p["half_seconds_remaining"] or 0)
@@ -94,5 +108,9 @@ maxw=max(int(r["week"]) for r in st)
 print("/* ---------- Advanced data: box scores, red zone, pace, rest/travel ----------")
 print("   Source: nflverse open data (player stats, play-by-play, schedules; CC-BY 4.0). Regenerate with tools/advgen.py. */")
 print("const ADV_ASOF="+json.dumps(f"through Week {maxw}")+";")
-for nm,obj in (("BOX",dict(BOX)),("RZ",RZ),("PACE",PACE),("REST",REST)):
+BQ={}
+for k,Q in BOXQ.items():
+    if int(k.split("|")[0])<maxw-2:continue   # last 3 weeks only, to keep the page small
+    BQ[k]={q:{"p":sorted([[a[0],a[1]]+v for a,v in d["p"].items()],key=lambda x:-x[3]),"r":sorted([[a[0],a[1]]+v for a,v in d["r"].items()],key=lambda x:-x[3]),"c":sorted([[a[0],a[1]]+v for a,v in d["c"].items()],key=lambda x:-x[4])} for q,d in Q.items()}
+for nm,obj in (("BOX",dict(BOX)),("RZ",RZ),("PACE",PACE),("REST",REST),("BOXQ",BQ)):
     print(f"const {nm}="+json.dumps(obj,separators=(",",":"),ensure_ascii=False)+";")

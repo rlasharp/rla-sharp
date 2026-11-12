@@ -33,7 +33,8 @@ function bxhHtml(sp,S){const comp=((S.header||{}).competitions||[])[0]||{},C=com
         ${rows.map(x=>`<tr><td>${bxhE((x.athlete||{}).shortName||(x.athlete||{}).displayName)}${x.starter&&sp==="nba"?"":""}</td>${idx.map(i=>`<td>${bxhE(x.stats[i])}</td>`).join("")}</tr>`).join("")}
         ${g.totals&&g.totals.some(Boolean)?`<tr class="bxtot"><td>Team</td>${idx.map(i=>`<td>${bxhE(g.totals[i])}</td>`).join("")}</tr>`:""}</tbody></table></div>`}).join("")}</div>`};
   const st=((comp.status||{}).type||{}).shortDetail||"";
-  return `<div class="bxhd small">${bxhE(st)} · ${bxhE(new Date(comp.date||Date.now()).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}))}</div>${ls}${P.length?P.map(team).join(""):`<div class="small">ESPN has no player stats for this game.</div>`}<div class="small" style="margin-top:6px">Official box score from ESPN.</div>`}
+  const evid=(S.header||{}).id,qb=(sp==="nba"||sp==="nhl")&&evid&&P.length&&typeof qbTabs!=="undefined";if(qb&&typeof QB_S!=="undefined")QB_S[sp+"|"+evid]=S;
+  return `<div class="bxhd small">${bxhE(st)} · ${bxhE(new Date(comp.date||Date.now()).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}))}</div>${ls}${qb?qbTabs(sp,evid,np):""}<div class="qbarea">${P.length?P.map(team).join(""):`<div class="small">ESPN has no player stats for this game.</div>`}</div><div class="small" style="margin-top:6px">Official box score from ESPN.</div>`}
 document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest("[data-h2hbx]");if(!b)return;e.preventDefault();e.stopPropagation();
   const key=b.dataset.h2hbx,[sp,d,a,h]=key.split("|"),row=b.closest("[data-bxrow]")||b.parentElement,isTr=row.tagName==="TR";
   const nx=row.nextElementSibling;if(nx&&nx.classList.contains("bxpanel")){nx.remove();b.setAttribute("aria-expanded","false");b.classList.remove("on");return}

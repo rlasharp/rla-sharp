@@ -10,14 +10,17 @@ function goPlayer(name){const P=PINFO[name];if(!P)return;const mk=null;
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest(".pl-go");if(!a)return;e.preventDefault();goPlayer(a.dataset.pl)});
 
 /* 1. Box score for one game */
-function boxScoreHtml(wk,away,home){const k=`${wk}|${away}|${home}`,B=(typeof BOX!=="undefined"&&BOX[k])||(typeof BOX_ESPN!=="undefined"&&BOX_ESPN[k]);if(!B&&!ADVOK)return "";
+const NFL_BQ={};
+function boxScoreHtml(wk,away,home){const k=`${wk}|${away}|${home}`,Q=typeof BOXQ!=="undefined"&&BOXQ[k],q=Q&&Q[NFL_BQ[k]]?NFL_BQ[k]:"",B=q?Q[q]:(typeof BOX!=="undefined"&&BOX[k])||(typeof BOX_ESPN!=="undefined"&&BOX_ESPN[k]);
+  const tabs=Q?`<div class="bxqt">${[["","Game"],...["1","2","3","4","5"].filter(x=>Q[x]).map(x=>[x,x==="5"?"OT":"Q"+x])].map(([v,l])=>`<button type="button" data-nbq="${k}|${v}" class="${q===v?"on":""}">${l}</button>`).join("")}</div>`:"";if(!B&&!ADVOK)return "";
   if(!B)return `<div class="card"><p class="note" style="margin:0">Box score not available yet.</p></div>`;
   const tbl=(title,head,rows,fn)=>`<div class="card"><h3 style="margin:0 0 6px">${title}</h3><div style="overflow-x:auto"><table class="wtbl"><thead><tr><th>Player</th>${head.map(h=>`<th class="r">${h}</th>`).join("")}</tr></thead><tbody>
     ${[away,home].map(tm=>{const R=rows.filter(r=>r[1]===tm);return R.length?`<tr class="tmrow"><td colspan="${head.length+1}">${badge(tm)} ${short(tm)}</td></tr>`+R.map(r=>`<tr><td>${plLink(r[0])}</td>${fn(r).map(v=>`<td class="r num">${v}</td>`).join("")}</tr>`).join(""):""}).join("")}</tbody></table></div></div>`;
-  return `<div class="grid g3 boxgrid">${tbl("Passing",["C/Att","Yds","TD","INT"],B.p,r=>[r[2]+"/"+r[3],r[4],r[5],r[6]])}
+  return `<div class="bxqw">${tabs}<div class="grid g3 boxgrid">${tbl("Passing",["C/Att","Yds","TD","INT"],B.p,r=>[r[2]+"/"+r[3],r[4],r[5],r[6]])}
    ${tbl("Rushing",["Att","Yds","TD"],B.r,r=>[r[2],r[3],r[4]])}
    ${tbl("Receiving",["Rec","Tgt","Yds","TD"],B.c,r=>[r[2],r[3],r[4],r[5]])}</div>
-   <p class="note" style="margin-top:6px">Box score: ${typeof BOX!=="undefined"&&BOX[k]?"nflverse official stats":"ESPN, posted right after the game (official nflverse stats replace it on Tuesday)"}. Tap a name for that player's page.</p>`}
+   <p class="note" style="margin-top:6px">Box score: ${typeof BOX!=="undefined"&&BOX[k]?"nflverse official stats":"ESPN, posted right after the game (official nflverse stats replace it on Tuesday)"}. Tap a name for that player's page.${q?` Showing ${q==="5"?"overtime":"quarter "+q} only, from the nflverse play-by-play.`:""}</p></div>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-nbq]");if(!b)return;const [w,a,h,q]=b.dataset.nbq.split("|");NFL_BQ[w+"|"+a+"|"+h]=q;const box=b.closest(".bxqw");if(box)box.outerHTML=boxScoreHtml(w,a,h)});
 
 /* 3. Player search (header) */
 function searchSetup(){const inp=document.getElementById("plSearch"),box=document.getElementById("plRes");if(!inp||typeof PINFO==="undefined")return;

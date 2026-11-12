@@ -315,3 +315,40 @@ new MutationObserver(()=>{if(window._bxT)return;window._bxT=setTimeout(()=>{wind
 
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-bxt]");if(!b)return;const w=b.closest(".bxsw");if(!w)return;const i=+b.dataset.bxt,C=[...w.querySelectorAll(":scope>.bxcard,:scope>.bxteam")];
   C.forEach((x,j)=>x.classList.toggle("bxon",j===i));w.querySelectorAll(".bxtabs button").forEach((x,j)=>x.classList.toggle("on",j===i))});
+/* ===== box scores by quarter / period (NBA, NHL): built in the browser from ESPN's play-by-play for that game ===== */
+const QB_S={},QB_ORIG=new WeakMap(),QB_PATH={nba:"basketball/nba",nhl:"hockey/nhl"};
+async function qbSummary(sp,id){const k=sp+"|"+id;if(QB_S[k])return QB_S[k];const r=await fetch(`https://site.api.espn.com/apis/site/v2/sports/${QB_PATH[sp]}/summary?event=${id}`,{cache:"force-cache"});if(!r.ok)throw new Error("HTTP "+r.status);return QB_S[k]=await r.json()}
+function qbCompute(sp,S){const out={per:{},name:{},team:{},teams:[]};const comp=((S.header||{}).competitions||[])[0]||{};
+  for(const c of comp.competitors||[])out.teams.push({id:String(c.team.id),ab:c.team.abbreviation,nm:c.team.displayName||c.team.abbreviation,side:c.homeAway,score:c.score,win:c.winner});
+  out.teams.sort((a,b)=>a.side==="away"?-1:1);
+  for(const T of ((S.boxscore||{}).players)||[])for(const g of T.statistics||[])for(const x of g.athletes||[]){const a=x.athlete||{};if(!a.id)continue;out.name[a.id]=a.shortName||a.displayName;out.team[a.id]=String(T.team.id)}
+  const A=(q,id)=>{const P=out.per[q]||(out.per[q]={});return P[id]||(P[id]=sp==="nba"?[0,0,0,0,0,0,0,0,0]:[0,0,0,0,0,0])};
+  for(const p of S.plays||[]){const q=(p.period||{}).number;if(!q)continue;const P=(p.participants||[]).map(x=>({id:x.athlete&&String(x.athlete.id),t:x.type||""})).filter(x=>x.id),t=(p.type||{}).text||"",ab=(p.type||{}).abbreviation||"";
+    if(sp==="nba"){const a0=P[0]&&P[0].id;if(!a0)continue;
+      if(/Rebound/.test(t)){A(q,a0)[1]++;continue}
+      if(/^Free Throw/.test(t)){const s=A(q,a0);s[8]++;if(p.scoringPlay){s[7]++;s[0]+=p.scoreValue||1}continue}
+      if(p.shootingPlay){const s=A(q,a0),m=/(\d+)-foot/.exec(p.text||""),d=m?+m[1]:0,three=p.scoreValue===3||/three point/i.test(p.text||"")||(d>=22&&!/two point/i.test(p.text||""));
+        s[4]++;if(three)s[6]++;if(p.scoringPlay){s[3]++;s[0]+=p.scoreValue||2;if(three)s[5]++;if(P[1])A(q,P[1].id)[2]++}}}
+    else{ /* NHL: [G, A, SOG, HIT, BLK, PIM] */
+      if(ab==="goal"){P.forEach((x,i)=>{if(x.t==="scorer"||(!x.t&&i===0)){const s=A(q,x.id);s[0]++;s[2]++}else if(/assist/.test(x.t)||(!x.t&&i>0&&i<3))A(q,x.id)[1]++})}
+      else if(ab==="shot-on-goal"&&P[0])A(q,P[0].id)[2]++;
+      else if(ab==="hit"&&P[0])A(q,P[0].id)[3]++;
+      else if(ab==="shot-blocked"&&P[1])A(q,P[1].id)[4]++;
+      else if((p.type||{}).penaltyMinutes&&P[0])A(q,P[0].id)[5]+=+(p.type.penaltyMinutes)||0}}
+  return out}
+function qbTables(sp,S,q){const D=qbCompute(sp,S),P=D.per[q]||{};
+  const H=sp==="nba"?["PTS","REB","AST","FG","3PT","FT"]:["G","A","PTS","SOG","HIT","BLK","PIM"];
+  const row=s=>sp==="nba"?[s[0],s[1],s[2],s[3]+"-"+s[4],s[5]+"-"+s[6],s[7]+"-"+s[8]]:[s[0],s[1],s[0]+s[1],s[2],s[3],s[4],s[5]];
+  const card=(T,i)=>{const R=Object.entries(P).filter(([id])=>D.team[id]===T.id).sort((a,b)=>sp==="nba"?b[1][0]-a[1][0]||b[1][1]-a[1][1]:(b[1][0]+b[1][1])-(a[1][0]+a[1][1])||b[1][2]-a[1][2]);
+    const tot=R.reduce((t,[,s])=>t.map((v,j)=>v+s[j]),sp==="nba"?[0,0,0,0,0,0,0,0,0]:[0,0,0,0,0,0]);
+    return `<div data-bxp="1" class="card bxcard${i?"":" bxon"}" style="margin-top:12px"><h2 class="bxh">${vxE(T.nm)}</h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Player</th>${H.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>
+     ${R.map(([id,s])=>`<tr><td>${vxE(D.name[id]||id)}</td>${row(s).map((v,j)=>`<td>${j===0?`<b>${v}</b>`:v}</td>`).join("")}</tr>`).join("")||`<tr><td colspan="${H.length+1}" class="small">No stats this ${sp==="nhl"?"period":"quarter"}.</td></tr>`}
+     ${R.length?`<tr class="bxtot"><td>Team</td>${row(tot).map(v=>`<td>${v}</td>`).join("")}</tr>`:""}</tbody></table></div></div>`};
+  const lab=sp==="nhl"?(q<=3?["1st","2nd","3rd"][q-1]+" period":"Overtime"):(q<=4?"Quarter "+q:"Overtime");
+  return `<div class="small" style="margin-top:8px">${lab} only · counted from ESPN's play-by-play (minutes aren't split by ${sp==="nhl"?"period":"quarter"}).</div><div class="bxsw"><div class="bxtabs">${D.teams.map((T,i)=>`<button type="button" data-bxt="${i}" class="${i?"":"on"}">${vxE(T.ab)}</button>`).join("")}</div>${D.teams.map(card).join("")}</div>`}
+function qbTabs(sp,id,n){const L=sp==="nhl"?["1st","2nd","3rd","OT"]:["Q1","Q2","Q3","Q4","OT"],k=Math.max(sp==="nhl"?3:4,Math.min(n||0,L.length));
+  return `<div class="bxqt" data-qb="${sp}|${id}"><button type="button" data-qbq="" class="on">Game</button>${L.slice(0,k).map((l,i)=>`<button type="button" data-qbq="${i+1}">${l}</button>`).join("")}</div>`}
+document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest("[data-qbq]");if(!b)return;const bar=b.closest("[data-qb]"),area=bar&&bar.nextElementSibling;if(!area||!area.classList.contains("qbarea"))return;
+  e.preventDefault();const [sp,id]=bar.dataset.qb.split("|"),q=b.dataset.qbq;bar.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
+  if(!QB_ORIG.has(area))QB_ORIG.set(area,area.innerHTML);if(!q){area.innerHTML=QB_ORIG.get(area);return}
+  area.innerHTML=`<div class="small" style="padding:10px 0">Loading…</div>`;try{const S=await qbSummary(sp,id);area.innerHTML=qbTables(sp,S,+q)}catch(err){area.innerHTML=`<div class="small" style="padding:10px 0">Couldn't load the play-by-play from ESPN — try again in a moment.</div>`}});
