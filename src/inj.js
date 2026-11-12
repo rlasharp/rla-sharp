@@ -1,6 +1,6 @@
 /* ---------- Injuries: ESPN NFL injury report (espn.com/nfl/injuries + ESPN team injury pages) ----------
    Every player ESPN lists, incl. injured reserve / PUP / NFI. Regenerate with tools/injgen.py data/espn_inj.txt "<date>". */
-const INJ_ASOF="Wed Nov 11";
+const INJ_ASOF="Thu Nov 12";
 const INJ={
   ARI:[["Zachary Carter", "DT", "IR", "Knee", "Nov 15"], ["Andrew Wingard", "S", "Questionable", "Groin", "Nov 15"], ["Dante Stills", "DT", "Questionable", "Shoulder", "Nov 15"], ["Max Melton", "CB", "Questionable", "Knee", "Nov 15"], ["Bam Knight", "RB", "Questionable", "Concussion", "Nov 15"], ["Hunter Long", "TE", "IR", "Knee", "Nov 15"], ["Gardner Minshew II", "QB", "IR", "Elbow", "Feb 15"], ["Michael Wilson", "WR", "IR", "Neck", "Feb 15"], ["Jayden Williams", "OT", "Questionable", "Knee", "Nov 15"], ["Jon Gaines II", "G", "Questionable", "Ankle", "Nov 15"], ["Hjalte Froholdt", "C", "Questionable", "Concussion", "Nov 15"]],
   ATL:[["Cameron Williams", "OL", "IR", "Undisclosed", ""], ["Zachariah Branch", "WR", "Doubtful", "Hamstring", "Nov 15"], ["Josh Woods", "LB", "Questionable", "Ankle", "Nov 15"], ["James Pearce Jr.", "LB", "Questionable", "Back", "Nov 15"], ["Divine Deablo", "LB", "Questionable", "Forearm", "Nov 15"], ["Gervon Dexter Sr.", "DT", "Questionable", "Illness", "Nov 15"], ["Brian Robinson Jr.", "RB", "IR", "Hamstring", "Dec 13"], ["Samson Ebukam", "DE", "IR", "Hamstring", "Dec 13"]],
