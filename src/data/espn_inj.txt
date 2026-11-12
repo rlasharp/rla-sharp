@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 15:32Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 17:27Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Zachary Carter|DT|IR|Knee|Nov 15
@@ -58,13 +58,14 @@ Zavier Scott|RB|IR|Wrist|Dec 13
 Kentavius Street|DT|IR|Knee|Feb 15
 Braxton Jones|OT|IR|Knee|Feb 15
 #CIN
+Andrei Iosivas|WR|IR|Thumb|Nov 15
 Kyle Dugger|S|Questionable|Quadriceps|Nov 15
 DJ Turner II|CB|Questionable|Ankle|Nov 15
 Dylan Fairchild|G|Questionable|Pectoral|Nov 15
-Andrei Iosivas|WR|IR|Thumb|Nov 15
 Cashius Howell|DE|IR|Wrist|Dec 6
 Erick All Jr.|TE|IR|Knee - ACL|Feb 15
 #CLE
+Denzel Boston|WR|Questionable|Toe|Nov 15
 Carson Schwesinger|LB|Questionable|Wrist|Nov 15
 Denzel Ward|CB|Questionable|Quadriceps|Nov 15
 Quincy Williams|LB|Questionable|Hamstring|Nov 15
@@ -74,7 +75,6 @@ Elgton Jenkins|C|Questionable|Knee|Nov 15
 Austin Barber|OT|Questionable|Calf|Nov 15
 Harold Fannin Jr.|TE|Questionable|Groin|Nov 15
 Ronnie Hickman|S|Questionable|Concussion|Nov 15
-Denzel Boston|WR|Questionable|Toe|Nov 15
 Deshaun Watson|QB|Out|Undisclosed|
 Maliek Collins|DT|Questionable|Elbow|Nov 15
 #DAL
@@ -112,6 +112,8 @@ Jack Campbell|LB|IR|Neck|Dec 6
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
+Josh Jacobs|RB|Questionable|Finger|Nov 25
+Trey Smack|PK|Questionable|Calf|Nov 15
 Ty'Ron Hopper|LB|Questionable|Chest|Nov 15
 Javon Bullard|S|Questionable|Ankle|Nov 15
 Zaire Franklin|LB|Doubtful|Shin|Nov 15
@@ -121,11 +123,9 @@ Skyy Moore|WR|IR|Ankle|Nov 15
 Chris Brooks|RB|IR|Ankle|Nov 15
 Kevin Zeitler|G|Questionable|Ankle|Nov 15
 Aaron Banks|G|Questionable|Knee|Nov 15
-Trey Smack|PK|Questionable|Calf|Nov 15
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Savion Williams|WR|Questionable|Groin|Nov 15
 MarShawn Lloyd|RB|Out|Undisclosed|
-Josh Jacobs|RB|Out|Finger|Nov 25
 Josh Whyle|TE|Questionable|Concussion|Nov 15
 Sean Rhyan|G|Questionable|Ankle|Nov 15
 Travis Glover|OT|Questionable|Knee|Nov 15
@@ -220,8 +220,9 @@ Tyrion Ingram-Dawkins|DE|Questionable|Ankle|Nov 15
 Demond Claiborne|RB|IR|Knee|Dec 6
 Theo Jackson|S|Questionable|Undisclosed|
 #NE
-TreVeyon Henderson|RB|Out|Illness|Nov 29
+Rhamondre Stevenson|RB|Doubtful|Knee|Nov 15
 A.J. Brown|WR|Questionable|Knee|Nov 15
+TreVeyon Henderson|RB|Out|Illness|Nov 29
 Charles Woods|CB|Questionable|Hamstring|Nov 15
 Ben Brown|C|Out|Knee|Nov 29
 Will Campbell|OT|Questionable|Undisclosed|
@@ -232,7 +233,6 @@ Walter Rouse|OL|Questionable|Concussion|Nov 15
 Cameron Latu|TE|Questionable|Back|Nov 15
 Hunter Henry|TE|Questionable|Foot|Nov 15
 Reggie Gilliam|FB|IR|Ankle|Nov 15
-Rhamondre Stevenson|RB|Doubtful|Knee|Nov 15
 #NO
 CJ Donaldson|RB|Questionable|Shoulder|Nov 15
 Noah Fant|TE|Questionable|Back|Nov 15
