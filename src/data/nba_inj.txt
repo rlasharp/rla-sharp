@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 15:09Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 15:32Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -64,8 +64,8 @@ Quinten Post|C|Day-To-Day|head|Nov 13
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Milwaukee Bucks
+Myles Turner|C|Day-To-Day|rest|Nov 13
 Ryan Rollins|G|Day-To-Day|head|Nov 13
-Myles Turner|C|Out|rest|Nov 13
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
@@ -75,8 +75,8 @@ Trendon Watford|F|Day-To-Day|ankle sprain|Nov 13
 Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 13
 Yves Missi|C|Out|knee bruise|Nov 16
 #Oklahoma City Thunder
+Ajay Mitchell|G|Day-To-Day|ankle|Nov 13
 Jaylin Williams|F|Out|back spasms|Nov 15
-Ajay Mitchell|G|Out|ankle|Nov 13
 Thomas Sorber|C|Out|knee|Nov 13
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
@@ -98,7 +98,7 @@ Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
-Chris Youngblood|G|Out|foot bruise|Nov 13
+Chris Youngblood|G|Day-To-Day|foot bruise|Nov 13
 Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
