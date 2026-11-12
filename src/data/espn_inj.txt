@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 03:27Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 04:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Zachary Carter|DT|IR|Knee|Nov 15
@@ -151,7 +151,6 @@ Arden Key|DE|IR|Hamstring|Nov 15
 Alec Pierce|WR|IR|Heel|Nov 29
 Luke Rhodes|LS|Questionable|Hamstring|Nov 15
 Jalen Travis|OT|Doubtful|Knee|Nov 29
-Jaylon Carlies|LB|Questionable|Neck|Nov 15
 #JAX
 B.J. Green II|DE|IR|Elbow|Nov 15
 Travon Walker|DE|Questionable|Ribs|Nov 15

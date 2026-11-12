@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 03:27Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 04:32Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -55,15 +55,16 @@ Brandon Ingram|F|Out|achilles surgery|Nov 13
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Austin Reaves|G|Out|heel|Nov 15
-Collin Sexton|G|Day-To-Day|head|Nov 11
+Austin Reaves|G|Day-To-Day|heel|Nov 15
+Luka Doncic|G|Day-To-Day|ankle|Nov 15
+Collin Sexton|G|Day-To-Day|head|Nov 15
 Quentin Grimes|G|Out|finger|Nov 15
 #Memphis Grizzlies
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Quinten Post|C|Out|head|Nov 13
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Milwaukee Bucks
-Ryan Rollins|G|Day-To-Day|head|Nov 11
+Ryan Rollins|G|Day-To-Day|head|Nov 13
 Myles Turner|C|Out|rest|Nov 13
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
