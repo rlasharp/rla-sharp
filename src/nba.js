@@ -863,20 +863,32 @@ function nbaZoneGrid(){
     for(let gx=st;gx<=50;gx+=st){const z=gx<50?nbaZoneOf(gx+st/2,gy+st/2):-1;if(z!==z0){cells.push([x0,gy,gx-x0,z0]);x0=gx;z0=z}}}
   return NBA_ZGRID={cells,st};
 }
+/* the 10 shot zones drawn as smooth vector shapes (same boundaries as nbaZoneOf): painted back to front — 3-point wedges, corners,
+   then the inside-the-arc area (mid-range wedges), the paint and the restricted area */
+function nbaZoneShapes(X,Y,sc,col){const cx=25,cy=.75,R=90,P=(x,y)=>`${X(x).toFixed(1)},${Y(y).toFixed(1)}`;
+  const wedge=(a1,a2)=>{const pts=[P(cx,cy)];for(let a=a1;;a=Math.min(a2,a+5)){const r=a*Math.PI/180;pts.push(P(cx+R*Math.sin(r),cy+R*Math.cos(r)));if(a>=a2)break}return pts.join(" ")};
+  const r3=23.75,ang=Math.asin(22/r3),yA=cy+r3*Math.cos(ang);
+  const arc=`M ${P(3,-4.5)} L ${P(3,yA)} A ${(r3*sc).toFixed(1)} ${(r3*sc).toFixed(1)} 0 0 0 ${P(47,yA)} L ${P(47,-4.5)} Z`;
+  return `<defs><clipPath id="nbcrt"><rect x="0" y="0" width="${X(50)}" height="${Y(31)}"/></clipPath><clipPath id="nbin2"><path d="${arc}"/></clipPath></defs>
+   <g clip-path="url(#nbcrt)"><polygon points="${wedge(-180,-22)}" fill="${col(7)}" stroke="${col(7)}" stroke-width=".8"/><polygon points="${wedge(-22,22)}" fill="${col(8)}" stroke="${col(8)}" stroke-width=".8"/><polygon points="${wedge(22,180)}" fill="${col(9)}" stroke="${col(9)}" stroke-width=".8"/>
+   <rect x="0" y="0" width="${X(3)}" height="${Y(9)}" fill="${col(5)}"/><rect x="${X(47)}" y="0" width="${X(50)-X(47)}" height="${Y(9)}" fill="${col(6)}"/>
+   <g clip-path="url(#nbin2)"><polygon points="${wedge(-180,-30)}" fill="${col(2)}" stroke="${col(2)}" stroke-width=".8"/><polygon points="${wedge(-30,30)}" fill="${col(3)}" stroke="${col(3)}" stroke-width=".8"/><polygon points="${wedge(30,180)}" fill="${col(4)}" stroke="${col(4)}" stroke-width=".8"/>
+    <rect x="${X(17)}" y="0" width="${X(33)-X(17)}" height="${Y(14.5)}" fill="${col(1)}"/><circle cx="${X(cx)}" cy="${Y(cy)}" r="${4*sc}" fill="${col(0)}"/></g>
+   <g fill="none" stroke="#000" stroke-opacity=".28" stroke-width="1.2"><path d="${arc}"/><rect x="${X(17)}" y="0" width="${X(33)-X(17)}" height="${Y(14.5)}"/><circle cx="${X(cx)}" cy="${Y(cy)}" r="${4*sc}"/></g></g>`}
 function nbaHeat(diff,att){if(att<3)return "#2a2d32";if(diff>=8)return "#d9483b";if(diff>=3)return "#e8894a";if(diff<=-8)return "#2f6fb5";if(diff<=-3)return "#5b9bd5";return "#6b7078"}
 function nbaCourt(nm){return nbaCourtFor((typeof NBA_SHOT!=="undefined"&&NBA_SHOT[nm]),"this season")}
 function nbaCourtFor(S,when,who){
   if(!S||typeof NBA_LGZ==="undefined"||!NBA_LGZ)return `<div class="small">No shot locations yet.</div>`;
-  const G=nbaZoneGrid(),sc=8,X=x=>x*sc,Y=y=>(y+4.5)*sc;
+  const sc=8,X=x=>x*sc,Y=y=>(y+4.5)*sc;
   const zinfo=S.map((z,i)=>{const lg=NBA_LGZ[i][1]/Math.max(1,NBA_LGZ[i][0])*100,pc=z[0]?z[1]/z[0]*100:0;return {att:z[0],made:z[1],pc,lg,diff:pc-lg}});
   const tot=S.reduce((s,z)=>s+z[0],0);
   // fixed label spots (feet) so numbers stay readable
-  const LBL=[[25,2.5],[25,10],[8,8],[25,18],[42,8],[1.6,2],[48.4,2],[6,25],[25,31.5],[44,25]];
-  let svg=`<svg viewBox="0 0 400 372" class="court" role="img" aria-label="Shot zones">`;
-  svg+=`<g shape-rendering="crispEdges">`+G.cells.map(([gx,gy,w,z])=>`<rect x="${X(gx).toFixed(1)}" y="${Y(gy).toFixed(1)}" width="${(w*sc+.4).toFixed(1)}" height="${(G.st*sc+.4).toFixed(1)}" fill="${nbaHeat(zinfo[z].diff,zinfo[z].att)}"/>`).join("")+`</g>`;
+  const LBL=[[25,2.5],[25,10],[8,8],[25,18],[42,8],[1.6,2],[48.4,2],[6,25],[25,27.5],[44,25]];
+  let svg=`<svg viewBox="0 0 400 284" class="court" role="img" aria-label="Shot zones">`;
+  svg+=nbaZoneShapes(X,Y,sc,i=>nbaHeat(zinfo[i].diff,zinfo[i].att));
   const L='stroke="rgba(255,255,255,.8)" stroke-width="1.6" fill="none"';
   const rimY=Y(.75),r3=23.75*sc;
-  svg+=`<rect x="0" y="0" width="400" height="372" ${L}/>`+
+  svg+=`<rect x="0" y="0" width="400" height="284" ${L}/>`+
     `<rect x="${X(17)}" y="0" width="${16*sc}" height="${Y(14.5)}" ${L}/>`+
     `<circle cx="${X(25)}" cy="${Y(14.5)}" r="${6*sc}" ${L}/>`+
     `<path d="M ${X(21)} ${rimY} A ${4*sc} ${4*sc} 0 0 0 ${X(29)} ${rimY}" ${L}/>`+
