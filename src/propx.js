@@ -118,7 +118,9 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
    <details class="pxfd"${S0.open?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary><div class="pxrw"><button type="button" class="pxrst" data-frst>↺ Reset all filters</button></div>
    ${tn!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">${key.startsWith("nfl")?"This game"+(typeof pxGameDay!=="undefined"?pxGameDay(key):""):"Tonight"}: ${pxSpTxt(tn)}${tt!=null?" · O/U "+tt:""}</span></div>`:""}
    ${G.some(g=>g.ha)?`<div class="pxfr"><div class="pxfl"><span>Situation</span>${P&&P.tn?`<button class="likeT" data-like="1">🎯 Like this game</button>`:""}</div>
-    ${Object.entries(PX_SIT).map(([g,[lab,o]])=>`<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...Object.entries(o)].map(([v,l])=>`<button data-sit="${g}|${v}">${l}${P&&P.tn&&P.tn[g]===v&&v?" •":""}</button>`).join("")}</div></div>`).join("")}</div>`:""}
+    ${Object.entries(PX_SIT).map(([g,[lab,o]])=>{if(g!=="ven"&&!G.some(x=>x[g]))return "";
+      let opts=Object.entries(o);if(g==="qb"){const C={};for(const x of G)if(x.qb)C[x.qb]=(C[x.qb]||0)+1;const L=Object.entries(C).sort((a,b)=>b[1]-a[1]);if(L.length<2)return "";opts=L.map(([n,c],i)=>[n,`${i===0?"His usual · ":""}${esc(pxLast(n))} <small>${c}</small>`])}
+      return `<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...opts].map(([v,l])=>`<button data-sit="${g}|${esc(v)}">${l}${P&&P.tn&&P.tn[g]===v&&v?" •":""}</button>`).join("")}</div></div>`}).join("")}</div>`:""}
    ${pxDual("sp","Team's spread",-15,15,.5,S0.lo,S0.hi,["Favored","PK","Underdog"],spPre)}
    ${hasTot?pxDual("tt","Game total (O/U)",t0,t1,.5,S0.tlo,S0.thi,[String(t0),String((t0+t1)/2),String(t1)],totPre):""}
    ${hasMin?pxDual("mn",MN.lab,0,MX,1,S0.mlo,S0.mhi,MN.u==="%"?["0%","50%","100%"]:["0",String(MX/2),String(MX)],mnPre):""}
@@ -133,7 +135,7 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
    </div>`}
 function pxPred(key){const S0=PXS[key],D=PXG[key],TR=D.TR;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi),lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
   const spAny=lo<=-15&&hi>=15,ttAny=tlo<=TR[0]&&thi>=TR[1];
-  return g=>(spAny||(g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi)))&&(g.min==null||(g.min>=mlo&&(mhi>=D.MN.max||g.min<=mhi)))&&(ttAny||g.tot!=null&&((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi)))&&(!S0.ven||g.ha===S0.ven)&&(!S0.rest||g.rest===S0.rest)&&(S0.glo==null||((S0.glo<=0||(g.tg!=null&&g.tg>=S0.glo))&&(S0.ghi>=15||(g.tg!=null&&g.tg<=S0.ghi))))&&(!S0.mates||Object.entries(S0.mates).every(([n,v])=>{if(g.wk==null)return false;const p=nflMatePlayed(n,g.wk);return p==null?false:(v==="w"?p:!p)}))}
+  return g=>(spAny||(g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi)))&&(g.min==null||(g.min>=mlo&&(mhi>=D.MN.max||g.min<=mhi)))&&(ttAny||g.tot!=null&&((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi)))&&Object.keys(PX_SIT).every(k=>!S0[k]||(k==="ven"?g.ha:g[k])===S0[k])&&(S0.glo==null||((S0.glo<=0||(g.tg!=null&&g.tg>=S0.glo))&&(S0.ghi>=15||(g.tg!=null&&g.tg<=S0.ghi))))&&(!S0.mates||Object.entries(S0.mates).every(([n,v])=>{if(g.wk==null)return false;const p=nflMatePlayed(n,g.wk);return p==null?false:(v==="w"?p:!p)}))}
 function pxResHtml(key){
   const S0=PXS[key],D=PXG[key];if(!S0||!D)return "";const {SETS,line,unit,dec,isTD,TR}=D;const G=SETS[S0.set]||SETS.ssn;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi);
   const lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
@@ -155,7 +157,7 @@ function pxPaint(f){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot
   {const TR2=PXG[key].TR,MN2=PXG[key].MN,on=[];const x=Math.min(S0.lo,S0.hi),y=Math.max(S0.lo,S0.hi);if(x>-15||y<15)on.push(["sp",pxSpRange(x,y)]);
    const a=Math.min(S0.tlo,S0.thi),b=Math.max(S0.tlo,S0.thi);if(f.querySelector('[data-dr="tt"]')&&(a>TR2[0]||b<TR2[1]))on.push(["tt",`O/U ${a<=TR2[0]?"≤"+b:b>=TR2[1]?a+"+":a+"–"+b}`]);
    const c=Math.min(S0.mlo,S0.mhi),d=Math.max(S0.mlo,S0.mhi);if(f.querySelector('[data-dr="mn"]')&&(c>0||d<MN2.max))on.push(["mn",MN2.u==="%"?`${c}–${d}% snaps`:`${c}–${d} min`]);
-   for(const g in PX_SIT)if(S0[g])on.push(["sit|"+g,PX_SIT[g][1][S0[g]]]);
+   for(const g in PX_SIT)if(S0[g])on.push(["sit|"+g,g==="qb"?"QB "+pxLast(S0[g]):PX_SIT[g][0].replace("Opp ","Opp ")+": "+PX_SIT[g][1][S0[g]]]);
    if(S0.mates)for(const [n,v] of Object.entries(S0.mates))on.push(["nmt|"+n,(v==="w"?"With ":"Without ")+pxLast(n)]);
    if(S0.glo!=null&&(S0.glo>0||S0.ghi<15))on.push(["tg",S0.ghi>=15?`${Math.min(S0.glo,S0.ghi)}+ targets`:`${Math.min(S0.glo,S0.ghi)}–${Math.max(S0.glo,S0.ghi)} targets`]);
    f.querySelectorAll("[data-sit]").forEach(b=>{const [g,v]=b.dataset.sit.split("|");b.classList.toggle("on",(S0[g]||"")===v)});
@@ -170,7 +172,7 @@ function pxFilterWire(root){
     f.querySelectorAll("input[data-r]").forEach(inp=>inp.oninput=()=>{const [nm,w]=inp.dataset.r.split("|"),S0=PXS[key];S0[nm==="sp"?w:nm==="tt"?"t"+w:nm==="tg"?"g"+w:"m"+w]=+inp.value;pxPaint(f)});
     f.querySelectorAll("[data-nmt]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [m,v]=b.dataset.nmt.replace(/&#39;/g,"'").replace(/&amp;/g,"&").split("|"),S1=PXS[key];S1.mates=S1.mates||{};if(v)S1.mates[m]=v;else delete S1.mates[m];if(!Object.keys(S1.mates).length)delete S1.mates;f.querySelectorAll("[data-nmt]").forEach(x=>{const [mm,vv]=x.dataset.nmt.replace(/&#39;/g,"'").replace(/&amp;/g,"&").split("|");x.classList.toggle("on",((S1.mates||{})[mm]||"")===vv)});pxPaint(f)});
     f.querySelectorAll("[data-sit]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [g,v]=b.dataset.sit.split("|");PXS[key][g]=v;pxPaint(f)});
-    {const lk=f.querySelector("[data-like]");if(lk)lk.onclick=e=>{e.stopPropagation();const t=PXG[key].TN||{};for(const g in PX_SIT)PXS[key][g]=t[g]||"";pxPaint(f)}}
+    {const lk=f.querySelector("[data-like]");if(lk)lk.onclick=e=>{e.stopPropagation();const t=PXG[key].TN||{};for(const g in PX_SIT)PXS[key][g]=(g==="ven"||g==="rest")?(t[g]||""):(PXS[key][g]||"");pxPaint(f)}}
     f.querySelectorAll("[data-set]").forEach(b=>b.onclick=e=>{e.stopPropagation();if(b.disabled)return;PXS[key].set=b.dataset.set;pxPaint(f)});
     f.querySelectorAll("[data-pre]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [nm,a,c]=b.dataset.pre.split("|"),S0=PXS[key];if(nm==="sp"){S0.lo=+a;S0.hi=+c}else if(nm==="tt"){S0.tlo=+a;S0.thi=+c}else if(nm==="tg"){S0.glo=+a;S0.ghi=+c}else{S0.mlo=+a;S0.mhi=+c}pxPaint(f)});
     const dd=f.querySelector("details.pxfd");if(dd)dd.ontoggle=()=>{PXS[key].open=dd.open};
@@ -185,7 +187,7 @@ function pxNbaSets(nm,k,opp){const p=NBA_LOGS[nm],ssn=p.g.map(x=>nbaRowPx(x,k));
   return {l5:ssn.slice(-5),l10:ssn.slice(-10),ssn,h2h,vp}}
 function pxNflSets(pl,k,CL){const SP=typeof NFL_SPR!=="undefined"?NFL_SPR:{},U=typeof USAGE_RAW!=="undefined"?USAGE_RAW:{},o=oppOf(pl.team),opp=o?o.opp:null;
   const row=(l,who)=>{const s=l.season===CUR?SP[l.week+"|"+(l.team||pl.team)]:null,u=U[l.player||pl.name],sn=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][0]:null;
-    const rs=l.season===CUR&&typeof NFL_RST!=="undefined"?NFL_RST[l.week+"|"+(l.team||pl.team)]:null,wk=l.season===CUR&&!who?l.week:null,tg=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][1]:(l.tgt!=null?l.tgt:null);return {wk,tg,ha:+l.home?"H":"A",rest:rs==null?null:rs<=5?"short":rs>=12?"bye":"norm",sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,min:sn,v:k==="anyTD"?(stat(l,k)>0?1:0):stat(l,k),lab:who?"":(+l.home?"":"@")+l.opp+(l.season!==CUR?" ’"+String(l.season).slice(2):""),who}};
+    const rs=l.season===CUR&&typeof NFL_RST!=="undefined"?NFL_RST[l.week+"|"+(l.team||pl.team)]:null,wk=l.season===CUR&&!who?l.week:null,tg=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][1]:(l.tgt!=null?l.tgt:null);return {...(l.season===CUR?pxNflSit(l.opp,pl.pos,l.week,l.team||pl.team):{}),wk,tg,ha:+l.home?"H":"A",rest:rs==null?null:rs<=5?"short":rs>=12?"bye":"norm",sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,min:sn,v:k==="anyTD"?(stat(l,k)>0?1:0):stat(l,k),lab:who?"":(+l.home?"":"@")+l.opp+(l.season!==CUR?" ’"+String(l.season).slice(2):""),who}};
   const ok=l=>Number.isFinite(stat(l,k)),ssn=CL.filter(ok).map(l=>row(l));
   const h2h=opp?pLogs(pl.name).filter(l=>l.opp===opp&&ok(l)).map(l=>row(l)):[];
   const vp=opp?S.playerLogs.filter(l=>l.season===CUR&&l.opp===opp&&l.pos===pl.pos&&l.player!==pl.name&&ok(l)).filter(l=>{const u=U[l.player];const sn=u&&u.wk&&u.wk[l.week]?u.wk[l.week][0]:null;return sn==null?true:sn>=50})
@@ -203,7 +205,7 @@ function nflPropHead(pl,k,line){const o0=oppOf(pl.team),closed=!!(o0&&nflStarted
    ${alt?"":`${rp&&typeof nflVerdict!=="undefined"?nflVerdict(pl.name,k):""}${rp?trackRow({pl,k}):""}`}`}
 function nflPropFilterCard(pl,k,line,CL){const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);
   const o9=oppOf(pl.team),rr=o9&&typeof NFL_RST!=="undefined"?NFL_RST[(o9.g.wk||PLAYS_WEEK)+"|"+pl.team]:null;
-  const P={tn:o9?{ven:o9.home?"H":"A",rest:rr==null?"":rr<=5?"short":rr>=12?"bye":"norm"}:null,head:nflPropHead(pl,k,line),
+  const Q9=o9&&typeof QB1_STATUS!=="undefined"&&QB1_STATUS[pl.team],P={tn:o9?{...pxNflSit(o9.opp,pl.pos,null,null),qb:Q9?(/^(out|doubtful|injured reserve|ir)\b/i.test(Q9.now||"")?Q9.sub:Q9.qb):"",ven:o9.home?"H":"A",rest:rr==null?"":rr<=5?"short":rr>=12?"bye":"norm"}:null,head:nflPropHead(pl,k,line),
     mates:nflMateHtml(pl,"nfl|"+pl.name),
     extra:`<div class="pxfr"><div class="pxfl"><span>✏️ Your sportsbook's line</span><input type="number" step=".5" id="lineIn" value="${line}" class="pxli"></div><div class="small">Different line at your book? Type it and every hit rate re-checks against it.</div></div>`};
   return `<div class="card" id="pxNfl" style="padding:10px">${pxFilterBlock("nfl|"+pl.name,pxNflSets(pl,k,CL),td?.5:line,sp,MARKETS[k].u,dec,td,(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name]&&USAGE_RAW[pl.name].s)?USAGE_RAW[pl.name].s.snap:null,pxNflTot(pl.team),[35,57,3],{lab:"Snap share",max:100,u:"%",pre:[50,70],w:10,any:"Any snap share"},P)}</div>`}
@@ -227,7 +229,23 @@ function pxRecentHtml(sp,n){let R=[];try{R=(LS.get("recentP",[])||[]).filter(r=>
 document.addEventListener("click",e=>{const a=e.target.closest("[data-rnfl]");if(!a)return;e.preventDefault();const [nm,k]=a.dataset.rnfl.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"').split("|");
   S.prop={player:nm,market:k||null,open:true};if(location.hash!=="#props")location.hash="props";else viewProps()});
 
-const PX_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{short:"Short week",norm:"Normal",bye:"After bye"}]};
+const PX_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{short:"Short week",norm:"Normal",bye:"After bye"}],
+  opp:["Opp defense",{top:"Top 10",mid:"Middle",bot:"Bottom 10"}],pace:["Opp pace",{fast:"Fast",mid:"Middle",slow:"Slow"}],
+  dvp:["Opp vs his position",{soft:"Gives up a lot",mid:"Middle",tough:"Stingy"}],
+  wx:["Weather",{dome:"Dome / roof closed",fair:"Outdoors, fair",wind:"Windy (15+ mph)",cold:"Cold (≤40°F)"}],qb:["QB",{}]};
+/* NFL filter tiers (this season's ranks): opponent defense by points allowed, pace by plays a game, what they allow to his position */
+const pxTier3=(r,n,a,b,c)=>r==null?null:r<=10?a:r>n-10?c:b;
+let PX_NRK=null;function pxNflRanks(){if(PX_NRK)return PX_NRK;const R={opp:{},pace:{},dvp:{}};try{const u=units(),T=Object.keys(u);R.n=T.length;for(const t of T)R.opp[t]=u[t].d.ptsR}catch(e){}
+  try{if(typeof PACE!=="undefined")for(const t in PACE)R.pace[t]=PACE[t].ppgR}catch(e){}
+  try{for(const pos of ["WR","TE","RB"]){const L=Object.entries(typeof NFL_DEFTGT!=="undefined"?NFL_DEFTGT:{}).filter(([,d])=>d[pos]&&d[pos].t>=15).map(([t,d])=>[t,d[pos].yds/d[pos].t]).sort((a,b)=>b[1]-a[1]);R.dvp[pos]={};L.forEach(([t],i)=>R.dvp[pos][t]=i+1);R.dvp[pos].n=L.length}
+    const Q=Object.keys(TEAM_STATS||{}).sort((a,b)=>TEAM_STATS[b].dpass-TEAM_STATS[a].dpass);R.dvp.QB={n:Q.length};Q.forEach((t,i)=>R.dvp.QB[t]=i+1)}catch(e){}
+  return PX_NRK=R}
+function pxNflSit(opp,pos,wk,team){const R=pxNflRanks(),o={};if(!opp)return o;
+  o.opp=pxTier3(R.opp[opp],R.n||32,"top","mid","bot");o.pace=pxTier3(R.pace[opp],32,"fast","mid","slow");
+  const D=R.dvp[pos];o.dvp=D?pxTier3(D[opp],D.n,"soft","mid","tough"):null;
+  if(wk!=null&&team){const w=typeof NFL_GWX!=="undefined"&&NFL_GWX[wk+"|"+team];if(w)o.wx=/dome|closed/i.test(w[0])?"dome":w[2]!=null&&w[2]>=15?"wind":w[1]!=null&&w[1]<=40?"cold":"fair";
+    const q=typeof NFL_GQB!=="undefined"&&NFL_GQB[wk+"|"+team];if(q)o.qb=q}
+  return o}
 
 /* ===== Game pages: points scored & allowed (Season / L5 / H2H) with spread + total filters ===== */
 const GS={};

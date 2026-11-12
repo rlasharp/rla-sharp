@@ -19,11 +19,23 @@ def blank(): return {"t": 0, "rec": 0, "yds": 0, "yac": 0, "fd": 0, "ay": 0, "ct
 P = collections.defaultdict(blank); DEF = collections.defaultdict(lambda: collections.defaultdict(blank)); LG = collections.defaultdict(blank)
 BL = collections.defaultdict(lambda: [0, 0]); weeks = set()
 RZ, RZD, TZ, QBZ, LGZ_ = {}, {}, {}, {}, {}
+GWX, GQB = {}, {}
 def rzb(): return {"c20": [0, 0], "c10": [0, 0], "c5": [0, 0], "t20": [0, 0, 0], "t10": [0, 0, 0], "ez": {"L": [0, 0, 0], "M": [0, 0, 0], "R": [0, 0, 0]}}
 def rzdb(): return {"ru": [0, 0], "pa": [0, 0, 0], "ez": {"L": [0, 0, 0], "M": [0, 0, 0], "R": [0, 0, 0]}}
 for r in csv.DictReader(gzip.open(os.path.join(D, "pbp.csv.gz"), "rt")):
     if r["season_type"] != "REG" or r["two_point_attempt"] == "1": continue
     key = (r["game_id"], r["play_id"]); f = ftn.get(key)
+    # per game, for the props filters: weather/roof, and which QB threw the passes (most attempts) for each team
+    po_ = "LAR" if r["posteam"] == "LA" else r["posteam"]; dt_ = "LAR" if r["defteam"] == "LA" else r["defteam"]
+    if po_ and dt_ and r.get("week"):
+        for t_ in (po_, dt_):
+            k_ = f'{r["week"]}|{t_}'
+            if k_ not in GWX:
+                try: GWX[k_] = [r.get("roof") or "", round(float(r["temp"])) if r.get("temp") else None, round(float(r["wind"])) if r.get("wind") else None]
+                except Exception: GWX[k_] = [r.get("roof") or "", None, None]
+        if r["pass_attempt"] == "1" and r.get("passer_player_id"):
+            qn = names.get(r["passer_player_id"], (None, None))[0]
+            if qn: GQB.setdefault(f'{r["week"]}|{po_}', collections.Counter())[qn] += 1
     if r["qb_dropback"] == "1" and r["defteam"] and f is not None:
         dt = "LAR" if r["defteam"] == "LA" else r["defteam"]; BL[dt][1] += 1; BL[dt][0] += 1 if f[1] else 0
     # red zone: carries and targets inside the 20 / 10 / 5, and passes thrown into the end zone (air yards reach the goal line)
@@ -93,6 +105,8 @@ print("const NFL_LGZONE=" + json.dumps(rd(LGZ_), separators=(",", ":")) + ";")
 print("const NFL_QBZ=" + json.dumps({n: {"tm": v["tm"], "att": v["att"], "z": rd(v["z"])} for n, v in QBZ.items() if v["att"] >= 30}, separators=(",", ":")) + ";")
 print("const NFL_RZP=" + json.dumps({n: v for n, v in RZ.items() if v["c20"][0] + v["t20"][0] >= 3}, separators=(",", ":")) + ";  /* red zone: c20/c10/c5 = [carries, TD]; t20/t10 = [targets, catches, TD]; ez = end-zone targets by side [targets, catches, TD] */")
 print("const NFL_RZD=" + json.dumps(RZD, separators=(",", ":")) + ";  /* red zone allowed: ru = [carries, rush TD], pa = [targets, catches, pass TD], ez = end-zone targets by side */")
+print("const NFL_GWX=" + json.dumps(GWX, separators=(",", ":")) + ";  /* week|team -> [roof, temp F, wind mph] (nflverse; dome/closed roofs have no weather) */")
+print("const NFL_GQB=" + json.dumps({k: c.most_common(1)[0][0] for k, c in GQB.items()}, separators=(",", ":")) + ";  /* week|team -> QB with the most pass attempts that game */")
 print("const NFL_BLITZ=" + json.dumps(BLo, separators=(",", ":")) + ";")
 print(f"nfltgt: {len(PL)} players, {len(DF)} defenses, weeks {wk}, ftn plays {len(ftn)}", file=sys.stderr)
 # game script: each team's closing spread (negative = favored) and final margin, this season (nflverse games.csv)

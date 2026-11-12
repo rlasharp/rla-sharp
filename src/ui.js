@@ -166,7 +166,7 @@ ${nflEdgesCard(g)}`
     if(T==="h2h")return nav+`<div class="section nodz"><div class="card"><h2>🆚 Head-to-head</h2>${h2hHtml(g)}<p class="small" style="margin:6px 0 0">Tap 📋 Box score on any of the last 5 meetings for the full stats.</p></div></div>`;
     if(T==="inj")return nav+`<div class="section">${injWxSection(g)}</div>`;
     return nav+`   <div class="section"><h2>Offense vs defense</h2><p class="small" style="margin-top:-6px">Per-game averages this season. Rank 1st = best in the NFL (most gained for offenses, least allowed for defenses). <span class="tag real">Real</span> Offense from ESPN, yards allowed from NFL.com, points allowed from CBS scores.</p>
-    <div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>${typeof gpLazy!=="undefined"?gpLazy("Matchup heat map",()=>vxHeat("nfl",g.away,g.home,short))+gpLazy("Red zone",()=>vxRz(g))+gpLazy("Where the QB throws",()=>typeof vxPassMap!=="undefined"?vxPassMap(g):"")+gpLazy("Red-zone & end-zone chances",()=>typeof vxRzGame!=="undefined"?vxRzGame(g):"")+gpLazy("Pace vs scoring",()=>typeof vxPace!=="undefined"?vxPace("nfl",g):"")+gpLazy("Offense vs defense — every team",()=>typeof vxStrength!=="undefined"?vxStrength("nfl",g):""):""}
+    <div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>${typeof gpLazy!=="undefined"?gpLazy("Matchup heat map",()=>vxHeat("nfl",g.away,g.home,short))+gpLazy("Red zone",()=>vxRz(g))+gpLazy("Pace vs scoring",()=>typeof vxPace!=="undefined"?vxPace("nfl",g):"")+gpLazy("Offense vs defense — every team",()=>typeof vxStrength!=="undefined"?vxStrength("nfl",g):""):""}
    ${nfPressCard(g)}${nfShareCard(g)}${typeof xaKeyOutCard!=="undefined"?`<div class="section">${xaDefTrendCard("nfl",g.away,g.home)}${xaTdCard(g)}${xaProeCard(g)}${xaDivCard(g)}${xaKickCard(g)}</div>`:""}
    <div class="section"><h2>Run game: yards per rushing attempt</h2><p class="small" style="margin-top:-6px">How well each offense runs the ball against how well the other defense stops it. <span class="tag real">Real</span> <a href="${RUN_SRC.att}" target="_blank" rel="noopener">StatRankings</a> rushing attempts and YPC allowed (2026, through Oct 27) with ESPN rushing yards.</p>
     <div class="grid g2">${runGameHtml(g.away,g.home)}${runGameHtml(g.home,g.away)}</div></div>
@@ -619,6 +619,7 @@ function viewPlayer(){
    ${QA?qbSplitCard(pl,k,line,CLall,QS,QM,qmode):""}
    <div class="section">
     ${v10.length?"":`<div class="card"><h2>Game log</h2><p class="note">No game log loaded for ${esc(pl.name)} yet.</p></div>`}</div>
+   ${pl.pos==="QB"&&typeof vxPassFor!=="undefined"?`<div class="section">${vxPassFor(pl.team,opp)}</div>`:""}${k==="anyTD"&&typeof vxRzTd!=="undefined"?`<div class="section">${vxRzTd(pl.name,opp)}</div>`:""}
    ${nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA)}
    ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nfl",pl.name):""}`;
   $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;try{history.replaceState(null,"","#props")}catch(x){}viewProps()};
@@ -754,7 +755,7 @@ function nflAllowTiles(t,pos,k){const D=DVP_RAW[pos];if(!D||!D.rows[t])return ""
 function nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA){
   const X=(typeof nflPropXCard!=="undefined"&&nflPropXCard(pl,k,line,CL))||{};
   const T=[["alt","Alt lines",X.alt],["gs","Game script",X.gs],["def","Vs defenses",X.def],
-    ["tgt","Targets",typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""],["use","Usage",usageCard(pl)],["rz","Red zone",rzCard(pl)+(typeof vxRzPlayer!=="undefined"?vxRzPlayer(pl.name):"")],
+    ["tgt","Targets",typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""],["use","Usage",usageCard(pl)],["rz","Red zone",rzCard(pl)+(k!=="anyTD"&&typeof vxRzPlayer!=="undefined"?vxRzPlayer(pl.name):"")],
     ["vs",opp?"Vs "+short(opp):"",opp?posvCard(pl,opp,k,line,unit)+vsCard(pl,opp,k,line,unit):""],
     ["all","All games",`<div style="max-height:380px;overflow:auto"><table><tbody>${allGameRows(pl,CL,CLall,qmode,QM,k,ouTag,QA)}</tbody></table></div><p class="note" style="margin:8px 0 0">"Did not play" weeks (injury / inactive) aren't counted in averages or hit rates.</p>`],
     ["sch","Schedule",typeof NFL_NEXT!=="undefined"&&NFL_NEXT[pl.team]?nfNextHtml(pl.team):""]].filter(t=>t[1]&&t[2]);

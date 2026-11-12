@@ -124,10 +124,10 @@ const VX_ZR=[["D","Deep","20+ yds"],["I","Medium","10–19"],["S","Short","0–9
 function vxQbOf(t){const Q=typeof QB1_STATUS!=="undefined"&&QB1_STATUS[t];let nm=Q?(/^(out|doubtful|injured reserve|ir)\b/i.test(Q.now||"")?Q.sub:Q.qb):null;
   if(nm&&NFL_QBZ[nm]&&NFL_QBZ[nm].tm===t)return [nm,NFL_QBZ[nm]];
   const L=Object.entries(NFL_QBZ).filter(([,v])=>v.tm===t).sort((x,y)=>y[1].att-x[1].att);return L.length?L[0]:null}
-function vxPassMap(g){try{if(typeof NFL_TZONE==="undefined"||typeof NFL_QBZ==="undefined")return "";const id="pm"+g.away+g.home;
+function vxPassMap(g,only){try{if(typeof NFL_TZONE==="undefined"||typeof NFL_QBZ==="undefined")return "";const id="pm"+g.away+g.home;
   if(!NFL_TZONE[g.away]||!NFL_TZONE[g.home])return "";const LG=NFL_LGZONE||{};
   const ypt=c=>c&&c[0]?c[2]/c[0]:null;
-  return vxBox(id,()=>{const v=VX_S[id]||"a",off=v==="a"?g.away:g.home,def=off===g.away?g.home:g.away,Q=vxQbOf(off),Z=Q?Q[1].z:NFL_TZONE[off].o,D=NFL_TZONE[def].d;
+  return vxBox(id,()=>{const v=only?(only===g.away?"a":"h"):(VX_S[id]||"a"),off=v==="a"?g.away:g.home,def=off===g.away?g.home:g.away,Q=vxQbOf(off),Z=Q?Q[1].z:NFL_TZONE[off].o,D=NFL_TZONE[def].d;
     const tot=Object.values(Z).reduce((s,c)=>s+c[0],0),dtot=Object.values(D).reduce((s,c)=>s+c[0],0);if(!tot||!dtot)return "";const mx=Math.max(...Object.values(Z).map(c=>c[0]));
     const qcell=k=>{const c=Z[k];if(!c||!c[0])return `<div class="qpz none">–</div>`;const sh=c[0]/tot;return `<div class="qpz" style="background:rgba(59,130,246,${(.1+c[0]/mx*.6).toFixed(2)})"><b>${Math.round(sh*100)}%</b><span>${Math.round(c[1]/c[0]*100)}% caught</span></div>`};
     const dcell=k=>{const c=D[k],l=ypt(LG[k]);if(!c||c[0]<3)return `<div class="qpz none">${c?c[0]:0} tgt</div>`;const y=ypt(c),e=l!=null?y-l:0;
@@ -138,7 +138,7 @@ function vxPassMap(g){try{if(typeof NFL_TZONE==="undefined"||typeof NFL_QBZ==="u
       if(sh>=.08&&Math.abs(e)>=1)ed.push({k,sh,e,txt:`${rl.toLowerCase()} ${cl.toLowerCase()}`,y:ypt(d),l})}
     ed.sort((x,y)=>y.sh-x.sh);
     return `<div class="card vx2"><h2 style="margin-bottom:2px">Where the QB throws vs where the defense gives up catches</h2><div class="small" style="margin-bottom:8px">Field split into 12 areas by how far the ball travels in the air and which side. Blue = how often he throws there. Green / red = the defense gives up more / fewer yards per target there than the NFL average.</div>
-     ${vxTabs(id,[["a",`${vxE(short(g.away))} pass vs ${vxE(short(g.home))} D`],["h",`${vxE(short(g.home))} pass vs ${vxE(short(g.away))} D`]],"a")}
+     ${only?"":vxTabs(id,[["a",`${vxE(short(g.away))} pass vs ${vxE(short(g.home))} D`],["h",`${vxE(short(g.home))} pass vs ${vxE(short(g.away))} D`]],"a")}
      <div class="qpw">${grid(qcell,`🎯 ${who}<br><span class="small">share of ${Q?"his":"their"} ${tot} throws</span>`)}${grid(dcell,`🛡️ ${vxE(short(def))} defense<br><span class="small">yards per target allowed</span>`)}</div>
      ${ed.length?`<div class="shx">${ed.slice(0,3).map(x=>`<div class="${x.e>0?"g":"r"}"><b>${x.e>0?"✅":"⚠️"} ${x.txt[0].toUpperCase()+x.txt.slice(1)}</b> — ${Math.round(x.sh*100)}% of ${whos} throws; ${vxE(short(def))} allow <b>${x.y.toFixed(1)}</b> yards per target there (NFL ${x.l.toFixed(1)}).</div>`).join("")}</div>`:""}
      <div class="small" style="margin-top:6px">nflverse play-by-play, regular season${typeof NFL_TGT_WEEKS!=="undefined"&&NFL_TGT_WEEKS?` weeks ${NFL_TGT_WEEKS}`:""}. Sacks and throwaways without a target aren't counted.</div></div>`})}catch(e){return ""}}
@@ -165,3 +165,14 @@ function vxRzGame(g){try{if(typeof NFL_RZP==="undefined"||typeof NFL_RZD==="unde
   return vxCard("Red-zone & end-zone chances","Who gets the ball inside the 20 this season, split by distance, with touchdowns. Orange boxes = throws into the end zone (left · middle · right) and TDs from them.",x,"nflverse play-by-play, regular season. Touchdowns follow chances: a player who gets most of his team's goal-line work is the likeliest anytime scorer.")}catch(e){return ""}}
 function vxRzPlayer(nm){try{if(typeof NFL_RZP==="undefined"||!NFL_RZP[nm])return "";const r=NFL_RZP[nm];
   return `<div class="card vx2" style="margin-top:12px"><h2 style="margin-bottom:2px">Goal-line map</h2><div class="small" style="margin-bottom:6px">His chances inside the 20, by distance, and his end-zone targets by side.</div>${vxRzRow(nm,r)}</div>`}catch(e){return ""}}
+/* player-prop versions: QB props get his throw map vs this week's defense; anytime-TD props get his goal-line chances + the defense near its goal line */
+function vxPassFor(team,opp){if(!team||!opp)return "";return vxPassMap({away:team,home:opp},team)}
+function vxRzDef(o){if(typeof NFL_RZD==="undefined"||!NFL_RZD[o])return "";const D=NFL_RZD[o],LG={ru:[0,0],pa:[0,0,0]};for(const d of Object.values(NFL_RZD)){LG.ru[0]+=d.ru[0];LG.ru[1]+=d.ru[1];LG.pa[0]+=d.pa[0];LG.pa[2]+=d.pa[2]}
+  const pct=(a,b)=>b?Math.round(a/b*100):0;
+  return `<div class="qrzd">🛡️ <b>${vxE(short(o))} in their red zone:</b> ${D.ru[0]} carries → <b>${D.ru[1]}</b> rush TD (${pct(D.ru[1],D.ru[0])}%, NFL ${pct(LG.ru[1],LG.ru[0])}%) · ${D.pa[0]} targets → <b>${D.pa[2]}</b> pass TD (${pct(D.pa[2],D.pa[0])}%, NFL ${pct(LG.pa[2],LG.pa[0])}%)
+   <div style="margin-top:4px"><span class="small">End-zone throws against them (left · middle · right):</span>${vxEz(D.ez)}</div></div>`}
+function vxRzTd(nm,opp){try{if(typeof NFL_RZP==="undefined")return "";const r=NFL_RZP[nm];if(!r)return opp?vxCard("Red-zone & end-zone chances","No red-zone carries or targets for him yet this season.",vxRzDef(opp),""):"";
+  const T=Object.values(NFL_RZP).filter(x=>x.tm===r.tm),tc=T.reduce((a,x)=>a+x.c20[0],0),tt=T.reduce((a,x)=>a+x.t20[0],0),t5=T.reduce((a,x)=>a+x.c5[0],0),pc=(a,b)=>b?Math.round(a/b*100):0;
+  const share=[r.c20[0]?`<b>${pc(r.c20[0],tc)}%</b> of his team's red-zone carries`:"",r.c5[0]?`<b>${pc(r.c5[0],t5)}%</b> of carries inside the 5`:"",r.t20[0]?`<b>${pc(r.t20[0],tt)}%</b> of red-zone targets`:""].filter(Boolean).join(" · ");
+  const tds=r.c20[1]+r.t20[2];
+  return vxCard("Red-zone & end-zone chances",`His chances inside the 20 this season, by distance — ${tds} red-zone TD${tds===1?"":"s"}.`,vxRzRow(nm,r)+(share?`<div class="qsay">He gets ${share}.</div>`:"")+(opp?`<h3 style="margin:12px 0 4px">This week's defense</h3>${vxRzDef(opp)}`:""),"nflverse play-by-play, regular season. Touchdowns follow chances: a big share of his team's goal-line work is the best sign for an anytime TD.")}catch(e){return ""}}
