@@ -40,6 +40,7 @@ if want nfl; then
   python3 tools/nflbox.py "$ROOT" > "$WORK/nflbox.js" 2>> "$WORK/summary.txt" && grep -q "^var BOX_ESPN" "$WORK/nflbox.js" && cp "$WORK/nflbox.js" nfl_box.js || log "NFL box scores (ESPN): kept old"
   NFLV=0; if [ "$(TZ=America/Toronto date +%u)" = 2 ] && [ "$(TZ=America/Toronto date +%H)" -lt 12 ]; then NFLV=1; fi   # Tuesday morning: weekly nflverse refresh
   if [ "$NFLV" = 0 ] && [ "$(TZ=America/Toronto date +%H)" -ge 9 ] && [ "$(TZ=America/Toronto date +%H)" -le 10 ]; then python3 tools/staleness.py "$ROOT" > /dev/null 2>&1; [ $? = 2 ] && NFLV=1 && log "NFL weekly data is behind — retrying the nflverse refresh"; fi
+  [ "${FORCE_NFLV:-0}" = 1 ] && NFLV=1
   if [ "$NFLV" = 1 ]; then
     bash tools/nflfetch.sh > "$WORK/nflfetch.log" 2>&1 && python3 tools/nfltgt.py "$WORK/nflv" > "$WORK/tgt.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/tgt.js" ] && cp "$WORK/tgt.js" nfl_tgt.js && log "NFL targets/spreads/rest refreshed"
     python3 tools/nflrush.py "$WORK/nflv" > "$WORK/rush.js" 2>> "$WORK/summary.txt" && [ -s "$WORK/rush.js" ] && cp "$WORK/rush.js" nfl_rush.js && log "NFL pass rush vs O-line refreshed"

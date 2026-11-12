@@ -254,6 +254,10 @@ try:
                    "home": [x.get("homeWins"), x.get("homeLosses"), x.get("homeOtLosses")], "road": [x.get("roadWins"), x.get("roadLosses"), x.get("roadOtLosses")],
                    "l10": [x.get("l10Wins"), x.get("l10Losses"), x.get("l10OtLosses")], "stk": f"{x.get('streakCode') or ''}{x.get('streakCount') or ''}",
                    "rk": x.get("leagueSequence"), "drk": x.get("divisionSequence")}
+        try:   # overtime / shootout record (official): OT wins = ROW - regulation wins; OT losses = OT/SO losses - shootout losses
+            sw, sl = x.get("shootoutWins"), x.get("shootoutLosses"); row, rw = x.get("regulationPlusOtWins"), x.get("regulationWins")
+            if None not in (sw, sl, row, rw) and x.get("otLosses") is not None: TEAM[a]["otso"] = [row - rw, x["otLosses"] - sl, sw, sl]
+        except Exception: pass
 except Exception as e:
     log("standings failed", e)
 try:

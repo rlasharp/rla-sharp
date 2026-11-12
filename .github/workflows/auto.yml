@@ -8,6 +8,7 @@ on:
       what: { description: "nba, nfl, nhl, soc or all", default: "all" }
       gate_state: { description: "(set by quick.yml) game-night state to save", default: "" }
       reason: { description: "(set by quick.yml) why this update was started", default: "" }
+      nflv: { description: "1 = also refresh the weekly NFL play-by-play data now", default: "0" }
   push:
     paths: ["src/tools/auto_run.sh", "src/tools/auto_espn.py", "src/tools/check.js", ".github/workflows/auto.yml"]
 permissions:
@@ -52,6 +53,8 @@ jobs:
           [ -z "$ISSUE" ] && echo "Live site OK ($SZ bytes)" || { echo "LIVE SITE PROBLEM: $ISSUE"; exit 1; }
       - name: Refresh data, rebuild, check
         id: run
+        env:
+          FORCE_NFLV: ${{ github.event.inputs.nflv || '0' }}
         run: bash src/tools/auto_run.sh "${{ github.event.inputs.what || 'all' }}"
       - name: Summary
         if: always()
