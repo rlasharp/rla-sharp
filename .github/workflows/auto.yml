@@ -67,8 +67,7 @@ jobs:
           git add -A index.html nhl_data.js nba_detail.js lines_hist.js 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json data/nhl_lines.json
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -qm "Auto refresh $(TZ=America/Toronto date '+%a %b %-d %-I:%M %p ET')"
-          for i in 1 2 3; do { git pull --rebase -X theirs -q origin main || { git rebase --abort; false; }; } && git push -q origin HEAD:main && exit 0; sleep 7; done   # -X theirs: on a clash in generated files keep this run's fresh copy
-          exit 1
+          # pushed together with the health file in the next step: one push per update = one site deployment (two quick pushes made GitHub cancel the first deployment, which showed up as a failure)
       - name: Write health file
         if: always()
         run: |
@@ -103,8 +102,10 @@ jobs:
           h["hist"]=h["hist"][-600:]
           json.dump(h,open(p,"w"),indent=1)
           PY
-          git add data/health.json; git commit -qm "health" || exit 0
+          git add data/health.json; git commit -qm "health" || true
+          [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ] && exit 0   # nothing to push
           for i in 1 2 3; do { git pull --rebase -X theirs -q origin main || { git rebase --abort; false; }; } && git push -q origin HEAD:main && exit 0; sleep 7; done   # -X theirs: on a clash in generated files keep this run's fresh copy
+          echo "push failed 3 times"; exit 1
         env:
           RES: ${{ steps.run.outcome }}
           LIVE: ${{ steps.live.outcome }}
