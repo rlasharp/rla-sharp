@@ -6,7 +6,7 @@
 function a(){var v=t==="auto"?(m&&m.matches?"light":"dark"):t;document.documentElement.setAttribute("data-theme",v);var mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=v==="light"?"#f6f7f9":"#0f1012"}
 a();if(m&&m.addEventListener)m.addEventListener("change",function(){if(t==="auto")a()});
 window.setTheme=function(v){t=v;try{localStorage.setItem("ge_theme",JSON.stringify(v))}catch(e){}a()};window.getTheme=function(){return t}})();</script>
-<script>/* start downloading the NHL data right away on pages that need it (Today, NHL) */(function(){var h=location.hash;if(!h||h==="#today"||/^#nhl/.test(h)){var l=document.createElement("link");l.rel="preload";l.as="script";l.href="nhl_data.js?v=20261112135841";document.head.appendChild(l)}})();</script>
+<script>/* start downloading the NHL data right away on pages that need it (Today, NHL) */(function(){var h=location.hash;if(!h||h==="#today"||/^#nhl/.test(h)){var l=document.createElement("link");l.rel="preload";l.as="script";l.href="nhl_data.js?v=20261112141758";document.head.appendChild(l)}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RLA Sharp — NFL Betting Research</title>
 <meta name="description" content="Free NFL & NBA betting research: player props ranked by hit rate, Plays of the day with a public record, live scores, line movement, injuries and matchup stats.">
@@ -2266,7 +2266,7 @@ function pxSideTg(){return `<div class="sidetg noglo"><span>Show hits for</span>
 if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("click",e=>{const r=e.target.closest&&e.target.closest("[data-frst]");if(!r)return;e.preventDefault();e.stopPropagation();
 const f=r.closest("[data-pxf]");
 if(f&&typeof PXS!=="undefined"){const key=f.dataset.pxf.replace(/&amp;/g,"&").replace(/&quot;/g,'"'),S0=PXS[key]||{},D=typeof PXG!=="undefined"&&PXG[key];PXS[key]={lo:-15,hi:15,mlo:0,mhi:D&&D.MN?D.MN.max:100,set:S0.set,open:S0.open}}
-else if(r.closest(".nbmin")){const box=r.closest(".nbmin"),nm=box.dataset.nm?nbaUnesc(box.dataset.nm):null;NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;if(nm)delete NB.tmf[nm];NB._best=null;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(x){}}
+else if(r.closest(".nbmin")){const box=r.closest(".nbmin"),nm=box.dataset.nm?nbaUnesc(box.dataset.nm):null;NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:"",opp:"",pace:""});NB.mlo=0;NB.mhi=48;if(nm)delete NB.tmf[nm];NB._best=null;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(x){}}
 else return;const y=window.scrollY;if(typeof route!=="undefined")route();window.scrollTo(0,y)},true);
 if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-side]");if(!b)return;e.preventDefault();e.stopPropagation();
 if(b.dataset.side===PXSIDE)return;PXSIDE=b.dataset.side;try{LS.set("pxside",PXSIDE)}catch(x){}const y=window.scrollY;if(typeof route!=="undefined")route();window.scrollTo(0,y)},true);
@@ -2292,7 +2292,7 @@ if(L&&L.tot!=null){const t=as+hs;tot=t===L.tot?"Total: push":`Total: <b>${t>L.to
 return `<div class="nbfin"><div class="nbfs"><span class="rsfin">FINAL</span><span class="${as>hs?"w":""}">${nbaBadge(g.a)} <b>${as}</b></span><span class="small">–</span><span class="${hs>as?"w":""}"><b>${hs}</b> ${nbaBadge(g.h)}</span><span class="rsm" style="--cw:${nbaCol(W)}">${nbaShort(W)} by ${Math.abs(as-hs)}</span></div>${sp||tot?`<div class="small">${[sp,tot].filter(Boolean).join(" · ")}</div>`:""}</div>`}
 const NB={date:null,sel:null,team:"tonight",q:"",sort:"pts",ij:"tonight"};
 (()=>{const m=(typeof LS!=="undefined"&&LS.get("nbaMin"))||null;NB.mlo=m?m[0]:0;NB.mhi=m?m[1]:48;
-const f=(typeof LS!=="undefined"&&LS.get("nbaGF"))||null;NB.gf=Object.assign({lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:""},f&&f.length===4?{lo:f[0],hi:f[1],tlo:f[2],thi:f[3]}:(f&&typeof f==="object"&&!Array.isArray(f)?f:{}))})();
+const f=(typeof LS!=="undefined"&&LS.get("nbaGF"))||null;NB.gf=Object.assign({lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:"",opp:"",pace:""},f&&f.length===4?{lo:f[0],hi:f[1],tlo:f[2],thi:f[3]}:(f&&typeof f==="object"&&!Array.isArray(f)?f:{}))})();
 function nbaGameLine(x){const S=typeof NBA_SPR!=="undefined"?NBA_SPR:null,s=S&&S[x[0]];if(!s)return null;return {sp:x[3]==="H"?s[3]:-s[3],tot:s[4]}}
 function nbaSpOn(){return NB.gf.lo>-15||NB.gf.hi<15}
 function nbaTtOn(){return NB.gf.tlo>195||NB.gf.thi<255}
@@ -2300,10 +2300,11 @@ let NBA_RESTM=null;
 function nbaRestOf(x){if(!NBA_RESTM){NBA_RESTM={};const byT={};for(const r of NBA_RES){(byT[r[2]]=byT[r[2]]||[]).push([r[1],r[0]]);(byT[r[3]]=byT[r[3]]||[]).push([r[1],r[0]])}
 for(const t in byT){const a=byT[t].sort((p,q)=>p[0]<q[0]?-1:1);a.forEach(([d,id],i)=>{NBA_RESTM[id+"|"+t]=i?Math.round((new Date(d)-new Date(a[i-1][0]))/864e5)-1:null})}}
 const r=NBA_RES.find(z=>z[0]===x[0]);if(!r)return null;const t=x[3]==="H"?r[3]:r[2];return NBA_RESTM[x[0]+"|"+t]}
-function nbaSitOn(){return !!(NB.gf.ven||NB.gf.rest||NB.gf.role)}
+function nbaSitOn(){return !!(NB.gf.ven||NB.gf.rest||NB.gf.role||NB.gf.opp||NB.gf.pace)}
 function nbaInR(x){if(x[4]<NB.mlo||(NB.mhi<48&&x[4]>NB.mhi))return false;
 const f0=NB.gf;if(f0.ven&&x[3]!==f0.ven)return false;if(f0.role&&((f0.role==="st")!==(x[9]===1||x[9]===true)))return false;
-if(f0.rest){const rd=nbaRestOf(x);if(rd==null)return false;if(f0.rest==="b2b"?rd!==0:rd<1)return false}
+if(f0.rest){const rd=nbaRestOf(x);if(rd==null)return false;if(f0.rest==="b2b"?rd!==0:f0.rest==="r1"?rd!==1:f0.rest==="r2"?rd<2:rd<1)return false}
+if(f0.opp&&nbaOppTier(x[2],"opp")!==f0.opp)return false;if(f0.pace&&nbaOppTier(x[2],"pace")!==f0.pace)return false;
 {const f=NB.gf;if((f.flo>0&&(x[11]||0)<f.flo)||(f.fhi<35&&(x[11]||0)>f.fhi))return false;if(((f.plo||0)>0&&(x[15]||0)<f.plo)||((f.phi??20)<20&&(x[15]||0)>f.phi))return false;
 if(f.ilo>95||f.ihi<135){const L=nbaGameLine(x);if(!L||L.tot==null)return false;const it=L.tot/2-L.sp/2;if((f.ilo>95&&it<f.ilo)||(f.ihi<135&&it>f.ihi))return false}}
 if(nbaSpOn()||nbaTtOn()){const L=nbaGameLine(x);if(!L)return false;const f=NB.gf;
@@ -2311,13 +2312,16 @@ if(nbaSpOn()&&((f.lo>-15&&L.sp<f.lo)||(f.hi<15&&L.sp>f.hi)))return false;
 if(nbaTtOn()&&(L.tot==null||(f.tlo>195&&L.tot<f.tlo)||(f.thi<255&&L.tot>f.thi)))return false}
 return true}
 function nbaMinOn(){const f=NB.gf;return NB.mlo>0||NB.mhi<48||nbaSpOn()||nbaTtOn()||nbaSitOn()||f.flo>0||f.fhi<35||(f.plo||0)>0||(f.phi??20)<20||f.ilo>95||f.ihi<135}
-function nbaFiltTxt(){const a=[];if(NB.mlo>0||NB.mhi<48)a.push(`${NB.mlo}–${NB.mhi} minutes`);const f=NB.gf;if(nbaSpOn())a.push(pxSpRange(f.lo,f.hi));if(nbaTtOn())a.push(`total ${f.tlo}–${f.thi}`);for(const g of ["ven","rest","role"])if(f[g])a.push(NBA_SIT[g][1][f[g]]);return a.join(" · ")}
-const NBA_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{b2b:"Back-to-back",rest:"1+ days off"}],role:["Role",{st:"Starter",bn:"Bench"}]};
+function nbaFiltTxt(){const a=[];if(NB.mlo>0||NB.mhi<48)a.push(`${NB.mlo}–${NB.mhi} minutes`);const f=NB.gf;if(nbaSpOn())a.push(pxSpRange(f.lo,f.hi));if(nbaTtOn())a.push(`total ${f.tlo}–${f.thi}`);for(const g in NBA_SIT)if(f[g]&&NBA_SIT[g][1][f[g]])a.push(NBA_SIT[g][1][f[g]]);return a.join(" · ")}
+const NBA_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{b2b:"Back-to-back",r1:"1 day off",r2:"2+ days off"}],role:["Role",{st:"Starter",bn:"Bench"}],
+opp:["Opp defense",{top:"Top 10",mid:"Middle",bot:"Bottom 10"}],pace:["Opp pace",{fast:"Fast",mid:"Middle",slow:"Slow"}]};
+function nbaOppTier(t,k){const T=typeof NBA_TADV!=="undefined"&&NBA_TADV[t];if(!T)return null;const n=Object.keys(NBA_TADV).length,r=k==="opp"?(T.dR&&T.dR.rtg):T.paceR;if(r==null)return null;
+return k==="opp"?(r<=10?"top":r>n-10?"bot":"mid"):(r<=10?"fast":r>n-10?"slow":"mid")}
 function nbaMinUI(id,tn){
 const f=NB.gf,spPre=[[-15,-7,"Fav 7+"],[-15,-.5,"Favored"],[.5,15,"Underdog"],[7,15,"Dog 7+"]].concat(tn&&tn.sp!=null?[[Math.max(-15,tn.sp-3),Math.min(15,tn.sp+3),"Near tonight"]]:[]).concat([[-15,15,"Any"]]);
 const ttPre=[[195,255,"Any"]].concat(tn&&tn.tot!=null?[[Math.max(195,tn.tot-5),Math.min(255,tn.tot+5),`Near tonight (${tn.tot})`]]:[]).concat([[195,225,"Low (225 or less)"],[225,255,"High (225+)"]]);
 const mnPre=[[0,48,"Any"],[10,48,"10+"],[20,48,"20+"],[25,48,"25+"],[30,48,"30+"]].concat(tn&&tn.min!=null?[[Math.max(0,tn.min-4),Math.min(48,tn.min+4),`His usual (${tn.min}±4)`]]:[]);
-return `<div class="card nbmin pxf" id="${id}"${tn&&tn.nm?` data-nm="${nbaEsc(tn.nm)}"`:""}${tn&&tn.ha?` data-tn='${JSON.stringify({ven:tn.ha,rest:tn.rest,role:tn.role})}'`:""}><details class="pxfd"${NB.fOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary><div class="pxrw"><button type="button" class="pxrst" data-frst>↺ Reset all filters</button></div>
+return `<div class="card nbmin pxf" id="${id}"${tn&&tn.nm?` data-nm="${nbaEsc(tn.nm)}"`:""}${tn&&tn.ha?` data-tn='${JSON.stringify({ven:tn.ha,rest:tn.rest,role:tn.role,opp:tn.opp,pace:tn.pace})}'`:""}><details class="pxfd"${NB.fOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary><div class="pxrw"><button type="button" class="pxrst" data-frst>↺ Reset all filters</button></div>
 ${tn&&tn.sp!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">Tonight: ${pxSpTxt(tn.sp)}${tn.tot!=null?" · O/U "+tn.tot:""}</span></div>`:""}
 <div class="pxfr"><div class="pxfl"><span>Situation</span>${tn&&tn.ha?`<button class="likeT" data-like="1">🎯 Like tonight</button>`:""}</div>
 ${Object.entries(NBA_SIT).map(([g,[lab,o]])=>`<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...Object.entries(o)].map(([v,l])=>`<button data-sit="${g}|${v}" class="${(f[g]||"")===v?"on":""}">${l}${tn&&tn[g]===v&&v?" •":""}</button>`).join("")}</div></div>`).join("")}</div>
@@ -2339,7 +2343,7 @@ box.querySelector(`[data-out="${nm}"]`).textContent=txt[nm](x,y);const fl=box.qu
 box.querySelector(`[data-r="${nm}|lo"]`).value=a;box.querySelector(`[data-r="${nm}|hi"]`).value=b;
 box.querySelectorAll(`[data-pre^="${nm}|"]`).forEach(p=>{const [,pa,pb]=p.dataset.pre.split("|");p.classList.toggle("on",+pa===x&&+pb===y)})}
 const on=[];for(const nm in st){const x=Math.min(...st[nm]),y=Math.max(...st[nm]);if(x>R[nm][0]||y<R[nm][1])on.push(`<span class="fchip" data-fclr="${nm}">${txt[nm](x,y)} ✕</span>`)}
-for(const g in NBA_SIT)if(NB.gf[g])on.push(`<span class="fchip" data-fclr="sit|${g}">${NBA_SIT[g][1][NB.gf[g]]} ✕</span>`);
+for(const g in NBA_SIT)if(NB.gf[g]&&NBA_SIT[g][1][NB.gf[g]])on.push(`<span class="fchip" data-fclr="sit|${g}">${g==="opp"||g==="pace"?NBA_SIT[g][0]+": ":""}${NBA_SIT[g][1][NB.gf[g]]} ✕</span>`);
 const mnm=box.dataset.nm?nbaUnesc(box.dataset.nm):null,mv=mnm&&NB.tmf[mnm];if(mv&&typeof mv==="object")for(const [who,w] of Object.entries(mv))on.push(`<span class="fchip" data-fclr="mate|${nbaEsc(who)}">${w==="w"?"With":"Without"} ${nbaEsc(pxLast(who))} ✕</span>`);
 const fs=box.querySelector("[data-fsum]");if(fs)fs.innerHTML=on.length?on.join("")+`<span class="fchip frst" data-frst>↺ Reset</span>`:`<span class="fany">No filters — all games${mnm?" · all teammates":""}</span>`;
 box.querySelectorAll("[data-fclr]").forEach(c=>c.onclick=e=>{e.preventDefault();e.stopPropagation();if(c.dataset.fclr.startsWith("mate|")){const who=nbaUnesc(c.dataset.fclr.slice(5));if(NB.tmf[mnm]&&typeof NB.tmf[mnm]==="object"){delete NB.tmf[mnm][who];if(!Object.keys(NB.tmf[mnm]).length)delete NB.tmf[mnm]}apply();return}if(c.dataset.fclr.startsWith("sit|")){NB.gf[c.dataset.fclr.slice(4)]="";apply();return}st[c.dataset.fclr]=[...R[c.dataset.fclr]];paint();apply()})};
@@ -2350,7 +2354,7 @@ box.querySelectorAll("input[data-r]").forEach(inp=>{const [nm,w]=inp.dataset.r.s
 box.querySelectorAll("[data-pre]").forEach(b=>b.onclick=()=>{const [nm,a,c]=b.dataset.pre.split("|");st[nm]=[+a,+c];paint();apply()});
 box.querySelectorAll("[data-sit]").forEach(b=>b.onclick=()=>{const [g,v]=b.dataset.sit.split("|");NB.gf[g]=v;apply()});
 box.querySelectorAll("[data-mt]").forEach(b=>b.onclick=()=>{const nm=nbaUnesc(box.dataset.nm),[who,v]=nbaUnesc(b.dataset.mt).split("|");let m=NB.tmf[nm];if(!m||typeof m!=="object")m=NB.tmf[nm]={};if(v)m[who]=v;else delete m[who];if(!Object.keys(m).length)delete NB.tmf[nm];apply()});
-const lk=box.querySelector("[data-like]");if(lk)lk.onclick=()=>{const t=JSON.parse(box.dataset.tn||"{}");for(const g in NBA_SIT)NB.gf[g]=t[g]||"";apply()};
+const lk=box.querySelector("[data-like]");if(lk)lk.onclick=()=>{const t=JSON.parse(box.dataset.tn||"{}");for(const g of ["ven","rest","role"])NB.gf[g]=t[g]||"";apply()};
 paint();
 }
 const NBA_MK={pts:[5,"Points","PTS"],reb:[6,"Rebounds","REB"],ast:[7,"Assists","AST"],"3pm":[8,"3-Pointers made","3PM"],"3pa":[15,"3-Pointers attempted","3PA"],
@@ -3199,7 +3203,7 @@ ${byP[nm].map(r=>nbaLineRow(nm,r)).join("")}</div>`}).join("")||`<div class="sma
 }
 function nbaGamePropCount(g){if(nbaStarted(g))return 0;return NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&(p.tm===g.a||p.tm===g.h)&&NBA_MK[r[1]]}).length}
 function nbaPlayer(el,nm){
-if(NB.lastPl!==nm){{NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:""});NB.mlo=0;NB.mhi=48;NB.tmf={};NB._best=null;NB.fOpen=false;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(e){}}NB.lastPl=nm}   /* new player: filters reset, and the filter panel starts closed */
+if(NB.lastPl!==nm){{NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:"",opp:"",pace:""});NB.mlo=0;NB.mhi=48;NB.tmf={};NB._best=null;NB.fOpen=false;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(e){}}NB.lastPl=nm}   /* new player: filters reset, and the filter panel starts closed */
 const p=NBA_LOGS[nm];
 if(!p){el.innerHTML=`<a href="#nba-players" class="small" style="color:var(--text2)">← Players</a><h1>${nbaEsc(nm)}</h1><p class="sub">No games played yet this season.</p>`;return}
 const g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):"",inj=nbaInjOf(nm);
@@ -3213,7 +3217,7 @@ const dvp=opp&&p.p5?nbaDvp(opp,p.p5,"pts",5):null,dvpAvg=dvp&&dvp.rows.length?dv
 const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
 const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk","sb"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
 return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div><div class="small swh">👆 Swipe the chart left or right for the next prop</div>
-${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null,mn0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[4]||0),0)/p.g.length):null,tp0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[15]||0),0)/p.g.length):null;return {fga:fg0,min:mn0,tpa:tp0>0?tp0:null,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":"rest"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
+${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null,mn0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[4]||0),0)/p.g.length):null,tp0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[15]||0),0)/p.g.length):null;return {fga:fg0,min:mn0,tpa:tp0>0?tp0:null,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":R0.rest===1?"r1":"r2"):"",opp:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"opp"):"",pace:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"pace"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
 <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}${typeof vxScatter!=="undefined"?vxScatter(nm,r[1],r[2]):""}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":(typeof OUT_DROP!=="undefined"&&OUT_DROP.nba.has(nm)?"🚑 He's ruled out — his props are removed.":"No prop lines posted for him today.")}</span></div>`:"");
 el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
 <div class="phead">
@@ -3449,7 +3453,7 @@ var NFL_DIVX={"lg":[522,264,255,274,239],"non":[973,496,469,461,482],"tm":{"ATL"
 var NFL_DIVG=["1|SF|LAR","1|GB|MIN","1|WAS|PHI","1|DAL|NYG","1|DEN|KC","2|CAR|ATL","2|MIN|CHI","2|LV|LAC","2|SEA|ARI","2|WAS|DAL","3|HOU|IND","3|CIN|PIT","3|ARI|SF","4|PIT|CLE","4|NE|BUF","4|KC|LV","4|ATL|NO","5|CHI|GB","5|HOU|TEN","5|NYG|WAS","5|DEN|LAC","5|SF|SEA","6|HOU|JAX","6|BAL|CLE","6|TEN|IND","6|NYJ|NE","6|ARI|LAR","6|LAC|KC","7|CIN|BAL","7|TB|CAR","7|MIA|NYJ","7|GB|DET","7|DAL|PHI","8|MIN|DET","8|IND|JAX","8|CLE|PIT","8|ATL|TB","8|KC|DEN","8|NE|MIA","8|PHI|WAS","9|NYG|PHI","9|ARI|SEA","10|WAS|NYG","10|MIN|GB","10|CAR|NO","10|BUF|NYJ","10|JAX|TEN","10|LAR|ARI","10|PIT|CIN","11|IND|HOU","11|MIA|BUF","11|LV|DEN","12|CHI|DET","12|PHI|DAL","12|NYJ|MIA","12|TEN|JAX","12|SEA|SF","12|CAR|TB","13|CIN|CLE","13|BUF|NE","14|NO|CAR","14|LAC|LV","14|LAR|SF","15|JAX|HOU","15|BAL|PIT","15|NO|TB","15|IND|TEN","15|DEN|LV","15|DET|MIN","16|GB|CHI","16|LAR|SEA","16|TB|ATL","16|CLE|BAL","16|NE|NYJ","17|BAL|CIN","17|NO|ATL","17|NYG|DAL","17|KC|LAC","17|BUF|MIA","17|DET|CHI","18|SF|ARI","18|PIT|BAL","18|NYJ|BUF","18|ATL|CAR","18|CLE|CIN","18|LAC|DEN","18|DET|GB","18|TEN|HOU","18|JAX|IND","18|LV|KC","18|SEA|LAR","18|CHI|MIN","18|MIA|NE","18|TB|NO","18|PHI|NYG","18|DAL|WAS"];
 var NFL_K={"Nick Folk":{"tm":"ATL","g":[[1,2,4,1,7,51],[2,1,2,0,3,41],[3,2,2,3,9,44],[4,1,1,6,9,29],[5,3,3,2,11,48],[6,0,0,1,1,0],[7,3,3,2,11,39],[8,0,1,0,0,0],[9,1,2,2,5,31]]},"Chris Boswell":{"tm":"PIT","g":[[1,2,3,2,8,43],[2,1,2,0,3,56],[3,3,3,3,12,44],[4,1,2,1,4,31],[5,2,2,4,10,54],[6,4,5,2,14,58],[7,3,3,1,10,47],[8,2,3,3,9,37]]},"Cairo Santos":{"tm":"CHI","g":[[1,1,1,8,11,40],[2,1,2,0,3,50],[3,2,2,3,9,48],[4,3,3,2,11,30],[5,0,1,1,1,0],[6,1,2,4,7,50],[7,3,4,3,12,58],[8,2,2,4,10,44],[9,2,2,3,9,38]]},"Jason Myers":{"tm":"SEA","g":[[1,2,2,1,7,30],[2,1,1,4,7,33],[3,1,1,4,7,57],[4,1,1,3,6,35],[5,5,5,2,17,50],[6,2,3,0,6,55],[7,2,2,2,8,35],[8,1,2,0,3,27],[9,1,1,2,5,45]]},"Wil Lutz":{"tm":"DEN","g":[[1,1,1,1,4,31],[2,2,2,2,8,45],[3,0,1,2,2,0],[4,2,3,0,6,52],[5,3,4,2,11,36],[6,1,1,2,5,53],[7,3,3,3,12,48],[8,2,2,2,8,45],[9,2,2,2,8,48]]},"Ka'imi Fairbairn":{"tm":"HOU","g":[[1,1,1,4,7,58],[2,2,3,0,6,45],[3,1,1,2,5,24],[4,3,3,3,12,54],[5,4,4,2,14,53],[6,2,2,4,10,49],[7,2,2,1,7,58],[9,3,3,5,14,56]]},"Harrison Butker":{"tm":"KC","g":[[1,1,1,4,7,28],[2,4,5,3,15,46],[3,1,2,3,6,34],[4,1,1,3,6,28],[6,3,4,1,10,50],[7,1,3,0,3,50],[8,1,2,3,6,45],[9,0,1,5,5,0]]},"Jake Elliott":{"tm":"PHI","g":[[1,1,1,3,6,35],[2,1,1,3,6,58],[3,0,0,1,1,0],[4,2,2,2,8,56],[5,1,1,2,5,48],[6,0,0,2,2,0],[7,0,0,3,3,0],[8,1,2,1,4,40],[9,1,1,0,3,45]]},"Daniel Carlson":{"tm":"NO","g":[[1,1,2,3,6,28],[2,3,3,1,10,51],[3,0,0,3,3,0],[4,1,2,3,6,27],[5,0,0,1,1,0],[6,2,3,4,10,58],[7,1,2,1,4,38]]},"Eddy Pineiro":{"tm":"SF","g":[[1,2,3,3,9,56],[2,0,0,5,5,0],[3,1,1,3,6,57],[4,1,2,3,6,24],[5,1,2,3,6,44],[6,1,1,2,5,33],[7,0,0,2,2,0],[9,1,1,5,8,35]]},"Jason Sanders":{"tm":"NYJ","g":[[1,3,4,2,11,52],[2,1,1,2,5,32],[3,1,1,1,4,42],[4,2,2,0,6,36],[5,1,1,2,5,54],[6,4,4,1,13,42],[7,1,2,2,5,33],[8,4,4,3,15,39],[9,4,5,0,12,54]]},"Joey Slye":{"tm":"TEN","g":[[1,1,1,1,4,42],[2,2,2,2,8,37],[3,0,1,1,1,0],[4,1,1,1,4,33],[5,1,1,0,3,30],[6,4,4,2,14,56],[7,1,1,3,6,29],[8,2,2,2,8,46]]},"Matt Gay":{"tm":"LV","g":[[1,2,2,3,9,47],[2,1,1,3,6,59],[3,3,3,2,11,41],[4,4,4,1,13,48],[5,1,2,2,5,46],[6,3,3,3,12,35],[7,3,4,0,9,36],[8,1,1,5,8,53],[9,1,1,2,5,50]]},"Chase McLaughlin":{"tm":"TB","g":[[1,2,2,3,9,51],[2,4,4,1,13,59],[3,3,3,1,10,54],[4,0,0,2,2,0],[5,1,1,3,6,41],[6,4,4,1,13,53],[7,2,2,5,11,44],[8,3,3,1,10,46],[9,3,3,1,10,35]]},"Tyler Bass":{"tm":"BUF","g":[[1,3,3,3,12,46],[2,0,0,5,5,0],[3,1,1,3,6,28],[4,2,2,2,8,38],[5,3,3,2,11,49],[6,4,4,3,15,47],[8,3,3,3,12,56],[9,3,3,2,11,52]]},"Riley Patterson":{"tm":"MIA","g":[[1,2,3,1,7,41],[2,2,3,1,7,28],[3,1,1,1,4,37],[4,1,1,1,4,27],[5,1,1,1,4,29]]},"Evan McPherson":{"tm":"CIN","g":[[1,4,4,3,15,58],[2,2,2,2,8,57],[3,2,2,3,9,50],[4,1,1,2,5,29],[5,1,1,4,7,26],[7,0,0,5,5,0],[8,0,0,5,5,0],[9,2,2,4,10,57]]},"Cameron Dicker":{"tm":"LAC","g":[[1,0,0,2,2,0],[2,0,1,2,2,0],[3,3,4,1,10,33],[4,3,3,2,11,40],[5,1,1,2,5,42],[6,2,2,0,6,30],[8,3,3,0,9,46],[9,3,3,1,10,52]]},"Brandon Aubrey":{"tm":"DAL","g":[[1,0,0,2,2,0],[2,3,3,4,13,60],[3,3,4,2,11,38],[4,2,4,4,10,50],[5,1,1,1,4,41],[6,0,0,1,1,0],[7,3,3,3,12,55],[8,3,4,3,12,41],[9,2,3,3,9,45]]},"Andre Szmyt":{"tm":"CLE","g":[[1,1,1,1,4,26],[2,3,3,2,11,50],[3,2,2,1,7,48],[4,2,2,3,9,56],[5,2,2,0,6,41],[6,2,3,1,7,48],[7,2,3,3,9,32],[8,2,2,0,6,49],[9,3,3,1,10,51]]},"Chad Ryland":{"tm":"ARI","g":[[1,4,5,2,14,49],[2,0,0,1,1,0],[3,3,3,3,12,49],[4,1,1,3,6,60],[5,0,1,3,3,0],[6,6,6,0,18,43],[7,3,3,1,10,41],[8,2,2,3,9,42],[9,1,1,0,3,28]]},"Jake Bates":{"tm":"DET","g":[[1,1,1,4,7,23],[2,1,1,4,7,31],[3,1,1,4,7,30],[4,4,4,2,14,54],[5,1,1,6,9,46],[7,2,2,2,8,40],[8,2,3,1,7,37],[9,4,4,1,13,43]]},"Will Reichard":{"tm":"MIN","g":[[1,1,1,4,7,38],[2,3,3,0,9,49],[3,3,3,2,11,56],[4,5,5,0,15,50],[5,3,3,2,11,55],[7,3,4,1,10,52],[8,0,1,1,1,0],[9,2,2,0,6,53]]},"Cam Little":{"tm":"JAX","g":[[1,2,2,4,10,47],[2,2,3,1,7,44],[3,0,1,5,5,0],[4,3,3,1,10,55],[5,2,2,1,7,57],[6,1,1,4,7,60],[8,0,0,6,6,0],[9,4,4,3,15,47]]},"Harrison Mevis":{"tm":"LAR","g":[[1,0,0,1,1,0],[2,0,1,4,4,0],[3,4,4,2,14,48],[4,1,2,3,6,40],[5,0,2,4,4,0]]},"Spencer Shrader":{"tm":"IND","g":[[1,1,1,2,5,58],[2,3,3,3,12,49],[3,4,4,1,13,58],[4,3,3,3,12,52],[5,5,5,1,16,57],[6,2,2,2,8,47],[7,1,3,1,4,43],[8,0,0,1,1,0],[9,3,3,2,11,59]]},"Tyler Loop":{"tm":"BAL","g":[[1,2,2,5,11,57],[2,1,2,2,5,49],[3,2,2,4,10,56],[4,1,2,3,6,64],[5,3,3,1,10,51],[6,1,2,1,4,34],[7,2,2,1,7,34],[8,1,2,1,4,26]]},"Andy Borregales":{"tm":"NE","g":[[1,1,1,1,4,50],[2,2,3,2,8,45],[3,2,3,0,6,40],[4,0,0,3,3,0],[5,1,1,6,9,28],[6,2,2,2,8,32],[7,1,1,3,6,47],[8,1,2,3,6,34],[9,0,0,3,3,0]]},"Ryan Fitzgerald":{"tm":"CAR","g":[[1,1,1,4,7,44],[2,2,2,4,10,37],[3,4,4,0,12,53],[4,2,2,2,8,47],[6,2,2,1,7,52],[7,0,0,1,1,0],[8,2,2,1,7,50],[9,0,1,3,3,0]]},"Trey Smack":{"tm":"GB","g":[[1,3,3,1,10,59],[2,2,2,2,8,34],[3,0,1,2,2,0],[4,1,1,2,5,58],[5,1,3,2,5,35],[6,3,3,2,11,44],[7,1,3,2,5,43],[8,0,0,3,3,0],[9,3,3,4,13,51]]},"Dominic Zvada":{"tm":"NYG","g":[[1,0,0,4,4,0],[2,2,2,0,6,52],[3,4,4,0,12,39],[4,3,3,1,10,52],[5,2,5,3,9,56],[6,2,2,1,7,41],[7,0,2,3,3,0],[9,4,4,1,13,53]]},"Drew Stevens":{"tm":"WAS","g":[[1,1,2,1,4,55],[2,2,3,2,8,47],[3,2,2,3,9,57],[4,2,2,1,7,31],[5,2,2,1,7,40],[6,1,1,2,5,51],[8,4,5,1,13,56],[9,2,2,1,7,41]]},"Blake Grupe":{"tm":"LAR","g":[[6,1,1,0,3,44]]},"Brandon McManus":{"tm":"LAR","g":[[7,0,0,5,5,0],[8,1,1,3,6,30],[9,2,2,2,8,33]]},"Zane Gonzalez":{"tm":"MIA","g":[[7,0,0,4,4,0],[8,2,3,1,7,52],[9,3,4,0,9,52]]},"Jake Moody":{"tm":"BAL","g":[[9,1,1,1,4,53]]},"Charlie Smyth":{"tm":"NO","g":[[9,3,4,2,11,48]]}};
 /* NHL data loads on demand from nhl_data.js (next to index.html) */ var NHL_GEN="",NHL_DATE="",NHL_TOM="",NHL_SLATE=[],NHL_NEXT=[],NHL_LATER=[],NHL_TEAM={},NHL_RES=[],NHL_P={},NHL_G={},NHL_INJ={},NHL_H2HP={},NHL_LZ=[],NHL_MODEL=null,NHL_PRES=[],NHL_PRES_D=null,NHL_RECENT=[],NHL_PROPS=[],NHL_FOM={};
-var BUILD_AT="2026-11-12T13:58:41Z";
+var BUILD_AT="2026-11-12T14:17:58Z";
 const NH={tm:"all",mk:"all",gp:"all",gm:"all"};
 let NHL_READY=false,NHL_WAIT=[];
 function nhlEnsure(cb){if(NHL_READY||NHL_DATE){NHL_READY=true;cb&&cb();return}if(NHL_WAIT.fail&&Date.now()-NHL_WAIT.fail<60000)return;/* failed just now (offline / missing file): no retry loop */if(cb)NHL_WAIT.push(cb);if(NHL_WAIT.loading)return;NHL_WAIT.loading=1;
@@ -4918,7 +4922,9 @@ ${P&&P.head?P.head:""}
 <details class="pxfd"${S0.open?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo" data-fsum></span><span class="pxchev">›</span></summary><div class="pxrw"><button type="button" class="pxrst" data-frst>↺ Reset all filters</button></div>
 ${tn!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">${key.startsWith("nfl")?"This game"+(typeof pxGameDay!=="undefined"?pxGameDay(key):""):"Tonight"}: ${pxSpTxt(tn)}${tt!=null?" · O/U "+tt:""}</span></div>`:""}
 ${G.some(g=>g.ha)?`<div class="pxfr"><div class="pxfl"><span>Situation</span>${P&&P.tn?`<button class="likeT" data-like="1">🎯 Like this game</button>`:""}</div>
-${Object.entries(PX_SIT).map(([g,[lab,o]])=>`<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...Object.entries(o)].map(([v,l])=>`<button data-sit="${g}|${v}">${l}${P&&P.tn&&P.tn[g]===v&&v?" •":""}</button>`).join("")}</div></div>`).join("")}</div>`:""}
+${Object.entries(PX_SIT).map(([g,[lab,o]])=>{if(g!=="ven"&&!G.some(x=>x[g]))return "";
+let opts=Object.entries(o);if(g==="qb"){const C={};for(const x of G)if(x.qb)C[x.qb]=(C[x.qb]||0)+1;const L=Object.entries(C).sort((a,b)=>b[1]-a[1]);if(L.length<2)return "";opts=L.map(([n,c],i)=>[n,`${i===0?"His usual · ":""}${esc(pxLast(n))} <small>${c}</small>`])}
+return `<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...opts].map(([v,l])=>`<button data-sit="${g}|${esc(v)}">${l}${P&&P.tn&&P.tn[g]===v&&v?" •":""}</button>`).join("")}</div></div>`}).join("")}</div>`:""}
 ${pxDual("sp","Team's spread",-15,15,.5,S0.lo,S0.hi,["Favored","PK","Underdog"],spPre)}
 ${hasTot?pxDual("tt","Game total (O/U)",t0,t1,.5,S0.tlo,S0.thi,[String(t0),String((t0+t1)/2),String(t1)],totPre):""}
 ${hasMin?pxDual("mn",MN.lab,0,MX,1,S0.mlo,S0.mhi,MN.u==="%"?["0%","50%","100%"]:["0",String(MX/2),String(MX)],mnPre):""}
@@ -4933,7 +4939,7 @@ ${typeof pxSideTg!=="undefined"?pxSideTg():""}<div class="pxset">${[["l5","L5"],
 </div>`}
 function pxPred(key){const S0=PXS[key],D=PXG[key],TR=D.TR;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi),lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
 const spAny=lo<=-15&&hi>=15,ttAny=tlo<=TR[0]&&thi>=TR[1];
-return g=>(spAny||(g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi)))&&(g.min==null||(g.min>=mlo&&(mhi>=D.MN.max||g.min<=mhi)))&&(ttAny||g.tot!=null&&((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi)))&&(!S0.ven||g.ha===S0.ven)&&(!S0.rest||g.rest===S0.rest)&&(S0.glo==null||((S0.glo<=0||(g.tg!=null&&g.tg>=S0.glo))&&(S0.ghi>=15||(g.tg!=null&&g.tg<=S0.ghi))))&&(!S0.mates||Object.entries(S0.mates).every(([n,v])=>{if(g.wk==null)return false;const p=nflMatePlayed(n,g.wk);return p==null?false:(v==="w"?p:!p)}))}
+return g=>(spAny||(g.sp!=null&&(lo<=-15||g.sp>=lo)&&(hi>=15||g.sp<=hi)))&&(g.min==null||(g.min>=mlo&&(mhi>=D.MN.max||g.min<=mhi)))&&(ttAny||g.tot!=null&&((tlo<=TR[0]||g.tot>=tlo)&&(thi>=TR[1]||g.tot<=thi)))&&Object.keys(PX_SIT).every(k=>!S0[k]||(k==="ven"?g.ha:g[k])===S0[k])&&(S0.glo==null||((S0.glo<=0||(g.tg!=null&&g.tg>=S0.glo))&&(S0.ghi>=15||(g.tg!=null&&g.tg<=S0.ghi))))&&(!S0.mates||Object.entries(S0.mates).every(([n,v])=>{if(g.wk==null)return false;const p=nflMatePlayed(n,g.wk);return p==null?false:(v==="w"?p:!p)}))}
 function pxResHtml(key){
 const S0=PXS[key],D=PXG[key];if(!S0||!D)return "";const {SETS,line,unit,dec,isTD,TR}=D;const G=SETS[S0.set]||SETS.ssn;const tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi);
 const lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),mlo=Math.min(S0.mlo,S0.mhi),mhi=Math.max(S0.mlo,S0.mhi);
@@ -4955,7 +4961,7 @@ const MN=PXG[key].MN;set("mn",S0.mlo,S0.mhi,0,MN.max,(x,y)=>x<=0&&y>=MN.max?MN.a
 {const TR2=PXG[key].TR,MN2=PXG[key].MN,on=[];const x=Math.min(S0.lo,S0.hi),y=Math.max(S0.lo,S0.hi);if(x>-15||y<15)on.push(["sp",pxSpRange(x,y)]);
 const a=Math.min(S0.tlo,S0.thi),b=Math.max(S0.tlo,S0.thi);if(f.querySelector('[data-dr="tt"]')&&(a>TR2[0]||b<TR2[1]))on.push(["tt",`O/U ${a<=TR2[0]?"≤"+b:b>=TR2[1]?a+"+":a+"–"+b}`]);
 const c=Math.min(S0.mlo,S0.mhi),d=Math.max(S0.mlo,S0.mhi);if(f.querySelector('[data-dr="mn"]')&&(c>0||d<MN2.max))on.push(["mn",MN2.u==="%"?`${c}–${d}% snaps`:`${c}–${d} min`]);
-for(const g in PX_SIT)if(S0[g])on.push(["sit|"+g,PX_SIT[g][1][S0[g]]]);
+for(const g in PX_SIT)if(S0[g])on.push(["sit|"+g,g==="qb"?"QB "+pxLast(S0[g]):PX_SIT[g][0].replace("Opp ","Opp ")+": "+PX_SIT[g][1][S0[g]]]);
 if(S0.mates)for(const [n,v] of Object.entries(S0.mates))on.push(["nmt|"+n,(v==="w"?"With ":"Without ")+pxLast(n)]);
 if(S0.glo!=null&&(S0.glo>0||S0.ghi<15))on.push(["tg",S0.ghi>=15?`${Math.min(S0.glo,S0.ghi)}+ targets`:`${Math.min(S0.glo,S0.ghi)}–${Math.max(S0.glo,S0.ghi)} targets`]);
 f.querySelectorAll("[data-sit]").forEach(b=>{const [g,v]=b.dataset.sit.split("|");b.classList.toggle("on",(S0[g]||"")===v)});
@@ -4970,7 +4976,7 @@ root.querySelectorAll("[data-pxf]").forEach(f=>{const key=f.dataset.pxf.replace(
 f.querySelectorAll("input[data-r]").forEach(inp=>inp.oninput=()=>{const [nm,w]=inp.dataset.r.split("|"),S0=PXS[key];S0[nm==="sp"?w:nm==="tt"?"t"+w:nm==="tg"?"g"+w:"m"+w]=+inp.value;pxPaint(f)});
 f.querySelectorAll("[data-nmt]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [m,v]=b.dataset.nmt.replace(/&#39;/g,"'").replace(/&amp;/g,"&").split("|"),S1=PXS[key];S1.mates=S1.mates||{};if(v)S1.mates[m]=v;else delete S1.mates[m];if(!Object.keys(S1.mates).length)delete S1.mates;f.querySelectorAll("[data-nmt]").forEach(x=>{const [mm,vv]=x.dataset.nmt.replace(/&#39;/g,"'").replace(/&amp;/g,"&").split("|");x.classList.toggle("on",((S1.mates||{})[mm]||"")===vv)});pxPaint(f)});
 f.querySelectorAll("[data-sit]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [g,v]=b.dataset.sit.split("|");PXS[key][g]=v;pxPaint(f)});
-{const lk=f.querySelector("[data-like]");if(lk)lk.onclick=e=>{e.stopPropagation();const t=PXG[key].TN||{};for(const g in PX_SIT)PXS[key][g]=t[g]||"";pxPaint(f)}}
+{const lk=f.querySelector("[data-like]");if(lk)lk.onclick=e=>{e.stopPropagation();const t=PXG[key].TN||{};for(const g in PX_SIT)PXS[key][g]=(g==="ven"||g==="rest")?(t[g]||""):(PXS[key][g]||"");pxPaint(f)}}
 f.querySelectorAll("[data-set]").forEach(b=>b.onclick=e=>{e.stopPropagation();if(b.disabled)return;PXS[key].set=b.dataset.set;pxPaint(f)});
 f.querySelectorAll("[data-pre]").forEach(b=>b.onclick=e=>{e.stopPropagation();const [nm,a,c]=b.dataset.pre.split("|"),S0=PXS[key];if(nm==="sp"){S0.lo=+a;S0.hi=+c}else if(nm==="tt"){S0.tlo=+a;S0.thi=+c}else if(nm==="tg"){S0.glo=+a;S0.ghi=+c}else{S0.mlo=+a;S0.mhi=+c}pxPaint(f)});
 const dd=f.querySelector("details.pxfd");if(dd)dd.ontoggle=()=>{PXS[key].open=dd.open};
@@ -4985,7 +4991,7 @@ vp=t.sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0).map(a=>a[1])}
 return {l5:ssn.slice(-5),l10:ssn.slice(-10),ssn,h2h,vp}}
 function pxNflSets(pl,k,CL){const SP=typeof NFL_SPR!=="undefined"?NFL_SPR:{},U=typeof USAGE_RAW!=="undefined"?USAGE_RAW:{},o=oppOf(pl.team),opp=o?o.opp:null;
 const row=(l,who)=>{const s=l.season===CUR?SP[l.week+"|"+(l.team||pl.team)]:null,u=U[l.player||pl.name],sn=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][0]:null;
-const rs=l.season===CUR&&typeof NFL_RST!=="undefined"?NFL_RST[l.week+"|"+(l.team||pl.team)]:null,wk=l.season===CUR&&!who?l.week:null,tg=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][1]:(l.tgt!=null?l.tgt:null);return {wk,tg,ha:+l.home?"H":"A",rest:rs==null?null:rs<=5?"short":rs>=12?"bye":"norm",sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,min:sn,v:k==="anyTD"?(stat(l,k)>0?1:0):stat(l,k),lab:who?"":(+l.home?"":"@")+l.opp+(l.season!==CUR?" ’"+String(l.season).slice(2):""),who}};
+const rs=l.season===CUR&&typeof NFL_RST!=="undefined"?NFL_RST[l.week+"|"+(l.team||pl.team)]:null,wk=l.season===CUR&&!who?l.week:null,tg=l.season===CUR&&u&&u.wk&&u.wk[l.week]?u.wk[l.week][1]:(l.tgt!=null?l.tgt:null);return {...(l.season===CUR?pxNflSit(l.opp,pl.pos,l.week,l.team||pl.team):{}),wk,tg,ha:+l.home?"H":"A",rest:rs==null?null:rs<=5?"short":rs>=12?"bye":"norm",sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,min:sn,v:k==="anyTD"?(stat(l,k)>0?1:0):stat(l,k),lab:who?"":(+l.home?"":"@")+l.opp+(l.season!==CUR?" ’"+String(l.season).slice(2):""),who}};
 const ok=l=>Number.isFinite(stat(l,k)),ssn=CL.filter(ok).map(l=>row(l));
 const h2h=opp?pLogs(pl.name).filter(l=>l.opp===opp&&ok(l)).map(l=>row(l)):[];
 const vp=opp?S.playerLogs.filter(l=>l.season===CUR&&l.opp===opp&&l.pos===pl.pos&&l.player!==pl.name&&ok(l)).filter(l=>{const u=U[l.player];const sn=u&&u.wk&&u.wk[l.week]?u.wk[l.week][0]:null;return sn==null?true:sn>=50})
@@ -5000,7 +5006,7 @@ return `<div class="pcl noglo"><div class="pcv">${td?"TD":line}<small>${u}</smal
 ${alt?"":`${rp&&typeof nflVerdict!=="undefined"?nflVerdict(pl.name,k):""}${rp?trackRow({pl,k}):""}`}`}
 function nflPropFilterCard(pl,k,line,CL){const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);
 const o9=oppOf(pl.team),rr=o9&&typeof NFL_RST!=="undefined"?NFL_RST[(o9.g.wk||PLAYS_WEEK)+"|"+pl.team]:null;
-const P={tn:o9?{ven:o9.home?"H":"A",rest:rr==null?"":rr<=5?"short":rr>=12?"bye":"norm"}:null,head:nflPropHead(pl,k,line),
+const Q9=o9&&typeof QB1_STATUS!=="undefined"&&QB1_STATUS[pl.team],P={tn:o9?{...pxNflSit(o9.opp,pl.pos,null,null),qb:Q9?(/^(out|doubtful|injured reserve|ir)\b/i.test(Q9.now||"")?Q9.sub:Q9.qb):"",ven:o9.home?"H":"A",rest:rr==null?"":rr<=5?"short":rr>=12?"bye":"norm"}:null,head:nflPropHead(pl,k,line),
 mates:nflMateHtml(pl,"nfl|"+pl.name),
 extra:`<div class="pxfr"><div class="pxfl"><span>✏️ Your sportsbook's line</span><input type="number" step=".5" id="lineIn" value="${line}" class="pxli"></div><div class="small">Different line at your book? Type it and every hit rate re-checks against it.</div></div>`};
 return `<div class="card" id="pxNfl" style="padding:10px">${pxFilterBlock("nfl|"+pl.name,pxNflSets(pl,k,CL),td?.5:line,sp,MARKETS[k].u,dec,td,(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name]&&USAGE_RAW[pl.name].s)?USAGE_RAW[pl.name].s.snap:null,pxNflTot(pl.team),[35,57,3],{lab:"Snap share",max:100,u:"%",pre:[50,70],w:10,any:"Any snap share"},P)}</div>`}
@@ -5020,7 +5026,22 @@ return `<div class="rcnt"><span class="rcnth">🕘 Recently viewed</span><div cl
 :`<a class="rchip" href="#props" data-rnfl="${esc(nm)}|${k}">${badge(PINFO[nm].team)}<span>${esc(nm)}</span></a>`).join("")}</div></div>`}
 document.addEventListener("click",e=>{const a=e.target.closest("[data-rnfl]");if(!a)return;e.preventDefault();const [nm,k]=a.dataset.rnfl.replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&quot;/g,'"').split("|");
 S.prop={player:nm,market:k||null,open:true};if(location.hash!=="#props")location.hash="props";else viewProps()});
-const PX_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{short:"Short week",norm:"Normal",bye:"After bye"}]};
+const PX_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{short:"Short week",norm:"Normal",bye:"After bye"}],
+opp:["Opp defense",{top:"Top 10",mid:"Middle",bot:"Bottom 10"}],pace:["Opp pace",{fast:"Fast",mid:"Middle",slow:"Slow"}],
+dvp:["Opp vs his position",{soft:"Gives up a lot",mid:"Middle",tough:"Stingy"}],
+wx:["Weather",{dome:"Dome / roof closed",fair:"Outdoors, fair",wind:"Windy (15+ mph)",cold:"Cold (≤40°F)"}],qb:["QB",{}]};
+const pxTier3=(r,n,a,b,c)=>r==null?null:r<=10?a:r>n-10?c:b;
+let PX_NRK=null;function pxNflRanks(){if(PX_NRK)return PX_NRK;const R={opp:{},pace:{},dvp:{}};try{const u=units(),T=Object.keys(u);R.n=T.length;for(const t of T)R.opp[t]=u[t].d.ptsR}catch(e){}
+try{if(typeof PACE!=="undefined")for(const t in PACE)R.pace[t]=PACE[t].ppgR}catch(e){}
+try{for(const pos of ["WR","TE","RB"]){const L=Object.entries(typeof NFL_DEFTGT!=="undefined"?NFL_DEFTGT:{}).filter(([,d])=>d[pos]&&d[pos].t>=15).map(([t,d])=>[t,d[pos].yds/d[pos].t]).sort((a,b)=>b[1]-a[1]);R.dvp[pos]={};L.forEach(([t],i)=>R.dvp[pos][t]=i+1);R.dvp[pos].n=L.length}
+const Q=Object.keys(TEAM_STATS||{}).sort((a,b)=>TEAM_STATS[b].dpass-TEAM_STATS[a].dpass);R.dvp.QB={n:Q.length};Q.forEach((t,i)=>R.dvp.QB[t]=i+1)}catch(e){}
+return PX_NRK=R}
+function pxNflSit(opp,pos,wk,team){const R=pxNflRanks(),o={};if(!opp)return o;
+o.opp=pxTier3(R.opp[opp],R.n||32,"top","mid","bot");o.pace=pxTier3(R.pace[opp],32,"fast","mid","slow");
+const D=R.dvp[pos];o.dvp=D?pxTier3(D[opp],D.n,"soft","mid","tough"):null;
+if(wk!=null&&team){const w=typeof NFL_GWX!=="undefined"&&NFL_GWX[wk+"|"+team];if(w)o.wx=/dome|closed/i.test(w[0])?"dome":w[2]!=null&&w[2]>=15?"wind":w[1]!=null&&w[1]<=40?"cold":"fair";
+const q=typeof NFL_GQB!=="undefined"&&NFL_GQB[wk+"|"+team];if(q)o.qb=q}
+return o}
 const GS={};
 function gsRowsNba(t){const S=typeof NBA_SPR!=="undefined"?NBA_SPR:{};
 return NBA_RES.filter(r=>r[2]===t||r[3]===t).sort((a,b)=>a[1]<b[1]?-1:1).map(r=>{const h=r[3]===t,s=S[r[0]];return {opp:h?r[2]:r[3],home:h,pf:h?r[5]:r[4],pa:h?r[4]:r[5],sp:s?(h?s[3]:-s[3]):null,tot:s?s[4]:null,d:r[1]}})}
@@ -7583,10 +7604,10 @@ const VX_ZR=[["D","Deep","20+ yds"],["I","Medium","10–19"],["S","Short","0–9
 function vxQbOf(t){const Q=typeof QB1_STATUS!=="undefined"&&QB1_STATUS[t];let nm=Q?(/^(out|doubtful|injured reserve|ir)\b/i.test(Q.now||"")?Q.sub:Q.qb):null;
 if(nm&&NFL_QBZ[nm]&&NFL_QBZ[nm].tm===t)return [nm,NFL_QBZ[nm]];
 const L=Object.entries(NFL_QBZ).filter(([,v])=>v.tm===t).sort((x,y)=>y[1].att-x[1].att);return L.length?L[0]:null}
-function vxPassMap(g){try{if(typeof NFL_TZONE==="undefined"||typeof NFL_QBZ==="undefined")return "";const id="pm"+g.away+g.home;
+function vxPassMap(g,only){try{if(typeof NFL_TZONE==="undefined"||typeof NFL_QBZ==="undefined")return "";const id="pm"+g.away+g.home;
 if(!NFL_TZONE[g.away]||!NFL_TZONE[g.home])return "";const LG=NFL_LGZONE||{};
 const ypt=c=>c&&c[0]?c[2]/c[0]:null;
-return vxBox(id,()=>{const v=VX_S[id]||"a",off=v==="a"?g.away:g.home,def=off===g.away?g.home:g.away,Q=vxQbOf(off),Z=Q?Q[1].z:NFL_TZONE[off].o,D=NFL_TZONE[def].d;
+return vxBox(id,()=>{const v=only?(only===g.away?"a":"h"):(VX_S[id]||"a"),off=v==="a"?g.away:g.home,def=off===g.away?g.home:g.away,Q=vxQbOf(off),Z=Q?Q[1].z:NFL_TZONE[off].o,D=NFL_TZONE[def].d;
 const tot=Object.values(Z).reduce((s,c)=>s+c[0],0),dtot=Object.values(D).reduce((s,c)=>s+c[0],0);if(!tot||!dtot)return "";const mx=Math.max(...Object.values(Z).map(c=>c[0]));
 const qcell=k=>{const c=Z[k];if(!c||!c[0])return `<div class="qpz none">–</div>`;const sh=c[0]/tot;return `<div class="qpz" style="background:rgba(59,130,246,${(.1+c[0]/mx*.6).toFixed(2)})"><b>${Math.round(sh*100)}%</b><span>${Math.round(c[1]/c[0]*100)}% caught</span></div>`};
 const dcell=k=>{const c=D[k],l=ypt(LG[k]);if(!c||c[0]<3)return `<div class="qpz none">${c?c[0]:0} tgt</div>`;const y=ypt(c),e=l!=null?y-l:0;
@@ -7597,7 +7618,7 @@ const ed=[];for(const [r,rl] of VX_ZR)for(const [c,cl] of VX_ZC){const k=r+c,z=Z
 if(sh>=.08&&Math.abs(e)>=1)ed.push({k,sh,e,txt:`${rl.toLowerCase()} ${cl.toLowerCase()}`,y:ypt(d),l})}
 ed.sort((x,y)=>y.sh-x.sh);
 return `<div class="card vx2"><h2 style="margin-bottom:2px">Where the QB throws vs where the defense gives up catches</h2><div class="small" style="margin-bottom:8px">Field split into 12 areas by how far the ball travels in the air and which side. Blue = how often he throws there. Green / red = the defense gives up more / fewer yards per target there than the NFL average.</div>
-${vxTabs(id,[["a",`${vxE(short(g.away))} pass vs ${vxE(short(g.home))} D`],["h",`${vxE(short(g.home))} pass vs ${vxE(short(g.away))} D`]],"a")}
+${only?"":vxTabs(id,[["a",`${vxE(short(g.away))} pass vs ${vxE(short(g.home))} D`],["h",`${vxE(short(g.home))} pass vs ${vxE(short(g.away))} D`]],"a")}
 <div class="qpw">${grid(qcell,`🎯 ${who}<br><span class="small">share of ${Q?"his":"their"} ${tot} throws</span>`)}${grid(dcell,`🛡️ ${vxE(short(def))} defense<br><span class="small">yards per target allowed</span>`)}</div>
 ${ed.length?`<div class="shx">${ed.slice(0,3).map(x=>`<div class="${x.e>0?"g":"r"}"><b>${x.e>0?"✅":"⚠️"} ${x.txt[0].toUpperCase()+x.txt.slice(1)}</b> — ${Math.round(x.sh*100)}% of ${whos} throws; ${vxE(short(def))} allow <b>${x.y.toFixed(1)}</b> yards per target there (NFL ${x.l.toFixed(1)}).</div>`).join("")}</div>`:""}
 <div class="small" style="margin-top:6px">nflverse play-by-play, regular season${typeof NFL_TGT_WEEKS!=="undefined"&&NFL_TGT_WEEKS?` weeks ${NFL_TGT_WEEKS}`:""}. Sacks and throwaways without a target aren't counted.</div></div>`})}catch(e){return ""}}
@@ -7622,6 +7643,16 @@ const x=side(g.away,g.home)+side(g.home,g.away);if(!x)return "";
 return vxCard("Red-zone & end-zone chances","Who gets the ball inside the 20 this season, split by distance, with touchdowns. Orange boxes = throws into the end zone (left · middle · right) and TDs from them.",x,"nflverse play-by-play, regular season. Touchdowns follow chances: a player who gets most of his team's goal-line work is the likeliest anytime scorer.")}catch(e){return ""}}
 function vxRzPlayer(nm){try{if(typeof NFL_RZP==="undefined"||!NFL_RZP[nm])return "";const r=NFL_RZP[nm];
 return `<div class="card vx2" style="margin-top:12px"><h2 style="margin-bottom:2px">Goal-line map</h2><div class="small" style="margin-bottom:6px">His chances inside the 20, by distance, and his end-zone targets by side.</div>${vxRzRow(nm,r)}</div>`}catch(e){return ""}}
+function vxPassFor(team,opp){if(!team||!opp)return "";return vxPassMap({away:team,home:opp},team)}
+function vxRzDef(o){if(typeof NFL_RZD==="undefined"||!NFL_RZD[o])return "";const D=NFL_RZD[o],LG={ru:[0,0],pa:[0,0,0]};for(const d of Object.values(NFL_RZD)){LG.ru[0]+=d.ru[0];LG.ru[1]+=d.ru[1];LG.pa[0]+=d.pa[0];LG.pa[2]+=d.pa[2]}
+const pct=(a,b)=>b?Math.round(a/b*100):0;
+return `<div class="qrzd">🛡️ <b>${vxE(short(o))} in their red zone:</b> ${D.ru[0]} carries → <b>${D.ru[1]}</b> rush TD (${pct(D.ru[1],D.ru[0])}%, NFL ${pct(LG.ru[1],LG.ru[0])}%) · ${D.pa[0]} targets → <b>${D.pa[2]}</b> pass TD (${pct(D.pa[2],D.pa[0])}%, NFL ${pct(LG.pa[2],LG.pa[0])}%)
+<div style="margin-top:4px"><span class="small">End-zone throws against them (left · middle · right):</span>${vxEz(D.ez)}</div></div>`}
+function vxRzTd(nm,opp){try{if(typeof NFL_RZP==="undefined")return "";const r=NFL_RZP[nm];if(!r)return opp?vxCard("Red-zone & end-zone chances","No red-zone carries or targets for him yet this season.",vxRzDef(opp),""):"";
+const T=Object.values(NFL_RZP).filter(x=>x.tm===r.tm),tc=T.reduce((a,x)=>a+x.c20[0],0),tt=T.reduce((a,x)=>a+x.t20[0],0),t5=T.reduce((a,x)=>a+x.c5[0],0),pc=(a,b)=>b?Math.round(a/b*100):0;
+const share=[r.c20[0]?`<b>${pc(r.c20[0],tc)}%</b> of his team's red-zone carries`:"",r.c5[0]?`<b>${pc(r.c5[0],t5)}%</b> of carries inside the 5`:"",r.t20[0]?`<b>${pc(r.t20[0],tt)}%</b> of red-zone targets`:""].filter(Boolean).join(" · ");
+const tds=r.c20[1]+r.t20[2];
+return vxCard("Red-zone & end-zone chances",`His chances inside the 20 this season, by distance — ${tds} red-zone TD${tds===1?"":"s"}.`,vxRzRow(nm,r)+(share?`<div class="qsay">He gets ${share}.</div>`:"")+(opp?`<h3 style="margin:12px 0 4px">This week's defense</h3>${vxRzDef(opp)}`:""),"nflverse play-by-play, regular season. Touchdowns follow chances: a big share of his team's goal-line work is the best sign for an anytime TD.")}catch(e){return ""}}
 function gpE(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c])}
 function gpTabs(cur,items){return `<div class="gtabs gptabs">${items.map(([k,l,h,a])=>`<a href="${h||"#"}" ${a||""} class="${k===cur?"on":""}">${l}</a>`).join("")}</div>`}
 function gpSummary(o){const R=[];
@@ -8077,7 +8108,7 @@ ${nfNextCard(g)}
 if(T==="h2h")return nav+`<div class="section nodz"><div class="card"><h2>🆚 Head-to-head</h2>${h2hHtml(g)}<p class="small" style="margin:6px 0 0">Tap 📋 Box score on any of the last 5 meetings for the full stats.</p></div></div>`;
 if(T==="inj")return nav+`<div class="section">${injWxSection(g)}</div>`;
 return nav+`   <div class="section"><h2>Offense vs defense</h2><p class="small" style="margin-top:-6px">Per-game averages this season. Rank 1st = best in the NFL (most gained for offenses, least allowed for defenses). <span class="tag real">Real</span> Offense from ESPN, yards allowed from NFL.com, points allowed from CBS scores.</p>
-<div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>${typeof gpLazy!=="undefined"?gpLazy("Matchup heat map",()=>vxHeat("nfl",g.away,g.home,short))+gpLazy("Red zone",()=>vxRz(g))+gpLazy("Where the QB throws",()=>typeof vxPassMap!=="undefined"?vxPassMap(g):"")+gpLazy("Red-zone & end-zone chances",()=>typeof vxRzGame!=="undefined"?vxRzGame(g):"")+gpLazy("Pace vs scoring",()=>typeof vxPace!=="undefined"?vxPace("nfl",g):"")+gpLazy("Offense vs defense — every team",()=>typeof vxStrength!=="undefined"?vxStrength("nfl",g):""):""}
+<div class="grid g2">${ovdHtml(g.away,g.home)}${ovdHtml(g.home,g.away)}</div></div>${typeof gpLazy!=="undefined"?gpLazy("Matchup heat map",()=>vxHeat("nfl",g.away,g.home,short))+gpLazy("Red zone",()=>vxRz(g))+gpLazy("Pace vs scoring",()=>typeof vxPace!=="undefined"?vxPace("nfl",g):"")+gpLazy("Offense vs defense — every team",()=>typeof vxStrength!=="undefined"?vxStrength("nfl",g):""):""}
 ${nfPressCard(g)}${nfShareCard(g)}${typeof xaKeyOutCard!=="undefined"?`<div class="section">${xaDefTrendCard("nfl",g.away,g.home)}${xaTdCard(g)}${xaProeCard(g)}${xaDivCard(g)}${xaKickCard(g)}</div>`:""}
 <div class="section"><h2>Run game: yards per rushing attempt</h2><p class="small" style="margin-top:-6px">How well each offense runs the ball against how well the other defense stops it. <span class="tag real">Real</span> <a href="${RUN_SRC.att}" target="_blank" rel="noopener">StatRankings</a> rushing attempts and YPC allowed (2026, through Oct 27) with ESPN rushing yards.</p>
 <div class="grid g2">${runGameHtml(g.away,g.home)}${runGameHtml(g.home,g.away)}</div></div>
@@ -8514,6 +8545,7 @@ ${(()=>{const rp=realProp(pl.name,k);return rp&&k!=="anyTD"&&typeof loAltHtml!==
 ${QA?qbSplitCard(pl,k,line,CLall,QS,QM,qmode):""}
 <div class="section">
 ${v10.length?"":`<div class="card"><h2>Game log</h2><p class="note">No game log loaded for ${esc(pl.name)} yet.</p></div>`}</div>
+${pl.pos==="QB"&&typeof vxPassFor!=="undefined"?`<div class="section">${vxPassFor(pl.team,opp)}</div>`:""}${k==="anyTD"&&typeof vxRzTd!=="undefined"?`<div class="section">${vxRzTd(pl.name,opp)}</div>`:""}
 ${nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA)}
 ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nfl",pl.name):""}`;
 $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;try{history.replaceState(null,"","#props")}catch(x){}viewProps()};
@@ -8635,7 +8667,7 @@ return `<div class="oa"><div class="oah">What ${esc(short(t))} allow to ${POSNAM
 function nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA){
 const X=(typeof nflPropXCard!=="undefined"&&nflPropXCard(pl,k,line,CL))||{};
 const T=[["alt","Alt lines",X.alt],["gs","Game script",X.gs],["def","Vs defenses",X.def],
-["tgt","Targets",typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""],["use","Usage",usageCard(pl)],["rz","Red zone",rzCard(pl)+(typeof vxRzPlayer!=="undefined"?vxRzPlayer(pl.name):"")],
+["tgt","Targets",typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""],["use","Usage",usageCard(pl)],["rz","Red zone",rzCard(pl)+(k!=="anyTD"&&typeof vxRzPlayer!=="undefined"?vxRzPlayer(pl.name):"")],
 ["vs",opp?"Vs "+short(opp):"",opp?posvCard(pl,opp,k,line,unit)+vsCard(pl,opp,k,line,unit):""],
 ["all","All games",`<div style="max-height:380px;overflow:auto"><table><tbody>${allGameRows(pl,CL,CLall,qmode,QM,k,ouTag,QA)}</tbody></table></div><p class="note" style="margin:8px 0 0">"Did not play" weeks (injury / inactive) aren't counted in averages or hit rates.</p>`],
 ["sch","Schedule",typeof NFL_NEXT!=="undefined"&&NFL_NEXT[pl.team]?nfNextHtml(pl.team):""]].filter(t=>t[1]&&t[2]);
