@@ -619,7 +619,7 @@ function viewPlayer(){
    ${QA?qbSplitCard(pl,k,line,CLall,QS,QM,qmode):""}
    <div class="section">
     ${v10.length?"":`<div class="card"><h2>Game log</h2><p class="note">No game log loaded for ${esc(pl.name)} yet.</p></div>`}</div>
-   ${pl.pos==="QB"&&typeof vxPassFor!=="undefined"?`<div class="section">${vxPassFor(pl.team,opp)}</div>`:""}${k==="anyTD"&&typeof vxRzTd!=="undefined"?`<div class="section">${vxRzTd(pl.name,opp)}</div>`:""}
+   ${pl.pos==="QB"&&typeof vxPassFor!=="undefined"?`<div class="section">${vxPassFor(pl.team,opp)}</div>`:""}
    ${nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA)}
    ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nfl",pl.name):""}`;
   $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;try{history.replaceState(null,"","#props")}catch(x){}viewProps()};
@@ -754,12 +754,13 @@ function nflAllowTiles(t,pos,k){const D=DVP_RAW[pos];if(!D||!D.rows[t])return ""
 /* ---------- NFL: every extra in one tabbed card ---------- */
 function nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA){
   const X=(typeof nflPropXCard!=="undefined"&&nflPropXCard(pl,k,line,CL))||{};
-  const T=[["alt","Alt lines",X.alt],["gs","Game script",X.gs],["def","Vs defenses",X.def],
+  const RZ=typeof vxRzTd!=="undefined"?vxRzTd(pl.name,opp):"";
+  const T=[...(k==="anyTD"?[["rzf","Red zone & end zone",RZ]]:[]),["alt","Alt lines",X.alt],["gs","Game script",X.gs],["def","Vs defenses",X.def],
     ["tgt","Targets",typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""],["use","Usage",usageCard(pl)],
     ["vs",opp?"Vs "+short(opp):"",opp?posvCard(pl,opp,k,line,unit)+vsCard(pl,opp,k,line,unit):""],
     ["all","All games",`<div style="max-height:380px;overflow:auto"><table><tbody>${allGameRows(pl,CL,CLall,qmode,QM,k,ouTag,QA)}</tbody></table></div><p class="note" style="margin:8px 0 0">"Did not play" weeks (injury / inactive) aren't counted in averages or hit rates.</p>`],
-    ["sch","Schedule",typeof NFL_NEXT!=="undefined"&&NFL_NEXT[pl.team]?nfNextHtml(pl.team):""]].filter(t=>t[1]&&t[2]);
-  if(!T.length)return "";const cur=T.some(t=>t[0]===S.prop.xt)?S.prop.xt:T[0][0];
+    ...(k!=="anyTD"?[["rzf","Red zone & end zone",RZ]]:[]),["sch","Schedule",typeof NFL_NEXT!=="undefined"&&NFL_NEXT[pl.team]?nfNextHtml(pl.team):""]].filter(t=>t[1]&&t[2]);
+  if(!T.length)return "";const cur=T.some(t=>t[0]===S.prop.xt)&&!(k==="anyTD"&&S.prop.xt==="alt")?S.prop.xt:T[0][0];
   return `<div class="section"><div class="card xtc nodz"><div class="nbtabs pmk xtt">${T.map(([id,l])=>`<button data-xt="${id}" class="${id===cur?"on":""}">${l}</button>`).join("")}</div>
    ${T.map(([id,,h])=>`<div class="xtp" data-xtp="${id}"${id===cur?"":" hidden"}>${h}</div>`).join("")}</div></div>`}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-xt]");if(!b)return;S.prop.xt=b.dataset.xt;const c=b.closest(".xtc");c.querySelectorAll("[data-xt]").forEach(x=>x.classList.toggle("on",x===b));c.querySelectorAll("[data-xtp]").forEach(p=>p.hidden=p.dataset.xtp!==b.dataset.xt)});
