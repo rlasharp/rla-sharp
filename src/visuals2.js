@@ -301,3 +301,10 @@ function fxDecorate(){for(const d of document.querySelectorAll("details.pxfd:not
   const rl=rows.find(r=>FX_GRP.role.includes(nm(r)));if(rl)H("⏱ His role",rl);
   const toi=sit.find(r=>{const t=r.firstElementChild&&r.firstElementChild.firstChild&&r.firstElementChild.firstChild.textContent.trim();return t==="Ice time"||t==="Minutes"});if(toi)H("⏱ His role",toi)}}
 new MutationObserver(()=>{clearTimeout(window._fxT);window._fxT=setTimeout(fxDecorate,60)}).observe(document.documentElement,{childList:true,subtree:true});
+/* ===== box scores: on phones, a team switch (one team at a time); on wide screens, the two teams side by side ===== */
+function bxPairs(){for(const sel of [".bxcard",".bxteam"])for(const a of document.querySelectorAll(sel+":not([data-bxp])")){const b=a.nextElementSibling;a.dataset.bxp=1;if(!b||!b.matches(sel))continue;b.dataset.bxp=1;
+  const lab=el=>{const h=el.querySelector("h2,h3");if(!h)return "Team";const bd=h.querySelector(".nbbdg,.badge,[class*=badge],[class*=bdg]"),wl=h.querySelector(".bxwl");return ((bd&&bd.textContent.trim())||h.textContent.replace(/\s+/g," ").trim().replace(/\s[WL]\s\d+$/,""))+(wl?" · "+wl.textContent.trim():"")};
+  const w=document.createElement("div");w.className="bxsw";a.parentNode.insertBefore(w,a);const t=document.createElement("div");t.className="bxtabs";
+  [a,b].forEach((el,i)=>{const btn=document.createElement("button");btn.type="button";btn.textContent=lab(el);if(!i)btn.className="on";btn.onclick=()=>{[a,b].forEach((x,j)=>x.classList.toggle("bxon",j===i));t.querySelectorAll("button").forEach((x,j)=>x.classList.toggle("on",j===i))};t.appendChild(btn)});
+  w.append(t,a,b);a.classList.add("bxon")}}
+new MutationObserver(()=>{clearTimeout(window._bxT);window._bxT=setTimeout(bxPairs,60)}).observe(document.documentElement,{childList:true,subtree:true});
