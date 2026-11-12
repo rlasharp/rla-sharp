@@ -259,7 +259,7 @@ function gsH2hNfl(g,t){const o=t===g.away?g.home:g.away,R=typeof nflH2hRows!=="u
   if(!R.length){const SP=typeof NFL_SPR!=="undefined"?NFL_SPR:{};return teamGames(t,null).filter(x=>x.opp===o).map(x=>{const s=x.season===CUR?SP[x.week+"|"+t]:null;return {opp:x.opp,home:!!x.home,pf:x.pf,pa:x.pa,sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,d:x.season===CUR?"Wk "+x.week:String(x.season)}})}
   return R.map(([d,a,ap,h,hp])=>({opp:a===t?h:a,home:h===t,pf:a===t?ap:hp,pa:a===t?hp:ap,sp:null,tot:null,d:d.slice(0,4)})).reverse()}
 function gsCard(key,sport,teams,rowsFor,h2hFor,ton,TR){
-  const S0=GS[key]||(GS[key]={t:0,set:"ssn",lo:-15,hi:15,tlo:TR[0],thi:TR[1],open:false});if(S0.tlo<TR[0]||S0.thi>TR[1]){S0.tlo=TR[0];S0.thi=TR[1]}
+  const S0=GS[key]||(GS[key]={t:0,set:"l5",lo:-15,hi:15,tlo:TR[0],thi:TR[1],open:false});if(S0.tlo<TR[0]||S0.thi>TR[1]){S0.tlo=TR[0];S0.thi=TR[1]}
   const t=teams[S0.t],o=teams[1-S0.t],all=rowsFor(t),sets={l5:all.slice(-5),l10:all.slice(-10),ssn:all,b2b:all.filter(r=>r.b2b),h2h:h2hFor(t)};
   const lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi);
   const spAny=lo<=-15&&hi>=15,ttAny=tlo<=TR[0]&&thi>=TR[1];
@@ -359,3 +359,5 @@ function nflFinalBlock(g,as,hs){const L=typeof LINES!=="undefined"?LINES[g.id]:n
 /* wording: NBA games are today ("tonight"); NFL games can be days away, so say "this game" + its day */
 function pxOppW(key){return String(key||"").startsWith("nfl")?"this game's":"tonight's"}
 function pxGameDay(key){try{const nm=String(key).split(/[|~]/)[1];const P=typeof PINFO!=="undefined"&&PINFO[nm];const o=P&&oppOf(P.team);const d=o&&String(o.g.when||"").split(" ")[0];return d?` (${d})`:""}catch(e){return ""}}
+
+window.addEventListener("hashchange",()=>{for(const k in GS)delete GS[k]});

@@ -996,6 +996,16 @@ function nbaMiniBars(vals,line,labs){
    ${vals.map((v,i)=>{const c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="mbc" title="${labs&&labs[i]!=null?String(labs[i]).replace(/<[^>]+>/g,"").replace(/"/g,"")+": ":""}${v} (line ${line})"><span class="mbv ${c}">${v}</span><i class="${c}${v<=0?" z":""}" style="height:${pct(v).toFixed(1)}%"></i></div>`}).join("")}</div>
    ${labs?`<div class="mbx">${labs.map(l=>`<span>${l}</span>`).join("")}</div>`:""}</div>`;
 }
+/* the small chart on each prop line, with quick filters (L5 / L10 / Season / Home / Away / B2B / vs tonight's opponent) */
+const NB_LRF={};
+function nbaLrChart(nm,k,line){const key=nm+"|"+k,mode=NB_LRF[key]||"l10",p=NBA_LOGS[nm],g=p&&nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):null;
+  const A=nbaAllG(nm),cur=A.filter(o=>!o.prev),F={l5:A.slice(-5),l10:A.slice(-10),ssn:cur,h:cur.filter(o=>o.x[3]==="H"),a:cur.filter(o=>o.x[3]==="A"),b2b:cur.filter(o=>{const r=nbaRestOf(o.x);return r===0}),vs:opp?A.filter(o=>o.x[2]===opp):[]};
+  const L=(F[mode]||F.l10).slice(-15),v=L.map(o=>nbaVal(o.x,k)),h=v.filter(z=>pxHit(z,line)).length,avg=v.length?v.reduce((a,b)=>a+b,0)/v.length:0;
+  const lab={l5:"L5",l10:"L10",ssn:"Season",h:"Home",a:"Away",b2b:"B2B",vs:opp?"vs "+opp:""};
+  const chips=Object.entries(lab).filter(([m,l])=>l&&(F[m].length||m==="l5")).map(([m,l])=>`<button type="button" data-lrf="${nbaEsc(key)}|${m}" class="${m===mode?"on":""}">${l}<small>${F[m].length}</small></button>`).join("");
+  return `<div class="lrc" data-lrk="${nbaEsc(key)}" data-line="${line}"><div class="lrchips">${chips}</div>${L.length?`<div class="mbw">${nbaMiniBars(v,line,L.map(o=>(o.prev?"’25 ":"")+(o.x[3]==="H"?"":"@")+o.x[2]))}<div class="small mbs">${lab[mode]}: <b class="${h/L.length>=.5?"up":"dn"}">${h}/${L.length} ${pxSW()}</b> · avg <b>${nbaF(avg)}</b> vs line ${line}</div></div>`:`<div class="small" style="padding:8px 0">No games here yet.</div>`}</div>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-lrf]");if(!b)return;e.preventDefault();e.stopPropagation();const s=nbaUnesc(b.dataset.lrf),i=s.lastIndexOf("|"),key=s.slice(0,i),m=s.slice(i+1);NB_LRF[key]=m;
+  const box=b.closest(".lrc");if(!box)return;const [nm,k]=[key.slice(0,key.lastIndexOf("|")),key.slice(key.lastIndexOf("|")+1)];box.outerHTML=nbaLrChart(nm,k,+box.dataset.line)},true);
 function nbaLineRow(nm,r){
       let [,k,line,op,up,book]=r;const main=line,alt=typeof loAltOdds!=="undefined"?loAltOdds(nm,k):null;if(alt){line=alt.line;op=alt.o;up=alt.u;book=alt.ob||alt.ub||""}
       const l6=nbaAllG(nm).slice(-6),vals=l6.map(o=>nbaVal(o.x,k)),ov=vals.filter(v=>v>line).length;
@@ -1003,7 +1013,7 @@ function nbaLineRow(nm,r){
       return `<div class="pl" data-jump="pc_${nm.replace(/[^A-Za-z0-9]/g,"")}_${k}_p" data-lrow="nba|${nbaEsc(nm+"|"+k)}">
         <div class="plh"><div><b>${NBA_MK[k]?NBA_MK[k][1]:k}</b> <span class="plv">${line}</span>${typeof loStep!=="undefined"?loStep(nm,k,main):""}${typeof loMoveTag!=="undefined"?loMoveTag(nm,k,line):""}</div>
           <div class="small">O ${op!=null?oddsFmt(op):"–"} · U ${up!=null?oddsFmt(up):"–"}${book?" · "+nbaEsc(book):""}</div>${alt&&op==null&&up==null&&typeof loFairTxt!=="undefined"?`<div class="small">${loFairTxt(nm,k,line)}</div>`:""}</div>${alt?"":(typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k,1):"")+nbaShopHtml(r)}
-        ${(()=>{const L10=nbaAllG(nm).slice(-10),v10=L10.map(o=>nbaVal(o.x,k)),o10=v10.filter(v=>pxHit(v,line)).length;return L10.length?`<div class="mbw">${nbaMiniBars(v10,line,L10.map(o=>(o.x[3]==="H"?"":"@")+o.x[2]))}<div class="small mbs">Last ${L10.length}: <b class="${o10/L10.length>=.5?"up":"dn"}">${o10}/${L10.length} ${pxSW()}</b> · avg <b>${nbaF(v10.reduce((a,b)=>a+b,0)/v10.length)}</b> vs line ${line}</div></div>`:""})()}
+        ${nbaLrChart(nm,k,line)}
         ${typeof loAltHtml!=="undefined"?loAltHtml(nm,k,main,nbaAllG(nm).slice(-10).map(o=>nbaVal(o.x,k))):""}
         ${nbaChanceHtml(nm,k)}
         <div class="plg">${l6.map((o,i)=>{const v=vals[i],c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="lc ${c}${o.prev?" pv":""}" title="${nbaEsc(o.x[1])} ${o.x[3]==="H"?"vs":"@"} ${o.x[2]}"><b>${v}</b><span>${o.x[3]==="H"?"":"@"}${o.x[2]}</span></div>`}).join("")}</div>
