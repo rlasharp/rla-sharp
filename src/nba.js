@@ -1109,7 +1109,8 @@ function nbaBox(id){
   const q=(i,side)=>{const a=LS[0][i],h=LS[1][i],me=side?h:a,op=side?a:h;return `<td class="${me>op?"qw":""}">${me??""}</td>`};
   const lsT=LS&&LS[0].length?`<div class="card" style="margin-top:12px"><div class="nbatbl"><table class="bxt lst" style="min-width:0"><thead><tr><th></th>${LS[0].map((_,i)=>`<th>${i<4?"Q"+(i+1):i===4?"OT":"OT"+(i-3)}</th>`).join("")}<th>T</th></tr></thead><tbody>
     ${[0,1].map(sd=>`<tr><td>${nbaBadge(r[2+sd])} <b>${nbaShort(r[2+sd])}</b></td>${LS[0].map((_,i)=>q(i,sd)).join("")}<td><b class="${(sd?r[5]>r[4]:r[4]>r[5])?"qwT":""}">${r[4+sd]}</b></td></tr>`).join("")}</tbody></table></div><div class="small" style="margin-top:4px">Green = won the quarter.</div></div>`:"";
-  return `<h2 style="margin:18px 0 0">${nbaShort(r[2])} ${r[4]} – ${nbaShort(r[3])} ${r[5]} · box score</h2>${lsT}${tbl("A",r[2])}${tbl("H",r[3])}`;
+  const tb=(ha,tm,on)=>tbl(ha,tm).replace('<div class="card bxcard"',`<div data-bxp="1" class="card bxcard${on?" bxon":""}"`);
+  return `<h2 style="margin:18px 0 0">${nbaShort(r[2])} ${r[4]} – ${nbaShort(r[3])} ${r[5]} · box score</h2>${lsT}<div class="bxsw"><div class="bxtabs">${[["A",r[2],r[4]],["H",r[3],r[5]]].map(([ha,tm,pts],i)=>`<button type="button" data-bxt="${i}" class="${i?"":"on"}">${nbaShort(tm)} · ${(ha==="A"?r[4]>r[5]:r[5]>r[4])?"W":"L"} ${pts}</button>`).join("")}</div>${tb("A",r[2],1)}${tb("H",r[3],0)}</div>`;
 }
 function nbaScores(el){
   const today=(typeof etNow!=="undefined"?etNow().d:NBA_SLATE_DATE),lo=new Date(new Date(today+"T12:00:00")-8*864e5).toISOString().slice(0,10);

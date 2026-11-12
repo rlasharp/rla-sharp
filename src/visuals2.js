@@ -243,7 +243,7 @@ function vxLnRecFill(){const E=[...document.querySelectorAll("[data-lnrec]:not([
   xaHistEnsure(()=>{for(const el of E){el.dataset.done=1;let a;try{a=JSON.parse(el.dataset.lnrec)}catch(e){continue}const [sp,nm,k]=a,H=(XA.hist||{})[sp+"|"+nm+"|"+k];if(!H||!H.length)continue;
     const G=typeof xaGames!=="undefined"?xaGames(sp,nm,k):[];let o=0,u=0,p=0;for(const [d,ln] of H){const g=G.find(x=>x.d===d);if(!g||g.v==null)continue;if(g.v>ln)o++;else if(g.v<ln)u++;else p++}
     const n=o+u+p;if(!n)continue;el.innerHTML=`📏 Vs his own closing lines (since Nov 2): <b class="${o>u?"up":u>o?"dn":""}">Over ${o} · Under ${u}${p?` · Push ${p}`:""}</b> in ${n} game${n>1?"s":""}.`}})}
-new MutationObserver(()=>{clearTimeout(window._lnrT);window._lnrT=setTimeout(vxLnRecFill,150)}).observe(document.documentElement,{childList:true,subtree:true});
+new MutationObserver(()=>{if(window._lnrT)return;window._lnrT=setTimeout(()=>{window._lnrT=0;vxLnRecFill()},150)}).observe(document.documentElement,{childList:true,subtree:true});
 /* ===== NHL referees tonight: penalties and goals in the games they've worked ===== */
 function vxNhlRefs(g){try{const R=typeof NHL_REFS!=="undefined"&&NHL_REFS;if(!R||!R.today)return "";const C=R.today[String(g.id)];if(!C||!C.length)return "";const L=R.lg||[null,null];
   const rows=C.map(n=>{const r=R.ref[n];return `<tr><td style="text-align:left"><b>${vxE(n)}</b></td><td>${r?r[0]:"–"}</td><td class="${r&&L[0]?(r[1]>=L[0]+.8?"up":r[1]<=L[0]-.8?"dn":""):""}">${r?r[1].toFixed(1):"–"}</td><td>${r?r[2].toFixed(1):"–"}</td></tr>`}).join("");
@@ -304,11 +304,14 @@ function fxDecorate(){for(const d of document.querySelectorAll("details.pxfd:not
   const ln=rows.find(r=>FX_GRP.lines.includes(nm(r)));if(ln)H("📈 Betting lines in each game",ln);
   const rl=rows.find(r=>FX_GRP.role.includes(nm(r)));if(rl)H("⏱ His role",rl);
   const toi=sit.find(r=>{const t=r.firstElementChild&&r.firstElementChild.firstChild&&r.firstElementChild.firstChild.textContent.trim();return t==="Ice time"||t==="Minutes"});if(toi)H("⏱ His role",toi)}}
-new MutationObserver(()=>{clearTimeout(window._fxT);window._fxT=setTimeout(fxDecorate,60)}).observe(document.documentElement,{childList:true,subtree:true});
+new MutationObserver(()=>{if(window._fxT)return;window._fxT=setTimeout(()=>{window._fxT=0;fxDecorate()},60)}).observe(document.documentElement,{childList:true,subtree:true});
 /* ===== box scores: on phones, a team switch (one team at a time); on wide screens, the two teams side by side ===== */
 function bxPairs(){for(const sel of [".bxcard",".bxteam"])for(const a of document.querySelectorAll(sel+":not([data-bxp])")){const b=a.nextElementSibling;a.dataset.bxp=1;if(!b||!b.matches(sel))continue;b.dataset.bxp=1;
   const lab=el=>{const h=el.querySelector("h2,h3");if(!h)return "Team";const bd=h.querySelector(".nbbdg,.badge,[class*=badge],[class*=bdg]"),wl=h.querySelector(".bxwl");return ((bd&&bd.textContent.trim())||h.textContent.replace(/\s+/g," ").trim().replace(/\s[WL]\s\d+$/,""))+(wl?" · "+wl.textContent.trim():"")};
   const w=document.createElement("div");w.className="bxsw";a.parentNode.insertBefore(w,a);const t=document.createElement("div");t.className="bxtabs";
   [a,b].forEach((el,i)=>{const btn=document.createElement("button");btn.type="button";btn.textContent=lab(el);if(!i)btn.className="on";btn.onclick=()=>{[a,b].forEach((x,j)=>x.classList.toggle("bxon",j===i));t.querySelectorAll("button").forEach((x,j)=>x.classList.toggle("on",j===i))};t.appendChild(btn)});
   w.append(t,a,b);a.classList.add("bxon")}}
-new MutationObserver(()=>{clearTimeout(window._bxT);window._bxT=setTimeout(bxPairs,60)}).observe(document.documentElement,{childList:true,subtree:true});
+new MutationObserver(()=>{if(window._bxT)return;window._bxT=setTimeout(()=>{window._bxT=0;bxPairs()},60)}).observe(document.documentElement,{childList:true,subtree:true});
+
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-bxt]");if(!b)return;const w=b.closest(".bxsw");if(!w)return;const i=+b.dataset.bxt,C=[...w.querySelectorAll(":scope>.bxcard,:scope>.bxteam")];
+  C.forEach((x,j)=>x.classList.toggle("bxon",j===i));w.querySelectorAll(".bxtabs button").forEach((x,j)=>x.classList.toggle("on",j===i))});
