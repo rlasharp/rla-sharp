@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-11 23:29Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 00:33Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -10,19 +10,17 @@ Paul George|F|Out|illness|Nov 15
 Nolan Traore|G|Out|calf soreness|Nov 14
 Mikel Brown Jr.|G|Out|illness not specified|Nov 14
 #Charlotte Hornets
-Brandon Miller|F|Day-To-Day|groin soreness|Nov 12
-Moussa Diabate|F|Day-To-Day|quadriceps|Nov 12
 Grant Williams|F|Out|hamstring|Nov 12
+Moussa Diabate|F|Day-To-Day|quadriceps|Nov 12
+Brandon Miller|F|Out|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Dailyn Swain|G|Out|back|Nov 13
+Norman Powell|G|Out|shoulder inflammation|Nov 13
 Tobe Awaka|F|Out|back|Nov 13
-Caleb Wilson|F|Day-To-Day|hip soreness|Nov 11
-Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 13
-Zach Collins|F|Day-To-Day|illness|Nov 11
 #Cleveland Cavaliers
 Sam Merrill|G|Out|elbow|Nov 16
-Jaylon Tyson|G|Out|ankle sprain|Nov 11
 #Dallas Mavericks
 Dereck Lively II|C|Out|foot surgery|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 18
@@ -57,7 +55,6 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Quentin Grimes|G|Out|finger|Nov 15
 #Memphis Grizzlies
-Isaiah Stewart|C|Day-To-Day|knee bruise|Nov 11
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Quinten Post|C|Out|head|Nov 13
 Richie Saunders|G|Out|knee surgery|Dec 1
@@ -68,8 +65,8 @@ Myles Turner|C|Out|rest|Nov 13
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
+Trey Murphy III|F|Out|knee tendinitis|Nov 13
 Bennedict Mathurin|G|Out|thumb sprain|Nov 13
-Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 11
 Trendon Watford|F|Out|ankle sprain|Nov 13
 Yves Missi|C|Out|knee bruise|Nov 16
 #Oklahoma City Thunder
@@ -105,7 +102,7 @@ Precious Achiuwa|F|Day-To-Day|lower leg bruise|Nov 13
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-Devin Vassell|G|Day-To-Day|groin|Nov 13
+Devin Vassell|G|Out|groin|Nov 13
 Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
