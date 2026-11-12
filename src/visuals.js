@@ -55,9 +55,13 @@ function vxDvp(g){try{const k=(window.VX_DK)||"pts",tab=`<div class="vxtabs">${[
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-vxdk]");if(!b)return;e.preventDefault();e.stopPropagation();window.VX_DK=b.dataset.vxdk;const c=b.closest(".vxdvc"),[a,h]=c.dataset.vxg.split("|"),n=document.createElement("div");n.innerHTML=vxDvp({a,h});const nc=n.firstElementChild;const inLazy=c.parentElement&&c.parentElement.classList.contains("gplzin");if(!inLazy&&c.classList.contains("open"))nc.classList.add("open","xfold");c.replaceWith(nc);if(!inLazy&&typeof uxFoldCards!=="undefined")uxFoldCards()});
 
 /* ===== 30. Injury impact meter: team margin with vs without each key player listed out ===== */
-function vxMeter(sp,t,k,s){const f=v=>v.toFixed(sp==="nhl"?2:1),mw=s.w.me-s.w.op,mo=s.wo.me-s.wo.op,d=mo-mw,rng=sp==="nhl"?2:sp==="nfl"?14:15,w=Math.min(50,Math.abs(d)/rng*50);
-  return `<div class="vxim"><div class="small"><b>${vxE(k.n)}</b> out — margin <b>${mw>=0?"+":""}${f(mw)}</b> with him (${s.w.n} g) → <b>${mo>=0?"+":""}${f(mo)}</b> without (${s.wo.n} g)</div>
-   <div class="vximb"><i style="${d>=0?`left:50%;width:${w}%;background:#16a34a`:`right:50%;width:${w}%;background:#e5484d`}"></i><em></em><span class="vximl">${d>=0?"+":""}${f(d)} ${sp==="nhl"?"goals":"pts"} a game without him${s.wo.n<3?" · tiny sample":""}</span></div></div>`}
+function vxMeter(sp,t,k,s){const f=v=>Math.abs(v).toFixed(sp==="nhl"?1:1),mw=s.w.me-s.w.op,mo=s.wo.me-s.wo.op,d=mo-mw,u=sp==="nhl"?"goals":"points",
+  tm=typeof nbaShort!=="undefined"&&sp==="nba"?nbaShort(t):typeof nhTm!=="undefined"&&sp==="nhl"?nhTm(t):typeof short!=="undefined"?short(t):t,
+  say=m=>m>=0?`win by <b>${f(m)}</b>`:`lose by <b>${f(m)}</b>`,col=m=>m>=0?"var(--good)":"var(--bad)",mx=Math.max(Math.abs(mw),Math.abs(mo),sp==="nhl"?1:5),w=m=>Math.round(Math.abs(m)/mx*100);
+  const bar=(lab,n,m,rec)=>`<div class="vxim2"><div class="small"><b>${lab}</b> · ${n} game${n===1?"":"s"} · ${rec}</div><div class="vxim2r"><div class="vxim2b"><i style="width:${w(m)}%;background:${col(m)}"></i></div><span>${vxE(tm)} ${say(m)}</span></div></div>`;
+  return `<div class="vxim"><div class="vximt">🚑 <b>${vxE(k.n)}</b> is out tonight</div>
+   ${bar("With him",s.w.n,mw,`${s.w.w}-${s.w.l}`)}${bar("Without him",s.wo.n,mo,`${s.wo.w}-${s.wo.l}`)}
+   <div class="vximv ${d<0?"dn":"up"}">${d<0?"⬇":"⬆"} ${vxE(tm)} have been <b>${f(d)} ${u} a game ${d<0?"worse":"better"}</b> without him${s.wo.n<5?` <span class="small">(only ${s.wo.n} game${s.wo.n===1?"":"s"} — a small sample)</span>`:""}</div></div>`}
 
 /* ===== 33. Goalie save % by game (NHL) ===== */
 function vxGoalie(g){try{const lsv=typeof NH_LGSV!=="undefined"?NH_LGSV():.9;
