@@ -3,7 +3,7 @@
 zones, shot types — ~200 KB) out of the main page into nba_detail.js, loaded on demand (nba.js: nbaDetailEnsure).
 usage: python3 tools/splitnba.py nba_data.js   -> writes nba_data_core.js (concatenated into index.html) + nba_detail.js"""
 import re, sys
-DETAIL = ("NBA_QMIN", "NBA_CHANCE", "NBA_SHOT", "NBA_STYPE", "NBA_Q1", "NBA_PREV", "NBA_BIO")
+DETAIL = ("NBA_FOULQ", "NBA_PADV", "NBA_QMIN", "NBA_CHANCE", "NBA_SHOT", "NBA_STYPE", "NBA_Q1", "NBA_PREV", "NBA_BIO")
 s = open(sys.argv[1], encoding="utf8").read()
 core, det = [], []
 for line in s.split("\n"):

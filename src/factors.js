@@ -46,6 +46,7 @@ function xfRef(g){const R=typeof NFL_REFS!=="undefined"&&NFL_REFS;if(!R||!R.g)re
 let XF_SCH=null;function xfSched(){if(XF_SCH)return XF_SCH;XF_SCH={};const add=(t,ts,c,id,opp,home)=>{(XF_SCH[t]=XF_SCH[t]||[]).push({ts:Date.parse(ts),c,id,opp,home})};
   for(const r of [...(window.SOC_OLD||[]),...(typeof SOC_RES!=="undefined"?SOC_RES:[])]){add(r[3],r[1]+"Z",r[2],r[0],r[4],1);add(r[4],r[1]+"Z",r[2],r[0],r[3],0)}
   for(const f of SOC_FX||[]){add(f.h,f.t,f.c,f.id,f.a,1);add(f.a,f.t,f.c,f.id,f.h,0)}
+  if(typeof SOC_NEXT!=="undefined"&&SOC_NEXT)for(const k in SOC_NEXT){const c=k.split("|")[0];for(const [id,ts,h,aw] of SOC_NEXT[k]){add(h,ts+"Z",c,id,aw,1);add(aw,ts+"Z",c,id,h,0)}}
   for(const k in XF_SCH){const m=new Map();for(const x of XF_SCH[k])m.set(x.id,x);XF_SCH[k]=[...m.values()].sort((a,b)=>a.ts-b.ts)}return XF_SCH}
 const XF_EURO=["ucl","uel","uecl"];
 function xfLgN(c){return (SOC_LG[c]||{}).sh||(SOC_LG[c]||{}).n||c}

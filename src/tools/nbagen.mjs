@@ -222,7 +222,7 @@ const zoneOf = (x, y, pts) => {
   if (Math.abs(dx) < 8 && y < 14.5) return 1;
   const ang = Math.atan2(dx, dy) * 180 / Math.PI; return ang < -30 ? 2 : ang > 30 ? 4 : 3;
 };
-const QMIN = {}; const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const CHANCE = {}; const QTR = {}; const DZONE = {}; const OZONE = {}; const DZG = {}; const TST = {};
+const QMIN = {}; const FOULQ = {}; const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const CHANCE = {}; const QTR = {}; const DZONE = {}; const OZONE = {}; const DZG = {}; const TST = {};
 const pbpFile = path.join(dir, "pbp_2027.json");
 if (fs.existsSync(pbpFile)) {
   const pbp = JSON.parse(fs.readFileSync(pbpFile));
@@ -250,6 +250,12 @@ if (fs.existsSync(pbpFile)) {
     const t = STYPE[n] || (STYPE[n] = [0, 1, 2, 3].map(() => [0, 0, 0, 0])); t[st][0]++; t[st][1] += made; t[st][2] += th; t[st][3] += th && made;
   }
   LGZ = lg;
+  // ---------- Fouls by quarter (for "foul trouble" splits): player -> [[game id, Q1 fouls, 1st-half fouls, game fouls]] ----------
+  { const FQ = {}; const idToName2 = {}; for (const [n, p] of Object.entries(LOGS)) idToName2[p.id] = n;
+    for (const r of pbp) { const t = String(r.type_text || ""); if (!/Foul/i.test(t) || /Technical|Flagrant Foul Type 2|Too Many/i.test(t)) continue;
+      const n = idToName2[r.athlete_id_1]; if (!n) continue; const q = +r.period_number;
+      const G = FQ[n] || (FQ[n] = {}), g = G[r.game_id] || (G[r.game_id] = [0, 0, 0]); if (q === 1) g[0]++; if (q <= 2) g[1]++; g[2]++; }
+    for (const [n, G] of Object.entries(FQ)) FOULQ[n] = Object.entries(G).map(([id, v]) => [id, ...v]); }
   // ---------- Quarter scoring: end-of-quarter score per game -> points by quarter ----------
   const endQ = {};
   for (const r of pbp) { const q = +r.period_number; if (!(q >= 1 && q <= 4)) continue; const e = endQ[r.game_id] || (endQ[r.game_id] = {}); const cur = e[q] || (e[q] = { a: 0, h: 0 });
@@ -455,6 +461,7 @@ const NBA_FB=${JSON.stringify(FB)}; /* game id -> [first-basket scorer, his team
 const NBA_Q1=${JSON.stringify(Q1)}; /* player -> [[date, 1st-quarter pts, reb, ast], ...] last 25 games */
 const NBA_GPACE=${JSON.stringify(GPACE)}; /* game id -> possessions per team */
 const NBA_CHANCE=${JSON.stringify(CHANCE)};
+const NBA_FOULQ=${JSON.stringify(FOULQ)}; /* player -> [[game id, 1st-quarter fouls, 1st-half fouls, game fouls]] (ESPN play-by-play) */
 const NBA_QMIN=${JSON.stringify(Object.fromEntries(Object.entries(QMIN).map(([n, a]) => [n, a.sort((x, y) => x[0] < y[0] ? -1 : 1).slice(-25)])))}; /* minutes by quarter (rebuilt from substitutions): [date, Q1, Q2, Q3, Q4, OT, his team's final margin] */ /* rebound + assist chances rebuilt from ESPN play-by-play lineups: s/l10/l5 = [games, ownMiss, oppMiss, oreb, dreb, teammateFGM, ast, min] */
 const NBA_TSTYPE=${JSON.stringify(TST)}; /* per team: o = shots taken, d = shots allowed; [catch&shoot, pull-up, <10 ft, other 10+ ft] each [FGA, FGM, 3PA, 3PM] */
 const NBA_DZONE=${JSON.stringify(DZONE)};

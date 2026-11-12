@@ -37,6 +37,20 @@ for ab, nm in sorted(TEAMS.items()):
         C[ab] = {"cur": cur, "prev": old.get("prev"), "chg": old.get("chg"), "ft": now}
     ok += 1; time.sleep(0.4)
 json.dump(C, open(CF, "w"), separators=(",", ":"), ensure_ascii=False)
+# daily power-play units (kept so the site can filter a player's past games by PP1 / PP2); date = today in Eastern time
+HF = os.path.join(ROOT, "data/nhl_pp_hist.json")
+try: PH = json.load(open(HF))
+except Exception: PH = {}
+day = (NOW - dt.timedelta(hours=5)).date().isoformat()
+PH[day] = {t: {u: [p[0] for p in (X.get("cur") or {}).get("g", {}).get(u, [])] for u in ("pp1", "pp2")} for t, X in C.items() if X.get("cur")}
+PH = {d: PH[d] for d in sorted(PH)[-200:]}
+json.dump(PH, open(HF, "w"), separators=(",", ":"), ensure_ascii=False)
+PPH = {}
+for d, T in PH.items():
+    for t, U in T.items():
+        for u, n in (("pp1", 1), ("pp2", 2)):
+            for nm in U.get(u) or []: PPH.setdefault(nm, {})[d] = n
+PPD = sorted(PH)
 if not C: sys.exit("nhllines: nothing — keeping the old file")
 print(f"/* NHL line combinations + power-play units — Daily Faceoff (tools/nhllines.py), {now} */")
 # the site only needs: forward lines, D pairs, power-play units (name, position, game-time decision); and for "who moved",
@@ -51,4 +65,5 @@ for t, X in C.items():
         o["prev"] = slim(X["prev"], ("f1", "pp1", "f2", "pp2")); o["chg"] = X["chg"]
     S[t] = o
 print("var NHL_LINES=" + json.dumps(S, separators=(",", ":"), ensure_ascii=False) + ";")
+print("var NHL_PPH=" + json.dumps({"days": PPD, "p": PPH}, separators=(",", ":"), ensure_ascii=False) + ";  /* power-play unit by day: days we have lines for, player -> {date: 1 | 2} */")
 print(f"nhllines: {ok}/{len(TEAMS)} teams", file=sys.stderr)

@@ -245,20 +245,21 @@ function nhLineRow(nm,r){
 const NH_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{b2b:"Back-to-back",rest:"1+ days off"}],
   opp:["Opp defense",{top:"Top 10",mid:"Middle",bot:"Bottom 10"}],sa:["Opp shots allowed",{few:"Few",mid:"Middle",many:"Many"}],
   gk:["Opp goalie",{good:"Good (.910+)",avg:"Average",weak:"Weak (under .895)"}]};
-function nhPF(nm){if(!NH.pf||NH.pfNm!==nm){NH.pf={ven:"",rest:"",opp:"",sa:"",gk:"",toi:"",mates:{}};if(NH.pfNm!==nm)NH.pfOpen=false;NH.pfNm=nm}return NH.pf}
+function nhPF(nm){if(!NH.pf||NH.pfNm!==nm){NH.pf={ven:"",rest:"",opp:"",sa:"",gk:"",toi:"",pp:"",mates:{}};if(NH.pfNm!==nm)NH.pfOpen=false;NH.pfNm=nm}return NH.pf}
 function nhTierOf(t,k){const T=NHL_TEAM[t];if(!T)return null;const n=Object.keys(NHL_TEAM).length,r=k==="opp"?T.gaR:T.saR;if(r==null)return null;return k==="opp"?(r<=10?"top":r>n-10?"bot":"mid"):(r<=10?"few":r>n-10?"many":"mid")}
 function nhGkTier(sv){return sv==null?null:sv>=.91?"good":sv<.895?"weak":"avg"}
 function nhRowOk(nm,x,isG){const f=NH.pfNm===nm&&/^#nhl-player-/.test(location.hash)?NH.pf:null;if(!f)return true;const w=nhWho(nm),prev=isG?x[9]===1:x[16]===1;
   if(f.ven&&x[2]!==f.ven)return false;
-  if((f.rest||f.opp||f.sa||f.gk||f.toi||Object.keys(f.mates).length)&&prev)return false;
+  if((f.rest||f.opp||f.sa||f.gk||f.toi||f.pp||Object.keys(f.mates).length)&&prev)return false;
   if(f.rest){const b=nhB2B(w.tm,x[0]);if(f.rest==="b2b"?!b:b)return false}
   if(f.opp&&nhTierOf(x[1],"opp")!==f.opp)return false;if(f.sa&&nhTierOf(x[1],"sa")!==f.sa)return false;
   if(f.gk&&!isG){const o=typeof NHL_GOPP!=="undefined"&&NHL_GOPP[x[0]+"|"+w.tm];if(!o||nhGkTier(o[1])!==f.gk)return false}
   if(f.toi&&!isG){const [a,b]=f.toi.split("-").map(Number),m=(x[10]||0)/60;if(m<a||m>b)return false}
+  if(f.pp&&!isG){const H=typeof NHL_PPH!=="undefined"&&NHL_PPH;if(!H||!H.days.includes(x[0]))return false;const u=(H.p[nm]||{})[x[0]]||0;if(f.pp==="pp1"?u!==1:f.pp==="pp2"?u!==2:u!==0)return false}
   for(const [mt,v] of Object.entries(f.mates)){const P=NHL_P[mt];if(!P)continue;const pl=P.g.some(r=>r[0]===x[0]&&r[16]!==1);if(v==="w"?!pl:pl)return false}
   return true}
 function nhValsF(nm,k){const isG=!!(NH_MK[k]&&NH_MK[k][4]);return nhVals(nm,k).filter(o=>nhRowOk(nm,o.x,isG))}
-function nhFiltOn(nm){const f=NH.pfNm===nm&&NH.pf;return !!f&&!!(f.ven||f.rest||f.opp||f.sa||f.gk||f.toi||Object.keys(f.mates).length)}
+function nhFiltOn(nm){const f=NH.pfNm===nm&&NH.pf;return !!f&&!!(f.ven||f.rest||f.opp||f.sa||f.gk||f.toi||f.pp||Object.keys(f.mates).length)}
 function nhMatesOf(nm){const w=nhWho(nm),L=typeof NHL_LINES!=="undefined"&&NHL_LINES&&NHL_LINES[w.tm];if(!L||!L.cur)return [];const G=L.cur.g||{},last=n=>String(n).split(" ").slice(-1)[0].toLowerCase();
   const me=last(nm),out=[];for(const k of ["f1","f2","f3","f4","d1","d2","d3","pp1","pp2"]){const P=G[k]||[];if(!P.some(p=>last(p[0])===me&&String(p[0])[0]===nm[0]))continue;
     for(const p of P){const full=Object.keys(NHL_P).find(n=>NHL_P[n].tm===w.tm&&last(n)===last(p[0])&&n[0]===String(p[0])[0]);if(full&&full!==nm&&!out.includes(full))out.push(full)}}
@@ -269,11 +270,13 @@ function nhFiltUI(nm,isG){const f=nhPF(nm),w=nhWho(nm),g=nhGameOf(w.tm),opp=g?(g
   const rows=Object.entries(NH_SIT).filter(([k])=>!(isG&&k==="gk")).map(([k,[lab,o]])=>{const lk=opp&&tn[k]&&(k==="opp"||k==="sa")?(()=>{const r=k==="opp"?NHL_TEAM[opp].gaR:NHL_TEAM[opp].saR;return `<button data-nhf="${k}|${tn[k]}" class="pxlk${f[k]===tn[k]?" on":""}">🎯 Like ${nhE(opp)} <small>${o[tn[k]]}${r?" · "+nhOrd(r):""}</small></button>`})():"";
     return `<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...Object.entries(o)].map(([v,l],i)=>`${i===1?lk:""}<button data-nhf="${k}|${v}" class="${(f[k]||"")===v?"on":""}">${l}${tn[k]===v&&v?" •":""}</button>`).join("")}</div></div>`}).join("");
   const toi=isG?"":`<div class="sitr"><span>Ice time</span><div class="pxpre">${[["","Any"],["0-14","Under 14 min"],["14-18","14–18"],["18-21","18–21"],["21-40","21+"]].concat(toiAvg?[[`${Math.max(0,toiAvg-2)}-${toiAvg+2}`,`His usual (${toiAvg}±2 min)`]]:[]).map(([v,l])=>`<button data-nhf="toi|${v}" class="${(f.toi||"")===v?"on":""}">${l}</button>`).join("")}</div></div>`;
+  const PH=!isG&&typeof NHL_PPH!=="undefined"&&NHL_PPH,ppDays=PH?w.g.filter(x=>x[16]!==1&&PH.days.includes(x[0])).length:0,curU=(()=>{const L=typeof NHL_LINES!=="undefined"&&NHL_LINES&&NHL_LINES[w.tm];if(!L||!L.cur)return "";const G=L.cur.g||{};return (G.pp1||[]).some(p=>p[0]===nm)?"pp1":(G.pp2||[]).some(p=>p[0]===nm)?"pp2":"none"})();
+  const pp=isG||!PH?"":`<div class="sitr"><span>Power play</span><div class="pxpre">${[["","Any"],["pp1","PP1"],["pp2","PP2"],["none","Not on the PP"]].map(([v,l])=>`<button data-nhf="pp|${v}" class="${(f.pp||"")===v?"on":""}">${l}${curU===v&&v?" •":""}</button>`).join("")}</div><div class="small" style="margin-top:4px">${ppDays} of his games so far have a saved power-play unit (we started saving them Nov 12) — this filter gets more useful every game.</div></div>`;
   const M=isG?[]:nhMatesOf(nm);
   const mates=M.length?`<div class="sitr"><span>Linemates</span><div class="nhmt">${M.map(m=>`<div><span>${nhE(m)}</span><div class="pxpre">${[["","Any"],["w","With"],["wo","Without"]].map(([v,l])=>`<button data-nhm="${nhE(m)}|${v}" class="${(f.mates[m]||"")===v?"on":""}">${l}</button>`).join("")}</div></div>`).join("")}</div></div>`:"";
-  const on=[];for(const k in NH_SIT)if(f[k])on.push(`${k==="ven"||k==="rest"?"":NH_SIT[k][0]+": "}${NH_SIT[k][1][f[k]]}`);if(f.toi)on.push(`${f.toi.replace("-","–")} min`);for(const [m,v] of Object.entries(f.mates))on.push(`${v==="w"?"With":"Without"} ${m.split(" ").slice(-1)[0]}`);
+  const on=[];for(const k in NH_SIT)if(f[k])on.push(`${k==="ven"||k==="rest"?"":NH_SIT[k][0]+": "}${NH_SIT[k][1][f[k]]}`);if(f.toi)on.push(`${f.toi.replace("-","–")} min`);if(f.pp)on.push(f.pp==="none"?"Not on PP":f.pp.toUpperCase());for(const [m,v] of Object.entries(f.mates))on.push(`${v==="w"?"With":"Without"} ${m.split(" ").slice(-1)[0]}`);
   return `<div class="card nhfc pxf" style="margin-top:12px"><details class="pxfd"${NH.pfOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo">${on.length?on.map(x=>`<span class="fchip">${nhE(x)}</span>`).join("")+`<span class="fchip frst" data-nhfr="1">↺ Reset</span>`:`<span class="fany">No filters — all games</span>`}</span><span class="pxchev">›</span></summary>
-   <div class="pxfr"><div class="pxfl"><span>Situation</span>${g?`<button class="likeT" data-nhlike="1">🎯 Like tonight</button>`:""}</div>${rows}${toi}${mates}</div>
+   <div class="pxfr"><div class="pxfl"><span>Situation</span>${g?`<button class="likeT" data-nhlike="1">🎯 Like tonight</button>`:""}</div>${rows}${toi}${pp}${mates}</div>
    <div class="small">Applies to every hit rate and chart on this page. Opponent ranks are this season's (goals against; shots against). Opposing goalie = the one who started against him, by his season save %.</div></details></div>`}
 function nhWireFilt(el,nm){const re=()=>{const y=scrollY;nhlPlayer(el,nm);scrollTo(0,y)};
   const d=el.querySelector(".nhfc details");if(d)d.ontoggle=()=>{NH.pfOpen=d.open};

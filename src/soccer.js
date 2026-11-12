@@ -14,8 +14,8 @@ function socEnsure(cb){socLoad("soccer_data.js","SOC_OK",SOC_WAIT,()=>{SOC_READY
 /* player logs come in one small file per league (soccer_p_<league>.js) + soccer_old.js for older head-to-head matches;
    pages ask only for the teams they show. Older builds had a single soccer_players.js — still supported. */
 var SOC_P=window.SOC_P||{},SOC_OLDP=window.SOC_OLDP||{};const SOCPL={have:{},busy:{},old:0};
-function SOC_PADD(k,o){Object.assign(SOC_P,o);SOCPL.have[k]=1;window.SOC_P_OK=1}
-function SOC_OLDADD(o){Object.assign(SOC_OLDP,o);SOCPL.old=1}
+function SOC_PADD(k,o){SOC_USUAL=null;Object.assign(SOC_P,o);SOCPL.have[k]=1;window.SOC_P_OK=1}
+function SOC_OLDADD(o){Object.assign(SOC_OLDP,o);SOCPL.old=1;SOC_USUAL=null}
 function socPKeys(tids){const all=Object.keys(window.SOC_PFILES||{});if(!tids)return all;return [...new Set(tids.map(t=>((SOC_TM[t]||[])[4]||[]).find(x=>!["ucl","uel","uecl"].includes(x))||"cups"))].filter(k=>all.includes(k))}
 function socScript(file){return new Promise(res=>{const sc=document.createElement("script");sc.src=file+"?v="+(typeof BUILD_AT!=="undefined"&&BUILD_AT?BUILD_AT.replace(/\D/g,""):Math.floor(Date.now()/600000));sc.onload=()=>res(1);sc.onerror=()=>res(0);document.head.appendChild(sc)})}
 function socPEnsure(cb,tids,old){socEnsure(async()=>{try{
@@ -275,7 +275,7 @@ function socGame(el,id){const f=socFx(id);if(!f){el.innerHTML=`<p><a href="#socc
       +gpMerge("What matters","gpwm",[(typeof xQuickHtml!=="undefined"?xQuickHtml(socQuick(f),"Automatic notes from this season's numbers — reasons to look closer, not picks."):""),(typeof xfSoc!=="undefined"?xfSoc(f):""),(typeof fxSoc!=="undefined"?fxCard(fxSoc(f),"Past meetings in our data and this season's results."):"")])
       +gpMerge("Injuries &amp; lineups","gpinj",[socMissCard(f),`<div id="scXIbox">${window.SOC_P_OK||socLuOf(f)?socXICard(f):""}</div>`])
       +(f.wx?socFold("🌦️ Weather at kickoff",socWx(f,1)):"")+socFoot();
-    if(t==="mu")body.innerHTML=`${socEstTable(f)}${socCornerCard(f)}${socCardCard(f)}${socFold("📊 Team numbers",socTeamCmp(f))}<div id="scGKf">${socFold("🧤 Goalkeepers",socGKCard(f))}</div>`+LZ("Where the goals come from",()=>typeof vxSocPos!=="undefined"?vxSocPos(f):"")+LZ("Chances vs goals",()=>typeof vxSocChance!=="undefined"?vxSocChance(f):"")+LZ("Attack vs defense — the league",()=>typeof vxStrength!=="undefined"?vxStrength("soc",f):"")+socFoot();
+    if(t==="mu")body.innerHTML=`${socEstTable(f)}${socCornerCard(f)}${socCardCard(f)}${socFold("📊 Team numbers",socTeamCmp(f))}<div id="scGKf">${socFold("🧤 Goalkeepers",socGKCard(f))}</div>`+LZ("Where the goals come from",()=>typeof vxSocPos!=="undefined"?vxSocPos(f):"")+(()=>{const h=typeof vxSocMissImpact!=="undefined"?vxSocMissImpact(f):"";return h?LZ("If the missing players sit",()=>h):""})()+LZ("Chances vs goals",()=>typeof vxSocChance!=="undefined"?vxSocChance(f):"")+LZ("Attack vs defense — the league",()=>typeof vxStrength!=="undefined"?vxStrength("soc",f):"")+socFoot();
     if(t==="tr")body.innerHTML=`${socFold("📅 Recent form",socFormCard(f))}`+LZ("Upcoming schedule",()=>typeof vxSched!=="undefined"?vxSched("soc",f.h,f.a,socTm,f.c,new Date(Date.parse(f.t)-5*36e5).toISOString().slice(0,10)):"")+socFoot();
     if(t==="h2h")body.innerHTML=socH2HCard(f)+socFoot();
     socWire(body);if(!(window.SOC_P_OK&&socPKeys([f.h,f.a]).every(k=>SOCPL.have[k]||SOCPL.have.all)))socPEnsure(()=>{const g=body.querySelector("#scGKf");if(g)g.innerHTML=socFold("🧤 Goalkeepers",socGKCard(f));const x=body.querySelector("#scXIbox");if(x)x.innerHTML=socXICard(f)},[f.h,f.a])};
@@ -418,7 +418,17 @@ function socFinder(el){const k=SC.cc==="card"?"card":"cor",d0=(socDays()[0])||so
 function socLineOf(pos){const p=String(pos||"").toUpperCase();if(p==="G"||p==="GK")return 0;if(/^(CD|LB|RB|LWB|RWB|D|SW|CB)/.test(p))return 1;if(/^DM/.test(p))return 2;if(/^AM/.test(p))return 4;if(/^(CF|F|ST|LW|RW|SS|W)/.test(p))return 5;if(/^(CM|LM|RM|M)/.test(p))return 3;return 3}
 function socSideOf(pos){const p=String(pos||"").toUpperCase();if(/-L$/.test(p)||/^L/.test(p))return 0;if(/-R$/.test(p)||/^R/.test(p))return 2;return 1}
 function socShort(n){const w=String(n||"").split(" ");return w.length>1?w.slice(1).join(" "):n}
-function socPitch(L,key){const rows=[[],[],[],[],[],[]];L.forEach((x,i)=>rows[socLineOf(x.pos)].push(Object.assign(x,{i})));
+/* ESPN sometimes lists a player in a slot he doesn't play (a left-back shown as a centre-back in a back three, etc.).
+   If a player started 5+ matches we know of and 70%+ of them in one role, and this match's label puts him in a different line, show his usual role. */
+var SOC_USUAL=null;function socUsualPos(aid){if(!aid)return null;if(!SOC_USUAL){SOC_USUAL={};const add=(a,p)=>{if(!a||!p||p==="SUB")return;const U=SOC_USUAL[a]||(SOC_USUAL[a]={});U[p]=(U[p]||0)+1};
+    for(const [a,P] of Object.entries(window.SOC_P||{}))for(const g of P[3]||[])if(g[1])add(a,g[12]);
+    for(const R of Object.values(window.SOC_OLDP||{}))for(const r of R)if(r[4])add(r[1],r[3])}
+  const U=SOC_USUAL[aid];if(!U)return null;const n=Object.values(U).reduce((a,b)=>a+b,0);if(n<5)return null;
+  const byLine={};for(const [p,c] of Object.entries(U)){const l=socLineOf(p);byLine[l]=(byLine[l]||0)+c}
+  const [bl,bc]=Object.entries(byLine).sort((a,b)=>b[1]-a[1])[0];if(bc/n<.7)return null;
+  return Object.entries(U).filter(([p])=>socLineOf(p)===+bl).sort((a,b)=>b[1]-a[1])[0][0]}
+function socFixPos(x){const u=socUsualPos(x.aid);if(!u||!x.pos||socLineOf(x.pos)===0||socLineOf(u)===0)return x.pos;return socLineOf(u)!==socLineOf(x.pos)||(socSideOf(u)!==1&&socSideOf(x.pos)===1&&socLineOf(u)===1)?u:x.pos}
+function socPitch(L,key){const rows=[[],[],[],[],[],[]];L.forEach((x,i)=>{const p=socFixPos(x);if(p!==x.pos){x.espnPos=x.pos;x.pos=p}rows[socLineOf(x.pos)].push(Object.assign(x,{i}))});
   const chip=x=>{const g=x.g||[];const b=!x.g?"":(g[5]?"⚽".repeat(Math.min(g[5],3)):"")+(g[6]?"🅰️":"")+(g[10]?"🟥":g[9]?"🟨":"")+(!g[1]?"":g[2]<85?"🔻":"");
     const gk=socLineOf(x.pos)===0;if(!x.g)return `<a class="scpl${gk?" gk":""}" ${x.aid?`href="#soccer-player-${x.aid}"`:""}><span class="scsh">${gk?"🧤":""}</span><i>${socE(socShort(x.nm))}</i></a>`;return `<button class="scpl${gk?" gk":""}" data-scpl="${key}|${x.i}"><span class="scsh">${gk?"🧤":""}</span><i>${socE(socShort(x.nm))}</i>${b?`<em>${b}</em>`:""}</button>`};
   return `<div class="scpitch"><div class="pm half"></div><div class="pm circ"></div><div class="pm box"></div><div class="pm six"></div><div class="pm arc"></div><div class="pm spot"></div><div class="pm goal"></div>

@@ -428,6 +428,29 @@ for f in FX:
         for m in meet[:6]:
             if m[0] not in EV: OLD_IDS[m[0]] = m
 json.dump(SCH, open(SCHF, "w"), separators=(",", ":"), ensure_ascii=False)
+# ---------------- each team's next league fixtures (for the "upcoming schedule" strip); cached 12 h per team ----------------
+NXF = os.path.join(R, "data/soccer_next.json"); NX = jload(NXF, {}); NEXT = {}; nreq = 0
+for f in FX:
+    for tid in (f["h"], f["a"]):
+        k = f'{f["c"]}|{tid}'
+        if k in NEXT: continue
+        c0 = NX.get(k)
+        if not c0 or (NOW - dt.datetime.fromisoformat(c0["at"])).total_seconds() > 12 * 3600:
+            if nreq >= 80: 
+                if c0: NEXT[k] = c0["g"]
+                continue
+            j = get(f"{S}{SLUG[f['c']]}/teams/{tid}/schedule"); nreq += 1; rows = []
+            for e in (j or {}).get("events", []):
+                try:
+                    c = e["competitions"][0]
+                    if ((c.get("status") or e.get("status") or {}).get("type") or {}).get("completed"): continue
+                    H = next(x for x in c["competitors"] if x["homeAway"] == "home"); A = next(x for x in c["competitors"] if x["homeAway"] == "away")
+                    rows.append([e["id"], e["date"][:16], H["team"]["id"], A["team"]["id"]])
+                except Exception: pass
+            if j is not None: NX[k] = c0 = {"at": NOW.isoformat(), "g": rows[:8]}
+        if c0: NEXT[k] = c0["g"]
+json.dump(NX, open(NXF, "w"), separators=(",", ":"), ensure_ascii=False)
+
 # box scores for the older meetings (downloaded once, cached with the rest)
 oneed = [m for m in OLD_IDS.values() if (BOX.get(m[0]) or {}).get("v") != 3]
 def old_box(m):
@@ -494,6 +517,7 @@ out = {
 print("/* ⚽ Soccer — tools/soccerfetch.py (ESPN results + box scores, PropLine odds + referees, Open-Meteo weather) */")
 for k, v in out.items(): print(f"var {k}=" + json.dumps(v, separators=(",", ":"), ensure_ascii=False) + ";")
 print("var SOC_OK=1;")
+print("var SOC_NEXT=" + json.dumps(NEXT, separators=(",", ":"), ensure_ascii=False) + ";  /* league|team -> next league fixtures [id, date, home id, away id] */")
 import glob
 for old in glob.glob("soccer_p_*.js"): os.remove(old)
 for k, D in PFILES.items():

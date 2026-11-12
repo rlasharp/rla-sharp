@@ -112,5 +112,8 @@ BQ={}
 for k,Q in BOXQ.items():
     if int(k.split("|")[0])<maxw-2:continue   # last 3 weeks only, to keep the page small
     BQ[k]={q:{"p":sorted([[a[0],a[1]]+v for a,v in d["p"].items()],key=lambda x:-x[3]),"r":sorted([[a[0],a[1]]+v for a,v in d["r"].items()],key=lambda x:-x[3]),"c":sorted([[a[0],a[1]]+v for a,v in d["c"].items()],key=lambda x:-x[4])} for q,d in Q.items()}
-for nm,obj in (("BOX",dict(BOX)),("RZ",RZ),("PACE",PACE),("REST",REST),("BOXQ",BQ)):
+for nm,obj in (("BOX",dict(BOX)),("RZ",RZ),("PACE",PACE),("REST",REST)):
     print(f"const {nm}="+json.dumps(obj,separators=(",",":"),ensure_ascii=False)+";")
+
+# per-quarter box scores go to their own file (loaded only when someone opens a box score)
+with open("nfl_boxq.js","w") as f_: f_.write("/* NFL box scores by quarter, last 3 weeks (nflverse play-by-play) — tools/advgen.py, loaded on demand */\nvar BOXQ="+json.dumps(BQ,separators=(",",":"),ensure_ascii=False)+";\n")

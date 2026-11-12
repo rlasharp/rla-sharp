@@ -1075,6 +1075,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
     <div class="card"><h2>${opp?`Where he scores vs where ${nbaEsc(nbaShort(opp))} allow`:"Where he scores"}</h2>${opp?nbaShotMatchup(nm,opp):nbaCourt(nm)}</div>
     ${nbaShotTypes(nm)}
     ${typeof vxQMin!=="undefined"?vxQMin(nm):""}
+    ${typeof vxFouls!=="undefined"?vxFouls(nm):""}
     <div class="card"><h2>Last ${Math.min(10,p.g.length)} games</h2>
       <div class="nbtabs">${[["pts","PTS"],["reb","REB"],["ast","AST"],["3pm","3PM"],["min","MIN"]].map(([k,l])=>`<button data-ptk="${k}" class="${k===tk?"on":""}">${l}</button>`).join("")}</div>
       <div id="ptrend">${nbaTrend(p,tk)}</div>

@@ -290,7 +290,7 @@ function vxDueBoard(){try{if(typeof xaXG==="undefined")return "";const L=[];for(
 const FX_HINT={"Venue":"Home or away games","Rest":"Days off before the game","Role":"Started or came off the bench","Opp defense":"Opponent's defense rank this season — Top 10 = hardest to score on",
   "Opp pace":"How fast the opponent plays — Fast = more chances for stats","Opp vs his position":"What the opponent gives up to players at his position","Weather":"Conditions at kickoff in that game",
   "QB":"Who threw him the ball in that game","Opp shots allowed":"How many shots the opponent gives up — Many = more chances","Opp goalie":"The goalie he faced, by that goalie's season save %",
-  "Ice time":"His minutes on the ice in that game","Linemates":"Games with or without each player on his line","Minutes":"Minutes he played in that match","Opp in the table":"Where the opponent sits in today's league table",
+  "Ice time":"His minutes on the ice in that game","Linemates":"Games with or without each player on his line","Power play":"Which power-play unit he was on that day","Minutes":"Minutes he played in that match","Opp in the table":"Where the opponent sits in today's league table",
   "Team's spread":"His team's point spread for that game — minus = favored","Game total (O/U)":"The over/under points line for that game","Team total (implied points)":"Points the books expected his team to score",
   "Minutes played":"Minutes he played in that game","Field-goal attempts":"Shots he took in that game","3-point attempts":"Threes he took in that game","Snap share":"Share of his team's offensive plays he was on the field for","Targets":"Passes thrown his way in that game"};
 const FX_GRP={opp:["Opp defense","Opp pace","Opp vs his position","Opp shots allowed","Opp goalie","Opp in the table"],lines:["Team's spread"],role:["Minutes played","Snap share","Ice time","Minutes"]};
@@ -352,3 +352,49 @@ document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.c
   e.preventDefault();const [sp,id]=bar.dataset.qb.split("|"),q=b.dataset.qbq;bar.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
   if(!QB_ORIG.has(area))QB_ORIG.set(area,area.innerHTML);if(!q){area.innerHTML=QB_ORIG.get(area);return}
   area.innerHTML=`<div class="small" style="padding:10px 0">Loading…</div>`;try{const S=await qbSummary(sp,id);area.innerHTML=qbTables(sp,S,+q)}catch(err){area.innerHTML=`<div class="small" style="padding:10px 0">Couldn't load the play-by-play from ESPN — try again in a moment.</div>`}});
+/* ===== NBA: foul trouble — how he plays when he picks up early fouls (ESPN play-by-play) ===== */
+function vxFouls(nm){try{const F=typeof NBA_FOULQ!=="undefined"&&NBA_FOULQ[nm],p=NBA_LOGS[nm];if(!F||!p)return "";const by={};for(const r of F)by[r[0]]=r;
+  const G=p.g.filter(x=>by[x[0]]&&x[4]>0);if(G.length<5)return "";const early=x=>{const f=by[x[0]];return f[1]>=2||f[2]>=3};
+  const E=G.filter(early),C=G.filter(x=>!early(x));const av=(a,f)=>a.length?a.reduce((s,x)=>s+f(x),0)/a.length:null,f1=v=>v==null?"–":v.toFixed(1);
+  const row=(lab,a)=>`<tr><td style="text-align:left">${lab}</td><td>${a.length}</td><td><b>${f1(av(a,x=>x[4]))}</b></td><td>${f1(av(a,x=>nbaVal(x,"pts")))}</td><td>${f1(av(a,x=>nbaVal(x,"reb")))}</td><td>${f1(av(a,x=>nbaVal(x,"ast")))}</td></tr>`;
+  const fpg=av(G,x=>by[x[0]][3]),dm=E.length&&C.length?av(E,x=>x[4])-av(C,x=>x[4]):null;
+  const say=!E.length?`He hasn't had early foul trouble in ${G.length} games — averages <b>${f1(fpg)}</b> fouls a game.`:`Early foul trouble in <b>${E.length} of ${G.length}</b> games (${Math.round(E.length/G.length*100)}%). ${dm!=null&&dm<=-3?`He loses about <b>${Math.abs(dm).toFixed(1)} minutes</b> when it happens — a real risk for overs.`:dm!=null?`His minutes barely change when it happens.`:""}`;
+  return `<div class="card vx2" style="margin-top:12px"><h2 style="margin-bottom:2px">Foul trouble</h2><div class="small" style="margin-bottom:8px">Early foul trouble = 2+ fouls in the 1st quarter or 3+ by halftime. ${f1(fpg)} fouls a game this season.</div>
+   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th style="text-align:left">Games</th><th>G</th><th>MIN</th><th>PTS</th><th>REB</th><th>AST</th></tr></thead><tbody>${row("Early foul trouble",E)}${row("Clean start",C)}</tbody></table></div>
+   <div class="qsay">${say}</div><div class="small" style="margin-top:6px">Fouls counted from ESPN play-by-play (technicals not included).</div></div>`}catch(e){return ""}}
+/* ===== NFL: what each defense has allowed by position over its last 4 games vs the season (weekly player logs) ===== */
+const VX_NDP=[["QB","QBs","passYds","pass yds"],["RB","RBs","rushRec","rush + rec yds"],["WR","WRs","recYds","rec yds"],["TE","TEs","recYds","rec yds"]];
+function vxNflDefPos(def){const L=(S.playerLogs||[]).filter(l=>l.season===CUR&&l.opp===def);const wks=[...new Set(L.map(l=>+l.week))].sort((a,b)=>a-b);if(wks.length<4)return null;const last=wks.slice(-4);
+  const out={};for(const [pos,,k] of VX_NDP){const per=w=>L.filter(l=>+l.week===w&&l.pos===pos).reduce((s,l)=>s+(Number.isFinite(stat(l,k))?stat(l,k):0),0);
+    const sea=wks.reduce((s,w)=>s+per(w),0)/wks.length,l4=last.reduce((s,w)=>s+per(w),0)/last.length;out[pos]={sea,l4,n:wks.length}}return out}
+let VX_NDR=null;function vxNflDefRanks(){if(VX_NDR)return VX_NDR;const R={};try{for(const t of Object.keys(TEAMS)){const x=vxNflDefPos(t);if(x)R[t]=x}}catch(e){}
+  for(const [pos] of VX_NDP)for(const w of ["sea","l4"]){const L=Object.entries(R).filter(([,x])=>x[pos]).sort((a,b)=>b[1][pos][w]-a[1][pos][w]);L.forEach(([t],i)=>R[t][pos][w+"R"]=i+1)}return VX_NDR=R}
+function vxNflDefTrend(g){try{const R=vxNflDefRanks();const side=(def,off)=>{const x=R[def];if(!x)return "";
+   return `<h3 style="margin:10px 0 4px">${vxE(short(def))} defense <span class="small">— what ${vxE(short(off))} face</span></h3><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th style="text-align:left">vs</th><th>Last 4</th><th>Season</th><th>Trend</th></tr></thead><tbody>
+   ${VX_NDP.map(([pos,lab,,u])=>{const y=x[pos];if(!y)return "";const d=y.l4-y.sea,pct=y.sea?d/y.sea:0,cls=pct>=.12?"up":pct<=-.12?"dn":"";
+     return `<tr><td style="text-align:left"><b>${lab}</b> <span class="small">${u}</span></td><td><b>${y.l4.toFixed(0)}</b> <span class="small">${vxOrd(y.l4R)}</span></td><td>${y.sea.toFixed(0)} <span class="small">${vxOrd(y.seaR)}</span></td><td class="${cls}">${cls==="up"?"▲ giving up more":cls==="dn"?"▼ tighter":"steady"}</td></tr>`}).join("")}</tbody></table></div>`};
+  const x=side(g.home,g.away)+side(g.away,g.home);if(!x)return "";
+  return vxCard("Defense by position: last 4 games","Yards a game each defense gave up to each position over its last 4 games, against its season average. Rank 1st = gives up the most.",x,"From weekly player stats (nflverse). ▲ = allowing 12%+ more lately — good for overs at that position.")}catch(e){return ""}}
+/* ===== NFL: kicker props this week — every posted kicker line with his record and this week's weather ===== */
+function vxKickSlot(){setTimeout(vxKickFill,300);return `<div id="kickProps"></div>`}
+function vxKickFill(n){const el=document.getElementById("kickProps");if(!el)return;const h=vxKickProps();if(h){el.innerHTML=h;return}if((n||0)<20)setTimeout(()=>vxKickFill((n||0)+1),1500)}
+function vxKickProps(){try{if(typeof NFL_K==="undefined"||typeof LO==="undefined"||!LO.data||!LO.data.nfl)return "";const D=LO.data.nfl.props||[];const KN={};for(const n in NFL_K)KN[loNorm(n)]=n;
+  const by={};for(const r of D){if(!["fgm","kpts","xpm"].includes(r[1]))continue;const n=KN[loNorm(r[0])];if(!n)continue;(by[n]=by[n]||{})[r[1]]=r}
+  const L=Object.entries(by);if(!L.length)return "";const i={fgm:1,kpts:4,xpm:3},lab={fgm:"FG made",kpts:"Kicking pts",xpm:"Extra pts"};
+  const rows=L.map(([n,M])=>{const K=NFL_K[n],G=K.g,o=typeof oppOf!=="undefined"?oppOf(K.tm):null,x=o&&typeof WX!=="undefined"?WX[o.g.id]:null;
+    const wx=x?(x.dome?"🏟️ indoors":typeof wxMini!=="undefined"?wxMini(o.g):""):"";
+    return `<tr><td style="text-align:left"><b>${vxE(n)}</b> <span class="small">${vxE(K.tm)}${o?` ${o.home?"vs":"@"} ${vxE(o.opp)}`:""}</span><div class="small">${wx}</div></td>${["fgm","kpts","xpm"].map(k=>{const r=M[k];if(!r)return `<td class="small">–</td>`;const v=G.map(z=>z[i[k]]),h=v.filter(z=>z>r[2]).length,l5=v.slice(-5).filter(z=>z>r[2]).length;
+      return `<td><b>${r[2]}</b> <span class="small">o ${typeof oddsFmt!=="undefined"?oddsFmt(r[3]):r[3]}</span><div class="small ${h/Math.max(1,v.length)>=.6?"up":h/Math.max(1,v.length)<=.4?"dn":""}">over ${h}/${v.length} · L5 ${l5}/5</div></td>`}).join("")}</tr>`}).join("");
+  return vxCard("🦵 Kicker props this week","Every kicker line we found, how often he cleared it this season and in his last 5, and this week's conditions.",`<div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th style="text-align:left">Kicker</th><th>FG made</th><th>Kicking pts</th><th>Extra pts</th></tr></thead><tbody>${rows}</tbody></table></div>`,"Season logs from nflverse; lines from the books we track. Wind of 15+ mph and cold cut long field goals; open each game's Matchup tab for his wind/cold splits.")}catch(e){return ""}}
+/* ===== Soccer: what happens to the team without the players who are missing (matches he started vs ones he didn't, this season) ===== */
+function vxSocMissImpact(f){try{if(!window.SOC_P||!f.miss)return "";const R=SOC_RES||[];const out=[];
+  for(const [tid,L] of Object.entries(f.miss))for(const [nm] of L){const aid=Object.keys(SOC_P).find(a=>SOC_P[a][1]===tid&&SOC_P[a][0]===nm);if(!aid)continue;
+    const st=new Set(SOC_P[aid][3].filter(g=>g[1]).map(g=>g[0]));const M=R.filter(r=>r[3]===tid||r[4]===tid).map(r=>{const h=r[3]===tid,me=h?r[7]:r[8],op=h?r[8]:r[7];return {id:r[0],gf:h?r[5]:r[6],ga:h?r[6]:r[5],sh:me&&me[0],sot:me&&me[1],w:(h?r[5]>r[6]:r[6]>r[5])?1:0}});
+    const W=M.filter(m=>st.has(m.id)),O=M.filter(m=>!st.has(m.id));if(W.length<3||O.length<2)continue;
+    const av=(a,k)=>a.filter(m=>m[k]!=null).reduce((s,m)=>s+m[k],0)/Math.max(1,a.filter(m=>m[k]!=null).length);out.push({tid,nm,W,O,av})}
+  if(!out.length)return "";
+  const row=x=>{const d=x.av(x.O,"gf")-x.av(x.W,"gf");return `<div class="qrzd" style="margin-top:8px"><b>${vxE(x.nm)}</b> <span class="small">${vxE(socTm(x.tid))} · likely out</span>
+    <div class="nbatbl"><table class="bxt" style="min-width:0;margin-top:4px"><thead><tr><th style="text-align:left"></th><th>Games</th><th>Goals</th><th>Conceded</th><th>Shots</th><th>On target</th><th>Won</th></tr></thead><tbody>
+    ${[["He started",x.W],["Without him",x.O]].map(([l,a])=>`<tr><td style="text-align:left">${l}</td><td>${a.length}</td><td><b>${x.av(a,"gf").toFixed(2)}</b></td><td>${x.av(a,"ga").toFixed(2)}</td><td>${x.av(a,"sh").toFixed(1)}</td><td>${x.av(a,"sot").toFixed(1)}</td><td>${Math.round(a.reduce((s,m)=>s+m.w,0)/a.length*100)}%</td></tr>`).join("")}</tbody></table></div>
+    <div class="small">${Math.abs(d)>=.3?`${vxE(socTm(x.tid))} score <b>${Math.abs(d).toFixed(2)} ${d<0?"fewer":"more"}</b> goals a game without him.`:"Not much change in goals without him."}</div></div>`};
+  return vxCard("If the missing players sit","How each team has done this season in matches the missing player started vs matches he didn't — every competition.",out.map(row).join(""),"Small samples — a few matches can swing these numbers. Missing = didn't feature in the last 2 matches after starting regularly, or sent off last time.")}catch(e){return ""}}

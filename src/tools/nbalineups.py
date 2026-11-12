@@ -10,7 +10,7 @@ req = urllib.request.Request(f"https://stats.nba.com/js/data/leaders/00_daily_li
                              headers={"User-Agent": "Mozilla/5.0 (rla-sharp research site)", "Referer": "https://www.nba.com/", "Origin": "https://www.nba.com"})
 try:
     with urllib.request.urlopen(req, timeout=30) as r: J = json.load(r)
-except Exception as e: sys.exit(f"nbalineups: {e} — keeping the old file")
+except Exception as e: sys.exit(f"nbalineups: NBA.com hasn't posted {day}'s lineups yet" if "404" in str(e) else f"nbalineups: {e} — keeping the old file")
 G = {}; nconf = nexp = 0
 for g in J.get("games") or []:
     sides = {}
