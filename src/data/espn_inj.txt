@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 13:52Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 14:22Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Zachary Carter|DT|IR|Knee|Nov 15
@@ -209,9 +209,9 @@ Tucker Addington|LS|Questionable|Shoulder|Nov 15
 Aaron Brewer|C|Questionable|Concussion|Nov 15
 Zach Sieler|DT|IR|Biceps|Feb 15
 #MIN
+Jauan Jennings|WR|Questionable|Calf|Nov 15
 Kyle Van Noy|LB|Questionable|Calf|Nov 15
 Jay Ward|S|Questionable|Knee|Nov 15
-Jauan Jennings|WR|Questionable|Calf|Nov 15
 Blake Cashman|LB|Questionable|Concussion|Nov 15
 T.J. Hockenson|TE|Questionable|Wrist|Nov 15
 Carson Wentz|QB|Questionable|Ankle|Nov 15
