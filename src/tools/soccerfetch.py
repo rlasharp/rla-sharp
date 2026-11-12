@@ -493,6 +493,57 @@ def tnum(c, tid):
 used = {f["h"] for f in FX} | {f["a"] for f in FX} | {r[0] for L in ST.values() for r in L} | {t for m in OLD_IDS.values() for t in (m[2], m[3])}
 RES = [[e["id"], e["t"][:16], e["c"], e["h"], e["a"], e["hs"], e["as"], BOX[e["id"]]["ts"].get(e["h"]), BOX[e["id"]]["ts"].get(e["a"]),
         BOX[e["id"]].get("ev", [])] for e in DONE]
+# ---------------- expected goals (xG) per match from FotMob's public match data, matched to our ESPN results by date + team names ----------------
+# finished days and finished matches never change, so both are cached for good; at most ~60 new match pages per run.
+XGF = os.path.join(R, "data/soccer_xg.json"); XGC = jload(XGF, {"days": {}, "xg": {}})
+def fm_get(u):
+    try:
+        with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"}), timeout=25) as r: return json.load(r)
+    except Exception: return None
+def nrm(x): return re.sub(r"[^a-z0-9 ]", "", unicodedata.normalize("NFKD", str(x or "")).encode("ascii", "ignore").decode().lower()).replace(" fc", "").replace("fc ", "").strip()
+def tnames(tid):
+    T = TEAM.get(tid) or {}; return {n for n in (nrm(T.get("n")), nrm(T.get("s"))) if n}
+def same(fm_name, tid):
+    a = nrm(fm_name); N = tnames(tid)
+    return any(a == n or (len(a) > 4 and (a in n or n in a)) or a.split(" ")[0] == n.split(" ")[0] and len(a.split(" ")[0]) > 4 for n in N)
+def find_xg(o):
+    if isinstance(o, dict):
+        if o.get("key") == "expected_goals" and isinstance(o.get("stats"), list) and len(o["stats"]) == 2: return o["stats"]
+        for v in o.values():
+            r = find_xg(v)
+            if r: return r
+    elif isinstance(o, list):
+        for v in o:
+            r = find_xg(v)
+            if r: return r
+    return None
+nxg = 0
+try:
+    recent = [e for e in DONE if (NOW - dt.datetime.fromisoformat(e["t"][:16] + "+00:00")).days <= 40]
+    for e in sorted(recent, key=lambda e: e["t"], reverse=True):
+        if e["id"] in XGC["xg"] or nxg >= 60: continue
+        d0 = dt.date.fromisoformat(e["t"][:10]); hit = None; miss = False
+        for d in (d0, d0 - dt.timedelta(days=1), d0 + dt.timedelta(days=1)):
+            k = d.strftime("%Y%m%d")
+            if k not in XGC["days"]:
+                j = fm_get(f"https://www.fotmob.com/api/data/matches?date={k}")
+                if j is None: miss = True; continue
+                XGC["days"][k] = [[m["id"], m["home"]["name"], m["away"]["name"]] for L in j.get("leagues") or [] for m in L.get("matches") or []]
+            hit = next((m for m in XGC["days"][k] if same(m[1], e["h"]) and same(m[2], e["a"])), None)
+            if hit: break
+        if not hit:
+            if not miss: XGC["xg"][e["id"]] = None   # only remember "no FotMob match" when the day lists actually loaded
+            continue
+        j = fm_get(f"https://www.fotmob.com/api/data/matchDetails?matchId={hit[0]}"); nxg += 1
+        if j is None: continue
+        x = find_xg(j)
+        try: XGC["xg"][e["id"]] = [round(float(x[0]), 2), round(float(x[1]), 2)] if x else None
+        except Exception: XGC["xg"][e["id"]] = None
+    today_k = NOW.strftime("%Y%m%d"); XGC["days"] = {k: v for k, v in XGC["days"].items() if k < today_k}   # today's list changes; refetch it next time
+    json.dump(XGC, open(XGF, "w"), separators=(",", ":"))
+    log_ = sum(1 for v in XGC["xg"].values() if v); print(f"soccer xG: {log_} matches with FotMob xG ({nxg} new pages read, {len(recent)} recent games)", file=sys.stderr)
+except Exception as ex: print("soccer xG failed:", ex, file=sys.stderr)
+XG = {k: v for k, v in XGC["xg"].items() if v}
 # player logs are split by each team's domestic league (cup-only teams together) so a page loads only what it shows
 def pkey(tid):
     for c in (TEAM.get(tid) or {}).get("c") or []:
@@ -506,6 +557,7 @@ out = {
   "SOC_TM": {tid: [T["n"], T["s"], T["ab"], T["col"], T["c"]] for tid, T in TEAM.items() if tid in used or any(tid in (e["h"], e["a"]) for e in DONE)},
   "SOC_TN": {f"{c}|{tid}": tnum(c, tid) for (c, tid) in TN},
   "SOC_RES": RES,
+  "SOC_XG": XG,
   "SOC_FX": [{k: f[k] for k in ("id", "t", "c", "h", "a", "ven", "city", "state", "detail", "pid", "odds", "ref", "wx", "lu", "miss", "proj", "hs", "as") if f.get(k) is not None} for f in FX],
   "SOC_ST": ST,
   "SOC_REF": {c: [x[:5] for x in L] for c, L in REFS.items()},

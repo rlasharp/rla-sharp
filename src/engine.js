@@ -68,7 +68,7 @@ const CUR = 2026;
 const POS = ["QB","RB","WR","TE"];
 const MARKETS = {
  passYds:{n:"Pass Yds",pos:["QB"]}, passAtt:{n:"Pass Att",pos:["QB"]}, comp:{n:"Completions",pos:["QB"]}, passTD:{n:"Pass TDs",pos:["QB"],cnt:1},
- int:{n:"Interceptions",pos:["QB"],cnt:1}, rushYds:{n:"Rush Yds",pos:["QB","RB"]}, rushAtt:{n:"Rush Att",pos:["RB"]},
+ int:{n:"Interceptions",pos:["QB"],cnt:1}, rushYds:{n:"Rush Yds",pos:["QB","RB"]}, rushAtt:{n:"Rush Att",pos:["QB","RB"]},
  rec:{n:"Receptions",pos:["RB","WR","TE"],cnt:1}, recYds:{n:"Rec Yds",pos:["RB","WR","TE"]},
  rushRec:{n:"Rush+Rec Yds",pos:["RB"]}, anyTD:{n:"Anytime TD",pos:["QB","RB","WR","TE"],cnt:1}
 };
