@@ -839,5 +839,54 @@ for _, g in games:
             if me in pid_nm:
                 on = C["names"].get(op) or op; FOM.setdefault(pid_nm[me], {}).setdefault(on, [0, 0])[i] += n_
 FOM = {k: {o: v for o, v in d.items() if v[0] + v[1] >= 3} for k, d in FOM.items()}
+# referees (NHL "right-rail" game info): who worked each game this season, and tonight's crews when the league has posted them
+try:
+    def refs_of(gid):
+        rr = get(f"https://api-web.nhle.com/v1/gamecenter/{gid}/right-rail")
+        gi = rr.get("gameInfo") or {}
+        return [dflt(x) for x in (gi.get("referees") or []) if dflt(x)]
+    y2_ = int(TODAY[:4]) if int(TODAY[5:7]) >= 9 else int(TODAY[:4]) - 1; s2_ = f"{y2_}-09-15"; nref = 0
+    for gid, g in sorted(C["games"].items(), key=lambda kv: kv[1]["d"], reverse=True):
+        if g["d"] < s2_ or "refs" in g: continue
+        if nref >= 80: break
+        try: g["refs"] = refs_of(gid); nref += 1
+        except Exception: break
+    R_ = {}
+    for _, g in games:
+        if g["d"] < s2_ or not g.get("refs") or g.get("as") is None: continue
+        pen = sum((g.get("x4") or {}).get(t, [0, 0, 0])[1] for t in (g["a"], g["h"]))
+        for nm_ in g["refs"]:
+            a_ = R_.setdefault(nm_, [0, 0, 0]); a_[0] += 1; a_[1] += pen; a_[2] += (g["as"] or 0) + (g["hs"] or 0)
+    TODAYR = {}
+    for g in SLATE:
+        try:
+            rf = refs_of(g["id"])
+            if rf: TODAYR[str(g["id"])] = rf
+        except Exception: pass
+    LGR = [sum(v[0] for v in R_.values()), sum(v[1] for v in R_.values()), sum(v[2] for v in R_.values())]
+    print(f"var NHL_REFS={J({'today': TODAYR, 'ref': {k: [v[0], round(v[1] / v[0], 2), round(v[2] / v[0], 2)] for k, v in R_.items() if v[0]}, 'lg': [round(LGR[1] / LGR[0], 2), round(LGR[2] / LGR[0], 2)] if LGR[0] else None})}; /* referees: games, penalties a game (both teams), goals a game */")
+    if nref:
+        with open(CACHE, "w") as f: json.dump(C, f, separators=(",", ":"), ensure_ascii=False)
+    log(f"NHL referees: {nref} new games read, {len(R_)} referees, {len(TODAYR)} of tonight's crews posted")
+except Exception as e:
+    log("referees failed", e); print("var NHL_REFS=null;")
+# opposing starting goalie for every game this season (most minutes in net) + his season save % — for the props "opp goalie" filter
+try:
+    y_ = int(TODAY[:4]) if int(TODAY[5:7]) >= 9 else int(TODAY[:4]) - 1; s0_ = f"{y_}-09-15"
+    GS_ = {}
+    for _, g in games:
+        if g["d"] < s0_: continue
+        for r in g.get("gl") or []: a_ = GS_.setdefault(str(r[0]), [0, 0]); a_[0] += r[2] or 0; a_[1] += r[3] or 0
+    GOPP = {}
+    for _, g in games:
+        if g["d"] < s0_ or not g.get("gl"): continue
+        for t_, o_ in ((g["a"], g["h"]), (g["h"], g["a"])):
+            G_ = sorted([r for r in g["gl"] if r[1] == o_], key=lambda r: -(r[5] or 0))
+            if not G_: continue
+            pid = str(G_[0][0]); sv = GS_.get(pid)
+            GOPP[f'{g["d"]}|{t_}'] = [C["names"].get(pid) or pid, round(sv[1] / sv[0], 3) if sv and sv[0] >= 100 else None]
+    print(f"var NHL_GOPP={J(GOPP)}; /* date|team -> [opposing starting goalie, his season save % (100+ shots) ] */")
+except Exception as e:
+    log("goalie-opponent map failed", e); print("var NHL_GOPP={};")
 print(f"var NHL_FOM={J({k: v for k, v in FOM.items() if v})}; /* faceoff results vs each opposing player this season */")
 log(f"NHL data: {len(SLATE)} games today, {len(NEXT)} tomorrow, {len(TEAM)} teams, {len(P)} skaters, {len(G)} goalies, {len(PROPS)} props, {len(RES)} finals, {NREQ[0]} requests")

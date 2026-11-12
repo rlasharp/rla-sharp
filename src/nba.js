@@ -332,7 +332,7 @@ function nbaGame(el,id){
         +gpMerge("What matters","gpwm",[(typeof nbaQuick!=="undefined"?nbaQuick(g):""),(typeof xfNba!=="undefined"?xfNba(g):"")])
         +gpMerge("Injuries","gpinj",[`<div class="grid g2"><div><h3 class="nhh3">${nbaShort(g.a)}</h3>${nbaInjTable(g.a)}</div><div><h3 class="nhh3">${nbaShort(g.h)}</h3>${nbaInjTable(g.h)}</div></div>`,(typeof woCard!=="undefined"?woCard("nba",g.a,g.h,nbaShort):"")])}
       return gpSummary({pick:pk?`<b>${nbaEsc(pk.txt)}</b> <span class="small">${pk.k.toLowerCase()} · ${oddsFmt(pk.odds)} · our chance ${Math.round(pk.ch*100)}%${pk.strong?" · strong lean":""}</span>`:(M?`Our estimate: <b>${nbaEsc(nbaShort(M.m>=0?g.h:g.a))} by ${Math.max(.5,Math.abs(M.m))}</b>, total ${M.tot} <span class="small">(lines not posted yet)</span>`:""),
-        props:bp.map(b=>gpPropLine(b.nm,b.side==="o"?"Over":"Under",b.line,NBA_MK[b.k][1],b.odds,b.sc,"#nba-player-"+encodeURIComponent(b.nm)))})
+        props:bp.map(b=>gpPropLine(b.nm,b.side==="o"?"Over":"Under",b.line,NBA_MK[b.k][1],b.odds,b.sc,"#nba-player-"+encodeURIComponent(b.nm)+"~"+b.k))})
       +(!L&&fut?`<div class="card gplines small">Sportsbook lines aren't posted yet.</div>`:"")+(!L&&fut?"":`<div class="card gplines">    ${L?`<div class="nbl" style="justify-content:center"><span>Spread <b>${L.sp<=0?g.h:g.a} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`:`<div class="small">Lines not posted yet.</div>`}
     ${W?`<div class="nbwp"><div style="width:${Math.round(W.a*100)}%;background:${nbaCol(g.a)}"></div><div style="width:${100-Math.round(W.a*100)}%;background:${nbaCol(g.h)}"></div></div>
     <div class="nbwpl"><span>${g.a} ${Math.round(W.a*100)}%</span><span class="small">chance to win (from the odds)</span><span>${g.h} ${Math.round(W.h*100)}%</span></div>`:""}
@@ -1018,7 +1018,7 @@ function nbaGameProps0(g){
   <p class="note" style="margin-top:8px">Boxes = his last 6 games, newest on the right: <span class="lc o">green</span> over, <span class="lc u">red</span> under. Lines close when the game starts.</p>`;
 }
 function nbaGamePropCount(g){if(nbaStarted(g))return 0;return NBA_PROPS.filter(r=>{const p=NBA_LOGS[r[0]];return p&&(p.tm===g.a||p.tm===g.h)&&NBA_MK[r[1]]}).length}
-function nbaPlayer(el,nm){
+function nbaPlayer(el,nm){nm=(typeof xMkFromHash!=="undefined"?xMkFromHash(nm,k=>{NB.pmk=k;NB.goto=null}):nm);
   if(NB.lastPl!==nm){{NB.gf=Object.assign(NB.gf,{lo:-15,hi:15,tlo:195,thi:255,ilo:95,ihi:135,flo:0,fhi:35,plo:0,phi:20,ven:"",rest:"",role:"",opp:"",pace:""});NB.mlo=0;NB.mhi=48;NB.tmf={};NB._best=null;NB.fOpen=false;try{LS.set("nbaGF",NB.gf);LS.set("nbaMin",[0,48])}catch(e){}}NB.lastPl=nm}   /* new player: filters reset, and the filter panel starts closed */
   const p=NBA_LOGS[nm];
   if(!p){el.innerHTML=`<a href="#nba-players" class="small" style="color:var(--text2)">← Players</a><h1>${nbaEsc(nm)}</h1><p class="sub">No games played yet this season.</p>`;return}
@@ -1034,7 +1034,7 @@ function nbaPlayer(el,nm){
   const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk","sb"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div><div class="small swh">👆 Swipe the chart left or right for the next prop</div>
 ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null,mn0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[4]||0),0)/p.g.length):null,tp0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[15]||0),0)/p.g.length):null;return {fga:fg0,min:mn0,tpa:tp0>0?tp0:null,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":R0.rest===1?"r1":"r2"):"",oppT:g0?(g0.h===p.tm?g0.a:g0.h):"",opp:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"opp"):"",pace:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"pace"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
-    <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}${typeof vxScatter!=="undefined"?vxScatter(nm,r[1],r[2]):""}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":(typeof OUT_DROP!=="undefined"&&OUT_DROP.nba.has(nm)?"🚑 He's ruled out — his props are removed.":"No prop lines posted for him today.")}</span></div>`:"");
+    <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}${typeof vxScatter!=="undefined"?vxScatter(nm,r[1],r[2]):""}${typeof vxLnRec!=="undefined"?vxLnRec("nba",nm,r[1]):""}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":(typeof OUT_DROP!=="undefined"&&OUT_DROP.nba.has(nm)?"🚑 He's ruled out — his props are removed.":"No prop lines posted for him today.")}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
   <div class="phead">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
@@ -1058,6 +1058,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${opp?`Where he scores vs where ${nbaEsc(nbaShort(opp))} allow`:"Where he scores"}</h2>${opp?nbaShotMatchup(nm,opp):nbaCourt(nm)}</div>
     ${nbaShotTypes(nm)}
+    ${typeof vxQMin!=="undefined"?vxQMin(nm):""}
     <div class="card"><h2>Last ${Math.min(10,p.g.length)} games</h2>
       <div class="nbtabs">${[["pts","PTS"],["reb","REB"],["ast","AST"],["3pm","3PM"],["min","MIN"]].map(([k,l])=>`<button data-ptk="${k}" class="${k===tk?"on":""}">${l}</button>`).join("")}</div>
       <div id="ptrend">${nbaTrend(p,tk)}</div>

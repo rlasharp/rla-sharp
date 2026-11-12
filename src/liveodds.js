@@ -160,7 +160,7 @@ function loMovesCard(sp,n){
   if(!LO.data)return "";const L=loMoves(sp,n||8);if(!L.length)return "";
   const mk=m=>sp==="nba"?(NBA_MK[m.k]?NBA_MK[m.k][1]:m.k):sp==="nhl"?(NH_MK[m.k]?NH_MK[m.k][1]:m.k):(MARKETS[m.k]?MARKETS[m.k].n:m.k);
   const pr=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
-  const row=m=>{const href=sp==="nba"?`#nba-player-${encodeURIComponent(m.nm)}`:sp==="nhl"?`#nhl-player-${encodeURIComponent(m.nm)}`:"#props";
+  const row=m=>{const href=sp==="nba"?`#nba-player-${encodeURIComponent(m.nm)}~${m.k}`:sp==="nhl"?`#nhl-player-${encodeURIComponent(m.nm)}~${m.k}`:"#props";
     const what=m.dl?`<b>${m.l} → ${m.now}</b> <span class="lmv ${m.dl>0?"up":"dn"}">${m.dl>0?"▲":"▼"} ${Math.abs(m.dl)}</span>`:`<b>${m.now}</b> <span class="lmv fl">over ${pr(m.o)} → ${pr(m.oNow)}</span>`;
     const why=m.dl>0?"books moved it up — money on the over":m.dl<0?"books moved it down — money on the under":m.dp<0?"over getting pricier":"under getting pricier";
     return `<a class="lmr" href="${href}" ${sp==="nfl"?`data-nflfav="${esc(m.nm)}"`:""}><span><b>${esc(m.nm)}</b> <span class="small">${esc(mk(m))}</span></span><span>${what}</span><span class="small">${why}</span></a>`};

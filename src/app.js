@@ -12,7 +12,7 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 function favDecorate(){
   const h=decodeURIComponent((location.hash||"").slice(1));
   const put=(sel,t,id)=>{const el=document.querySelector(sel);if(!el||el.querySelector(".favb"))return;el.insertAdjacentHTML("beforeend",favBtn(t,id))};
-  if(h.startsWith("nba-player-"))put("#v-nba .phead > div:last-child","nbap",h.slice(11));
+  if(h.startsWith("nba-player-"))put("#v-nba .phead > div:last-child","nbap",h.slice(11).split("~")[0]);
   if(h.startsWith("nba-team-"))put("#v-nba .phead > div:last-child","nbat",h.slice(9));
   if(h.startsWith("nhl-player-"))put("#v-nhl .phead > div:last-child","nhlp",h.slice(11));
   if(h.startsWith("nhl-team-"))put("#v-nhl .phead > div:last-child","nhlt",h.slice(9));
@@ -604,3 +604,8 @@ function glGuide(){if((location.hash||"")!=="#guide")return;const h=document.get
   h.insertAdjacentHTML("beforeend",`<div class="card" id="glossary" style="margin-top:14px"><h2>📖 Glossary</h2><p class="small">Tip: anywhere on the site, tap a dotted-underlined word to see this in one line.</p>${GLOSS.filter((g,i,a)=>a.findIndex(z=>z[1]===g[1])===i).map(g=>`<div class="glrow"><b>${esc(g[0])}</b><span>${esc(g[1])}</span></div>`).join("")}</div>`)}
 {const mo=new MutationObserver(ms=>{if(ms.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&!(n.classList&&(n.classList.contains("gl")||n.id==="glpop")))))glRun()});
  const mm=document.querySelector("main");if(mm)mo.observe(mm,{childList:true,subtree:true});window.addEventListener("hashchange",glRun);window.addEventListener("load",glRun)}
+
+/* "#nba-player-Name~pts" / "#nhl-player-Name~hsog": open the player on that prop. The market part is removed from the address
+   right away (without a reload), so switching tabs on the page afterwards isn't overridden. */
+function xMkFromHash(nm,set){const i=String(nm).lastIndexOf("~");if(i<0)return nm;const k=nm.slice(i+1),n=nm.slice(0,i);if(k)set(k);
+  try{const h=location.hash,j=h.lastIndexOf("~");if(j>0)history.replaceState(null,"",h.slice(0,j))}catch(e){}return n}

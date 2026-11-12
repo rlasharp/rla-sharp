@@ -100,7 +100,25 @@ function socGrade(b){if(typeof SOC_RES==="undefined"||!window.SOC_OK){socEnsure(
 
 /* ---------- player numbers ---------- */
 function socVal(g,mk){const m=SOC_MK[mk];if(!m)return null;if(mk==="sga")return g[5]+g[6];return g[m[3]]}
-function socPlayerGames(aid){const P=window.SOC_P&&SOC_P[aid];return P?P[3]:[]}
+function socPlayerGames(aid){const P=window.SOC_P&&SOC_P[aid];return P?P[3].filter(g=>socRowOk(aid,g)):[]}
+/* ---------- 🎚 soccer player filters (player page only): started / off the bench, minutes, opponent's place in the table, venue ---------- */
+function socPF(aid){if(!SC.pf||SC.pfId!==aid){SC.pf={role:"",min:"",tbl:"",ven:""};SC.pfId=aid}return SC.pf}
+function socTblTier(lg,team){const S=typeof SOC_ST!=="undefined"&&SOC_ST[lg];if(!S)return null;const r=S.find(x=>String(x[0])===String(team));if(!r)return null;const n=S.length;return r[1]<=Math.ceil(n/3)?"top":r[1]>n-Math.ceil(n/3)?"bot":"mid"}
+function socRowOk(aid,g){const f=SC.pfId===aid&&location.hash==="#soccer-player-"+aid?SC.pf:null;if(!f)return true;const P=SOC_P[aid],tid=P&&P[1],r=socResIdx()[g[0]];
+  if(f.role&&(f.role==="st"?!g[1]:g[1]))return false;
+  if(f.min){const [a,b]=f.min.split("-").map(Number);if(g[2]<a||g[2]>b)return false}
+  if(f.ven){if(!r)return false;if((r[3]===tid?"H":"A")!==f.ven)return false}
+  if(f.tbl){if(!r)return false;const opp=r[3]===tid?r[4]:r[3];if(socTblTier(r[2],opp)!==f.tbl)return false}
+  return true}
+function socFiltUI(aid){const f=socPF(aid),P=SOC_P[aid],[,tid,,G]=P,fx=(SOC_FX||[]).find(x=>(x.h===tid||x.a===tid)&&!socStarted(x)),opp=fx?(fx.h===tid?fx.a:fx.h):null;
+  const st=G.filter(g=>g[1]),um=st.length?Math.round(st.reduce((a,g)=>a+g[2],0)/st.length):null,tn={ven:fx?(fx.h===tid?"H":"A"):"",tbl:opp&&fx?socTblTier(fx.c,opp):"",role:G.length?(st.length*2>=G.length?"st":"sub"):""};
+  const R=[["ven","Venue",[["H","Home"],["A","Away"]]],["role","Role",[["st","Started"],["sub","Off the bench"]]],["min","Minutes",[["0-45","Under 45"],["45-74","45–74"],["75-120","75+"]].concat(um?[[`${Math.max(0,um-10)}-${um+10}`,`His usual (${um}±10)`]]:[])],
+    ["tbl","Opp in the table",[["top","Top third"],["mid","Middle third"],["bot","Bottom third"]]]];
+  const lk=k=>k==="tbl"&&opp&&tn.tbl?(()=>{const S=SOC_ST[fx.c],r=S&&S.find(x=>String(x[0])===String(opp));return `<button data-scf="tbl|${tn.tbl}" class="pxlk${f.tbl===tn.tbl?" on":""}">🎯 Like ${socE(socTm(opp))} <small>${r?socOrd(r[1]):""}</small></button>`})():"";
+  const on=R.filter(([k])=>f[k]).map(([k,l,o])=>(k==="tbl"?"Opp: ":"")+((o.find(x=>x[0]===f[k])||[])[1]||f[k]));
+  return `<div class="card scfc pxf"><details class="pxfd"${SC.pfOpen?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo">${on.length?on.map(x=>`<span class="fchip">${socE(x)}</span>`).join("")+`<span class="fchip frst" data-scfr="1">↺ Reset</span>`:`<span class="fany">No filters — all games</span>`}</span><span class="pxchev">›</span></summary>
+   <div class="pxfr">${R.map(([k,l,o])=>`<div class="sitr"><span>${l}</span><div class="pxpre">${[["","Any"],...o].map(([v,t],i)=>`${i===1?lk(k):""}<button data-scf="${k}|${v}" class="${(f[k]||"")===v?"on":""}">${t}${tn[k]&&tn[k]===v?" •":""}</button>`).join("")}</div></div>`).join("")}</div>
+   <div class="small">Applies to the hit rates, per-90 numbers and game log on this page. Table place is today's league table; cup games have no table, so they drop out when that filter is on.</div></details></div>`}
 function socLam(aid,mk,f){const G=socPlayerGames(aid).filter(g=>g[2]>=15).slice(-10);if(G.length<3)return null;
   const mins=G.reduce((a,g)=>a+g[2],0),tot=G.reduce((a,g)=>a+(socVal(g,mk)||0),0),r90=tot/mins*90;
   const st=G.slice(-5),em=f&&f.lu?((socLuNames(f).includes(SOC_P[aid][0]))?Math.max(70,st.filter(g=>g[1]).reduce((a,g)=>a+g[2],0)/Math.max(1,st.filter(g=>g[1]).length)):20):st.reduce((a,g)=>a+g[2],0)/st.length;
@@ -305,12 +323,13 @@ function socTable(el){const c=SC.tlg,L=(SOC_ST||{})[c]||[];
 
 /* ---------- player page ---------- */
 function socPlayer(el,aid){socPEnsure(()=>{const P=window.SOC_P&&SOC_P[aid];if(!P){el.innerHTML=`<p><a href="#soccer">← Soccer</a></p><div class="card">Player not found.</div>`;return}
-  const [nm,tid,pos,G]=P,RI=socResIdx(),last=G.slice(-15).reverse(),fx=(SOC_FX||[]).find(f=>(f.h===tid||f.a===tid)&&!socStarted(f));
+  const [nm,tid,pos,G0]=P,G=G0.filter(g=>socRowOk(aid,g)),RI=socResIdx(),last=G.slice(-15).reverse(),fx=(SOC_FX||[]).find(f=>(f.h===tid||f.a===tid)&&!socStarted(f));
   const tot=k=>G.reduce((a,g)=>a+(socVal(g,k)||0),0),mins=G.reduce((a,g)=>a+g[2],0),p90=k=>mins?(tot(k)/mins*90).toFixed(2):"–";
   const props=fx?(SOC_PROPS||[]).filter(r=>r[5]===fx.id&&r[7]===aid).map(r=>socPropEval(r,fx)):[];
   const hr=(mk,line)=>{const [h,n]=socHitP(aid,mk,line,10);return n?`<b>${h}/${n}</b>`:"–"};
   el.innerHTML=`<p><a href="#soccer">← Soccer</a></p><div class="phead"><div><h1>${socE(nm)}</h1><p class="sub">${socBadge(tid)} ${socE(socTmFull(tid))} · ${socE(pos||"")} · ${G.length} appearances (${G.filter(g=>g[1]).length} starts) · ${mins} minutes</p></div><div></div></div>
   ${fx?`<div class="card"><h2>Next: ${fx.h===tid?"vs":"@"} ${socE(socTm(fx.h===tid?fx.a:fx.h))} <span class="small">${socE(socDayS(socDay(fx.t)))} · <a href="#soccer-game-${fx.id}">match page →</a></span></h2>${props.map(x=>socPropRow(x,fx)).join("")||`<div class="small">No props posted for him yet.</div>`}</div>`:""}
+  ${socFiltUI(aid)}
   ${(()=>{const K=socLineOf(pos)===0&&socGKSeason(aid);return K?`<div class="card"><h2>🧤 In goal this season <span class="small">${K.n} matches (45+ min)</span></h2><div class="pbio"><div><b>${(K.sv/K.n).toFixed(1)}</b>Saves / match</div><div><b>${K.sv}</b>Saves</div><div><b>${K.pct!=null?Math.round(K.pct*100)+"%":"–"}</b>Save %</div><div><b>${K.ga}</b>Conceded</div><div><b>${K.cs}</b>Clean sheets</div></div>
     <div class="small" style="margin-top:8px">Saves, last 10: ${socChips(K.G.slice(-10).map(x=>x[1]),2.5,"saves")}</div></div>`:""})()}
   <div class="card"><h2>Per 90 minutes</h2><div class="pbio"><div><b>${p90("sshot")}</b>Shots</div><div><b>${p90("ssot")}</b>On target</div><div><b>${p90("sgoal")}</b>Goals</div><div><b>${p90("sast")}</b>Assists</div><div><b>${p90("sfoul")}</b>Fouls</div><div><b>${p90("sfwon")}</b>Fouled</div></div>
@@ -526,3 +545,6 @@ function socMovesCard(){const L=[];for(const f of (SOC_FX||[]).filter(f=>!socSta
    <div class="small" style="margin-top:6px">Money coming in usually moves a price — a shorter price means the books now think it's more likely.</div></details>`}
 /* 6) fold the less-used cards */
 function socFold(title,html,open){return html?`<details class="card scfold"${open?" open":""}><summary><b>${title}</b> <span class="small">tap to ${open?"close":"open"}</span></summary><div class="scfoldb">${html.replace(/^<div class="card[^"]*"[^>]*>/,"<div>")}</div></details>`:""}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-scf],[data-scfr]");if(!b)return;const h=decodeURIComponent((location.hash||"").slice(1));if(!h.startsWith("soccer-player-"))return;
+  e.preventDefault();e.stopPropagation();const aid=h.slice(14);if(b.dataset.scfr)SC.pf=null;else{const [k,v]=b.dataset.scf.split("|");socPF(aid)[k]=v}SC.pfOpen=!b.dataset.scfr||SC.pfOpen;const y=scrollY;soccerRoute(h);scrollTo(0,y)},true);
+document.addEventListener("toggle",e=>{if(e.target.closest&&e.target.closest(".scfc"))SC.pfOpen=e.target.open},true);

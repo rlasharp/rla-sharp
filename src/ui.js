@@ -756,7 +756,7 @@ function nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA){
   const X=(typeof nflPropXCard!=="undefined"&&nflPropXCard(pl,k,line,CL))||{};
   const RZ=typeof vxRzTd!=="undefined"?vxRzTd(pl.name,opp):"";
   const T=[...(k==="anyTD"?[["rzf","Red zone & end zone",RZ]]:[]),["alt","Alt lines",X.alt],["gs","Game script",X.gs],["def","Vs defenses",X.def],
-    ["tgt","Targets",typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""],["use","Usage",usageCard(pl)],
+    ["tgt","Targets",typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""],["use","Usage",usageCard(pl)+(typeof vxSnaps!=="undefined"?vxSnaps(pl.name):"")],
     ["vs",opp?"Vs "+short(opp):"",opp?posvCard(pl,opp,k,line,unit)+vsCard(pl,opp,k,line,unit):""],
     ["all","All games",`<div style="max-height:380px;overflow:auto"><table><tbody>${allGameRows(pl,CL,CLall,qmode,QM,k,ouTag,QA)}</tbody></table></div><p class="note" style="margin:8px 0 0">"Did not play" weeks (injury / inactive) aren't counted in averages or hit rates.</p>`],
     ...(k!=="anyTD"?[["rzf","Red zone & end zone",RZ]]:[]),["sch","Schedule",typeof NFL_NEXT!=="undefined"&&NFL_NEXT[pl.team]?nfNextHtml(pl.team):""]].filter(t=>t[1]&&t[2]);

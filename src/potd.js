@@ -67,7 +67,7 @@ function potdNhl(){if(typeof NHL_DATE==="undefined"||!NHL_DATE){if(typeof nhlEns
       const why=[];if(s){why.push(`Went ${ov} ${x.line} in <b>${s.l10} of his last ${s.n10}</b> (averaging ${s.avg.toFixed(1)} ${potdE(m[2])} this season).`);why.push(`This season: ${s.hs} of ${s.ns} games ${ov} the line.`)}
       if(NHL_G[x.nm]&&g){const opp=g.a===x.tm?g.h:g.a,o=NHL_TEAM[opp];if(o&&o.sf)why.push(`${potdE(nhTm(opp))} average ${(+o.sf).toFixed(1)} shots a game.`)}
       return potdCard({title:`${potdNhTitle(x)}`,sub:`${potdE(x.tm)}${g?` ${g.a===x.tm?"@":"vs"} ${potdE(g.a===x.tm?g.h:g.a)} · ${potdE(g.t)} ET`:""}`,odds:x.odds,ch:b?b.s.p:null,need:imp(x.odds),
-        strip:potdStrip(vals,x.line,x.side),why,r:x.r,v:x.v,attr:`data-pdnhl="${potdE(x.nm)}"`,foot:`<div class="pdft"><span class="small">Tap for his full game log →</span></div>`},i)}
+        strip:potdStrip(vals,x.line,x.side),why,r:x.r,v:x.v,attr:`data-pdnhl="${potdE(x.nm)}|${x.k||""}"`,foot:`<div class="pdft"><span class="small">Tap for his full game log →</span></div>`},i)}
     const g=(NHL_SLATE||[]).find(y=>y.a===x.a&&y.h===x.h),e=x.e||(g?nhEdges(g).find(y=>y.mk===x.mk&&y.pick===x.pick):null),pr=g&&nhProject(g);
     const why=[];if(pr)why.push(`Our model: ${potdE(nhTm(g.h))} win ${potdPct(pr.hwin)} of the time; expected score ${potdE(nhTm(g.a))} ${pr.la.toFixed(1)} – ${pr.lh.toFixed(1)} ${potdE(nhTm(g.h))}.`);
     if(g){const pa=nhProbable(g.a,g),ph=nhProbable(g.h,g);if(pa||ph)why.push(`Goalies: ${potdE(pa?pa.nm:"TBD")} vs ${potdE(ph?ph.nm:"TBD")}.`)}
@@ -88,7 +88,7 @@ function viewPotd(){const el=document.getElementById("v-potd");if(!el)return;con
    <div id="pdBody">${sp==="nhl"?potdNhl():sp==="soc"?potdSoc():potdNba()}</div>`;
   el.querySelectorAll("[data-pdsp]").forEach(b=>b.onclick=()=>{POTD_SP=b.dataset.pdsp;try{LS.set("potdSp",POTD_SP)}catch(e){}viewPotd()});
   el.querySelectorAll("[data-pdnba]").forEach(c=>c.onclick=e=>{if(e.target.closest("[data-act],button,a"))return;const [nm,k]=c.dataset.pdnba.split("|");nbaGoPlayer(typeof nbaUnesc!=="undefined"?nbaUnesc(nm):nm,k)});
-  el.querySelectorAll("[data-pdnhl]").forEach(c=>c.onclick=e=>{if(e.target.closest("[data-act],button,a"))return;location.hash="#nhl-player-"+encodeURIComponent(c.dataset.pdnhl.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&lt;/g,"<"))});
+  el.querySelectorAll("[data-pdnhl]").forEach(c=>c.onclick=e=>{if(e.target.closest("[data-act],button,a"))return;{const [nm_,k_]=c.dataset.pdnhl.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&lt;/g,"<").split("|");location.hash="#nhl-player-"+encodeURIComponent(nm_)+(k_?"~"+k_:"")}});
   el.querySelectorAll("[data-pdgame]").forEach(c=>c.onclick=e=>{if(e.target.closest("[data-act],button,a"))return;location.hash=c.dataset.pdgame});
   if(typeof actBind!=="undefined")try{actBind(el)}catch(e){}}
 function potdSoc(){if(!window.SOC_OK){if(typeof socEnsure!=="undefined")socEnsure(()=>{if(location.hash==="#potd")viewPotd()});return `<div class="card small">Loading soccer…</div>`}
