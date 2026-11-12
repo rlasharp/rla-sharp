@@ -1,20 +1,20 @@
 {
  "auto": {
-  "at": "2026-11-12T05:44:33+00:00",
+  "at": "2026-11-12T06:05:50+00:00",
   "ok": true,
-  "summary": "\nnbalineups: HTTP Error 404: Not Found \u2014 keeping the old file\nNBA starting lineups: kept old\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 160 games cached\nNBA refs: 9 crews posted today\nliveprops: 114 feed lines merged (0 skipped from other days), 114 total, unmatched names: []\nFirst tip is 1103 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 160 (through 2026-11-10), players 462, slate 4, lines 4, props 114, inj teams 29, prev-season players 107, play log 27, adv 384, qtr games 160, h2h 4/4/4/2\nnfl-update: 14 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-lines-next: 13 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 8 with a forecast\nnflrefs: 136 games (0 new), 18 referees, 0 of this week's crews posted\n286 players, 32 teams\nnfl-inj: 286 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 681 players, 5 ESPN requests this run\nNHL data: 11 games today, 2 tomorrow, 32 teams, 693 skaters, 66 goalies, 787 props, 288 finals, 40 requests\nsocmgr: 5 new headlines, 13 clubs with manager news\nsoccer: 152 upcoming matches (0 with odds, 152 with estimates, 141 with weather, 0 with referee), 0 player props, 5880 players\ntrack: nba 2026-11-12: snapshot 10 props, 4 games \u00b7 graded: NHL plays 7-9, best props NBA 14-26 NFL 8-2 NHL 11-26\nSite check OK \u2014 published (2026-11-12T05:43:00Z)\n"
+  "summary": "\nnbalineups: HTTP Error 404: Not Found \u2014 keeping the old file\nNBA starting lineups: kept old\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 160 games cached\nNBA refs: 9 crews posted today\nliveprops: 285 feed lines merged (0 skipped from other days), 278 total, unmatched names: []\nFirst tip is 1085 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 160 (through 2026-11-10), players 462, slate 4, lines 4, props 278, inj teams 29, prev-season players 107, play log 27, adv 384, qtr games 160, h2h 4/4/4/2\nnfl-update: 14 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-lines-next: 13 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 8 with a forecast\nnflrefs: 136 games (0 new), 18 referees, 0 of this week's crews posted\n286 players, 32 teams\nnfl-inj: 286 players\nnfl-qtr: 136 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 682 players, 6 ESPN requests this run\nNHL data: 11 games today, 2 tomorrow, 32 teams, 694 skaters, 66 goalies, 786 props, 289 finals, 40 requests\nsocmgr: 5 new headlines, 13 clubs with manager news\nsoccer: 152 upcoming matches (0 with odds, 152 with estimates, 141 with weather, 0 with referee), 0 player props, 5880 players\ntrack: nba 2026-11-12: snapshot 10 props, 4 games \u00b7 graded: NHL plays 8-9, best props NBA 14-26 NFL 8-2 NHL 11-29\nSite check OK \u2014 published (2026-11-12T06:04:17Z)\n"
  },
  "site": {
-  "at": "2026-11-12T05:44:33+00:00",
+  "at": "2026-11-12T06:05:50+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-12T05:44:33+00:00",
+  "at": "2026-11-12T06:05:50+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Thu Nov 12 12:38 AM ET",
-  "odds_at": "2026-11-12T03:34:41+00:00",
+  "gen": "Thu Nov 12 12:55 AM ET",
+  "odds_at": "2026-11-12T05:44:45+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -971,6 +971,20 @@
     "nbalineups: HTTP Error 404: Not Found \u2014 keeping the old file",
     "NBA starting lineups: kept old",
     "liveprops: 114 feed lines merged (0 skipped from other days), 114 total, unmatched names: []"
+   ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-12T06:05:50+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [
+    "nbalineups: HTTP Error 404: Not Found \u2014 keeping the old file",
+    "NBA starting lineups: kept old",
+    "liveprops: 285 feed lines merged (0 skipped from other days), 278 total, unmatched names: []"
    ],
    "check_failed": false,
    "published": true
