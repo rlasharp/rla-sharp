@@ -102,7 +102,7 @@ function socGrade(b){if(typeof SOC_RES==="undefined"||!window.SOC_OK){socEnsure(
 function socVal(g,mk){const m=SOC_MK[mk];if(!m)return null;if(mk==="sga")return g[5]+g[6];return g[m[3]]}
 function socPlayerGames(aid){const P=window.SOC_P&&SOC_P[aid];return P?P[3].filter(g=>socRowOk(aid,g)):[]}
 /* ---------- 🎚 soccer player filters (player page only): started / off the bench, minutes, opponent's place in the table, venue ---------- */
-function socPF(aid){if(!SC.pf||SC.pfId!==aid){SC.pf={role:"",min:"",tbl:"",ven:""};SC.pfId=aid}return SC.pf}
+function socPF(aid){if(!SC.pf||SC.pfId!==aid){SC.pf={role:"",min:"",tbl:"",ven:""};if(SC.pfId!==aid)SC.pfOpen=false;SC.pfId=aid}return SC.pf}
 function socTblTier(lg,team){const S=typeof SOC_ST!=="undefined"&&SOC_ST[lg];if(!S)return null;const r=S.find(x=>String(x[0])===String(team));if(!r)return null;const n=S.length;return r[1]<=Math.ceil(n/3)?"top":r[1]>n-Math.ceil(n/3)?"bot":"mid"}
 function socRowOk(aid,g){const f=SC.pfId===aid&&location.hash==="#soccer-player-"+aid?SC.pf:null;if(!f)return true;const P=SOC_P[aid],tid=P&&P[1],r=socResIdx()[g[0]];
   if(f.role&&(f.role==="st"?!g[1]:g[1]))return false;

@@ -204,7 +204,7 @@ function nflPropHead(pl,k,line){const o0=oppOf(pl.team),closed=!!(o0&&nflStarted
   const own=S.lines[pl.name+"|"+k];
   return `<div class="pcl noglo"><div class="pcv">${td?"TD":line}<small>${u}</small>${!td&&!closed&&typeof loStep!=="undefined"?loStep(pl.name,k,main):""}</div><div class="pcm"><b>${td?"Anytime touchdown":MARKETS[k].n}</b>${alt&&typeof loAltChip!=="undefined"?loAltChip(pl.name,k):""}<div class="pco">${rp?`${rp[1]!=null?`<span class="o">${td?"Yes":"Over"} ${amTxt(rp[1])}</span>`:""}${rp[2]!=null?`<span class="u">Under ${amTxt(rp[2])}</span>`:""}${rp[3]?`<span class="bk">${esc(rp[3])}</span>`:""}`:`<span class="bk">${closed?"🔒 Game started — pregame lines closed":own?"Your line":"No book line yet · his season average"}</span>`}</div></div></div>
    ${alt?"":`${rp&&typeof nflVerdict!=="undefined"?nflVerdict(pl.name,k):""}${rp?trackRow({pl,k}):""}`}`}
-function nflPropFilterCard(pl,k,line,CL){const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);
+function nflPropFilterCard(pl,k,line,CL){{const id=pl.name+"|"+k;if(window._pxLastProp!==id){window._pxLastProp=id;const S0=PXS["nfl|"+pl.name];if(S0)S0.open=false}}const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);
   const o9=oppOf(pl.team),rr=o9&&typeof NFL_RST!=="undefined"?NFL_RST[(o9.g.wk||PLAYS_WEEK)+"|"+pl.team]:null;
   const Q9=o9&&typeof QB1_STATUS!=="undefined"&&QB1_STATUS[pl.team],P={tn:o9?{...pxNflSit(o9.opp,pl.pos,null,null),oppT:o9.opp,pos:pl.pos,qb:Q9?(/^(out|doubtful|injured reserve|ir)\b/i.test(Q9.now||"")?Q9.sub:Q9.qb):"",ven:o9.home?"H":"A",rest:rr==null?"":rr<=5?"short":rr>=12?"bye":"norm"}:null,head:nflPropHead(pl,k,line),
     mates:nflMateHtml(pl,"nfl|"+pl.name),

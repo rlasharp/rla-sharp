@@ -1074,7 +1074,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
   if(typeof nbaWirePx!=="undefined")nbaWirePx(el,nm);
   if(typeof pxSwipe!=="undefined")pxSwipe(el.querySelector(".pmkw"),"#v-nba [data-pmk]");
   if(typeof pxRecentAdd!=="undefined")pxRecentAdd("nba",nm,NB.pmk);
-  el.querySelectorAll("[data-pmk]").forEach(b=>b.onclick=()=>{NB.pmk=b.dataset.pmk;el.querySelectorAll("[data-pmk]").forEach(x=>x.classList.toggle("on",x===b));el.querySelectorAll("[data-pmkc]").forEach(c=>c.hidden=c.dataset.pmkc!==NB.pmk)});
+  el.querySelectorAll("[data-pmk]").forEach(b=>b.onclick=()=>{NB.pmk=b.dataset.pmk;NB.fOpen=false;{const d=el.querySelector("details.pxfd[open]");if(d)d.open=false}el.querySelectorAll("[data-pmk]").forEach(x=>x.classList.toggle("on",x===b));el.querySelectorAll("[data-pmkc]").forEach(c=>c.hidden=c.dataset.pmkc!==NB.pmk)});
   nbaWireCharts(el,()=>nbaPlayer(el,nm));
   el.querySelectorAll("[data-jump]").forEach(r=>r.onclick=()=>nbaFlash(r.dataset.jump));
   if(NB.goto){const id=NB.goto;NB.goto=null;setTimeout(()=>nbaFlash(id),60)}

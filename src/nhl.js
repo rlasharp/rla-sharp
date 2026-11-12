@@ -245,7 +245,7 @@ function nhLineRow(nm,r){
 const NH_SIT={ven:["Venue",{H:"Home",A:"Away"}],rest:["Rest",{b2b:"Back-to-back",rest:"1+ days off"}],
   opp:["Opp defense",{top:"Top 10",mid:"Middle",bot:"Bottom 10"}],sa:["Opp shots allowed",{few:"Few",mid:"Middle",many:"Many"}],
   gk:["Opp goalie",{good:"Good (.910+)",avg:"Average",weak:"Weak (under .895)"}]};
-function nhPF(nm){if(!NH.pf||NH.pfNm!==nm){NH.pf={ven:"",rest:"",opp:"",sa:"",gk:"",toi:"",mates:{}};NH.pfNm=nm}return NH.pf}
+function nhPF(nm){if(!NH.pf||NH.pfNm!==nm){NH.pf={ven:"",rest:"",opp:"",sa:"",gk:"",toi:"",mates:{}};if(NH.pfNm!==nm)NH.pfOpen=false;NH.pfNm=nm}return NH.pf}
 function nhTierOf(t,k){const T=NHL_TEAM[t];if(!T)return null;const n=Object.keys(NHL_TEAM).length,r=k==="opp"?T.gaR:T.saR;if(r==null)return null;return k==="opp"?(r<=10?"top":r>n-10?"bot":"mid"):(r<=10?"few":r>n-10?"many":"mid")}
 function nhGkTier(sv){return sv==null?null:sv>=.91?"good":sv<.895?"weak":"avg"}
 function nhRowOk(nm,x,isG){const f=NH.pfNm===nm&&/^#nhl-player-/.test(location.hash)?NH.pf:null;if(!f)return true;const w=nhWho(nm),prev=isG?x[9]===1:x[16]===1;
@@ -319,7 +319,7 @@ function nhlPlayer(el,nm){
    ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nhl",nm):""}
    ${isG?"":nhShotMap(nm)}${isG||typeof vxToi==="undefined"?"":vxToi(nm)}
    <div class="card" style="margin-top:12px"><h2>Game log</h2><div class="alw"><table class="altt nhlog"><thead><tr>${isG?"<th>Date</th><th>Opp</th><th>Start</th><th>SA</th><th>SV</th><th>GA</th><th>SV%</th><th>Min</th>":"<th>Date</th><th>Opp</th><th>G</th><th>A</th><th>PTS</th><th>SOG</th><th>BLK</th><th>HIT</th><th>PPG</th><th>FO</th><th>TOI</th>"}</tr></thead><tbody>${lg}</tbody></table></div></div>${nhFoot()}`;
-  el.querySelectorAll("[data-nhpm]").forEach(b=>b.onclick=()=>{NH.pm=b.dataset.nhpm;const y=scrollY;nhlPlayer(el,nm);scrollTo(0,y)});
+  el.querySelectorAll("[data-nhpm]").forEach(b=>b.onclick=()=>{NH.pm=b.dataset.nhpm;NH.pfOpen=false;const y=scrollY;nhlPlayer(el,nm);scrollTo(0,y)});
   nhWireFilt(el,nm);
   nhWire(el,()=>nhlPlayer(el,nm))}
 /* market tabs for a player page: posted props first, then stats we can chart without a line */
