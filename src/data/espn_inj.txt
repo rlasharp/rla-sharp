@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 19:23Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 19:34Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Zachary Carter|DT|IR|Knee|Nov 15
@@ -77,12 +77,12 @@ Ronnie Hickman|S|Questionable|Concussion|Nov 15
 Deshaun Watson|QB|Out|Undisclosed|
 Maliek Collins|DT|Questionable|Elbow|Nov 15
 #DAL
+George Pickens|WR|Out|Hamstring|Nov 15
 Joey Porter Jr.|CB|Questionable|Ankle|Nov 15
 DeMarvion Overshown|LB|Questionable|Hamstring|Nov 15
 KaVontae Turpin|WR|Questionable|Ribs|Nov 15
 Luke Schoonmaker|TE|Out|Undisclosed|
 Devin Moore|CB|IR|Hip|Nov 15
-George Pickens|WR|Questionable|Hamstring|Nov 15
 Tyler Goodson|RB|Out|Knee - ACL + MCL|Nov 26
 Jake Ferguson|TE|Out|Knee|Nov 22
 Donovan Ezeiruaku|LB|Questionable|Ankle|Nov 15
@@ -129,11 +129,11 @@ Josh Whyle|TE|Questionable|Concussion|Nov 15
 Sean Rhyan|G|Questionable|Ankle|Nov 15
 Travis Glover|OT|Questionable|Knee|Nov 15
 #HOU
+Azeez Al-Shaair|LB|Questionable|Groin|Nov 15
 David Montgomery|RB|Questionable|Groin|Nov 15
 Woody Marks|RB|Questionable|Knee|Nov 15
 Jaylin Smith|CB|IR|Hamstring|Nov 15
 Jake Hummel|LB|IR|Groin|Nov 15
-Azeez Al-Shaair|LB|Questionable|Groin|Nov 15
 Brevin Jordan|TE|Questionable|Finger|Nov 15
 Marvin Harrison Jr.|WR|Questionable|Hamstring|Nov 15
 Keylan Rutledge|G|Questionable|Neck|Nov 15
