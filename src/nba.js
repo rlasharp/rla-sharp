@@ -502,6 +502,7 @@ function nbaSets(nm,opp){
     h2h:opp?all.filter(o=>o.x[2]===opp):[]
   };
 }
+const NBA_CMB={5:["PTS","#3987e5"],6:["REB","#16a34a"],7:["AST","#d97706"]};
 function nbaChart(items,k,line,id){
   if(!items.length)return `<div class="small" style="padding:18px 0;text-align:center">No games to show.</div>`;
   const vals=items.map(o=>nbaVal(o.x,k)),mx=Math.max(line*1.35,...vals,1),H=150;
@@ -509,10 +510,12 @@ function nbaChart(items,k,line,id){
   const over=vals.filter(v=>pxHit(v,line)).length,avg=vals.reduce((a,b)=>a+b,0)/vals.length;
   return `<div class="nbch" style="height:${H+34}px">
     <div class="nbln" style="bottom:${ly+20}px"></div>
-    ${items.map((o,i)=>{const v=vals[i],x=o.x,ok=pxHit(v,line),psh=v===line;return `<div class="nbbar${o.prev?" pv":""}" title="${nbaEsc(x[1])} ${x[3]==="H"?"vs":"@"} ${x[2]}: ${v}">
-      <span class="v ${psh?"":ok?"h":"m"}">${v}</span><i class="${psh?"p":ok?"h":"m"}" style="height:${Math.max(3,Math.round(v/mx*H))}px"></i>
+    ${items.map((o,i)=>{const v=vals[i],x=o.x,ok=pxHit(v,line),psh=v===line,hh=Math.max(3,Math.round(v/mx*H)),C=Array.isArray(NBA_MK[k]&&NBA_MK[k][0])?NBA_MK[k][0]:null;
+      const parts=C?C.map(j=>[NBA_CMB[j][0],+x[j]||0,NBA_CMB[j][1]]):null;return `<div class="nbbar${o.prev?" pv":""}" title="${nbaEsc(x[1])} ${x[3]==="H"?"vs":"@"} ${x[2]}: ${v}${parts?" = "+parts.map(q=>q[1]+" "+q[0]).join(" + "):""}">
+      <span class="v ${psh?"":ok?"h":"m"}">${v}</span>${parts?`<i class="stk ${psh?"p":ok?"h":"m"}" style="height:${hh}px">${parts.map(q=>{const sh=v?q[1]/v*hh:0;return `<em style="height:${(v?q[1]/v*100:0).toFixed(1)}%;background:${q[2]}">${sh>=13?q[1]:""}</em>`}).join("")}</i>`:`<i class="${psh?"p":ok?"h":"m"}" style="height:${hh}px"></i>`}
       <span class="o">${x[3]==="H"?"":"@"}${x[2]}</span></div>`}).join("")}
   </div>
+  ${Array.isArray(NBA_MK[k]&&NBA_MK[k][0])?`<div class="stkk">${NBA_MK[k][0].map(j=>`<span><i style="background:${NBA_CMB[j][1]}"></i>${NBA_CMB[j][0]} <b>${nbaF(vals.length?items.reduce((a,o)=>a+(+o.x[j]||0),0)/items.length:0)}</b></span>`).join("")}<span class="small">avg · tap or hover a bar for the split</span></div>`:""}
   <div class="nbsum"><b class="${over/vals.length>=.5?"up":"dn"}">${over}/${vals.length} ${pxSW()}</b> <span style="color:#f3c75a">${line}</span> · avg ${nbaF(avg)}${items.some(o=>o.prev)?` · <span class="small">faded = last season</span>`:""}</div>`;
 }
 
