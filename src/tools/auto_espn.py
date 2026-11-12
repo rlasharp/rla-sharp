@@ -114,6 +114,30 @@ def nba_lines(date):
     open("data/nba_lines.txt", "w").write("\n".join(hdr + rows) + "\n")
     print(f"nba-lines: {len(rows)} games ({n} refreshed)")
 
+def lines_next(sport, keys):
+    """Lines for upcoming games as soon as ESPN's feed (DraftKings) has them -> nba_next_lines.js / nfl_next_lines.js.
+    keys: list of (label, scoreboard query). Keeps each game's first-seen number as its open. Real lines only."""
+    fn = f"{sport}_next_lines.js"; var = "NBA_LINES_NEXT" if sport == "nba" else "NFL_LINES_NEXT"; old = {}
+    if os.path.exists(fn):
+        try: old = json.loads(re.search(r"=\s*(\{.*\})\s*;", open(fn).read(), re.S).group(1))
+        except Exception: old = {}
+    out, n = {}, 0
+    for label, q in keys:
+        try: d = get(B + q)
+        except SystemExit: continue
+        for e in d.get("events", []):
+            c = e["competitions"][0]; a, h, _ = teams_of(c, FIX_NFL if sport == "nfl" else None); k = f"{label}|{a}@{h}"; o = odds_of(c)
+            st = ((c.get("status") or e.get("status") or {}).get("type") or {}).get("state", "pre")
+            if st != "pre": continue
+            if not o or o["sp"] is None or o["tot"] is None:
+                if k in old: out[k] = old[k]
+                continue
+            op = (old.get(k) or {}).get("open") or {"sp": o["spo"] if o["spo"] is not None else o["sp"], "tot": o["toto"] if o["toto"] is not None else o["tot"]}
+            out[k] = {"open": op, "sp": o["sp"], "spx": o["spx"] or -110, "tot": o["tot"], "ox": o["ox"] or -110, "ux": o["ux"] or -110, "mla": o["mla"], "mlh": o["mlh"], "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")}
+            n += 1
+    open(fn, "w").write(f"/* {sport.upper()} lines for upcoming games — ESPN odds feed (tools/auto_espn.py lines-next) */\nvar {var}=" + json.dumps(out, separators=(",", ":")) + ";\n")
+    print(f"{sport}-lines-next: {n} upcoming games with lines")
+
 # ---------------- NFL ----------------
 def nfl_team_map():
     js = open("engine.js", encoding="utf-8").read()
@@ -328,5 +352,11 @@ if __name__ == "__main__":
     elif cmd == "nfl-inj": nfl_inj(sys.argv[2])
     elif cmd == "nfl-update": nfl_update()
     elif cmd == "nfl-qtr": nfl_qtr()
+    elif cmd == "nba-lines-next":
+        t = datetime.date.fromisoformat(sys.argv[2]); ds = [(t + datetime.timedelta(days=i)).isoformat() for i in (1, 2, 3)]
+        lines_next("nba", [(d, "basketball/nba/scoreboard?dates=" + d.replace("-", "")) for d in ds])
+    elif cmd == "nfl-lines-next":
+        wk = int(re.search(r"PLAYS_WEEK=(\d+)", open("plays.js", encoding="utf-8").read()).group(1))
+        lines_next("nfl", [(str(wk + 1), f"football/nfl/scoreboard?week={wk + 1}&seasontype=2")])
     elif cmd == "nfl-roll": nfl_roll(len(sys.argv) > 2 and sys.argv[2] == "force")
     else: raise SystemExit("unknown command")

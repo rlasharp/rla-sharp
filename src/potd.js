@@ -4,6 +4,8 @@
    record counts (locked before the first game by the site update; until then a preview using the same rules).
    Everything comes from real posted lines and box scores — nothing invented. */
 let POTD_SP=null;
+/* NHL play titles: props are plain text (escape them); game plays already carry their own small-print markup */
+function potdNhTitle(x){return x.type==="prop"?potdE(nhlPlayTitle(x)):nhlPlayTitle(x)}
 function potdSp(){if(POTD_SP)return POTD_SP;let s=null;try{s=LS.get("potdSp")||LS.get("sport")}catch(e){}return s==="nhl"?"nhl":s==="soc"?"soc":"nba"}
 function potdE(s){return typeof esc!=="undefined"?esc(String(s)):String(s).replace(/[<&"]/g,c=>({"<":"&lt;","&":"&amp;",'"':"&quot;"})[c])}
 function potdPct(x){return Math.round(x*100)+"%"}
@@ -64,7 +66,7 @@ function potdNhl(){if(typeof NHL_DATE==="undefined"||!NHL_DATE){if(typeof nhlEns
       const vals=nhVals(x.nm,x.k).map(o=>o.v).slice(-10),m=NH_MK[x.k],g=nhGameOf(x.tm),ov=x.side==="o"?"over":"under";
       const why=[];if(s){why.push(`Went ${ov} ${x.line} in <b>${s.l10} of his last ${s.n10}</b> (averaging ${s.avg.toFixed(1)} ${potdE(m[2])} this season).`);why.push(`This season: ${s.hs} of ${s.ns} games ${ov} the line.`)}
       if(NHL_G[x.nm]&&g){const opp=g.a===x.tm?g.h:g.a,o=NHL_TEAM[opp];if(o&&o.sf)why.push(`${potdE(nhTm(opp))} average ${(+o.sf).toFixed(1)} shots a game.`)}
-      return potdCard({title:`${potdE(nhlPlayTitle(x))}`,sub:`${potdE(x.tm)}${g?` ${g.a===x.tm?"@":"vs"} ${potdE(g.a===x.tm?g.h:g.a)} · ${potdE(g.t)} ET`:""}`,odds:x.odds,ch:b?b.s.p:null,need:imp(x.odds),
+      return potdCard({title:`${potdNhTitle(x)}`,sub:`${potdE(x.tm)}${g?` ${g.a===x.tm?"@":"vs"} ${potdE(g.a===x.tm?g.h:g.a)} · ${potdE(g.t)} ET`:""}`,odds:x.odds,ch:b?b.s.p:null,need:imp(x.odds),
         strip:potdStrip(vals,x.line,x.side),why,r:x.r,v:x.v,attr:`data-pdnhl="${potdE(x.nm)}"`,foot:`<div class="pdft"><span class="small">Tap for his full game log →</span></div>`},i)}
     const g=(NHL_SLATE||[]).find(y=>y.a===x.a&&y.h===x.h),e=x.e||(g?nhEdges(g).find(y=>y.mk===x.mk&&y.pick===x.pick):null),pr=g&&nhProject(g);
     const why=[];if(pr)why.push(`Our model: ${potdE(nhTm(g.h))} win ${potdPct(pr.hwin)} of the time; expected score ${potdE(nhTm(g.a))} ${pr.la.toFixed(1)} – ${pr.lh.toFixed(1)} ${potdE(nhTm(g.h))}.`);
@@ -75,7 +77,7 @@ function potdNhl(){if(typeof NHL_DATE==="undefined"||!NHL_DATE){if(typeof nhlEns
   const R=T&&T.sum&&T.sum.nhl&&(T.sum.nhl.recent||[]).filter(x=>x.r&&x.r!=="pending"&&x.d!==NHL_DATE).slice(0,10);
   const rec=`<div class="card rec"><h2 style="margin-bottom:4px">📒 NHL plays of the day record</h2>
     ${S&&(S.w+S.l)?`<div class="recs"><div><b>${S.w}-${S.l}${S.p?"-"+S.p:""}</b>Record</div><div><b class="${S.u>0?"up":S.u<0?"dn":""}">${S.u>0?"+":""}${(+S.u).toFixed(2)}u</b>Units (1u a play)</div><div><b>${potdPct(S.w/(S.w+S.l))}</b>Hit rate</div></div>`:`<div class="small">Tracking started Nov 8 — results post after the games.</div>`}
-    ${(R||[]).map(x=>`<div class="rcr"><span class="lc ${x.r==="win"?"o":x.r==="loss"?"u":"p"} rcc">${x.r==="win"?"W":x.r==="loss"?"L":"P"}</span><div style="flex:1;min-width:0"><b>${potdE(nhlPlayTitle(x))}</b> <span class="small">${typeof xOdds!=="undefined"?xOdds(x.odds):x.odds} · ${potdE(nhDayS(x.d).split(",").slice(0,2).join(","))}${x.v!=null?" · "+potdE(x.v):""}</span></div></div>`).join("")}
+    ${(R||[]).map(x=>`<div class="rcr"><span class="lc ${x.r==="win"?"o":x.r==="loss"?"u":"p"} rcc">${x.r==="win"?"W":x.r==="loss"?"L":"P"}</span><div style="flex:1;min-width:0"><b>${potdNhTitle(x)}</b> <span class="small">${typeof xOdds!=="undefined"?xOdds(x.odds):x.odds} · ${potdE(nhDayS(x.d).split(",").slice(0,2).join(","))}${x.v!=null?" · "+potdE(x.v):""}</span></div></div>`).join("")}
     <a href="#record" class="small" style="display:block;text-align:center;margin-top:8px;color:var(--text2)">📒 Full record →</a></div>`;
   return `<p class="small pdhead">${head}</p>${cards}${typeof prlSportHtml!=="undefined"?prlSportHtml("nhl"):""}<div style="margin-top:14px">${rec}</div>
    <div class="small" style="margin-top:8px">How they're picked: props that went our way in 7+ of the last 10 with our chance at least 5 points over what the odds need (odds −200 or better, player not injured), plus our two biggest game edges (moneyline, puck line or total). Leans, not guarantees — bet small.</div>`}
@@ -95,6 +97,6 @@ function potdSoc(){if(!window.SOC_OK){if(typeof socEnsure!=="undefined")socEnsur
 /* a one-line teaser at the top of the NBA / NHL games pages */
 function potdTeaser(sp){try{let t="";
   if(sp==="nba"&&typeof nbaTodayPlays!=="undefined"){const b=nbaTodayPlays().P[0];if(b)t=`${potdE(b.nm)} ${b.side==="o"?"Over":"Under"} ${b.line} ${potdE(NBA_MK[b.k][1])} <span class="small">${oddsFmt(b.odds)}</span>`}
-  if(sp==="nhl"){const T=typeof TRACK!=="undefined"&&TRACK,P=T&&T.nhlPlays&&T.nhlPlays.length?T.nhlPlays:potdNhlPreview(),x=P[0];if(x)t=`${potdE(nhlPlayTitle(x))} <span class="small">${typeof xOdds!=="undefined"?xOdds(x.odds):x.odds}</span>`}
+  if(sp==="nhl"){const T=typeof TRACK!=="undefined"&&TRACK,P=T&&T.nhlPlays&&T.nhlPlays.length?T.nhlPlays:potdNhlPreview(),x=P[0];if(x)t=`${potdNhTitle(x)} <span class="small">${typeof xOdds!=="undefined"?xOdds(x.odds):x.odds}</span>`}
   return `<a class="card pdteas" href="#potd" data-pdgo="${sp}"><span>⭐ <b>Play of the day</b></span><span class="pdtx">${t||`<span class="small">${sp==="nba"&&typeof NBA_PROPS!=="undefined"&&NBA_PROPS.length?"nothing passes our filters today":"posted once today's lines are up"}</span>`}</span><span class="small">All plays →</span></a>`}catch(e){return ""}}
 document.addEventListener("click",e=>{const a=e.target.closest("[data-pdgo]");if(a){POTD_SP=a.dataset.pdgo;try{LS.set("potdSp",POTD_SP)}catch(x){}}});

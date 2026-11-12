@@ -1,0 +1,1 @@
+var NFL_LINES_NEXT={};

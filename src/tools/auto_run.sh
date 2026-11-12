@@ -14,6 +14,7 @@ if want nba; then
     python3 tools/auto_espn.py nba-inj 2>>"$WORK/summary.txt" && log "NBA injuries refreshed" || log "NBA injuries: kept old"
     python3 tools/nbalineups.py "$TODAY" > "$WORK/lu.js" 2>>"$WORK/summary.txt" && grep -q "^var NBA_LU" "$WORK/lu.js" && cp "$WORK/lu.js" nba_lu.js && log "NBA starting lineups refreshed" || log "NBA starting lineups: kept old"
     python3 tools/auto_espn.py nba-lines "$TODAY" 2>>"$WORK/summary.txt" && log "NBA lines checked" || log "NBA lines: kept old"
+    python3 tools/auto_espn.py nba-lines-next "$TODAY" >> "$WORK/summary.txt" 2>&1 || log "NBA upcoming lines: kept old"   # lines for the next 3 days as soon as books post them
     python3 tools/nbarefs.py "$ROOT" > "$WORK/refs.js" 2>> "$WORK/summary.txt" && grep -q "^var NBA_REFS" "$WORK/refs.js" && cp "$WORK/refs.js" nba_refs.js || log "NBA referees: kept old"
     if ! grep -q "^# day: $TODAY" data/nba_props.txt; then   # new day: drop yesterday's props
       grep '^#' data/nba_props.txt | grep -v '^# day:' > "$WORK/h.txt"; echo "# day: $TODAY" >> "$WORK/h.txt"; cp "$WORK/h.txt" data/nba_props.txt; log "NBA props reset for $TODAY"; fi
@@ -29,6 +30,7 @@ fi
 if want nfl; then
   for f in engine.js real.js market.js inj.js data/espn_inj.txt; do cp "$f" "$WORK/$(basename $f).bak"; done
   python3 tools/auto_espn.py nfl-update >> "$WORK/summary.txt" 2>&1 || log "NFL lines/finals: kept old"
+  python3 tools/auto_espn.py nfl-lines-next >> "$WORK/summary.txt" 2>&1 || log "NFL next-week lines: kept old"
   python3 tools/auto_espn.py nfl-roll >> "$WORK/summary.txt" 2>&1 || log "NFL new week: not set up yet (kept this week)"   # writes nothing unless it completes   # once every game of the week is final: next week's games + lines, plays archived
   grep -q "nfl-roll: Week" "$WORK/summary.txt" && python3 tools/auto_espn.py nfl-update >> "$WORK/summary.txt" 2>&1   # fill the new week's lines right away
   python3 tools/nflwx.py > "$WORK/nflwx.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_WX" "$WORK/nflwx.js" && cp "$WORK/nflwx.js" nfl_wx.js || log "NFL weather: kept old"   # kickoff forecast for every outdoor game, refreshed each NFL update

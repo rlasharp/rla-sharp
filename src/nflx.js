@@ -103,6 +103,8 @@ function viewNextWeek(){
     return `<div class="card game nw"><div class="when"><span>${fmt(g.d,g.tm)}</span>${div?`<span class="tag real">Division game</span>`:""}</div>
       <div class="tm">${badge(g.away)}<span class="nm">${TEAMS[g.away]?TEAMS[g.away][0]:g.away}<small>${recTxt(g.away)}</small></span></div>
       <div class="tm" style="margin-top:8px">${badge(g.home)}<span class="nm">${TEAMS[g.home]?TEAMS[g.home][0]:g.home}<small>${recTxt(g.home)}</small></span></div>
+      ${(()=>{const L=typeof NFL_LINES_NEXT!=="undefined"&&NFL_LINES_NEXT[wk+"|"+g.away+"@"+g.home];if(!L)return `<div class="pubmini small">Lines not posted yet — they appear here as soon as books post them.</div>`;
+        const fav=L.sp<=0?g.home:g.away;return `<div class="pubmini">📈 <b>${esc(short(fav))} −${Math.abs(L.sp)}</b> · O/U <b>${L.tot}</b>${L.mla!=null&&L.mlh!=null?` · ML ${oddsFmt(L.mla)} / ${oddsFmt(L.mlh)}`:""}${L.open&&(L.open.sp!==L.sp||L.open.tot!==L.tot)?` <span class="small">(opened ${L.open.sp<=0?g.home:g.away} −${Math.abs(L.open.sp)}, ${L.open.tot})</span>`:""}</div>`})()}
       ${o.length?`<div class="pubmini">🚑 Out right now: ${o.slice(0,6).join(", ")}${o.length>6?"…":""}</div>`:""}</div>`};
   host.innerHTML=`<h1>NFL · Week ${wk}</h1>${nfWeekTabs("nextweek")}
    <p class="sub">${G.length} games. Lookahead spreads and totals post Sunday night, and player props Tuesday–Wednesday — they show up on the This week tab once the week rolls over.</p>

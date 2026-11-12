@@ -113,7 +113,7 @@ function xfReturn(g){const out=[];
       else if(back===0){let m2=0;for(let i=seq.length-1;i>=0&&!seq[i];i--)m2++;
         if(m2>=3&&/quest|probable|day|game-time|gtd/i.test(st))out.push({ic:"⏱️",c:"y",h:`${xfE(n)} could return tonight`,t:`Missed the last ${m2} games (${xfE(st)}). Players are often on a minutes limit in their first game back.`})}}}
   return out.slice(0,4)}
-function xfNba(g){try{const R=(typeof NBA_REST!=="undefined"&&NBA_REST)||{};return xfCard([xfBlow(g),...xfBump(g),xfAlt("nba",g.a,g.h,{b2b:R[g.a]&&R[g.a].rest===0,name:nbaShort(g.a)}),...xfReturn(g),...xfRevenge(g)])}catch(e){return ""}}
+function xfNba(g){try{const R=(typeof NBA_REST!=="undefined"&&NBA_REST)||{};return xfCard([xfBlow(g),...xfBump(g),xfAlt("nba",g.a,g.h,{b2b:!g.fut&&R[g.a]&&R[g.a].rest===0,name:nbaShort(g.a)}),...xfReturn(g),...xfRevenge(g)])}catch(e){return ""}}
 
 /* ---- NFL: backup QB, divisional rematch, pass rush vs offensive line ---- */
 function xfQB(t){try{const Q=(typeof QB1_STATUS!=="undefined"&&QB1_STATUS[t])||null;
