@@ -251,7 +251,8 @@ function pxNflSit(opp,pos,wk,team){const R=pxNflRanks(),o={};if(!opp)return o;
 /* ===== Game pages: points scored & allowed (Season / L5 / H2H) with spread + total filters ===== */
 const GS={};
 function gsRowsNba(t){const S=typeof NBA_SPR!=="undefined"?NBA_SPR:{};
-  return NBA_RES.filter(r=>r[2]===t||r[3]===t).sort((a,b)=>a[1]<b[1]?-1:1).map(r=>{const h=r[3]===t,s=S[r[0]];return {opp:h?r[2]:r[3],home:h,pf:h?r[5]:r[4],pa:h?r[4]:r[5],sp:s?(h?s[3]:-s[3]):null,tot:s?s[4]:null,d:r[1]}})}
+  const L=NBA_RES.filter(r=>r[2]===t||r[3]===t).sort((a,b)=>a[1]<b[1]?-1:1);
+  return L.map((r,i)=>{const h=r[3]===t,s=S[r[0]],b2b=i>0&&Math.round((Date.parse(r[1])-Date.parse(L[i-1][1]))/864e5)===1;return {opp:h?r[2]:r[3],home:h,pf:h?r[5]:r[4],pa:h?r[4]:r[5],sp:s?(h?s[3]:-s[3]):null,tot:s?s[4]:null,d:r[1],b2b}})}
 function gsRowsNfl(t){const SP=typeof NFL_SPR!=="undefined"?NFL_SPR:{};
   return teamGames(t).map(x=>{const s=SP[x.week+"|"+t];return {opp:x.opp,home:!!x.home,pf:x.pf,pa:x.pa,sp:s?s[0]:null,tot:s&&s[2]!=null?s[2]:null,d:"Wk "+x.week}})}
 function gsH2hNfl(g,t){const o=t===g.away?g.home:g.away,R=typeof nflH2hRows!=="undefined"?nflH2hRows(g):((typeof H2H_RAW!=="undefined"&&H2H_RAW[g.id])||[]);
@@ -259,24 +260,25 @@ function gsH2hNfl(g,t){const o=t===g.away?g.home:g.away,R=typeof nflH2hRows!=="u
   return R.map(([d,a,ap,h,hp])=>({opp:a===t?h:a,home:h===t,pf:a===t?ap:hp,pa:a===t?hp:ap,sp:null,tot:null,d:d.slice(0,4)})).reverse()}
 function gsCard(key,sport,teams,rowsFor,h2hFor,ton,TR){
   const S0=GS[key]||(GS[key]={t:0,set:"ssn",lo:-15,hi:15,tlo:TR[0],thi:TR[1],open:false});if(S0.tlo<TR[0]||S0.thi>TR[1]){S0.tlo=TR[0];S0.thi=TR[1]}
-  const t=teams[S0.t],o=teams[1-S0.t],all=rowsFor(t),sets={l5:all.slice(-5),ssn:all,h2h:h2hFor(t)};
+  const t=teams[S0.t],o=teams[1-S0.t],all=rowsFor(t),sets={l5:all.slice(-5),l10:all.slice(-10),ssn:all,b2b:all.filter(r=>r.b2b),h2h:h2hFor(t)};
   const lo=Math.min(S0.lo,S0.hi),hi=Math.max(S0.lo,S0.hi),tlo=Math.min(S0.tlo,S0.thi),thi=Math.max(S0.tlo,S0.thi);
   const spAny=lo<=-15&&hi>=15,ttAny=tlo<=TR[0]&&thi>=TR[1];
-  const ok=r=>(spAny||(r.sp!=null&&(lo<=-15||r.sp>=lo)&&(hi>=15||r.sp<=hi)))&&(ttAny||(r.tot!=null&&(tlo<=TR[0]||r.tot>=tlo)&&(thi>=TR[1]||r.tot<=thi)));
+  const ok=r=>(!S0.rest||(S0.rest==="b2b"?r.b2b:r.b2b===false))&&(spAny||(r.sp!=null&&(lo<=-15||r.sp>=lo)&&(hi>=15||r.sp<=hi)))&&(ttAny||(r.tot!=null&&(tlo<=TR[0]||r.tot>=tlo)&&(thi>=TR[1]||r.tot<=thi)));
   const A=(sets[S0.set]||all),M=A.filter(ok),N=M.length;
   const tsp=ton.sp==null?null:(S0.t===1?ton.sp:-ton.sp),ttot=ton.tot,it=tsp!=null&&ttot!=null?ttot/2-tsp/2:null;
   const av=f=>N?(M.reduce((q,r)=>q+f(r),0)/N):null,f1=v=>v==null?"—":(Math.round(v*10)/10).toFixed(1);
   const ovr=ttot!=null&&N?M.filter(r=>r.pf+r.pa>ttot).length:null,cvM=M.filter(r=>r.sp!=null),cov=cvM.filter(r=>r.pf-r.pa+r.sp>0).length;
   const badgeF=sport==="nba"?nbaBadge:badge,shortF=sport==="nba"?nbaShort:short;
   const mx0=Math.max(1,...M.map(r=>Math.max(r.pf,r.pa)),it||0),mn0=Math.min(...M.map(r=>Math.min(r.pf,r.pa)),it||1e9),base=sport==='nba'&&M.length?Math.max(0,Math.floor((mn0-15)/10)*10):0,mx=mx0+(mx0-base)*.12,H=v=>((v-base)/(mx-base)*100).toFixed(1);
-  const chips=[];if(!spAny)chips.push(["sp",pxSpRange(lo,hi)]);if(!ttAny)chips.push(["tt",`O/U ${tlo<=TR[0]?"≤"+thi:thi>=TR[1]?tlo+"+":tlo+"–"+thi}`]);
+  const chips=[];if(S0.rest)chips.push(["rest",S0.rest==="b2b"?"Back-to-backs":"Rested (1+ days off)"]);if(!spAny)chips.push(["sp",pxSpRange(lo,hi)]);if(!ttAny)chips.push(["tt",`O/U ${tlo<=TR[0]?"≤"+thi:thi>=TR[1]?tlo+"+":tlo+"–"+thi}`]);
   const spPre=[[-15,-7,"Fav 7+"],[-15,-.5,"Favored"],[.5,15,"Underdog"],[7,15,"Dog 7+"]].concat(tsp!=null?[[pxClamp(tsp-3,-15,15),pxClamp(tsp+3,-15,15),sport==="nfl"?"Near this game":"Near tonight"]]:[]).concat([[-15,15,"Any"]]);
   const w=TR[2],totPre=[[TR[0],TR[1],"Any"]].concat(ttot!=null?[[pxClamp(ttot-w,TR[0],TR[1]),pxClamp(ttot+w,TR[0],TR[1]),`${sport==="nfl"?"Near this game":"Near tonight"} (${ttot})`]]:[]);
   return `<div class="card gsc" data-gs="${esc(key)}"><h2 class="noglo" style="margin-bottom:8px">Points scored & allowed</h2>
    <div class="gst">${teams.map((x,i)=>`<button data-gst="${i}" class="${i===S0.t?"on":""}">${badgeF(x)} ${esc(shortF(x))}</button>`).join("")}</div>
-   <div class="pxset gss">${[["l5","L5"],["ssn","Season"],["h2h","H2H"]].map(([v,l])=>`<button data-gss="${v}" class="${v===S0.set?"on":""}"${sets[v].length?"":" disabled"}>${l}<small>${sets[v].length} games</small></button>`).join("")}</div>
+   <div class="pxset gss">${[["l5","L5"],["l10","L10"],["ssn","Season"],...(sport==="nba"?[["b2b","B2B"]]:[]),["h2h","H2H"]].map(([v,l])=>`<button data-gss="${v}" class="${v===S0.set?"on":""}"${sets[v].length?"":" disabled"}>${l}<small>${sets[v].length} game${sets[v].length===1?"":"s"}</small></button>`).join("")}</div>
    <details class="pxfd"${S0.open?" open":""}><summary class="pxfs"><span class="pxft">🎚 <b>Filters</b></span><span class="pxfc noglo">${chips.length?chips.map(([n,l])=>`<span class="fchip" data-gsc="${n}">${l} ✕</span>`).join(""):'<span class="fany">Any spread · Any total</span>'}</span><span class="pxchev">›</span></summary>
     ${tsp!=null?`<div style="margin:8px 0 2px"><span class="pxtn noglo">${sport==="nfl"?"This game":"Tonight"}: ${esc(shortF(t))} ${pxSpTxt(tsp)}${ttot!=null?" · O/U "+ttot:""}</span></div>`:""}
+    ${sport==="nba"?`<div class="sitr"><span>Rest</span><div class="pxpre">${[["","Any"],["b2b","Back-to-back"],["rest","1+ days off"]].map(([v,l])=>`<button data-gsr="${v}" class="${(S0.rest||"")===v?"on":""}">${l}</button>`).join("")}</div></div>`:""}
     ${pxDual("sp",`${esc(shortF(t))}${/s$/.test(shortF(t))?"'":"'s"} spread`,-15,15,.5,S0.lo,S0.hi,["Favored","PK","Underdog"],spPre)}
     ${pxDual("tt","Game total (O/U)",TR[0],TR[1],.5,S0.tlo,S0.thi,[String(TR[0]),String((TR[0]+TR[1])/2),String(TR[1])],totPre)}
     <div class="small">Closing lines (${sport==="nba"?"DraftKings via ESPN":"nflverse"}). Head-to-head games from earlier seasons have no lines, so the filters leave them out.</div></details>
@@ -292,7 +294,8 @@ function gsWire(root,rerender){
     c.querySelectorAll("[data-gst]").forEach(b=>b.onclick=()=>{S0.t=+b.dataset.gst;S0.lo=-15;S0.hi=15;re()});
     c.querySelectorAll("[data-gss]").forEach(b=>b.onclick=()=>{if(b.disabled)return;S0.set=b.dataset.gss;re()});
     const dd=c.querySelector("details");if(dd)dd.ontoggle=()=>{S0.open=dd.open};
-    c.querySelectorAll("[data-gsc]").forEach(ch=>ch.onclick=e=>{e.preventDefault();e.stopPropagation();if(ch.dataset.gsc==="sp"){S0.lo=-15;S0.hi=15}else{S0.tlo=-1e9;S0.thi=1e9}re()});
+    c.querySelectorAll("[data-gsr]").forEach(b=>b.onclick=()=>{S0.rest=b.dataset.gsr;re()});
+    c.querySelectorAll("[data-gsc]").forEach(ch=>ch.onclick=e=>{e.preventDefault();e.stopPropagation();if(ch.dataset.gsc==="rest"){S0.rest=""}else if(ch.dataset.gsc==="sp"){S0.lo=-15;S0.hi=15}else{S0.tlo=-1e9;S0.thi=1e9}re()});
     c.querySelectorAll("[data-pre]").forEach(b=>b.onclick=()=>{const [n,a,z]=b.dataset.pre.split("|");if(n==="sp"){S0.lo=+a;S0.hi=+z}else{S0.tlo=+a;S0.thi=+z}re()});
     const fill=(n,a,b,mn,mx,txt)=>{const x=Math.min(a,b),y=Math.max(a,b),fl=c.querySelector(`[data-fill="${n}"]`),o=c.querySelector(`[data-out="${n}"]`);if(!fl)return;fl.style.left=(x-mn)/(mx-mn)*100+"%";fl.style.right=(100-(y-mn)/(mx-mn)*100)+"%";o.textContent=txt(x,y);
       c.querySelectorAll(`[data-pre^="${n}|"]`).forEach(p=>{const [,pa,pb]=p.dataset.pre.split("|");p.classList.toggle("on",+pa===x&&+pb===y)})};

@@ -398,3 +398,8 @@ function vxSocMissImpact(f){try{if(!window.SOC_P||!f.miss)return "";const R=SOC_
     ${[["He started",x.W],["Without him",x.O]].map(([l,a])=>`<tr><td style="text-align:left">${l}</td><td>${a.length}</td><td><b>${x.av(a,"gf").toFixed(2)}</b></td><td>${x.av(a,"ga").toFixed(2)}</td><td>${x.av(a,"sh").toFixed(1)}</td><td>${x.av(a,"sot").toFixed(1)}</td><td>${Math.round(a.reduce((s,m)=>s+m.w,0)/a.length*100)}%</td></tr>`).join("")}</tbody></table></div>
     <div class="small">${Math.abs(d)>=.3?`${vxE(socTm(x.tid))} score <b>${Math.abs(d).toFixed(2)} ${d<0?"fewer":"more"}</b> goals a game without him.`:"Not much change in goals without him."}</div></div>`};
   return vxCard("If the missing players sit","How each team has done this season in matches the missing player started vs matches he didn't — every competition.",out.map(row).join(""),"Small samples — a few matches can swing these numbers. Missing = didn't feature in the last 2 matches after starting regularly, or sent off last time.")}catch(e){return ""}}
+
+/* box scores: side by side only when the box itself is wide enough (not the window) — inside a narrow panel it keeps the team switch */
+const BX_RO=typeof ResizeObserver!=="undefined"?new ResizeObserver(E=>{for(const e of E)e.target.classList.toggle("wide",e.contentRect.width>=820)}):null;
+function bxWatch(){for(const w of document.querySelectorAll(".bxsw:not([data-ro])")){w.dataset.ro=1;if(BX_RO)BX_RO.observe(w);else w.classList.toggle("wide",w.clientWidth>=820)}}
+new MutationObserver(()=>{if(window._bxwT)return;window._bxwT=setTimeout(()=>{window._bxwT=0;bxWatch()},50)}).observe(document.documentElement,{childList:true,subtree:true});
