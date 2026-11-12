@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 19:34Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 21:27Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -32,7 +32,7 @@ Ugonna Onyenso|C|Day-To-Day|foot|Nov 13
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
-Stephen Curry|G|Out|abdomen|Dec 1
+Stephen Curry|G|Out|abdomen|Dec 12
 Gary Payton II|G|Day-To-Day|knee inflammation|Nov 13
 Brandon Williams|G|Out|hamstring not specified|Nov 22
 Kristaps Porzingis|C|Out|illness|Jan 2
@@ -47,9 +47,9 @@ Tyrese Haliburton|G|Out|hamstring strain|Nov 22
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
+Brandon Ingram|F|Out|achilles surgery|Nov 19
 Cam Christie|G|Day-To-Day|ankle|Nov 13
 Yanic Konan Niederhauser|C|Out|foot surgery|Nov 17
-Brandon Ingram|F|Out|achilles surgery|Nov 13
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
@@ -62,6 +62,7 @@ Quinten Post|C|Day-To-Day|head|Nov 13
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
+Giannis Antetokounmpo|F|Day-To-Day|wrist|Nov 13
 Pelle Larsson|G|Day-To-Day|illness|Nov 13
 Klay Thompson|G|Day-To-Day|ankle|Nov 13
 #Milwaukee Bucks
@@ -71,10 +72,11 @@ Ryan Rollins|G|Day-To-Day|head|Nov 13
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
+Bryce McGowens|G|Day-To-Day|elbow infection|Nov 13
+Trendon Watford|F|Out|ankle sprain|Nov 14
 Bennedict Mathurin|G|Day-To-Day|thumb sprain|Nov 13
-Trendon Watford|F|Day-To-Day|ankle sprain|Nov 13
+Yves Missi|C|Out|knee bruise|Nov 13
 Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 13
-Yves Missi|C|Out|knee bruise|Nov 16
 #Oklahoma City Thunder
 Ajay Mitchell|G|Day-To-Day|ankle|Nov 13
 Jaylin Williams|F|Out|back spasms|Nov 15
