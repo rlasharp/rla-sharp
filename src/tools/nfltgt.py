@@ -18,11 +18,48 @@ def zone(ay, loc):
 def blank(): return {"t": 0, "rec": 0, "yds": 0, "yac": 0, "fd": 0, "ay": 0, "ct": 0, "cc": 0, "drop": 0, "z": collections.Counter(), "g": set()}
 P = collections.defaultdict(blank); DEF = collections.defaultdict(lambda: collections.defaultdict(blank)); LG = collections.defaultdict(blank)
 BL = collections.defaultdict(lambda: [0, 0]); weeks = set()
+RZ, RZD, TZ, QBZ, LGZ_ = {}, {}, {}, {}, {}
+def rzb(): return {"c20": [0, 0], "c10": [0, 0], "c5": [0, 0], "t20": [0, 0, 0], "t10": [0, 0, 0], "ez": {"L": [0, 0, 0], "M": [0, 0, 0], "R": [0, 0, 0]}}
+def rzdb(): return {"ru": [0, 0], "pa": [0, 0, 0], "ez": {"L": [0, 0, 0], "M": [0, 0, 0], "R": [0, 0, 0]}}
 for r in csv.DictReader(gzip.open(os.path.join(D, "pbp.csv.gz"), "rt")):
     if r["season_type"] != "REG" or r["two_point_attempt"] == "1": continue
     key = (r["game_id"], r["play_id"]); f = ftn.get(key)
     if r["qb_dropback"] == "1" and r["defteam"] and f is not None:
         dt = "LAR" if r["defteam"] == "LA" else r["defteam"]; BL[dt][1] += 1; BL[dt][0] += 1 if f[1] else 0
+    # red zone: carries and targets inside the 20 / 10 / 5, and passes thrown into the end zone (air yards reach the goal line)
+    try: yl = float(r["yardline_100"])
+    except Exception: yl = None
+    if yl is not None and yl <= 20 and r["season_type"] == "REG":
+        po = "LAR" if r["posteam"] == "LA" else r["posteam"]; dfn = "LAR" if r["defteam"] == "LA" else r["defteam"]
+        if r["rush_attempt"] == "1" and r["rusher_player_id"] and r["qb_kneel"] != "1":
+            nm_, ps_ = names.get(r["rusher_player_id"], (None, None)); td_ = r["rush_touchdown"] == "1"
+            if nm_:
+                q = RZ.setdefault(nm_, rzb()); q["tm"] = po; q["pos"] = ps_
+                for cut, k_ in ((20, "c20"), (10, "c10"), (5, "c5")):
+                    if yl <= cut: q[k_][0] += 1; q[k_][1] += td_
+            if dfn: RZD.setdefault(dfn, rzdb())["ru"][0] += 1; RZD[dfn]["ru"][1] += td_
+        elif r["pass_attempt"] == "1" and r["receiver_player_id"] and r["sack"] != "1":
+            nm_, ps_ = names.get(r["receiver_player_id"], (None, None)); td_ = r["pass_touchdown"] == "1"; cp_ = r["complete_pass"] == "1"
+            try: ay_ = float(r["air_yards"])
+            except Exception: ay_ = None
+            ez_ = ay_ is not None and ay_ >= yl and r["pass_location"] in ("left", "middle", "right")
+            if nm_:
+                q = RZ.setdefault(nm_, rzb()); q["tm"] = po; q["pos"] = ps_
+                for cut, k_ in ((20, "t20"), (10, "t10")):
+                    if yl <= cut: q[k_][0] += 1; q[k_][1] += cp_; q[k_][2] += td_
+                if ez_: e_ = q["ez"][r["pass_location"][0].upper()]; e_[0] += 1; e_[1] += cp_; e_[2] += td_
+            if dfn:
+                D_ = RZD.setdefault(dfn, rzdb()); D_["pa"][0] += 1; D_["pa"][1] += cp_; D_["pa"][2] += td_
+                if ez_: e_ = D_["ez"][r["pass_location"][0].upper()]; e_[0] += 1; e_[1] += cp_; e_[2] += td_
+    # where each offense (and each QB) throws, and where each defense gives up catches: 12 areas (depth x side)
+    if r["pass_attempt"] == "1" and r["sack"] != "1" and r["air_yards"] and r["pass_location"] in ("left", "middle", "right"):
+        po = "LAR" if r["posteam"] == "LA" else r["posteam"]; dfn = "LAR" if r["defteam"] == "LA" else r["defteam"]
+        z_ = zone(float(r["air_yards"]), r["pass_location"]); cp_ = r["complete_pass"] == "1"; yd_ = float(r["receiving_yards"] or 0) if cp_ else 0; td_ = r["pass_touchdown"] == "1"
+        rows_ = [TZ.setdefault(po, {"o": {}, "d": {}})["o"], TZ.setdefault(dfn, {"o": {}, "d": {}})["d"], LGZ_]
+        qn_ = names.get(r["passer_player_id"], (None, None))[0]
+        if qn_: QB_ = QBZ.setdefault(qn_, {"tm": po, "z": {}, "att": 0}); QB_["tm"] = po; QB_["att"] += 1; rows_.append(QB_["z"])
+        for Zt in rows_:
+            c_ = Zt.setdefault(z_, [0, 0, 0, 0]); c_[0] += 1; c_[1] += cp_; c_[2] += yd_; c_[3] += td_
     if r["pass_attempt"] != "1" or not r["receiver_player_id"] or r["sack"] == "1" or not r["air_yards"] or r["pass_location"] not in ("left", "middle", "right"): continue
     nm, pos = names.get(r["receiver_player_id"], (None, None))
     if not nm or pos not in ("WR", "TE", "RB"): continue
@@ -50,6 +87,12 @@ print("const NFL_TGT_WEEKS=" + json.dumps(wk) + ";")
 print("const NFL_TGT=" + json.dumps(PL, separators=(",", ":")) + ";")
 print("const NFL_DEFTGT=" + json.dumps(DF, separators=(",", ":")) + ";")
 print("const NFL_LGTGT=" + json.dumps(LGo, separators=(",", ":")) + ";")
+rd = lambda Z: {k: [v[0], v[1], round(v[2]), v[3]] for k, v in Z.items()}
+print("const NFL_TZONE=" + json.dumps({t: {"o": rd(v["o"]), "d": rd(v["d"])} for t, v in TZ.items() if t}, separators=(",", ":")) + ";  /* per team: o = passes thrown, d = passes allowed, by area (B/S/I/D = behind line / 0-9 / 10-19 / 20+ air yards, L/M/R): [targets, catches, yards, TD] */")
+print("const NFL_LGZONE=" + json.dumps(rd(LGZ_), separators=(",", ":")) + ";")
+print("const NFL_QBZ=" + json.dumps({n: {"tm": v["tm"], "att": v["att"], "z": rd(v["z"])} for n, v in QBZ.items() if v["att"] >= 30}, separators=(",", ":")) + ";")
+print("const NFL_RZP=" + json.dumps({n: v for n, v in RZ.items() if v["c20"][0] + v["t20"][0] >= 3}, separators=(",", ":")) + ";  /* red zone: c20/c10/c5 = [carries, TD]; t20/t10 = [targets, catches, TD]; ez = end-zone targets by side [targets, catches, TD] */")
+print("const NFL_RZD=" + json.dumps(RZD, separators=(",", ":")) + ";  /* red zone allowed: ru = [carries, rush TD], pa = [targets, catches, pass TD], ez = end-zone targets by side */")
 print("const NFL_BLITZ=" + json.dumps(BLo, separators=(",", ":")) + ";")
 print(f"nfltgt: {len(PL)} players, {len(DF)} defenses, weeks {wk}, ftn plays {len(ftn)}", file=sys.stderr)
 # game script: each team's closing spread (negative = favored) and final margin, this season (nflverse games.csv)

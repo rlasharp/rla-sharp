@@ -416,6 +416,25 @@ for _, g in games:
         if t in x4 and o in x4:
             Z.setdefault("x4n", 0); Z["x4n"] += 1; X4 = Z.setdefault("x4", [0, 0, 0, 0, 0])   # ENG for, ENG against, pen taken, pen drawn, games with an ENG
             X4[0] += x4[t][0]; X4[1] += x4[o][0]; X4[2] += x4[t][1]; X4[3] += x4[t][2]; X4[4] += 1 if x4[t][0] + x4[o][0] else 0
+# shot map: unblocked attempts by area (slot <=20 ft, high slot, wide/circles, long range) for and against, per team
+ZN = {}; LZN = [[0, 0, 0] for _ in range(4)]
+for _, g in games:
+    sz = g.get("sz")
+    if not sz: continue
+    tof = {str(r[0]): r[1] for r in g.get("p") or []}; tof.update({str(r[0]): r[1] for r in g.get("gl") or []})
+    seen = set()
+    for pid, zz in sz.items():
+        t = tof.get(str(pid))
+        if t not in (g["a"], g["h"]): continue
+        o = g["h"] if t == g["a"] else g["a"]
+        for side, tm_ in (("f", t), ("a", o)):
+            Q = ZN.setdefault(tm_, {"n": set(), "f": [[0, 0, 0] for _ in range(4)], "a": [[0, 0, 0] for _ in range(4)]}); Q["n"].add(id(g))
+            for i in range(4):
+                for j in range(3): Q[side][i][j] += zz[i][j]
+        for i in range(4):
+            for j in range(3): LZN[i][j] += zz[i][j]
+for t, Q in ZN.items():
+    if t in TEAM and Q["n"]: TEAM[t]["zn"] = {"n": len(Q["n"]), "f": Q["f"], "a": Q["a"]}
 for t, Z in X.items():
     if t not in TEAM or not Z["n"]: continue
     n = Z["n"]; fa = TEAM[t].setdefault("fa", {})

@@ -357,7 +357,7 @@ function nbaGame(el,id){
   </div>`:""}
   ${typeof nbaKeyMu!=="undefined"?nbaKeyMu(g):""}${typeof xaRefCard!=="undefined"?xaRefCard(g):""}${typeof xaKeyOutCard!=="undefined"?xaDefTrendCard("nba",g.a,g.h)+xaGainCard(g)+xaBenchCard(g)+xaYesCard(g):""}
   <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.a)} have the ball</h2>${nbaMatchup(g.a,g.h)}</div>
-  <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>${typeof gpLazy!=="undefined"?gpLazy("Matchup heat map",()=>vxHeat("nba",g.a,g.h,nbaShort))+gpLazy("Defense vs position",()=>vxDvp(g)):""}
+  <div class="card" style="margin-top:14px"><h2>When the ${nbaShort(g.h)} have the ball</h2>${nbaMatchup(g.h,g.a)}</div>${typeof gpLazy!=="undefined"?gpLazy("Matchup heat map",()=>vxHeat("nba",g.a,g.h,nbaShort))+gpLazy("Defense vs position",()=>vxDvp(g))+gpLazy("Team shot zones",()=>typeof vxNbaZones!=="undefined"?vxNbaZones(g):"")+gpLazy("Pace vs scoring",()=>typeof vxPace!=="undefined"?vxPace("nba",g):"")+gpLazy("Offense vs defense — every team",()=>typeof vxStrength!=="undefined"?vxStrength("nba",g):""):""}
   <p class="note" style="margin-top:6px">Longer bar = better rank (1st of 30). <span class="rkg">Green</span> = top 8, <span class="rkb">red</span> = bottom 8. Highlighted rows are mismatches. Season to date.</p>
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${nbaShort(g.a)} players</h2>${nbaPlayerTable(nbaTopPlayers(g.a,7),{no3:1,nonote:1})}</div>
