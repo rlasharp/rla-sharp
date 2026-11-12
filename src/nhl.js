@@ -194,7 +194,9 @@ function nhRankCard(g){const sw=NH.sw===String(g.id),o=sw?g.h:g.a,d=sw?g.a:g.h,O
 /* injuries (ESPN report) */
 function nhInjOf(nm){if(typeof NHL_INJ==="undefined")return null;const n=typeof loNorm!=="undefined"?loNorm(nm):nm;for(const L of Object.values(NHL_INJ))for(const r of L)if((typeof loNorm!=="undefined"?loNorm(r[0]):r[0])===n)return r;return null}
 function nhInjChip(nm){const r=nhInjOf(nm);return r?` <span class="pll ${/out|reserve|ir/i.test(r[2])?"u":"n"}" title="${nhE(r[3])}${r[4]?" · est. return "+nhE(r[4]):""}">🚑 ${nhE(r[2])}</span>`:""}
-function nhInjList(t,n){const L=(typeof NHL_INJ!=="undefined"&&NHL_INJ[t])||[];const pts=nm=>{const p=NHL_P[nm]||Object.values(NHL_P).find(x=>false);return p&&p.s?p.s[3]:-1};
+/* ESPN's injury wording is sometimes raw ("Undisclosed not specified", "Lower Body not specified") — tidy it */
+function nhInjTxt(x){return String(x||"").replace(/\s*\bnot specified\b/ig,"").replace(/^undisclosed$/i,"undisclosed injury").trim()}
+function nhInjList(t,n){const L=((typeof NHL_INJ!=="undefined"&&NHL_INJ[t])||[]).map(r=>r.map((v,i)=>i===3?nhInjTxt(v):v));const pts=nm=>{const p=NHL_P[nm]||Object.values(NHL_P).find(x=>false);return p&&p.s?p.s[3]:-1};
   return L.slice().sort((a,b)=>pts(b[0])-pts(a[0])).slice(0,n||99)}
 function nhInjCard(g){const side=t=>{const L=nhInjList(t);return `<div><h3 style="margin:0 0 6px">${nhBadge(t)} ${nhE(nhTm(t))}</h3>${L.length?L.map(r=>{const p=NHL_P[r[0]];return `<div class="nhgl"><b>${NHL_P[r[0]]||NHL_G[r[0]]?nhLink(r[0]):nhE(r[0])}</b> <span class="small">${nhE(r[1])}</span> <span class="pll ${/out|reserve|ir/i.test(r[2])?"u":"n"}">${nhE(r[2])}</span><div class="small">${nhE(r[3])}${r[4]?" · est. return "+nhE(r[4]):""}${p&&p.s?` · ${p.s[1]} G · ${p.s[3]} PTS in ${p.s[0]} GP`:""}</div></div>`}).join(""):`<div class="small">Nobody listed.</div>`}</div>`};
   return `<div class="card"><h2>🚑 Injuries</h2><div class="grid g2">${side(g.a)}${side(g.h)}</div><div class="small" style="margin-top:6px">ESPN injury report. Day-to-day players often play — check close to puck drop.</div></div>`}

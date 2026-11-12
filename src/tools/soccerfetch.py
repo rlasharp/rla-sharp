@@ -314,6 +314,9 @@ def project(f):
 
 # ---------------- upcoming fixtures: odds join, weather, lineups, missing players ----------------
 FX = sorted([e for e in EV.values() if not e["done"] and ts(e["t"]) > NOW - dt.timedelta(hours=3) and ts(e["t"]) < NOW + dt.timedelta(days=16)], key=lambda e: e["t"])
+# playoff slots whose teams aren't decided yet (ESPN names them "TBD Home" / "TBD Away"): no real matchup, so no estimate
+TBD = {k for k, T in TEAM.items() if str((T or {}).get("n", "")).upper().startswith("TBD")}
+FX = [f for f in FX if f["h"] not in TBD and f["a"] not in TBD and not str(f.get("hn", "")).upper().startswith("TBD") and not str(f.get("an", "")).upper().startswith("TBD")]
 OD = LO.get("events") or []
 for f in FX:
     m_ = [o for o in OD if o.get("hid") == f["h"] and o.get("aid") == f["a"] and abs((ts(o["start"]) - ts(f["t"])).total_seconds()) < 6 * 3600]
