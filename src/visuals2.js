@@ -169,10 +169,39 @@ function vxRzPlayer(nm){try{if(typeof NFL_RZP==="undefined"||!NFL_RZP[nm])return
 function vxPassFor(team,opp){if(!team||!opp)return "";return vxPassMap({away:team,home:opp},team)}
 function vxRzDef(o){if(typeof NFL_RZD==="undefined"||!NFL_RZD[o])return "";const D=NFL_RZD[o],LG={ru:[0,0],pa:[0,0,0]};for(const d of Object.values(NFL_RZD)){LG.ru[0]+=d.ru[0];LG.ru[1]+=d.ru[1];LG.pa[0]+=d.pa[0];LG.pa[2]+=d.pa[2]}
   const pct=(a,b)=>b?Math.round(a/b*100):0;
-  return `<div class="qrzd">🛡️ <b>${vxE(short(o))} in their red zone:</b> ${D.ru[0]} carries → <b>${D.ru[1]}</b> rush TD (${pct(D.ru[1],D.ru[0])}%, NFL ${pct(LG.ru[1],LG.ru[0])}%) · ${D.pa[0]} targets → <b>${D.pa[2]}</b> pass TD (${pct(D.pa[2],D.pa[0])}%, NFL ${pct(LG.pa[2],LG.pa[0])}%)
-   <div style="margin-top:4px"><span class="small">End-zone throws against them (left · middle · right):</span>${vxEz(D.ez)}</div></div>`}
+  return `<div class="qfw">${vxRzFieldDef(D)}</div><div class="qrzd">🛡️ <b>${vxE(short(o))} in their red zone:</b> ${D.ru[0]} carries → <b>${D.ru[1]}</b> rush TD (${pct(D.ru[1],D.ru[0])}%, NFL ${pct(LG.ru[1],LG.ru[0])}%) · ${D.pa[0]} targets → <b>${D.pa[2]}</b> pass TD (${pct(D.pa[2],D.pa[0])}%, NFL ${pct(LG.pa[2],LG.pa[0])}%)
+</div>`}
 function vxRzTd(nm,opp){try{if(typeof NFL_RZP==="undefined")return "";const r=NFL_RZP[nm];if(!r)return opp?vxCard("Red-zone & end-zone chances","No red-zone carries or targets for him yet this season.",vxRzDef(opp),""):"";
   const T=Object.values(NFL_RZP).filter(x=>x.tm===r.tm),tc=T.reduce((a,x)=>a+x.c20[0],0),tt=T.reduce((a,x)=>a+x.t20[0],0),t5=T.reduce((a,x)=>a+x.c5[0],0),pc=(a,b)=>b?Math.round(a/b*100):0;
   const share=[r.c20[0]?`<b>${pc(r.c20[0],tc)}%</b> of his team's red-zone carries`:"",r.c5[0]?`<b>${pc(r.c5[0],t5)}%</b> of carries inside the 5`:"",r.t20[0]?`<b>${pc(r.t20[0],tt)}%</b> of red-zone targets`:""].filter(Boolean).join(" · ");
   const tds=r.c20[1]+r.t20[2];
-  return vxCard("Red-zone & end-zone chances",`His chances inside the 20 this season, by distance — ${tds} red-zone TD${tds===1?"":"s"}.`,vxRzRow(nm,r)+(share?`<div class="qsay">He gets ${share}.</div>`:"")+(opp?`<h3 style="margin:12px 0 4px">This week's defense</h3>${vxRzDef(opp)}`:""),"nflverse play-by-play, regular season. Touchdowns follow chances: a big share of his team's goal-line work is the best sign for an anytime TD.")}catch(e){return ""}}
+  return vxCard("Red-zone & end-zone chances",`His chances inside the 20 this season, by distance — ${tds} red-zone TD${tds===1?"":"s"}.`,`<div class="qfw">${vxRzFieldPlayer(r)}</div><div class="small qfk"><span style="color:#15803d">■</span> carries · <span style="color:#2563eb">■</span> targets (inside-10 targets include the 5) · <span style="color:#f97316">■</span> throws into the end zone</div>`+(share?`<div class="qsay">He gets ${share}.</div>`:"")+(opp?`<h3 style="margin:12px 0 4px">This week's defense</h3>${vxRzDef(opp)}`:""),"nflverse play-by-play, regular season. Touchdowns follow chances: a big share of his team's goal-line work is the best sign for an anytime TD.")}catch(e){return ""}}
+/* ===== red zone drawn on a football field: end zone at the top (left · middle · right), then the 5, 10 and 20-yard lines =====
+   r = NFL_RZP row (player) or null; ez = end-zone [targets, catches, TD] by side; bands = carries / targets by distance */
+function vxField(o){const W=340,EZ=62,Y5=EZ+52,Y10=Y5+52,Y20=Y10+92,H=Y20+18,c=[W/6,W/2,W*5/6];
+  const green="#2f7d46",line="rgba(255,255,255,.75)";
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="qfield" role="img" aria-label="${vxE(o.label||"Red zone field")}">
+   <rect x="0" y="0" width="${W}" height="${H}" rx="10" fill="${green}"/>
+   <rect x="0" y="0" width="${W}" height="${EZ}" rx="10" fill="#235f35"/><rect x="0" y="${EZ-10}" width="${W}" height="10" fill="#235f35"/>
+   <text x="${W/2}" y="13" text-anchor="middle" font-size="9" font-weight="800" fill="#fff" fill-opacity=".55" letter-spacing="3">END ZONE</text>
+   <line x1="${W/3}" y1="0" x2="${W/3}" y2="${EZ}" stroke="${line}" stroke-opacity=".35" stroke-dasharray="3 3"/><line x1="${W*2/3}" y1="0" x2="${W*2/3}" y2="${EZ}" stroke="${line}" stroke-opacity=".35" stroke-dasharray="3 3"/>
+   <line x1="0" y1="${EZ}" x2="${W}" y2="${EZ}" stroke="#fff" stroke-width="3"/>
+   ${[[Y5,"5"],[Y10,"10"],[Y20,"20"]].map(([y,l])=>`<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="${line}" stroke-width="1.5"/><text x="8" y="${y-4}" font-size="11" font-weight="800" fill="#fff" fill-opacity=".8">${l}</text><text x="${W-8}" y="${y-4}" text-anchor="end" font-size="11" font-weight="800" fill="#fff" fill-opacity=".8">${l}</text>`).join("")}
+   <text x="${W/2}" y="${EZ+12}" text-anchor="middle" font-size="8.5" font-weight="800" fill="#fff" fill-opacity=".6">GOAL LINE</text>`;
+  /* end zone: targets thrown there by side */
+  if(o.ez){const mx=Math.max(1,...["L","M","R"].map(k=>o.ez[k][0]));["L","M","R"].forEach((k,i)=>{const v=o.ez[k];
+    s+=`<rect x="${i*W/3+6}" y="18" width="${W/3-12}" height="${EZ-24}" rx="7" fill="#f97316" fill-opacity="${v[0]?(.25+v[0]/mx*.6).toFixed(2):0}"/>
+     <text x="${c[i]}" y="37" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">${v[0]}</text><text x="${c[i]}" y="50" text-anchor="middle" font-size="9.5" fill="#fff">${v[0]===1?"target":"targets"} · ${v[2]} TD</text>`});
+    s+=`<text x="8" y="${EZ-4}" font-size="8" fill="#fff" fill-opacity=".6">LEFT</text><text x="${W-8}" y="${EZ-4}" text-anchor="end" font-size="8" fill="#fff" fill-opacity=".6">RIGHT</text>`}
+  /* chips inside each band: [y-top, y-bottom, [{n, td, lab, col}]] */
+  for(const [y0,y1,L] of o.bands||[]){const it=L.filter(x=>x&&x.n);if(!it.length)continue;const w=Math.min(150,(W-40)/it.length-8);
+    it.forEach((x,i)=>{const cx=W/2+(i-(it.length-1)/2)*(w+10),cy=(y0+y1)/2;
+      s+=`<g><rect x="${(cx-w/2).toFixed(1)}" y="${(cy-17).toFixed(1)}" width="${w.toFixed(1)}" height="34" rx="8" fill="${x.col}" fill-opacity=".92"/>
+       <text x="${cx.toFixed(1)}" y="${(cy-2).toFixed(1)}" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">${x.n} ${vxE(x.lab)}</text>
+       <text x="${cx.toFixed(1)}" y="${(cy+11).toFixed(1)}" text-anchor="middle" font-size="10" fill="#fff">${x.td} TD${x.n?` · ${Math.round(x.td/x.n*100)}%`:""}</text></g>`})}
+  return s+`</svg>`}
+function vxRzFieldPlayer(r){const EZ=62,Y5=EZ+52,Y10=Y5+52,Y20=Y10+92,C="#15803d",T="#2563eb";
+  const car=(n,td)=>({n,td,lab:n===1?"carry":"carries",col:C}),tg=(n,td)=>({n,td,lab:n===1?"target":"targets",col:T});
+  return vxField({label:"His red-zone chances",ez:r.ez,bands:[[EZ,Y5,[car(r.c5[0],r.c5[1])]],[Y5,Y10,[car(r.c10[0]-r.c5[0],r.c10[1]-r.c5[1]),tg(r.t10[0],r.t10[2])]],[Y10,Y20,[car(r.c20[0]-r.c10[0],r.c20[1]-r.c10[1]),tg(r.t20[0]-r.t10[0],r.t20[2]-r.t10[2])]]]})}
+function vxRzFieldDef(D){const EZ=62,Y5=EZ+52,Y10=Y5+52,Y20=Y10+92;
+  return vxField({label:"Red zone allowed",ez:D.ez,bands:[[EZ,Y20,[{n:D.ru[0],td:D.ru[1],lab:"carries allowed",col:"#b45309"},{n:D.pa[0],td:D.pa[2],lab:"targets allowed",col:"#7c3aed"}]]]})}
