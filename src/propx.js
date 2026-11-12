@@ -120,7 +120,8 @@ function pxFilterBlock(key,SETS,line,tonight,unit,dec,isTD,minAvg,tonTot,TR,MN,P
    ${G.some(g=>g.ha)?`<div class="pxfr"><div class="pxfl"><span>Situation</span>${P&&P.tn?`<button class="likeT" data-like="1">🎯 Like this game</button>`:""}</div>
     ${Object.entries(PX_SIT).map(([g,[lab,o]])=>{if(g!=="ven"&&!G.some(x=>x[g]))return "";
       let opts=Object.entries(o);if(g==="qb"){const C={};for(const x of G)if(x.qb)C[x.qb]=(C[x.qb]||0)+1;const L=Object.entries(C).sort((a,b)=>b[1]-a[1]);if(L.length<2)return "";opts=L.map(([n,c],i)=>[n,`${i===0?"His usual · ":""}${esc(pxLast(n))} <small>${c}</small>`])}
-      return `<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...opts].map(([v,l])=>`<button data-sit="${g}|${esc(v)}">${l}${P&&P.tn&&P.tn[g]===v&&v?" •":""}</button>`).join("")}</div></div>`}).join("")}</div>`:""}
+      const T9=P&&P.tn,lk=T9&&T9.oppT&&T9[g]&&["opp","pace","dvp"].includes(g)?(()=>{const R=pxNflRanks(),r=g==="opp"?R.opp[T9.oppT]:g==="pace"?R.pace[T9.oppT]:(R.dvp[T9.pos]||{})[T9.oppT];return `<button data-sit="${g}|${T9[g]}" class="pxlk">🎯 Like ${esc(T9.oppT)} <small>${o[T9[g]]}${r?" · "+ordinal(r):""}</small></button>`})():"";
+      return `<div class="sitr"><span>${lab}</span><div class="pxpre">${[["","Any"],...opts].map(([v,l],i)=>`${i===1?lk:""}<button data-sit="${g}|${esc(v)}">${l}${P&&P.tn&&P.tn[g]===v&&v?" •":""}</button>`).join("")}</div></div>`}).join("")}</div>`:""}
    ${pxDual("sp","Team's spread",-15,15,.5,S0.lo,S0.hi,["Favored","PK","Underdog"],spPre)}
    ${hasTot?pxDual("tt","Game total (O/U)",t0,t1,.5,S0.tlo,S0.thi,[String(t0),String((t0+t1)/2),String(t1)],totPre):""}
    ${hasMin?pxDual("mn",MN.lab,0,MX,1,S0.mlo,S0.mhi,MN.u==="%"?["0%","50%","100%"]:["0",String(MX/2),String(MX)],mnPre):""}
@@ -205,7 +206,7 @@ function nflPropHead(pl,k,line){const o0=oppOf(pl.team),closed=!!(o0&&nflStarted
    ${alt?"":`${rp&&typeof nflVerdict!=="undefined"?nflVerdict(pl.name,k):""}${rp?trackRow({pl,k}):""}`}`}
 function nflPropFilterCard(pl,k,line,CL){const td=k==="anyTD",dec=MARKETS[k].cnt?1:0,sp=pxNflSpread(pl.team);
   const o9=oppOf(pl.team),rr=o9&&typeof NFL_RST!=="undefined"?NFL_RST[(o9.g.wk||PLAYS_WEEK)+"|"+pl.team]:null;
-  const Q9=o9&&typeof QB1_STATUS!=="undefined"&&QB1_STATUS[pl.team],P={tn:o9?{...pxNflSit(o9.opp,pl.pos,null,null),qb:Q9?(/^(out|doubtful|injured reserve|ir)\b/i.test(Q9.now||"")?Q9.sub:Q9.qb):"",ven:o9.home?"H":"A",rest:rr==null?"":rr<=5?"short":rr>=12?"bye":"norm"}:null,head:nflPropHead(pl,k,line),
+  const Q9=o9&&typeof QB1_STATUS!=="undefined"&&QB1_STATUS[pl.team],P={tn:o9?{...pxNflSit(o9.opp,pl.pos,null,null),oppT:o9.opp,pos:pl.pos,qb:Q9?(/^(out|doubtful|injured reserve|ir)\b/i.test(Q9.now||"")?Q9.sub:Q9.qb):"",ven:o9.home?"H":"A",rest:rr==null?"":rr<=5?"short":rr>=12?"bye":"norm"}:null,head:nflPropHead(pl,k,line),
     mates:nflMateHtml(pl,"nfl|"+pl.name),
     extra:`<div class="pxfr"><div class="pxfl"><span>✏️ Your sportsbook's line</span><input type="number" step=".5" id="lineIn" value="${line}" class="pxli"></div><div class="small">Different line at your book? Type it and every hit rate re-checks against it.</div></div>`};
   return `<div class="card" id="pxNfl" style="padding:10px">${pxFilterBlock("nfl|"+pl.name,pxNflSets(pl,k,CL),td?.5:line,sp,MARKETS[k].u,dec,td,(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name]&&USAGE_RAW[pl.name].s)?USAGE_RAW[pl.name].s.snap:null,pxNflTot(pl.team),[35,57,3],{lab:"Snap share",max:100,u:"%",pre:[50,70],w:10,any:"Any snap share"},P)}</div>`}
