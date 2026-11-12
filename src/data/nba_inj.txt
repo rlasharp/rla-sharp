@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 18:20Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 19:23Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -10,8 +10,6 @@ Paul George|F|Day-To-Day|illness|Nov 15
 Nolan Traore|G|Day-To-Day|calf soreness|Nov 14
 Mikel Brown Jr.|G|Day-To-Day|illness not specified|Nov 14
 #Charlotte Hornets
-Grant Williams|F|Out|hamstring|Nov 12
-Moussa Diabate|F|Day-To-Day|quadriceps|Nov 12
 Brandon Miller|F|Out|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
@@ -63,6 +61,9 @@ Luka Doncic|G|Day-To-Day|ankle|Nov 15
 Quinten Post|C|Day-To-Day|head|Nov 13
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
+#Miami Heat
+Pelle Larsson|G|Day-To-Day|illness|Nov 13
+Klay Thompson|G|Day-To-Day|ankle|Nov 13
 #Milwaukee Bucks
 Myles Turner|C|Day-To-Day|rest|Nov 13
 Ryan Rollins|G|Day-To-Day|head|Nov 13
