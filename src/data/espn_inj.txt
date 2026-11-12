@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 09:34Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 11:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Zachary Carter|DT|IR|Knee|Nov 15
@@ -220,6 +220,8 @@ Tyrion Ingram-Dawkins|DE|Questionable|Ankle|Nov 15
 Demond Claiborne|RB|IR|Knee|Dec 6
 Theo Jackson|S|Questionable|Undisclosed|
 #NE
+TreVeyon Henderson|RB|Out|Illness|Nov 29
+A.J. Brown|WR|Questionable|Knee|Nov 15
 Charles Woods|CB|Questionable|Hamstring|Nov 15
 Ben Brown|C|Out|Knee|Nov 29
 Will Campbell|OT|Questionable|Undisclosed|
@@ -228,9 +230,7 @@ Kevin Byard|S|Questionable|Chest|Nov 15
 Morgan Moses|OT|Questionable|Foot|Nov 15
 Walter Rouse|OL|Questionable|Concussion|Nov 15
 Cameron Latu|TE|Questionable|Back|Nov 15
-TreVeyon Henderson|RB|Out|Illness|Nov 29
 Hunter Henry|TE|Questionable|Foot|Nov 15
-A.J. Brown|WR|Out|Knee|Nov 15
 Reggie Gilliam|FB|IR|Ankle|Nov 15
 Rhamondre Stevenson|RB|Doubtful|Knee|Nov 15
 #NO
