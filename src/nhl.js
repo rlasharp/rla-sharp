@@ -639,7 +639,9 @@ function nhlScores(el){const R=(typeof NHL_RECENT!=="undefined"&&NHL_RECENT)||[]
    <div class="grid g2">${R.map(g=>`<div class="card"><div class="nhgh"><span class="small">${nhE(nhDayS(g.d))}</span><b>FINAL${g.ot===1?" (OT)":g.ot===2?" (SO)":""}</b></div>
      ${[[g.a,g.as,g.asog],[g.h,g.hs,g.hsog]].map(([t,sc,sg])=>`<div class="nhrow" style="flex-direction:row;justify-content:space-between"><span><a href="#nhl-team-${t}" style="color:inherit">${nhBadge(t)} <b>${nhE(nhTm(t))}</b></a> <span class="small">${sg??"–"} shots</span></span><b style="font-size:20px">${sc}</b></div>`).join("")}
      <div class="small" style="margin-top:6px">⭐ ${g.stars.map(x=>`<b>${nhE(x[0])}</b> ${x[2]}G ${x[3]}A`).join(" · ")}</div>
-     <div class="small">🥅 ${g.gk.map(x=>`${nhE(x[0])} ${x[2]}/${x[3]} saves`).join(" · ")}</div></div>`).join("")||`<div class="card small">No finals yet.</div>`}</div>
+     <div class="small">🥅 ${g.gk.map(x=>`${nhE(x[0])} ${x[2]}/${x[3]} saves`).join(" · ")}</div>
+     <button class="bxb${NH.bsel===String(g.id)?" on":""}" data-nhbx="${g.id}|${g.d}|${g.a}|${g.h}|${g.as}|${g.hs}" style="margin-top:8px">📋 ${NH.bsel===String(g.id)?"Hide box":"Box score"}</button></div>`).join("")||`<div class="card small">No finals yet.</div>`}</div>
+   <div id="nhBoxOut"></div>
    <div class="card" style="margin-top:12px"><h2 style="margin-bottom:2px">🎯 How the props finished${typeof NHL_PRES_D!=="undefined"&&NHL_PRES_D?" · "+nhE(nhDayS(NHL_PRES_D)):""}</h2>
     ${P.length?`<div class="small" style="margin-bottom:8px">Every line we had at puck drop (closing line), graded from the box score.</div>
      <div class="nhtiles" style="margin-bottom:8px">${Object.entries(byMk).map(([k,m])=>nhTile(NH_MKS[k]||k,`${m.o} over · ${m.u} under`,`${Math.round(m.o/Math.max(1,m.o+m.u)*100)}% overs`,m.o>m.u?"up":"dn")).join("")}</div>
@@ -647,3 +649,11 @@ function nhlScores(el){const R=(typeof NHL_RECENT!=="undefined"&&NHL_RECENT)||[]
      ${PL.map(r=>`<div class="nhrr"><span class="nhwl ${r[8]==="over"?"w":r[8]==="under"?"l":""}">${r[8]==="over"?"OVER":r[8]==="under"?"UNDER":"PUSH"}</span><span><b>${nhE(r[0])}</b> <span class="small">${nhE(r[1])} · ${nhE(NH_MKS[r[2]]||r[2])} ${r[2]==="hanyG"?"":r[3]}</span></span><span><b>${r[7]}</b></span></div>`).join("")}`
      :`<div class="small">Prop results appear the morning after games we had lines for (the first ones after tonight).</div>`}</div>${nhFoot()}`;
   el.querySelectorAll("[data-nhsm]").forEach(b=>b.onclick=()=>{NH.sm=b.dataset.nhsm;const y=scrollY;nhlScores(el);scrollTo(0,y)})}
+
+/* NHL scores: box score under the list (same layout as the NBA one), from ESPN */
+document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest("[data-nhbx]");if(!b)return;e.preventDefault();const [id,d,a,h,as,hs]=b.dataset.nhbx.split("|");
+  const out=document.getElementById("nhBoxOut");if(!out)return;document.querySelectorAll("[data-nhbx]").forEach(x=>{x.classList.remove("on");x.textContent="📋 Box score"});
+  if(NH.bsel===id){NH.bsel=null;out.innerHTML="";return}NH.bsel=id;b.classList.add("on");b.textContent="📋 Hide box";
+  out.innerHTML=`<h2 style="margin:18px 0 0">${nhE(nhTm(a))} ${as} – ${nhE(nhTm(h))} ${hs} · box score</h2><div class="card small" style="margin-top:12px">Loading the box score…</div>`;out.scrollIntoView({behavior:"smooth",block:"start"});
+  try{const k="nhl|"+d+"|"+a+"|"+h,S=BXH.c[k]||(BXH.c[k]=await bxhFind("nhl",d,a,h));if(NH.bsel!==id)return;out.innerHTML=`<h2 style="margin:18px 0 0">${nhE(nhTm(a))} ${as} – ${nhE(nhTm(h))} ${hs} · box score</h2><div class="bxpage">${bxhHtml("nhl",S)}</div>`}
+  catch(err){out.innerHTML=`<div class="card small" style="margin-top:12px">Couldn't load this box score from ESPN right now. Try again in a minute.</div>`}});
