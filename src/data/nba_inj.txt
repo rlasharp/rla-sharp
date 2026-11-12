@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 21:27Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 22:28Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -14,11 +14,12 @@ Brandon Miller|F|Out|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Tobe Awaka|F|Out|back|Nov 14
 Dailyn Swain|G|Day-To-Day|back|Nov 13
 Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 13
-Tobe Awaka|F|Day-To-Day|back|Nov 13
-Caleb Wilson|F|Day-To-Day|hand|Nov 13
+Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
+Evan Mobley|C|Out|toe|Nov 14
 Sam Merrill|G|Out|elbow|Nov 16
 #Dallas Mavericks
 Dereck Lively II|C|Out|foot surgery|Nov 18
@@ -32,8 +33,8 @@ Ugonna Onyenso|C|Day-To-Day|foot|Nov 13
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
+Charles Bassey|C|Day-To-Day|toe soreness|Nov 13
 Stephen Curry|G|Out|abdomen|Dec 12
-Gary Payton II|G|Day-To-Day|knee inflammation|Nov 13
 Brandon Williams|G|Out|hamstring not specified|Nov 22
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
@@ -62,12 +63,9 @@ Quinten Post|C|Day-To-Day|head|Nov 13
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
+Klay Thompson|G|Day-To-Day|ankle soreness|Nov 13
 Giannis Antetokounmpo|F|Day-To-Day|wrist|Nov 13
 Pelle Larsson|G|Day-To-Day|illness|Nov 13
-Klay Thompson|G|Day-To-Day|ankle|Nov 13
-#Milwaukee Bucks
-Myles Turner|C|Day-To-Day|rest|Nov 13
-Ryan Rollins|G|Day-To-Day|head|Nov 13
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
@@ -87,7 +85,7 @@ Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
 Tristan da Silva|F|Day-To-Day|calf strain|Nov 13
 Jamal Cain|F|Day-To-Day|shoulder bruise|Nov 13
-Jalen Suggs|G|Out|knee|Nov 16
+Jalen Suggs|G|Out|knee|Nov 13
 Jonathan Isaac|F|Out|knee not specified|Nov 16
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
