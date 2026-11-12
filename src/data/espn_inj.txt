@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 07:55Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-12 09:34Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Zachary Carter|DT|IR|Knee|Nov 15
@@ -229,8 +229,8 @@ Morgan Moses|OT|Questionable|Foot|Nov 15
 Walter Rouse|OL|Questionable|Concussion|Nov 15
 Cameron Latu|TE|Questionable|Back|Nov 15
 TreVeyon Henderson|RB|Out|Illness|Nov 29
-A.J. Brown|WR|Questionable|Knee|Nov 15
 Hunter Henry|TE|Questionable|Foot|Nov 15
+A.J. Brown|WR|Out|Knee|Nov 15
 Reggie Gilliam|FB|IR|Ankle|Nov 15
 Rhamondre Stevenson|RB|Doubtful|Knee|Nov 15
 #NO
