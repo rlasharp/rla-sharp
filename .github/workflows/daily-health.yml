@@ -30,7 +30,7 @@ jobs:
           print(f"- Last update: {age(last.get('at'))} — {'OK' if last.get('ok') else 'FAILED'}")
           print(f"- Live site check: {'OK' if site.get('ok') else 'problem: ' + (site.get('issue') or '?')[:200]}")
           if nhl: print(f"- NHL data: built {nhl.get('gen', '?')} · odds {age(nhl.get('odds_at'))}{'' if nhl.get('ok', True) else ' · ' + nhl.get('issue', '')}")
-          fails = sorted({f for x in H for f in (x.get("fails") or [])})
+          fails = sorted({f for x in H for f in (x.get("fails") or []) if ("kept old" in f or "FAILED" in f or "failed" in f.lower()) and not f.startswith("liveprops")})
           if fails:
               print("\n**Steps that kept old data (the site stayed up with the previous numbers):**")
               for f in fails[:12]: print(f"- {f}")
