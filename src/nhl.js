@@ -221,7 +221,7 @@ function nhGameProps(g){
    ${order.map(nm=>nhPlayerLines(nm,by[nm],true)).join("")}`}
 /* one card per player with every prop line */
 function nhPlayerLines(nm,rows,head){const w=nhWho(nm);
-  return `<div class="card plines" style="margin-top:12px">${head?`<div class="gph">${nhBadge(w.tm)}<div style="min-width:0"><a href="#nhl-player-${encodeURIComponent(nm)}"><b>${nhE(nm)}</b></a>${nhInjChip(nm)}${typeof newsFlag!=="undefined"?newsFlag("nhl",nm):""}<div class="small">${nhE(w.tm)} · ${nhE(w.pos||(NHL_G[nm]?"G":""))}${w.s?` · ${w.s[1]} G · ${w.s[2]} A · ${w.s[8]} min TOI`:` · ${w.gs} starts · SV% ${w.svp!=null?(w.svp/100).toFixed(3).slice(1):"–"}`}</div></div></div>`:""}
+  return `<div class="card plines" style="margin-top:12px">${head?`<div class="gph">${nhBadge(w.tm)}<div style="min-width:0"><a href="#nhl-player-${encodeURIComponent(nm)}${rows&&rows.length===1?"~"+rows[0][1]:""}"><b>${nhE(nm)}</b></a>${nhInjChip(nm)}${typeof newsFlag!=="undefined"?newsFlag("nhl",nm):""}<div class="small">${nhE(w.tm)} · ${nhE(w.pos||(NHL_G[nm]?"G":""))}${w.s?` · ${w.s[1]} G · ${w.s[2]} A · ${w.s[8]} min TOI`:` · ${w.gs} starts · SV% ${w.svp!=null?(w.svp/100).toFixed(3).slice(1):"–"}`}</div></div></div>`:""}
    ${rows.map(r=>nhLineRow(nm,r)).join("")}</div>`}
 function nhLineRow(nm,r){
   let [,k,line,op,up,book]=r;const m=NH_MK[k],main=line,yes=k==="hanyG",alt=!yes&&typeof loAltOdds!=="undefined"?loAltOdds(nm,k):null;
