@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 01:55Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 02:27Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Nov 13
 Keshon Gilbert|G|Out|knee inflammation|Nov 13
@@ -42,6 +42,7 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 15
 Steven Adams|C|Out|calf strain|Nov 15
 #Indiana Pacers
+Aaron Nesmith|G|Day-To-Day|knee soreness|Nov 13
 Tyrese Haliburton|G|Out|hamstring strain|Nov 22
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
