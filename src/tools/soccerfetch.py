@@ -435,11 +435,12 @@ for f in FX:
         k = f'{f["c"]}|{tid}'
         if k in NEXT: continue
         c0 = NX.get(k)
+        if c0 and not c0.get("v2"): c0 = None
         if not c0 or (NOW - dt.datetime.fromisoformat(c0["at"])).total_seconds() > 12 * 3600:
             if nreq >= 80: 
                 if c0: NEXT[k] = c0["g"]
                 continue
-            j = get(f"{S}{SLUG[f['c']]}/teams/{tid}/schedule"); nreq += 1; rows = []
+            j = get(f"{S}{SLUG[f['c']]}/teams/{tid}/schedule?fixture=true"); nreq += 1; rows = []
             for e in (j or {}).get("events", []):
                 try:
                     c = e["competitions"][0]
@@ -447,7 +448,7 @@ for f in FX:
                     H = next(x for x in c["competitors"] if x["homeAway"] == "home"); A = next(x for x in c["competitors"] if x["homeAway"] == "away")
                     rows.append([e["id"], e["date"][:16], H["team"]["id"], A["team"]["id"]])
                 except Exception: pass
-            if j is not None: NX[k] = c0 = {"at": NOW.isoformat(), "g": rows[:8]}
+            if j is not None: NX[k] = c0 = {"at": NOW.isoformat(), "g": rows[:8], "v2": 1}
         if c0: NEXT[k] = c0["g"]
 json.dump(NX, open(NXF, "w"), separators=(",", ":"), ensure_ascii=False)
 
