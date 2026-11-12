@@ -844,18 +844,18 @@ try:
     def refs_of(gid):
         rr = get(f"https://api-web.nhle.com/v1/gamecenter/{gid}/right-rail")
         gi = rr.get("gameInfo") or {}
-        return [dflt(x) for x in (gi.get("referees") or []) if dflt(x)]
+        return [n for n in (dflt(x.get("fullName")) if isinstance(x, dict) and "fullName" in x else dflt(x) for x in (gi.get("referees") or [])) if n]
     y2_ = int(TODAY[:4]) if int(TODAY[5:7]) >= 9 else int(TODAY[:4]) - 1; s2_ = f"{y2_}-09-15"; nref = 0
     for gid, g in sorted(C["games"].items(), key=lambda kv: kv[1]["d"], reverse=True):
-        if g["d"] < s2_ or "refs" in g: continue
-        if nref >= 80: break
-        try: g["refs"] = refs_of(gid); nref += 1
+        if g["d"] < s2_ or "refs2" in g: continue
+        if nref >= 150: break
+        try: g["refs2"] = refs_of(gid); nref += 1
         except Exception: break
     R_ = {}
     for _, g in games:
-        if g["d"] < s2_ or not g.get("refs") or g.get("as") is None: continue
+        if g["d"] < s2_ or not g.get("refs2") or g.get("as") is None: continue
         pen = sum((g.get("x4") or {}).get(t, [0, 0, 0])[1] for t in (g["a"], g["h"]))
-        for nm_ in g["refs"]:
+        for nm_ in g["refs2"]:
             a_ = R_.setdefault(nm_, [0, 0, 0]); a_[0] += 1; a_[1] += pen; a_[2] += (g["as"] or 0) + (g["hs"] or 0)
     TODAYR = {}
     for g in SLATE:
