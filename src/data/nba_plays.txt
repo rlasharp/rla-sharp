@@ -27,3 +27,4 @@
 2026-11-11|Brayden Burries|3pm|u|1.5|-118|BetRivers|MIL|LAL
 2026-11-11|Andre Drummond|reb|o|6.5|108|BetRivers|NY|CLE
 2026-11-11|Ajay Mitchell|stl|u|1.5|-160|FanDuel|OKC|POR
+2026-11-12|Grayson Allen|ast|u|4.5|102|FanDuel|CHA|PHX
