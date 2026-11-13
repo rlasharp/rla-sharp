@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 19:34Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 21:27Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
@@ -54,10 +54,10 @@ Yanic Konan Niederhauser|C|Out|foot surgery|Nov 17
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Quentin Grimes|G|Day-To-Day|finger|Nov 15
-Collin Sexton|G|Day-To-Day|head|Nov 15
 Austin Reaves|G|Day-To-Day|heel|Nov 15
 Luka Doncic|G|Day-To-Day|ankle|Nov 15
+Quentin Grimes|G|Day-To-Day|finger|Nov 15
+Collin Sexton|G|Day-To-Day|head|Nov 15
 #Memphis Grizzlies
 Quinten Post|C|Out|concussion|Nov 14
 Zach Edey|C|Out|ankle|Nov 14
@@ -70,10 +70,10 @@ Pelle Larsson|G|Day-To-Day|illness|Nov 13
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
+Dejounte Murray|G|Out|ankle|Nov 20
 Bryce McGowens|G|Out|elbow infection|Nov 14
 Yves Missi|C|Out|knee bruise|Nov 14
 Bennedict Mathurin|G|Day-To-Day|thumb sprain|Nov 13
-Dejounte Murray|G|Day-To-Day|ankle|Nov 13
 Trey Murphy III|F|Out|knee tendinitis|Nov 14
 Trendon Watford|F|Out|ankle sprain|Nov 14
 #Oklahoma City Thunder
@@ -105,7 +105,7 @@ Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 13
+Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 15
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
