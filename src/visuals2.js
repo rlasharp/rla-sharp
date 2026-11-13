@@ -403,3 +403,49 @@ function vxSocMissImpact(f){try{if(!window.SOC_P||!f.miss)return "";const R=SOC_
 const BX_RO=typeof ResizeObserver!=="undefined"?new ResizeObserver(E=>{for(const e of E)e.target.classList.toggle("wide",e.contentRect.width>=820)}):null;
 function bxWatch(){for(const w of document.querySelectorAll(".bxsw:not([data-ro])")){w.dataset.ro=1;if(BX_RO)BX_RO.observe(w);else w.classList.toggle("wide",w.clientWidth>=820)}}
 new MutationObserver(()=>{if(window._bxwT)return;window._bxwT=setTimeout(()=>{window._bxwT=0;bxWatch()},50)}).observe(document.documentElement,{childList:true,subtree:true});
+
+/* ===== NFL longest catch / run / completion each game (NFL_LONG from play-by-play) → onto the game logs, for the "longest" props.
+   Weeks without play-by-play (earlier seasons) stay empty so they never count as 0. ===== */
+(function(){try{if(typeof NFL_LONG==="undefined"||typeof REAL_LOGS==="undefined")return;let mx=0;for(const v of Object.values(NFL_LONG))for(const w in v)mx=Math.max(mx,+w);
+  for(const l of REAL_LOGS){const ok=l.season===CUR&&l.week<=mx,L=ok&&NFL_LONG[l.player]&&NFL_LONG[l.player][l.week];
+    const played=ok&&((l.rec||0)+(l.rushAtt||0)+(l.comp||0)+(l.passAtt||0)>0||l.recYds!=null||l.rushYds!=null);
+    l.recLong=L?L[0]:played?0:null;l.rushLong=L?L[1]:played?0:null;l.passLong=L?L[2]:played?0:null}}catch(e){}})();
+/* ===== NFL: role trend — snaps, target share and carries week by week (USAGE_RAW, nflverse snap counts + player stats) ===== */
+function vxRoleTrend(nm){try{const U=typeof USAGE_RAW!=="undefined"&&USAGE_RAW[nm];if(!U||!U.wk||U.pos==="QB")return "";
+  const tt={};for(const v of Object.values(USAGE_RAW))if(v.tm===U.tm&&v.wk)for(const [w,a] of Object.entries(v.wk))tt[w]=(tt[w]||0)+(a[1]||0);
+  const W=Object.entries(U.wk).map(([w,a])=>({w:+w,sn:a[0],tg:a[1]||0,ca:a[2]||0,ts:tt[w]?(a[1]||0)/tt[w]*100:null})).sort((a,b)=>a.w-b.w).slice(-6);if(W.length<3)return "";
+  const av=(a,k)=>{const x=a.map(o=>o[k]).filter(v=>v!=null);return x.length?x.reduce((s,v)=>s+v,0)/x.length:null};
+  const rec=W.slice(-2),old=W.slice(0,-2),rb=U.pos==="RB",key=rb?"ca":"ts";
+  const d=(av(rec,key)??0)-(av(old,key)??0),ds=(av(rec,"sn")??0)-(av(old,"sn")??0);
+  const say=(rb?Math.abs(d)>=3:Math.abs(d)>=5)||Math.abs(ds)>=10?(d+ds/(rb?5:2)>0?["📈 Role growing","up"]:["📉 Role shrinking","dn"]):["➖ Steady role",""];
+  const H=90,bar=o=>`<div class="nbbar" title="Week ${o.w}: ${o.sn}% snaps · ${o.tg} targets${o.ts!=null?` (${Math.round(o.ts)}% of team)`:""} · ${o.ca} carries"><span class="v">${o.sn}%</span><i style="height:${Math.max(3,Math.round(o.sn/100*H))}px;background:${o.sn>=70?"#22c55e":o.sn>=45?"#3987e5":"#8a94a3"}"></i><span class="small">W${o.w}</span><span class="small">${rb?`${o.ca} car`:o.ts!=null?Math.round(o.ts)+"% tgt":o.tg+" tgt"}</span></div>`;
+  return `<div class="vx2s"><h3 style="margin:4px 0 4px">Role trend <b class="${say[1]}" style="font-size:13px;margin-left:6px">${say[0]}</b></h3>
+   <div class="small" style="margin-bottom:6px">Last ${W.length} games: bar = share of team snaps; under it ${rb?"carries":"his share of the team's targets"}. Last 2 games: <b>${Math.round(av(rec,"sn"))}%</b> snaps${rb?` · <b>${av(rec,"ca").toFixed(1)}</b> carries`:av(rec,"ts")!=null?` · <b>${Math.round(av(rec,"ts"))}%</b> target share`:""} vs <b>${old.length?Math.round(av(old,"sn")):"–"}%</b>${rb?` · ${old.length?av(old,"ca").toFixed(1):"–"}`:av(old,"ts")!=null?` · ${Math.round(av(old,"ts"))}%`:""} before.</div>
+   <div class="nbch" style="height:${H+58}px">${W.map(bar).join("")}</div>
+   <div class="small">Route counts aren't in the free play-by-play, so snaps and targets stand in for them.</div></div>`}catch(e){return ""}}
+/* ===== NFL: how weather moved this stat — his games (and every player at his position) indoors / calm / windy / cold, this season ===== */
+function vxWxSplit(pl,k,line){try{if(typeof NFL_GWX==="undefined"||typeof REAL_LOGS==="undefined")return "";
+  const cond=l=>{const w=NFL_GWX[l.week+"|"+(l.team||pl.team)];if(!w)return null;if(/dome|closed/i.test(w[0]))return "in";if(w[2]!=null&&w[2]>=10)return "wind";if(w[1]!=null&&w[1]<=50)return "cold";return "calm"};
+  const mine=pLogs(pl.name).filter(l=>l.season===CUR&&Number.isFinite(stat(l,k))),G={};for(const l of mine){const c=cond(l);if(c)(G[c]=G[c]||[]).push(stat(l,k))}
+  const LG={};for(const l of REAL_LOGS){if(l.season!==CUR||l.pos!==pl.pos)continue;const v=stat(l,k);if(!Number.isFinite(v)||(k!=="passLong"&&k!=="comp"&&k!=="passYds"&&k!=="passAtt"&&v===0))continue;const c=cond(l);if(c)(LG[c]=LG[c]||[]).push(v)}
+  const av=a=>a&&a.length?a.reduce((s,v)=>s+v,0)/a.length:null,lgAll=av(Object.values(LG).flat());if(!mine.length&&lgAll==null)return "";
+  const lab={in:"🏟️ Indoors",calm:"🌤️ Outdoors, calm",wind:"🌬️ Wind 10+ mph",cold:"🥶 50°F or colder"};
+  const o=typeof oppOf!=="undefined"?oppOf(pl.team):null,x=o&&typeof WX!=="undefined"?WX[o.g.id]:null;
+  const now=x?(x.dome?"in":x.ws!=null&&x.ws>=10?"wind":x.t!=null&&x.t<=50?"cold":"calm"):null;
+  const rows=Object.keys(lab).filter(c=>G[c]||LG[c]).map(c=>{const a=G[c]||[],h=line!=null?a.filter(v=>v>line).length:null,l=av(LG[c]),dl=l!=null&&lgAll?(l/lgAll-1)*100:null;
+    return `<tr${c===now?' class="qhl"':""}><td>${lab[c]}</td><td>${a.length?`<b>${av(a).toFixed(1)}</b> <span class="small">${h!=null?`over ${h}/${a.length}`:`${a.length} g`}</span>`:"–"}</td><td>${l!=null?`${l.toFixed(1)} <span class="small ${dl>=4?"up":dl<=-4?"dn":""}">${dl>=0?"+":""}${Math.round(dl)}%</span>`:"–"}</td></tr>`}).join("");
+  return `<div class="vx2s"><h3 style="margin:4px 0 4px">Weather</h3>${x&&typeof wxLine!=="undefined"?`<div class="small" style="margin-bottom:6px">This game: <b>${wxLine(x,o.g)}</b>${now?` → <b>${lab[now]}</b>${G[now]||LG[now]?" (highlighted)":" — no games like this yet this season"}`:""}.</div>`:""}
+   <div class="nbatbl"><table class="bxt xat"><thead><tr><th>Conditions</th><th>${xaEsc((pl.name||"").split(" ").slice(-1)[0])}${line!=null?` <span class="small">(line ${line})</span>`:""}</th><th>All ${pl.pos}s</th></tr></thead><tbody>${rows}</tbody></table></div>
+   <div class="small" style="margin-top:4px">Each game's actual kickoff weather (nflverse) this season. "All ${pl.pos}s" = average for every ${pl.pos} in those conditions, and how far it is from their overall average.</div></div>`}catch(e){return ""}}
+/* ===== Soccer: formation matchup — how each side did this season against a back three/five vs a back four (SOC_FM = ESPN team formations) ===== */
+function vxSocFmMatch(f){try{if(typeof SOC_FM==="undefined"||typeof SOC_RES==="undefined")return "";
+  const back=fm=>{const d=+String(fm||"").split("-")[0];return d===4?"4":d===3||d===5?"3":null},bl={"4":"a back four","3":"a back three / five"};
+  const usual=t=>{const C={};SOC_RES.filter(r=>r[3]===t||r[4]===t).slice(-8).forEach(r=>{const x=(SOC_FM[r[0]]||{})[t];if(x)C[x]=(C[x]||0)+1});const e=Object.entries(C).sort((a,b)=>b[1]-a[1])[0];return e?e[0]:null};
+  const side=(t,opp)=>{const S={"4":[],"3":[]};for(const r of SOC_RES){if(r[3]!==t&&r[4]!==t)continue;const F=SOC_FM[r[0]];if(!F)continue;const home=r[3]===t,o=home?r[4]:r[3],b=back(F[o]);if(!b)continue;
+      const me=home?r[7]:r[8],op=home?r[8]:r[7];S[b].push({gf:home?r[5]:r[6],ga:home?r[6]:r[5],cor:me&&me[2],ocor:op&&op[2],sh:me&&me[1]})}
+    const ob=back(usual(opp));if(!S["4"].length&&!S["3"].length)return "";
+    const row=b=>{const L=S[b];if(!L.length)return `<tr><td>vs ${bl[b]}</td><td colspan="4" class="small">no games yet</td></tr>`;const n=L.length,w=L.filter(x=>x.gf>x.ga).length,d=L.filter(x=>x.gf===x.ga).length,a=k=>{const v=L.map(x=>x[k]).filter(v=>v!=null);return v.length?(v.reduce((s,x)=>s+x,0)/v.length).toFixed(1):"–"};
+      return `<tr${b===ob?' class="qhl"':""}><td>vs ${bl[b]}${b===ob?" ◀":""}</td><td>${w}-${d}-${n-w-d} <span class="small">(${n})</span></td><td>${a("gf")} – ${a("ga")}</td><td>${a("sh")}</td><td>${a("cor")}</td></tr>`};
+    return `<h3 style="margin:10px 0 4px">${socBadge(t)} ${socE(socTm(t))} <span class="small">usually ${socE(usual(t)||"?")}</span></h3><div class="nbatbl"><table class="bxt xat"><thead><tr><th></th><th>W-D-L</th><th>Goals for – against</th><th>On target</th><th>Corners</th></tr></thead><tbody>${row("4")}${row("3")}</tbody></table></div>`};
+  const x=side(f.h,f.a)+side(f.a,f.h);if(!x)return "";const uh=usual(f.h),ua=usual(f.a);
+  return vxCard("Formation matchup",`${socE(socTm(f.h))} ${uh?`usually play ${socE(uh)}`:""}${uh&&ua?" · ":""}${ua?`${socE(socTm(f.a))} usually ${socE(ua)}`:""}. ◀ = the shape they face in this match.`,x,"Per game, this season, every competition. Formations are what ESPN lists at kickoff for each match; a back five counts with the back threes (same three centre-backs).")}catch(e){return ""}}

@@ -105,7 +105,7 @@ function nbaWireMin(root,redraw){
   paint();
 }
 const NBA_MK={pts:[5,"Points","PTS"],reb:[6,"Rebounds","REB"],ast:[7,"Assists","AST"],"3pm":[8,"3-Pointers made","3PM"],"3pa":[15,"3-Pointers attempted","3PA"],
-  pa:[[5,7],"Points + Assists","P+A"],pra:[[5,6,7],"Points + Rebounds + Assists","PRA"],pr:[[5,6],"Points + Rebounds","P+R"],ra:[[6,7],"Rebounds + Assists","R+A"],blk:[13,"Blocks","BLK"],stl:[12,"Steals","STL"],sb:[[12,13],"Steals + Blocks","S+B"]};
+  pa:[[5,7],"Points + Assists","P+A"],pra:[[5,6,7],"Points + Rebounds + Assists","PRA"],pr:[[5,6],"Points + Rebounds","P+R"],ra:[[6,7],"Rebounds + Assists","R+A"],blk:[13,"Blocks","BLK"],stl:[12,"Steals","STL"],sb:[[12,13],"Steals + Blocks","S+B"],ftm:[16,"Free throws made","FTM"]};
 const NBA_HCA=2.0;
 function nbaEsc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function nbaTm(a){return NBA_TEAMS[a]||a}
@@ -529,7 +529,7 @@ function nbaAllowIdx(){
   for(const [t,x] of T){out[t].tpm=x.d.tpa*x.d.tp/100;out[t].fta=x.d.fta}
   return NBA_ALLOW=out;
 }
-const NBA_ALLOW_REL={pts:["paint","tp","ft","fb"],pr:["paint","tp","ft","reb"],pa:["paint","tp","ft","fb"],pra:["paint","tp","ft","reb","fb"],reb:["reb"],ra:["reb"],"3pm":["tp"],"3pa":["tp"],ast:[],stl:[],blk:[]};
+const NBA_ALLOW_REL={pts:["paint","tp","ft","fb"],pr:["paint","tp","ft","reb"],pa:["paint","tp","ft","fb"],pra:["paint","tp","ft","reb","fb"],reb:["reb"],ra:["reb"],"3pm":["tp"],ftm:["ft"],"3pa":["tp"],ast:[],stl:[],blk:[]};
 function nbaOppAllows(opp,k,title){
   const A=nbaAllowIdx()[opp];if(!A)return "";const rel=k?(NBA_ALLOW_REL[k]||[]):null;
   const tile=(key,lab,sub)=>{const [v,r,n]=A[key];const c=r<=8?"g":r>=n-7?"r":"";
@@ -555,7 +555,7 @@ function nbaPropCard(r,idx){
   ${nbaChanceHtml(nm,k)}
   ${alt?"":`${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}`}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${(idx||0)<100?nbaMateSel(nm):""}
   ${pxSideTg()}<div class="nbtabs hrt">${tab("l5","L5",rate(S.l5))}${tab("l10","L10",rate(S.l10))}${tab("season","Season",rate(S.season))}${tab("h2h","H2H",rate(S.h2h))}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
-  <div class="nbchw">${nbaChart(S.l10,k,line)}</div>${/^(pts|pra|pr|pa)$/.test(k)?nbaFtLine(nm,opp):""}
+  <div class="nbchw">${nbaChart(S.l10,k,line)}</div>${/^(pts|pra|pr|pa|ftm)$/.test(k)?nbaFtLine(nm,opp):""}
   ${typeof xaVerdictHtml!=="undefined"?xaVerdictHtml("nba",nm,k,line):""}${typeof xaProjLine!=="undefined"?xaProjLine(nm,k,line):""}${typeof xaSitChips!=="undefined"?xaSitChips(nm,k,line):""}
   ${(idx||0)<100?`<a href="#nba-player-${encodeURIComponent(nm)}" class="gopl" data-gopl="${nbaEsc(nm)}|${k}">📊 ${nbaEsc(nm.split(" ").filter(w=>!/^(Jr\.?|Sr\.?|II|III|IV)$/.test(w)).slice(-1)[0])}'s stats &amp; all his lines →</a>`:""}
   <div class="xadeep">${opp&&p.p5?(()=>{const d=nbaDvp(opp,p.p5,k,5);if(!d.rows.length)return "";const av=d.rows.reduce((s,r)=>s+r.v,0)/d.rows.length;return `<div class="small" style="margin-top:6px">${opp} last 5: allowed ${nbaF(av)} ${NBA_MK[k][2]} a game to ${nbaPosWord(p.p5)} (NBA avg ${nbaF(d.lg)}) — <b class="${av>d.lg?"up":"dn"}">${av>d.lg?"easier":"tougher"}</b></div>`})():""}</div>
@@ -1066,7 +1066,7 @@ function nbaPlayer(el,nm){nm=(typeof xMkFromHash!=="undefined"?xMkFromHash(nm,k=
   const tk=NB.ptk||"pts";
   const dvp=opp&&p.p5?nbaDvp(opp,p.p5,"pts",5):null,dvpAvg=dvp&&dvp.rows.length?dvp.rows.reduce((s,r)=>s+r.v,0)/dvp.rows.length:null;
   const back=NB.from&&/^nba-(props|best)$|^nba$/.test(NB.from)?NB.from:"nba-players",backL={"nba-props":"Props","nba-best":"Best props","nba":"Games"}[back]||"Players";
-  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","stl","blk","sb"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
+  const linesTbl=props.length?`${opp?`<div class="card" style="margin-top:12px;padding:12px">${nbaOppAllows(opp,null)}</div>`:""}<h2 class="noglo" style="margin:16px 0 10px">Prop charts · tonight</h2>${(()=>{const mk=props.map(r=>r[1]),ord=["pts","reb","ast","pra","pr","pa","ra","3pm","3pa","ftm","stl","blk","sb"],P=[...props].sort((x,y)=>ord.indexOf(x[1])-ord.indexOf(y[1]));const sel=NB.pmk&&mk.includes(NB.pmk)?NB.pmk:P[0][1];
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div><div class="small swh">👆 Swipe the chart left or right for the next prop</div>
 ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null,mn0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[4]||0),0)/p.g.length):null,tp0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[15]||0),0)/p.g.length):null;return {fga:fg0,min:mn0,tpa:tp0>0?tp0:null,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":R0.rest===1?"r1":"r2"):"",oppT:g0?(g0.h===p.tm?g0.a:g0.h):"",opp:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"opp"):"",pace:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"pace"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
     <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}${typeof vxScatter!=="undefined"?vxScatter(nm,r[1],r[2]):""}${typeof vxLnRec!=="undefined"?vxLnRec("nba",nm,r[1]):""}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":(typeof OUT_DROP!=="undefined"&&OUT_DROP.nba.has(nm)?"🚑 He's ruled out — his props are removed.":"No prop lines posted for him today.")}</span></div>`:"");

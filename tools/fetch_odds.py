@@ -32,12 +32,14 @@ NOT_BOOKS = {"prizepicks", "underdog", "pick6", "kalshi", "polymarket", "prophet
 NBA_MK = {"player_points": "pts", "player_rebounds": "reb", "player_assists": "ast", "player_threes": "3pm",
           "player_steals": "stl", "player_blocks": "blk", "player_points_rebounds": "pr",
           "player_points_assists": "pa", "player_rebounds_assists": "ra", "player_points_rebounds_assists": "pra",
-          "player_blocks_steals": "sb", "player_double_double": "dd", "player_triple_double": "td", "player_first_basket": "fb"}
+          "player_blocks_steals": "sb", "player_double_double": "dd", "player_triple_double": "td", "player_first_basket": "fb",
+          "player_free_throws_made": "ftm"}
 NFL_MK = {"player_pass_yds": "passYds", "player_pass_tds": "passTD", "player_rush_yds": "rushYds", "player_pass_attempts": "passAtt",
           "player_field_goals_made": "fgm", "player_kicking_points": "kpts", "player_extra_points_made": "xpm",
           "player_reception_yds": "recYds", "player_receptions": "rec", "player_anytime_td": "anyTD",
           "player_rush_attempts": "rushAtt", "player_rush_reception_yds": "rushRec",
-          "player_pass_completions": "comp", "player_pass_interceptions": "int"}
+          "player_pass_completions": "comp", "player_pass_interceptions": "int",
+          "player_reception_longest": "recLong", "player_rush_longest": "rushLong", "player_longest_completion": "passLong"}
 
 NHL_MK = {"player_points": "hpts", "player_goals": "hgoals", "player_assists": "hast", "player_shots_on_goal": "hsog",
           "player_blocked_shots": "hblk", "player_total_saves": "hsaves", "player_power_play_points": "hppp",
@@ -48,6 +50,7 @@ GAME_MK = ["h2h", "spreads", "totals"]
 PERIOD_OK = [True]
 PM_BOOKS = {"kalshi", "polymarket"}
 MKLIST = {}
+Q1S = {}   # (player, mk) -> {N: [best over price, book]}  NBA 1st-quarter "N+ Points" ladders
 PMSAMPLE = {}
 YES_MK = {"anyTD", "hanyG", "dd", "td", "fb"}  # one-sided Yes markets (no under, no alt ladder)
 MKSAMPLE = {}
@@ -186,7 +189,7 @@ def pick_yes(book_rows):
                 return ln, s["Over"], None, b, best, bb, None, None
     return None
 
-def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=None):
+def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=None, periods=False):
     try:
         events = client.get_events(sport)
     except Exception as e:
@@ -206,7 +209,7 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
             try: MKLIST[sport] = [g(m, "key") for m in client.get_markets(sport, eid)]; used += 1
             except Exception as e: MKLIST[sport] = [f"failed: {e}"]
         try:
-            if with_game and PERIOD_OK[0]:
+            if (with_game or periods) and PERIOD_OK[0]:
                 try: odds = client.get_odds(sport, event_id=eid, markets=mks, period="all")   # full game + 1st/2nd/3rd period lines, same request
                 except TypeError as te: PERIOD_OK[0] = False; print("period= not supported by this SDK:", te); odds = client.get_odds(sport, event_id=eid, markets=mks)
             else:
@@ -249,6 +252,15 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
                     MKSAMPLE[g(m, "key")] = [b, str(g(m, "line_type", "")), [{k_: g(o, k_) for k_ in ("name", "description", "point", "price", "payout_multiplier")} for o in (g(m, "outcomes", []) or [])[:2]]]
                 mk = mk_map.get(g(m, "key"))
                 if not mk: continue
+                if periods and str(g(m, "period") or "").lower() == "q1" and mk in ("pts", "reb", "ast"):
+                    for oc in g(m, "outcomes", []) or []:
+                        mm = re.match(r"^\s*(\d+)\s*\+", str(g(oc, "name", ""))); pl_ = g(oc, "description"); pr_ = g(oc, "price")
+                        if not mm or not pl_ or pr_ is None: continue
+                        try: pr_ = int(round(float(pr_)))
+                        except Exception: continue
+                        pl_ = re.sub(r"\s*\([A-Z]{2,4}\)\s*$", "", str(pl_)).strip(); cur = Q1S.setdefault((pl_, mk), {}).get(int(mm.group(1)))
+                        if not cur or pr_ > cur[0]: Q1S[(pl_, mk)][int(mm.group(1))] = [pr_, BOOK_NAME.get(b, b) if "BOOK_NAME" in globals() else b]
+                    continue
                 if g(m, "period"): continue   # period player props: full game only
                 lt = str(g(m, "line_type", "") or "")
                 DIAG[lt] = DIAG.get(lt, 0) + 1
@@ -330,8 +342,8 @@ def main():
     used = budget["used"]
     # NBA: every run (games in the next 30 hours). NFL: at most every 3 hours (games in the next 8 days).
     if used < 900:
-        evs, rows, used = fetch_sport("basketball_nba", NBA_MK, 30, opens, used)
-        if evs or rows: out["nba"] = {"at": out["updated"], "events": evs, "props": rows}
+        evs, rows, used = fetch_sport("basketball_nba", NBA_MK, 30, opens, used, periods=True)
+        if evs or rows: out["nba"] = {"at": out["updated"], "events": evs, "props": rows, "q1": [[pl, mk, sorted([[n, v[0], v[1]] for n, v in L.items()])] for (pl, mk), L in Q1S.items()]}
         try: save_close("nba", evs, rows, out["updated"])
         except Exception as e: print("close (nba) failed:", e)
     last_nfl = (prev.get("nfl") or {}).get("at")

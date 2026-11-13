@@ -371,7 +371,13 @@ function xaFoulSay(nm){const p=NBA_LOGS[nm];if(!p)return "";const G=p.g.filter(x
 /* 1st quarter (NBA_Q1, in nba_detail.js) */
 function xaQ1Body(nm,k){if(typeof NBA_Q1==="undefined"||!NBA_Q1[nm]||!["pts","reb","ast"].includes(k))return "";const R=NBA_Q1[nm],i={pts:1,reb:2,ast:3}[k];if(R.length<4)return "";
   const v=R.map(r=>r[i]),av=a=>a.reduce((s,x)=>s+x,0)/a.length,ln=Math.max(.5,Math.round(av(v))-.5),l5=v.slice(-5),h=a=>a.filter(x=>x>ln).length;
-  return `<h4>1️⃣ 1st quarter</h4><div class="small">1st-quarter ${NBA_MK[k][1].toLowerCase()}: <b>${av(v).toFixed(1)}</b> a game (last 5: ${av(l5).toFixed(1)} — ${l5.join(", ")}). Over ${ln}: <b>${h(v)}/${v.length}</b> games. For 1st-quarter props when books post them.</div>`}
+  const Q=xaQ1Odds(nm,k),pc=x=>Math.round(x*100)+"%";
+  const lad=Q?`<table class="bxt xat" style="margin-top:6px"><thead><tr><th>1st Q</th><th>His games</th><th>Price</th><th>Needs</th></tr></thead><tbody>${Q.map(([n,o,b])=>{const hit=v.filter(x=>x>=n).length,r=hit/v.length,need=xaImp(o),e=r-need;
+     return `<tr><td><b>${n}+</b></td><td>${hit}/${v.length} <span class="small">(${pc(r)})</span></td><td>${oddsFmt(o)} <span class="small">${xaEsc(b||"")}</span></td><td class="${e>=.08&&v.length>=8?"up":e<=-.08?"dn":""}">${pc(need)}</td></tr>`}).join("")}</tbody></table><div class="small">Books post 1st-quarter ${NBA_MK[k][2]} as "N+" ladders. Green = he's reached it more often than the price needs (8+ games).</div>`:"";
+  return `<h4>1️⃣ 1st quarter</h4><div class="small">1st-quarter ${NBA_MK[k][1].toLowerCase()}: <b>${av(v).toFixed(1)}</b> a game (last 5: ${av(l5).toFixed(1)} — ${l5.join(", ")}). Over ${ln}: <b>${h(v)}/${v.length}</b> games.${Q?"":" Books haven't posted his 1st-quarter lines yet."}</div>${lad}`}
+/* real 1st-quarter ladders from the odds feed (data/live_odds.json → nba.q1): [[N, best price, book], ...] */
+function xaQ1Odds(nm,k){const D=typeof LO!=="undefined"&&LO.data&&LO.data.nba;if(!D||!D.q1)return null;const n=typeof loNorm!=="undefined"?loNorm(nm):nm;
+  const r=D.q1.find(x=>x[1]===k&&(typeof loNorm!=="undefined"?loNorm(x[0]):x[0])===n);return r&&r[2].length?r[2]:null}
 
 /* yes-only markets from the odds feed: double-double (dd), triple-double (td), first basket (fb) */
 function xaYesRows(mk){const D=typeof LO!=="undefined"&&LO.data&&LO.data.nba;if(!D||!D.props)return [];const today=new Set((D.events||[]).filter(e=>e.date===NBA_SLATE_DATE).map(e=>String(e.id)));

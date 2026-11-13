@@ -6,7 +6,7 @@ Object.assign(MARKETS.passYds,{n:"Passing yards",u:"pass yds"});Object.assign(MA
 Object.assign(MARKETS.passTD,{n:"Passing TDs",u:"pass TDs"});Object.assign(MARKETS.int,{n:"Interceptions",u:"INTs"});
 Object.assign(MARKETS.rushYds,{n:"Rushing yards",u:"rush yds"});Object.assign(MARKETS.rushAtt,{n:"Rushing attempts",u:"rush att"});
 Object.assign(MARKETS.rec,{n:"Receptions",u:"receptions"});Object.assign(MARKETS.recYds,{n:"Receiving yards",u:"rec yds"});
-Object.assign(MARKETS.rushRec,{n:"Rush + rec yards",u:"rush+rec yds"});Object.assign(MARKETS.anyTD,{n:"Anytime TD",u:"TDs"});
+Object.assign(MARKETS.rushRec,{n:"Rush + rec yards",u:"rush+rec yds"});Object.assign(MARKETS.recLong,{u:"yd longest catch"});Object.assign(MARKETS.rushLong,{u:"yd longest run"});Object.assign(MARKETS.passLong,{u:"yd longest completion"});Object.assign(MARKETS.anyTD,{n:"Anytime TD",u:"TDs"});
 const POSNAME={QB:"quarterbacks",RB:"running backs",WR:"wide receivers",TE:"tight ends"};
 const short=t=>TEAMS[t][0].split(" ").slice(-1)[0];
 const badge=t=>`<span class="ab" style="background:${TEAMS[t][3]};color:${typeof xInkOn!=="undefined"?xInkOn(TEAMS[t][3]):"#fff"}">${t}</span>`;   /* white or black text, whichever reads on the team colour */
@@ -536,7 +536,7 @@ function playerCovHtml(pl,opp,k){
 function dvpSummary(t,pos){const D=DVP_RAW[pos];if(!D||!D.rows[t])return'<p class="note">Not available.</p>';
   const lab={att:"Pass att",comp:"Completions",passYds:"Pass yds",passTD:"Pass TD",int:"INT",rate:"Passer rating",rushAtt:"Rushing att",rushYds:"Rush yds",rushTD:"Rush TD",tgt:"Targets",rec:"Receptions",recYds:"Rec yds",recTD:"Rec TD"};
   return `<table><tbody>${D.cols.map((c,i)=>`<tr><td>${lab[c]||c}</td><td class="r num"><b>${D.rows[t][i]}</b></td><td class="r small">${ordinal([...Object.values(D.rows)].map(r=>r[i]).sort((a,b)=>b-a).indexOf(D.rows[t][i])+1)} most</td></tr>`).join("")}</tbody></table>`}
-const STAT_LAB={passYds:"pass yds",comp:"comp",passTD:"pass TD",rushYds:"rush yds",rushAtt:"rush att",rec:"rec",recYds:"rec yds",rushRec:"rush+rec yds",anyTD:"TD"};
+const STAT_LAB={passYds:"pass yds",comp:"comp",passTD:"pass TD",rushYds:"rush yds",rushAtt:"rush att",rec:"rec",recYds:"rec yds",rushRec:"rush+rec yds",anyTD:"TD",recLong:"yd long catch",rushLong:"yd long run",passLong:"yd long comp"};
 function lineStr(s,pos){const p=[];if(pos==="QB"){if(s.passYds!=null)p.push(`${s.comp!=null?s.comp+" cmp, ":""}${s.passYds} pass yds, ${s.passTD||0} TD`);if(s.rushYds!=null)p.push(`${s.rushYds} rush yds`)}
   else{if(s.rushAtt)p.push(`${s.rushAtt}-${s.rushYds} rush${s.rushTD?", "+s.rushTD+" TD":""}`);if(s.rec!=null)p.push(`${s.rec}-${s.recYds} rec${s.recTD?", "+s.recTD+" TD":""}`)}return p.join(" · ")}
 function vsCard(pl,opp,k,line,unit){if(!opp)return "";const V=(typeof VS_LOGS!=="undefined"&&VS_LOGS[pl.name])||[];
@@ -592,7 +592,7 @@ function viewPlayer(){
   if(S.prop&&S._lastPl!==S.prop.player){if(typeof PXS!=="undefined")for(const key in PXS)delete PXS[key];S.prop.xt=null;S._lastPl=S.prop.player}
   const P=allPlayers();const pl=P.find(p=>p.name===S.prop.player);if(!pl){S.prop={};try{history.replaceState(null,"","#props")}catch(e){}return viewProps()}
   try{const want="#props/"+encodeURIComponent(pl.name)+(S.prop.market?"/"+S.prop.market:"");if(location.hash!==want)history.replaceState(null,"",want)}catch(e){} /* refresh keeps the player page */
-  const L0=pLogs(pl.name);const MK=marketsFor(pl.pos).filter(m=>realProp(pl.name,m)||L0.length);
+  const L0=pLogs(pl.name);const MK=marketsFor(pl.pos).filter(m=>realProp(pl.name,m)||L0.length&&!MARKETS[m].opt);
   if(!S.prop.market||!MK.includes(S.prop.market))S.prop.market=nflDefMk(pl,MK);
   const k=S.prop.market,o=oppOf(pl.team),opp=o?o.opp:null,L=pLogs(pl.name),main=lineFor(pl.name,k),line=typeof loLine!=="undefined"?loLine(pl.name,k,main):main,dv=opp?dvpFor(opp,pl.pos,k):{rank:NaN,avg:NaN};
   const CLall=L.filter(l=>l.season===CUR);const QA=qb1Applies(pl,k),QS=QA?QB1_STATUS[pl.team]:null,QM=QA?qb1Miss(pl.team):[];
@@ -612,7 +612,7 @@ function viewPlayer(){
    ${o&&nflStarted(o.g)?`<div class="info" style="margin:12px 0"><span>🔒 His game has kicked off — this week's pregame lines are closed.</span></div>`:""}
    ${opp?`<div class="card" style="margin-top:12px;padding:12px">${nflAllowTiles(opp,pl.pos,k)}</div>`:""}
    <h2 class="noglo" style="margin:16px 0 10px">Prop charts · this week</h2>
-   <div class="nbtabs pmk">${[...MK].sort((a,b)=>(realProp(pl.name,b)?1:0)-(realProp(pl.name,a)?1:0)).map(m=>{const rl=realProp(pl.name,m);return `<button data-m="${m}" class="${m===k?"on":""}">${({passYds:"Pass yds",comp:"Comp",passTD:"Pass TD",int:"INT",passAtt:"Pass att",rushYds:"Rush yds",rushAtt:"Rush att",rec:"Rec",recYds:"Rec yds",rushRec:"Rush+Rec",anyTD:"TD"})[m]||MARKETS[m].n}<small>${m==="anyTD"?(rl?amTxt(rl[1]):"—"):rl?rl[0]:"avg "+fmt(lineFor(pl.name,m),0)}</small></button>`}).join("")}</div>
+   <div class="nbtabs pmk">${[...MK].sort((a,b)=>(realProp(pl.name,b)?1:0)-(realProp(pl.name,a)?1:0)).map(m=>{const rl=realProp(pl.name,m);return `<button data-m="${m}" class="${m===k?"on":""}">${({passYds:"Pass yds",comp:"Comp",passTD:"Pass TD",int:"INT",passAtt:"Pass att",rushYds:"Rush yds",rushAtt:"Rush att",rec:"Rec",recYds:"Rec yds",rushRec:"Rush+Rec",anyTD:"TD",recLong:"Long rec",rushLong:"Long rush",passLong:"Long comp"})[m]||MARKETS[m].n}<small>${m==="anyTD"?(rl?amTxt(rl[1]):"—"):rl?rl[0]:"avg "+fmt(lineFor(pl.name,m),0)}</small></button>`}).join("")}</div>
    <div class="small swh">👆 Swipe the chart left or right for the next prop</div>
    ${(()=>{const rp=realProp(pl.name,k);return rp&&k!=="anyTD"&&typeof loAltHtml!=="undefined"&&!(o&&nflStarted(o.g))?loAltHtml(pl.name,k,rp[0],CL.filter(l=>Number.isFinite(stat(l,k))).slice(-10).map(l=>stat(l,k))):""})()}
    <div class="section">${typeof nflPropFilterCard!=="undefined"?nflPropFilterCard(pl,k,line,CL):""}</div>
@@ -759,6 +759,8 @@ function nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA){
     ["tgt","Targets",typeof nfMatrixCard!=="undefined"?nfMatrixCard(pl,opp):""],["use","Usage",usageCard(pl)+(typeof vxSnaps!=="undefined"?vxSnaps(pl.name):"")],
     ["vs",opp?"Vs "+short(opp):"",opp?posvCard(pl,opp,k,line,unit)+vsCard(pl,opp,k,line,unit):""],
     ["all","All games",`<div style="max-height:380px;overflow:auto"><table><tbody>${allGameRows(pl,CL,CLall,qmode,QM,k,ouTag,QA)}</tbody></table></div><p class="note" style="margin:8px 0 0">"Did not play" weeks (injury / inactive) aren't counted in averages or hit rates.</p>`],
+    ...(/^(passYds|comp|passAtt|passLong|recYds|rec|recLong|rushYds|rushAtt|rushLong|rushRec)$/.test(k)&&typeof vxWxSplit!=="undefined"?[["wx","Weather",vxWxSplit(pl,k,line)]]:[]),
+    ...(pl.pos!=="QB"&&typeof vxRoleTrend!=="undefined"?[["role","Role trend",vxRoleTrend(pl.name)]]:[]),
     ...(k!=="anyTD"?[["rzf","Red zone & end zone",RZ]]:[]),["sch","Schedule",typeof NFL_NEXT!=="undefined"&&NFL_NEXT[pl.team]?nfNextHtml(pl.team):""]].filter(t=>t[1]&&t[2]);
   if(!T.length)return "";const cur=T.some(t=>t[0]===S.prop.xt)&&!(k==="anyTD"&&S.prop.xt==="alt")?S.prop.xt:T[0][0];
   return `<div class="section"><div class="card xtc nodz"><div class="nbtabs pmk xtt">${T.map(([id,l])=>`<button data-xt="${id}" class="${id===cur?"on":""}">${l}</button>`).join("")}</div>

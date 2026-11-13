@@ -63,7 +63,7 @@ function livePut(host,html,before){
   if(el)el.replaceWith(nb);else if(before)host.insertBefore(nb,before);else host.prepend(nb);
 }
 /* NBA live stat line for a player: value of a market so far */
-const LIVE_LAB={pts:["PTS"],reb:["REB"],ast:["AST"],"3pm":["3PT",0],"3pa":["3PT",1],blk:["BLK"],stl:["STL"],pa:["PTS","AST"],pr:["PTS","REB"],ra:["REB","AST"],pra:["PTS","REB","AST"],sb:["STL","BLK"]};
+const LIVE_LAB={pts:["PTS"],reb:["REB"],ast:["AST"],"3pm":["3PT",0],"3pa":["3PT",1],ftm:["FT",0],blk:["BLK"],stl:["STL"],pa:["PTS","AST"],pr:["PTS","REB"],ra:["REB","AST"],pra:["PTS","REB","AST"],sb:["STL","BLK"]};
 async function liveBox(id){
   const b=LIVE.box[id];if(b&&Date.now()-b.t<25000)return b.p;
   try{const r=await fetch(LIVE_SUM+id,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json(),p={};
@@ -73,7 +73,7 @@ async function liveBox(id){
 }
 function liveVal(o,k){
   const L=LIVE_LAB[k];if(!o||!L)return null;
-  if(k==="3pm"||k==="3pa"){const v=String(o["3PT"]||"").split("-");return v.length===2?+v[L[1]]:null}
+  if(k==="3pm"||k==="3pa"||k==="ftm"){const v=String(o[L[0]]||"").split("-");return v.length===2?+v[L[1]]:null}
   let s=0;for(const l of L){const v=+o[l];if(!Number.isFinite(v))return null;s+=v}return s;
 }
 /* NFL live box score (ESPN summary) -> {player: {passYds,...}} */

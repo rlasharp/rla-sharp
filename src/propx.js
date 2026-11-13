@@ -23,7 +23,7 @@ function pxTable(rows,val,line,dec,minCol,hdr){
      return `<tr${tn?' class="tn"':""}><td>${lab}${tn?' <span class="pll o">tonight</span>':""}${sub?`<div class="small">${sub}</div>`:""}</td><td>${a.length}</td>${minCol?`<td>${nbaF(av(a,minCol))}</td>`:""}<td><b>${fmt(av(vs,v=>v),dec)}</b></td><td class="${o/a.length>=.6?"up":o/a.length<=.4?"dn":""}">${o}/${a.length}</td></tr>`}).join("")}</tbody></table></div>`}
 
 /* ===== NBA ===== */
-const PX_DEF={pts:d=>d.pts,reb:d=>d.reb,ast:d=>d.ast,"3pm":d=>d.tpa*d.tp/100,"3pa":d=>d.tpa,pa:d=>d.pts+d.ast,pr:d=>d.pts+d.reb,ra:d=>d.reb+d.ast,pra:d=>d.pts+d.reb+d.ast};
+const PX_DEF={pts:d=>d.pts,reb:d=>d.reb,ast:d=>d.ast,"3pm":d=>d.tpa*d.tp/100,"3pa":d=>d.tpa,ftm:d=>d.fta*d.ft/100,pa:d=>d.pts+d.ast,pr:d=>d.pts+d.reb,ra:d=>d.reb+d.ast,pra:d=>d.pts+d.reb+d.ast};
 function pxNbaRank(k){
   const T=Object.entries(NBA_TADV||{}).filter(([,x])=>x&&x.d&&x.o);const n=T.length;
   const f=PX_DEF[k]?([,x])=>PX_DEF[k](x.d):k==="stl"?([,x])=>x.o.tov:k==="blk"?([,x])=>x.o.paint:null;if(!f)return {};
