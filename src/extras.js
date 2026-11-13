@@ -44,7 +44,13 @@ function recChart(R){
 function recSum(rows){const t={win:0,loss:0,push:0,void:0,pending:0,u:0};for(const r of rows){t[r.st]=(t[r.st]||0)+1;t.u+=r.u||0}t.g=t.win+t.loss;return t}
 function recLine(t){return `${t.win}-${t.loss}${t.push?"-"+t.push:""}`}
 function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){nhlEnsure(()=>{if((location.hash||"").slice(1)==="record")viewRecord()})}
-  const R=recAll(),T=recSum(R),host=document.getElementById("v-record");
+  const RA=recAll(),host=document.getElementById("v-record"),F=window.RECF||(window.RECF={per:"all",sp:"all"});
+  const etDay=o=>{const d=new Date(Date.now()-(o||0)*864e5);return d.toLocaleDateString("en-CA",{timeZone:"America/New_York"})},td=etDay(0),yd=etDay(1),wk=etDay(6);
+  const perOk=r=>F.per==="all"||!r.date?F.per==="all":F.per==="today"?r.date===td:F.per==="yday"?r.date===yd:r.date>=wk&&r.date<=td;
+  const R=RA.filter(r=>perOk(r)&&(F.sp==="all"||r.sport===F.sp)),T=recSum(R);
+  const PER=[["today","Today"],["yday","Yesterday"],["week","Last 7 days"],["all","All time"]],SPS=[["all","All sports"],...["NFL","NBA","NHL","Soccer"].filter(k=>RA.some(r=>r.sport===k)).map(k=>[k,k])];
+  const perL=(PER.find(x=>x[0]===F.per)||PER[3])[1];
+  const fbar=`<div class="recf"><div class="seg">${PER.map(([k,l])=>`<button class="btn${F.per===k?" on":""}" data-recp="${k}">${l}</button>`).join("")}</div><div class="seg">${SPS.map(([k,l])=>`<button class="btn${F.sp===k?" on":""}" data-recs="${k}">${({NFL:"🏈 ",NBA:"🏀 ",NHL:"🏒 ",Soccer:"⚽ "}[k]||"")+l}</button>`).join("")}</div></div>`;
   const tile=(l,v,c)=>`<div><b class="${c||""}">${v}</b>${l}</div>`;
   const uTxt=u=>(u>0?"+":"")+u.toFixed(2)+"u",uCls=u=>u>0?"up":u<0?"dn":"";
   const grp=(key)=>{const m={};for(const r of R){const k=key(r);(m[k]=m[k]||[]).push(r)}return Object.entries(m).map(([k,a])=>[k,recSum(a)])};
@@ -56,6 +62,7 @@ function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){
   const ic={NFL:"🏈",NBA:"🏀",NHL:"🏒",Soccer:"⚽"};
   host.innerHTML=`<h1>Our record</h1>
   <p class="sub">Every pick we post, graded from official results. Wins and losses both stay up · 1 unit per play.</p>
+  ${fbar}${F.per!=="all"||F.sp!=="all"?`<div class="small" style="margin:-4px 0 8px">Showing <b>${perL.toLowerCase()}</b>${F.per==="today"?` (${td})`:""}${F.sp!=="all"?` · <b>${esc(F.sp)}</b> only`:""}${R.length?"":" — no plays yet"}.</div>`:""}
   <div class="card rec"><div class="recs">${tile("Record",recLine(T))}${tile("Hit rate",T.g?Math.round(T.win/T.g*100)+"%":"–")}${tile("Units",uTxt(T.u),uCls(T.u))}</div>
    <div class="recsp">${bySp.map(([k,t])=>`<span class="recchip">${ic[k]||""} <b>${esc(k)}</b> ${recLine(t)} <em class="${uCls(t.u)}">${uTxt(t.u)}</em></span>`).join("")}</div>
    <div class="row" style="gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center"><button class="btn" id="recShare">📤 Share</button><span class="small">${T.pending?`${T.pending} pending · `:""}pushes and no-plays don't count</span></div></div>
@@ -66,10 +73,11 @@ function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){
     ["nums","🎯 Our numbers",(typeof xTrackCard!=="undefined"?xTrackCard():"")+(typeof xCalCard!=="undefined"?xCalCard().replace(/^\s*<div class="card[^"]*"[^>]*>/,'<div style="margin-top:14px">'):"")],
     ["clv","💹 Closing line",`<div class="card"><h2>x</h2><div id="clvCard">${clvCardHtml(R)}</div></div>`]]):""}
   <p class="note" style="margin-top:10px">Past results don't guarantee future results. Bet small.</p>`;
+  host.querySelectorAll("[data-recp]").forEach(b=>b.onclick=()=>{F.per=b.dataset.recp;viewRecord()});host.querySelectorAll("[data-recs]").forEach(b=>b.onclick=()=>{F.sp=b.dataset.recs;viewRecord()});
   {const m=document.getElementById("recMore");if(m)m.onclick=()=>{document.getElementById("recList").classList.add("all");m.remove()}}
   clvLoad(R).then(ch=>{if(ch){const c=document.getElementById("clvCard");if(c)c.innerHTML=clvCardHtml(R)}});
   document.getElementById("recShare").onclick=()=>shareImage({title:"Our record",sub:"NFL Plays of the Week + NBA Plays of the day",
-    rows:[{a:"Overall",b:recLine(T),c:uTxt(T.u)},...grp(r=>r.sport).map(([k,t])=>({a:k,b:recLine(t),c:uTxt(t.u)}))],file:"rla-sharp-record.png"});
+    rows:[{a:F.per==="all"&&F.sp==="all"?"Overall":[F.sp!=="all"?F.sp:"",F.per!=="all"?perL:""].filter(Boolean).join(" · "),b:recLine(T),c:uTxt(T.u)},...grp(r=>r.sport).map(([k,t])=>({a:k,b:recLine(t),c:uTxt(t.u)}))],file:"rla-sharp-record.png"});
 }
 
 /* ===== Beginner guide ===== */

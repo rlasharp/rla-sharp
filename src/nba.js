@@ -555,13 +555,22 @@ function nbaPropCard(r,idx){
   ${nbaChanceHtml(nm,k)}
   ${alt?"":`${typeof nbaVerdict!=="undefined"?nbaVerdict(nm,k):""}${typeof nbaOddsBtns!=="undefined"?nbaOddsBtns(nm,k):""}`}${opp&&(idx||0)<100?nbaOppAllows(opp,k):""}${(idx||0)<100?nbaMateSel(nm):""}
   ${pxSideTg()}<div class="nbtabs hrt">${tab("l5","L5",rate(S.l5))}${tab("l10","L10",rate(S.l10))}${tab("season","Season",rate(S.season))}${tab("h2h","H2H",rate(S.h2h))}${opp&&p.p5?tab("dvp","vs "+p.p5):""}</div>
-  <div class="nbchw">${nbaChart(S.l10,k,line)}</div>
+  <div class="nbchw">${nbaChart(S.l10,k,line)}</div>${/^(pts|pra|pr|pa)$/.test(k)?nbaFtLine(nm,opp):""}
   ${typeof xaVerdictHtml!=="undefined"?xaVerdictHtml("nba",nm,k,line):""}${typeof xaProjLine!=="undefined"?xaProjLine(nm,k,line):""}${typeof xaSitChips!=="undefined"?xaSitChips(nm,k,line):""}
   ${(idx||0)<100?`<a href="#nba-player-${encodeURIComponent(nm)}" class="gopl" data-gopl="${nbaEsc(nm)}|${k}">📊 ${nbaEsc(nm.split(" ").filter(w=>!/^(Jr\.?|Sr\.?|II|III|IV)$/.test(w)).slice(-1)[0])}'s stats &amp; all his lines →</a>`:""}
   <div class="xadeep">${opp&&p.p5?(()=>{const d=nbaDvp(opp,p.p5,k,5);if(!d.rows.length)return "";const av=d.rows.reduce((s,r)=>s+r.v,0)/d.rows.length;return `<div class="small" style="margin-top:6px">${opp} last 5: allowed ${nbaF(av)} ${NBA_MK[k][2]} a game to ${nbaPosWord(p.p5)} (NBA avg ${nbaF(d.lg)}) — <b class="${av>d.lg?"up":"dn"}">${av>d.lg?"easier":"tougher"}</b></div>`})():""}</div>
   ${typeof xaPanel!=="undefined"?xaPanel("nba",nm,k,line,PXSIDE):""}
   </div>`;
 }
+/* free throws for points props: his FT% and attempts (season / last 5 / last 10) + how many free throws tonight's opponent gives up */
+function nbaFtLine(nm,opp){try{const p=NBA_LOGS[nm];if(!p)return "";const G=p.g.filter(x=>x[17]!=null&&x[4]>0);if(G.length<3)return "";
+  const st=L=>{const m=L.reduce((s,x)=>s+(+x[16]||0),0),a=L.reduce((s,x)=>s+(+x[17]||0),0);return {pct:a?Math.round(m/a*100):null,m:m/L.length,a:a/L.length,n:L.length}};
+  const S=st(G),L5=st(G.slice(-5)),L10=st(G.slice(-10)),f=x=>x.pct==null?"–":x.pct+"%";
+  const A=opp&&typeof nbaAllowIdx!=="undefined"?nbaAllowIdx()[opp]:null,FA=Object.values(NBA_ALLOW||{}).map(x=>x.fta).filter(v=>v!=null),fr=A&&A.fta!=null?[A.fta,FA.filter(v=>v>A.fta).length+1,FA.length]:null;
+  const cls=x=>x.pct==null||S.pct==null?"":x.pct>=S.pct+5?"up":x.pct<=S.pct-5?"dn":"";
+  return `<div class="ftln"><b>🎯 Free throws</b><div class="ftg"><div><span class="small">Season</span><b>${f(S)}</b><span class="small">${nbaF(S.m)}/${nbaF(S.a)} a game</span></div>
+   <div><span class="small">Last 10</span><b class="${cls(L10)}">${f(L10)}</b><span class="small">${nbaF(L10.m)}/${nbaF(L10.a)}</span></div><div><span class="small">Last 5</span><b class="${cls(L5)}">${f(L5)}</b><span class="small">${nbaF(L5.m)}/${nbaF(L5.a)}</span></div>
+   ${fr?`<div><span class="small">${nbaEsc(nbaShort(opp))} allow</span><b>${nbaF(A.fta)}</b><span class="small">FTA a game · ${nbaOrd(fr[1])} most of ${fr[2]}</span></div>`:""}</div></div>`}catch(e){return ""}}
 function nbaWireCharts(root,redraw){
   root.querySelectorAll(".nbmate").forEach(s=>s.onchange=()=>{const nm=s.dataset.mate.replace(/&amp;/g,"&").replace(/&quot;/g,'"');if(s.value)NB.tmf[nm]=s.value;else delete NB.tmf[nm];const y=window.scrollY;if(redraw)redraw();window.scrollTo(0,y)});
   root.querySelectorAll("[data-pct]").forEach(b=>b.onclick=()=>{

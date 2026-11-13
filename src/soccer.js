@@ -428,20 +428,43 @@ var SOC_USUAL=null;function socUsualPos(aid){if(!aid)return null;if(!SOC_USUAL){
   const [bl,bc]=Object.entries(byLine).sort((a,b)=>b[1]-a[1])[0];if(bc/n<.7)return null;
   return Object.entries(U).filter(([p])=>socLineOf(p)===+bl).sort((a,b)=>b[1]-a[1])[0][0]}
 function socFixPos(x){const u=socUsualPos(x.aid);if(!u||!x.pos||socLineOf(x.pos)===0||socLineOf(u)===0)return x.pos;return socLineOf(u)!==socLineOf(x.pos)||(socSideOf(u)!==1&&socSideOf(x.pos)===1&&socLineOf(u)===1)?u:x.pos}
-function socPitch(L,key){const rows=[[],[],[],[],[],[]];L.forEach((x,i)=>{const p=socFixPos(x);if(p!==x.pos){x.espnPos=x.pos;x.pos=p}rows[socLineOf(x.pos)].push(Object.assign(x,{i}))});
+/* left-to-right spot from ESPN's slot label: LB/LM/LW 0 · CD-L/AM-L 1 · centre 2 · CD-R 3 · RB/RM/RW 4 */
+function socXOf(pos){const p=String(pos||"").toUpperCase();if(/-L$/.test(p))return 1;if(/-R$/.test(p))return 3;if(/^L/.test(p))return 0;if(/^R/.test(p))return 4;return 2}
+/* how deep a slot sits: line first, then (inside a line) centre-backs before full-backs, sided forwards behind a lone central one */
+function socDepth(pos){const p=String(pos||"").toUpperCase(),l=socLineOf(p);let d=l*10;if(l===1&&/^(LB|RB)/.test(p))d+=3;if(l===1&&/WB/.test(p))d+=6;if(l===5&&socXOf(p)!==2)d-=2;return d}
+/* ESPN's slot labels describe the formation slot, not the job (in a 4-2-3-1 the two holding midfielders are listed as "LM"/"RM").
+   With the team's formation (e.g. 4-2-3-1) we sort the XI from deepest to most advanced and fill the formation's rows in order,
+   so the picture always has the real shape; the role names come from the row each player lands in. */
+function socFmRows(L,fm){const n=String(fm||"").split("-").map(Number);if(!n.length||n.some(x=>!x)||n.reduce((a,b)=>a+b,0)!==10||L.length!==11)return null;
+  const gk=L.filter(x=>socLineOf(x.pos)===0);if(gk.length!==1)return null;const O=L.filter(x=>x!==gk[0]).sort((a,b)=>socDepth(a.pos)-socDepth(b.pos));
+  const rows=[gk];let k=0;for(const c of n){rows.push(O.slice(k,k+c).sort((a,b)=>socXOf(a.pos)-socXOf(b.pos)));k+=c}
+  const nr=n.length,back3=n[0]===3;gk[0].role="Goalkeeper";
+  rows.slice(1).forEach((R,r)=>{const m=R.length;R.forEach((x,j)=>{const end=m>1&&(j===0||j===m-1),Ls=j===0?"Left":"Right";let t;
+    if(r===0)t=m>=4?(end?(m===5?`${Ls} wing-back`:`${Ls}-back`):"Centre-back"):m===3?(end?`${Ls} centre-back`:"Centre-back"):"Centre-back";
+    else if(r===nr-1)t=m===3?(end?`${Ls} winger`:"Striker"):"Striker";
+    else{const first=r===1,last=r===nr-2,mids=nr-2;
+      if(m>=4)t=end?(back3&&mids===1||back3&&first?`${Ls} wing-back`:`${Ls} midfielder`):"Central midfielder";
+      else if(m===3)t=mids===1?"Central midfielder":last?(end?`${Ls} winger`:"Attacking midfielder"):"Central midfielder";
+      else t=mids>1&&first?"Defensive midfielder":mids>1&&last?"Attacking midfielder":"Central midfielder"}
+    x.role=t})});
+  return rows}
+function socPitch(L,key,fm){L.forEach((x,i)=>{const p=socFixPos(x);if(p!==x.pos){x.espnPos=x.pos;x.pos=p}x.i=i;x.role=null});
+  let rows=socFmRows(L,fm);if(!rows){rows=[[],[],[],[],[],[]];L.forEach(x=>rows[socLineOf(x.pos)].push(x));rows.forEach(r=>r.sort((a,b)=>socXOf(a.pos)-socXOf(b.pos)))}
   const chip=x=>{const g=x.g||[];const b=!x.g?"":(g[5]?"⚽".repeat(Math.min(g[5],3)):"")+(g[6]?"🅰️":"")+(g[10]?"🟥":g[9]?"🟨":"")+(!g[1]?"":g[2]<85?"🔻":"");
     const gk=socLineOf(x.pos)===0;if(!x.g)return `<a class="scpl${gk?" gk":""}" ${x.aid?`href="#soccer-player-${x.aid}"`:""}><span class="scsh">${gk?"🧤":""}</span><i>${socE(socShort(x.nm))}</i></a>`;return `<button class="scpl${gk?" gk":""}" data-scpl="${key}|${x.i}"><span class="scsh">${gk?"🧤":""}</span><i>${socE(socShort(x.nm))}</i>${b?`<em>${b}</em>`:""}</button>`};
   return `<div class="scpitch"><div class="pm half"></div><div class="pm circ"></div><div class="pm box"></div><div class="pm six"></div><div class="pm arc"></div><div class="pm spot"></div><div class="pm goal"></div>
-   <div class="scrows">${rows.slice().reverse().filter(r=>r.length).map(r=>`<div class="scrow">${r.sort((a,b)=>socSideOf(a.pos)-socSideOf(b.pos)).map(chip).join("")}</div>`).join("")}</div></div>`}
+   <div class="scrows">${rows.slice().reverse().filter(r=>r.length).map(r=>`<div class="scrow">${r.map(chip).join("")}</div>`).join("")}</div></div>`}
+/* the formation a team used in a finished match, or its most recent one (for a predicted XI) */
+function socFmOf(id,tid){const F=window.SOC_FM||{};if(id&&F[id]&&F[id][tid])return F[id][tid];const R=(typeof socTeamRes==="function"?socTeamRes(tid):[]).slice().reverse();for(const r of R)if(F[r[0]]&&F[r[0]][tid])return F[r[0]][tid];return ""}
 function socLineupCard(id,h,a,P){const all={};const mk=tid=>{const L=P.filter(x=>x.tid===tid);return {xi:L.filter(x=>x.g[1]),sub:L.filter(x=>!x.g[1]).sort((x,y)=>y.g[2]-x.g[2])}};
   const H=mk(h),A=mk(a);if(H.xi.length<7||A.xi.length<7)return "";all.h=[...H.xi,...H.sub];all.a=[...A.xi,...A.sub];window.SOC_LU_CUR={id,all};
-  const side=(k,tid,T)=>`<div><h3 style="margin:0 0 6px">${socBadge(tid)} ${socTL(tid,socE(socTm(tid)))}</h3>${socPitch(T.xi,k)}
+  const side=(k,tid,T)=>`<div><h3 style="margin:0 0 6px">${socBadge(tid)} ${socTL(tid,socE(socTm(tid)))}${socFmOf(id,tid)?` <span class="small">${socE(socFmOf(id,tid))}</span>`:""}</h3>${socPitch(T.xi,k,socFmOf(id,tid))}
     <div class="scbench"><b>Subs used</b>${T.sub.map((x,j)=>`<button class="scpl sub" data-scpl="${k}|${T.xi.length+j}"><i>${socE(x.nm)}</i><em>${x.g[2]}′${x.g[5]?" ⚽":""}${x.g[6]?" 🅰️":""}${x.g[9]?" 🟨":""}</em></button>`).join("")||`<span class="small">none</span>`}</div></div>`;
   return `<div class="card"><h2>🟩 Lineups</h2><div class="xasub">Starting XI by position · ⚽ goal · 🅰️ assist · 🟨/🟥 card · 🔻 subbed off · tap a player for his match</div>
    <div class="sc2">${side("h",h,H)}${side("a",a,A)}</div><div id="scPlBox" class="scplbox" hidden></div></div>`}
 function socLineupWire(el){el.querySelectorAll("[data-scpl]").forEach(b=>b.onclick=()=>{const [k,i]=b.dataset.scpl.split("|"),C=window.SOC_LU_CUR,x=C&&C.all[k][+i];if(!x)return;
   el.querySelectorAll(".scpl.on").forEach(z=>z.classList.remove("on"));b.classList.add("on");const g=x.g,box=el.querySelector("#scPlBox");
-  box.hidden=false;box.innerHTML=`<div class="row" style="align-items:center;gap:8px"><b style="font-size:16px">${socE(x.nm)}</b><span class="small">${socE(x.pos||"")} · ${socE(socTm(x.tid))}</span><span class="sp"></span>${x.old?"":`<a class="small" href="#soccer-player-${x.aid}">Season page →</a>`}</div>
+  box.hidden=false;box.innerHTML=`<div class="row" style="align-items:center;gap:8px"><b style="font-size:16px">${socE(x.nm)}</b><span class="small">${socE(x.role||x.pos||"")} · ${socE(socTm(x.tid))}</span><span class="sp"></span>${x.old?"":`<a class="small" href="#soccer-player-${x.aid}">Season page →</a>`}</div>
    <div class="pbio" style="margin-top:8px"><div><b>${g[2]}′</b>${g[1]?"Started":"Came on"}</div>${socLineOf(x.pos)===0?"":`<div><b>${g[5]}</b>Goals</div>`}<div><b>${g[6]}</b>Assists</div><div><b>${g[3]}</b>Shots</div><div><b>${g[4]}</b>On target</div><div><b>${g[7]}</b>Fouls</div><div><b>${g[8]}</b>Fouled</div><div><b>${g[9]?"🟨":g[10]?"🟥":"–"}</b>Card</div></div>${socLineOf(x.pos)===0?(()=>{const r=socMatchRow(C.id),ga=r?(x.tid===r[3]?r[6]:r[5]):null,sv=g[11]||0,pct=ga!=null&&sv+ga?Math.round(sv/(sv+ga)*100):null;
      return `<div class="pbio" style="margin-top:8px"><div><b>${sv}</b>🧤 Saves</div><div><b>${ga??"–"}</b>Goals conceded</div><div><b>${pct!=null?pct+"%":"–"}</b>Save %</div><div><b>${ga===0?"✅":"–"}</b>Clean sheet</div></div>`})():""}`;
   box.scrollIntoView({block:"nearest",behavior:"smooth"})})}
@@ -452,7 +475,7 @@ function socLineupWire(el){el.querySelectorAll("[data-scpl]").forEach(b=>b.oncli
 const SOCL={m:{},sum:{},lu:{},luAt:{},t:null,busy:0};
 async function socLuTick(){if(location.protocol==="file:"||!window.SOC_OK)return;const h=decodeURIComponent((location.hash||"").slice(1));if(!h.startsWith("soccer-game-"))return;const f=socFx(h.slice(12).replace(/-props$/,""));if(!f)return;
   const m=(Date.parse(f.t)-Date.now())/60000;if(m>75||m<-5)return;try{const r=await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${SOC_SLUG[f.c]}/summary?event=${f.id}`,{cache:"no-store"});if(!r.ok)return;const j=await r.json(),lu={};
-    for(const sd of j.rosters||[]){const R=sd.roster||[],xi=R.filter(p=>p.starter).map(p=>[(p.athlete||{}).displayName,(p.position||{}).abbreviation||"",(p.athlete||{}).id]);if(xi.length>=11)lu[(sd.team||{}).id]={xi,sub:R.filter(p=>!p.starter).map(p=>(p.athlete||{}).displayName)}}
+    for(const sd of j.rosters||[]){const R=sd.roster||[],xi=R.filter(p=>p.starter).map(p=>[(p.athlete||{}).displayName,(p.position||{}).abbreviation||"",(p.athlete||{}).id]);if(xi.length>=11)lu[(sd.team||{}).id]={xi,fm:sd.formation||"",sub:R.filter(p=>!p.starter).map(p=>(p.athlete||{}).displayName)}}
     if(Object.keys(lu).length===2){SOCL.lu[f.id]=lu;SOCL.luAt[f.id]=Date.now();const x=document.getElementById("scXIbox");if(x)x.innerHTML=socXICard(f)}}catch(e){}}
 setInterval(()=>{if(!document.hidden)socLuTick()},120000);window.addEventListener("hashchange",()=>setTimeout(socLuTick,1500));
 const SOC_SLUG={epl:"eng.1",laliga:"esp.1",seriea:"ita.1",bund:"ger.1",ligue1:"fra.1",ucl:"uefa.champions",uel:"uefa.europa",uecl:"uefa.europa.conf",champ:"eng.2",ered:"ned.1",port:"por.1",mls:"usa.1"};
@@ -503,8 +526,8 @@ function socPredXI(f,tid){if(!window.SOC_P_OK)return null;const Ls=socTeamRes(ti
   const gk=C.filter(x=>x.gk).sort((a,b)=>b.last-a.last||b.sc-a.sc)[0],of=C.filter(x=>!x.gk).sort((a,b)=>b.sc-a.sc).slice(0,10);if(!gk||of.length<10)return null;return [gk,...of]}
 function socXICard(f){const L=socLuOf(f),conf=!!L;const side=tid=>{let X;if(conf&&L[tid]){const v=L[tid];X=Array.isArray(v)?v.map(n=>({nm:n,pos:""})):v.xi.map(([nm,pos,aid])=>({nm,pos,aid}))}else X=socPredXI(f,tid);
     if(!X)return `<div><h3 style="margin:0 0 6px">${socBadge(tid)} ${socE(socTm(tid))}</h3><div class="small">Not enough recent matches to predict.</div></div>`;
-    const W=X.map(x=>Object.assign({},x,{g:null}));const sub=conf&&L[tid]&&!Array.isArray(L[tid])?L[tid].sub||[]:[];
-    return `<div><h3 style="margin:0 0 6px">${socBadge(tid)} ${socTL(tid,socE(socTm(tid)))}</h3>${socPitch(W,"x"+tid)}${sub.length?`<div class="scbench"><b>Bench</b>${sub.map(n=>`<span class="scpl sub"><i>${socE(n)}</i></span>`).join("")}</div>`:""}</div>`};
+    const W=X.map(x=>Object.assign({},x,{g:null}));const fm=conf&&L[tid]&&L[tid].fm||(conf?"":socFmOf(null,tid));const sub=conf&&L[tid]&&!Array.isArray(L[tid])?L[tid].sub||[]:[];
+    return `<div><h3 style="margin:0 0 6px">${socBadge(tid)} ${socTL(tid,socE(socTm(tid)))}${fm?` <span class="small">${socE(fm)}${conf?"":" (last match)"}</span>`:""}</h3>${socPitch(W,"x"+tid,fm)}${sub.length?`<div class="scbench"><b>Bench</b>${sub.map(n=>`<span class="scpl sub"><i>${socE(n)}</i></span>`).join("")}</div>`:""}</div>`};
   const t=Date.parse(f.t),mins=Math.round((t-Date.now())/60000);
   return `<div class="card" id="scXI"><h2>${conf?"📋 Confirmed lineups":"🔮 Predicted lineups"}</h2><div class="xasub">${conf?`Official starting XIs${SOCL.lu[f.id]?" · checked "+(typeof freshAge!=="undefined"?freshAge(new Date(SOCL.luAt[f.id]).toISOString()):"just now"):""} — kept up to date until kickoff in case of warm-up changes`:`<b>Predicted, not official</b> — from each team's starts in its last 5 matches, minus players sent off or missing lately. The confirmed XIs replace this about an hour before kickoff${mins>0&&mins<180?` (in about ${mins>60?Math.round(mins/60)+" h":mins+" min"})`:""}.`}</div>
    <div class="sc2">${side(f.h)}${side(f.a)}</div></div>`}
