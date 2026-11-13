@@ -1,9 +1,9 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 00:03Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 01:08Z
 #Atlanta Hawks
+Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
 Asa Newell|F|Out|toe|Nov 20
 Kingston Flemings|G|Day-To-Day|back|Nov 13
-Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
 Paul George|F|Day-To-Day|illness|Nov 15
@@ -50,7 +50,6 @@ Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
 Brandon Ingram|F|Out|achilles surgery|Nov 19
-Cam Christie|G|Day-To-Day|ankle|Nov 13
 Yanic Konan Niederhauser|C|Out|foot surgery|Nov 17
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
@@ -78,7 +77,7 @@ Bennedict Mathurin|G|Day-To-Day|thumb sprain|Nov 13
 Yves Missi|C|Out|knee bruise|Nov 13
 Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 13
 #Oklahoma City Thunder
-Ajay Mitchell|G|Day-To-Day|ankle|Nov 13
+Ajay Mitchell|G|Day-To-Day|ankle sprain|Nov 13
 Jaylin Williams|F|Out|back spasms|Nov 15
 Thomas Sorber|C|Out|knee|Nov 13
 Cason Wallace|G|Out|shoulder surgery|Mar 2
@@ -105,7 +104,7 @@ Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Precious Achiuwa|F|Day-To-Day|lower leg bruise|Nov 13
+Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 13
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
