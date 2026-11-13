@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 23:08Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 23:20Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
@@ -45,8 +45,6 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 15
 Steven Adams|C|Out|calf strain|Nov 15
 #Indiana Pacers
-T.J. McConnell|G|Day-To-Day|hamstring strain|Nov 13
-Aaron Nesmith|G|Day-To-Day|undisclosed|
 Tyrese Haliburton|G|Out|hamstring strain|Nov 22
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -67,7 +65,7 @@ Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
 Klay Thompson|G|Day-To-Day|ankle soreness|Nov 13
-Pelle Larsson|G|Day-To-Day|illness|Nov 13
+Pelle Larsson|G|Out|illness|Nov 14
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
