@@ -112,7 +112,7 @@ function nbaTm(a){return NBA_TEAMS[a]||a}
 function nbaShort(a){const n=nbaTm(a);return n.replace(/^(Los Angeles|LA|Golden State|New York|New Orleans|Oklahoma City|San Antonio|Portland Trail)\s/,"").split(" ").slice(-1)[0]}
 function nbaRec(a){const t=NBA_TEAM[a];return t?`${t.w}-${t.l}`:"0-0"}
 function nbaSg(x){return x>0?"+"+x:x<0?"−"+Math.abs(x):"PK"}
-function nbaVal(g,k){const i=NBA_MK[k][0];return Array.isArray(i)?i.reduce((s,j)=>s+g[j],0):(g[i]||0)}
+function nbaVal(g,k){if(k==="dd"||k==="td"){const c=[g[5],g[6],g[7],g[12],g[13]].filter(v=>v>=10).length;return c>=(k==="dd"?2:3)?1:0}const i=NBA_MK[k][0];return Array.isArray(i)?i.reduce((s,j)=>s+g[j],0):(g[i]||0)}
 function nbaAvg(p,k,n){const g=n?p.g.slice(-n):p.g;if(!g.length)return 0;return g.reduce((s,x)=>s+(k==="min"?x[4]:nbaVal(x,k)),0)/g.length}
 function nbaF(x){return (Math.round(x*10)/10).toFixed(1)}
 function nbaLink(n){return `<a href="#nba-player-${encodeURIComponent(n)}" style="color:inherit">${nbaEsc(n)}</a>`}
@@ -1080,7 +1080,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
   ${g?`<div class="info"><span>Today ${g.a===p.tm?"@":"vs"} <b>${nbaTm(opp)}</b>, ${g.t} ET${dvpAvg!=null?`. ${opp} has allowed ${nbaF(dvpAvg)} points a game to ${nbaPosWord(p.p5)} over its last 5 (NBA average ${nbaF(dvp.lg)}).`:""}</span></div>`:""}
   ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}
   ${typeof newsCard!=="undefined"?newsCard("nba",{player:nm,hrs:72},"News about "+nbaEsc(nm)):""}
-  ${linesTbl}
+  ${typeof nbaYesCard!=="undefined"?nbaYesCard(nm):""}${linesTbl}
   ${inj?`<div class="info">Injury report: <b style="color:${nbaInjCol(inj[2])}">${nbaEsc(inj[2])}</b> — ${nbaEsc(inj[3])}${inj[4]?", est. return "+nbaEsc(inj[4]):""}</div>`:""}
   <div class="grid g4" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">${tile("pts","Points")}${tile("reb","Rebounds")}${tile("ast","Assists")}${tile("3pm","3-Pointers")}</div>
   ${(()=>{const X=(typeof NBA_PADV!=="undefined"&&NBA_PADV[nm])||null;if(!X)return "";const rk=(k,good)=>X[k+"R"]?`<small class="${X[k+"R"]<=Math.round(X.N*.2)?"up":X[k+"R"]>=Math.round(X.N*.8)?"dn":""}">${nbaOrd(X[k+"R"])} of ${X.N}</small>`:"";

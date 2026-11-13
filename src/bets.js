@@ -8,6 +8,7 @@ function betsSave(a){LS.set("bets",a)}
 function betStakeDefault(){return LS.get("betStake",10)}
 function betTitle(b){
   if(b.k==="soc")return b.title||"Soccer bet";
+  if(b.k==="nbaprop"&&(b.market==="dd"||b.market==="td"))return `${b.player} ${b.market==="dd"?"double-double":"triple-double"}`;
   if(b.k==="nbaprop"){const m=typeof NBA_MK!=="undefined"&&NBA_MK[b.market];return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1]:b.market}`}
   if(b.k==="nhlprop"){const m=typeof NH_MK!=="undefined"&&NH_MK[b.market];if(b.market==="hanyG")return `${b.player} anytime goal`;return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1].toLowerCase():b.market}`}
   if(b.k==="parlay")return `${b.legs.length}-leg parlay`;

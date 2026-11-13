@@ -130,6 +130,11 @@ function loAltPick(key,line,keepClosed){if(line==null)delete LO.pick[key];else L
 window.addEventListener("hashchange",()=>{clearTimeout(LO.stepT);LO.pick={};LO.openAlt=null});
 function loAltClick(e){e.stopPropagation();const tr=e.target.closest("[data-alt]");if(!tr)return;
   const key=tr.dataset.alt,l=tr.dataset.l===""?null:+tr.dataset.l;loAltPick(key,LO.pick[key]===l?null:l)}
+/* bet spec for one alt rung (track / parlay): the normal prop spec with the alt line, price and book */
+function loAltSpec(nm,k,l,side,odds,book){if(odds==null)return null;let s=null;
+  try{if(typeof NBA_MK!=="undefined"&&NBA_MK[k])s=nbaSpec(nm,k,side);else if(typeof NH_MK!=="undefined"&&NH_MK[k])s=nhlSpec(nm,k,side);else if(typeof MARKETS!=="undefined"&&MARKETS[k])s=specProp(nm,k,side)}catch(e){}
+  return s?Object.assign({},s,{line:l,odds,book:book||s.book,alt:1}):null}
+function loAltSp(k){return typeof NBA_MK!=="undefined"&&NBA_MK[k]?"nba":typeof NH_MK!=="undefined"&&NH_MK[k]?"nhl":"nfl"}
 function loAltHtml(nm,k,line,vals){
   const key=nm+"|"+k,A=LO.alt[key];if(!A||!A.length)return "";
   const pr=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
@@ -142,10 +147,11 @@ function loAltHtml(nm,k,line,vals){
       if(best)R.forEach(r=>{if(r[0]===best.l)r.best=best});return best?`<div class="altbest">⭐ Best value: <b>${best.side==="o"?"Over":"Under"} ${best.l}</b> at ${pr(best.pr)} — hit ${Math.round(best.h*100)}% of his last ${V.length} vs ${Math.round(imp(best.pr)*100)}% the price needs.</div>`:""})();
   return `<details class="alt"${open?" open":""} onclick="loAltClick(event)"><summary>🪜 Alt lines (${A.length})${bestHtml?' <span class="altn">⭐ value</span>':""}${pick!=null?` · <span class="altn">showing ${pick}</span>`:""}</summary>
    <div class="small" style="margin:4px 0 2px">👆 Tap a line (or use − / + next to the line) to see it in the charts and hit rates. Leaving the page puts it back to the normal line.</div>
-   ${bestHtml}<div class="alw"><table class="altt"><thead><tr><th>Line</th><th>Over</th><th>Under</th>${V.length?`<th title="Last ${V.length} games over this line">L${V.length} over</th>`:""}</tr></thead><tbody>
+   ${bestHtml}<div class="alw"><table class="altt"><thead><tr><th>Line</th><th>Over</th><th>Under</th>${V.length?`<th title="Last ${V.length} games over this line">L${V.length} over</th>`:""}<th title="Track it or add it to a parlay">＋</th></tr></thead><tbody>
    ${R.map(r=>{const isM=!!r[5],on=isM?pick==null:pick===r[0];
-     return `<tr class="alr${isM?" alm":""}${on?" on":""}${r.best?" albest":""}" data-alt="${ak}" data-l="${isM?"":r[0]}"><td><b>${r[0]}</b>${isM?' <span class="small">main</span>':""}</td><td>${pr(r[1])}${bk(r[2])}</td><td>${pr(r[3])}${bk(r[4])}</td>${V.length?`<td>${hit(r[0])}</td>`:""}</tr>`}).join("")}
-   </tbody></table></div><div class="small" style="margin-top:4px">Lower and higher lines than the main one, best price per line across licensed US books. Longer odds = less likely — alt lines are fun but riskier; bet small.</div></details>`}
+     return `<tr class="alr${isM?" alm":""}${on?" on":""}${r.best?" albest":""}" data-alt="${ak}" data-l="${isM?"":r[0]}"><td><b>${r[0]}</b>${isM?' <span class="small">main</span>':""}</td><td>${pr(r[1])}${bk(r[2])}</td><td>${pr(r[3])}${bk(r[4])}</td>${V.length?`<td>${hit(r[0])}</td>`:""}<td class="albt">${isM?"":`${typeof actBtn!=="undefined"?actBtn(loAltSpec(nm,k,r[0],"over",r[1],r[2]),"O","ov")+actBtn(loAltSpec(nm,k,r[0],"under",r[3],r[4]),"U","un"):""}`}</td></tr>`}).join("")}
+   </tbody></table></div><div class="small" style="margin-top:4px">Lower and higher lines than the main one, best price per line across licensed US books. Longer odds = less likely — alt lines are fun but riskier; bet small. <b>＋ O / U</b> = track that alt line or add it to a parlay.</div>
+   ${pick!=null&&loAltSp(k)!=="nhl"&&typeof snapBtn!=="undefined"?`<div style="margin-top:6px">${snapBtn(loAltSp(k),nm,k,`Snapshot ${pick}`)}</div>`:""}</details>`}
 
 /* ---------- 📈 Biggest line moves today (open = first line the feed saw today) ---------- */
 function loMoves(sp,n){

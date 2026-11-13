@@ -479,16 +479,18 @@ async function snapImage(o){
 function vData(html){const d=document.createElement("div");d.innerHTML=html;const b=d.querySelector(".vh"),items=[...d.querySelectorAll("li")].map(li=>{const m=li.querySelector("span").textContent;return [m==="✅"?1:m==="⚠️"?-1:0,li.textContent.slice(m.length)]});
   const st=d.querySelector(".vbox");return b?{txt:b.textContent.replace(/\s+/g," ").trim(),st:st.classList.contains("vs3")?"Strong":st.classList.contains("vs2")?"Medium":"Weak",items}:null}
 function snapNba(nm,k){
-  const r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k),p=NBA_LOGS[nm];if(!r||!p)return;const g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):"";
-  const v=vData(nbaVerdict(nm,k)),L6=nbaAllG(nm).slice(-6),AG=nbaAllG(nm),VL=AG.map(o=>nbaVal(o.x,k)).filter(Number.isFinite),hr=m=>{const a=VL.slice(-m);return [`Last ${a.length}`,a.filter(z=>z>r[2]).length,a.length]},L10=AG.slice(-10);
-  snapImage({kicker:`NBA · ${nbaDay(NBA_SLATE_DATE)}`,title:nm,sub:`${p.tm} ${g?(g.a===p.tm?"@ ":"vs ")+opp:""} · ${NBA_MK[k][1]} ${r[2]} · O ${oddsFmt(r[3])} / U ${oddsFmt(r[4])}`,
+  let r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k);const p=NBA_LOGS[nm];if(!r||!p)return;const g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):"";
+  const alt=typeof loAltOdds!=="undefined"?loAltOdds(nm,k):null;if(alt){r=r.slice();r[2]=alt.line;r[3]=alt.o;r[4]=alt.u}
+  const v=alt?null:vData(nbaVerdict(nm,k)),L6=nbaAllG(nm).slice(-6),AG=nbaAllG(nm),VL=AG.map(o=>nbaVal(o.x,k)).filter(Number.isFinite),hr=m=>{const a=VL.slice(-m);return [`Last ${a.length}`,a.filter(z=>z>r[2]).length,a.length]},L10=AG.slice(-10);
+  snapImage({kicker:`NBA · ${nbaDay(NBA_SLATE_DATE)}`,title:nm,sub:`${p.tm} ${g?(g.a===p.tm?"@ ":"vs ")+opp:""} · ${NBA_MK[k][1]} ${alt?"alt ":""}${r[2]} · O ${oddsFmt(r[3])} / U ${oddsFmt(r[4])}`,
     lean:v,items:v?v.items:[],boxes:L6.map(o=>{const val=nbaVal(o.x,k);return {v:val,c:val>r[2]?"o":val<r[2]?"u":"p",lab:(o.x[3]==="H"?"":"@")+o.x[2]}}),boxCap:`Last ${L6.length} games vs ${r[2]} (green = over)`,tiles:[hr(5),hr(10),hr(20)].map(t=>[t[0]+" over",t[1],t[2]]),
     bars:{line:r[2],cap:`${NBA_MK[k][1]} · last ${L10.length} games (gold line = ${r[2]})`,vals:L10.map(o=>({v:nbaVal(o.x,k),lab:(o.x[3]==="H"?"":"@")+o.x[2]})).filter(b=>Number.isFinite(b.v))},file:`${nm.replace(/\W+/g,"-")}-${k}`});
 }
 function snapNfl(name,k){
-  const rp=realProp(name,k),P=PINFO[name];if(!rp||!P)return;const o=oppOf(P.team),v=vData(nflVerdict(name,k)),G=pLogs(name).filter(l=>l.season===CUR&&Number.isFinite(stat(l,k))).slice(-6);
+  let rp=realProp(name,k);const P=PINFO[name];if(!rp||!P)return;const alt=typeof loAltOdds!=="undefined"?loAltOdds(name,k):null;if(alt){rp=rp.slice();rp[0]=alt.line;rp[1]=alt.o;rp[2]=alt.u}
+  const o=oppOf(P.team),v=alt?null:vData(nflVerdict(name,k)),G=pLogs(name).filter(l=>l.season===CUR&&Number.isFinite(stat(l,k))).slice(-6);
   const ALL=pLogs(name).filter(l=>Number.isFinite(stat(l,k))),SZ=ALL.filter(l=>l.season===CUR),G10=ALL.slice(-10),ov=a=>a.filter(l=>stat(l,k)>rp[0]).length;
-  snapImage({kicker:`NFL · Week ${typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:""}`,title:name,sub:`${P.team} ${o?(o.home?"vs ":"@ ")+o.opp:""} · ${MARKETS[k].n} ${k==="anyTD"?"":rp[0]}${rp[1]!=null?" · "+amTxt(rp[1]):""}`,
+  snapImage({kicker:`NFL · Week ${typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:""}`,title:name,sub:`${P.team} ${o?(o.home?"vs ":"@ ")+o.opp:""} · ${MARKETS[k].n} ${k==="anyTD"?"":(alt?"alt ":"")+rp[0]}${rp[1]!=null?" · "+amTxt(rp[1]):""}`,
     lean:v,items:v?v.items:[],boxes:G.map(l=>{const val=stat(l,k);return {v:val,c:val>rp[0]?"o":val<rp[0]?"u":"p",lab:(l.home?"":"@")+l.opp}}),boxCap:`Last ${G.length} games vs ${rp[0]} (green = over)`,tiles:[[`Last ${Math.min(3,ALL.length)} over`,ov(ALL.slice(-3)),Math.min(3,ALL.length)],[`Last ${Math.min(5,ALL.length)} over`,ov(ALL.slice(-5)),Math.min(5,ALL.length)],[SZ.length===ALL.length?"This season":`Last ${G10.length} over`,SZ.length===ALL.length?ov(SZ):ov(G10),SZ.length===ALL.length?SZ.length:G10.length]],
     bars:Number.isFinite(rp[0])?{line:rp[0],cap:`${MARKETS[k].n} · last ${G10.length} games (gold line = ${rp[0]})`,vals:G10.map(l=>({v:stat(l,k),lab:(l.season!==CUR?"'"+String(l.season).slice(2)+" ":"")+(l.home?"":"@")+l.opp}))}:null,file:`${name.replace(/\W+/g,"-")}-${k}`});
 }

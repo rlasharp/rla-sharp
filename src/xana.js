@@ -585,3 +585,17 @@ document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closes
   const t=el.getAttribute("title")||(el.querySelector&&el.querySelector("title")&&el.querySelector("title").textContent);if(!t)return;
   let tip=document.getElementById("xatip");if(!tip){tip=document.createElement("div");tip.id="xatip";document.body.appendChild(tip)}
   tip.textContent=t;tip.style.left=Math.max(8,Math.min(innerWidth-208,e.clientX-100))+"px";tip.style.top=(e.clientY-48)+"px";tip.className="show";clearTimeout(tip._t);tip._t=setTimeout(()=>tip.className="",2600)});
+
+/* ===== NBA player page: double-double / triple-double props (only when a book has posted the price) ===== */
+function nbaYesCard(nm){try{const p=NBA_LOGS[nm];if(!p)return "";const out=[];
+  for(const [mk,lab,n] of [["dd","Double-double",2],["td","Triple-double",3]]){const r=xaYesRows(mk).find(x=>x.nm===nm);if(!r)continue;
+    const G=p.g,hit=x=>xaDD(x,n),rate=a=>a.length?a.filter(hit).length:0,l5=G.slice(-5),l10=G.slice(-10),need=xaImp(r.best),ch=G.length?(rate(G)/G.length*.5+(l10.length?rate(l10)/l10.length:0)*.5):null,e=need!=null&&ch!=null?ch-need:null;
+    const cats=x=>[["PTS",x[5]],["REB",x[6]],["AST",x[7]],["STL",x[12]],["BLK",x[13]]].sort((a,b)=>b[1]-a[1]).slice(0,n);
+    const near=G.slice(-10).filter(x=>!hit(x)&&cats(x)[n-1][1]>=8).length;
+    const g=nbaGameOf(p.tm),spec=g?{k:"nbaprop",player:nm,market:mk,side:"over",line:.5,odds:r.best,book:r.bestBook,team:p.tm,opp:g.a===p.tm?g.h:g.a,home:g.h===p.tm,date:NBA_SLATE_DATE,wk:NBA_SLATE_DATE}:null;
+    out.push(`<div class="ddrow"><div class="ddh"><b>${lab}</b> <span class="o">${oddsFmt(r.best)}</span> <span class="small">${xaEsc(r.bestBook||"")}</span>${spec&&typeof actBtn!=="undefined"?actBtn(spec,"＋ Track / parlay","ov"):""}</div>
+     <div class="ftg"><div><span class="small">Season</span><b>${rate(G)}/${G.length}</b></div><div><span class="small">Last 10</span><b>${rate(l10)}/${l10.length}</b></div><div><span class="small">Last 5</span><b>${rate(l5)}/${l5.length}</b></div>
+     <div><span class="small">Price needs</span><b class="${e!=null&&e>=.05?"up":e!=null&&e<=-.05?"dn":""}">${need!=null?Math.round(need*100)+"%":"–"}</b><span class="small">he's ~${ch!=null?Math.round(ch*100):"–"}%</span></div></div>
+     <div class="plg" style="margin-top:6px">${l10.map(x=>`<div class="lc ${hit(x)?"o":"u"}" title="${xaEsc(x[1])}: ${x[5]} pts · ${x[6]} reb · ${x[7]} ast"><b>${hit(x)?"✓":"✗"}</b><span>${cats(x).map(c=>c[1]).join("/")}</span></div>`).join("")}</div>
+     <div class="small">Boxes = last ${l10.length} games, his ${n===2?"two":"three"} best of points / rebounds / assists / steals / blocks. ${near?`Missed by 1–2 in <b>${near}</b> of them.`:""}</div></div>`)}
+  return out.length?`<div class="card" style="margin-top:12px"><h2 style="margin-bottom:6px">🎯 ${out.length>1?"Double- & triple-double":/Triple/.test(out[0])?"Triple-double":"Double-double"}</h2>${out.join("")}</div>`:""}catch(e){return ""}}
