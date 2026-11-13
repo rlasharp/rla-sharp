@@ -28,3 +28,6 @@
 2026-11-11|Andre Drummond|reb|o|6.5|108|BetRivers|NY|CLE
 2026-11-11|Ajay Mitchell|stl|u|1.5|-160|FanDuel|OKC|POR
 2026-11-12|Grayson Allen|ast|u|4.5|102|FanDuel|CHA|PHX
+2026-11-13|Jalen Johnson|reb|u|9.5|-110|BetRivers|ATL|CHI
+2026-11-13|Sidy Cissoko|reb|u|3.5|-118|FanDuel|POR|SAC
+2026-11-13|Isaiah Hartenstein|pa|u|13.5|-104|FanDuel|OKC|LAC
