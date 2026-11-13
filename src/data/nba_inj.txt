@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 22:26Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 23:08Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
@@ -8,8 +8,8 @@ Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
 Paul George|F|Day-To-Day|illness|Nov 15
 #Brooklyn Nets
-Nolan Traore|G|Day-To-Day|calf soreness|Nov 14
 Mikel Brown Jr.|G|Day-To-Day|illness not specified|Nov 14
+Nolan Traore|G|Day-To-Day|calf soreness|Nov 14
 #Charlotte Hornets
 Brandon Miller|F|Day-To-Day|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
@@ -31,7 +31,7 @@ Sergio de Larrea|F|Out|knee strain|Nov 18
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
-Ugonna Onyenso|C|Day-To-Day|foot|Nov 13
+Ugonna Onyenso|C|Day-To-Day|foot|Nov 14
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
@@ -46,7 +46,7 @@ Clint Capela|C|Out|ankle sprain|Nov 15
 Steven Adams|C|Out|calf strain|Nov 15
 #Indiana Pacers
 T.J. McConnell|G|Day-To-Day|hamstring strain|Nov 13
-Aaron Nesmith|G|Day-To-Day|knee soreness|Nov 13
+Aaron Nesmith|G|Day-To-Day|undisclosed|
 Tyrese Haliburton|G|Out|hamstring strain|Nov 22
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -86,7 +86,6 @@ Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
-Jalen Suggs|G|Out|knee|Nov 13
 Jonathan Isaac|F|Out|knee not specified|Nov 16
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 18
