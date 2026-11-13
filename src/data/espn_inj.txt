@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-13 04:28Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-13 05:30Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 15
@@ -292,7 +292,6 @@ Anthony Hill Jr.|LB|Questionable|Neck|Nov 15
 James Williams Sr.|LB|IR|Groin|Dec 13
 Peter Skoronski|G|Questionable|Hamstring|Nov 15
 #WAS
-Chig Okonkwo|TE|Questionable|Back|Nov 12
 Athan Kaliakmanis|QB|Out|Coach's Decision|Nov 23
 Isaac Yiadom|CB|Out|Coach's Decision|Nov 23
 Tanoa Togiai|G|Out|Coach's Decision|Nov 23

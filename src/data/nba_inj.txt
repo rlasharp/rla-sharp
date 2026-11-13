@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 04:26Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 05:30Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
@@ -11,7 +11,7 @@ Paul George|F|Day-To-Day|illness|Nov 15
 Nolan Traore|G|Day-To-Day|calf soreness|Nov 14
 Mikel Brown Jr.|G|Day-To-Day|illness not specified|Nov 14
 #Charlotte Hornets
-Brandon Miller|F|Out|groin soreness|Nov 15
+Brandon Miller|F|Day-To-Day|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
