@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-13 13:51Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-13 15:28Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 15
@@ -24,10 +24,10 @@ Gervon Dexter Sr.|DT|Questionable|Illness|Nov 15
 Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 #BAL
+Lamar Jackson|QB|IR|Thumb|Dec 13
 Jaylinn Hawkins|S|Questionable|Knee|Nov 16
 Rashod Bateman|WR|Questionable|Calf|Nov 16
 Olaivavega Ioane|G|Questionable|Knee|Nov 16
-Lamar Jackson|QB|IR|Thumb|Dec 13
 Adisa Isaac|LB|Questionable|Hamstring|Nov 16
 #BUF
 Sam Franklin Jr.|S|Questionable|Shoulder|Nov 15
@@ -203,10 +203,10 @@ Tyrion Ingram-Dawkins|DE|Questionable|Ankle|Nov 15
 Kyle Van Noy|LB|Questionable|Calf|Nov 15
 Demond Claiborne|RB|IR|Knee|Dec 6
 #NE
+Rhamondre Stevenson|RB|Questionable|Knee|Nov 15
 TreVeyon Henderson|RB|Out|Illness|Nov 29
 A.J. Brown|WR|Questionable|Knee|Nov 15
 Hunter Henry|TE|Questionable|Foot|Nov 15
-Rhamondre Stevenson|RB|Questionable|Knee|Nov 15
 Charles Woods|CB|Questionable|Hamstring|Nov 15
 Ben Brown|C|Out|Knee|Nov 29
 Kevin Byard|S|Questionable|Chest|Nov 15
