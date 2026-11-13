@@ -1,8 +1,8 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-12 23:21Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 00:03Z
 #Atlanta Hawks
-Kingston Flemings|G|Day-To-Day|back|Nov 13
-Asa Newell|F|Out|toe|Nov 20
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
+Asa Newell|F|Out|toe|Nov 20
+Kingston Flemings|G|Day-To-Day|back|Nov 13
 Mouhamed Gueye|F|Out|foot fracture|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
@@ -26,7 +26,6 @@ Sam Merrill|G|Out|elbow|Nov 16
 Dereck Lively II|C|Out|foot surgery|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 18
 Sergio de Larrea|F|Out|knee strain|Nov 18
-Morez Johnson Jr.|F|Day-To-Day|lower leg bruise|Nov 12
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
@@ -97,7 +96,6 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 LeBron James|F|Out|back|Nov 15
 Dominick Barlow|F|Out|back fracture|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
-Joel Embiid|C|Day-To-Day|foot|Nov 12
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
@@ -111,8 +109,8 @@ Precious Achiuwa|F|Day-To-Day|lower leg bruise|Nov 13
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-De'Aaron Fox|G|Day-To-Day|hip soreness|Nov 13
 Devin Vassell|G|Day-To-Day|groin|Nov 13
+De'Aaron Fox|G|Day-To-Day|hip soreness|Nov 13
 Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
