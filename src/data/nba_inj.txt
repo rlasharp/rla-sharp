@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 15:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 17:30Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
@@ -84,8 +84,8 @@ Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
-Tristan da Silva|F|Day-To-Day|calf strain|Nov 13
 Jamal Cain|F|Day-To-Day|shoulder bruise|Nov 13
+Tristan da Silva|F|Day-To-Day|calf strain|Nov 13
 Jalen Suggs|G|Out|knee|Nov 13
 Jonathan Isaac|F|Out|knee not specified|Nov 16
 Paolo Banchero|F|Out|ankle sprain|Nov 22
@@ -97,6 +97,7 @@ Dominick Barlow|F|Out|back fracture|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
+Drew Timme|F|Day-To-Day|hand|Nov 15
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|foot bruise|Nov 16
@@ -113,6 +114,7 @@ De'Aaron Fox|G|Day-To-Day|hip soreness|Nov 13
 Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 14
 Trayce Jackson-Davis|F|Day-To-Day|illness|Nov 15
 Scottie Barnes|F|Out|groin soreness|Nov 15
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
