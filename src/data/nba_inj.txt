@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 21:27Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 22:26Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
@@ -23,6 +23,8 @@ Caleb Wilson|F|Out|hand|Dec 13
 Evan Mobley|C|Out|toe|Nov 14
 Sam Merrill|G|Out|elbow|Nov 16
 #Dallas Mavericks
+Max Christie|G|Day-To-Day|ankle|Nov 14
+Morez Johnson Jr.|F|Day-To-Day|lower leg|Nov 14
 Dereck Lively II|C|Out|foot surgery|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 18
 Sergio de Larrea|F|Out|knee strain|Nov 18
@@ -54,9 +56,9 @@ Yanic Konan Niederhauser|C|Out|foot surgery|Nov 17
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
+Quentin Grimes|G|Day-To-Day|finger|Nov 15
 Austin Reaves|G|Day-To-Day|heel|Nov 15
 Luka Doncic|G|Day-To-Day|ankle|Nov 15
-Quentin Grimes|G|Day-To-Day|finger|Nov 15
 Collin Sexton|G|Day-To-Day|head|Nov 15
 #Memphis Grizzlies
 Quinten Post|C|Out|concussion|Nov 14
@@ -84,8 +86,6 @@ Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
-Jamal Cain|F|Day-To-Day|shoulder bruise|Nov 13
-Tristan da Silva|F|Day-To-Day|calf strain|Nov 13
 Jalen Suggs|G|Out|knee|Nov 13
 Jonathan Isaac|F|Out|knee not specified|Nov 16
 Paolo Banchero|F|Out|ankle sprain|Nov 22
@@ -105,7 +105,7 @@ Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 15
+Precious Achiuwa|F|Out|ankle soreness|Nov 15
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
