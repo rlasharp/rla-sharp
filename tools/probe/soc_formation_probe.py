@@ -2,8 +2,7 @@
 import json, urllib.request
 def get(u):
     with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=25) as r: return json.load(r)
-sb = get("https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261101-20261110")
-ids = [e["id"] for e in sb.get("events", []) if e["status"]["type"]["completed"]][:3]
+ids = ["401879239", "401879240"]
 for i in ids:
     sm = get(f"https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event={i}")
     for side in sm.get("rosters") or []:
