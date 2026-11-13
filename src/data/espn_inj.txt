@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-13 06:46Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-13 07:54Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 15
@@ -226,7 +226,7 @@ Christen Miller|DT|Questionable|Knee|Nov 15
 Martin Emerson Jr.|CB|Questionable|Shin|Nov 15
 Erik McCoy|C|Doubtful|Biceps|Nov 15
 #NYG
-Jason Pinnock|S|Questionable|Back|Nov 12
+Jason Pinnock|S|Questionable|Back|Nov 22
 Malik Harrison|LB|Out|Groin|Nov 22
 Nikko Reed|CB|Out|Coach's Decision|Nov 22
 Josh Sills|G|Out|Coach's Decision|Nov 22
