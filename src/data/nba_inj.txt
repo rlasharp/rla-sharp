@@ -1,9 +1,8 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 23:20Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 23:57Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
 Asa Newell|F|Out|toe|Nov 20
-Kingston Flemings|G|Day-To-Day|back|Nov 13
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
 Paul George|F|Day-To-Day|illness|Nov 15
@@ -17,11 +16,11 @@ Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
 Tobe Awaka|F|Out|back|Nov 14
 Dailyn Swain|G|Day-To-Day|back|Nov 13
-Norman Powell|G|Day-To-Day|shoulder inflammation|Nov 13
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
 Evan Mobley|C|Out|toe|Nov 14
 Sam Merrill|G|Out|elbow|Nov 16
+Nae'Qwan Tomlin|F|Out|back|Nov 16
 #Dallas Mavericks
 Max Christie|G|Day-To-Day|ankle|Nov 14
 Morez Johnson Jr.|F|Day-To-Day|lower leg|Nov 14
@@ -64,7 +63,7 @@ Zach Edey|C|Out|ankle|Nov 14
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Klay Thompson|G|Day-To-Day|ankle soreness|Nov 13
+Klay Thompson|G|Out|ankle soreness|Nov 14
 Pelle Larsson|G|Out|illness|Nov 14
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
