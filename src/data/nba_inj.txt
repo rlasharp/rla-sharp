@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 01:08Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 01:48Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
@@ -77,9 +77,9 @@ Bennedict Mathurin|G|Day-To-Day|thumb sprain|Nov 13
 Yves Missi|C|Out|knee bruise|Nov 13
 Trey Murphy III|F|Day-To-Day|knee tendinitis|Nov 13
 #Oklahoma City Thunder
+Thomas Sorber|C|Out|knee|Nov 20
 Ajay Mitchell|G|Day-To-Day|ankle sprain|Nov 13
 Jaylin Williams|F|Out|back spasms|Nov 15
-Thomas Sorber|C|Out|knee|Nov 13
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
@@ -99,7 +99,7 @@ Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
-Chris Youngblood|G|Day-To-Day|foot bruise|Nov 13
+Chris Youngblood|G|Out|foot bruise|Nov 16
 Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
