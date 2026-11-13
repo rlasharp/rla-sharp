@@ -222,7 +222,11 @@ const zoneOf = (x, y, pts) => {
   if (Math.abs(dx) < 8 && y < 14.5) return 1;
   const ang = Math.atan2(dx, dy) * 180 / Math.PI; return ang < -30 ? 2 : ang > 30 ? 4 : 3;
 };
+const SHOTD_ = {};   /* player -> game -> [[x, y, made]] — every shot location, for the dot shot chart */
 const QMIN = {}; const FOULQ = {}; const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const CHANCE = {}; const QTR = {}; const DZONE = {}; const OZONE = {}; const DZG = {}; const TST = {};
+const SD_A = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
+function shotdOut() { const o = {}; for (const [n, D] of Object.entries(SHOTD_)) { const G = Object.keys(D).sort().slice(-10); const L = G.map(g => D[g]); const tot = L.reduce((s, a) => s + a.length, 0); if (tot < 6 * G.length) continue;
+  o[n] = [L.flat().map(([x, y]) => SD_A[Math.max(0, Math.min(63, x + 6))] + SD_A[Math.max(0, Math.min(63, y + 5))]).join(""), L.flat().map(v => v[2]).join(""), L.map(a => a.length)]; } return o; }
 const pbpFile = path.join(dir, "pbp_2027.json");
 if (fs.existsSync(pbpFile)) {
   const pbp = JSON.parse(fs.readFileSync(pbpFile));
@@ -247,6 +251,7 @@ if (fs.existsSync(pbpFile)) {
     for (const [tm, side] of [[off, "o"], [def, "d"]]) { if (!tm) continue; const T = TST[tm] || (TST[tm] = { o: [0, 1, 2, 3].map(() => [0, 0, 0, 0]), d: [0, 1, 2, 3].map(() => [0, 0, 0, 0]) }); const q = T[side][st]; q[0]++; q[1] += made; q[2] += th; q[3] += th && made; }
     const n = idToName[r.athlete_id_1]; if (!n) continue;
     const s = SHOT[n] || (SHOT[n] = ZONES.map(() => [0, 0])); s[z][0]++; s[z][1] += made;
+    { const D = SHOTD_[n] || (SHOTD_[n] = {}), gk = String(r.game_date || "") + "|" + r.game_id; (D[gk] || (D[gk] = [])).push([Math.round(x), Math.round(y), made]); }
     const t = STYPE[n] || (STYPE[n] = [0, 1, 2, 3].map(() => [0, 0, 0, 0])); t[st][0]++; t[st][1] += made; t[st][2] += th; t[st][3] += th && made;
   }
   LGZ = lg;
@@ -455,6 +460,7 @@ const NBA_REST=${JSON.stringify(REST)};
 const NBA_ZONES=${JSON.stringify(ZONES)};
 const NBA_LGZ=${JSON.stringify(LGZ)};
 const NBA_SHOT=${JSON.stringify(SHOT)};
+const NBA_SHOTD=${JSON.stringify(shotdOut())}; /* player -> [xy pairs (2 chars a shot), made bits, shots per game oldest→newest] last 10 games, players with 6+ shots a game */
 const NBA_STYPE=${JSON.stringify(STYPE)}; /* [catch&shoot, pull-up, <10 ft, other 10+ ft] each [FGA, FGM, 3PA, 3PM], this season, ESPN play-by-play */
 const NBA_LGST=${JSON.stringify(LGST)};
 const NBA_FB=${JSON.stringify(FB)}; /* game id -> [first-basket scorer, his team, team that won the opening possession] */

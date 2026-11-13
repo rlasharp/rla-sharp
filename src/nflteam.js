@@ -31,7 +31,7 @@ function viewNflTeam(t){const host=document.getElementById("v-nflteam");if(!host
   const top=(f,n)=>P.slice().sort((a,b)=>f(b)-f(a)).filter(x=>f(x)>0).slice(0,n);
   const prow=(x,txt)=>`<div class="scfr"><a href="#" data-nflp="${esc(x.n)}"><b>${esc(x.n)}</b></a> <span class="small">${esc(x.pos)} · ${x.g} g</span><span class="small" style="margin-left:auto">${txt}</span></div>`;
   host.innerHTML=`<p><a href="javascript:history.back()">← Back</a> · <a href="#standings">Standings</a></p>
-  <div class="phead"><div><h1>${badge(t)} ${esc(nfTm(t))}</h1><p class="sub">${S?`<b>${nfRec(S)}</b>${divRank?` · ${ordinal(divRank)} in the ${esc(divN)}`:""} · home ${S.hw}-${S.hl} · away ${S.aw}-${S.al} · division ${S.dw}-${S.dl} · streak <b class="${/^W/.test(S.strk)?"up":"dn"}">${S.strk}</b>`:""}</p></div><div></div></div>
+  <div class="phead tch" style="--tc:${(TEAMS[t]&&TEAMS[t][1])||"#555"}"><div><h1>${badge(t)} ${esc(nfTm(t))}</h1><p class="sub">${S?`<b>${nfRec(S)}</b>${divRank?` · ${ordinal(divRank)} in the ${esc(divN)}`:""} · home ${S.hw}-${S.hl} · away ${S.aw}-${S.al} · division ${S.dw}-${S.dl} · streak <b class="${/^W/.test(S.strk)?"up":"dn"}">${S.strk}</b>`:""}</p></div><div></div></div>
   ${o?`<div class="card"><h2>Next</h2><a class="scfr scfrl" href="#game-${o.g.id}">${o.home?"vs":"@"} ${badge(o.opp)} ${esc(nfTm(o.opp))}<span class="small">${esc(o.g.when||"")}</span></a></div>`:""}
   <div class="grid g2">
    <div class="card"><h2>🏈 Offense <span class="small">per game · rank of 32</span></h2><table class="bxt" style="min-width:0;width:100%"><tbody>${rk("Points","pts","o")}${rk("Pass yards","pass","o")}${rk("Rush yards","rush","o")}${rk("Total yards","tot","o")}</tbody></table></div>

@@ -135,22 +135,29 @@ function loAltSpec(nm,k,l,side,odds,book){if(odds==null)return null;let s=null;
   try{if(typeof NBA_MK!=="undefined"&&NBA_MK[k])s=nbaSpec(nm,k,side);else if(typeof NH_MK!=="undefined"&&NH_MK[k])s=nhlSpec(nm,k,side);else if(typeof MARKETS!=="undefined"&&MARKETS[k])s=specProp(nm,k,side)}catch(e){}
   return s?Object.assign({},s,{line:l,odds,book:book||s.book,alt:1}):null}
 function loAltSp(k){return typeof NBA_MK!=="undefined"&&NBA_MK[k]?"nba":typeof NH_MK!=="undefined"&&NH_MK[k]?"nhl":"nfl"}
+/* every game we have for this stat, oldest → newest, with a this-season flag (for the hit-rate heatmap) */
+function loSeries(nm,k){let V=[];try{if(typeof NBA_MK!=="undefined"&&(NBA_MK[k]||k==="dd")&&typeof nbaAllG!=="undefined")V=nbaAllG(nm).map(o=>({v:nbaVal(o.x,k),c:!o.prev}));
+    else if(typeof NH_MK!=="undefined"&&NH_MK[k]&&typeof nhVals!=="undefined")V=nhVals(nm,k).map(o=>({v:o.v,c:!o.prev}));
+    else if(typeof MARKETS!=="undefined"&&MARKETS[k]&&typeof pLogs!=="undefined")V=pLogs(nm).filter(l=>Number.isFinite(stat(l,k))).map(l=>({v:stat(l,k),c:l.season===CUR}))}catch(e){}
+  return V.filter(o=>Number.isFinite(o.v))}
+function loHeatCell(V,l){if(!V.length)return `<td class="hm na">–</td>`;const h=V.filter(v=>v>l).length/V.length;return `<td class="hm" style="background:hsl(${Math.round(h*120)},62%,${40+(1-Math.abs(h-.5)*2)*8}%)" title="${V.filter(v=>v>l).length}/${V.length} over">${Math.round(h*100)}</td>`}
 function loAltHtml(nm,k,line,vals){
   const key=nm+"|"+k,A=LO.alt[key];if(!A||!A.length)return "";
   const pr=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
   const AB={DraftKings:"DK",FanDuel:"FD",BetMGM:"MGM",Caesars:"CZR",Fanatics:"FAN","ESPN BET":"ESPN",BetRivers:"BR","Hard Rock Bet":"HR",Unibet:"UNI"};
   const bk=b=>b?`<span class="alb" title="${esc(b)}">${esc(AB[b]||b)}</span>`:"",mv=LO.move[key]||{},main=mv.now!=null?mv.now:line,pick=LO.pick[key];
   const V=(vals||[]).filter(Number.isFinite),R=[...A,[main,mv.oNow,null,mv.uNow,null,1]].sort((a,b)=>a[0]-b[0]);
+  const SR=loSeries(nm,k),SZ=SR.filter(o=>o.c),HV=[["L5",SR.slice(-5),1],["L10",SR.slice(-10),SR.length>=8],["L20",SR.slice(-20),SR.length>=15],["Szn",SZ,SZ.length>=3]].filter(x=>x[2]).map(([l,a])=>[l,a.map(o=>o.v)]),heat=SR.length>=5;
   const hit=l=>{if(!V.length)return "";const o=V.filter(v=>v>l).length,p=o/V.length;return `<span class="${p>=.5?"up":"dn"}">${o}/${V.length}</span>`};
   const ak=esc(key),open=LO.openAlt===key,bestHtml=(()=>{if(V.length<5)return "";const imp=o=>o==null?null:o<0?-o/(-o+100):100/(o+100);let best=null;
       for(const r of R){for(const [i,side] of [[1,"o"],[3,"u"]]){const pr=r[i];if(pr==null)continue;const h=V.filter(v=>side==="o"?v>r[0]:v<r[0]).length/V.length,val=h-imp(pr);if(val>.06&&(!best||val>best.val))best={l:r[0],side,pr,val,h}}}
       if(best)R.forEach(r=>{if(r[0]===best.l)r.best=best});return best?`<div class="altbest">⭐ Best value: <b>${best.side==="o"?"Over":"Under"} ${best.l}</b> at ${pr(best.pr)} — hit ${Math.round(best.h*100)}% of his last ${V.length} vs ${Math.round(imp(best.pr)*100)}% the price needs.</div>`:""})();
   return `<details class="alt"${open?" open":""} onclick="loAltClick(event)"><summary>🪜 Alt lines (${A.length})${bestHtml?' <span class="altn">⭐ value</span>':""}${pick!=null?` · <span class="altn">showing ${pick}</span>`:""}</summary>
    <div class="small" style="margin:4px 0 2px">👆 Tap a line (or use − / + next to the line) to see it in the charts and hit rates. Leaving the page puts it back to the normal line.</div>
-   ${bestHtml}<div class="alw"><table class="altt"><thead><tr><th>Line</th><th>Over</th><th>Under</th>${V.length?`<th title="Last ${V.length} games over this line">L${V.length} over</th>`:""}<th title="Track it or add it to a parlay">＋</th></tr></thead><tbody>
+   ${bestHtml}<div class="alw"><table class="altt"><thead><tr><th>Line</th><th>Over</th><th>Under</th>${heat?HV.map(([l])=>`<th class="hmh" title="% of games over this line">${l}</th>`).join(""):V.length?`<th title="Last ${V.length} games over this line">L${V.length} over</th>`:""}<th title="Track it or add it to a parlay">＋</th></tr></thead><tbody>
    ${R.map(r=>{const isM=!!r[5],on=isM?pick==null:pick===r[0];
-     return `<tr class="alr${isM?" alm":""}${on?" on":""}${r.best?" albest":""}" data-alt="${ak}" data-l="${isM?"":r[0]}"><td><b>${r[0]}</b>${isM?' <span class="small">main</span>':""}</td><td>${pr(r[1])}${bk(r[2])}</td><td>${pr(r[3])}${bk(r[4])}</td>${V.length?`<td>${hit(r[0])}</td>`:""}<td class="albt">${isM?"":`${typeof actBtn!=="undefined"?actBtn(loAltSpec(nm,k,r[0],"over",r[1],r[2]),"O","ov")+actBtn(loAltSpec(nm,k,r[0],"under",r[3],r[4]),"U","un"):""}`}</td></tr>`}).join("")}
-   </tbody></table></div><div class="small" style="margin-top:4px">Lower and higher lines than the main one, best price per line across licensed US books. Longer odds = less likely — alt lines are fun but riskier; bet small. <b>＋ O / U</b> = track that alt line or add it to a parlay.</div>
+     return `<tr class="alr${isM?" alm":""}${on?" on":""}${r.best?" albest":""}" data-alt="${ak}" data-l="${isM?"":r[0]}"><td><b>${r[0]}</b>${isM?' <span class="small">main</span>':""}</td><td>${pr(r[1])}${bk(r[2])}</td><td>${pr(r[3])}${bk(r[4])}</td>${heat?HV.map(([,a])=>loHeatCell(a,r[0])).join(""):V.length?`<td>${hit(r[0])}</td>`:""}<td class="albt">${isM?"":`${typeof actBtn!=="undefined"?actBtn(loAltSpec(nm,k,r[0],"over",r[1],r[2]),"O","ov")+actBtn(loAltSpec(nm,k,r[0],"under",r[3],r[4]),"U","un"):""}`}</td></tr>`}).join("")}
+   </tbody></table></div><div class="small" style="margin-top:4px">Lower and higher lines than the main one, best price per line across licensed US books. ${heat?"Coloured columns = % of games he went over each line (L5 / L10 / L20 / this season) — green often, red rarely. ":""}Longer odds = less likely — alt lines are fun but riskier; bet small. <b>＋ O / U</b> = track that alt line or add it to a parlay.</div>
    ${pick!=null&&loAltSp(k)!=="nhl"&&typeof snapBtn!=="undefined"?`<div style="margin-top:6px">${snapBtn(loAltSp(k),nm,k,`Snapshot ${pick}`)}</div>`:""}</details>`}
 
 /* ---------- 📈 Biggest line moves today (open = first line the feed saw today) ---------- */

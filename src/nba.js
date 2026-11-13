@@ -1071,7 +1071,7 @@ function nbaPlayer(el,nm){nm=(typeof xMkFromHash!=="undefined"?xMkFromHash(nm,k=
 ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null,mn0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[4]||0),0)/p.g.length):null,tp0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[15]||0),0)/p.g.length):null;return {fga:fg0,min:mn0,tpa:tp0>0?tp0:null,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":R0.rest===1?"r1":"r2"):"",oppT:g0?(g0.h===p.tm?g0.a:g0.h):"",opp:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"opp"):"",pace:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"pace"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
     <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}${typeof vxScatter!=="undefined"?vxScatter(nm,r[1],r[2]):""}${typeof vxLnRec!=="undefined"?vxLnRec("nba",nm,r[1]):""}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":(typeof OUT_DROP!=="undefined"&&OUT_DROP.nba.has(nm)?"🚑 He's ruled out — his props are removed.":"No prop lines posted for him today.")}</span></div>`:"");
   el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
-  <div class="phead">
+  <div class="phead tch" style="--tc:${nbaCol(p.tm)}">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
     <div style="min-width:0"><h1 style="margin:0">${nbaEsc(nm)}${nbaInjChip(inj)}</h1>
     <div class="sub" style="margin:4px 0 0">${posName?posName+" · ":""}${nbaTm(p.tm)}</div></div>
@@ -1092,6 +1092,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
   ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nba",nm):""}
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${opp?`Where he scores vs where ${nbaEsc(nbaShort(opp))} allow`:"Where he scores"}</h2>${opp?nbaShotMatchup(nm,opp):nbaCourt(nm)}</div>
+    ${typeof vxShotDots!=="undefined"&&NBA_SHOTD&&NBA_SHOTD[nm]?`<div class="card"><h2>Every shot · last ${NBA_SHOTD[nm][2].length} games</h2>${vxShotDots(nm)}</div>`:""}
     ${nbaShotTypes(nm)}
     ${typeof vxQMin!=="undefined"?vxQMin(nm):""}
     ${typeof vxFouls!=="undefined"?vxFouls(nm):""}
@@ -1131,7 +1132,7 @@ function nbaBox(id){
   const lsT=LS&&LS[0].length?`<div class="card" style="margin-top:12px"><div class="nbatbl"><table class="bxt lst" style="min-width:0"><thead><tr><th></th>${LS[0].map((_,i)=>`<th>${i<4?"Q"+(i+1):i===4?"OT":"OT"+(i-3)}</th>`).join("")}<th>T</th></tr></thead><tbody>
     ${[0,1].map(sd=>`<tr><td>${nbaBadge(r[2+sd])} <b>${nbaShort(r[2+sd])}</b></td>${LS[0].map((_,i)=>q(i,sd)).join("")}<td><b class="${(sd?r[5]>r[4]:r[4]>r[5])?"qwT":""}">${r[4+sd]}</b></td></tr>`).join("")}</tbody></table></div><div class="small" style="margin-top:4px">Green = won the quarter.</div></div>`:"";
   const tb=(ha,tm,on)=>tbl(ha,tm).replace('<div class="card bxcard"',`<div data-bxp="1" class="card bxcard${on?" bxon":""}"`);
-  return `<h2 style="margin:18px 0 0">${nbaShort(r[2])} ${r[4]} – ${nbaShort(r[3])} ${r[5]} · box score</h2>${lsT}${typeof qbTabs!=="undefined"?qbTabs("nba",id,LS&&LS[0]?LS[0].length:4):""}<div class="qbarea"><div class="bxsw"><div class="bxtabs">${[["A",r[2],r[4]],["H",r[3],r[5]]].map(([ha,tm,pts],i)=>`<button type="button" data-bxt="${i}" class="${i?"":"on"}">${nbaShort(tm)} · ${(ha==="A"?r[4]>r[5]:r[5]>r[4])?"W":"L"} ${pts}</button>`).join("")}</div>${tb("A",r[2],1)}${tb("H",r[3],0)}</div></div>`;
+  return `<h2 style="margin:18px 0 0">${nbaShort(r[2])} ${r[4]} – ${nbaShort(r[3])} ${r[5]} · box score</h2>${lsT}${typeof qbTabs!=="undefined"?qbTabs("nba",id,LS&&LS[0]?LS[0].length:4):""}<div class="qbarea"><div class="bxsw"><div class="bxtabs">${[["A",r[2],r[4]],["H",r[3],r[5]]].map(([ha,tm,pts],i)=>`<button type="button" data-bxt="${i}" class="${i?"":"on"}">${nbaShort(tm)} · ${(ha==="A"?r[4]>r[5]:r[5]>r[4])?"W":"L"} ${pts}</button>`).join("")}</div>${tb("A",r[2],1)}${tb("H",r[3],0)}</div></div>${typeof vxFlowSlot!=="undefined"?vxFlowSlot("nba",id,"📈 Game flow"):""}`;
 }
 function nbaScores(el){
   const today=(typeof etNow!=="undefined"?etNow().d:NBA_SLATE_DATE),lo=new Date(new Date(today+"T12:00:00")-8*864e5).toISOString().slice(0,10);
@@ -1198,7 +1199,7 @@ function nbaTeamPage(el,t){
   const x=NBA_TEAM[t],A=NBA_TADV[t],f=nbaForm(t),conf=NBA_CONF.East.includes(t)?"East":"West",rk=nbaStandRows(conf).find(r=>r.t===t);
   const tile=(l,v,sub)=>`<div class="stat"><div class="l">${l}</div><div style="font-size:20px;font-weight:800">${v}</div><div class="small">${sub||""}</div></div>`;
   el.innerHTML=`<a href="#nba-teams" class="small" style="color:var(--text2)">← Standings</a>
-  <div class="phead"><div class="pnum" style="background:${nbaCol(t)}">${t}</div><div><h1 style="margin:0">${nbaEsc(nbaTm(t))}</h1><div class="sub" style="margin:4px 0 0">${x.w}-${x.l} · ${rk?nbaOrd(rk.rk)+" in the "+conf:""} · ${f.streak} streak</div></div></div>
+  <div class="phead tch" style="--tc:${nbaCol(t)}"><div class="pnum" style="background:${nbaCol(t)}">${t}</div><div><h1 style="margin:0">${nbaEsc(nbaTm(t))}</h1><div class="sub" style="margin:4px 0 0">${x.w}-${x.l} · ${rk?nbaOrd(rk.rk)+" in the "+conf:""} · ${f.streak} streak</div></div></div>
   <div class="grid g4" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">
     ${tile("Last 10",f.l10)}${tile("Home",x.hm)}${tile("Road",x.aw)}${tile("Points",nbaF(x.ppg),"allowed "+nbaF(x.opp))}
     ${A?tile("Offense rating",nbaF(A.o.rtg),nbaOrd(A.oR.rtg)+" of 30"):""}${A?tile("Defense rating",nbaF(A.d.rtg),nbaOrd(A.dR.rtg)+" of 30"):""}${A?tile("Pace",nbaF(A.pace),nbaOrd(A.paceR)+" fastest"):""}${A?tile("Net rating",nbaSg(+(A.o.rtg-A.d.rtg).toFixed(1)),"per 100 possessions"):""}

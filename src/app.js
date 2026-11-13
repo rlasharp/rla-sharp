@@ -436,14 +436,16 @@ function drawLogo(x,X,Y,S){ /* same design as the app icon: dark rounded square,
   x.fillStyle="#f3c75a";P.forEach(([a,b])=>{x.beginPath();x.arc(X+S*a,Y+S*b,S*.035,0,7);x.fill()});x.restore();
 }
 async function snapImage(o){
-  const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
-  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#1d1a10");g.addColorStop(.35,"#121418");g.addColorStop(1,"#0d0f12");x.fillStyle=g;x.fillRect(0,0,W,H);
+  o=Object.assign({},o,{story:SNAP_FMT==="story"});const W=1080,H=o.story?1920:1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,W*.35,H);if(o.col&&/^#[0-9a-f]{6}$/i.test(o.col)){g.addColorStop(0,o.col);g.addColorStop(.42,"#121418")}else{g.addColorStop(0,"#1d1a10");g.addColorStop(.35,"#121418")}g.addColorStop(1,"#0b0d10");x.fillStyle=g;x.fillRect(0,0,W,H);
+  if(o.col){x.globalAlpha=.08;x.fillStyle="#fff";for(let i=-H;i<W;i+=46){x.beginPath();x.moveTo(i,0);x.lineTo(i+18,0);x.lineTo(i+18+H,H);x.lineTo(i+H,H);x.fill()}x.globalAlpha=1;const fd=x.createLinearGradient(0,H*.35,0,H);fd.addColorStop(0,"rgba(11,13,16,0)");fd.addColorStop(1,"rgba(11,13,16,.85)");x.fillStyle=fd;x.fillRect(0,0,W,H)}
   drawLogo(x,72,64,110);x.fillStyle="#fff";x.font="800 52px system-ui,sans-serif";x.fillText("RLA Sharp",204,122);
   x.fillStyle="#f3c75a";x.font="600 26px system-ui,sans-serif";x.fillText(o.kicker||"NFL & NBA betting research",206,160);
   const fit=(t,w,px,max)=>{let f=px;do{x.font=`${w} ${f}px system-ui,sans-serif`;if(x.measureText(t).width<=max)break;f-=2}while(f>22);return t};
   let y=270;x.fillStyle="#fff";x.fillText(fit(o.title,800,66,W-144),72,y);y+=52;
   x.fillStyle="#c7cbd2";x.fillText(fit(o.sub||"",500,32,W-144),72,y);y+=40;
-  if(o.lean){y+=26;const col=o.lean.st==="Strong"?"#3fb26b":o.lean.st==="Medium"?"#f3c75a":"#8a8f98";x.fillStyle=col+"33";x.beginPath();x.roundRect?x.roundRect(72,y,W-144,96,20):x.rect(72,y,W-144,96);x.fill();
+  if(o.story)y+=40;
+  if(o.lean&&!o.story){y+=26;const col=o.lean.st==="Strong"?"#3fb26b":o.lean.st==="Medium"?"#f3c75a":"#8a8f98";x.fillStyle=col+"33";x.beginPath();x.roundRect?x.roundRect(72,y,W-144,96,20):x.rect(72,y,W-144,96);x.fill();
     x.fillStyle=col;x.fillText(fit(o.lean.txt,800,48,W-200),100,y+64);y+=124}
   for(const it of (o.items||[]).slice(0,o.bars?4:5)){x.fillStyle="#e1e4e9";const t=(it[0]===1?"✅ ":it[0]===-1?"⚠️ ":"• ")+String(it[1]).replace(/<[^>]+>/g,"");x.fillText(fit(t,500,32,W-144),72,y+30);y+=50}
   if(o.tiles&&o.tiles.length){y+=14;const n=o.tiles.length,gap=16,tw=(W-144-gap*(n-1))/n;
@@ -452,7 +454,7 @@ async function snapImage(o){
       x.textAlign="center";x.fillStyle=col;x.font="800 44px system-ui,sans-serif";x.fillText(t[2]?`${t[1]}/${t[2]}`:"—",X+tw/2,y+54);
       x.fillStyle="#9aa0aa";x.font="600 22px system-ui,sans-serif";x.fillText(t[0],X+tw/2,y+88);x.textAlign="left"});y+=128}
   if(o.bars&&o.bars.vals.length){const B=o.bars,n=B.vals.length;y+=18;x.fillStyle="#9aa0aa";x.font="600 26px system-ui,sans-serif";x.fillText(B.cap||"Last games",72,y);y+=20;
-    const ch=196,top=y+40,base=top+ch,mx=Math.max(B.line,...B.vals.map(b=>b.v))*1.15||1,gap=12,bw=(W-144-gap*(n-1))/n,Y=v=>base-(v/mx)*ch;
+    const ch=o.story?330:196,top=y+40,base=top+ch,mx=Math.max(B.line,...B.vals.map(b=>b.v))*1.15||1,gap=12,bw=(W-144-gap*(n-1))/n,Y=v=>base-(v/mx)*ch;
     x.fillStyle="#16191e";x.beginPath();x.roundRect?x.roundRect(60,y,W-120,ch+96,20):x.rect(60,y,W-120,ch+96);x.fill();
     B.vals.forEach((b,i)=>{const X=72+i*(bw+gap),c=b.v>B.line?"#3fb26b":b.v<B.line?"#e5534b":"#8a8f98",h=Math.max(4,base-Y(b.v));
       x.fillStyle=c;x.beginPath();x.roundRect?x.roundRect(X,base-h,bw,h,[10,10,0,0]):x.rect(X,base-h,bw,h);x.fill();
@@ -467,6 +469,8 @@ async function snapImage(o){
   if(o.rows)for(const r of o.rows.slice(0,8)){x.fillStyle="#1c1f25";x.beginPath();x.roundRect?x.roundRect(72,y,W-144,88,18):x.rect(72,y,W-144,88);x.fill();
     x.fillStyle="#fff";x.fillText(fit(r.a,700,32,W-360),100,y+40);x.fillStyle=r.col||"#9aa0aa";x.fillText(fit(r.b||"",500,26,W-360),100,y+74);
     if(r.c){x.fillStyle="#f3c75a";x.font="800 36px system-ui,sans-serif";x.textAlign="right";x.fillText(r.c,W-100,y+56);x.textAlign="left"}y+=100}
+  if(o.story&&o.lean){const by=Math.min(H-330,y+60),lc=/under/i.test(o.lean.txt)?"#e5534b":/over|yes/i.test(o.lean.txt)?"#3fb26b":"#8a8f98";x.fillStyle=lc;x.beginPath();x.roundRect?x.roundRect(72,by,W-144,150,34):x.rect(72,by,W-144,150);x.fill();
+    x.fillStyle="#fff";x.textAlign="center";x.fillText(fit(String(o.lean.txt).toUpperCase(),900,64,W-200),W/2,by+90);x.font="600 26px system-ui,sans-serif";x.fillStyle="rgba(255,255,255,.85)";x.fillText(o.lean.st?o.lean.st+" lean":"",W/2,by+130);x.textAlign="left"}
   if(o.big){y+=10;x.fillStyle="#f3c75a";x.font="800 60px system-ui,sans-serif";x.fillText(o.big,72,y+60);x.fillStyle="#9aa0aa";x.font="500 28px system-ui,sans-serif";x.fillText(o.bigSub||"",72,y+100)}
   x.fillStyle="#7c828c";x.font="500 24px system-ui,sans-serif";x.fillText("Leans from past numbers, not guarantees. 21+ · 1-800-GAMBLER",72,H-110);
   x.fillStyle="#fff";x.font="700 34px system-ui,sans-serif";x.fillText(typeof siteUrl!=="undefined"?siteUrl():"rlasharp.github.io/rla-sharp",72,H-58);
@@ -477,12 +481,12 @@ async function snapImage(o){
   if(typeof shareToast!=="undefined")shareToast("Snapshot saved — post it anywhere 📸");
 }
 function vData(html){const d=document.createElement("div");d.innerHTML=html;const b=d.querySelector(".vh"),items=[...d.querySelectorAll("li")].map(li=>{const m=li.querySelector("span").textContent;return [m==="✅"?1:m==="⚠️"?-1:0,li.textContent.slice(m.length)]});
-  const st=d.querySelector(".vbox");return b?{txt:b.textContent.replace(/\s+/g," ").trim(),st:st.classList.contains("vs3")?"Strong":st.classList.contains("vs2")?"Medium":"Weak",items}:null}
+  const st=d.querySelector(".vbox");if(b)b.querySelectorAll("button,.vwhy,a,small").forEach(x=>x.remove());return b?{txt:b.textContent.replace(/\s+/g," ").replace(/\s*Why\?\s*$/,"").trim(),st:st.classList.contains("vs3")?"Strong":st.classList.contains("vs2")?"Medium":"Weak",items}:null}
 function snapNba(nm,k){
   let r=NBA_PROPS.find(x=>x[0]===nm&&x[1]===k);const p=NBA_LOGS[nm];if(!r||!p)return;const g=nbaGameOf(p.tm),opp=g?(g.a===p.tm?g.h:g.a):"";
   const alt=typeof loAltOdds!=="undefined"?loAltOdds(nm,k):null;if(alt){r=r.slice();r[2]=alt.line;r[3]=alt.o;r[4]=alt.u}
   const v=alt?null:vData(nbaVerdict(nm,k)),L6=nbaAllG(nm).slice(-6),AG=nbaAllG(nm),VL=AG.map(o=>nbaVal(o.x,k)).filter(Number.isFinite),hr=m=>{const a=VL.slice(-m);return [`Last ${a.length}`,a.filter(z=>z>r[2]).length,a.length]},L10=AG.slice(-10);
-  snapImage({kicker:`NBA · ${nbaDay(NBA_SLATE_DATE)}`,title:nm,sub:`${p.tm} ${g?(g.a===p.tm?"@ ":"vs ")+opp:""} · ${NBA_MK[k][1]} ${alt?"alt ":""}${r[2]} · O ${oddsFmt(r[3])} / U ${oddsFmt(r[4])}`,
+  snapImage({col:nbaCol(p.tm),kicker:`NBA · ${nbaDay(NBA_SLATE_DATE)}`,title:nm,sub:`${p.tm} ${g?(g.a===p.tm?"@ ":"vs ")+opp:""} · ${NBA_MK[k][1]} ${alt?"alt ":""}${r[2]} · O ${oddsFmt(r[3])} / U ${oddsFmt(r[4])}`,
     lean:v,items:v?v.items:[],boxes:L6.map(o=>{const val=nbaVal(o.x,k);return {v:val,c:val>r[2]?"o":val<r[2]?"u":"p",lab:(o.x[3]==="H"?"":"@")+o.x[2]}}),boxCap:`Last ${L6.length} games vs ${r[2]} (green = over)`,tiles:[hr(5),hr(10),hr(20)].map(t=>[t[0]+" over",t[1],t[2]]),
     bars:{line:r[2],cap:`${NBA_MK[k][1]} · last ${L10.length} games (gold line = ${r[2]})`,vals:L10.map(o=>({v:nbaVal(o.x,k),lab:(o.x[3]==="H"?"":"@")+o.x[2]})).filter(b=>Number.isFinite(b.v))},file:`${nm.replace(/\W+/g,"-")}-${k}`});
 }
@@ -490,16 +494,22 @@ function snapNfl(name,k){
   let rp=realProp(name,k);const P=PINFO[name];if(!rp||!P)return;const alt=typeof loAltOdds!=="undefined"?loAltOdds(name,k):null;if(alt){rp=rp.slice();rp[0]=alt.line;rp[1]=alt.o;rp[2]=alt.u}
   const o=oppOf(P.team),v=alt?null:vData(nflVerdict(name,k)),G=pLogs(name).filter(l=>l.season===CUR&&Number.isFinite(stat(l,k))).slice(-6);
   const ALL=pLogs(name).filter(l=>Number.isFinite(stat(l,k))),SZ=ALL.filter(l=>l.season===CUR),G10=ALL.slice(-10),ov=a=>a.filter(l=>stat(l,k)>rp[0]).length;
-  snapImage({kicker:`NFL · Week ${typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:""}`,title:name,sub:`${P.team} ${o?(o.home?"vs ":"@ ")+o.opp:""} · ${MARKETS[k].n} ${k==="anyTD"?"":(alt?"alt ":"")+rp[0]}${rp[1]!=null?" · "+amTxt(rp[1]):""}`,
+  snapImage({col:(TEAMS[P.team]&&TEAMS[P.team][1])||null,kicker:`NFL · Week ${typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:""}`,title:name,sub:`${P.team} ${o?(o.home?"vs ":"@ ")+o.opp:""} · ${MARKETS[k].n} ${k==="anyTD"?"":(alt?"alt ":"")+rp[0]}${rp[1]!=null?" · "+amTxt(rp[1]):""}`,
     lean:v,items:v?v.items:[],boxes:G.map(l=>{const val=stat(l,k);return {v:val,c:val>rp[0]?"o":val<rp[0]?"u":"p",lab:(l.home?"":"@")+l.opp}}),boxCap:`Last ${G.length} games vs ${rp[0]} (green = over)`,tiles:[[`Last ${Math.min(3,ALL.length)} over`,ov(ALL.slice(-3)),Math.min(3,ALL.length)],[`Last ${Math.min(5,ALL.length)} over`,ov(ALL.slice(-5)),Math.min(5,ALL.length)],[SZ.length===ALL.length?"This season":`Last ${G10.length} over`,SZ.length===ALL.length?ov(SZ):ov(G10),SZ.length===ALL.length?SZ.length:G10.length]],
     bars:Number.isFinite(rp[0])?{line:rp[0],cap:`${MARKETS[k].n} · last ${G10.length} games (gold line = ${rp[0]})`,vals:G10.map(l=>({v:stat(l,k),lab:(l.season!==CUR?"'"+String(l.season).slice(2)+" ":"")+(l.home?"":"@")+l.opp}))}:null,file:`${name.replace(/\W+/g,"-")}-${k}`});
 }
 function snapParlay(){const a=slipGet();if(!a.length)return;const c=slipCalc(a);
   snapImage({kicker:"My parlay",title:`${a.length}-leg parlay`,sub:`Built on RLA Sharp`,rows:a.map(l=>({a:betTitle(l),b:l.book||"",c:oddsFmt(l.odds)})),
     big:a.length>1?(c.am>0?"+":"")+c.am:oddsFmt(a[0].odds),bigSub:`Book's chance ${(c.impl*100).toFixed(1)}%${c.est!=null?` · our estimate ${(c.est*100).toFixed(1)}%`:""}`,file:"rla-parlay"})}
+/* 📸 → pick the size first: Post (4:5, feeds) or Story (9:16, Instagram / TikTok stories) */
+var SNAP_FMT="post";
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-snap]");if(!b)return;e.preventDefault();e.stopPropagation();
   const [sp,nm,k]=b.dataset.snap.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").split("|");
-  if(sp==="nba")snapNba(nm,k);else if(sp==="nfl")snapNfl(nm,k);else if(sp==="parlay")snapParlay()},true);
+  const go=f=>{SNAP_FMT=f;if(sp==="nba")snapNba(nm,k);else if(sp==="nfl")snapNfl(nm,k);else if(sp==="parlay")snapParlay()};
+  const old=document.getElementById("actmenu");if(old)old.remove();const r=b.getBoundingClientRect(),d=document.createElement("div");d.id="actmenu";
+  d.innerHTML=`<div class="small" style="margin-bottom:6px"><b style="color:var(--text)">📸 Snapshot size</b></div><button class="btn" data-sf="post">▭ Post (4:5)</button><button class="btn" data-sf="story">▯ Story (9:16)</button>`;
+  document.body.appendChild(d);const W=Math.min(260,window.innerWidth-16);d.style.width=W+"px";d.style.left=Math.max(8,Math.min(window.innerWidth-W-8,r.left))+"px";d.style.top=(r.bottom+6+window.scrollY)+"px";
+  d.querySelectorAll("[data-sf]").forEach(x=>x.onclick=ev=>{ev.stopPropagation();d.remove();go(x.dataset.sf)})},true);
 function snapBtn(sp,nm,k,label){return `<button class="obtn snapb" data-snap="${sp}|${esc(nm||"")}|${k||""}">📸 ${label||"Snapshot"}</button>`}
 
 /* ===== ⓘ Glossary: tap a term for a one-line explanation ===== */

@@ -98,7 +98,7 @@ for gid, g in sorted(SCHED.items()):
     C["games"][gid] = rec; new += 1
 # play-by-play pass (box scores lack these): faceoffs won/lost, shot attempts (SAT = goals + shots on goal + missed + blocked),
 # goals by period, who scored first, and high-danger attempts (unblocked attempts from within 20 ft of the net)
-PBP_V = 4   # 4: + power-play / short-handed points, empty-net goals, penalties taken, faceoff matchups
+PBP_V = 5   # 5: + goalie saves by shot area; 4: + power-play / short-handed points, empty-net goals, penalties taken, faceoff matchups
 nfo = 0
 for gid, rec in sorted(C["games"].items()):
     if rec.get("xv") == PBP_V: continue
@@ -110,7 +110,7 @@ for gid, rec in sorted(C["games"].items()):
     for side in ("awayTeam", "homeTeam"):
         t = pbp.get(side) or {}
         if t.get("id") is not None: tid[str(t["id"])] = t.get("abbrev")
-    fo, sat, sz = {}, {}, {}   # sz: player -> 4 zones x [unblocked attempts, shots on goal incl. goals, goals]
+    fo, sat, sz, gz = {}, {}, {}, {}   # sz: player -> 4 zones x [unblocked attempts, shots on goal incl. goals, goals]
     tm = {rec["a"]: [0, 0, 0, 0, 0, 0], rec["h"]: [0, 0, 0, 0, 0, 0]}   # [SAT, HD attempts, goals P1, P2, P3, scored first]
     first = None
     ppp, x4, fom = {}, {rec["a"]: [0, 0, 0], rec["h"]: [0, 0, 0]}, {}   # ppp: pid -> [PP goals, PP assists, SH points]; x4: team -> [empty-net goals, penalties taken, penalties drawn]
@@ -149,8 +149,11 @@ for gid, rec in sorted(C["games"].items()):
         if k != "blocked-shot" and x is not None and y is not None:
             dist = ((89 - abs(x)) ** 2 + y ** 2) ** .5
             if dist <= 20: tm[t][1] += 1
+            z = 0 if dist <= 20 else 1 if dist <= 35 and abs(y) <= 12 else 2 if dist <= 45 else 3   # slot, high slot, wide / circles, long range
+            gk_ = dd.get("goalieInNetId")
+            if gk_ and k in ("goal", "shot-on-goal"):
+                GZ_ = gz.setdefault(str(gk_), [[0, 0] for _ in range(4)])[z]; GZ_[0] += 1; GZ_[1] += k == "goal"
             if shooter:
-                z = 0 if dist <= 20 else 1 if dist <= 35 and abs(y) <= 12 else 2 if dist <= 45 else 3   # slot, high slot, wide / circles, long range
                 Z = sz.setdefault(str(shooter), [[0, 0, 0] for _ in range(4)])[z]
                 Z[0] += 1
                 if k in ("goal", "shot-on-goal"): Z[1] += 1
@@ -159,6 +162,7 @@ for gid, rec in sorted(C["games"].items()):
             per = ((pl.get("periodDescriptor") or {}).get("number")) or 0
             if 1 <= per <= 3: tm[t][1 + per] += 1
             if first is None: first = t; tm[t][5] = 1
+    rec["gz"] = gz
     rec["fo"] = fo; rec["sat"] = sat; rec["tm"] = tm; rec["sz"] = sz; rec["ppp"] = ppp; rec["x4"] = x4; rec["fom"] = fom; rec["xv"] = PBP_V; nfo += 1
 log(f"NHL: {new} new box scores, {nfo} play-by-play logs, {len(C['games'])} cached, {NREQ[0]} requests so far")
 # ---------- last season (2025-26) box scores, cached once in src/data/nhl_prev.json: longer player histories + H2H ----------
@@ -564,6 +568,10 @@ for pid, L in GO.items():
     sa, sv, ga, toi = (sum(x[i] for x in L) for i in (3, 4, 5, 6))
     G[nm] = {"id": int(pid), "tm": tm, "gp": len(L), "gs": len(st), "w": sum(1 for x in st if x[8]),
              "svp": round(sv / sa * 100, 1) if sa else None, "gaa": round(ga * 3600 / toi, 2) if toi else None, "g": (GOP.get(pid, []) + [x + [0] for x in L])[-25:]}
+    gzs = [[0, 0] for _ in range(4)]
+    for g_ in C["games"].values():
+        for zi, zz in enumerate(((g_.get("gz") or {}).get(pid)) or []): gzs[zi][0] += zz[0]; gzs[zi][1] += zz[1]
+    if sum(z[0] for z in gzs) >= 30: G[nm]["gz"] = gzs   # shots on goal faced / goals allowed: slot, high slot, circles, long range
 
 # ---------- props + game lines from the PropLine feed (refreshed live on the public site too) ----------
 PROPS, LINES = [], {}
