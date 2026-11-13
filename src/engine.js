@@ -17,7 +17,7 @@ const TEAMS = {
 const TEAM_IDS = Object.keys(TEAMS);
 // Week 10 slate (ESPN schedule, kickoff times ET; set up automatically by tools/auto_espn.py nfl-roll). wp = home win probability from feed (null = not provided)
 const SLATE = [
- {id:1,away:"WAS",home:"NYG",when:"Thu Nov 12 · 8:15 PM",wp:null,tv:"TNF"},
+ {id:1,away:"WAS",home:"NYG",final:[24,21],when:"Thu Nov 12 · 8:15 PM",wp:null,tv:"TNF"},
  {id:2,away:"NE",home:"DET",when:"Sun Nov 15 · 9:30 AM",wp:null},
  {id:3,away:"KC",home:"ATL",when:"Sun Nov 15 · 1:00 PM",wp:null},
  {id:4,away:"HOU",home:"CLE",when:"Sun Nov 15 · 1:00 PM",wp:null},
@@ -40,8 +40,8 @@ const LINES = {
  4:{sp:4.5,ml:[-225,185],tot:40.5},
  5:{sp:-3,ml:[124,-148],tot:41.5},
  6:{sp:10.5,ml:[-600,440],tot:46.5},
- 7:{sp:-3.5,ml:[164,-198],tot:38.5},
- 8:{sp:-2.5,ml:[110,-130],tot:48.5},
+ 7:{sp:-3.5,ml:[170,-205],tot:38.5},
+ 8:{sp:-2.5,ml:[114,-135],tot:48.5},
  9:{sp:8.5,ml:[-440,340],tot:50.5},
  10:{sp:6.5,ml:[-298,240],tot:40.5},
  11:{sp:9.5,ml:[-485,370],tot:39.5},
