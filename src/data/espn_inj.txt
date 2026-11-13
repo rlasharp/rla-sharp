@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-13 19:18Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-13 19:38Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Out|Ankle|Nov 22
@@ -148,10 +148,10 @@ Branson Combs|LB|Questionable|Shoulder|Nov 15
 Robert Hainsey|C|Questionable|Concussion|Nov 15
 Ezra Cleveland|G|Questionable|Knee|Nov 15
 #KC
+Kenneth Walker III|RB|Questionable|Groin|Nov 15
 Jaydn Ott|RB|Questionable|Hamstring|Nov 15
 Peter Woods|DT|Questionable|Neck|Nov 15
 Jaylon Moore|OT|Questionable|Ankle|Nov 15
-L'Jarius Sneed|CB|IR|Knee|Nov 26
 #LV
 Chris Collier|RB|Questionable|Undisclosed|Nov 15
 Trey Zuhn III|C|Questionable|Concussion|Nov 15
@@ -171,12 +171,12 @@ Deane Leonard|CB|Questionable|Concussion|Nov 16
 Kayode Awosika|G|Questionable|Lower Leg|Nov 16
 Isas Waxter|CB|Questionable|Ankle|Nov 16
 #LAR
+Myles Garrett|DE|Questionable|Knee|Nov 15
 Trent McDuffie|CB|Questionable|Back|Nov 15
 Davis Allen|TE|Questionable|Oblique|Nov 15
 Puka Nacua|WR|IR|Knee - MCL|Dec 20
 Colby Parkinson|TE|Questionable|Ribs|Nov 15
 Tyler Higbee|TE|Questionable|Illness|Nov 15
-Myles Garrett|DE|Questionable|Knee|Nov 15
 Kam Curl|S|Questionable|Toe|Nov 15
 Davante Adams|WR|IR|Hamstring|Nov 25
 Jordan Whittington|WR|IR|Back|Dec 20
@@ -221,7 +221,7 @@ Taliese Fuaga|OT|Out|Knee|Nov 22
 David Edwards|G|Questionable|Knee|Nov 15
 Kelvin Banks Jr.|OT|Questionable|Ankle|Nov 15
 Quincy Riley|CB|Questionable|Knee|Nov 15
-CJ Donaldson|RB|Questionable|Shoulder|Nov 22
+CJ Donaldson|RB|Out|Shoulder|Nov 22
 Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 Martin Emerson Jr.|CB|Questionable|Shin|Nov 15
 #NYG

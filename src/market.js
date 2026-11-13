@@ -8,7 +8,7 @@ const MARKET_ASOF="Fri Nov 13, 2 PM ET";
 const MOVE={
  1:{open:{sp:-4.5,tot:49.5},now:{sp:-1.5,tot:40.5,ml:[105,-125]}},
  2:{open:{sp:4.5,tot:48.5},now:{sp:-3,tot:49.5,ml:[130,-155]}},
- 3:{open:{sp:-3.5,tot:41.5},now:{sp:3,tot:47.5,ml:[-185,154]}},
+ 3:{open:{sp:-3.5,tot:41.5},now:{sp:3,tot:47.5,ml:[-175,145]}},
  4:{open:{sp:1.5,tot:52.5},now:{sp:4.5,tot:40.5,ml:[-238,195]}},
  5:{open:{sp:3,tot:42.5},now:{sp:-3,tot:41.5,ml:[130,-155]}},
  6:{open:{sp:6.5,tot:47.5},now:{sp:10.5,tot:46.5,ml:[-700,500]}},
@@ -19,7 +19,7 @@ const MOVE={
  11:{open:{sp:-8.5,tot:46.5},now:{sp:9.5,tot:39.5,ml:[-500,380]}},
  12:{open:{sp:-13.5,tot:45.5},now:{sp:3.5,tot:55.5,ml:[-205,170]}},
  13:{open:{sp:-1.5,tot:46.5},now:{sp:-3.5,tot:49.5,ml:[150,-180]}},
- 14:{open:{sp:-3.5,tot:48.5},now:{sp:-4.5,tot:38.5,ml:[180,-218]}},
+ 14:{open:{sp:-3.5,tot:48.5},now:{sp:-4.5,tot:38.5,ml:[185,-225]}},
  15:{open:{sp:3,tot:48.5},now:{sp:3,tot:45.5,ml:[-185,154]}}};
 // [awayLine,price,book],[homeLine,price,book] · ml [price,book] x2 · tot [line,price,book] over/under
 const BEST={};
