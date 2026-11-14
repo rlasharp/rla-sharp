@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 21:16Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 21:57Z
 #Atlanta Hawks
 Kingston Flemings|G|Day-To-Day|back|Nov 15
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -50,7 +50,8 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 15
 Steven Adams|C|Out|calf strain|Nov 15
 #Indiana Pacers
-Aaron Nesmith|G|Day-To-Day|hand|Nov 15
+T.J. McConnell|G|Day-To-Day|hamstring|Nov 15
+Aaron Nesmith|G|Day-To-Day|hand sprain|Nov 15
 Tyrese Haliburton|G|Out|hamstring strain|Nov 22
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -109,6 +110,7 @@ Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
+Keegan Murray|F|Day-To-Day|illness|Nov 15
 Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 15
 Maxime Raynaud|C|Out|knee dislocated|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
@@ -128,6 +130,8 @@ Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
+Alex Sarr|C|Day-To-Day|illness|Nov 15
+Tre Johnson|G|Day-To-Day|back|Nov 15
 Bub Carrington|G|Day-To-Day|chest|Nov 15
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 16
 Reece Beekman|G|Out|shoulder|Dec 3
