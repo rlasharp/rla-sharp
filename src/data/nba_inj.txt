@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 03:54Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 04:55Z
 #Atlanta Hawks
 Kingston Flemings|G|Day-To-Day|back|Nov 15
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -15,7 +15,7 @@ Brandon Miller|F|Day-To-Day|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
-Jalen Smith|F|Day-To-Day|hand|Nov 13
+Jalen Smith|F|Day-To-Day|hand|Nov 14
 Dailyn Swain|G|Out|back|Nov 14
 Tobe Awaka|F|Out|back|Nov 14
 Caleb Wilson|F|Out|hand|Dec 13
