@@ -67,7 +67,7 @@ jobs:
           git config user.name "rla-sharp-bot"
           git config user.email "actions@users.noreply.github.com"
           if [ -n "$GATE_STATE" ]; then mkdir -p data; printf '%s\n' "$GATE_STATE" > data/quick.json; git add data/quick.json; fi
-          git add -A index.html nhl_data.js nba_detail.js lines_hist.js nfl_boxq.js 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json data/nhl_lines.json data/soccer_next.json data/nhl_pp_hist.json
+          git add -A index.html nhl_data.js nba_detail.js lines_hist.js nfl_boxq.js nfl_box2.js 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json data/nhl_lines.json data/soccer_next.json data/nhl_pp_hist.json
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -qm "Auto refresh $(TZ=America/Toronto date '+%a %b %-d %-I:%M %p ET')"
           # pushed together with the health file in the next step: one push per update = one site deployment (two quick pushes made GitHub cancel the first deployment, which showed up as a failure)
