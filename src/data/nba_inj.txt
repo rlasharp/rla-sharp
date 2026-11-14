@@ -1,6 +1,6 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 23:05Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 23:16Z
 #Atlanta Hawks
-Kingston Flemings|G|Day-To-Day|back|Nov 15
+Kingston Flemings|G|Out|back strain|Nov 18
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
 Asa Newell|F|Out|toe|Nov 20
@@ -19,16 +19,15 @@ Jalen Smith|F|Day-To-Day|finger sprain|Nov 14
 Norman Powell|G|Day-To-Day|back|Nov 14
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
+Peyton Watson|G|Out|hamstring|Nov 16
+James Harden|G|Out|calf|Nov 16
+Donovan Mitchell|G|Out|knee bruise|Nov 16
 Jarrett Allen|C|Out|knee|Nov 16
-Peyton Watson|G|Day-To-Day|hamstring|Nov 16
 Evan Mobley|C|Out|toe sprain|Nov 16
-Donovan Mitchell|G|Day-To-Day|knee bruise|Nov 16
-James Harden|G|Day-To-Day|calf|Nov 16
 Sam Merrill|G|Out|elbow|Nov 16
 Nae'Qwan Tomlin|F|Out|back|Nov 16
 #Dallas Mavericks
-Max Christie|G|Day-To-Day|ankle sprain|Nov 15
-Morez Johnson Jr.|F|Day-To-Day|lower leg|Nov 14
+Max Christie|G|Out|ankle sprain|Nov 15
 Dereck Lively II|C|Out|foot surgery|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 18
 Sergio de Larrea|F|Out|knee strain|Nov 18
