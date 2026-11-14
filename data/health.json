@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-14T21:30:36+00:00",
+  "at": "2026-11-14T21:59:43+00:00",
   "ok": true,
-  "summary": "UFC: 290 fighters, 2775 past fights, 231 requests\ntrack: nba 2026-11-14: snapshot 10 props, 5 games; ufc UFC 334: Gane vs. Hokit: locked 5 picks \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-14T21:29:02Z)\n"
+  "summary": "NBA finals from ESPN: 76 games kept (0 new), 1711 player lines\nNBA injuries refreshed\nnbalineups: 5 games, 0 confirmed / 50 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 183 games cached\nNBA refs: 5 crews posted today\nliveprops: 638 feed lines merged (0 skipped from other days), 633 total, unmatched names: []\nNBA data: teams 30, results 183 (through 2026-11-13), players 467, slate 5, lines 5, props 633, inj teams 29, prev-season players 138, play log 34, adv 393, qtr games 183, h2h 3/2/3/2/2\nnhllines: 32/32 teams\nNHL PP time: 687 players, 0 ESPN requests this run\nNHL data: 14 games today, 5 tomorrow, 32 teams, 691 skaters, 67 goalies, 1483 props, 304 finals, 52 requests\ntrack: nba 2026-11-14: snapshot 10 props, 5 games \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-14T21:58:05Z)\n"
  },
  "site": {
-  "at": "2026-11-14T21:30:36+00:00",
+  "at": "2026-11-14T21:59:43+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-14T21:30:36+00:00",
+  "at": "2026-11-14T21:59:43+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sat Nov 14 4:20 PM ET",
+  "gen": "Sat Nov 14 4:57 PM ET",
   "odds_at": "2026-11-14T20:11:24+00:00",
   "backfill": "1312/1312"
  },
@@ -1786,6 +1786,18 @@
    "site_ok": true,
    "site_issue": "",
    "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-14T21:59:43+00:00",
+   "what": "nba,nhl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [
+    "liveprops: 638 feed lines merged (0 skipped from other days), 633 total, unmatched names: []"
+   ],
    "check_failed": false,
    "published": true
   }
