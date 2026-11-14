@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 20:23Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 21:16Z
 #Atlanta Hawks
 Kingston Flemings|G|Day-To-Day|back|Nov 15
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -60,10 +60,9 @@ Yanic Konan Niederhauser|C|Out|foot surgery|Nov 17
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Quentin Grimes|G|Day-To-Day|finger|Nov 15
-Austin Reaves|G|Day-To-Day|heel|Nov 15
-Luka Doncic|G|Day-To-Day|ankle|Nov 15
 Collin Sexton|G|Day-To-Day|head|Nov 15
+Austin Reaves|G|Day-To-Day|heel|Nov 15
+Quentin Grimes|G|Day-To-Day|finger|Nov 15
 #Memphis Grizzlies
 Quinten Post|C|Out|concussion|Nov 16
 Jerami Grant|F|Day-To-Day|head|Nov 14

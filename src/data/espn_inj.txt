@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 20:23Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 21:19Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Questionable|Knee|Nov 15
@@ -24,6 +24,7 @@ Jaylinn Hawkins|S|Out|Knee|Nov 22
 Lamar Jackson|QB|IR|Thumb|Dec 27
 Adisa Isaac|LB|Questionable|Hamstring|Nov 16
 #BUF
+Jordan Hancock|CB|Questionable|Hamstring|Nov 15
 Spencer Brown|OT|Doubtful|Ankle|Nov 15
 Christian Benford|CB|Questionable|Wrist|Nov 15
 Tyrell Shavers|WR|Out|Knee - ACL|Nov 15
@@ -91,9 +92,9 @@ Sean Rhyan|G|Out|Ankle|Nov 25
 Lukas Van Ness|DE|Questionable|Back|Nov 15
 Javon Bullard|S|Questionable|Ankle|Nov 15
 Zaire Franklin|LB|Doubtful|Shin|Nov 15
-Josh Whyle|TE|Out|Concussion|Nov 25
-Skyy Moore|WR|IR|Ankle|Nov 15
-Chris Brooks|RB|IR|Ankle|Nov 15
+Josh Whyle|TE|Out|Concussion|Dec 20
+Skyy Moore|WR|Questionable|Ankle|Nov 15
+Chris Brooks|RB|Questionable|Ankle|Nov 15
 Xavier McKinney|S|Questionable|Foot|Nov 15
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Warren Brinson|DT|IR|Calf|Nov 15
@@ -183,7 +184,7 @@ Walter Rouse|OL|Questionable|Concussion|Nov 15
 Cameron Latu|TE|Questionable|Back|Nov 15
 Reggie Gilliam|FB|IR|Knee|Nov 15
 #NO
-Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
+Travis Etienne Jr.|RB|Questionable|Hamstring|Nov 15
 Erik McCoy|C|Out|Biceps|Nov 22
 Christen Miller|DT|Out|Knee|Nov 22
 Taliese Fuaga|OT|Out|Knee|Nov 22
@@ -220,6 +221,7 @@ Zack Baun|LB|Questionable|Back|Nov 22
 Derrick Harmon|DT|Questionable|Foot|Nov 15
 Pat Freiermuth|TE|Questionable|Illness|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 22
+Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
 Gracen Halton|DT|IR|Ankle|Feb 15
 Trent Williams|OT|Questionable|Shoulder|Nov 15
@@ -240,8 +242,8 @@ Yaya Diaby|LB|Out|Knee - MCL|Nov 22
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 22
 #TEN
-Tommy Townsend|P|Out|Knee|Nov 22
-Peter Skoronski|G|Out|Hamstring|Nov 22
+Tommy Townsend|P|IR|Knee|Dec 13
+Peter Skoronski|G|IR|Hamstring|Dec 13
 Cody Barton|LB|Out|Concussion|Nov 22
 Anthony Hill Jr.|LB|Out|Neck|Nov 22
 Tyjae Spears|RB|Questionable|Knee|Nov 15
