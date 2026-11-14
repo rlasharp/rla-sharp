@@ -89,6 +89,7 @@ function tdGamesCard(){const R=tdAllGames();
 const GP_NAV={nav:["#today","#games","#props","#plays","#bets"],nbaNav:["#today","#nba","#nba-props","#potd","#bets"],nhlNav:["#today","#nhl","#nhl-props","#potd","#bets"],socNav:["#today","#soccer","#soccer-props","#potd","#bets"]};
 function gpNav(){for(const [id,keep] of Object.entries(GP_NAV)){const n=document.getElementById(id);if(!n||n.dataset.gp)continue;n.dataset.gp=1;
   if(id==="socNav"&&!n.querySelector('a[href="#potd"]'))n.insertAdjacentHTML("beforeend",'<a href="#potd" data-v="potd" data-sp="soc">Picks</a>');
+  if(!n.querySelector('a[href="#futures"]'))n.insertAdjacentHTML("beforeend",'<a href="#futures" data-v="futures">🏆 Futures</a><a href="#record" data-v="record">📒 Our record</a><a href="#settings" data-v="settings">⚙️ Settings</a>');
   const L=[...n.querySelectorAll("a")];
   for(const a of L){const h=a.getAttribute("href");if(keep.includes(h)){if(h==="#plays"||h==="#potd")a.textContent="Picks";if(h==="#bets")a.textContent="My Bets";if(h==="#today")a.textContent="Today";if(/^#(games|nba|nhl|soccer)$/.test(h))a.textContent="Games";if(/props$/.test(h))a.textContent="Props"}else a.classList.add("nvx")}
   /* order: Today · Games · Props · Picks · My Bets, then More */
