@@ -1,12 +1,10 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 21:57Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 22:33Z
 #Atlanta Hawks
 Kingston Flemings|G|Day-To-Day|back|Nov 15
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
 Asa Newell|F|Out|toe|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
-#Boston Celtics
-Paul George|F|Day-To-Day|illness|Nov 15
 #Brooklyn Nets
 Mikel Brown Jr.|G|Day-To-Day|illness not specified|Nov 14
 Nolan Traore|G|Day-To-Day|calf soreness|Nov 14
@@ -47,8 +45,9 @@ Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
-Clint Capela|C|Out|ankle sprain|Nov 15
+Clint Capela|C|Out|ankle sprain|Nov 16
 Steven Adams|C|Out|calf strain|Nov 15
+Fred VanVleet|G|Out|knee|Nov 16
 #Indiana Pacers
 T.J. McConnell|G|Day-To-Day|hamstring|Nov 15
 Aaron Nesmith|G|Day-To-Day|hand sprain|Nov 15
@@ -97,7 +96,7 @@ Jonathan Isaac|F|Out|knee not specified|Nov 16
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
-LeBron James|F|Day-To-Day|back|Nov 15
+Joel Embiid|C|Out|foot|Nov 16
 Dominick Barlow|F|Out|back fracture|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
@@ -118,11 +117,10 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Nate Bittle|C|Out|foot fracture|Nov 23
 Scottie Barnes|F|Out|groin strain|Nov 15
 Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 14
-Trayce Jackson-Davis|F|Day-To-Day|illness|Nov 15
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
-Nate Bittle|C|Out|foot fracture|Nov 15
 #Utah Jazz
 Jaxson Hayes|C|Day-To-Day|knee|Nov 15
 Trey Alexander|G|Out|ankle sprain|Nov 16
