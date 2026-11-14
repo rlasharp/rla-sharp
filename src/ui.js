@@ -706,7 +706,7 @@ function route(){
   const SHARED=["calc","record","guide","today","bets","favs","week","potd"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
   if(h.startsWith("ufc")&&typeof ufcRoute!=="undefined"){LS.set("sport","ufc");["nav","nbaNav","nhlNav","socNav"].forEach(i=>{const n=document.getElementById(i);if(n)n.hidden=true});const uN=document.getElementById("ufcNav");if(uN)uN.hidden=false;
     document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s==="ufc"));document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-ufc"));
-    const nv=h==="ufc-props"?"ufc-props":h==="ufc-results"?"ufc-results":"ufc";document.querySelectorAll("#ufcNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
+    const nv=h==="ufc-props"?"ufc-props":h==="ufc-results"?"ufc-results":h==="ufc-live"?"ufc-live":"ufc";document.querySelectorAll("#ufcNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
     document.getElementById("banner").innerHTML="";ufcRoute(h);window.scrollTo(0,0);return}
   const isUfc=SHARED.includes(h)&&LS.get("sport")==="ufc";{const uN=document.getElementById("ufcNav");if(uN)uN.hidden=!isUfc}
   if(h.startsWith("nba"))LS.set("sport","nba");else if(h.startsWith("nhl"))LS.set("sport","nhl");else if(h.startsWith("soccer"))LS.set("sport","soc");else if(!SHARED.includes(h))LS.set("sport","nfl");

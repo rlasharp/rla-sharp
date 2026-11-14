@@ -512,7 +512,7 @@ function snapParlay(){const a=slipGet();if(!a.length)return;const c=slipCalc(a);
 var SNAP_FMT="post";
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-snap]");if(!b)return;e.preventDefault();e.stopPropagation();
   const [sp,nm,k]=b.dataset.snap.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").split("|");
-  const go=f=>{SNAP_FMT=f;if(sp==="nba")snapNba(nm,k);else if(sp==="nfl")snapNfl(nm,k);else if(sp==="parlay")snapParlay()};
+  const go=f=>{SNAP_FMT=f;if(sp==="nba")snapNba(nm,k);else if(sp==="nfl")snapNfl(nm,k);else if(sp==="parlay")snapParlay();else if(sp==="ufc"&&typeof ufSnap!=="undefined")ufSnap(nm)};
   const old=document.getElementById("actmenu");if(old)old.remove();const r=b.getBoundingClientRect(),d=document.createElement("div");d.id="actmenu";
   d.innerHTML=`<div class="small" style="margin-bottom:6px"><b style="color:var(--text)">📸 Snapshot size</b></div><button class="btn" data-sf="post">▭ Post (4:5)</button><button class="btn" data-sf="story">▯ Story (9:16)</button>`;
   document.body.appendChild(d);const W=Math.min(260,window.innerWidth-16);d.style.width=W+"px";d.style.left=Math.max(8,Math.min(window.innerWidth-W-8,r.left))+"px";d.style.top=(r.bottom+6+window.scrollY)+"px";

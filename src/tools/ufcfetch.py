@@ -192,7 +192,8 @@ for aid in ids:
         except Exception: pass
         rows.append([(f.get("d") or "")[:10], op, (C["ath"].get(op) or {}).get("n") or "?", res, mshort(f.get("m"), f.get("md")), f.get("md") or "", f.get("r"), f.get("clk") or "", secs, f.get("wc") or "",
                      s.get("sl"), s.get("sa"), so.get("sl"), so.get("sa"), s.get("tdl"), s.get("tda"), so.get("tdl"), so.get("tda"), s.get("kd"), s.get("ctrl"), s.get("suba"),
-                     [s.get("hl"), s.get("bl"), s.get("ll")], [s.get("dl"), s.get("cl"), s.get("gl")]])
+                     [s.get("hl"), s.get("bl"), s.get("ll")], [s.get("dl"), s.get("cl"), s.get("gl")],
+                     [so.get("hl"), so.get("bl"), so.get("ll")], [so.get("dl"), so.get("cl"), so.get("gl")]])
     FT[aid] = {k: A.get(k) for k in ("n", "nick", "age", "ht", "hti", "wt", "reach", "rch", "stance", "ctry", "wc", "team")}
     FT[aid]["R"] = A.get("R") or {}
     FT[aid]["h"] = rows   # newest first
@@ -200,12 +201,32 @@ for e in EV:   # results on the cards (method, round, time) from the fight cache
     for F in e["f"]:
         x = C["fights"].get(str(F["id"])) or (fight(e["id"], F["id"]) if F["st"] == "post" else None)
         if x and x.get("done"): F["m"] = mshort(x.get("m"), x.get("md")); F["md"] = x.get("md") or ""; F["r"] = x.get("r"); F["clk"] = x.get("clk") or ""
+# title fights (core competition "types", e.g. "UFC Heavyweight Title") for the upcoming fights
+def title(x):
+    e, F = x
+    c = get(CORE + f"leagues/ufc/events/{e['id']}/competitions/{F['id']}") or {}
+    t = [y.get("text") for y in (c.get("types") or []) if isinstance(y, dict) and "title" in (y.get("text") or "").lower()]
+    if t: F["ti"] = t[0]
+up_ = [(e, F) for e in EV for F in e["f"]]
+with ThreadPoolExecutor(12) as ex: list(ex.map(title, up_))
+# ESPN rankings (division top 15 + pound for pound): {athleteId: [[list name, rank], ...]}
+RK = {}
+rk = get(SITE + "rankings") or {}
+for L in rk.get("rankings") or []:
+    ty = L.get("type") or ""
+    if ty.endswith("-champions"): continue
+    nm = (L.get("name") or "").replace(" Rankings", "")
+    for r in L.get("ranks") or []:
+        aid = str(((r.get("athlete") or {}).get("id")) or "")
+        if aid: RK.setdefault(aid, []).append([nm, r.get("current")])
+log(f"UFC: {sum(1 for e in EV for F in e['f'] if F.get('ti'))} title fights, {len(RK)} ranked fighters")
 json.dump(C, open(CF, "w"), separators=(",", ":"))
 J = lambda o: json.dumps(o, separators=(",", ":"), ensure_ascii=False)
 print("/* 🥊 UFC — tools/ufcfetch.py (ESPN MMA feeds: cards, results, fighter bios, fight-by-fight stats) */")
 print(f'var UFC_GEN="{NOW.astimezone(dt.timezone(dt.timedelta(hours=-5))).strftime("%a %b %d %I:%M %p")} ET";')
 print(f"var UFC_EV={J(EV)};  /* cards: fights main event first; c = [id, name, record, winner, country] */")
-print(f"var UFC_F={J(FT)};  /* fighters: bio, record split (R), last 10 fights h = [date, oppId, opp, W/L/D/NC, method, detail, round, time, seconds, weight class, sig landed, sig att, sig absorbed, opp sig att, TD landed, TD att, opp TD landed, opp TD att, knockdowns, control sec, sub att, [head, body, leg], [distance, clinch, ground]] */")
+print(f"var UFC_F={J(FT)};  /* fighters: bio, record split (R), last 10 fights h = [date, oppId, opp, W/L/D/NC, method, detail, round, time, seconds, weight class, sig landed, sig att, sig absorbed, opp sig att, TD landed, TD att, opp TD landed, opp TD att, knockdowns, control sec, sub att, [head, body, leg], [distance, clinch, ground], opponent's [head, body, leg], opponent's [distance, clinch, ground]] */")
+print(f"var UFC_RK={J(RK)};  /* ESPN rankings: athleteId -> [[list, rank], ...] */")
 print("var UFC_OK=1;")
 _names = set()
 for f in list(C["fights"].values())[:30]:
