@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 13:32Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 15:18Z
 #Atlanta Hawks
 Kingston Flemings|G|Day-To-Day|back|Nov 15
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -15,12 +15,12 @@ Brandon Miller|F|Day-To-Day|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Dailyn Swain|G|Day-To-Day|back|Nov 14
+Tobe Awaka|F|Day-To-Day|back|Nov 14
 Jalen Smith|F|Day-To-Day|hand|Nov 14
-Dailyn Swain|G|Out|back|Nov 14
-Tobe Awaka|F|Out|back|Nov 14
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
-Evan Mobley|C|Out|toe|Nov 14
+Evan Mobley|C|Day-To-Day|toe|Nov 14
 Sam Merrill|G|Out|elbow|Nov 16
 Nae'Qwan Tomlin|F|Out|back|Nov 16
 #Dallas Mavericks
@@ -60,24 +60,24 @@ Austin Reaves|G|Day-To-Day|heel|Nov 15
 Luka Doncic|G|Day-To-Day|ankle|Nov 15
 Collin Sexton|G|Day-To-Day|head|Nov 15
 #Memphis Grizzlies
-Quinten Post|C|Out|concussion|Nov 14
-Zach Edey|C|Out|ankle|Nov 14
+Quinten Post|C|Day-To-Day|concussion|Nov 14
+Zach Edey|C|Day-To-Day|ankle|Nov 14
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Klay Thompson|G|Out|ankle soreness|Nov 14
-Pelle Larsson|G|Out|illness|Nov 14
+Pelle Larsson|G|Day-To-Day|illness|Nov 14
+Klay Thompson|G|Day-To-Day|ankle soreness|Nov 14
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
+Bryce McGowens|G|Day-To-Day|elbow infection|Nov 14
 Dejounte Murray|G|Out|ankle|Nov 20
-Bryce McGowens|G|Out|elbow infection|Nov 14
 Yves Missi|C|Out|knee bruise|Nov 14
 Trey Murphy III|F|Out|knee tendinitis|Nov 14
 Trendon Watford|F|Out|ankle sprain|Nov 14
 #Oklahoma City Thunder
-Ajay Mitchell|G|Out|ankle sprain|Nov 15
+Ajay Mitchell|G|Day-To-Day|ankle sprain|Nov 15
 Thomas Sorber|C|Out|knee|Nov 20
 Jaylin Williams|F|Out|back spasms|Nov 15
 Cason Wallace|G|Out|shoulder surgery|Mar 2
@@ -97,7 +97,7 @@ Ariel Hukporti|C|Out|achilles surgery|Oct 1
 Drew Timme|F|Day-To-Day|hand|Nov 15
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
-Chris Youngblood|G|Out|foot bruise|Nov 16
+Chris Youngblood|G|Day-To-Day|foot bruise|Nov 16
 Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2

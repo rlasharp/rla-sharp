@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 13:39Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 15:19Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Questionable|Knee|Nov 15
@@ -82,6 +82,7 @@ Jack Campbell|LB|IR|Neck|Dec 6
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 Isiah Pacheco|RB|IR|Back|Dec 28
 #GB
+Josh Jacobs|RB|Out|Finger|Nov 25
 Kevin Zeitler|G|Questionable|Ankle|Nov 15
 Travis Glover|OT|Questionable|Knee|Nov 15
 Sean Rhyan|G|Out|Ankle|Nov 25
@@ -94,7 +95,6 @@ Chris Brooks|RB|IR|Ankle|Nov 15
 Xavier McKinney|S|Questionable|Foot|Nov 15
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Warren Brinson|DT|IR|Calf|Nov 15
-Josh Jacobs|RB|Out|Finger|Nov 25
 #HOU
 Keylan Rutledge|G|Out|Neck|Nov 19
 Will Anderson Jr.|DE|Questionable|Ankle|Nov 15
