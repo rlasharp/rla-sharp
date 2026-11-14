@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 03:27Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 05:28Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Questionable|Knee|Nov 15
@@ -47,7 +47,7 @@ Braxton Jones|OT|IR|Knee|Feb 15
 #CIN
 Kyle Dugger|S|Out|Quadriceps|Nov 22
 Andrei Iosivas|WR|IR|Thumb|Nov 15
-Brian Parker II|OT|IR|Undisclosed|Nov 15
+Brian Parker II|OT|IR|Knee|Nov 15
 Jalen Davis|CB|IR|Hamstring|Nov 15
 Cashius Howell|DE|IR|Wrist|Dec 6
 #CLE
@@ -118,7 +118,7 @@ Mo Alie-Cox|TE|Out|Groin|Nov 19
 Arden Key|DE|IR|Hamstring|Nov 15
 Alec Pierce|WR|IR|Heel|Nov 29
 #JAX
-B.J. Green II|DE|IR|Elbow|Nov 22
+B.J. Green II|DE|IR|Forearm|Nov 22
 Jessie Bates III|S|Out|Coach's Decision|Nov 22
 Robert Hainsey|C|Questionable|Concussion|Nov 15
 #KC
@@ -180,7 +180,7 @@ Ben Brown|C|Out|Knee|Nov 29
 Carlton Davis III|CB|Out|Knee|Nov 29
 Walter Rouse|OL|Questionable|Concussion|Nov 15
 Cameron Latu|TE|Questionable|Back|Nov 15
-Reggie Gilliam|FB|IR|Ankle|Nov 15
+Reggie Gilliam|FB|IR|Knee|Nov 15
 #NO
 Erik McCoy|C|Out|Biceps|Nov 22
 Christen Miller|DT|Out|Knee|Nov 22
