@@ -5,7 +5,7 @@ on:
     - cron: "41 */2 * * *"        # every 2 hours, around the clock (off-peak minute; quick.yml adds game-night updates)
   workflow_dispatch:
     inputs:
-      what: { description: "nba, nfl, nhl, soc, ufc or all", default: "all" }
+      what: { description: "nba, nfl, nhl, soc, ufc, cfb, cbb, fut or all", default: "all" }
       gate_state: { description: "(set by quick.yml) game-night state to save", default: "" }
       reason: { description: "(set by quick.yml) why this update was started", default: "" }
       nflv: { description: "1 = also refresh the weekly NFL play-by-play data now", default: "0" }
@@ -51,6 +51,14 @@ jobs:
           fi
           echo "issue=$ISSUE" >> $GITHUB_OUTPUT
           [ -z "$ISSUE" ] && echo "Live site OK ($SZ bytes)" || { echo "LIVE SITE PROBLEM: $ISSUE"; exit 1; }
+      - name: College box-score cache (kept out of git — it changes every run)
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/cfb_box.json
+            data/cbb_box.json
+          key: college-box-${{ github.run_id }}
+          restore-keys: college-box-
       - name: Refresh data, rebuild, check
         id: run
         env:
@@ -67,7 +75,7 @@ jobs:
           git config user.name "rla-sharp-bot"
           git config user.email "actions@users.noreply.github.com"
           if [ -n "$GATE_STATE" ]; then mkdir -p data; printf '%s\n' "$GATE_STATE" > data/quick.json; git add data/quick.json; fi
-          git add -A index.html nhl_data.js nba_detail.js lines_hist.js nfl_boxq.js nfl_box2.js ufc_data.js data/ufc_cache.json data/futures_hist.json data/futures_names.json 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json data/nhl_lines.json data/soccer_next.json data/nhl_pp_hist.json
+          git add -A index.html nhl_data.js nba_detail.js lines_hist.js nfl_boxq.js nfl_box2.js ufc_data.js cfb_data.js cbb_data.js data/cfb_focus.json data/cbb_focus.json data/ufc_cache.json data/futures_hist.json data/futures_names.json 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json data/nhl_lines.json data/soccer_next.json data/nhl_pp_hist.json
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -qm "Auto refresh $(TZ=America/Toronto date '+%a %b %-d %-I:%M %p ET')"
           # pushed together with the health file in the next step: one push per update = one site deployment (two quick pushes made GitHub cancel the first deployment, which showed up as a failure)

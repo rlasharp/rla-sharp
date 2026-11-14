@@ -69,6 +69,10 @@ if want ufc; then   # UFC: ESPN cards, results, fighter bios + fight-by-fight st
     cp "$WORK/ufc.js" ufc_data.js; log "$(tail -1 "$WORK/ufc.log")"
   else log "UFC data FAILED — kept old: $(tail -3 "$WORK/ufc.log" | tr '\n' ' ')"; fi
 fi
+for CS in cfb cbb; do if want $CS; then   # college: ESPN games, lines, rankings, box scores (box cache restored by actions/cache)
+  if python3 tools/collegefetch.py "$ROOT" $CS > "$WORK/$CS.js" 2> "$WORK/$CS.log" && grep -q "_OK=1" "$WORK/$CS.js"; then cp "$WORK/$CS.js" ${CS}_data.js; log "$(tail -1 "$WORK/$CS.log")"
+  else log "${CS^^} data FAILED — kept old: $(tail -3 "$WORK/$CS.log" | tr '\n' ' ')"; fi
+fi; done
 if want fut || [ "$WHAT" = all ]; then   # futures: ESPN futures feed, one price a day kept in data/futures_hist.json
   if python3 tools/futures.py "$ROOT" > "$WORK/fut.js" 2> "$WORK/fut.log" && grep -q "^var FUT_OK=1" "$WORK/fut.js"; then cp "$WORK/fut.js" futures_data.js; log "Futures: $(tr '\n' ' ' < "$WORK/fut.log")"
   else log "Futures FAILED — kept old: $(tail -2 "$WORK/fut.log" | tr '\n' ' ')"; fi

@@ -7,3 +7,7 @@ src/nba_data_core.js
 src/adv_core.js
 src/nfl_box2.js
 src/ufc_data.js
+src/cfb_data.js
+src/cbb_data.js
+data/cfb_box.json
+data/cbb_box.json

@@ -380,6 +380,12 @@ def main():
         out["ufc"], used = ufc_odds.run(client, prev, used, 960, BOOK_NAME, NOT_BOOKS)
     except Exception as e:
         print("ufc odds failed:", e); out["ufc"] = prev.get("ufc") or {}
+    try:
+        import college_odds
+        col, used = college_odds.run(client, prev, used, 975, BOOK_NAME, NOT_BOOKS, root=".")
+        out.update(col)
+    except Exception as e:
+        print("college odds failed:", e); out["cfb"] = prev.get("cfb") or {}; out["cbb"] = prev.get("cbb") or {}
     keep = {e["id"] for s in ("nba", "nfl", "nhl") for e in (out[s].get("events") or [])}
     out["open"] = {k: v for k, v in opens.items() if k.split("|")[0] in {str(x) for x in keep}}
     out["budget"] = {"day": today, "used": used}
