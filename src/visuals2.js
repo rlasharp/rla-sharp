@@ -553,3 +553,56 @@ function vxMinProj(nm){try{const p=NBA_LOGS[nm];if(!p||typeof NBA_SPR==="undefin
    ${bm!=null&&cm!=null&&blow.length>=2?`<li>In blowouts (won or lost by 18+): <b>${bm.toFixed(1)}</b> min (${blow.length} g) vs <b>${cm.toFixed(1)}</b> in closer games.</li>`:""}
    ${risk!=null?`<li>Tonight's spread ${sp>0?"+":""}${sp}: games with spreads like this ended in an 18+ point blowout <b>${Math.round(risk*100)}%</b> of the time this season (${B.length} games).</li>`:""}
    ${mateTxt.map(t=>`<li>${t}</li>`).join("")}</ul></div>`}catch(e){return ""}}
+/* ===================== Filters & charts, easier and nicer (works on every sport's filter card and bar chart) =====================
+   presets row + live "games match" counter on filter cards · tap a bar for that game · drag the line under a chart ·
+   5-game trend line · bars grow in · small phone buzz on filter taps */
+const FX_PRE=[["🎯 Tonight's spot",'[data-like],[data-nhlike]'],["🛡️ Vs good D",'[data-sit="opp|top"],[data-nhf="opp|top"]'],["🍰 Vs weak D",'[data-sit="opp|bot"],[data-nhf="opp|bot"]'],
+  ["🏠 Home",'[data-sit="ven|H"],[data-nhf="ven|H"]'],["✈️ Away",'[data-sit="ven|A"],[data-nhf="ven|A"]'],["⭐ Starter",'[data-sit="role|st"]'],["😴 Back-to-back",'[data-sit="rest|b2b"],[data-nhf="rest|b2b"]']];
+function fxBuzz(){try{if(navigator.vibrate&&!matchMedia("(prefers-reduced-motion: reduce)").matches)navigator.vibrate(8)}catch(e){}}
+function fxCount(){/* filtered season sample from the page's first prop chart: NBA season tab, NHL "this season", NFL has its own counter */
+  const t=document.querySelector('.prop .hrt [data-pct$="|season"] small');if(t&&/\d+\/\d+/.test(t.textContent)){const [o,n]=t.textContent.split("/").map(Number),c=t.closest(".prop");return {n,o,line:c&&c.dataset.line}}
+  const tab=document.querySelector("[data-nhpm].on"),k=tab&&tab.dataset.nhpm,row=k?[...document.querySelectorAll(".pl[data-lrow]")].find(x=>x.dataset.lrow.endsWith("|"+k)):document.querySelector(".pl[data-lrow]"),m=row&&row.querySelector(".mbs");
+  if(m){const r=/this season\s*(\d+)\/(\d+)/.exec(m.textContent);if(r){const lv=row.querySelector(".plv"),mk=row.querySelector(".plh b");return {n:+r[2],o:+r[1],line:lv&&lv.textContent,mk:mk&&mk.textContent}}}return null}
+function fxDecorateFilters(){for(const c of document.querySelectorAll(".pxf")){if(c.querySelector(":scope > .fxq"))continue;const P=FX_PRE.map(([l,sel])=>[l,c.querySelector(sel)]).filter(x=>x[1]);
+    const q=document.createElement("div");q.className="fxq";const hasSum=!!c.querySelector(".pxsum"),C=hasSum?null:fxCount();
+    q.innerHTML=`${P.length?`<div class="fxqp">${P.map(([l,b],i)=>`<button type="button" class="fxp${b.classList.contains("on")?" on":""}" data-fxp="${i}">${l}</button>`).join("")}${c.querySelector("[data-frst]")?`<button type="button" class="fxp rst" data-fxr>↺ All games</button>`:""}</div>`:""}
+     ${C?`<div class="fxcnt"><b>${C.n}</b> game${C.n===1?"":"s"} match this season · <b class="${C.n&&C.o/C.n>=.5?"up":"dn"}">${C.o}/${C.n}</b> ${typeof pxSW!=="undefined"?pxSW():"over"}${C.line?` ${C.line}`:""}${C.mk?` ${vxE(C.mk.toLowerCase())}`:""}</div>`:""}`;
+    if(!q.textContent.trim())continue;c.prepend(q);
+    q.querySelectorAll("[data-fxp]").forEach(x=>x.onclick=e=>{e.preventDefault();fxBuzz();const b=P[+x.dataset.fxp][1];
+      if(b.classList.contains("on")&&!b.hasAttribute("data-like")&&!b.hasAttribute("data-nhlike")){const any=b.parentElement&&b.parentElement.querySelector("button");if(any&&any!==b)any.click();else b.click()}else b.click()});
+    const r=q.querySelector("[data-fxr]");if(r)r.onclick=e=>{e.preventDefault();fxBuzz();const t=c.querySelector("[data-frst]");if(t)t.click()}}}
+/* ---- charts ---- */
+function fxChartInfo(el){try{return JSON.parse(el.dataset.fx)}catch(e){return null}}
+function fxLineY(el,F,line){/* pixel y (from the chart's top) of a value, using the drawn line as the scale */
+  const bars=[...el.querySelectorAll(".nbbar>i,.mbc>i")];if(!bars.length)return null;const r0=el.getBoundingClientRect(),base=Math.max(...bars.map(b=>b.getBoundingClientRect().bottom))-r0.top;
+  const ln=el.querySelector(".nbln,.mbline");if(!ln||!(F.l>0))return null;const ly=ln.getBoundingClientRect().top-r0.top;return v=>base-(base-ly)*(v/F.l)}
+function fxTrend(el){const F=fxChartInfo(el);if(!F)return;const B=[...el.querySelectorAll(".nbbar,.mbc")];if(B.length<6){const o=el.querySelector(".fxtr");if(o)o.remove();return}
+  const vals=B.map(b=>+b.dataset.v),Y=fxLineY(el,F,F.l);if(!Y)return;const r0=el.getBoundingClientRect(),pts=B.map((b,i)=>{const w=vals.slice(Math.max(0,i-4),i+1),a=w.reduce((s,v)=>s+v,0)/w.length,r=b.getBoundingClientRect();return [r.left-r0.left+r.width/2,Y(a)]});
+  let s=el.querySelector(".fxtr");if(!s){s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("class","fxtr");el.appendChild(s)}
+  s.setAttribute("viewBox",`0 0 ${r0.width} ${r0.height}`);s.innerHTML=`<polyline points="${pts.map(p=>p[0].toFixed(1)+","+Math.max(2,p[1]).toFixed(1)).join(" ")}" fill="none" stroke="#a78bfa" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>${pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${Math.max(2,p[1]).toFixed(1)}" r="2.6" fill="#a78bfa"/>`).join("")}`}
+function fxKeyOf(el){const c=el.closest("[data-nm][data-k]");if(c)return (c.dataset.nm||"").replace(/&amp;/g,"&")+"|"+c.dataset.k;const r=el.closest("[data-lrow]");if(r){const p=r.dataset.lrow.replace(/&amp;/g,"&").split("|");return p[1]+"|"+p[2]}const k=el.closest("[data-lrk]");return k?k.dataset.lrk.replace(/&amp;/g,"&"):null}
+function fxSetLine(el,F,L){const nb=el.classList.contains("nbch"),ln=el.querySelector(".nbln,.mbline");if(nb)ln.style.bottom=(L/F.mx*F.H+F.o)+"px";else{ln.style.bottom=(L/F.mx*100).toFixed(1)+"%";const t=ln.querySelector(".mbll");if(t)t.textContent=L}
+  let o=0;const B=[...el.querySelectorAll(".nbbar,.mbc")];for(const b of B){const v=+b.dataset.v,hit=typeof pxHit!=="undefined"?pxHit(v,L):v>L,p=v===L,i=b.querySelector(":scope>i"),sp=b.querySelector(".v,.mbv");if(hit)o++;
+    if(nb){[i,sp].forEach(x=>{if(!x)return;x.classList.remove("h","m","p");x.classList.add(p?"p":hit?"h":"m")})}else{[i,sp].forEach(x=>{if(!x)return;x.classList.remove("o","u","p");x.classList.add(p?"p":hit?"o":"u")})}}
+  return [o,B.length]}
+function fxDecorateCharts(){for(const el of document.querySelectorAll(".nbch[data-fx],.mb[data-fx]")){if(el.dataset.fxd)continue;el.dataset.fxd=1;const F=fxChartInfo(el);if(!F)continue;
+    requestAnimationFrame(()=>fxTrend(el));
+    const B=[...el.querySelectorAll(".nbbar,.mbc")],vals=B.map(b=>+b.dataset.v),key=fxKeyOf(el);if(B.length<3||!(F.l>0)||(key&&/\|(hanyG|anyTD|fb|dd|td)$/.test(key)))continue;
+    const fr=+(F.l-Math.floor(F.l)).toFixed(2),lo=Math.max(fr||1,Math.floor(Math.min(...vals,F.l))-1+fr),hi=Math.ceil(Math.max(...vals,F.l))+fr;
+    const w=document.createElement("div");w.className="fxdl";w.innerHTML=`<span class="small">Line</span><input type="range" min="${lo}" max="${hi}" step="1" value="${F.l}" aria-label="Move the line"><b class="fxdv">${F.l}</b><span class="small fxdh"></span>`;
+    (el.closest(".mbw,.lrc,.nbchw")||el).after(w);const inp=w.querySelector("input"),out=w.querySelector(".fxdv"),h=w.querySelector(".fxdh");
+    const show=L=>{L=Math.min(hi,Math.max(lo,+L));const [o,n]=fxSetLine(el,F,L);out.textContent=L;
+      const A=key&&typeof LO!=="undefined"&&LO.alt&&LO.alt[key],a=A&&A.find(r=>r[0]===L),pr=x=>x==null?"":(typeof oddsFmt!=="undefined"?oddsFmt(x):x);
+      h.innerHTML=`<b class="${o/n>=.5?"up":"dn"}">${o}/${n}</b> ${typeof pxSW!=="undefined"?pxSW():"over"}${L===F.l?" · book line":a?` · alt O ${pr(a[1])}${a[3]!=null?" / U "+pr(a[3]):""}`:""}${L!==F.l?` · <a href="#" data-fxback>reset</a>`:""}${B.length>=6?` · <span style="color:#a78bfa">━</span> 5-game avg · tap a bar for the game`:" · tap a bar for the game"}`;
+      const bk=h.querySelector("[data-fxback]");if(bk)bk.onclick=e=>{e.preventDefault();inp.value=F.l;show(F.l)}};
+    inp.oninput=()=>show(inp.value);inp.onchange=fxBuzz;show(F.l)}}
+/* tap a bar → that game */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".nbbar[data-v],.mbc[data-v]");const old=document.getElementById("fxpop");
+  if(!b){if(old&&!e.target.closest("#fxpop"))old.remove();return}const el=b.closest("[data-fx]"),F=el&&fxChartInfo(el);if(!F)return;if(old)old.remove();
+  const inp=el.parentElement&&(el.closest(".mbw,.lrc,.nbchw")||el).nextElementSibling,L=inp&&inp.classList&&inp.classList.contains("fxdl")?+inp.querySelector("input").value:F.l;
+  const v=+b.dataset.v,[top,sub]=(b.dataset.g||b.title||"").split("|"),hit=typeof pxHit!=="undefined"?pxHit(v,L):v>L,d=Math.round((v-L)*10)/10;
+  const p=document.createElement("div");p.id="fxpop";p.innerHTML=`<b>${vxE(top||"")}</b>${sub?`<div class="small">${vxE(sub)}</div>`:""}<div style="margin-top:4px"><b style="font-size:18px">${v}</b> <span class="${v===L?"":hit?"up":"dn"}">${v===L?"push":hit?"✓ "+(typeof pxSW!=="undefined"?pxSW():"over"):"✗ missed"} ${L}${v!==L?` (${d>0?"+":""}${d})`:""}</span></div>`;
+  document.body.appendChild(p);const r=b.getBoundingClientRect(),W=Math.min(240,innerWidth-16);p.style.width=W+"px";p.style.left=Math.max(8,Math.min(innerWidth-W-8,r.left+r.width/2-W/2))+"px";p.style.top=(r.top+scrollY-p.offsetHeight-8)+"px";fxBuzz()});
+document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-sit],[data-nhf],[data-scf],[data-pre],.fchip,[data-like],[data-nhlike]"))fxBuzz()},true);
+{let fxT=0;const run=()=>{fxT=0;try{fxDecorateFilters();fxDecorateCharts()}catch(e){}};new MutationObserver(()=>{if(!fxT)fxT=setTimeout(run,60)}).observe(document.documentElement,{childList:true,subtree:true});
+  let rz=0;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>document.querySelectorAll(".nbch[data-fx],.mb[data-fx]").forEach(fxTrend),150)})}

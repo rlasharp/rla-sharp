@@ -509,10 +509,11 @@ function nbaChart(items,k,line,id){
   const vals=items.map(o=>nbaVal(o.x,k)),mx=Math.max(line*1.35,...vals,1),H=150;
   const ly=Math.round(line/mx*H);
   const over=vals.filter(v=>pxHit(v,line)).length,avg=vals.reduce((a,b)=>a+b,0)/vals.length;
-  return `<div class="nbch" style="height:${H+34}px">
+  return `<div class="nbch" data-fx='{"l":${line},"mx":${mx},"H":${H},"o":20}' style="height:${H+34}px">
     <div class="nbln" style="bottom:${ly+20}px"></div>
     ${items.map((o,i)=>{const v=vals[i],x=o.x,ok=pxHit(v,line),psh=v===line,hh=Math.max(3,Math.round(v/mx*H)),C=nbaIsCmb(k)?NBA_MK[k][0]:null;
-      const parts=C?C.map(j=>[NBA_CMB[j][0],+x[j]||0,NBA_CMB[j][1]]):null;return `<div class="nbbar${o.prev?" pv":""}" title="${nbaEsc(x[1])} ${x[3]==="H"?"vs":"@"} ${x[2]}: ${v}${parts?" = "+parts.map(q=>q[1]+" "+q[0]).join(" + "):""}">
+      const parts=C?C.map(j=>[NBA_CMB[j][0],+x[j]||0,NBA_CMB[j][1]]):null;const rs=typeof NBA_RES!=="undefined"?NBA_RES.find(z=>z[0]===x[0]):null,res=rs?(()=>{const me=rs[2]===x[2]?rs[5]:rs[4],op=rs[2]===x[2]?rs[4]:rs[5];return `${me>op?"W":"L"} ${me}–${op}`})():"";
+      return `<div class="nbbar${o.prev?" pv":""}" data-v="${v}" data-g="${nbaEsc(`${x[1]} ${x[3]==="H"?"vs":"@"} ${x[2]}${res?" · "+res:""}|${x[4]} min · ${x[5]} pts · ${x[6]} reb · ${x[7]} ast · ${x[8]} 3PM${x[12]!=null?` · ${x[12]} stl · ${x[13]} blk`:""}`)}" title="${nbaEsc(x[1])} ${x[3]==="H"?"vs":"@"} ${x[2]}: ${v}${parts?" = "+parts.map(q=>q[1]+" "+q[0]).join(" + "):""}">
       <span class="v ${psh?"":ok?"h":"m"}">${v}</span>${parts?`<i class="stk ${psh?"p":ok?"h":"m"}" style="height:${hh}px">${parts.map(q=>{const sh=v?q[1]/v*hh:0;return `<em style="height:${(v?q[1]/v*100:0).toFixed(1)}%" title="${q[1]} ${q[0]}">${sh>=13?q[1]:""}</em>`}).join("")}</i>`:`<i class="${psh?"p":ok?"h":"m"}" style="height:${hh}px"></i>`}
       <span class="o">${x[3]==="H"?"":"@"}${x[2]}</span></div>`}).join("")}
   </div>
@@ -1001,8 +1002,8 @@ function nbaMiniBars(vals,line,labs){
   /* HTML bars (not a stretched SVG) so numbers and labels stay crisp at any width; bars keep a slim fixed width */
   if(!vals.length)return "";const top=Math.max(line,...vals),mx=(top>0?top:1)*1.12,pct=v=>v<=0?0:Math.max(4,v/mx*100);
   const ln=(line/mx*100).toFixed(1),grid=[.25,.5,.75,1].map(f=>`<div class="mbg" style="bottom:${f*100}%"></div>`).join("");
-  return `<div class="mb${vals.length<=6?" few":""}" role="img" aria-label="Last ${vals.length} games vs line ${line}"><div class="mbp">${grid}<div class="mbline" style="bottom:${ln}%"><span class="mbll">${line}</span></div>
-   ${vals.map((v,i)=>{const c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="mbc" title="${labs&&labs[i]!=null?String(labs[i]).replace(/<[^>]+>/g,"").replace(/"/g,"")+": ":""}${v} (line ${line})"><span class="mbv ${c}">${v}</span><i class="${c}${v<=0?" z":""}" style="height:${pct(v).toFixed(1)}%"></i></div>`}).join("")}</div>
+  return `<div class="mb${vals.length<=6?" few":""}" data-fx='{"l":${line},"mx":${mx}}' role="img" aria-label="Last ${vals.length} games vs line ${line}"><div class="mbp">${grid}<div class="mbline" style="bottom:${ln}%"><span class="mbll">${line}</span></div>
+   ${vals.map((v,i)=>{const c=v===line?"p":pxHit(v,line)?"o":"u";return `<div class="mbc" data-v="${v}" data-g="${labs&&labs[i]!=null?String(labs[i]).replace(/<small>/g," · ").replace(/<[^>]+>/g,"").replace(/"/g,""):""}" title="${labs&&labs[i]!=null?String(labs[i]).replace(/<[^>]+>/g,"").replace(/"/g,"")+": ":""}${v} (line ${line})"><span class="mbv ${c}">${v}</span><i class="${c}${v<=0?" z":""}" style="height:${pct(v).toFixed(1)}%"></i></div>`}).join("")}</div>
    ${labs?`<div class="mbx">${labs.map(l=>`<span>${l}</span>`).join("")}</div>`:""}</div>`;
 }
 /* the small chart on each prop line, with quick filters (L5 / L10 / Season / Home / Away / B2B / vs tonight's opponent) */

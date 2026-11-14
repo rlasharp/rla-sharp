@@ -158,7 +158,6 @@ function nhResChip(r,t){const home=r[3]===t,f=home?r[4]:r[2],ag=home?r[2]:r[4],w
   const cov=sp==null?null:(home?(r[4]-r[2])+sp:(r[2]-r[4])-sp)>0,ou=tot==null?null:(r[2]+r[4]>tot?"O":r[2]+r[4]<tot?"U":"P");
   return `<span class="nhres ${w?"w":"l"}" title="${nhE(r[0])}${sp!=null?` · puck line ${home?(sp>0?"+":"")+sp:(sp>0?"−":"+")+Math.abs(sp)}`:""}${tot!=null?` · total ${tot}`:""}">${w?"W":r[5]?"OTL":"L"} ${f}-${ag} ${home?"vs":"@"} ${nhE(home?r[1]:r[3])}${cov!=null||ou?` <i>${cov==null?"":cov?"✓PL":"✗PL"}${ou?" "+ou+(tot!=null?tot:""):""}</i>`:""}</span>`}
 function nhLast(t,n){return (NHL_RES||[]).filter(r=>r[1]===t||r[3]===t).slice(-n).reverse().map(r=>nhResChip(r,t)).join("")}
-function nhH2H(a,h){return (NHL_RES||[]).filter(r=>(r[1]===a&&r[3]===h)||(r[1]===h&&r[3]===a))}
 const nhOrd=n=>n==null?"–":n+(n%100>=11&&n%100<=13?"th":["th","st","nd","rd"][n%10]||"th");
 const nhRkC=n=>n==null?"":n<=10?"up":n>=23?"dn":"";
 function nhWL(r){return r?`${r[0]}-${r[1]}${r.length>2&&r[2]?"-"+r[2]:""}`:"–"}

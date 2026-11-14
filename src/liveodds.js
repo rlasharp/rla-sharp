@@ -142,7 +142,7 @@ function loSeries(nm,k){let V=[];try{if(typeof NBA_MK!=="undefined"&&(NBA_MK[k]|
     else if(typeof NH_MK!=="undefined"&&NH_MK[k]&&typeof nhVals!=="undefined")V=nhVals(nm,k).map(o=>({v:o.v,c:!o.prev}));
     else if(typeof MARKETS!=="undefined"&&MARKETS[k]&&typeof pLogs!=="undefined")V=pLogs(nm).filter(l=>Number.isFinite(stat(l,k))).map(l=>({v:stat(l,k),c:l.season===CUR}))}catch(e){}
   return V.filter(o=>Number.isFinite(o.v))}
-function loHeatCell(V,l){if(!V.length)return `<td class="hm na">–</td>`;const h=V.filter(v=>v>l).length/V.length;return `<td class="hm" style="background:hsl(${Math.round(h*120)},62%,${40+(1-Math.abs(h-.5)*2)*8}%)" title="${V.filter(v=>v>l).length}/${V.length} over">${Math.round(h*100)}</td>`}
+function loHeatCell(V,l){if(!V.length)return `<td class="hm na">–</td>`;const h=V.filter(v=>v>l).length/V.length;return `<td class="hm" style="color:#fff;background:hsl(${Math.round(h*120)},60%,${34-(1-Math.abs(h-.5)*2)*6}%)" title="${V.filter(v=>v>l).length}/${V.length} over">${Math.round(h*100)}</td>`}
 function loAltHtml(nm,k,line,vals){
   const key=nm+"|"+k,A=LO.alt[key];if(!A||!A.length)return "";
   const pr=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);

@@ -3,7 +3,10 @@
 function vxE(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c])}
 function vxOrd(n){const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
 /* colour for an edge: + = the attacking side has it (green), − = the defense has it (red) */
-function vxEdgeBg(e,max){const a=Math.min(1,Math.abs(e)/max)*.55;return e>0?`rgba(34,197,94,${a})`:`rgba(229,72,77,${a})`}
+function vxEdgeBg(e,max){const a=Math.min(1,Math.abs(e)/max)*.55,c=e>0?[34,197,94]:[229,72,77];
+  /* opaque blend over the page's card colour, so text on it stays readable in both themes */
+  const dark=(()=>{try{const t=document.documentElement.dataset.theme;return t?t!=="light":!matchMedia("(prefers-color-scheme: light)").matches}catch(e){return true}})(),bg=dark?[30,34,40]:[255,255,255],m=c.map((v,i)=>Math.round(v*a+bg[i]*(1-a)));
+  return `rgb(${m.join(",")})`}
 
 /* ===== 26. Matchup heat map: each stat, both directions, coloured by who has the edge ===== */
 function vxRankOf(vals,t,hi){const L=Object.entries(vals).filter(([,v])=>v!=null&&isFinite(v)).sort((a,b)=>hi?b[1]-a[1]:a[1]-b[1]);return L.findIndex(x=>x[0]===t)+1}
