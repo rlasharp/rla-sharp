@@ -6,7 +6,7 @@
 function a(){var v=t==="auto"?(m&&m.matches?"light":"dark"):t;document.documentElement.setAttribute("data-theme",v);var mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=v==="light"?"#f6f7f9":"#0f1012"}
 a();if(m&&m.addEventListener)m.addEventListener("change",function(){if(t==="auto")a()});
 window.setTheme=function(v){t=v;try{localStorage.setItem("ge_theme",JSON.stringify(v))}catch(e){}a()};window.getTheme=function(){return t}})();</script>
-<script>/* start downloading the NHL data right away on pages that need it (Today, NHL) */(function(){var h=location.hash;if(!h||h==="#today"||/^#nhl/.test(h)){var l=document.createElement("link");l.rel="preload";l.as="script";l.href="nhl_data.js?v=20261114224919";document.head.appendChild(l)}})();</script>
+<script>/* start downloading the NHL data right away on pages that need it (Today, NHL) */(function(){var h=location.hash;if(!h||h==="#today"||/^#nhl/.test(h)){var l=document.createElement("link");l.rel="preload";l.as="script";l.href="nhl_data.js?v=20261114230202";document.head.appendChild(l)}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RLA Sharp — NFL Betting Research</title>
 <meta name="description" content="Free NFL & NBA betting research: player props ranked by hit rate, Plays of the day with a public record, live scores, line movement, injuries and matchup stats.">
@@ -817,6 +817,8 @@ body.cbsafe .ufr.W,body.cbsafe .ou.o,body.cbsafe .lc.o{background:#2f7fe0!import
 :focus-visible{outline:3px solid #4a8cff!important;outline-offset:2px}
 @media (pointer:coarse){.obtn,.seg button,.fxp,.nbtabs button{min-height:36px}button.btn,a.btn{min-height:40px}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+.fuchips{display:flex;gap:6px;overflow-x:auto;padding:8px 0;scrollbar-width:none}.fuchips .fxp{white-space:nowrap;flex:none}
+.futbl{min-width:0!important;width:100%}.futbl td,.futbl th{padding:6px 4px;font-size:13px}.futbl td:nth-child(2){text-align:left}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#121418">
@@ -913,6 +915,7 @@ body.cbsafe .ufr.W,body.cbsafe .ou.o,body.cbsafe .lc.o{background:#2f7fe0!import
   <section id="v-injuries" class="hide"></section>
   <section id="v-calc" class="hide"></section>
   <section id="v-settings" class="hide"></section>
+  <section id="v-futures" class="hide"></section>
   <section id="v-bets" class="hide"></section>
   <section id="v-favs" class="hide"></section>
   <section id="v-nextweek" class="hide"></section>
@@ -3400,7 +3403,7 @@ el.innerHTML=`${xBack("#"+back,"Back")}
 <div class="sub" style="margin:4px 0 0">${posName?posName+" · ":""}${nbaTm(p.tm)}</div></div>
 </div>
 <div class="pline">${[bio&&bio[0]?nbaEsc(bio[0]):"",bio&&bio[1]?nbaEsc(String(bio[1]).replace(" lbs",""))+" lbs":"",bio&&bio[2]?nbaEsc(bio[2])+" yrs":"",bio&&bio[4]!==""&&bio[4]!=null?nbaEsc(bio[4])+" NBA seasons":"",p.g.length+" games",nbaF(nbaAvg(p,"min"))+" min/game"].filter(Boolean).map(x=>`<span>${x}</span>`).join("")}</div>
-${typeof nbaStrip!=="undefined"?nbaStrip(p):""}
+${typeof nbaStrip!=="undefined"?nbaStrip(p):""}${typeof fuCard!=="undefined"?fuCard("nba",[nm],"Awards odds"):""}
 ${g?`<div class="info"><span>Today ${g.a===p.tm?"@":"vs"} <b>${nbaTm(opp)}</b>, ${g.t} ET${dvpAvg!=null?`. ${opp} has allowed ${nbaF(dvpAvg)} points a game to ${nbaPosWord(p.p5)} over its last 5 (NBA average ${nbaF(dvp.lg)}).`:""}</span></div>`:""}
 ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}
 ${typeof newsCard!=="undefined"?newsCard("nba",{player:nm,hrs:72},"News about "+nbaEsc(nm)):""}
@@ -3527,6 +3530,7 @@ ${A?tile("Offense rating",nbaF(A.o.rtg),nbaOrd(A.oR.rtg)+" of 30"):""}${A?tile("
 <div class="card"><h2>Next 7 days</h2>${nbaNextHtml(t)}</div>
 <div class="card"><h2>Last 5</h2>${nbaLast5(t)}</div>
 ${typeof xBetRec!=="undefined"?xBetRec(nbaBetRows(t),{src:"ESPN"}):""}
+${typeof fuCard!=="undefined"?fuCard("nba",[NBA_TEAMS[t]],"Futures"):""}
 </div>
 <div class="card" style="margin-top:14px"><h2>Roster</h2>${nbaPlayerTable(nbaTopPlayers(t,13),{no3:1,nonote:1})}</div>
 <div class="card" style="margin-top:14px"><h2>Injuries</h2>${nbaInjTable(t)}</div>`;
@@ -3636,7 +3640,7 @@ var NFL_DIVX={"lg":[523,264,256,275,239],"non":[973,496,469,461,482],"tm":{"ATL"
 var NFL_DIVG=["1|SF|LAR","1|GB|MIN","1|WAS|PHI","1|DAL|NYG","1|DEN|KC","2|CAR|ATL","2|MIN|CHI","2|LV|LAC","2|SEA|ARI","2|WAS|DAL","3|HOU|IND","3|CIN|PIT","3|ARI|SF","4|PIT|CLE","4|NE|BUF","4|KC|LV","4|ATL|NO","5|CHI|GB","5|HOU|TEN","5|NYG|WAS","5|DEN|LAC","5|SF|SEA","6|HOU|JAX","6|BAL|CLE","6|TEN|IND","6|NYJ|NE","6|ARI|LAR","6|LAC|KC","7|CIN|BAL","7|TB|CAR","7|MIA|NYJ","7|GB|DET","7|DAL|PHI","8|MIN|DET","8|IND|JAX","8|CLE|PIT","8|ATL|TB","8|KC|DEN","8|NE|MIA","8|PHI|WAS","9|NYG|PHI","9|ARI|SEA","10|WAS|NYG","10|MIN|GB","10|CAR|NO","10|BUF|NYJ","10|JAX|TEN","10|LAR|ARI","10|PIT|CIN","11|IND|HOU","11|MIA|BUF","11|LV|DEN","12|CHI|DET","12|PHI|DAL","12|NYJ|MIA","12|TEN|JAX","12|SEA|SF","12|CAR|TB","13|CIN|CLE","13|BUF|NE","14|NO|CAR","14|LAC|LV","14|LAR|SF","15|JAX|HOU","15|BAL|PIT","15|NO|TB","15|IND|TEN","15|DEN|LV","15|DET|MIN","16|GB|CHI","16|LAR|SEA","16|TB|ATL","16|CLE|BAL","16|NE|NYJ","17|BAL|CIN","17|NO|ATL","17|NYG|DAL","17|KC|LAC","17|BUF|MIA","17|DET|CHI","18|SF|ARI","18|PIT|BAL","18|NYJ|BUF","18|ATL|CAR","18|CLE|CIN","18|LAC|DEN","18|DET|GB","18|TEN|HOU","18|JAX|IND","18|LV|KC","18|SEA|LAR","18|CHI|MIN","18|MIA|NE","18|TB|NO","18|PHI|NYG","18|DAL|WAS"];
 var NFL_K={"Nick Folk":{"tm":"ATL","g":[[1,2,4,1,7,51],[2,1,2,0,3,41],[3,2,2,3,9,44],[4,1,1,6,9,29],[5,3,3,2,11,48],[6,0,0,1,1,0],[7,3,3,2,11,39],[8,0,1,0,0,0],[9,1,2,2,5,31]]},"Chris Boswell":{"tm":"PIT","g":[[1,2,3,2,8,43],[2,1,2,0,3,56],[3,3,3,3,12,44],[4,1,2,1,4,31],[5,2,2,4,10,54],[6,4,5,2,14,58],[7,3,3,1,10,47],[8,2,3,3,9,37]]},"Cairo Santos":{"tm":"CHI","g":[[1,1,1,8,11,40],[2,1,2,0,3,50],[3,2,2,3,9,48],[4,3,3,2,11,30],[5,0,1,1,1,0],[6,1,2,4,7,50],[7,3,4,3,12,58],[8,2,2,4,10,44],[9,2,2,3,9,38]]},"Jason Myers":{"tm":"SEA","g":[[1,2,2,1,7,30],[2,1,1,4,7,33],[3,1,1,4,7,57],[4,1,1,3,6,35],[5,5,5,2,17,50],[6,2,3,0,6,55],[7,2,2,2,8,35],[8,1,2,0,3,27],[9,1,1,2,5,45]]},"Wil Lutz":{"tm":"DEN","g":[[1,1,1,1,4,31],[2,2,2,2,8,45],[3,0,1,2,2,0],[4,2,3,0,6,52],[5,3,4,2,11,36],[6,1,1,2,5,53],[7,3,3,3,12,48],[8,2,2,2,8,45],[9,2,2,2,8,48]]},"Ka'imi Fairbairn":{"tm":"HOU","g":[[1,1,1,4,7,58],[2,2,3,0,6,45],[3,1,1,2,5,24],[4,3,3,3,12,54],[5,4,4,2,14,53],[6,2,2,4,10,49],[7,2,2,1,7,58],[9,3,3,5,14,56]]},"Harrison Butker":{"tm":"KC","g":[[1,1,1,4,7,28],[2,4,5,3,15,46],[3,1,2,3,6,34],[4,1,1,3,6,28],[6,3,4,1,10,50],[7,1,3,0,3,50],[8,1,2,3,6,45],[9,0,1,5,5,0]]},"Jake Elliott":{"tm":"PHI","g":[[1,1,1,3,6,35],[2,1,1,3,6,58],[3,0,0,1,1,0],[4,2,2,2,8,56],[5,1,1,2,5,48],[6,0,0,2,2,0],[7,0,0,3,3,0],[8,1,2,1,4,40],[9,1,1,0,3,45]]},"Daniel Carlson":{"tm":"NO","g":[[1,1,2,3,6,28],[2,3,3,1,10,51],[3,0,0,3,3,0],[4,1,2,3,6,27],[5,0,0,1,1,0],[6,2,3,4,10,58],[7,1,2,1,4,38]]},"Eddy Pineiro":{"tm":"SF","g":[[1,2,3,3,9,56],[2,0,0,5,5,0],[3,1,1,3,6,57],[4,1,2,3,6,24],[5,1,2,3,6,44],[6,1,1,2,5,33],[7,0,0,2,2,0],[9,1,1,5,8,35]]},"Jason Sanders":{"tm":"NYJ","g":[[1,3,4,2,11,52],[2,1,1,2,5,32],[3,1,1,1,4,42],[4,2,2,0,6,36],[5,1,1,2,5,54],[6,4,4,1,13,42],[7,1,2,2,5,33],[8,4,4,3,15,39],[9,4,5,0,12,54]]},"Joey Slye":{"tm":"TEN","g":[[1,1,1,1,4,42],[2,2,2,2,8,37],[3,0,1,1,1,0],[4,1,1,1,4,33],[5,1,1,0,3,30],[6,4,4,2,14,56],[7,1,1,3,6,29],[8,2,2,2,8,46]]},"Matt Gay":{"tm":"LV","g":[[1,2,2,3,9,47],[2,1,1,3,6,59],[3,3,3,2,11,41],[4,4,4,1,13,48],[5,1,2,2,5,46],[6,3,3,3,12,35],[7,3,4,0,9,36],[8,1,1,5,8,53],[9,1,1,2,5,50]]},"Chase McLaughlin":{"tm":"TB","g":[[1,2,2,3,9,51],[2,4,4,1,13,59],[3,3,3,1,10,54],[4,0,0,2,2,0],[5,1,1,3,6,41],[6,4,4,1,13,53],[7,2,2,5,11,44],[8,3,3,1,10,46],[9,3,3,1,10,35]]},"Tyler Bass":{"tm":"BUF","g":[[1,3,3,3,12,46],[2,0,0,5,5,0],[3,1,1,3,6,28],[4,2,2,2,8,38],[5,3,3,2,11,49],[6,4,4,3,15,47],[8,3,3,3,12,56],[9,3,3,2,11,52]]},"Riley Patterson":{"tm":"MIA","g":[[1,2,3,1,7,41],[2,2,3,1,7,28],[3,1,1,1,4,37],[4,1,1,1,4,27],[5,1,1,1,4,29]]},"Evan McPherson":{"tm":"CIN","g":[[1,4,4,3,15,58],[2,2,2,2,8,57],[3,2,2,3,9,50],[4,1,1,2,5,29],[5,1,1,4,7,26],[7,0,0,5,5,0],[8,0,0,5,5,0],[9,2,2,4,10,57]]},"Cameron Dicker":{"tm":"LAC","g":[[1,0,0,2,2,0],[2,0,1,2,2,0],[3,3,4,1,10,33],[4,3,3,2,11,40],[5,1,1,2,5,42],[6,2,2,0,6,30],[8,3,3,0,9,46],[9,3,3,1,10,52]]},"Brandon Aubrey":{"tm":"DAL","g":[[1,0,0,2,2,0],[2,3,3,4,13,60],[3,3,4,2,11,38],[4,2,4,4,10,50],[5,1,1,1,4,41],[6,0,0,1,1,0],[7,3,3,3,12,55],[8,3,4,3,12,41],[9,2,3,3,9,45]]},"Andre Szmyt":{"tm":"CLE","g":[[1,1,1,1,4,26],[2,3,3,2,11,50],[3,2,2,1,7,48],[4,2,2,3,9,56],[5,2,2,0,6,41],[6,2,3,1,7,48],[7,2,3,3,9,32],[8,2,2,0,6,49],[9,3,3,1,10,51]]},"Chad Ryland":{"tm":"ARI","g":[[1,4,5,2,14,49],[2,0,0,1,1,0],[3,3,3,3,12,49],[4,1,1,3,6,60],[5,0,1,3,3,0],[6,6,6,0,18,43],[7,3,3,1,10,41],[8,2,2,3,9,42],[9,1,1,0,3,28]]},"Jake Bates":{"tm":"DET","g":[[1,1,1,4,7,23],[2,1,1,4,7,31],[3,1,1,4,7,30],[4,4,4,2,14,54],[5,1,1,6,9,46],[7,2,2,2,8,40],[8,2,3,1,7,37],[9,4,4,1,13,43]]},"Will Reichard":{"tm":"MIN","g":[[1,1,1,4,7,38],[2,3,3,0,9,49],[3,3,3,2,11,56],[4,5,5,0,15,50],[5,3,3,2,11,55],[7,3,4,1,10,52],[8,0,1,1,1,0],[9,2,2,0,6,53]]},"Cam Little":{"tm":"JAX","g":[[1,2,2,4,10,47],[2,2,3,1,7,44],[3,0,1,5,5,0],[4,3,3,1,10,55],[5,2,2,1,7,57],[6,1,1,4,7,60],[8,0,0,6,6,0],[9,4,4,3,15,47]]},"Harrison Mevis":{"tm":"LAR","g":[[1,0,0,1,1,0],[2,0,1,4,4,0],[3,4,4,2,14,48],[4,1,2,3,6,40],[5,0,2,4,4,0]]},"Spencer Shrader":{"tm":"IND","g":[[1,1,1,2,5,58],[2,3,3,3,12,49],[3,4,4,1,13,58],[4,3,3,3,12,52],[5,5,5,1,16,57],[6,2,2,2,8,47],[7,1,3,1,4,43],[8,0,0,1,1,0],[9,3,3,2,11,59]]},"Tyler Loop":{"tm":"BAL","g":[[1,2,2,5,11,57],[2,1,2,2,5,49],[3,2,2,4,10,56],[4,1,2,3,6,64],[5,3,3,1,10,51],[6,1,2,1,4,34],[7,2,2,1,7,34],[8,1,2,1,4,26]]},"Andy Borregales":{"tm":"NE","g":[[1,1,1,1,4,50],[2,2,3,2,8,45],[3,2,3,0,6,40],[4,0,0,3,3,0],[5,1,1,6,9,28],[6,2,2,2,8,32],[7,1,1,3,6,47],[8,1,2,3,6,34],[9,0,0,3,3,0]]},"Ryan Fitzgerald":{"tm":"CAR","g":[[1,1,1,4,7,44],[2,2,2,4,10,37],[3,4,4,0,12,53],[4,2,2,2,8,47],[6,2,2,1,7,52],[7,0,0,1,1,0],[8,2,2,1,7,50],[9,0,1,3,3,0]]},"Trey Smack":{"tm":"GB","g":[[1,3,3,1,10,59],[2,2,2,2,8,34],[3,0,1,2,2,0],[4,1,1,2,5,58],[5,1,3,2,5,35],[6,3,3,2,11,44],[7,1,3,2,5,43],[8,0,0,3,3,0],[9,3,3,4,13,51]]},"Dominic Zvada":{"tm":"NYG","g":[[1,0,0,4,4,0],[2,2,2,0,6,52],[3,4,4,0,12,39],[4,3,3,1,10,52],[5,2,5,3,9,56],[6,2,2,1,7,41],[7,0,2,3,3,0],[9,4,4,1,13,53],[10,0,1,3,3,0]]},"Drew Stevens":{"tm":"WAS","g":[[1,1,2,1,4,55],[2,2,3,2,8,47],[3,2,2,3,9,57],[4,2,2,1,7,31],[5,2,2,1,7,40],[6,1,1,2,5,51],[8,4,5,1,13,56],[9,2,2,1,7,41],[10,1,1,3,6,46]]},"Blake Grupe":{"tm":"LAR","g":[[6,1,1,0,3,44]]},"Brandon McManus":{"tm":"LAR","g":[[7,0,0,5,5,0],[8,1,1,3,6,30],[9,2,2,2,8,33]]},"Zane Gonzalez":{"tm":"MIA","g":[[7,0,0,4,4,0],[8,2,3,1,7,52],[9,3,4,0,9,52]]},"Jake Moody":{"tm":"BAL","g":[[9,1,1,1,4,53]]},"Charlie Smyth":{"tm":"NO","g":[[9,3,4,2,11,48]]}};
 /* NHL data loads on demand from nhl_data.js (next to index.html) */ var NHL_GEN="",NHL_DATE="",NHL_TOM="",NHL_SLATE=[],NHL_NEXT=[],NHL_LATER=[],NHL_TEAM={},NHL_RES=[],NHL_P={},NHL_G={},NHL_INJ={},NHL_H2HP={},NHL_LZ=[],NHL_MODEL=null,NHL_PRES=[],NHL_PRES_D=null,NHL_RECENT=[],NHL_PROPS=[],NHL_FOM={};
-var BUILD_AT="2026-11-14T22:49:19Z";
+var BUILD_AT="2026-11-14T23:02:02Z";
 const NH={tm:"all",mk:"all",gp:"all",gm:"all"};
 let NHL_READY=false,NHL_WAIT=[];
 function nhlEnsure(cb){if(NHL_READY||NHL_DATE){NHL_READY=true;cb&&cb();return}if(NHL_WAIT.fail&&Date.now()-NHL_WAIT.fail<60000)return;/* failed just now (offline / missing file): no retry loop */if(cb)NHL_WAIT.push(cb);if(NHL_WAIT.loading)return;NHL_WAIT.loading=1;
@@ -3909,7 +3913,7 @@ const lg=isG?w.g.slice().reverse().map(x=>`<tr class="${x[9]===1?"nhprev":""}"><
 :w.g.slice().reverse().map(x=>`<tr class="${x[16]===1?"nhprev":""}"><td>${x[16]===1?"'25 ":""}${nhE(x[0].slice(5))}</td><td>${nhLab(x)}</td><td>${x[3]}</td><td>${x[4]}</td><td>${x[5]}</td><td>${x[6]}</td><td>${x[7]}</td><td>${x[8]}</td><td>${x[11]}</td><td>${x[13]!=null&&(x[13]+x[14])?x[13]+"/"+(x[13]+x[14]):"–"}</td><td>${(x[10]/60).toFixed(1)}</td></tr>`).join("");
 el.innerHTML=`<p class="small">${xBack(g?"#nhl-game-"+g.id:"#nhl","Back")}</p>
 <div class="phead tch" style="--tc:${NH_COL[w.tm]||"#555"}"><div>${nhBadge(w.tm)}</div><div><h1 style="margin:0">${nhE(nm)}${nhInjChip(nm)}</h1><div class="small">${nhE(nhTm(w.tm))} · ${nhE(isG?"G":w.pos)}${g?` · next: ${g.a===w.tm?"@":"vs"} ${nhE(nhTm(opp))} ${g.d===NHL_DATE?"today":"tomorrow"} ${nhE(g.t)}`:""}</div></div></div>
-${typeof nhlStrip!=="undefined"?nhlStrip(w,isG):""}
+${typeof nhlStrip!=="undefined"?nhlStrip(w,isG):""}${typeof fuCard!=="undefined"?fuCard("nhl",[nm],"Awards odds"):""}
 ${typeof newsCard!=="undefined"?newsCard("nhl",{player:nm,hrs:72},"News about "+nhE(nm)):""}
 ${typeof pxSideTg!=="undefined"?pxSideTg():""}
 ${nhFiltUI(nm,isG)}
@@ -4137,6 +4141,7 @@ ${up.length?`<div class="card" style="margin-top:12px"><h2>Next games</h2>${up.m
 <div class="card"><h2>Goalies</h2>${gk.map(x=>`<div class="nhgl">${nhGoalieLine(x)}</div>`).join("")||`<div class="small">No goalie data.</div>`}
 <h3 class="nhh3">Injuries</h3>${nhInjList(t).map(r=>`<div class="nhgl"><b>${nhE(r[0])}</b> <span class="pll ${/out|reserve|ir/i.test(r[2])?"u":"n"}">${nhE(r[2])}</span> <span class="small">${nhE(r[3])}</span></div>`).join("")||`<div class="small">Nobody listed.</div>`}</div></div>
 ${typeof nhlBetCard!=="undefined"?nhlBetCard(t):""}
+${typeof fuCard!=="undefined"?fuCard("nhl",[T.n],"Futures"):""}
 ${(()=>{const I=(typeof NHL_INJ!=="undefined"&&NHL_INJ[t])||[];return `<div class="card"><h2>🚑 Injuries</h2>${I.length?I.map(r=>`<div class="ufval"><b>${nhLink(r[0])}</b><span class="small">${nhE(r[1])}</span><span>${nhE(r[2])}</span><span class="small">${nhE(r[3]||"")}${r[4]?" · back "+nhE(r[4]):""}</span></div>`).join(""):`<div class="small">ESPN lists no injured players.</div>`}</div>`})()}
 <div class="card" style="margin-top:12px"><h2>Every game this season</h2>${R.slice().reverse().map(r=>nhResRow(r,t)).join("")||`<div class="small">No games yet.</div>`}</div>${nhFoot()}`}
 function nhProjFrom(g,q){const la=q.la,lh=q.lh,P=(l,k)=>{let p=Math.exp(-l);for(let i=1;i<=k;i++)p*=l/i;return p};let hw=0,dr=0,h2=0,a2=0;
@@ -5275,6 +5280,39 @@ function xA11y(root){(root||document).querySelectorAll("button:not([aria-label])
 if(!t||!/[A-Za-z0-9]/.test(t)){const k=Object.keys(XA_NAMES).find(x=>t.startsWith(x));const lab=b.getAttribute("title")||(k&&XA_NAMES[k]);if(lab)b.setAttribute("aria-label",lab)}});
 (root||document).querySelectorAll("svg:not([role]):not([aria-hidden])").forEach(s=>{if(!s.closest("button,a"))s.setAttribute("aria-hidden","true")})}
 let XA_T=0;window.addEventListener("load",()=>{xA11y();try{new MutationObserver(()=>{clearTimeout(XA_T);XA_T=setTimeout(()=>xA11y(document.querySelector("main")),150)}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}catch(e){}});
+var FUT=null,FUT_OK=0;
+const FU={lg:null,mk:{}};
+function fuE(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c])}
+function fuImp(o){return o==null?null:o<0?-o/(-o+100):100/(o+100)}
+function fuAm(o){return typeof oddsFmt!=="undefined"?oddsFmt(o):(o>0?"+":"")+o}
+function fuMarkets(lg){return (typeof FUT!=="undefined"&&FUT&&FUT.lg&&FUT.lg[lg])||[]}
+function fuRows(m){const R=m.rows.map(r=>({nm:r[0],tm:r[1],o:r[2],h:r[3]||[],imp:fuImp(r[2])}));const sum=R.reduce((s,r)=>s+(r.imp||0),0);const one=sum>.95&&sum<1.7&&!/make|miss|over|under|win total|wins|to reach|top \d/i.test(m.n);
+R.forEach(r=>{r.fair=one?r.imp/sum:null;const h=r.h,ago=d=>{const t=Date.now()-d*864e5;let x=null;for(const p of h)if(Date.parse(p[0])<=t)x=p;return x};r.first=h[0];r.w=ago(7)||h[0];
+r.dOpen=r.first?r.imp-fuImp(r.first[1]):0;r.dW=r.w?r.imp-fuImp(r.w[1]):0});return {R,one,margin:sum-1}}
+function fuSpark(h){const v=h.map(p=>fuImp(p[1])).filter(x=>x!=null);if(v.length<2)return "";const W=70,Hh=20,mx=Math.max(...v),mn=Math.min(...v),X=i=>i/(v.length-1)*W,Y=x=>Hh-2-(mx===mn?.5:(x-mn)/(mx-mn))*(Hh-4);
+const up=v[v.length-1]>=v[0];return `<svg viewBox="0 0 ${W} ${Hh}" width="${W}" height="${Hh}" aria-hidden="true"><polyline fill="none" stroke="${up?"#3fb26b":"#e5534b"}" stroke-width="1.8" points="${v.map((x,i)=>X(i).toFixed(1)+","+Y(x).toFixed(1)).join(" ")}"/></svg>`}
+function fuMove(d){if(!d||Math.abs(d)<.0025)return `<span class="small">–</span>`;const pp=(d*100).toFixed(Math.abs(d)<.01?1:0);return `<span class="${d>0?"up":"dn"}">${d>0?"▲":"▼"} ${Math.abs(pp)} pts</span>`}
+function fuLink(lg,r){try{if(lg==="nba"){if(typeof NBA_LOGS!=="undefined"&&NBA_LOGS[r.nm])return `#nba-player-${encodeURIComponent(r.nm)}`;const t=Object.entries(NBA_TEAMS||{}).find(([a,n])=>n===r.nm);if(t)return "#nba-team-"+t[0]}
+if(lg==="nhl"){if(typeof NHL_P!=="undefined"&&(NHL_P[r.nm]||NHL_G[r.nm]))return `#nhl-player-${encodeURIComponent(r.nm)}`;const t=Object.entries(NHL_TEAM||{}).find(([a,v])=>v.n===r.nm);if(t)return "#nhl-team-"+t[0]}
+if(lg==="nfl"){if(typeof PINFO!=="undefined"&&PINFO[r.nm])return `#props/${encodeURIComponent(r.nm)}`;const t=Object.entries(TEAMS||{}).find(([a,v])=>v[0]===r.nm);if(t)return "#team-"+t[0]}}catch(e){}return null}
+function viewFutures(){const el=document.getElementById("v-futures");if(!el)return;const LGS=[["nba","🏀 NBA"],["nfl","🏈 NFL"],["nhl","🏒 NHL"]].filter(([k])=>fuMarkets(k).length&&(typeof xFollow==="undefined"||xFollow(k)));
+if(!LGS.length){el.innerHTML=`<h1>🏆 Futures</h1><div class="card small">Futures prices load with the next data update.</div>`;return}
+const lg=LGS.some(x=>x[0]===FU.lg)?FU.lg:LGS[0][0],M=fuMarkets(lg),mi=Math.min(FU.mk[lg]||0,M.length-1),m=M[mi],{R,one,margin}=fuRows(m);
+const days=Math.max(1,...M.flatMap(x=>x.rows.map(r=>(r[3]||[]).length)));
+const mv=M.flatMap(x=>fuRows(x).R.filter(r=>r.imp>=.02&&r.w&&r.w!==r.h[r.h.length-1]).map(r=>({x,r}))).sort((a,b)=>Math.abs(b.r.dW)-Math.abs(a.r.dW)).filter(o=>Math.abs(o.r.dW)>=.01).slice(0,6);
+el.innerHTML=`<h1>🏆 Futures</h1><p class="sub">Championship, awards, division and conference prices · ${fuE(m.book||"sportsbook")} via ESPN · updated ${typeof FUT!=="undefined"&&FUT.at?new Date(FUT.at).toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}):""}</p>
+<div class="seg">${LGS.map(([k,l])=>`<button data-fulg="${k}" class="${k===lg?"on":""}">${l}</button>`).join("")}</div>
+${mv.length?`<div class="card"><h2>📈 Biggest moves this week</h2>${mv.map(({x,r})=>`<div class="ufval"><b>${fuE(r.nm)}</b><span class="small">${fuE(x.n)}</span><span>${fuAm(r.w[1])} → <b>${fuAm(r.o)}</b></span>${fuMove(r.dW)}</div>`).join("")}</div>`:""}
+<div class="fuchips">${M.map((x,i)=>`<button class="fxp${i===mi?" on":""}" data-fumk="${i}">${fuE(x.n.replace(/^(NBA|NHL|NFL)\s*-\s*/,""))}</button>`).join("")}</div>
+<div class="card"><h2>${fuE(m.n)}</h2><div class="small" style="margin-bottom:6px">${one?`Fair chance = the price's chance with the book's ${Math.round(margin*100)}% margin taken out.`:"Chance = what the price implies (several can win this one, so there's no single margin to remove)."} Moves = change in that chance${days>1?"":" — movement fills in as we keep a price every day (tracking started recently)"}.</div>
+<div class="nbatbl"><table class="bxt futbl"><thead><tr><th>#</th><th></th><th>Price</th><th>${one?"Fair chance":"Chance"}</th><th>7 days</th><th>Since tracked</th><th></th></tr></thead><tbody>
+${R.map((r,i)=>{const L=fuLink(lg,r);return `<tr><td>${i+1}</td><td>${L?`<a href="${L}">${fuE(r.nm)}</a>`:fuE(r.nm)}${r.tm&&r.tm!==r.nm?` <span class="small">${fuE(r.tm)}</span>`:""}</td><td><b>${fuAm(r.o)}</b></td><td>${Math.round((one?r.fair:r.imp)*1000)/10}%</td><td>${fuMove(r.dW)}</td><td>${fuMove(r.dOpen)}${r.first?`<div class="small">${fuE(r.first[0].slice(5))}: ${fuAm(r.first[1])}</div>`:""}</td><td>${fuSpark(r.h)}</td></tr>`}).join("")}</tbody></table></div></div>
+<p class="note">Futures tie up your money for months and carry a bigger book margin than single games. Prices: ESPN's futures feed. Research, not advice. 21+.</p>`;
+el.querySelectorAll("[data-fulg]").forEach(b=>b.onclick=()=>{FU.lg=b.dataset.fulg;viewFutures()});
+el.querySelectorAll("[data-fumk]").forEach(b=>b.onclick=()=>{FU.mk[lg]=+b.dataset.fumk;const y=scrollY;viewFutures();scrollTo(0,y)})}
+function fuFor(lg,names){const N=new Set(names.filter(Boolean));const out=[];for(const m of fuMarkets(lg)){const {R,one}=fuRows(m);R.forEach((r,i)=>{if(N.has(r.nm))out.push({m,r,rank:i+1,of:R.length,one})})}return out}
+function fuCard(lg,names,title){const L=fuFor(lg,names);if(!L.length)return "";
+return `<div class="card"><h2>🏆 ${fuE(title||"Futures")}</h2>${L.slice(0,8).map(({m,r,rank,of,one})=>`<div class="ufval"><span>${fuE(m.n.replace(/^(NBA|NHL|NFL)\s*-\s*/,""))}</span><b>${fuAm(r.o)}</b><span class="small">${Math.round((one?r.fair:r.imp)*100)}% · ${rank}${rank===1?"st":rank===2?"nd":rank===3?"rd":"th"} of ${of}</span>${fuMove(r.dW)}</div>`).join("")}<a class="small" href="#futures">All futures →</a></div>`}
 function xImp(o){return o==null?null:o<0?-o/(-o+100):100/(o+100)}
 function xNoVig(a,b){const x=xImp(a),y=xImp(b);return x!=null&&y!=null?[x/(x+y),y/(x+y)]:null}
 function xNorm(z){return typeof normCdf!=="undefined"?normCdf(z):.5*(1+Math.tanh(.7978845608*(z+.044715*z*z*z)))}
@@ -5641,6 +5679,7 @@ ${pr&&pr[0]!=null?`<div><b class="${pr[0]>0?"up":"dn"}">${pr[0]>0?"+":""}${pr[0]
 ${dv?`<div><b>${dv[2]}-${dv[3]}</b>Division games vs the spread</div><div><b>${dv[4]}-${dv[5]}</b>Division games over-under</div>`:""}</div>
 ${dv?`<div class="small" style="margin-top:6px">Division numbers cover the last 3 seasons plus this one (nflverse closing lines).</div>`:""}</div>`:""}
 ${typeof xBetRec!=="undefined"?xBetRec(nflBetRows(t),{src:"nflverse"}):""}
+${typeof fuCard!=="undefined"&&TEAMS[t]?fuCard("nfl",[TEAMS[t][0]],"Futures"):""}
 <div class="card"><h2>📅 Results</h2>${res.map(r=>{const home=r[3]===t,me=home?r[4]:r[2],op=home?r[2]:r[4],opp=home?r[1]:r[3],x=me>op?"W":me<op?"L":"D";
 return `<div class="scfr"><i class="scf ${x}">${x}</i><span class="small">Wk ${r[0]}</span><span>${home?"vs":"@"} ${badge(opp)} ${nflTeamLink(opp)}</span><b>${me}-${op}</b></div>`}).join("")||`<div class="small">No games yet.</div>`}</div>
 <div class="card"><h2>⭐ Key players <span class="small">this season</span></h2>
@@ -7480,7 +7519,7 @@ const nba=[["#nba","🏀 Games"],["#nba-best","🔥 Best props"],["#nba-props","
 const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
 const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-scores","🧾 Scores"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
 const ufc=[["#ufc","🥊 Fight cards"],["#ufc-props","⭐ Best bets"],["#ufc-results","🧾 Results"]];
-const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
+const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#futures","🏆 Futures"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
 const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
 const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
 sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${[["nba","NBA",nba],["nhl","NHL",nhl],["nfl","NFL",nfl],["ufc","UFC",ufc]].filter(x=>typeof xFollow==="undefined"||xFollow(x[0])).map(x=>grp(x[1],x[2])).join("")}${grp("More",all)}
@@ -9864,7 +9903,7 @@ const outSt=nflOutStatus(pl.name);
 $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← Back</a>${outSt?`<div class="info" style="margin-top:12px"><span>🚑 <b>${esc(pl.name)} is ruled out (${esc(outSt)})</b> — he has no props this week. His past games are below for reference.</span></div>`:""}
 <div class="row phead tch" style="margin:16px 0 6px;--tc:${(TEAMS[pl.team]&&TEAMS[pl.team][1])||"#555"}">${badge(pl.team)}<h1 style="margin:0">${esc(pl.name)}</h1>${typeof INJ_P!=="undefined"&&INJ_P[pl.name]?injTag(pl.name):(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[pl.name]?`<span class="tag" style="background:#3a2a10;color:#fab219">⚠ ${QUESTIONABLE[pl.name]}</span>`:"")}</div>
 <div class="pline">${(()=>{const U=(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name])||null,su=U&&U.s;return [pl.pos+" · "+short(pl.team),o?`${o.home?"vs":"@"} ${short(opp)} · ${o.g.when}`:"No game this week",su&&su.snap!=null?su.snap+"% snaps":"",su&&su.tpg?fmt(su.tpg,1)+" targets/game":"",su&&su.cpg&&pl.pos!=="WR"&&pl.pos!=="TE"?fmt(su.cpg,1)+" carries/game":""].filter(Boolean).map(x=>`<span>${x}</span>`).join("")})()}</div>
-${typeof nflStrip!=="undefined"?nflStrip(pl.name,pl.pos):""}${typeof newsCard!=="undefined"?newsCard("nfl",{player:pl.name,hrs:72},"News about "+esc(pl.name)):""}
+${typeof nflStrip!=="undefined"?nflStrip(pl.name,pl.pos):""}${typeof fuCard!=="undefined"?fuCard("nfl",[pl.name],"Awards odds"):""}${typeof newsCard!=="undefined"?newsCard("nfl",{player:pl.name,hrs:72},"News about "+esc(pl.name)):""}
 <div class="qbrow">${typeof nflQbChip!=="undefined"?nflQbChip(pl)+nflWxChip(pl)+(typeof xfScriptChip!=="undefined"?xfScriptChip(pl):"")+(typeof nfRushChip!=="undefined"?nfRushChip(pl):""):""}</div>${typeof nflUseBars!=="undefined"?nflUseBars(pl):""}
 ${o&&nflStarted(o.g)?`<div class="info" style="margin:12px 0"><span>🔒 His game has kicked off — this week's pregame lines are closed.</span></div>`:""}
 ${opp?`<div class="card" style="margin-top:12px;padding:12px">${nflAllowTiles(opp,pl.pos,k)}</div>`:""}
@@ -9948,7 +9987,7 @@ document.querySelectorAll("[data-bx]").forEach(b=>b.onclick=()=>{W.sel=W.sel===b
 }
 function route(){
 const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
-const SHARED=["calc","record","guide","today","bets","favs","week","potd","settings"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
+const SHARED=["calc","record","guide","today","bets","favs","week","potd","settings","futures"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
 if(h.startsWith("ufc")&&typeof ufcRoute!=="undefined"){LS.set("sport","ufc");["nav","nbaNav","nhlNav","socNav"].forEach(i=>{const n=document.getElementById(i);if(n)n.hidden=true});const uN=document.getElementById("ufcNav");if(uN)uN.hidden=false;
 document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s==="ufc"));document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-ufc"));
 const nv=h==="ufc-props"?"ufc-props":h==="ufc-results"?"ufc-results":h==="ufc-live"?"ufc-live":h==="ufc-rank"?"ufc-rank":"ufc";document.querySelectorAll("#ufcNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
@@ -9981,12 +10020,12 @@ document.querySelectorAll("#nbaNav a,#nhlNav a").forEach(a=>a.classList.toggle("
 if(h.startsWith("props/")){const [,nm,mk]=h.split("/");if(nm&&(!S.prop||S.prop.player!==nm||!S.prop.open))S.prop={player:nm,market:mk||null,open:true};else if(S.prop&&mk)S.prop.market=mk}
 let v=h.startsWith("game-")?"game":h.startsWith("props/")?"props":h.startsWith("team-")?"nflteam":h;
 if(v==="slate")v="games";
-if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam","week","potd","settings"].includes(v))v="today";
+if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam","week","potd","settings","futures"].includes(v))v="today";
 if(v!=="props"&&S.prop)S.prop.open=false;
 document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));
 document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v||((v==="game"||v==="nextweek")&&a.dataset.v==="games")||(v==="nflteam"&&a.dataset.v==="standings")));
 banner();if(typeof updateBetsBadge!=="undefined")updateBetsBadge();
-({settings:()=>typeof viewSettings!=="undefined"&&viewSettings(),potd:()=>typeof viewPotd!=="undefined"&&viewPotd(),week:()=>typeof viewWeek!=="undefined"&&viewWeek(),nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
+({futures:()=>typeof viewFutures!=="undefined"&&viewFutures(),settings:()=>typeof viewSettings!=="undefined"&&viewSettings(),potd:()=>typeof viewPotd!=="undefined"&&viewPotd(),week:()=>typeof viewWeek!=="undefined"&&viewWeek(),nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
 window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",route);

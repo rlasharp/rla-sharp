@@ -608,7 +608,7 @@ function viewPlayer(){
   $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← Back</a>${outSt?`<div class="info" style="margin-top:12px"><span>🚑 <b>${esc(pl.name)} is ruled out (${esc(outSt)})</b> — he has no props this week. His past games are below for reference.</span></div>`:""}
    <div class="row phead tch" style="margin:16px 0 6px;--tc:${(TEAMS[pl.team]&&TEAMS[pl.team][1])||"#555"}">${badge(pl.team)}<h1 style="margin:0">${esc(pl.name)}</h1>${typeof INJ_P!=="undefined"&&INJ_P[pl.name]?injTag(pl.name):(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[pl.name]?`<span class="tag" style="background:#3a2a10;color:#fab219">⚠ ${QUESTIONABLE[pl.name]}</span>`:"")}</div>
    <div class="pline">${(()=>{const U=(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name])||null,su=U&&U.s;return [pl.pos+" · "+short(pl.team),o?`${o.home?"vs":"@"} ${short(opp)} · ${o.g.when}`:"No game this week",su&&su.snap!=null?su.snap+"% snaps":"",su&&su.tpg?fmt(su.tpg,1)+" targets/game":"",su&&su.cpg&&pl.pos!=="WR"&&pl.pos!=="TE"?fmt(su.cpg,1)+" carries/game":""].filter(Boolean).map(x=>`<span>${x}</span>`).join("")})()}</div>
-   ${typeof nflStrip!=="undefined"?nflStrip(pl.name,pl.pos):""}${typeof newsCard!=="undefined"?newsCard("nfl",{player:pl.name,hrs:72},"News about "+esc(pl.name)):""}
+   ${typeof nflStrip!=="undefined"?nflStrip(pl.name,pl.pos):""}${typeof fuCard!=="undefined"?fuCard("nfl",[pl.name],"Awards odds"):""}${typeof newsCard!=="undefined"?newsCard("nfl",{player:pl.name,hrs:72},"News about "+esc(pl.name)):""}
    <div class="qbrow">${typeof nflQbChip!=="undefined"?nflQbChip(pl)+nflWxChip(pl)+(typeof xfScriptChip!=="undefined"?xfScriptChip(pl):"")+(typeof nfRushChip!=="undefined"?nfRushChip(pl):""):""}</div>${typeof nflUseBars!=="undefined"?nflUseBars(pl):""}
    ${o&&nflStarted(o.g)?`<div class="info" style="margin:12px 0"><span>🔒 His game has kicked off — this week's pregame lines are closed.</span></div>`:""}
    ${opp?`<div class="card" style="margin-top:12px;padding:12px">${nflAllowTiles(opp,pl.pos,k)}</div>`:""}
@@ -704,7 +704,7 @@ function viewWeeks(){
 /* ---------- Router ---------- */
 function route(){
   const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
-  const SHARED=["calc","record","guide","today","bets","favs","week","potd","settings"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
+  const SHARED=["calc","record","guide","today","bets","favs","week","potd","settings","futures"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
   if(h.startsWith("ufc")&&typeof ufcRoute!=="undefined"){LS.set("sport","ufc");["nav","nbaNav","nhlNav","socNav"].forEach(i=>{const n=document.getElementById(i);if(n)n.hidden=true});const uN=document.getElementById("ufcNav");if(uN)uN.hidden=false;
     document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s==="ufc"));document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-ufc"));
     const nv=h==="ufc-props"?"ufc-props":h==="ufc-results"?"ufc-results":h==="ufc-live"?"ufc-live":h==="ufc-rank"?"ufc-rank":"ufc";document.querySelectorAll("#ufcNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
@@ -737,12 +737,12 @@ function route(){
   if(h.startsWith("props/")){const [,nm,mk]=h.split("/");if(nm&&(!S.prop||S.prop.player!==nm||!S.prop.open))S.prop={player:nm,market:mk||null,open:true};else if(S.prop&&mk)S.prop.market=mk}
   let v=h.startsWith("game-")?"game":h.startsWith("props/")?"props":h.startsWith("team-")?"nflteam":h;
   if(v==="slate")v="games";
-  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam","week","potd","settings"].includes(v))v="today";
+  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam","week","potd","settings","futures"].includes(v))v="today";
   if(v!=="props"&&S.prop)S.prop.open=false;
   document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));
   document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v||((v==="game"||v==="nextweek")&&a.dataset.v==="games")||(v==="nflteam"&&a.dataset.v==="standings")));
   banner();if(typeof updateBetsBadge!=="undefined")updateBetsBadge();
-  ({settings:()=>typeof viewSettings!=="undefined"&&viewSettings(),potd:()=>typeof viewPotd!=="undefined"&&viewPotd(),week:()=>typeof viewWeek!=="undefined"&&viewWeek(),nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
+  ({futures:()=>typeof viewFutures!=="undefined"&&viewFutures(),settings:()=>typeof viewSettings!=="undefined"&&viewSettings(),potd:()=>typeof viewPotd!=="undefined"&&viewPotd(),week:()=>typeof viewWeek!=="undefined"&&viewWeek(),nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",route);

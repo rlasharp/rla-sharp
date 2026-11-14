@@ -1086,7 +1086,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
     <div class="sub" style="margin:4px 0 0">${posName?posName+" · ":""}${nbaTm(p.tm)}</div></div>
   </div>
   <div class="pline">${[bio&&bio[0]?nbaEsc(bio[0]):"",bio&&bio[1]?nbaEsc(String(bio[1]).replace(" lbs",""))+" lbs":"",bio&&bio[2]?nbaEsc(bio[2])+" yrs":"",bio&&bio[4]!==""&&bio[4]!=null?nbaEsc(bio[4])+" NBA seasons":"",p.g.length+" games",nbaF(nbaAvg(p,"min"))+" min/game"].filter(Boolean).map(x=>`<span>${x}</span>`).join("")}</div>
-  ${typeof nbaStrip!=="undefined"?nbaStrip(p):""}
+  ${typeof nbaStrip!=="undefined"?nbaStrip(p):""}${typeof fuCard!=="undefined"?fuCard("nba",[nm],"Awards odds"):""}
   ${g?`<div class="info"><span>Today ${g.a===p.tm?"@":"vs"} <b>${nbaTm(opp)}</b>, ${g.t} ET${dvpAvg!=null?`. ${opp} has allowed ${nbaF(dvpAvg)} points a game to ${nbaPosWord(p.p5)} over its last 5 (NBA average ${nbaF(dvp.lg)}).`:""}</span></div>`:""}
   ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}
   ${typeof newsCard!=="undefined"?newsCard("nba",{player:nm,hrs:72},"News about "+nbaEsc(nm)):""}
@@ -1218,6 +1218,7 @@ function nbaTeamPage(el,t){
     <div class="card"><h2>Next 7 days</h2>${nbaNextHtml(t)}</div>
     <div class="card"><h2>Last 5</h2>${nbaLast5(t)}</div>
     ${typeof xBetRec!=="undefined"?xBetRec(nbaBetRows(t),{src:"ESPN"}):""}
+    ${typeof fuCard!=="undefined"?fuCard("nba",[NBA_TEAMS[t]],"Futures"):""}
   </div>
   <div class="card" style="margin-top:14px"><h2>Roster</h2>${nbaPlayerTable(nbaTopPlayers(t,13),{no3:1,nonote:1})}</div>
   <div class="card" style="margin-top:14px"><h2>Injuries</h2>${nbaInjTable(t)}</div>`;

@@ -314,7 +314,7 @@ function nhlPlayer(el,nm){
     :w.g.slice().reverse().map(x=>`<tr class="${x[16]===1?"nhprev":""}"><td>${x[16]===1?"'25 ":""}${nhE(x[0].slice(5))}</td><td>${nhLab(x)}</td><td>${x[3]}</td><td>${x[4]}</td><td>${x[5]}</td><td>${x[6]}</td><td>${x[7]}</td><td>${x[8]}</td><td>${x[11]}</td><td>${x[13]!=null&&(x[13]+x[14])?x[13]+"/"+(x[13]+x[14]):"–"}</td><td>${(x[10]/60).toFixed(1)}</td></tr>`).join("");
   el.innerHTML=`<p class="small">${xBack(g?"#nhl-game-"+g.id:"#nhl","Back")}</p>
    <div class="phead tch" style="--tc:${NH_COL[w.tm]||"#555"}"><div>${nhBadge(w.tm)}</div><div><h1 style="margin:0">${nhE(nm)}${nhInjChip(nm)}</h1><div class="small">${nhE(nhTm(w.tm))} · ${nhE(isG?"G":w.pos)}${g?` · next: ${g.a===w.tm?"@":"vs"} ${nhE(nhTm(opp))} ${g.d===NHL_DATE?"today":"tomorrow"} ${nhE(g.t)}`:""}</div></div></div>
-   ${typeof nhlStrip!=="undefined"?nhlStrip(w,isG):""}
+   ${typeof nhlStrip!=="undefined"?nhlStrip(w,isG):""}${typeof fuCard!=="undefined"?fuCard("nhl",[nm],"Awards odds"):""}
    ${typeof newsCard!=="undefined"?newsCard("nhl",{player:nm,hrs:72},"News about "+nhE(nm)):""}
    ${typeof pxSideTg!=="undefined"?pxSideTg():""}
    ${nhFiltUI(nm,isG)}
@@ -570,6 +570,7 @@ function nhlTeam(el,t){const T=NHL_TEAM[t];if(!T){el.innerHTML=`<h1>Team not fou
    <div class="card"><h2>Goalies</h2>${gk.map(x=>`<div class="nhgl">${nhGoalieLine(x)}</div>`).join("")||`<div class="small">No goalie data.</div>`}
    <h3 class="nhh3">Injuries</h3>${nhInjList(t).map(r=>`<div class="nhgl"><b>${nhE(r[0])}</b> <span class="pll ${/out|reserve|ir/i.test(r[2])?"u":"n"}">${nhE(r[2])}</span> <span class="small">${nhE(r[3])}</span></div>`).join("")||`<div class="small">Nobody listed.</div>`}</div></div>
    ${typeof nhlBetCard!=="undefined"?nhlBetCard(t):""}
+   ${typeof fuCard!=="undefined"?fuCard("nhl",[T.n],"Futures"):""}
    ${(()=>{const I=(typeof NHL_INJ!=="undefined"&&NHL_INJ[t])||[];return `<div class="card"><h2>🚑 Injuries</h2>${I.length?I.map(r=>`<div class="ufval"><b>${nhLink(r[0])}</b><span class="small">${nhE(r[1])}</span><span>${nhE(r[2])}</span><span class="small">${nhE(r[3]||"")}${r[4]?" · back "+nhE(r[4]):""}</span></div>`).join(""):`<div class="small">ESPN lists no injured players.</div>`}</div>`})()}
    <div class="card" style="margin-top:12px"><h2>Every game this season</h2>${R.slice().reverse().map(r=>nhResRow(r,t)).join("")||`<div class="small">No games yet.</div>`}</div>${nhFoot()}`}
 

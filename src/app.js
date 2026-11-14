@@ -125,7 +125,7 @@ function moreOpen(){
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
   const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-scores","🧾 Scores"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
   const ufc=[["#ufc","🥊 Fight cards"],["#ufc-props","⭐ Best bets"],["#ufc-results","🧾 Results"]];
-  const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
+  const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#futures","🏆 Futures"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
   sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${[["nba","NBA",nba],["nhl","NHL",nhl],["nfl","NFL",nfl],["ufc","UFC",ufc]].filter(x=>typeof xFollow==="undefined"||xFollow(x[0])).map(x=>grp(x[1],x[2])).join("")}${grp("More",all)}

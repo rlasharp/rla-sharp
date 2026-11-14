@@ -69,6 +69,10 @@ if want ufc; then   # UFC: ESPN cards, results, fighter bios + fight-by-fight st
     cp "$WORK/ufc.js" ufc_data.js; log "$(tail -1 "$WORK/ufc.log")"
   else log "UFC data FAILED — kept old: $(tail -3 "$WORK/ufc.log" | tr '\n' ' ')"; fi
 fi
+if want fut || [ "$WHAT" = all ]; then   # futures: ESPN futures feed, one price a day kept in data/futures_hist.json
+  if python3 tools/futures.py "$ROOT" > "$WORK/fut.js" 2> "$WORK/fut.log" && grep -q "^var FUT_OK=1" "$WORK/fut.js"; then cp "$WORK/fut.js" futures_data.js; log "Futures: $(tr '\n' ' ' < "$WORK/fut.log")"
+  else log "Futures FAILED — kept old: $(tail -2 "$WORK/fut.log" | tr '\n' ' ')"; fi
+fi
 bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 # tracker: snapshot best props / game numbers / NHL plays before games, grade after (uses the site's own functions)
 if node tools/track.js "$ROOT/src/index.html" > "$WORK/track.log" 2>&1; then log "$(tail -1 "$WORK/track.log")"; bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
