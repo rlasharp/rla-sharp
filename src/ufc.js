@@ -47,6 +47,7 @@ function ufML(f){const O=ufOddsOf(f);if(!O)return null;const ml=[null,null];for(
   if(!ml[0]||!ml[1])return null;const ia=ufImp(ml[0][0]),ib=ufImp(ml[1][0]);return {ml,p:[ia/(ia+ib),ib/(ia+ib)],vig:ia+ib-1}}
 
 /* ---------- our estimates: the market's win chance × how each fighter wins / loses (last 10 fights, smoothed) ---------- */
+let UF_K0=null;function ufKo0(){if(UF_K0)return UF_K0;let k=0,t=0;for(const F of Object.values(window.UFC_F||{})){const r=F.R||{};k+=r.tkos||0;t+=(r.tkos||0)+(r.submissions||0)}UF_K0=t>50?k/t:.6;return UF_K0}
 function ufEst(f){const M=ufML(f);if(!M)return null;const A=ufStats(f.c[0][0]),B=ufStats(f.c[1][0]);if(!A||!B)return null;
   /* career numbers (ESPN record: KO/TKO and submission wins and losses, the rest decisions); last-10 fights when there is no career split */
   const car=X=>X.C?X.C:{w:X.w,l:X.l,KO:X.wKO,SUB:X.wSUB,DEC:X.wDEC,lKO:X.lKO,lSUB:X.lSUB,lDEC:X.lDEC};const a=car(A),b=car(B);
@@ -54,7 +55,8 @@ function ufEst(f){const M=ufML(f);if(!M)return null;const A=ufStats(f.c[0][0]),B
   /* 1) does it go the distance? each fighter's share of fights that went to the judges, combined */
   const dr=X=>(X.DEC+X.lDEC+1)/(X.w+X.l+2),dist=mix(dr(a),dr(b));
   /* 2) if a fighter finishes it, KO or submission: how he finishes people, combined with how the other one gets finished */
-  const ko=(X,Y)=>mix((X.KO+1)/(X.KO+X.SUB+2),(Y.lKO+1)/(Y.lKO+Y.lSUB+2));
+  /* small records lean on the KO share of finishes across every fighter we have (ESPN careers), not on 50/50 */
+  const k0=ufKo0(),ko=(X,Y)=>mix((X.KO+4*k0)/(X.KO+X.SUB+4),(Y.lKO+4*k0)/(Y.lKO+Y.lSUB+4));
   const p=M.p,est={win:p,dist,by:[0,1].map(i=>{const pd=dist*p[i],pf=Math.max(0,p[i]-pd),k=i?ko(b,a):ko(a,b);return {DEC:pd,KO:pf*k,SUB:pf*(1-k)}})};
   est.n=Math.min(A.n,B.n);
   /* 3) fight length: a steady finishing rate, set so the chance of reaching the final bell equals the distance estimate */
@@ -110,24 +112,57 @@ function ufTape(f){const [a,b]=f.c,A=(window.UFC_F||{})[a[0]]||{},B=(window.UFC_
    ${row("Takedowns / 15 min",f2(SA.td15),f2(SB.td15),1)}${row("Takedown accuracy",pc(SA.tdacc),pc(SB.tdacc),1)}${row("Takedown defense",pc(SA.tddef),pc(SB.tddef),1)}${row("Knockdowns / 15 min",f2(SA.kd15),f2(SB.kd15),1)}${row("Sub attempts / 15 min",f2(SA.sub15),f2(SB.sub15),1)}
    ${row("Control time / fight",ct(SA.ctrl),ct(SB.ctrl),1)}${row("Avg fight time",ct(SA.avgT),ct(SB.avgT))}${row("Finish rate (of wins)",pc(SA.fin),pc(SB.fin))}${row("Fights to decision",pc(SA.dist),pc(SB.dist))}
    </tbody></table></div><div class="small">Per-minute numbers from their last ${Math.min(SA.statN||0,10)} / ${Math.min(SB.statN||0,10)} fights with stats (ESPN). Bold = the better side.</div></div>`}
-function ufMethods(f){const S=f.c.map(c=>ufStats(c[0])||{});const bar=(k,o,n,lab)=>{const v=[o.KO,o.SUB,o.DEC],t=v.reduce((a,b)=>a+b,0);return `<div class="ufmb"><span class="small">${lab} (${t})</span><div class="ufmbar">${t?v.map((x,i)=>x?`<i class="m${i}" style="width:${x/t*100}%">${x}</i>`:"").join(""):`<em class="small">none</em>`}</div></div>`};
-  return `<div class="card"><h2>How they win and lose <span class="small">· whole pro career</span></h2>${f.c.map((c,i)=>{const C=S[i].C;return `<h3 style="margin:10px 0 4px">${ufE(c[1])}</h3>${C?bar("w",{KO:C.KO,SUB:C.SUB,DEC:C.DEC},0,"Wins")+bar("l",{KO:C.lKO,SUB:C.lSUB,DEC:C.lDEC},0,"Losses"):bar("w",{KO:S[i].wKO||0,SUB:S[i].wSUB||0,DEC:S[i].wDEC||0},0,"Wins (last 10)")+bar("l",{KO:S[i].lKO||0,SUB:S[i].lSUB||0,DEC:S[i].lDEC||0},0,"Losses (last 10)")}`}).join("")}
-   <div class="small" style="margin-top:6px"><span class="ufk m0">KO/TKO</span> <span class="ufk m1">Submission</span> <span class="ufk m2">Decision</span></div></div>`}
+/* ESPN-style matchup: both fighters side by side, bars growing out from the middle (career record split) */
+function ufMethods(f){const S=f.c.map(c=>ufStats(c[0])||{}),C=S.map(x=>x.C||{w:x.w||0,l:x.l||0,KO:x.wKO||0,SUB:x.wSUB||0,DEC:x.wDEC||0,lKO:x.lKO||0,lSUB:x.lSUB||0,lDEC:x.lDEC||0}),car=!!(S[0].C&&S[1].C);
+  const row=(lab,k,tot)=>{const v=[C[0][k],C[1][k]],t=[C[0][tot],C[1][tot]],pc=v.map((x,i)=>t[i]?x/t[i]:0),mx=Math.max(.0001,...pc),bt=pc[0]===pc[1]?-1:pc[0]>pc[1]?0:1;
+    return `<div class="ufmx"><div class="l"><span>${v[0]} <small>${Math.round(pc[0]*100)}%</small></span><i style="width:${pc[0]/mx*100}%" class="${bt===0?"on":""}"></i></div><b>${lab}</b><div class="r"><i style="width:${pc[1]/mx*100}%" class="${bt===1?"on":""}"></i><span>${v[1]} <small>${Math.round(pc[1]*100)}%</small></span></div></div>`};
+  return `<div class="card"><h2>How they win and lose <span class="small">· ${car?"whole pro career":"last 10 fights"}</span></h2>
+   <div class="ufmh"><span><b>${ufE(ufLast(f.c[0][1]))}</b><small>${C[0].w}-${C[0].l}</small></span><span></span><span><b>${ufE(ufLast(f.c[1][1]))}</b><small>${C[1].w}-${C[1].l}</small></span></div>
+   <div class="ufms">Wins</div>${row("KO/TKO","KO","w")}${row("Submission","SUB","w")}${row("Decision","DEC","w")}
+   <div class="ufms">Losses</div>${row("KO/TKO","lKO","l")}${row("Submission","lSUB","l")}${row("Decision","lDEC","l")}
+   <div class="small" style="margin-top:6px">Count and share of each fighter's wins (or losses). The longer bar is highlighted.</div></div>`}
 function ufLength(f){const S=f.c.map(c=>ufStats(c[0])||{secs:[]}),rd=f.rd||3,bins=x=>{const b=Array(rd+1).fill(0);for(const s of x){const r=Math.min(rd,Math.floor((s-1)/300)+1);if(s>=rd*300-1)b[rd]++;else b[r-1]++}return b};
   const B=f.c.map((c,i)=>bins(S[i].secs||[])),mx=Math.max(1,...B.flat());if(!B.some(b=>b.some(Boolean)))return "";
   return `<div class="card"><h2>When their fights end</h2>${f.c.map((c,i)=>`<div class="small" style="margin-top:8px"><b>${ufE(ufLast(c[1]))}</b> · last ${S[i].secs.length} fights</div><div class="ufrd">${B[i].map((v,j)=>`<div><i style="height:${Math.max(3,v/mx*60)}px"></i><b>${v}</b><span class="small">${j<rd?"R"+(j+1):"Dist."}</span></div>`).join("")}</div>`).join("")}
    <div class="small">Round each of their fights ended (a 3-round fight that went the full 15 minutes counts as "Dist.").</div></div>`}
-function ufOddsBoard(f){const O=ufOddsOf(f);if(!O)return `<div class="card small">No sportsbook odds posted for this fight yet — books usually post a week out.</div>`;const E=ufEst(f);const G={};for(const o of O.o)(G[o[0]]=G[o[0]]||[]).push(o);
-  return `<div class="card"><h2>Odds &amp; our estimates</h2><div class="small" style="margin-bottom:6px">Best price across licensed US books. <b>Ours</b> = the moneyline's win chance × how each fighter has won and lost over his career, and how long their last 10 fights lasted. Green when ours beats what the price needs by 5+ points.</div>
-   ${Object.entries(G).map(([k,L])=>`<h3 style="margin:12px 0 4px">${ufE(UF_MK[k]||k)}</h3><div class="nbatbl"><table class="bxt ufot"><tbody>${L.slice(0,24).map(o=>{const e=ufEstOf(f,ufParse(f,o),E),nd=ufImp(o[4]),ed=e!=null?e-nd:null;
-     return `<tr><td>${ufOLabel(f,o)}</td><td><b>${ufAm(o[4])}</b> <span class="small">${ufE(o[5])}</span></td><td class="small">needs ${ufPct(nd)}</td><td class="${ed!=null&&ed>=.05&&E.n>=4?"up":ed!=null&&ed<=-.08?"dn":""}">${e!=null?"ours "+ufPct(e):""}</td><td>${typeof actBtn!=="undefined"?actBtn(ufSpec(f,o),"＋","ov"):""}</td></tr>`}).join("")}</tbody></table></div>`).join("")}
-   <div class="small" style="margin-top:6px">Odds updated ${ufE((LO.data.ufc.at||"").slice(11,16))} UTC.</div></div>`}
+function ufOddsBoard(f){const O=ufOddsOf(f);if(!O)return `<div class="card small">No sportsbook odds posted for this fight yet — books usually post a week out.</div>`;const E=ufEst(f);
+  const cell=o=>{if(!o)return `<td class="small">–</td>`;const e=ufEstOf(f,ufParse(f,o),E),nd=ufImp(o[4]),ed=e!=null?e-nd:null,cl=ed!=null&&ed>=.05&&E&&E.n>=4?"up":ed!=null&&ed<=-.08?"dn":"";
+    return `<td><b>${ufAm(o[4])}</b>${e!=null?`<div class="small ${cl}">ours ${ufPct(e)}</div>`:""}${typeof actBtn!=="undefined"?actBtn(ufSpec(f,o),"＋","ov"):""}</td>`};
+  const find=(k,fn)=>O.o.find(o=>o[0]===k&&fn(ufParse(f,o)||{},o));
+  /* method grid: fighter × KO / Sub / Decision */
+  const meth=f.c.map((c,i)=>["KO","SUB","DEC"].map(m=>find("fight_outcome",P=>P.t==="meth"&&P.who===i&&P.m===m)||find("round_betting",P=>P.t==="meth"&&P.who===i&&P.m===m)));
+  const ml=f.c.map((c,i)=>find("h2h",P=>P.t==="ml"&&P.who===i));
+  const dist=[find("fight_distance",P=>P.t==="dist"&&P.y===1),find("fight_distance",P=>P.t==="dist"&&P.y===0)];
+  /* total rounds: the line priced closest to even */
+  const RL=[...new Set(O.o.filter(o=>o[0]==="total_rounds"&&o[3]!=null).map(o=>o[3]))].map(x=>{const ov=find("total_rounds",P=>P.t==="rds"&&P.over&&P.x===x),un=find("total_rounds",P=>P.t==="rds"&&!P.over&&P.x===x);return {x,ov,un,gap:ov&&un?Math.abs(ufImp(ov[4])-ufImp(un[4])):9}}).sort((a,b)=>a.gap-b.gap);
+  const main=RL[0],rest=O.o.filter(o=>!["h2h","fight_outcome","fight_distance"].includes(o[0])&&!(o[0]==="total_rounds"&&main&&o[3]===main.x)&&!(o[0]==="round_betting"&&ufParse(f,o)&&ufParse(f,o).t==="meth"));
+  const G={};for(const o of rest)(G[o[0]]=G[o[0]]||[]).push(o);
+  return `<div class="card"><h2>Odds &amp; our estimates</h2><div class="small" style="margin-bottom:8px">Best price across licensed US books · <span class="up">green</span> = our estimate beats what the price needs by 5+ points · ＋ to track or add to a parlay.</div>
+   <div class="nbatbl"><table class="bxt ufog"><thead><tr><th></th><th>Win</th><th>KO/TKO</th><th>Sub</th><th>Decision</th></tr></thead><tbody>${f.c.map((c,i)=>`<tr><th>${ufE(ufLast(c[1]))}</th>${cell(ml[i])}${meth[i].map(cell).join("")}</tr>`).join("")}</tbody></table></div>
+   <div class="nbatbl"><table class="bxt ufog"><thead><tr><th></th><th>Yes</th><th>No</th></tr></thead><tbody><tr><th>Goes the distance</th>${cell(dist[0])}${cell(dist[1])}</tr>${main?`<tr><th>Rounds ${main.x}</th>${cell(main.ov)}${cell(main.un)}</tr>`:""}</tbody></table>${main?`<div class="small">Rounds row: <b>Yes</b> = over ${main.x}, <b>No</b> = under.</div>`:""}</div>
+   ${Object.keys(G).length?`<details class="ufmore2"><summary>More markets (${rest.length}) — round betting, other round lines${G.player_significant_strikes||G.player_takedowns?", strikes, takedowns":""}</summary>
+    ${Object.entries(G).map(([k,L])=>`<h3 style="margin:10px 0 4px">${ufE(UF_MK[k]||k)}</h3><div class="nbatbl"><table class="bxt ufot"><tbody>${L.map(o=>{const e=ufEstOf(f,ufParse(f,o),E),nd=ufImp(o[4]),ed=e!=null?e-nd:null;
+      return `<tr><td>${ufOLabel(f,o)}</td><td><b>${ufAm(o[4])}</b> <span class="small">${ufE(o[5])}</span></td><td class="${ed!=null&&ed>=.05&&E&&E.n>=4?"up":ed!=null&&ed<=-.08?"dn":""}">${e!=null?"ours "+ufPct(e):""}</td><td>${typeof actBtn!=="undefined"?actBtn(ufSpec(f,o),"＋","ov"):""}</td></tr>`}).join("")}</tbody></table></div>`).join("")}</details>`:""}
+   <div class="small" style="margin-top:6px">Ours = the odds' win chance × each fighter's career: how he wins, how he loses, and how often his fights go the distance. Odds updated ${ufE((LO.data.ufc.at||"").slice(11,16))} UTC.</div></div>`}
+/* our prediction: winner, most likely way it ends, and the best-priced bet in this fight */
+function ufPredict(f){if(f.st==="post")return "";const E=ufEst(f);if(!E)return "";const w=E.win[0]>=E.win[1]?0:1,b=E.by[w],m=["KO","SUB","DEC"].sort((x,y)=>b[y]-b[x])[0],ML={KO:"KO/TKO",SUB:"submission",DEC:"decision"};
+  const rd=f.rd||3,rds=Array.from({length:rd},(_,r)=>[r+1,E.inRound(w,r+1)]).sort((x,y)=>y[1]-x[1]),fin=b.KO+b.SUB;
+  const how=m==="DEC"?`by decision`:`by ${ML[m]}, most likely in round ${rds[0][0]}`;
+  const V=ufValues([f]).filter(x=>x.edge>=.04&&x.need>=.2&&E.n>=4)[0],A=ufStats(f.c[0][0])||{},B=ufStats(f.c[1][0])||{};
+  const keys=[];const cmp=(lab,x,y,dec,hi)=>{if(x==null||y==null)return;const d=x-y;if(Math.abs(d)<(dec||0))return;const bw=(hi?d>0:d<0)?0:1;keys.push(`${ufE(ufLast(f.c[bw][1]))} ${lab} (${(bw?y:x).toFixed(lab.includes("%")?0:1)} vs ${(bw?x:y).toFixed(lab.includes("%")?0:1)})`)};
+  cmp("lands more significant strikes per minute",A.slpm,B.slpm,1,1);cmp("absorbs fewer strikes per minute",A.sapm,B.sapm,1,0);cmp("lands more takedowns per 15 min",A.td15,B.td15,.8,1);cmp("knocks people down more (per 15 min)",A.kd15,B.kd15,.3,1);
+  const conf=Math.abs(E.win[0]-E.win[1]),cf=conf>=.4?"Strong":conf>=.2?"Medium":"Lean";
+  return `<div class="card ufpred"><h2>🔮 Our prediction</h2><div class="ufpw"><b>${ufE(f.c[w][1])}</b> ${how}</div>
+   <div class="ufpb"><div><span class="small">Win chance</span><b>${ufPct(E.win[w])}</b></div><div><span class="small">By ${ML[m]}</span><b>${ufPct(b[m])}</b></div><div><span class="small">Goes the distance</span><b>${ufPct(E.dist)}</b></div><div><span class="small">Confidence</span><b>${cf}</b></div></div>
+   ${keys.length?`<ul class="small ufkeys">${keys.slice(0,3).map(k=>`<li>${k}</li>`).join("")}</ul>`:""}
+   ${V?`<div class="ufpv">⭐ Best value (no long shots): <b>${ufOLabel(f,V.o)}</b> ${ufAm(V.o[4])} <span class="small">(${ufE(UF_MK[V.o[0]]||V.o[0])}) · ours ${ufPct(V.e)} vs needs ${ufPct(V.need)}</span>${typeof actBtn!=="undefined"?actBtn(ufSpec(f,V.o),"＋","ov"):""}</div>`:""}
+   <div class="small">From the odds' win chance and both fighters' careers (method of wins and losses, how often they go the distance). Research, not a guarantee.</div></div>`}
 function ufFightPage(el,id){const f=ufFight(id);if(!f){el.innerHTML=ufHead("Fight not found.")+`<a href="#ufc">← UFC</a>`;return}const M=ufML(f),[a,b]=f.c;
   el.innerHTML=`<p><a href="#ufc-event-${f.ev.id}">← ${ufE(f.ev.n)}</a></p>
    <div class="card ufhero"><div class="small">${ufE(f.wc)} · ${f.rd} rounds · ${ufDate(f.t||f.ev.d)}</div>
     <div class="ufpair big">${f.c.map((c,i)=>`<div class="ufside${f.st==="post"&&c[3]?" won":""}"><a href="#ufc-fighter-${c[0]}"><b>${ufE(c[1])}</b></a><span class="small">${ufE(((window.UFC_F||{})[c[0]]||{}).nick||"")}</span><span class="small">${ufE(c[2])}${c[4]?" · "+ufE(c[4]):""}</span>${M?`<span class="ufml">${ufAm(M.ml[i][0])} <small>${ufPct(M.p[i])} to win</small></span>`:""}</div>${i===0?`<span class="ufvs">vs</span>`:""}`).join("")}</div>
     ${f.st==="post"?`<div class="nbsay">🏁 ${ufE(f.c.find(c=>c[3])?f.c.find(c=>c[3])[1]+" wins":"Result")}${f.m?` · ${ufE(f.m)}${f.md?" ("+ufE(f.md)+")":""} · R${f.r} ${ufE(f.clk||"")}`:""}</div>`:M?`<div class="nbwp" style="margin-top:8px"><div style="width:${Math.round(M.p[0]*100)}%;background:#d33f49"></div><div style="width:${100-Math.round(M.p[0]*100)}%;background:#3987e5"></div></div><div class="small" style="text-align:center">win chance from the odds (vig removed)</div>`:""}</div>
-   ${ufOddsBoard(f)}${ufTape(f)}${ufMethods(f)}${ufLength(f)}
+   ${ufTape(f)}${ufPredict(f)}${ufMethods(f)}${ufOddsBoard(f)}${ufLength(f)}
    <div class="grid g2">${f.c.map(c=>`<div class="card"><h2>${ufE(c[1])} · last fights</h2>${ufHist(c[0],5)}<a class="small" href="#ufc-fighter-${c[0]}">All his fights →</a></div>`).join("")}</div>`}
 function ufHist(aid,n){const F=(window.UFC_F||{})[aid];if(!F||!F.h.length)return `<div class="small">No UFC fights on file.</div>`;
   return `<div class="nbatbl"><table class="bxt ufh"><thead><tr><th>Date</th><th>Opponent</th><th></th><th>Method</th><th>Time</th><th>Sig. str</th><th>TD</th></tr></thead><tbody>${F.h.slice(0,n||10).map(r=>`<tr><td>${ufE((r[0]||"").slice(2).replace(/-/g,"/"))}</td><td><a href="#ufc-fighter-${r[1]}">${ufE(r[2])}</a></td><td><span class="ufr ${r[3]}">${r[3]}</span></td><td>${ufE(r[4])}<div class="small">${ufE(r[5]||"")}</div></td><td>R${r[6]||"?"} ${ufE(r[7])}</td><td>${r[10]!=null?`${r[10]}/${r[11]}`:"–"}<div class="small">${r[12]!=null?`took ${r[12]}`:""}</div></td><td>${r[14]!=null?`${r[14]}/${r[15]}`:"–"}</td></tr>`).join("")}</tbody></table></div>`}
