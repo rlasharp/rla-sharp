@@ -149,7 +149,7 @@ const XSET_DEF={start:"today",hide:[],tz:"et",text:"m",cb:0};
 function xSet(){let o={};try{o=JSON.parse(localStorage.getItem("rla_set")||"{}")||{}}catch(e){}return Object.assign({},XSET_DEF,o)}
 function xSetSave(k,v){const o=xSet();o[k]=v;try{localStorage.setItem("rla_set",JSON.stringify(o))}catch(e){}xSetApply()}
 function xFollow(sp){return !xSet().hide.includes(sp==="soccer"?"soc":sp)}
-function xSetApply(){const o=xSet(),B=document.body;if(!B)return;["nfl","nba","nhl","soc","ufc"].forEach(sp=>B.classList.toggle("hide-"+sp,o.hide.includes(sp)));
+function xSetApply(){const o=xSet(),B=document.body;if(!B)return;["nfl","nba","nhl","soc","ufc","cfb","cbb"].forEach(sp=>B.classList.toggle("hide-"+sp,o.hide.includes(sp)));
   B.classList.toggle("cbsafe",!!o.cb);B.classList.toggle("txt-l",o.text==="l");B.classList.toggle("txt-xl",o.text==="xl");if(o.tz==="local")xTzSoon()}
 /* game times: the site writes "7:00 PM ET"; with "my time zone" on, every such time on the page is shown in yours */
 const XTZ_RE=/\b(\d{1,2}):(\d{2})\s*([AaPp][Mm])\s*ET\b/g;
@@ -163,10 +163,10 @@ function xTzWalk(root){if(xSet().tz!=="local"||!xEtOffsetMin())return;const W=do
     const m=/(\d{1,2}):(\d{2})\s*([AaPp][Mm])\s*$/.exec(v),nx=A[i+1];if(m&&nx&&/^\s*ET\b/.test(nx.nodeValue)){t.nodeValue=v.slice(0,m.index)+xTzConv(m[1],m[2],m[3]);nx.nodeValue=nx.nodeValue.replace(/^\s*ET\b/,"")}})}
 let XTZ_T=0;function xTzSoon(){clearTimeout(XTZ_T);XTZ_T=setTimeout(()=>xTzWalk(),80)}
 window.addEventListener("load",()=>{xSetApply();try{new MutationObserver(()=>{if(xSet().tz==="local")xTzSoon()}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}catch(e){}
-  const o=xSet();if((!location.hash||location.hash==="#"||location.hash==="#today")&&o.start&&o.start!=="today"&&!sessionStorage.getItem("rla_started")){try{sessionStorage.setItem("rla_started","1")}catch(e){}location.replace("#"+({nfl:"games",nba:"nba",nhl:"nhl",soc:"soccer",ufc:"ufc"}[o.start]||"today"))}
+  const o=xSet();if((!location.hash||location.hash==="#"||location.hash==="#today")&&o.start&&o.start!=="today"&&!sessionStorage.getItem("rla_started")){try{sessionStorage.setItem("rla_started","1")}catch(e){}location.replace("#"+({nfl:"games",nba:"nba",nhl:"nhl",soc:"soccer",ufc:"ufc",cfb:"cfb",cbb:"cbb"}[o.start]||"today"))}
   try{sessionStorage.setItem("rla_started","1")}catch(e){}});
 function viewSettings(){const el=document.getElementById("v-settings");if(!el)return;const o=xSet(),of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
-  const SP=[["nfl","🏈 NFL"],["nba","🏀 NBA"],["nhl","🏒 NHL"],["soc","⚽ Soccer"],["ufc","🥊 UFC"]];
+  const SP=[["nfl","🏈 NFL"],["nba","🏀 NBA"],["nhl","🏒 NHL"],["soc","⚽ Soccer"],["ufc","🥊 UFC"],["cfb","🏈 College football"],["cbb","🏀 College basketball"]];
   const seg=(k,opts,cur)=>`<div class="seg">${opts.map(([v,l])=>`<button data-xset="${k}" data-v="${v}" class="${cur===v?"on":""}">${l}</button>`).join("")}</div>`;
   el.innerHTML=`<h1>⚙️ Settings</h1><p class="sub">Saved on this device.</p>
    <div class="card"><h2>Open the site on</h2>${seg("start",[["today","🏠 Today"],...SP],o.start)}</div>
@@ -182,7 +182,7 @@ function viewSettings(){const el=document.getElementById("v-settings");if(!el)re
    <div class="card"><h2>Reset</h2><button class="btn" id="xReset">Reset these settings</button></div>`;
   el.querySelectorAll("[data-xset]").forEach(b=>b.onclick=()=>{const k=b.dataset.xset,v=b.dataset.v;if(k==="odds"){if(typeof setOddsFmt!=="undefined")setOddsFmt(v);if(typeof syncOddsBtns!=="undefined")syncOddsBtns()}else xSetSave(k,k==="cb"?+v:v);
     if(k==="tz"&&v==="et")location.reload();viewSettings();if(typeof toast!=="undefined")toast("Saved")});
-  el.querySelectorAll("[data-xhide]").forEach(c=>c.onchange=()=>{const o2=xSet(),sp=c.dataset.xhide;let H=o2.hide.filter(x=>x!==sp);if(!c.checked)H.push(sp);if(H.length>=5){c.checked=true;return}xSetSave("hide",H)});
+  el.querySelectorAll("[data-xhide]").forEach(c=>c.onchange=()=>{const o2=xSet(),sp=c.dataset.xhide;let H=o2.hide.filter(x=>x!==sp);if(!c.checked)H.push(sp);if(H.length>=7){c.checked=true;return}xSetSave("hide",H)});
   const st=el.querySelector("#xStake");st.onchange=()=>{const v=Math.max(1,+st.value||10);try{LS.set("betStake",v)}catch(e){}if(typeof toast!=="undefined")toast("Saved")};
   el.querySelector("#xReset").onclick=()=>{try{localStorage.removeItem("rla_set")}catch(e){}xSetApply();location.reload()}}
 

@@ -44,6 +44,8 @@ function searchIndex(){
   /* 🥊 UFC fighters + cards (once the UFC data has loaded) */
   if(window.UFC_OK){for(const [aid,F] of Object.entries(window.UFC_F||{}))if(F&&F.n)L.push({k:F.n.toLowerCase(),l:F.n,s:"UFC",sub:`${(F.R||{}).rec||""}${F.wc?" · "+F.wc:""}`,h:"ufc-fighter-"+aid,w:30});
     for(const e of (window.UFC_EV||[]))if(e.f.some(f=>f.st!=="post"))L.push({k:e.n.toLowerCase(),l:e.n,s:"UFC",sub:"Fight card · "+(typeof ufDate!=="undefined"?ufDate(e.d):""),h:"ufc-event-"+e.id,w:60})}
+  for(const CS of ["cfb","cbb"])if(typeof coOk!=="undefined"&&coOk(CS)){const U=CS.toUpperCase();for(const [id,T] of Object.entries(coV(CS,"TM")||{}))if(T.n)L.push({k:(T.n+" "+T.a).toLowerCase(),l:T.n,s:U,sub:"Team · "+(T.cf||U),h:CS+"-team-"+id,w:20});
+    for(const [aid,p] of Object.entries(coV(CS,"P")||{}))L.push({k:p.n.toLowerCase(),l:p.n,s:U,sub:`${(coT(CS,p.t)||{}).a||""} · ${p.p}`,h:CS+"-player-"+aid,w:10})}
   /* today's games: "celtics knicks", "leafs habs", "chiefs bills" */
   try{const TN=(sp,t)=>sp==="nba"?(NBA_TEAMS[t]||t):sp==="nhl"?((NHL_TEAM[t]||{}).n||t):((TEAMS[t]||[])[0]||t);
     if(typeof NBA_SLATE!=="undefined")for(const g of NBA_SLATE)L.push({k:"",l:`${TN("nba",g.a)} @ ${TN("nba",g.h)}`,s:"NBA",sub:`Game · ${g.t||""} ET`,h:"nba-game-"+g.id,w:80,gk:`${g.a} ${g.h}`});
@@ -93,12 +95,12 @@ function srchGames(hits){const out=[];const T=hits.filter(x=>/^Team/.test(x.sub|
   return out}
 function appSearchSetup(){
   const inp=document.getElementById("plSearch"),box=document.getElementById("plRes");if(!inp)return;
-  inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure();if(typeof ufcEnsure!=="undefined"&&!window.UFC_OK)ufcEnsure(()=>{SRCH=null});if(typeof socEnsure!=="undefined"){socEnsure();setTimeout(()=>socPEnsure(),1200)}});
+  inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure();if(typeof ufcEnsure!=="undefined"&&!window.UFC_OK)ufcEnsure(()=>{SRCH=null});if(typeof coEnsure!=="undefined")["cfb","cbb"].forEach(CS=>{if(!coOk(CS)&&(typeof xFollow==="undefined"||xFollow(CS)))coEnsure(CS,()=>{SRCH=null})});if(typeof socEnsure!=="undefined"){socEnsure();setTimeout(()=>socPEnsure(),1200)}});
   inp.placeholder="🔍 Search players, teams, fighters, games";
   const draw=()=>{const q=inp.value.trim().toLowerCase();if(q.length<2){const R=srchRecent();if(!R.length||document.activeElement!==inp){box.innerHTML="";box.hidden=true;return}
       box.innerHTML='<div class="small" style="padding:6px 8px 2px">Recent</div>'+R.map((x,i)=>`<button data-r="${i}"><span class="small">🕘</span> ${esc(x.l)} <span class="small">${esc(x.sub||"")}</span></button>`).join("");box._rec=R;box._hits=[];box.hidden=false;return}
     const hit0=srchFind(q),hit=hit0.concat(srchGames(hit0));const fz=hit.length&&hit[0]._t===2;
-    box.innerHTML=hit.length?(fz?'<div class="small" style="padding:6px 8px 2px">No exact match — did you mean:</div>':"")+hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":x.s==="NHL"?"nh":x.s==="SOC"?"sc":x.s==="UFC"?"uf":"nf"}">${x.s==="SOC"?"⚽":x.s==="UFC"?"🥊":x.s}</span> <span>${/^Team/.test(x.sub)?"🛡️ ":""}${esc(x.l)}</span><small>${esc(x.sub)}${x._via?` · “${esc(x._via)}”`:""}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found — try a last name or team</div>';
+    box.innerHTML=hit.length?(fz?'<div class="small" style="padding:6px 8px 2px">No exact match — did you mean:</div>':"")+hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":x.s==="NHL"?"nh":x.s==="SOC"?"sc":x.s==="UFC"?"uf":x.s==="CBB"?"nb":"nf"}">${x.s==="SOC"?"⚽":x.s==="UFC"?"🥊":x.s}</span> <span>${/^Team/.test(x.sub)?"🛡️ ":""}${esc(x.l)}</span><small>${esc(x.sub)}${x._via?` · “${esc(x._via)}”`:""}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found — try a last name or team</div>';
     box.hidden=false;box._hits=hit};
   inp.oninput=draw;inp.onfocus=draw;
   inp.onkeydown=e=>{if(e.key==="Enter"){const b=box.querySelector("button");if(b)b.click()}if(e.key==="Escape"){inp.value="";draw();inp.blur()}};
@@ -109,12 +111,12 @@ function appSearchSetup(){
 }
 
 /* ===== Bottom tab bar (phones) + More sheet ===== */
-function curSport(){const h=(location.hash||"").slice(1);if(h.startsWith("nba"))return "nba";if(h.startsWith("nhl"))return "nhl";if(h.startsWith("soccer"))return "soc";if(h.startsWith("ufc"))return "ufc";if(["games","plays","props","public","weeks","trends","injuries","bets","standings"].some(x=>h===x||h.startsWith(x))||h.startsWith("game-"))return "nfl";const s=LS.get("sport","nba");return s==="nfl"||s==="nhl"||s==="soc"||s==="ufc"?s:"nba"}
+function curSport(){const h=(location.hash||"").slice(1);if(h.startsWith("nba"))return "nba";if(h.startsWith("nhl"))return "nhl";if(h.startsWith("soccer"))return "soc";if(h.startsWith("ufc"))return "ufc";if(h.startsWith("cfb"))return "cfb";if(h.startsWith("cbb"))return "cbb";if(["games","plays","props","public","weeks","trends","injuries","bets","standings"].some(x=>h===x||h.startsWith(x))||h.startsWith("game-"))return "nfl";const s=LS.get("sport","nba");return s==="nfl"||s==="nhl"||s==="soc"||s==="ufc"?s:"nba"}
 function tabbarRender(){
   let bar=document.getElementById("tabbar");if(!bar){bar=document.createElement("nav");bar.id="tabbar";document.body.appendChild(bar)}
   const sp=curSport(),h=(location.hash||"#today").slice(1)||"today";
-  const T=[["today","🏠","Today","#today"],["games",sp==="nba"?"🏀":sp==="nhl"?"🏒":sp==="soc"?"⚽":sp==="ufc"?"🥊":"🏈",sp==="ufc"?"Fights":"Games",sp==="nba"?"#nba":sp==="nhl"?"#nhl":sp==="soc"?"#soccer":sp==="ufc"?"#ufc":"#games"],["props","🎯",sp==="ufc"?"Best bets":"Props",sp==="nba"?"#nba-best":sp==="nhl"?"#nhl-props":sp==="soc"?"#soccer-props":sp==="ufc"?"#ufc-props":"#props"],["bets","🎟️","My Bets","#bets"],["more","☰","More",""]];
-  const on=k=>k==="today"?h==="today":k==="games"?(h==="nba"||h==="nhl"||h==="soccer"||h==="ufc"||h.startsWith("ufc-event")||h.startsWith("ufc-fight-")||h.startsWith("soccer-game")||h.startsWith("nhl-game")||h==="games"||h==="nextweek"||h.startsWith("nba-tomorrow")||h.startsWith("nba-game")||h.startsWith("game-")):k==="props"?/^(nba-props|nba-best|props|nhl-props|soccer-props|ufc-props)$/.test(h):k==="bets"?h==="bets":false;
+  const T=[["today","🏠","Today","#today"],["games",sp==="nba"?"🏀":sp==="nhl"?"🏒":sp==="soc"?"⚽":sp==="ufc"?"🥊":sp==="cbb"?"🏀":"🏈",sp==="ufc"?"Fights":"Games",sp==="nba"?"#nba":sp==="nhl"?"#nhl":sp==="soc"?"#soccer":sp==="ufc"?"#ufc":sp==="cfb"||sp==="cbb"?"#"+sp:"#games"],["props","🎯",sp==="ufc"?"Best bets":"Props",sp==="nba"?"#nba-best":sp==="nhl"?"#nhl-props":sp==="soc"?"#soccer-props":sp==="ufc"?"#ufc-props":sp==="cfb"||sp==="cbb"?"#"+sp+"-best":"#props"],["bets","🎟️","My Bets","#bets"],["more","☰","More",""]];
+  const on=k=>k==="today"?h==="today":k==="games"?(h==="nba"||h==="nhl"||h==="soccer"||h==="ufc"||h==="cfb"||h==="cbb"||/^(cfb|cbb)-game-/.test(h)||h.startsWith("ufc-event")||h.startsWith("ufc-fight-")||h.startsWith("soccer-game")||h.startsWith("nhl-game")||h==="games"||h==="nextweek"||h.startsWith("nba-tomorrow")||h.startsWith("nba-game")||h.startsWith("game-")):k==="props"?/^(nba-props|nba-best|props|nhl-props|soccer-props|ufc-props|cfb-best|cbb-best|cfb-props|cbb-props)$/.test(h):k==="bets"?h==="bets":false;
   const nb=typeof uxBetsCount!=="undefined"?uxBetsCount():0;
   bar.innerHTML=T.map(([k,i,l,href])=>k==="more"?`<button data-more="1"><b>${i}</b><span>${l}</span></button>`:`<a href="${href}" class="${on(k)?"on":""}"><b>${i}${k==="bets"&&nb?`<em class="tbn">${nb}</em>`:""}</b><span>${l}</span></a>`).join("");
   bar.querySelector("[data-more]").onclick=moreOpen;
@@ -125,10 +127,11 @@ function moreOpen(){
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
   const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-scores","🧾 Scores"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
   const ufc=[["#ufc","🥊 Fight cards"],["#ufc-props","⭐ Best bets"],["#ufc-results","🧾 Results"]];
+  const cfb=[["#cfb","🏈 Games"],["#cfb-best","⭐ Best bets"],["#cfb-props","🎯 Props"],["#cfb-rank","🏆 Rankings"]],cbb=[["#cbb","🏀 Games"],["#cbb-best","⭐ Best bets"],["#cbb-props","🎯 Props"],["#cbb-rank","🏆 Rankings"]];
   const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#futures","🏆 Futures"],["#calib","🎯 Calibration"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
-  sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${[["nba","NBA",nba],["nhl","NHL",nhl],["nfl","NFL",nfl],["ufc","UFC",ufc]].filter(x=>typeof xFollow==="undefined"||xFollow(x[0])).map(x=>grp(x[1],x[2])).join("")}${grp("More",all)}
+  sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${[["nba","NBA",nba],["nhl","NHL",nhl],["nfl","NFL",nfl],["ufc","UFC",ufc],["cfb","College football",cfb],["cbb","College basketball",cbb]].filter(x=>typeof xFollow==="undefined"||xFollow(x[0])).map(x=>grp(x[1],x[2])).join("")}${grp("More",all)}
    <h3>Odds format</h3><div class="seg" id="msOdds"><button data-f="am" class="${of==="am"?"on":""}">American (−110)</button><button data-f="dec" class="${of==="dec"?"on":""}">Decimal (1.91)</button></div>
    <h3>Theme</h3>${typeof uxThemeSeg!=="undefined"?uxThemeSeg():""}<h3>View</h3>${typeof uxViewSeg!=="undefined"?uxViewSeg():""}
    <button class="btn" id="msClose" style="width:100%;margin-top:14px">Close</button></div>`;

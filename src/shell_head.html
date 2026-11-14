@@ -809,7 +809,7 @@ tr.qhl td{background:color-mix(in srgb,var(--accent,#3987e5) 12%,transparent);fo
 .stag.uf{background:#3a1416;color:#ff9a9d}
 .xchk{display:flex;flex-wrap:wrap;gap:10px}.xchk label{display:flex;align-items:center;gap:6px;font-weight:600;padding:6px 10px;border:1px solid var(--line);border-radius:10px;min-height:40px}
 body.hide-nfl .sportsw [data-s=nfl],body.hide-nba .sportsw [data-s=nba],body.hide-nhl .sportsw [data-s=nhl],body.hide-soc .sportsw [data-s=soc],body.hide-ufc .sportsw [data-s=ufc]{display:none!important}
-body.hide-ufc #ufcToday{display:none}
+body.hide-ufc #ufcToday{display:none}body.hide-cfb .sportsw [data-s=cfb],body.hide-cbb .sportsw [data-s=cbb]{display:none!important}
 body.txt-l main{zoom:1.12}body.txt-xl main{zoom:1.25}
 body.cbsafe .up,body.cbsafe b.up{color:#3b82f6!important}body.cbsafe .dn,body.cbsafe b.dn{color:#f97316!important}
 body.cbsafe [style*="#3fb26b"]{background-color:#2f7fe0!important}body.cbsafe [style*="#e5534b"]{background-color:#f08a24!important}body.cbsafe [style*="background:#d33f49"]{background-color:#f08a24!important}
@@ -825,6 +825,11 @@ details.pkwhy{margin-top:6px}details.pkwhy>summary{cursor:pointer;font-size:12.5
 .pkft{display:inline-block;font-size:11px;font-weight:700;border-radius:8px;padding:1px 7px;margin-top:4px}.pkft.follow{background:color-mix(in srgb,#f97316 25%,var(--card))}.pkft.fade{background:color-mix(in srgb,#3b82f6 25%,var(--card))}
 .pkcal{display:flex;flex-direction:column;gap:8px}.pkcr{display:grid;grid-template-columns:70px 1fr;gap:4px 8px;align-items:center}.pkck{font-weight:700;font-size:13px}.pkcb{position:relative;height:16px;background:var(--line);border-radius:8px;overflow:hidden}
 .pkcb i{position:absolute;left:0;top:0;bottom:0;border-radius:8px}.pkcb i.exp{background:#9aa3ae;opacity:.55}.pkcb i.act{height:8px;top:4px}.pkcb i.act.ok{background:#3fb26b}.pkcb i.act.lo{background:#e5534b}.pkcv{grid-column:2;font-size:12.5px}
+.corank{font-size:11px;font-weight:800;color:var(--text2)}.cobd{display:inline-block;min-width:34px;text-align:center;font-size:11px;font-weight:800;color:#fff;border-radius:6px;padding:2px 4px;margin-right:4px}
+.corow{display:block;color:inherit;text-decoration:none}.copair{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:6px 0}.copair .cosd:last-child{text-align:right;align-items:flex-end}
+.cosd{display:flex;flex-direction:column;gap:2px;color:inherit;text-decoration:none}.cosd.won b{color:#3fb26b}.cosc{font-size:20px}.copair.big b{font-size:16px}.coln{margin-top:2px}
+.cobars{position:relative;display:flex;align-items:flex-end;gap:3px;height:60px;margin:8px 0 2px;border-bottom:1px solid var(--line)}.cobars i{flex:1;display:flex;align-items:flex-start;justify-content:center;border-radius:4px 4px 0 0;background:#8a8f98}.cobars i.o{background:#3fb26b}.cobars i.u{background:#e5534b}
+.cobars i em{font-style:normal;font-size:9.5px;color:#fff;font-weight:700}.cobl{position:absolute;left:0;right:0;border-top:2px dashed #f3c75a}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#121418">
@@ -839,7 +844,7 @@ details.pkwhy{margin-top:6px}details.pkwhy>summary{cursor:pointer;font-size:12.5
 <header><div class="hwrap">
   <div class="brand"><a href="#today" class="brandlink"><div class="logo">RLA</div><span class="bname">Sharp</span></a><a id="fresh" class="fresh" href="#" hidden aria-label="Data freshness"></a><button id="themeBtn" class="themebtn" aria-label="Theme">🌓</button><button id="viewBtn" class="themebtn viewbtn" aria-label="Simple or detailed view">Detailed</button><div id="oddsFmt" class="oddsfmt" title="Odds format"><button data-f="am">American</button><button data-f="dec">Decimal</button></div></div>
   <a id="freshM" class="fresh freshm" href="#" hidden aria-label="Data freshness"></a><div class="psearch"><input id="plSearch" type="search" placeholder="🔍 Search player" autocomplete="off" aria-label="Search player"><div id="plRes" class="psres" hidden></div></div>
-  <div id="sport" class="sportsw"><a href="#games" data-s="nfl">🏈 NFL</a><a href="#nba" data-s="nba">🏀 NBA</a><a href="#nhl" data-s="nhl">🏒 NHL</a><a href="#soccer" data-s="soc">⚽ Soccer</a><a href="#ufc" data-s="ufc">🥊 UFC</a></div>
+  <div id="sport" class="sportsw"><a href="#games" data-s="nfl">🏈 NFL</a><a href="#nba" data-s="nba">🏀 NBA</a><a href="#nhl" data-s="nhl">🏒 NHL</a><a href="#soccer" data-s="soc">⚽ Soccer</a><a href="#ufc" data-s="ufc">🥊 UFC</a><a href="#cfb" data-s="cfb">🏈 CFB</a><a href="#cbb" data-s="cbb">🏀 CBB</a></div>
   <nav id="nav">
     <a href="#today" data-v="today">🏠 Today</a>
     <a href="#games" data-v="games">Games</a>
@@ -883,6 +888,24 @@ details.pkwhy{margin-top:6px}details.pkwhy>summary{cursor:pointer;font-size:12.5
     <a href="#week" data-v="week">📅 Week ahead</a>
     <a href="#record" data-v="record">📒 Record</a>
     <a href="#guide" data-v="guide">Betting 101</a>
+  </nav>
+  <nav id="cfbNav" class="coNav" hidden>
+    <a href="#today" data-v="today">🏠 Today</a>
+    <a href="#cfb" data-v="cfb">Games</a>
+    <a href="#cfb-props" data-v="cfb-props">Props</a>
+    <a href="#cfb-best" data-v="cfb-best">Best bets</a>
+    <a href="#cfb-rank" data-v="cfb-rank">🏆 Rankings</a>
+    <a href="#bets" data-v="bets">🎟️ My Bets</a>
+    <a href="#record" data-v="record">📒 Record</a>
+  </nav>
+  <nav id="cbbNav" class="coNav" hidden>
+    <a href="#today" data-v="today">🏠 Today</a>
+    <a href="#cbb" data-v="cbb">Games</a>
+    <a href="#cbb-props" data-v="cbb-props">Props</a>
+    <a href="#cbb-best" data-v="cbb-best">Best bets</a>
+    <a href="#cbb-rank" data-v="cbb-rank">🏆 Rankings</a>
+    <a href="#bets" data-v="bets">🎟️ My Bets</a>
+    <a href="#record" data-v="record">📒 Record</a>
   </nav>
   <nav id="ufcNav" hidden>
     <a href="#today" data-v="today">🏠 Today</a>
@@ -931,6 +954,8 @@ details.pkwhy{margin-top:6px}details.pkwhy>summary{cursor:pointer;font-size:12.5
   <section id="v-nhl" class="hide"></section>
   <section id="v-soccer" class="hide"></section>
   <section id="v-ufc" class="hide"></section>
+  <section id="v-cfb" class="hide"></section>
+  <section id="v-cbb" class="hide"></section>
   <section id="v-record" class="hide"></section>
   <section id="v-week" class="hide"></section>
   <section id="v-potd" class="hide"></section>

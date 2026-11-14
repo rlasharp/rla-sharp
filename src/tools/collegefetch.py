@@ -9,7 +9,7 @@ Real data only. usage: python3 tools/collegefetch.py <repo root> cfb|cbb > cfb_d
 import json, os, sys, time, datetime as dt, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 R, SP = sys.argv[1], sys.argv[2]
-CFG = {"cfb": {"path": "football/college-football", "grp": 80, "days": 6, "back": 0, "sd": 15.5},
+CFG = {"cfb": {"path": "football/college-football", "grp": 80, "days": 7, "back": 0, "sd": 15.5},
        "cbb": {"path": "basketball/mens-college-basketball", "grp": 50, "days": 2, "back": 0, "sd": 11.0}}[SP]
 SITE = f"https://site.api.espn.com/apis/site/v2/sports/{CFG['path']}/"
 NOW = dt.datetime.now(dt.timezone.utc); ET = dt.timezone(dt.timedelta(hours=-5))
@@ -52,9 +52,13 @@ if RANK:
 # ---------- window games ----------
 d0 = NOW.astimezone(ET).date()
 dates = f"{d0:%Y%m%d}-{(d0 + dt.timedelta(days=CFG['days'])):%Y%m%d}"
-sb = get(SITE + f"scoreboard?groups={CFG['grp']}&limit=500&dates={dates}") or {}
+def day_sb(i):
+    d = d0 + dt.timedelta(days=i)
+    return (get(SITE + f"scoreboard?groups={CFG['grp']}&limit=400&dates={d:%Y%m%d}") or {}).get("events") or []
+with ThreadPoolExecutor(8) as ex: EVS = [e for L in ex.map(day_sb, range(CFG["days"] + 1)) for e in L]
+seen_ = set(); EVS = [e for e in EVS if not (e["id"] in seen_ or seen_.add(e["id"]))]
 G = []
-for e in sb.get("events") or []:
+for e in EVS:
     c = (e.get("competitions") or [{}])[0]
     st = ((c.get("status") or {}).get("type") or {})
     cs = sorted(c.get("competitors") or [], key=lambda x: 0 if x.get("homeAway") == "away" else 1)
