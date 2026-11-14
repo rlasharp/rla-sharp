@@ -798,6 +798,10 @@ tr.qhl td{background:color-mix(in srgb,var(--accent,#3987e5) 12%,transparent);fo
 .xstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(74px,1fr));gap:6px;margin:10px 0 2px}.xstrip>div{display:flex;flex-direction:column;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 4px;text-align:center}
 .xstrip b{font-size:20px;font-weight:800;line-height:1.1}.xstrip span{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.03em;margin-top:2px}.xstrip small{font-size:10.5px;color:var(--text2)}.xstn{margin:2px 0 8px}
 .xback{display:inline-block;font-size:14px;color:var(--text2)}
+.ufbadges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.ufbadge{display:inline-block;font-size:12px;font-weight:700;border-radius:8px;padding:2px 8px;background:var(--line);color:var(--text)}
+.ufbadge.late{background:color-mix(in srgb,#f3c75a 35%,var(--card))}.ufbadge.home{background:color-mix(in srgb,#3fb26b 25%,var(--card))}.ufbadge.div{background:color-mix(in srgb,#8b5cf6 25%,var(--card))}
+.ufdiv{font-size:11px;font-weight:700;color:#8b5cf6}
+.ufcd{display:flex;gap:8px;margin:8px 0 12px}.ufcd>div{flex:1;display:flex;flex-direction:column;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}.ufcd b{font-size:17px}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#121418">
@@ -863,6 +867,7 @@ tr.qhl td{background:color-mix(in srgb,var(--accent,#3987e5) 12%,transparent);fo
     <a href="#ufc-live" data-v="ufc-live">🔴 Live</a>
     <a href="#ufc-props" data-v="ufc-props">Best bets</a>
     <a href="#ufc-results" data-v="ufc-results">Results</a>
+    <a href="#ufc-rank" data-v="ufc-rank">🏆 Rankings</a>
     <a href="#bets" data-v="bets">🎟️ My Bets</a>
     <a href="#record" data-v="record">📒 Record</a>
   </nav>

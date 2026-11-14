@@ -3,7 +3,7 @@
    Prop cards get a 📰 flag when a headline from the last 24 h about the player says he's out / questionable / scratched,
    so late news shows up before the injury report catches up. Headlines are ESPN's, linked to the story; nothing invented. */
 const NEWS={nba:null,nhl:null,nfl:null,t:{},busy:{}};
-const NEWS_URL={nba:"basketball/nba",nhl:"hockey/nhl",nfl:"football/nfl"};
+const NEWS_URL={nba:"basketball/nba",nhl:"hockey/nhl",nfl:"football/nfl",ufc:"mma/ufc"};
 const NEWS_BAD=/\b(ruled out|will not play|won't play|won’t play|out for|out (tonight|today|thursday|friday|saturday|sunday|monday|tuesday|wednesday)|(is|are) out\b|scratched|scratch|sidelined|placed on (ir|injured reserve)|to ir\b|season-ending|suspended|inactive)\b/i;
 const NEWS_Q=/\b(questionable|doubtful|day-to-day|game-time decision|gtd|limited|did not practice|dnp|uncertain|status (is )?(unclear|in doubt))\b/i;
 const NEWS_START=/\b(will start|to start|starting|gets the start|in goal|in net)\b/i;
@@ -26,7 +26,7 @@ async function newsLoad(sp,force){if(location.protocol==="file:"||NEWS.busy[sp])
     NEWS.t[sp]=Date.now();const sig=NEWS[sp].slice(0,8).map(x=>x.h).join("|");const ch=sig!==NEWS["sig"+sp];NEWS["sig"+sp]=sig;return ch}catch(e){NEWS.t[sp]=Date.now();return false}finally{NEWS.busy[sp]=0}}
 function newsAge(at){const m=(Date.now()-Date.parse(at))/6e4;return !isFinite(m)?"":m<60?Math.max(1,Math.round(m))+" min ago":m<1440?Math.round(m/60)+" h ago":Math.round(m/1440)+" d ago"}
 function newsFor(sp,o){const L=NEWS[sp]||[],hrs=o.hrs||48;
-  return L.filter(x=>(Date.now()-Date.parse(x.at))/36e5<=hrs&&((o.teams&&x.tm.some(t=>o.teams.includes(t)))||(o.player&&(x.ath.some(n=>newsNorm(n)===newsNorm(o.player))||x.h.includes(o.player)))))}
+  return L.filter(x=>(Date.now()-Date.parse(x.at))/36e5<=hrs&&((o.teams&&x.tm.some(t=>o.teams.includes(t)))||(o.player&&(x.ath.some(n=>newsNorm(n)===newsNorm(o.player))||x.h.includes(o.player)))||(o.players&&o.players.some(pl=>x.ath.some(n=>newsNorm(n)===newsNorm(pl))||x.h.includes(pl)))))}
 /* a 📰 chip for a player with fresh injury-type news (last 24 h) */
 function newsFlag(sp,nm){const L=newsFor(sp,{player:nm,hrs:24}).filter(x=>x.bad||x.q);if(!L.length)return "";const x=L[0];
   return ` <a class="newsf ${x.bad?"b":"q"}" href="${x.url||"#"}" target="_blank" rel="noopener" title="${(x.h+" — "+x.d).replace(/"/g,"&quot;")}">📰 ${x.bad?"news: out?":"news: questionable"}</a>`}
