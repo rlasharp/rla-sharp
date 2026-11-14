@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-13 23:57Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 01:01Z
 #Atlanta Hawks
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Keshon Gilbert|G|Out|knee inflammation|Nov 20
@@ -14,8 +14,8 @@ Brandon Miller|F|Day-To-Day|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Dailyn Swain|G|Out|back|Nov 14
 Tobe Awaka|F|Out|back|Nov 14
-Dailyn Swain|G|Day-To-Day|back|Nov 13
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
 Evan Mobley|C|Out|toe|Nov 14
@@ -72,7 +72,6 @@ Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 Dejounte Murray|G|Out|ankle|Nov 20
 Bryce McGowens|G|Out|elbow infection|Nov 14
 Yves Missi|C|Out|knee bruise|Nov 14
-Bennedict Mathurin|G|Day-To-Day|thumb sprain|Nov 13
 Trey Murphy III|F|Out|knee tendinitis|Nov 14
 Trendon Watford|F|Out|ankle sprain|Nov 14
 #Oklahoma City Thunder
