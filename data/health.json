@@ -1,20 +1,20 @@
 {
  "auto": {
-  "at": "2026-11-14T22:06:28+00:00",
+  "at": "2026-11-14T22:17:07+00:00",
   "ok": true,
-  "summary": "UFC data FAILED \u2014 kept old:     print(f\"var UFC_RANKS={J(RKL)};  /* ESPN ranking lists: {n: list, r: [[rank, id, name, record, trend]]} */\")                                                              ^ NameError: name 'n' is not defined. Did you mean: 'nm'? \ntrack: nba 2026-11-14: snapshot 10 props, 5 games \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-14T22:04:49Z)\n"
+  "summary": "UFC: 290 fighters, 2775 past fights, 231 requests\ntrack: nba 2026-11-14: snapshot 10 props, 5 games \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-14T22:15:29Z)\n"
  },
  "site": {
-  "at": "2026-11-14T22:06:28+00:00",
+  "at": "2026-11-14T22:17:07+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-14T22:06:28+00:00",
+  "at": "2026-11-14T22:17:07+00:00",
   "ok": true,
   "issue": "",
   "gen": "Sat Nov 14 4:57 PM ET",
-  "odds_at": "2026-11-14T20:11:24+00:00",
+  "odds_at": "2026-11-14T22:11:30+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -1810,6 +1810,16 @@
    "fails": [
     "UFC data FAILED \u2014 kept old:     print(f\"var UFC_RANKS={J(RKL)};  /* ESPN ranking lists: {n: list, r: [[rank, id, name, record, trend]]} */\")                    "
    ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-14T22:17:07+00:00",
+   "what": "ufc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
    "check_failed": false,
    "published": true
   }
