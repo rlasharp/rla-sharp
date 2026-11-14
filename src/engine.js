@@ -212,6 +212,8 @@ function projectGame(g){
   const blend=(p)=>({pf:p.pf*.55+p.pf5*.45,pa:p.pa*.55+p.pa5*.45});
   const a=blend(A),h=blend(H);
   let shp=lg+(h.pf-lg)+(a.pa-lg)+1.2, sap=lg+(a.pf-lg)+(h.pa-lg)-1.2; // home field ≈ 2.4 pts
+  /* 🚑 injuries: take out what the missing players usually produce (injadj.js) */
+  if(typeof iaTeam!=="undefined"){const IH=iaTeam("nfl",g.home),IA_=iaTeam("nfl",g.away);if(IH)shp-=IH.d;if(IA_)sap-=IA_.d}
   shp=Math.max(6,shp);sap=Math.max(6,sap);
   // blend 50/50 with market-implied team totals (from spread + total)
   const L=LINES[g.id];let hp=shp,ap=sap,mh=null,ma=null;

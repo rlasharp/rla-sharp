@@ -22,7 +22,7 @@ function socPEnsure(cb,tids,old){socEnsure(async()=>{try{
     if(!window.SOC_PFILES){if(!SOCPL.legacy)SOCPL.legacy=socScript("soccer_players.js").then(()=>{window.SOC_P_OK=1;Object.assign(SOCPL.have,{all:1})});await SOCPL.legacy}
     else{const need=socPKeys(tids).filter(k=>!SOCPL.have[k]),P=need.map(k=>SOCPL.busy[k]||(SOCPL.busy[k]=socScript("soccer_p_"+k+".js")));
       if(old&&!SOCPL.old)P.push(SOCPL.busyOld||(SOCPL.busyOld=socScript("soccer_old.js")));await Promise.all(P)}
-    try{if(typeof SRCH!=="undefined")SRCH=null}catch(e){}}catch(e){}cb&&cb()})}
+    try{if(typeof SRCH!=="undefined")SRCH=null}catch(e){}if(typeof iaBump!=="undefined"){iaBump();iaSocAll()}}catch(e){}cb&&cb()})}
 const socE=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const socO=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
 const socImp=o=>o==null?null:o<0?-o/(-o+100):100/(o+100);
@@ -268,7 +268,8 @@ function socGame(el,id){const f=socFx(id);if(!f){el.innerHTML=`<p><a href="#socc
   const body=el.querySelector("#scBody"),LZ=(t,fn)=>typeof gpLazy!=="undefined"?gpLazy(t,fn):fn();
   const summary=()=>{let pick="",props=[];try{const x=socPred(f);if(x)pick=`<b>${socE(socTm(f.h))} ${x.score[0]}–${x.score[1]} ${socE(socTm(f.a))}</b> <span class="small">${socE(x.res)}</span>`}catch(e){}
     try{props=socBestProps().filter(x=>x.f&&x.f.id===f.id&&x.our>=.45).slice(0,2).map(x=>`<b>${socE(x.nm)}</b> ${socE((SOC_MK[x.mk]||[])[1]||x.mk)}${x.line!=null?" "+x.line:""} <span class="small">${x.price!=null?oddsFmt(x.price):""}${x.our!=null?` · our chance ${Math.round(x.our*100)}%`:""}</span>`)}catch(e){}
-    return gpSummary({pick,props})};
+    let ia="";try{if(typeof iaSocApply!=="undefined"){iaSocApply(f);ia=iaNote("soc",[f.h,f.a],f,[socTm(f.h),socTm(f.a)])}}catch(e){}
+    return gpSummary({pick,props,ia})};
   const draw=()=>{const t=({game:"ov"}[SC.tab]||SC.tab||"ov");
     if(t==="props"){body.innerHTML=`<div class="small">Loading players…</div>`;socPEnsure(()=>{body.innerHTML=(typeof socParlayCard!=="undefined"?socParlayCard(f):"")+socGameProps(f);socWire(body)},[f.h,f.a]);return}
     if(t==="ov")body.innerHTML=`${summary()}<div id="scLiveBox" data-id="${f.id}">${socLiveStats(f)}</div>${socVerdictHtml(f,1)}${socPredCard(f)}`
@@ -327,7 +328,8 @@ function socPlayer(el,aid){socPEnsure(()=>{const P=window.SOC_P&&SOC_P[aid];if(!
   const tot=k=>G.reduce((a,g)=>a+(socVal(g,k)||0),0),mins=G.reduce((a,g)=>a+g[2],0),p90=k=>mins?(tot(k)/mins*90).toFixed(2):"–";
   const props=fx?(SOC_PROPS||[]).filter(r=>r[5]===fx.id&&r[7]===aid).map(r=>socPropEval(r,fx)):[];
   const hr=(mk,line)=>{const [h,n]=socHitP(aid,mk,line,10);return n?`<b>${h}/${n}</b>`:"–"};
-  el.innerHTML=`<p><a href="#soccer">← Soccer</a></p><div class="phead tch" style="--tc:${(SOC_TM[tid]||[])[3]||"#555"}"><div><h1>${socE(nm)}</h1><p class="sub">${socBadge(tid)} ${socE(socTmFull(tid))} · ${socE(pos||"")} · ${G.length} appearances (${G.filter(g=>g[1]).length} starts) · ${mins} minutes</p></div><div></div></div>
+  el.innerHTML=`<p>${typeof xBack!=="undefined"?xBack("#soccer","Back"):`<a href="#soccer">← Soccer</a>`}</p><div class="phead tch" style="--tc:${(SOC_TM[tid]||[])[3]||"#555"}"><div><h1>${socE(nm)}</h1><p class="sub">${socBadge(tid)} ${socE(socTmFull(tid))} · ${socE(pos||"")} · ${G.length} appearances (${G.filter(g=>g[1]).length} starts) · ${mins} minutes</p></div><div></div></div>
+  ${typeof xStrip!=="undefined"?(()=>{const n=G.length||1,T=i=>G.reduce((a,g)=>a+(+g[i]||0),0),pg=i=>(T(i)/n).toFixed(1),gk=socLineOf(pos)===0;return xStrip(gk?[["Apps",G.length],["Min/g",Math.round(mins/n)],["Saves/g",pg(11)],["Yellow",T(9)]]:[["Goals",T(5)],["Assists",T(6)],["Shots/g",pg(3)],["On target/g",pg(4)],["Min/g",Math.round(mins/n)],["Fouls/g",pg(7)]],`${G.length} appearances`)})():""}
   ${fx?`<div class="card"><h2>Next: ${fx.h===tid?"vs":"@"} ${socE(socTm(fx.h===tid?fx.a:fx.h))} <span class="small">${socE(socDayS(socDay(fx.t)))} · <a href="#soccer-game-${fx.id}">match page →</a></span></h2>${props.map(x=>socPropRow(x,fx)).join("")||`<div class="small">No props posted for him yet.</div>`}</div>`:""}
   ${socFiltUI(aid)}
   ${(()=>{const K=socLineOf(pos)===0&&socGKSeason(aid);return K?`<div class="card"><h2>🧤 In goal this season <span class="small">${K.n} matches (45+ min)</span></h2><div class="pbio"><div><b>${(K.sv/K.n).toFixed(1)}</b>Saves / match</div><div><b>${K.sv}</b>Saves</div><div><b>${K.pct!=null?Math.round(K.pct*100)+"%":"–"}</b>Save %</div><div><b>${K.ga}</b>Conceded</div><div><b>${K.cs}</b>Clean sheets</div></div>
@@ -338,7 +340,7 @@ function socPlayer(el,aid){socPEnsure(()=>{const P=window.SOC_P&&SOC_P[aid];if(!
   ${last.map(g=>{const r=RI[g[0]];const opp=r?(r[3]===tid?r[4]:r[3]):null;return `<tr class="sclink" data-href="#soccer-match-${g[0]}"><td class="small"><a href="#soccer-match-${g[0]}">${r?r[1].slice(5,10):""}</a></td><td>${r?(r[3]===tid?"":"@")+socE(socTm(opp)):""} <span class="small">${r?socE((SOC_LG[r[2]]||{}).sh||""):""}</span></td><td>${g[2]}${g[1]?"":"*"}</td><td>${g[3]}</td><td>${g[4]}</td><td>${g[5]}</td><td>${g[6]}</td><td>${g[7]}</td><td>${g[8]}</td><td>${socLineOf(pos)===0?(g[11]||0):""}${g[9]?"🟨":""}${g[10]?"🟥":""}</td></tr>`}).join("")}</tbody></table></div><div class="small">* came off the bench (minutes estimated from the substitution time)</div></div>${socFoot()}`})}
 
 /* ---------- router + Today ---------- */
-function soccerRoute(h){const el=document.getElementById("v-soccer");if(!el)return;
+function soccerRoute(h){const el=document.getElementById("v-soccer");if(!el)return;if(window.SOC_OK&&typeof iaSocAll!=="undefined")iaSocAll();
   if(!window.SOC_OK){el.innerHTML=`<div class="small" style="padding:30px 0;text-align:center">Loading soccer…</div>`;socEnsure(()=>{if(!window.SOC_OK){el.innerHTML=`<div class="card">Couldn't load the soccer data. Check your connection and try again.</div>`;return}if((location.hash||"").slice(1).startsWith("soccer"))soccerRoute(decodeURIComponent((location.hash||"").slice(1)))});return}
   if(h.startsWith("soccer-game-")){SC.tab=h.endsWith("-props")?"props":SC.tab;return socGame(el,h.slice(12).replace(/-props$/,""))}
   if(h==="soccer-props")return socProps(el);if(h==="soccer-table")return socTable(el);if(h.startsWith("soccer-player-"))return socPlayer(el,h.slice(14));

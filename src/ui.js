@@ -605,9 +605,10 @@ function viewPlayer(){
   const sim=opp?S.playerLogs.filter(l=>l.opp===opp&&l.pos===pl.pos&&l.season===CUR).sort((a,b)=>b.week-a.week).slice(0,8):[];
   const ouTag=v=>v>line?'<span class="ou o">OVER</span>':v<line?'<span class="ou u">UNDER</span>':'<span class="ou p">PUSH</span>';
   const outSt=nflOutStatus(pl.name);
-  $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← All props</a>${outSt?`<div class="info" style="margin-top:12px"><span>🚑 <b>${esc(pl.name)} is ruled out (${esc(outSt)})</b> — he has no props this week. His past games are below for reference.</span></div>`:""}${typeof newsCard!=="undefined"?newsCard("nfl",{player:pl.name,hrs:72},"News about "+esc(pl.name)):""}
+  $("#v-props").innerHTML=`<a class="btn" href="#props" id="back">← Back</a>${outSt?`<div class="info" style="margin-top:12px"><span>🚑 <b>${esc(pl.name)} is ruled out (${esc(outSt)})</b> — he has no props this week. His past games are below for reference.</span></div>`:""}
    <div class="row phead tch" style="margin:16px 0 6px;--tc:${(TEAMS[pl.team]&&TEAMS[pl.team][1])||"#555"}">${badge(pl.team)}<h1 style="margin:0">${esc(pl.name)}</h1>${typeof INJ_P!=="undefined"&&INJ_P[pl.name]?injTag(pl.name):(typeof QUESTIONABLE!=="undefined"&&QUESTIONABLE[pl.name]?`<span class="tag" style="background:#3a2a10;color:#fab219">⚠ ${QUESTIONABLE[pl.name]}</span>`:"")}</div>
    <div class="pline">${(()=>{const U=(typeof USAGE_RAW!=="undefined"&&USAGE_RAW[pl.name])||null,su=U&&U.s;return [pl.pos+" · "+short(pl.team),o?`${o.home?"vs":"@"} ${short(opp)} · ${o.g.when}`:"No game this week",su&&su.snap!=null?su.snap+"% snaps":"",su&&su.tpg?fmt(su.tpg,1)+" targets/game":"",su&&su.cpg&&pl.pos!=="WR"&&pl.pos!=="TE"?fmt(su.cpg,1)+" carries/game":""].filter(Boolean).map(x=>`<span>${x}</span>`).join("")})()}</div>
+   ${typeof nflStrip!=="undefined"?nflStrip(pl.name,pl.pos):""}${typeof newsCard!=="undefined"?newsCard("nfl",{player:pl.name,hrs:72},"News about "+esc(pl.name)):""}
    <div class="qbrow">${typeof nflQbChip!=="undefined"?nflQbChip(pl)+nflWxChip(pl)+(typeof xfScriptChip!=="undefined"?xfScriptChip(pl):"")+(typeof nfRushChip!=="undefined"?nfRushChip(pl):""):""}</div>${typeof nflUseBars!=="undefined"?nflUseBars(pl):""}
    ${o&&nflStarted(o.g)?`<div class="info" style="margin:12px 0"><span>🔒 His game has kicked off — this week's pregame lines are closed.</span></div>`:""}
    ${opp?`<div class="card" style="margin-top:12px;padding:12px">${nflAllowTiles(opp,pl.pos,k)}</div>`:""}
@@ -622,7 +623,7 @@ function viewPlayer(){
    ${pl.pos==="QB"&&typeof vxPassFor!=="undefined"?`<div class="section">${vxPassFor(pl.team,opp)}</div>`:""}
    ${nflExtrasCard(pl,k,line,CL,CLall,opp,unit,qmode,QM,ouTag,QA)}
    ${typeof xaTrendsCard!=="undefined"?xaTrendsCard("nfl",pl.name):""}`;
-  $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;try{history.replaceState(null,"","#props")}catch(x){}viewProps()};
+  $("#back").onclick=e=>{e.preventDefault();S.prop.open=false;if(typeof XNAV!=="undefined"&&XNAV>0){XNAV-=2;history.back();return}try{history.replaceState(null,"","#props")}catch(x){}viewProps()};
   {const px=$("#pxNfl");if(px&&typeof pxFilterWire!=="undefined")pxFilterWire(px)}
   if(typeof pxSwipe!=="undefined")pxSwipe($("#pxNfl"),"#v-props [data-m]");
   if(typeof pxRecentAdd!=="undefined")pxRecentAdd("nfl",pl.name,k);

@@ -131,8 +131,11 @@ function nbaModel(a,h){
   const r=t=>t.mar*t.g/(t.g+5);
   const m=r(H)-r(A)+NBA_HCA;
   const tot=(H.ppg+A.opp)/2+(A.ppg+H.opp)/2;
-  const z=m/12,p=1/(1+Math.exp(-1.702*z));
-  return {m:Math.round(m*2)/2,tot:Math.round(tot*2)/2,p,g:Math.min(A.g,H.g)};
+  /* 🚑 injuries: take out what the missing players usually score (injadj.js) */
+  const IA_=typeof iaTeam!=="undefined"?[iaTeam("nba",a),iaTeam("nba",h)]:[null,null],da=IA_[0]?IA_[0].d:0,dh=IA_[1]?IA_[1].d:0;
+  const m2=m-dh+da,tot2=tot-dh-da;
+  const z=m2/12,p=1/(1+Math.exp(-1.702*z));
+  return {m:Math.round(m2*2)/2,tot:Math.round(tot2*2)/2,p,g:Math.min(A.g,H.g),ia:da||dh?{a:da,h:dh}:null};
 }
 /* regulars (24+ min a game) listed Out who have played this season — the model's numbers include them */
 function nbaKeyOut(tm){return nbaOutNames(tm).filter(n=>{const p=NBA_LOGS[n];return p&&p.tm===tm&&nbaAvg(p,"min")>=24})}
@@ -1071,13 +1074,14 @@ function nbaPlayer(el,nm){nm=(typeof xMkFromHash!=="undefined"?xMkFromHash(nm,k=
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div><div class="small swh">👆 Swipe the chart left or right for the next prop</div>
 ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null,mn0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[4]||0),0)/p.g.length):null,tp0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[15]||0),0)/p.g.length):null;return {fga:fg0,min:mn0,tpa:tp0>0?tp0:null,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":R0.rest===1?"r1":"r2"):"",oppT:g0?(g0.h===p.tm?g0.a:g0.h):"",opp:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"opp"):"",pace:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"pace"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
     <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}${typeof vxScatter!=="undefined"?vxScatter(nm,r[1],r[2]):""}${typeof vxLnRec!=="undefined"?vxLnRec("nba",nm,r[1]):""}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":(typeof OUT_DROP!=="undefined"&&OUT_DROP.nba.has(nm)?"🚑 He's ruled out — his props are removed.":"No prop lines posted for him today.")}</span></div>`:"");
-  el.innerHTML=`<a href="#${back}" class="small" style="color:var(--text2)">← ${backL}</a>
+  el.innerHTML=`${xBack("#"+back,"Back")}
   <div class="phead tch" style="--tc:${nbaCol(p.tm)}">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
     <div style="min-width:0"><h1 style="margin:0">${nbaEsc(nm)}${nbaInjChip(inj)}</h1>
     <div class="sub" style="margin:4px 0 0">${posName?posName+" · ":""}${nbaTm(p.tm)}</div></div>
   </div>
   <div class="pline">${[bio&&bio[0]?nbaEsc(bio[0]):"",bio&&bio[1]?nbaEsc(String(bio[1]).replace(" lbs",""))+" lbs":"",bio&&bio[2]?nbaEsc(bio[2])+" yrs":"",bio&&bio[4]!==""&&bio[4]!=null?nbaEsc(bio[4])+" NBA seasons":"",p.g.length+" games",nbaF(nbaAvg(p,"min"))+" min/game"].filter(Boolean).map(x=>`<span>${x}</span>`).join("")}</div>
+  ${typeof nbaStrip!=="undefined"?nbaStrip(p):""}
   ${g?`<div class="info"><span>Today ${g.a===p.tm?"@":"vs"} <b>${nbaTm(opp)}</b>, ${g.t} ET${dvpAvg!=null?`. ${opp} has allowed ${nbaF(dvpAvg)} points a game to ${nbaPosWord(p.p5)} over its last 5 (NBA average ${nbaF(dvp.lg)}).`:""}</span></div>`:""}
   ${typeof nbaRoleTag!=="undefined"?nbaRoleTag(nm):""}
   ${typeof newsCard!=="undefined"?newsCard("nba",{player:nm,hrs:72},"News about "+nbaEsc(nm)):""}

@@ -312,8 +312,9 @@ function nhlPlayer(el,nm){
     :`${w.s[0]} GP · ${w.s[1]} G · ${w.s[2]} A · ${w.s[3]} PTS · ${(w.s[4]/w.s[0]).toFixed(1)} SOG/g · ${(w.s[5]/w.s[0]).toFixed(1)} BLK/g · ${(w.s[6]/w.s[0]).toFixed(1)} hits/g · ${w.s[7]} PPG · ${w.s[8]} min TOI`;
   const lg=isG?w.g.slice().reverse().map(x=>`<tr class="${x[9]===1?"nhprev":""}"><td>${x[9]===1?"'25 ":""}${nhE(x[0].slice(5))}</td><td>${nhLab(x)}</td><td>${x[7]?"✔":""}</td><td>${x[3]}</td><td>${x[4]}</td><td>${x[5]}</td><td>${x[3]?(x[4]/x[3]).toFixed(3).slice(1):"–"}</td><td>${Math.round(x[6]/60)}</td></tr>`).join("")
     :w.g.slice().reverse().map(x=>`<tr class="${x[16]===1?"nhprev":""}"><td>${x[16]===1?"'25 ":""}${nhE(x[0].slice(5))}</td><td>${nhLab(x)}</td><td>${x[3]}</td><td>${x[4]}</td><td>${x[5]}</td><td>${x[6]}</td><td>${x[7]}</td><td>${x[8]}</td><td>${x[11]}</td><td>${x[13]!=null&&(x[13]+x[14])?x[13]+"/"+(x[13]+x[14]):"–"}</td><td>${(x[10]/60).toFixed(1)}</td></tr>`).join("");
-  el.innerHTML=`<p class="small"><a href="${g?"#nhl-game-"+g.id:"#nhl"}">← ${g?"Game":"NHL"}</a></p>
+  el.innerHTML=`<p class="small">${xBack(g?"#nhl-game-"+g.id:"#nhl","Back")}</p>
    <div class="phead tch" style="--tc:${NH_COL[w.tm]||"#555"}"><div>${nhBadge(w.tm)}</div><div><h1 style="margin:0">${nhE(nm)}${nhInjChip(nm)}</h1><div class="small">${nhE(nhTm(w.tm))} · ${nhE(isG?"G":w.pos)}${g?` · next: ${g.a===w.tm?"@":"vs"} ${nhE(nhTm(opp))} ${g.d===NHL_DATE?"today":"tomorrow"} ${nhE(g.t)}`:""}</div></div></div>
+   ${typeof nhlStrip!=="undefined"?nhlStrip(w,isG):""}
    ${typeof newsCard!=="undefined"?newsCard("nhl",{player:nm,hrs:72},"News about "+nhE(nm)):""}
    ${typeof pxSideTg!=="undefined"?pxSideTg():""}
    ${nhFiltUI(nm,isG)}
@@ -370,7 +371,7 @@ function nhLgAvg(k){const v=Object.values(NHL_TEAM).map(t=>t[k]).filter(x=>x!=nu
 /* our estimate (v2): expected goals = league avg x attack x defence, where attack/defence blend goals (50%),
    chances near the net (30%) and shots (20%); then special teams, home ice, rest and the probable goalie. Poisson for the rest. */
 function nhLgRate(f){let n=0,s=0;for(const t of Object.values(NHL_TEAM)){const v=f(t);if(v!=null&&isFinite(v)){s+=v;n++}}return n?s/n:null}
-function nhProject(g){const A=NHL_TEAM[g.a],H=NHL_TEAM[g.h];if(!A||!H||A.gf==null||H.gf==null)return null;if(g.proj)return nhProjFrom(g,g.proj);const lg=nhLgAvg("gf")||3.0,lsv=NH_LGSV();
+function nhProject(g){const A=NHL_TEAM[g.a],H=NHL_TEAM[g.h];if(!A||!H||A.gf==null||H.gf==null)return null;if(g.proj)return nhProjFrom(g,typeof iaNhlProj!=="undefined"?iaNhlProj(g,g.proj):g.proj);const lg=nhLgAvg("gf")||3.0,lsv=NH_LGSV();
   const lhd=nhLgRate(t=>t.fa&&t.fa.hd&&t.fa.hd[0]),lsf=nhLgRate(t=>t.sf),lpp=nhLgRate(t=>t.pp),lpk=nhLgRate(t=>t.pk);
   const k=T=>Math.min(.75,(T.gp||0)/40+.3),rg=(r,T)=>1+(r-1)*k(T);
   const att=T=>rg(.5*(T.gf/lg)+.3*(T.fa&&T.fa.hd&&lhd?T.fa.hd[0]/lhd:T.gf/lg)+.2*(T.sf&&lsf?T.sf/lsf:1),T);
