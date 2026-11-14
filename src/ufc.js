@@ -169,10 +169,10 @@ function ufPredict(f){if(f.st==="post")return "";const E=ufEst(f);if(!E)return "
    <div class="small">From the odds' win chance and both fighters' careers (method of wins and losses, how often they go the distance). Research, not a guarantee.</div></div>`}
 function ufFightPage(el,id){const f=ufFight(id);if(!f){el.innerHTML=ufHead("Fight not found.")+`<a href="#ufc">← UFC</a>`;return}const M=ufML(f),[a,b]=f.c;
   el.innerHTML=`<p><a href="#ufc-event-${f.ev.id}">← ${ufE(f.ev.n)}</a></p>
-   <div class="card ufhero">${f.ti?`<div class="uftitle">🏆 ${ufE(f.ti)}</div>`:""}<div class="row" style="align-items:center;gap:6px"><span class="small">${ufE(f.wc)} · ${f.rd} rounds · ${ufDate(f.t||f.ev.d)}</span><span class="sp"></span><button class="obtn snapb" data-snap="ufc|${f.id}|">📸 Snapshot</button></div>
+   <div class="card ufhero">${f.ti?`<div class="uftitle">🏆 ${ufE(f.ti)}</div>`:""}<div class="row" style="align-items:center;gap:6px"><span class="small">${ufE(f.wc)} · ${f.rd} rounds · ${ufDate(f.t||f.ev.d)}</span><span class="sp"></span><button class="obtn snapb" data-snap="ufc|${f.id}|">📸 Snapshot</button>${typeof xPrintBtn!=="undefined"?xPrintBtn():""}</div>
     <div class="ufpair big">${f.c.map((c,i)=>`<div class="ufside${f.st==="post"&&c[3]?" won":""}"><a href="#ufc-fighter-${c[0]}"><b>${ufE(c[1])}</b></a><span class="small">${ufE(((window.UFC_F||{})[c[0]]||{}).nick||"")}</span><span class="small">${ufE(c[2])}${c[4]?" · "+ufE(c[4]):""}</span>${ufRankHtml(c[0])}${M?`<span class="ufml">${ufAm(M.ml[i][0])} <small>${ufPct(M.p[i])} to win</small></span>`:""}${ufTagHtml(c[0])}</div>${i===0?`<span class="ufvs">vs</span>`:""}`).join("")}</div>
     ${f.st==="post"?`<div class="nbsay">🏁 ${ufE(f.c.find(c=>c[3])?f.c.find(c=>c[3])[1]+" wins":"Result")}${f.m?` · ${ufE(f.m)}${f.md?" ("+ufE(f.md)+")":""} · R${f.r} ${ufE(f.clk||"")}`:""}</div>`:M?`<div class="nbwp" style="margin-top:8px"><div style="width:${Math.round(M.p[0]*100)}%;background:#d33f49"></div><div style="width:${100-Math.round(M.p[0]*100)}%;background:#3987e5"></div></div><div class="small" style="text-align:center">win chance from the odds (vig removed)</div>`:""}</div>
-   ${ufBadges(f)}${f.st==="post"?ufJudges(f):""}${ufTape(f)}${ufFlags(f)}${ufPredict(f)}${ufMethods(f)}${ufStrikes(f)}${ufOddsBoard(f)}${ufVolume(f)}${ufCommon(f)}${ufOppQ(f)}${ufLength(f)}${ufTrendCard(f)}
+   ${ufBadges(f)}${f.st==="post"?ufJudges(f):""}${ufTape(f)}${ufFlags(f)}${ufPredict(f)}${ufMethods(f)}${ufStrikes(f)}${ufOddsBoard(f)}${ufVolume(f)}${ufCommon(f)}${ufOppQ(f)}${ufEdges(f)}${ufLength(f)}${ufFinishCard(f)}${ufCardioCard(f)}${ufTrendCard(f)}
    ${typeof newsCard!=="undefined"?newsCard("ufc",{players:f.c.map(c=>c[1]),hrs:240},"News about "+ufE(ufLast(f.c[0][1]))+" & "+ufE(ufLast(f.c[1][1]))):""}
    <div class="grid g2">${f.c.map(c=>`<div class="card"><h2>${ufE(c[1])} · last fights</h2>${ufHist(c[0],5)}<a class="small" href="#ufc-fighter-${c[0]}">All his fights →</a></div>`).join("")}</div>`}
 function ufHist(aid,n){const F=(window.UFC_F||{})[aid];if(!F||!F.h.length)return `<div class="small">No UFC fights on file.</div>`;
@@ -200,6 +200,8 @@ function ufFighterPage(el,aid){const F=(window.UFC_F||{})[aid];if(!F){el.innerHT
       return `<div class="small" style="margin-top:6px">Last ${W.length} fights: won ${by("W","KO").length} by KO, ${by("W","SUB").length} by submission, ${by("W","DEC").length} on the cards${rd("W")}. Lost ${by("L","KO").length} by KO, ${by("L","SUB").length} by submission, ${by("L","DEC").length} on the cards.</div>`})()}</div>
    <div class="card"><h2>Form trend <span class="small">· sig. strikes per minute</span></h2>${ufTrend(aid)}</div>
    <div class="card"><h2>Where he lands and gets hit</h2><div class="ufb2">${(()=>{const X=ufSplit(aid)||{};return ufBody(X.land,"#d33f49","Lands")+ufBody(X.hit,"#8a8f98","Gets hit")})()}</div></div>
+   <div class="card"><h2>Finish timing</h2>${ufFinishLine(aid)}</div>
+   ${(()=>{const k=ufCardio(aid),f1=v=>v==null?"–":v.toFixed(1);return k.nL||k.nS?`<div class="card"><h2>Cardio check</h2><div class="pbio" style="margin:0"><div><b>${f1(k.lL)}</b>Strikes / min, fights 10+ min (${k.nL})</div><div><b>${f1(k.lS)}</b>Strikes / min, under 10 min (${k.nS})</div><div><b>${k.fiveN}</b>Fights past 15 min</div></div></div>`:""})()}
    ${ufOppQ1(aid)}
    <div class="card"><h2>Fight by fight</h2>${ufHist(aid,10)}</div>
    ${typeof newsCard!=="undefined"?newsCard("ufc",{player:F.n,hrs:336},"News about "+ufE(F.n)):""}`}
@@ -250,7 +252,7 @@ function ufBody(sh,col,lab){if(!sh)return `<div class="ufbody"><div class="small
    <g fill="currentColor" font-size="13" font-weight="700"><text x="80" y="25">${Math.round(sh[0]*100)}%</text><text x="80" y="72">${Math.round(sh[1]*100)}%</text><text x="80" y="135">${Math.round(sh[2]*100)}%</text></g>
    <g fill="currentColor" font-size="9" opacity=".7"><text x="80" y="37">head</text><text x="80" y="84">body</text><text x="80" y="147">legs</text></g></svg></div>`}
 /* one ESPN-style mirrored row (bars grow out from the middle) */
-function ufMir(lab,v,txt){const mx=Math.max(.0001,...v.map(x=>x||0)),bt=v[0]==null||v[1]==null||v[0]===v[1]?-1:v[0]>v[1]?0:1;
+function ufMir(lab,v,txt,low){const mx=Math.max(.0001,...v.map(x=>x||0)),bt=v[0]==null||v[1]==null||v[0]===v[1]?-1:(v[0]>v[1])!==!!low?0:1;   /* low = smaller is better (highlight that side) */
   return `<div class="ufmx"><div class="l"><span>${txt[0]}</span><i style="width:${(v[0]||0)/mx*100}%" class="${bt===0?"on":""}"></i></div><b>${lab}</b><div class="r"><i style="width:${(v[1]||0)/mx*100}%" class="${bt===1?"on":""}"></i><span>${txt[1]}</span></div></div>`}
 function ufStrikes(f){const X=f.c.map(c=>ufSplit(c[0])||{}),S=f.c.map(c=>ufStats(c[0])||{}),nm=i=>ufE(ufLast(f.c[i][1]));if(!X[0].n&&!X[1].n)return "";
   const pc=v=>v==null?"–":Math.round(v*100)+"%",pos=i=>X[i].pos||[null,null,null];
@@ -404,3 +406,39 @@ function ufRankPage(el){const L=(window.UFC_RANKS||[]).filter(x=>x.r&&x.r.length
      return `<div class="ufval"><b>${rk===0?"C":"#"+rk}</b>${inF?`<a href="#ufc-fighter-${aid}">${ufE(nm)}</a>`:`<span>${ufE(nm)}</span>`}<span class="small">${ufE(rec)}${tr&&tr!=="-"?` · ${ufE(tr)}`:""}</span>${nx?`<a class="small" href="#ufc-fight-${nx.id}">🥊 vs ${ufE(ufLast(nx.c.find(c=>c[0]!==aid)[1]))} · ${ufDate(nx.t||nx.ev.d)}</a>`:`<span class="small">no fight booked</span>`}</div>`}).join("")}</div>
    <p class="note">Rankings: ESPN's panel. Trend = moves since the last update.</p>`;
   el.querySelectorAll("[data-ufrk]").forEach(b=>b.onclick=()=>{UFC.rk=b.dataset.ufrk;ufRankPage(el)})}
+
+/* ===== finish timing, cardio check, reach & height edge ===== */
+/* when his fights end: each finish he scored (green) or suffered (red) on a 15 / 25 minute line, decisions at the end */
+function ufFinishLine(aid,col){const H=(((window.UFC_F||{})[aid]||{}).h)||[];const R=H.filter(r=>r[8]&&(r[3]==="W"||r[3]==="L"));if(!R.length)return `<div class="small">No fights on file.</div>`;
+  const five=R.some(r=>r[8]>900||(+r[6]||0)>3),T=five?1500:900,W=320,X=s=>8+(W-16)*Math.min(1,s/T);
+  const dots=R.map((r,k)=>{const fin=r[4]!=="DEC",c=r[3]==="W"?"#3fb26b":"#e5534b",y=fin?(r[3]==="W"?22:46):34,x=fin?X(r[8]):X(T)+(k%3-1)*3;
+    return `<circle cx="${x.toFixed(1)}" cy="${y}" r="${fin?6:4}" fill="${c}" fill-opacity="${fin?.9:.45}"><title>${r[3]} vs ${ufE(r[2])} · ${ufE(r[4])} ${r[6]?"R"+r[6]:""} ${ufE(r[7]||"")}</title></circle>`}).join("");
+  const ticks=Array.from({length:(T/300)+1},(_,i)=>`<line x1="${X(i*300)}" x2="${X(i*300)}" y1="12" y2="56" stroke="currentColor" stroke-opacity=".15"/>${i<T/300?`<text x="${X(i*300+150)}" y="68" font-size="10" text-anchor="middle" fill="currentColor" opacity=".6">R${i+1}</text>`:""}`).join("");
+  const fw=R.filter(r=>r[3]==="W"&&r[4]!=="DEC"),fl=R.filter(r=>r[3]==="L"&&r[4]!=="DEC"),avg=a=>a.length?a.reduce((s,r)=>s+r[8],0)/a.length:null,mm=s=>s==null?"–":`${Math.floor(s/60)}:${String(Math.round(s%60)).padStart(2,"0")}`;
+  const early=fw.filter(r=>r[8]<=300).length;
+  return `<svg viewBox="0 0 ${W} 74" class="uftr" role="img" aria-label="When his fights ended">${ticks}<text x="${W-6}" y="10" font-size="9" text-anchor="end" fill="currentColor" opacity=".6">decisions →</text>${dots}</svg>
+   <div class="small"><span style="color:#3fb26b">●</span> he finished them (top) · <span style="color:#e5534b">●</span> he got finished (bottom) · faded = went to the judges.<br>
+   ${fw.length?`His finishes come at ${mm(avg(fw))} on average${early?` — ${early} of ${fw.length} in round 1`:""}.`:"No finishes in these fights."}${fl.length?` He's been finished at ${mm(avg(fl))} on average.`:""}</div>`}
+function ufFinishCard(f){return `<div class="card"><h2>Finish timing <span class="small">· last ${Math.min(10,Math.max(...f.c.map(c=>((((window.UFC_F||{})[c[0]]||{}).h)||[]).length)))} fights</span></h2><div class="grid g2">${f.c.map((c,i)=>`<div><div class="ufbn" style="color:${UF_COL[i]}">${ufE(c[1])}</div>${ufFinishLine(c[0])}</div>`).join("")}</div></div>`}
+/* cardio check: strikes per minute in his long fights (10+ min) vs his short ones — does his output hold up? */
+function ufCardio(aid){const H=((((window.UFC_F||{})[aid]||{}).h)||[]).filter(r=>r[8]>=60&&r[10]!=null&&r[12]!=null);const L=H.filter(r=>r[8]>=600),S=H.filter(r=>r[8]<600);
+  const rate=(a,i)=>{const m=a.reduce((s,r)=>s+r[8],0)/60;return m?a.reduce((s,r)=>s+(+r[i]||0),0)/m:null};
+  return {nL:L.length,nS:S.length,lL:rate(L,10),lS:rate(S,10),aL:rate(L,12),aS:rate(S,12),tdL:rate(L,14),fiveN:H.filter(r=>r[8]>900).length,five:rate(H.filter(r=>r[8]>900),10),all:rate(H,10)}}
+function ufCardioCard(f){const K=f.c.map(c=>ufCardio(c[0])),nm=i=>ufE(ufLast(f.c[i][1])),f1=v=>v==null?"–":v.toFixed(1);if(!K[0].nL&&!K[1].nL)return "";
+  const say=K.map((k,i)=>{if(k.nL<2||k.nS<2||k.lL==null||k.lS==null)return k.nL?`${nm(i)}: only ${k.nL} long fight${k.nL>1?"s":""} on file.`:`${nm(i)}: no fights past 10 minutes on file — untested late.`;
+    const d=(k.lL-k.lS)/Math.max(.1,k.lS);return `${nm(i)} ${d>=.1?"keeps a higher pace in long fights":d<=-.15?"slows down in long fights":"holds his pace in long fights"} (${f1(k.lL)} a minute in fights past 10 min vs ${f1(k.lS)} in shorter ones).`});
+  const five=f.rd===5?K.map((k,i)=>k.fiveN?`${nm(i)} has gone past 15 minutes ${k.fiveN} time${k.fiveN>1?"s":""} (${f1(k.five)} strikes a minute).`:`${nm(i)} has never gone past 15 minutes in the fights on file.`):[];
+  return `<div class="card"><h2>Cardio check <span class="small">· sig. strikes per minute, long vs short fights</span></h2><div class="ufmh"><span><b>${nm(0)}</b></span><span></span><span><b>${nm(1)}</b></span></div>
+   ${ufMir("Fights 10+ min",[K[0].lL,K[1].lL],[`${f1(K[0].lL)} <small>(${K[0].nL})</small>`,`${f1(K[1].lL)} <small>(${K[1].nL})</small>`])}${ufMir("Under 10 min",[K[0].lS,K[1].lS],[`${f1(K[0].lS)} <small>(${K[0].nS})</small>`,`${f1(K[1].lS)} <small>(${K[1].nS})</small>`])}
+   ${ufMir("Absorbed, 10+ min",[K[0].aL,K[1].aL],[f1(K[0].aL),f1(K[1].aL)],1)}
+   <ul class="small ufkeys">${[...say,...five].map(x=>`<li>${x}</li>`).join("")}</ul><div class="small">ESPN doesn't publish round-by-round stats, so this compares whole fights; (n) = fights.</div></div>`}
+/* reach & height: this matchup's gap + how fighters with that kind of edge did on the recent cards we have */
+function ufInch(s){const m=/(\d+)'\s*(\d+)/.exec(String(s||""));if(m)return +m[1]*12+(+m[2]);const r=parseFloat(String(s||""));return isFinite(r)?r:null}
+function ufEdgeBase(kind,min){let w=0,n=0;for(const e of (window.UFC_EV||[]))for(const f of e.f){if(f.st!=="post"||f.c.length<2)continue;const wi=f.c.findIndex(c=>c[3]);if(wi<0)continue;
+    const v=f.c.map(c=>{const F=(window.UFC_F||{})[c[0]]||{};return kind==="reach"?(F.rch!=null?+F.rch:ufInch(F.reach)):(F.hti!=null?+F.hti:ufInch(F.ht))});if(v[0]==null||v[1]==null||Math.abs(v[0]-v[1])<min)continue;
+    n++;if((v[0]>v[1]?0:1)===wi)w++}return {w,n}}
+function ufEdges(f){const F=f.c.map(c=>(window.UFC_F||{})[c[0]]||{}),nm=i=>ufE(ufLast(f.c[i][1]));const rows=[];
+  for(const [kind,lab] of [["reach","Reach"],["height","Height"]]){const v=F.map(x=>kind==="reach"?(x.rch!=null?+x.rch:ufInch(x.reach)):(x.hti!=null?+x.hti:ufInch(x.ht)));if(v[0]==null||v[1]==null)continue;
+    const d=Math.abs(v[0]-v[1]);if(d<1){rows.push(`<li>${lab}: about even.</li>`);continue}const b=v[0]>v[1]?0:1,min=Math.max(2,Math.floor(d)-1),B=ufEdgeBase(kind,min);
+    rows.push(`<li><b>${nm(b)}</b> has ${d.toFixed(d%1?1:0)}" more ${lab.toLowerCase()}.${B.n>=8?` On the last ${(window.UFC_EV||[]).filter(e=>e.f.every(x=>x.st==="post")).length} cards, the fighter with ${min}"+ more ${lab.toLowerCase()} won <b>${B.w} of ${B.n}</b> (${Math.round(B.w/B.n*100)}%).`:""}</li>`)}
+  return rows.length?`<div class="card"><h2>Reach &amp; height edge</h2><ul class="ufkeys">${rows.join("")}</ul><div class="small">Bios: ESPN. The win rate comes from finished fights on recent cards where both fighters' measurements are listed.</div></div>`:""}

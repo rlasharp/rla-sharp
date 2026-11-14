@@ -17,7 +17,7 @@ function gpSummary(o){const R=[];
   if(o.sp&&o.teams)try{const W=gpWatch(o.sp,o.teams);if(W.inj)R.push(`<div class="gpsr"><span class="gpsl">🚑 Key absence</span><div>${W.inj}</div></div>`);if(W.mv)R.push(`<div class="gpsr"><span class="gpsl">📈 Line move</span><div>${W.mv}</div></div>`)}catch(e){}
   try{const n=o.ia!=null?o.ia:(o.sp&&o.teams&&typeof iaNote!=="undefined"?iaNote(o.sp,o.teams):"");if(n)R.push(`<div class="gpsr"><span class="gpsl">🚑 Injury adjustment</span><div>${n}</div></div>`)}catch(e){}
   R.push(`<div class="gpsr"><span class="gpsl">What matters</span><div class="gptop" data-gptop><span class="small">—</span></div></div>`);
-  return `<div class="card gpsum"><h2>The short version</h2>${R.join("")}<div class="small gpfoot">Tap any section below to open it.</div></div>`}
+  return `<div class="card gpsum"><h2>The short version</h2>${R.join("")}<div class="small gpfoot">Tap any section below to open it.${typeof xPrintBtn!=="undefined"?" "+xPrintBtn():""}</div></div>`}
 function gpPropLine(nm,side,line,mk,odds,ch,href){return `<a href="${href||"#"}"><b>${gpE(nm)}</b> ${side} ${line} ${gpE(mk)}</a> <span class="small">${typeof oddsFmt!=="undefined"?oddsFmt(odds):odds}${ch!=null?` · our chance ${Math.round(ch*100)}%`:""}</span>`}
 /* merged cards (the parts keep their own content; their own card frame is flattened by CSS) */
 function gpMerge(title,cls,parts,sub){parts=parts.filter(x=>x&&String(x).trim());if(!parts.length)return "";

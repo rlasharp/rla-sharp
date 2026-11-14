@@ -112,3 +112,13 @@ function nflStrip(name,pos){const L=pLogs(name).filter(l=>l.season===CUR);if(!L.
     :pos==="RB"?[["Rush yds",a("rushYds")],["Carries",a("rushAtt")],["Rec",a("rec")],["Rec yds",a("recYds")],["TD",t("rushTD")+t("recTD")]]
     :[["Rec",a("rec")],["Rec yds",a("recYds")],["Long",a("recLong")],["TD",t("recTD")+t("rushTD")]];
   return xStrip(I.map(([l,v])=>[l,v,""]),`Per game (TDs and INTs are totals) · ${L.length} games this season`)}
+
+/* ---------- 🖨️ Print / save as PDF: opens every folded card on the page, prints in light colours, then puts things back ---------- */
+function xPrintBtn(){return `<button class="obtn xprint" data-xprint="1">🖨️ Print / PDF</button>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-xprint]");if(!b)return;e.preventDefault();e.stopPropagation();
+  const root=document.querySelector("main>section:not(.hide)");if(!root)return;const opened=[],dets=[],H=document.documentElement,theme=H.getAttribute("data-theme");
+  try{if(typeof gpFill!=="undefined")root.querySelectorAll(".gplazy").forEach(c=>{if(!c.classList.contains("open")){c.classList.add("open");opened.push(c)}gpFill(c)})}catch(x){}
+  root.querySelectorAll(".xfold:not(.open)").forEach(c=>{c.classList.add("open");opened.push(c)});root.querySelectorAll("details:not([open])").forEach(d=>{d.open=true;dets.push(d)});
+  H.setAttribute("data-theme","light");document.body.classList.add("printing");
+  const done=()=>{opened.forEach(c=>c.classList.remove("open"));dets.forEach(d=>d.open=false);if(theme)H.setAttribute("data-theme",theme);else H.removeAttribute("data-theme");document.body.classList.remove("printing");window.removeEventListener("afterprint",done)};
+  window.addEventListener("afterprint",done);setTimeout(()=>{try{window.print()}catch(x){}setTimeout(()=>{if(document.body.classList.contains("printing"))done()},1500)},250)},true);
