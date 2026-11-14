@@ -101,12 +101,12 @@ function appSearchSetup(){
 }
 
 /* ===== Bottom tab bar (phones) + More sheet ===== */
-function curSport(){const h=(location.hash||"").slice(1);if(h.startsWith("nba"))return "nba";if(h.startsWith("nhl"))return "nhl";if(h.startsWith("soccer"))return "soc";if(["games","plays","props","public","weeks","trends","injuries","bets","standings"].some(x=>h===x||h.startsWith(x))||h.startsWith("game-"))return "nfl";const s=LS.get("sport","nba");return s==="nfl"||s==="nhl"||s==="soc"?s:"nba"}
+function curSport(){const h=(location.hash||"").slice(1);if(h.startsWith("nba"))return "nba";if(h.startsWith("nhl"))return "nhl";if(h.startsWith("soccer"))return "soc";if(h.startsWith("ufc"))return "ufc";if(["games","plays","props","public","weeks","trends","injuries","bets","standings"].some(x=>h===x||h.startsWith(x))||h.startsWith("game-"))return "nfl";const s=LS.get("sport","nba");return s==="nfl"||s==="nhl"||s==="soc"||s==="ufc"?s:"nba"}
 function tabbarRender(){
   let bar=document.getElementById("tabbar");if(!bar){bar=document.createElement("nav");bar.id="tabbar";document.body.appendChild(bar)}
   const sp=curSport(),h=(location.hash||"#today").slice(1)||"today";
-  const T=[["today","🏠","Today","#today"],["games",sp==="nba"?"🏀":sp==="nhl"?"🏒":sp==="soc"?"⚽":"🏈","Games",sp==="nba"?"#nba":sp==="nhl"?"#nhl":sp==="soc"?"#soccer":"#games"],["props","🎯","Props",sp==="nba"?"#nba-best":sp==="nhl"?"#nhl-props":sp==="soc"?"#soccer-props":"#props"],["bets","🎟️","My Bets","#bets"],["more","☰","More",""]];
-  const on=k=>k==="today"?h==="today":k==="games"?(h==="nba"||h==="nhl"||h==="soccer"||h.startsWith("soccer-game")||h.startsWith("nhl-game")||h==="games"||h==="nextweek"||h.startsWith("nba-tomorrow")||h.startsWith("nba-game")||h.startsWith("game-")):k==="props"?/^(nba-props|nba-best|props|nhl-props|soccer-props)$/.test(h):k==="bets"?h==="bets":false;
+  const T=[["today","🏠","Today","#today"],["games",sp==="nba"?"🏀":sp==="nhl"?"🏒":sp==="soc"?"⚽":sp==="ufc"?"🥊":"🏈",sp==="ufc"?"Fights":"Games",sp==="nba"?"#nba":sp==="nhl"?"#nhl":sp==="soc"?"#soccer":sp==="ufc"?"#ufc":"#games"],["props","🎯",sp==="ufc"?"Best bets":"Props",sp==="nba"?"#nba-best":sp==="nhl"?"#nhl-props":sp==="soc"?"#soccer-props":sp==="ufc"?"#ufc-props":"#props"],["bets","🎟️","My Bets","#bets"],["more","☰","More",""]];
+  const on=k=>k==="today"?h==="today":k==="games"?(h==="nba"||h==="nhl"||h==="soccer"||h==="ufc"||h.startsWith("ufc-event")||h.startsWith("ufc-fight-")||h.startsWith("soccer-game")||h.startsWith("nhl-game")||h==="games"||h==="nextweek"||h.startsWith("nba-tomorrow")||h.startsWith("nba-game")||h.startsWith("game-")):k==="props"?/^(nba-props|nba-best|props|nhl-props|soccer-props|ufc-props)$/.test(h):k==="bets"?h==="bets":false;
   const nb=typeof uxBetsCount!=="undefined"?uxBetsCount():0;
   bar.innerHTML=T.map(([k,i,l,href])=>k==="more"?`<button data-more="1"><b>${i}</b><span>${l}</span></button>`:`<a href="${href}" class="${on(k)?"on":""}"><b>${i}${k==="bets"&&nb?`<em class="tbn">${nb}</em>`:""}</b><span>${l}</span></a>`).join("");
   bar.querySelector("[data-more]").onclick=moreOpen;
@@ -116,10 +116,11 @@ function moreOpen(){
   const nba=[["#nba","🏀 Games"],["#nba-best","🔥 Best props"],["#nba-props","🎯 All props"],["#nba-players","👤 Players"],["#nba-teams","📊 Standings"],["#nba-scores","🧾 Scores"],["#nba-injuries","🚑 Injuries"]];
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
   const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-scores","🧾 Scores"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
+  const ufc=[["#ufc","🥊 Fight cards"],["#ufc-props","⭐ Best bets"],["#ufc-results","🧾 Results"]];
   const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
-  sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NHL",nhl)}${grp("NFL",nfl)}${grp("More",all)}
+  sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NHL",nhl)}${grp("NFL",nfl)}${grp("UFC",ufc)}${grp("More",all)}
    <h3>Odds format</h3><div class="seg" id="msOdds"><button data-f="am" class="${of==="am"?"on":""}">American (−110)</button><button data-f="dec" class="${of==="dec"?"on":""}">Decimal (1.91)</button></div>
    <h3>Theme</h3>${typeof uxThemeSeg!=="undefined"?uxThemeSeg():""}<h3>View</h3>${typeof uxViewSeg!=="undefined"?uxViewSeg():""}
    <button class="btn" id="msClose" style="width:100%;margin-top:14px">Close</button></div>`;
@@ -184,7 +185,7 @@ function viewToday(){
   const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
   const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].map(sp=>loMovesCard(sp,5)).join(""):"";
   const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p><div id="liveTrk"></div>
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p><div id="liveTrk"></div><div id="ufcToday"></div>
   ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}

@@ -64,6 +64,11 @@ if want soc; then   # Soccer: ESPN box scores (cached in data/soccer_box.json) +
     cp "$WORK/soc.js" soccer_data.js; log "$(tail -1 "$WORK/soc.log")"
   else log "Soccer data FAILED — kept old: $(tail -3 "$WORK/soc.log" | tr '\n' ' ')"; fi
 fi
+if want ufc; then   # UFC: ESPN cards, results, fighter bios + fight-by-fight stats (finished fights cached in data/ufc_cache.json)
+  if python3 tools/ufcfetch.py "$ROOT" > "$WORK/ufc.js" 2> "$WORK/ufc.log" && grep -q "^var UFC_OK=1" "$WORK/ufc.js"; then
+    cp "$WORK/ufc.js" ufc_data.js; log "$(tail -1 "$WORK/ufc.log")"
+  else log "UFC data FAILED — kept old: $(tail -3 "$WORK/ufc.log" | tr '\n' ' ')"; fi
+fi
 bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 # tracker: snapshot best props / game numbers / NHL plays before games, grade after (uses the site's own functions)
 if node tools/track.js "$ROOT/src/index.html" > "$WORK/track.log" 2>&1; then log "$(tail -1 "$WORK/track.log")"; bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }

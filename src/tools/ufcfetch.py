@@ -161,13 +161,20 @@ def mshort(m, md):
 import re
 PICK = {"sl": r"^sigStrikesLanded$", "sa": r"^sigStrikesAttempted$", "tl": r"^totalStrikesLanded$", "ta": r"^totalStrikesAttempted$", "kd": r"^knockDowns$",
         "tdl": r"^take[dD]owns?Landed$|^takedownsLanded$|^takeDownsLanded$", "tda": r"^take[dD]owns?Attempted$|^takeDownsAttempted$", "ctrl": r"control|Control",
-        "suba": r"^submissions?Attempt", "hl": r"^sigHeadStrikesLanded$|^sigHead.*Landed$", "bl": r"^sigBodyStrikesLanded$|^sigBody.*Landed$", "ll": r"^sigLegStrikesLanded$|^sigLeg.*Landed$",
-        "dl": r"^sigDistanceStrikesLanded$|^sigDistance(Strikes)?Landed$", "cl": r"^sigClinchStrikesLanded$|^sigClinch.*Landed$", "gl": r"^sigGroundStrikesLanded$|^sigGround.*Landed$"}
+        "suba": r"^submissions$"}
 def stx(raw):
     out = {}
     for k, rx in PICK.items():
         hit = next((v for n, v in raw.items() if re.search(rx, n)), None)
         if hit is not None: out[k] = hit
+    # where the significant strikes landed (head / body / leg) and from where (distance / clinch / ground): ESPN splits them both ways
+    def sm(pos, tgt):
+        v = [raw.get(f"sig{p_}{t_}StrikesLanded") for p_ in pos for t_ in tgt]; v = [x for x in v if x is not None]
+        return sum(v) if v else None
+    P_, T_ = ("Distance", "Clinch", "Ground"), ("Head", "Body", "Leg")
+    for k, a, b in (("hl", P_, ("Head",)), ("bl", P_, ("Body",)), ("ll", P_, ("Leg",)), ("dl", ("Distance",), T_), ("cl", ("Clinch",), T_), ("gl", ("Ground",), T_)):
+        v = sm(a, b)
+        if v is not None: out[k] = v
     return out
 FT = {}
 for aid in ids:
@@ -189,6 +196,10 @@ for aid in ids:
     FT[aid] = {k: A.get(k) for k in ("n", "nick", "age", "ht", "hti", "wt", "reach", "rch", "stance", "ctry", "wc", "team")}
     FT[aid]["R"] = A.get("R") or {}
     FT[aid]["h"] = rows   # newest first
+for e in EV:   # results on the cards (method, round, time) from the fight cache
+    for F in e["f"]:
+        x = C["fights"].get(str(F["id"])) or (fight(e["id"], F["id"]) if F["st"] == "post" else None)
+        if x and x.get("done"): F["m"] = mshort(x.get("m"), x.get("md")); F["md"] = x.get("md") or ""; F["r"] = x.get("r"); F["clk"] = x.get("clk") or ""
 json.dump(C, open(CF, "w"), separators=(",", ":"))
 J = lambda o: json.dumps(o, separators=(",", ":"), ensure_ascii=False)
 print("/* 🥊 UFC — tools/ufcfetch.py (ESPN MMA feeds: cards, results, fighter bios, fight-by-fight stats) */")

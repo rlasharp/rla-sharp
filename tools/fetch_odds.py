@@ -375,6 +375,11 @@ def main():
         out["soc"], used = soccer_odds.run(client, prev, used, 950)
     except Exception as e:
         print("soccer odds failed:", e); out["soc"] = prev.get("soc") or {}
+    try:
+        import ufc_odds
+        out["ufc"], used = ufc_odds.run(client, prev, used, 960, BOOK_NAME, NOT_BOOKS)
+    except Exception as e:
+        print("ufc odds failed:", e); out["ufc"] = prev.get("ufc") or {}
     keep = {e["id"] for s in ("nba", "nfl", "nhl") for e in (out[s].get("events") or [])}
     out["open"] = {k: v for k, v in opens.items() if k.split("|")[0] in {str(x) for x in keep}}
     out["budget"] = {"day": today, "used": used}
