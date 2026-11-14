@@ -33,7 +33,7 @@ function finProp(sp,d,tm,nm,k,side,line){if(line==null&&(k==="hanyG"||k==="anyTD
 function finEdge(mk,pick,a,h,F){const [as,hs]=F,pk=String(pick);
   if(mk==="Moneyline")return (pk===h)===(hs>as)?"win":"loss";
   if(mk==="Total"){const L=+pk.split(" ")[1],t=as+hs;return t===L?"push":(pk.startsWith("Over")===(t>L))?"win":"loss"}
-  if(mk==="Spread"||mk==="Puck line"){const [tm,ln]=pk.split(" "),mg=tm===h?hs-as:as-hs;return mg+(+ln)===0?"push":mg+(+ln)>0?"win":"loss"}return null}
+  if(mk==="Spread"||mk==="Puck line"){const [tm,ln]=pk.split(" "),v=+String(ln).replace(/[−–]/g,"-"),mg=tm===h?hs-as:as-hs;return mg+v===0?"push":mg+v>0?"win":"loss"}return null}
 /* a tracked play / best prop {type?, nm,k,side,line,tm | mk,pick,a,h} on date d */
 function finItem(sp,d,x){if(x.r)return null;
   if(x.type==="game"){const F=finScore(sp,d,x.a,x.h);if(!F)return null;const r=finEdge(x.mk,x.pick,x.a,x.h,F);return r?{r,f:F}:null}

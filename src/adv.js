@@ -1,6 +1,6 @@
 
 /* ---------- Advanced views: box scores, red zone, splits, pace, rest/travel, search (data in adv_data.js) ---------- */
-const ADVOK=typeof BOX!=="undefined";
+var BOX;const ADVOK=true;   /* BOX now loads on demand (nfl_box2.js) */
 const ord=n=>typeof ordinal==="function"?ordinal(n):n;
 const nmKey=n=>n.toLowerCase().replace(/[.'’-]/g,"").replace(/\b(jr|sr|ii|iii|iv)\b/g,"").replace(/\s+/g," ").trim();
 let PIDX=null;function pinfoName(n){if(typeof PINFO==="undefined")return null;if(PINFO[n])return n;if(!PIDX){PIDX={};Object.keys(PINFO).forEach(k=>PIDX[nmKey(k)]=k)}return PIDX[nmKey(n)]||null}
@@ -11,10 +11,14 @@ document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest
 
 /* 1. Box score for one game */
 const NFL_BQ={};let NFL_BQL=0;
-function nflBoxqEnsure(){if(typeof BOXQ!=="undefined"||NFL_BQL)return;NFL_BQL=1;const sc=document.createElement("script");sc.src="nfl_boxq.js?v="+(typeof BUILD_AT!=="undefined"?BUILD_AT.replace(/\D/g,""):Date.now());
-  sc.onload=()=>{document.querySelectorAll(".bxqw[data-bxk]").forEach(el=>{const [w,a,h]=el.dataset.bxk.split("|");el.outerHTML=boxScoreHtml(w,a,h)})};sc.onerror=()=>{NFL_BQL=0};document.head.appendChild(sc)}
+let NFL_BXL=0;
+function nflBoxqEnsure(){const v=typeof BUILD_AT!=="undefined"?BUILD_AT.replace(/\D/g,""):Date.now(),redraw=()=>document.querySelectorAll(".bxqw[data-bxk]").forEach(el=>{const [w,a,h]=el.dataset.bxk.split("|");el.outerHTML=boxScoreHtml(w,a,h)});
+  if(!BOX&&!NFL_BXL){NFL_BXL=1;const s2=document.createElement("script");s2.src="nfl_box2.js?v="+v;s2.onload=redraw;s2.onerror=()=>{NFL_BXL=2;redraw()};document.head.appendChild(s2)}
+  if(typeof BOXQ!=="undefined"||NFL_BQL)return;NFL_BQL=1;const sc=document.createElement("script");sc.src="nfl_boxq.js?v="+v;
+  sc.onload=redraw;sc.onerror=()=>{NFL_BQL=0};document.head.appendChild(sc)}
 function boxScoreHtml(wk,away,home){nflBoxqEnsure();const k=`${wk}|${away}|${home}`,Q=typeof BOXQ!=="undefined"&&BOXQ[k],q=Q&&Q[NFL_BQ[k]]?NFL_BQ[k]:"",B=q?Q[q]:(typeof BOX!=="undefined"&&BOX[k])||(typeof BOX_ESPN!=="undefined"&&BOX_ESPN[k]);
   const tabs=Q?`<div class="bxqt">${[["","Game"],...["1","2","3","4","5"].filter(x=>Q[x]).map(x=>[x,x==="5"?"OT":"Q"+x])].map(([v,l])=>`<button type="button" data-nbq="${k}|${v}" class="${q===v?"on":""}">${l}</button>`).join("")}</div>`:"";if(!B&&!ADVOK)return "";
+  if(!B&&!BOX&&NFL_BXL===1)return `<div class="bxqw" data-bxk="${k}"><div class="card small">Loading box score…</div></div>`;
   if(!B)return `<div class="card"><p class="note" style="margin:0">Box score not available yet.</p></div>`;
   const sc=t=>{try{const x=teamGames(t).find(z=>+z.week===+wk);return x?[x.pf,x.pa]:null}catch(e){return null}};
   const part=(title,head,rows,fn)=>rows.length?`<div class="small bxgn">${title}</div><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Player</th>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><td>${plLink(r[0])}</td>${fn(r).map((v,i)=>`<td>${i===0?`<b>${v}</b>`:v}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";

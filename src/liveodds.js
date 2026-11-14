@@ -2,7 +2,9 @@
    Merges real sportsbook lines into NBA_PROPS / REAL_PROPS, keeps the open line to show ▲▼ moves.
    The bundled daily data stays as the fallback when the file is missing (e.g. the private copy). */
 const LO={data:null,move:{},alt:{},pick:{},openAlt:null,applied:0,nba:0,nfl:0};
-function loNorm(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g,"").replace(/[^a-z]/g,"")}
+const LO_NC=new Map();
+function loNorm(s){const k=String(s||"");let v=LO_NC.get(k);if(v===undefined){v=loNorm0(k);if(LO_NC.size>20000)LO_NC.clear();LO_NC.set(k,v)}return v}
+function loNorm0(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g,"").replace(/[^a-z]/g,"")}
 let LO_IDX=null;
 function loIdx(){if(LO_IDX)return LO_IDX;const nba={},nfl={};
   if(typeof NBA_LOGS!=="undefined")for(const nm in NBA_LOGS)nba[loNorm(nm)]=nm;

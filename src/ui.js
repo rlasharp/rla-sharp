@@ -146,7 +146,7 @@ function viewGame(id){
    ${tabP?`<div id="gpBody">${nflGameProps(g)}</div>`:`
    ${(()=>{const T=({inj:"ov"}[S.gtab]||S.gtab||"ov"),nav="";
     if(T==="ov"){const pj=typeof projScore!=="undefined"?projScore(g):null,bp=(typeof nflBest!=="undefined"?nflBest():[]).filter(b=>b.g&&b.g.id===g.id&&b.sc>=.45).slice(0,2);
-      return gpSummary({pick:pj?`<b>${esc(short(pj.win))} ${Math.max(pj.a,pj.h)}–${Math.min(pj.a,pj.h)}</b> <span class="small">our projected score</span>`:"",
+      return gpSummary({sp:"nfl",teams:[g.away,g.home],pick:pj?`<b>${esc(short(pj.win))} ${Math.max(pj.a,pj.h)}–${Math.min(pj.a,pj.h)}</b> <span class="small">our projected score</span>`:"",
         props:bp.map(b=>gpPropLine(b.name,b.side==="o"?"Over":"Under",b.line,(MARKETS[b.k]||{n:b.k}).n,b.odds,b.sc,"#props/"+encodeURIComponent(b.name)+"/"+b.k))})
       +`   <div class="section"><h2>The lines</h2><div class="grid g3">${lineCard("Moneyline","ml",g)}${lineCard("Spread","sp",g)}${lineCard("Total","tot",g)}</div>
     <p class="note" style="margin-top:8px">${PROJ_NOTE} ${splitsSrc(g)}</p>${typeof xaPmLine!=="undefined"?xaPmLine("nfl",g.away,g.home):""}</div>

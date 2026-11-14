@@ -194,7 +194,10 @@ function nhRankCard(g){const sw=NH.sw===String(g.id),o=sw?g.h:g.a,d=sw?g.a:g.h,O
      return `<tr><td><b class="${nhRkC(ro)}">${nhOrd(ro)}</b> <span class="small">${v(O,k,0)}</span><div class="nhbar l"><i class="${nhRkC(ro)}" style="width:${bw(ro)}%"></i></div></td><th title="${nhE(t)}">${l}${ro&&rd&&["g","sog","ppg","pp","sh","fo"].includes(k)?`<div class="small nhedge">${ro<=10&&rd>=23?"🔥 edge "+nhE(o):rd<=10&&ro>=23?"🧱 edge "+nhE(d):""}</div>`:""}</th><td><span class="small">${v(D,k,1)}</span> <b class="${nhRkC(rd)}">${nhOrd(rd)}</b><div class="nhbar r"><i class="${nhRkC(rd)}" style="width:${bw(rd)}%"></i></div></td></tr>`}).join("")}</tbody></table>
    <div class="small" style="margin-top:6px">Per game, rank of 32 (1st = best for that team: most for, fewest against). A high FOR rank against a low AGAINST rank (e.g. 5th vs 27th) is a mismatch worth a look. Tap ⇄ to flip sides: ${nhE(nhTm(d))} FOR vs ${nhE(nhTm(o))} AGAINST.</div></div>`}
 /* injuries (ESPN report) */
-function nhInjOf(nm){if(typeof NHL_INJ==="undefined")return null;const n=typeof loNorm!=="undefined"?loNorm(nm):nm;for(const L of Object.values(NHL_INJ))for(const r of L)if((typeof loNorm!=="undefined"?loNorm(r[0]):r[0])===n)return r;return null}
+let NH_INJI=null,NH_INJS=null;
+function nhInjOf(nm){if(typeof NHL_INJ==="undefined")return null;const nz=x=>typeof loNorm!=="undefined"?loNorm(x):x;
+  if(!NH_INJI||NH_INJS!==NHL_INJ){NH_INJI=new Map();NH_INJS=NHL_INJ;for(const L of Object.values(NHL_INJ))for(const r of L){const k=nz(r[0]);if(!NH_INJI.has(k))NH_INJI.set(k,r)}}
+  return NH_INJI.get(nz(nm))||null}
 function nhInjChip(nm){const r=nhInjOf(nm);return r?` <span class="pll ${/out|reserve|ir/i.test(r[2])?"u":"n"}" title="${nhE(r[3])}${r[4]?" · est. return "+nhE(r[4]):""}">🚑 ${nhE(r[2])}</span>`:""}
 /* ESPN's injury wording is sometimes raw ("Undisclosed not specified", "Lower Body not specified") — tidy it */
 function nhInjTxt(x){return String(x||"").replace(/\s*\bnot specified\b/ig,"").replace(/^undisclosed$/i,"undisclosed injury").trim()}
@@ -487,7 +490,7 @@ function nhlGame(el,id){
   const summary=()=>{const pr=nhProject(g),e=(nhEdges(g)||[]).find(x=>x.edge>=.03),bp=nhBest().filter(b=>b.g&&b.g.id===g.id&&b.s.p>=.45).slice(0,2);let pick="";
     if(pr){const hw=pr.hwin>=.5,w=hw?g.h:g.a;let [ws,ls]=nhPredScore(pr,hw,g);
       pick=`<b>${nhE(nhTm(w))} ${ws}–${ls}</b> <span class="small">${Math.round((hw?pr.hwin:1-pr.hwin)*100)}% to win</span>${e?`<div class="small">Best edge vs the books: <b>${e.mk==="Moneyline"?"":nhE(e.mk.replace(/ total$/,""))+" "}${nhE(e.pick)}</b> ${nhOdds(e.odds)} · our ${Math.round(e.me*100)}% vs ${Math.round(e.bk*100)}%</div>`:""}`}
-    return gpSummary({pick,props:bp.map(b=>gpPropLine(b.nm,b.k==="hanyG"?(b.side==="o"?"to score":"no goal"):(b.side==="o"?"Over":"Under"),b.k==="hanyG"?"":b.line,b.k==="hanyG"?"":NH_MK[b.k][1],b.odds,b.s.p,"#nhl-player-"+encodeURIComponent(b.nm)+"~"+b.k))})};
+    return gpSummary({sp:"nhl",teams:[g.a,g.h],pick,props:bp.map(b=>gpPropLine(b.nm,b.k==="hanyG"?(b.side==="o"?"to score":"no goal"):(b.side==="o"?"Over":"Under"),b.k==="hanyG"?"":b.line,b.k==="hanyG"?"":NH_MK[b.k][1],b.odds,b.s.p,"#nhl-player-"+encodeURIComponent(b.nm)+"~"+b.k))})};
   const body={
     overview:()=>summary()+nhHero(g,"lines")+(typeof xaGoalieNote!=="undefined"?xaGoalieNote(g)+xaPmLine("nhl",g.a,g.h):"")
       +gpMerge("What matters","gpwm",[nhQuick(g),(typeof xfNhl!=="undefined"?xfNhl(g):""),(typeof fxNhl!=="undefined"?fxCard(fxNhl(g),"Meetings last season and this season, and this season's results."):"")])

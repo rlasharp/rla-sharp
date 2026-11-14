@@ -517,3 +517,39 @@ const GF_IO=typeof IntersectionObserver!=="undefined"?new IntersectionObserver(e
 async function gfFill(c){const [sp,...rest]=c.dataset.gflow.split("|"),key=rest.join("|"),b=c.querySelector(".gfb");
   try{const S=await gfSummary(sp,key);const h=sp==="nba"?gfWinProb(S,"nba"):sp==="nfl"?gfWinProb(S,"nfl")+gfDrives(S):gfSocMomentum(S);if(!h){c.remove();return}b.className="";b.innerHTML=h}catch(e){c.remove()}}
 new MutationObserver(()=>{for(const c of document.querySelectorAll("[data-gflow]:not([data-gfo])")){c.dataset.gfo=1;if(GF_IO)GF_IO.observe(c);else gfFill(c)}}).observe(document.documentElement,{childList:true,subtree:true});
+/* ===== NBA: with vs without each teammate — his average and hit rate on this line in games the teammate played vs sat (this season) ===== */
+function vxMateSplit(nm,k,line){try{const p=NBA_LOGS[nm];if(!p)return "";const tm=p.tm,G=p.g.filter(x=>x[4]>0);if(G.length<6)return "";
+  const mates=Object.keys(NBA_LOGS).filter(m=>m!==nm&&NBA_LOGS[m].tm===tm).map(m=>({m,L:NBA_LOGS[m].g,min:NBA_LOGS[m].g.reduce((s,x)=>s+(x[4]||0),0)})).sort((a,b)=>b.min-a.min).slice(0,7);
+  const rows=[];for(const T of mates){const ids=new Set(T.L.filter(x=>x[4]>0).map(x=>x[0])),W=G.filter(x=>ids.has(x[0])),O=G.filter(x=>!ids.has(x[0]));if(O.length<2||W.length<2)continue;
+    const av=a=>a.reduce((s,x)=>s+nbaVal(x,k),0)/a.length,hr=a=>a.filter(x=>pxHit(nbaVal(x,k),line)).length,inj=typeof nbaInjOf!=="undefined"?nbaInjOf(T.m):null,out=inj&&/out|doubtful/i.test(inj[2]||"");
+    rows.push({m:T.m,w:av(W),o:av(O),wn:W.length,on:O.length,wh:hr(W),oh:hr(O),out,st:inj&&inj[2]})}
+  if(!rows.length)return "";rows.sort((a,b)=>(b.out-a.out)||Math.abs(b.o-b.w)-Math.abs(a.o-a.w));const mx=Math.max(line,...rows.flatMap(r=>[r.w,r.o]))*1.1;
+  const bar=(v,c)=>`<i style="width:${Math.max(3,v/mx*100)}%;background:${c}"></i>`;
+  return `<div class="vxms"><h4 style="margin:10px 0 4px">👥 With vs without teammates <span class="small">· ${NBA_MK[k]?NBA_MK[k][2]:k} ${line}</span></h4>${rows.slice(0,5).map(r=>`<div class="msr${r.out?" out":""}"><div class="small"><b>${nbaEsc(r.m)}</b>${r.out?` <span class="dn">· ${nbaEsc(r.st)} tonight</span>`:""}</div>
+     <div class="msb"><span class="small">with</span><div class="msbar">${bar(r.w,"#94a3b8")}<b>${r.w.toFixed(1)}</b></div><span class="small">${r.wh}/${r.wn} over</span></div>
+     <div class="msb"><span class="small">without</span><div class="msbar">${bar(r.o,r.o>r.w?"#16a34a":"#dc2626")}<b>${r.o.toFixed(1)}</b></div><span class="small">${r.oh}/${r.on} over</span></div></div>`).join("")}
+   <div class="small">Games this season he played with each teammate vs games that teammate missed. Small samples swing a lot.</div></div>`}catch(e){return ""}}
+/* ===== NBA: what tonight's opponent allowed at his position, game by game (last 10), drawn like his own bars ===== */
+function vxOppAllowBars(opp,pos,k,line){try{if(typeof nbaDvp==="undefined"||!opp||!pos)return "";const d=nbaDvp(opp,pos,k,10);if(!d||!d.rows||d.rows.length<3)return "";
+  const R=d.rows.filter(r=>r.who&&r.who.length).slice(-10).map(r=>Object.assign({},r,{lab:(r.ha==="H"?"":"@")+r.vs})),mx=Math.max(line,...R.map(r=>r.v))*1.12,av=R.reduce((s,r)=>s+r.v,0)/R.length;
+  return `<div class="vxms"><h4 style="margin:10px 0 4px">🛡️ ${nbaEsc(nbaShort(opp))} allowed to ${nbaPosWord?nbaPosWord(pos):pos} · last ${R.length}</h4>
+   <div class="nbch" style="height:120px">${R.map(r=>`<div class="nbbar" title="${nbaEsc(r.lab||"")}"><span class="v">${typeof r.v==="number"&&r.v%1?r.v.toFixed(1):r.v}</span><i style="height:${Math.max(3,Math.round(r.v/mx*80))}px;background:${r.v>line?"#16a34a":"#dc2626"}"></i><span class="small">${nbaEsc(String(r.lab||"").slice(0,6))}</span></div>`).join("")}</div>
+   <div class="small">Total ${NBA_MK[k]?NBA_MK[k][2]:k} they gave up to ${pos}s each game (all players at the position combined) · avg <b>${av.toFixed(1)}</b> vs NBA ${d.lg!=null?nbaF(d.lg):"–"}. Green = above his line.</div></div>`}catch(e){return ""}}
+/* ===== NBA: minutes tonight — his usual minutes, how blowouts cut them, and tonight's blowout risk from the spread (real closing lines this season) ===== */
+function vxMinProj(nm){try{const p=NBA_LOGS[nm];if(!p||typeof NBA_SPR==="undefined")return "";const G=p.g.filter(x=>x[4]>0);if(G.length<5)return "";
+  const L=G.slice(-10),w=L.map((x,i)=>i>=L.length-5?2:1),base=L.reduce((s,x,i)=>s+x[4]*w[i],0)/w.reduce((a,b)=>a+b,0);
+  const srt=G.slice(-15).map(x=>x[4]).sort((a,b)=>a-b),q=f=>srt[Math.min(srt.length-1,Math.max(0,Math.round(f*(srt.length-1))))];
+  const mg=x=>{const s=NBA_SPR[x[0]];return s&&s[5]!=null?Math.abs(s[6]-s[5]):null},blow=G.filter(x=>(mg(x)??0)>=18),close=G.filter(x=>mg(x)!=null&&mg(x)<18);
+  const avm=a=>a.length?a.reduce((s,x)=>s+x[4],0)/a.length:null,bm=avm(blow),cm=avm(close);
+  const all=Object.values(NBA_SPR).filter(s=>s[3]!=null&&s[5]!=null),bucket=sp=>{const a=Math.abs(sp);return all.filter(s=>{const b=Math.abs(s[3]);return a<5?b<5:a<10?b>=5&&b<10:b>=10})},sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null;
+  const B=sp!=null?bucket(sp):[],risk=B.length>=15?B.filter(s=>Math.abs(s[6]-s[5])>=18).length/B.length:null;
+  const proj=bm!=null&&cm!=null&&risk!=null&&blow.length>=2?cm*(1-risk)+bm*risk:base;
+  const mates=Object.keys(NBA_LOGS).filter(m=>m!==nm&&NBA_LOGS[m].tm===p.tm&&typeof nbaInjOf!=="undefined"&&(()=>{const i=nbaInjOf(m);return i&&/out/i.test(i[2]||"")})()&&NBA_LOGS[m].g.reduce((s,x)=>s+x[4],0)/Math.max(1,NBA_LOGS[m].g.length)>=20);
+  const mateTxt=mates.map(m=>{const ids=new Set(NBA_LOGS[m].g.filter(x=>x[4]>0).map(x=>x[0])),O=G.filter(x=>!ids.has(x[0]));return O.length>=2?`${nbaEsc(m)} is out — in ${O.length} games without him he played <b>${avm(O).toFixed(1)}</b> min.`:""}).filter(Boolean);
+  const lo=q(.2),hi=q(.8),W=300,x=v=>Math.max(0,Math.min(W,(v-Math.min(lo,proj)+4)/((Math.max(hi,proj)+4)-(Math.min(lo,proj)-4))*W));
+  return `<div class="card vx2" style="margin-top:12px"><h2 style="margin-bottom:2px">⏱️ Minutes tonight</h2><div class="mprow"><b class="mpbig">~${Math.round(proj)}</b><span class="small">min expected · usual range <b>${lo}–${hi}</b> (middle 60% of his last ${srt.length})</span></div>
+   <svg viewBox="0 0 ${W} 26" width="100%" style="max-width:340px"><rect x="${x(lo)}" y="8" width="${Math.max(4,x(hi)-x(lo))}" height="10" rx="5" fill="#3987e5" opacity=".3"/><line x1="${x(proj)}" x2="${x(proj)}" y1="2" y2="24" stroke="#3987e5" stroke-width="3"/></svg>
+   <ul class="small mpl"><li>Last 10: <b>${avm(L).toFixed(1)}</b> min (last 5 count double → ${base.toFixed(1)}).</li>
+   ${bm!=null&&cm!=null&&blow.length>=2?`<li>In blowouts (won or lost by 18+): <b>${bm.toFixed(1)}</b> min (${blow.length} g) vs <b>${cm.toFixed(1)}</b> in closer games.</li>`:""}
+   ${risk!=null?`<li>Tonight's spread ${sp>0?"+":""}${sp}: games with spreads like this ended in an 18+ point blowout <b>${Math.round(risk*100)}%</b> of the time this season (${B.length} games).</li>`:""}
+   ${mateTxt.map(t=>`<li>${t}</li>`).join("")}</ul></div>`}catch(e){return ""}}

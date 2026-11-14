@@ -14,6 +14,7 @@ function gpTabs(cur,items){return `<div class="gtabs gptabs">${items.map(([k,l,h
 function gpSummary(o){const R=[];
   if(o.pick)R.push(`<div class="gpsr"><span class="gpsl">Our pick</span><div>${o.pick}</div></div>`);
   if(o.props&&o.props.length)R.push(`<div class="gpsr"><span class="gpsl">Top props</span><div>${o.props.map(p=>`<div class="gpsp">${p}</div>`).join("")}</div></div>`);
+  if(o.sp&&o.teams)try{const W=gpWatch(o.sp,o.teams);if(W.inj)R.push(`<div class="gpsr"><span class="gpsl">🚑 Key absence</span><div>${W.inj}</div></div>`);if(W.mv)R.push(`<div class="gpsr"><span class="gpsl">📈 Line move</span><div>${W.mv}</div></div>`)}catch(e){}
   R.push(`<div class="gpsr"><span class="gpsl">What matters</span><div class="gptop" data-gptop><span class="small">—</span></div></div>`);
   return `<div class="card gpsum"><h2>The short version</h2>${R.join("")}<div class="small gpfoot">Tap any section below to open it.</div></div>`}
 function gpPropLine(nm,side,line,mk,odds,ch,href){return `<a href="${href||"#"}"><b>${gpE(nm)}</b> ${side} ${line} ${gpE(mk)}</a> <span class="small">${typeof oddsFmt!=="undefined"?oddsFmt(odds):odds}${ch!=null?` · our chance ${Math.round(ch*100)}%`:""}</span>`}
@@ -143,3 +144,14 @@ function plTimelinePost(root){const h=decodeURIComponent((location.hash||"").sli
   if(!sp||!nm||root.querySelector(".tlcard"))return;const put=()=>{if(root.querySelector(".tlcard"))return;const html=plTimeline(sp,nm);if(!html)return;const first=root.querySelector(".card");if(first)first.insertAdjacentHTML("afterend",html)};
   if(typeof LINE_HIST==="undefined"&&typeof xaHistEnsure!=="undefined")xaHistEnsure(put);else put();
   if(typeof newsLoad!=="undefined"&&NEWS&&!NEWS[sp])newsLoad(sp).then(()=>{const c=root.querySelector(".tlcard");if(c){c.remove();put()}})}
+
+/* "what to watch" rows for the short version: the biggest name ruled out / doubtful, and the biggest prop line move today */
+function gpWatch(sp,T){const out={},st=s=>/^(out|doubtful|injured reserve|ir\b)/i.test(s||"");let best=null;
+  if(sp==="nba"&&typeof NBA_INJ!=="undefined")for(const t of T)for(const r of NBA_INJ[t]||[]){if(!st(r[2]))continue;const p=NBA_LOGS[r[0]];if(!p||!p.g.length)continue;const mn=nbaAvg(p,"min"),pt=nbaAvg(p,"pts");if(!best||mn>best.s)best={s:mn,t,txt:`<b>${gpE(r[0])}</b> (${gpE(t)}) — ${gpE(r[2])} · ${nbaF(mn)} min, ${nbaF(pt)} pts a game`}}
+  if(sp==="nhl"&&typeof NHL_INJ!=="undefined")for(const t of T)for(const r of NHL_INJ[t]||[]){if(!st(r[2]))continue;const p=NHL_P[r[0]];if(!p||!p.s||!p.s[0])continue;const sc=p.s[3]/p.s[0];if(!best||sc>best.s)best={s:sc,t,txt:`<b>${gpE(r[0])}</b> (${gpE(t)}) — ${gpE(r[2])} · ${p.s[3]} pts in ${p.s[0]} games`}}
+  if(sp==="nfl"&&typeof INJ!=="undefined"){const pr={QB:4,WR:3,RB:3,TE:2};for(const t of T)for(const r of INJ[t]||[]){if(!st(r[2]))continue;const sc=(pr[r[1]]||1)*10+((typeof USAGE_RAW!=="undefined"&&USAGE_RAW[r[0]]&&USAGE_RAW[r[0]].s&&USAGE_RAW[r[0]].s.snap)||0)/10;if(!best||sc>best.s)best={s:sc,t,txt:`<b>${gpE(r[0])}</b> (${gpE(t)} ${gpE(r[1])}) — ${gpE(r[2])}${r[3]?" · "+gpE(r[3]):""}`}}}
+  if(best)out.inj=best.txt;
+  if(typeof loMoves!=="undefined"){const tm=nm=>sp==="nba"?(NBA_LOGS[nm]||{}).tm:sp==="nhl"?((typeof nhWho!=="undefined"&&nhWho(nm))||{}).tm:(PINFO[nm]||{}).team;
+    const m=loMoves(sp,60).find(x=>T.includes(tm(x.nm))&&x.dl);if(m){const lab=sp==="nba"?(NBA_MK[m.k]?NBA_MK[m.k][1]:m.k):sp==="nhl"?(NH_MK[m.k]?NH_MK[m.k][1]:m.k):(MARKETS[m.k]?MARKETS[m.k].n:m.k);
+      out.mv=`<b>${gpE(m.nm)}</b> ${gpE(lab)}: ${m.l} → <b>${m.now}</b> <span class="small">${m.dl>0?"▲ books raised it — money / news on the over":"▼ books lowered it — money / news on the under"}</span>`}}
+  return out}

@@ -78,12 +78,17 @@ for(const s of ['nba','nfl','nhl','soc'])T[s]=T[s]||{};
   const gradeEdge=(e,a,h,F)=>{const [as,hs]=F,mk=e.mk,pk=String(e.pick);
     if(mk==="Moneyline")return (pk===h)===(hs>as)?"win":"loss";
     if(mk==="Total"){const L=+pk.split(" ")[1],t=as+hs;return t===L?"push":((pk.startsWith("Over"))===(t>L))?"win":"loss"}
-    if(mk==="Spread"||mk==="Puck line"){const [tm,ln]=pk.split(" "),v=+ln,mg=tm===h?hs-as:as-hs;return mg+v===0?"push":mg+v>0?"win":"loss"}return null};
+    if(mk==="Spread"||mk==="Puck line"){const [tm,ln]=pk.split(" "),v=+String(ln).replace(/[−–]/g,"-"),mg=tm===h?hs-as:as-hs;return mg+v===0?"push":mg+v>0?"win":"loss"}return null};
   for(const sp of ['nba','nfl','nhl'])for(const [d,S] of Object.entries(T[sp])){
     /* "void" is re-checked: a pick voided because the player's stats weren't in our data yet (not because he sat out) gets its real grade */
     for(const x of S.best||[])if(!x.r||x.r==="void"){const g=gradeProp(sp,d,x);if(g&&!(x.r==="void"&&g.r==="void")){x.r=g.r;if(g.v!=null)x.v=g.v}}
     for(const x of S.plays||[])if(!x.r||(x.r==="void"&&x.type==="prop")){if(x.type==="prop"){const g=gradeProp(sp,d,x);if(g&&!(x.r==="void"&&g.r==="void")){x.r=g.r;if(g.v!=null)x.v=g.v}}else{const F=final(sp,d,x.a,x.h);if(F){x.r=gradeEdge({mk:x.mk,pick:x.pick},x.a,x.h,F);x.f=F}}}
     for(const G of S.games||[])if(!G.f){const F=final(sp,d,G.a,G.h);if(F){G.f=F;G.win=(G.p>=.5)===(F[1]>F[0]);if(G.L&&G.L.tot!=null&&F[0]+F[1]!==G.L.tot)G.tw=(G.tot>G.L.tot)===(F[0]+F[1]>G.L.tot);for(const e of G.edges||[])e.r=gradeEdge(e,G.a,G.h,F)}}}
+  /* re-grade finished game picks every run (deterministic from the final score) — fixes any earlier mis-grade,
+     e.g. Nov 2026: picks written with a typographic minus ("NYR −1.5") were read as NaN and marked lost */
+  for(const sp of ['nba','nfl','nhl'])for(const S of Object.values(T[sp])){
+    for(const x of S.plays||[])if(x.type!=="prop"&&x.f&&x.mk){const r=gradeEdge({mk:x.mk,pick:x.pick},x.a,x.h,x.f);if(r)x.r=r}
+    for(const G of S.games||[])if(G.f)for(const e of G.edges||[]){const r=gradeEdge(e,G.a,G.h,G.f);if(r)e.r=r}}
   /* parlays: every leg graded like a pick; any loss = loss; void/push legs drop out (payout from the legs that won) */
   const gradeParlay=(sp,d,P)=>{if(!P||P.r)return;for(const x of P.legs){if(x.r&&x.r!=="void")continue;
       if(sp==="soc"){const g=x.spec&&typeof socGrade!=="undefined"?socGrade(x.spec):null;if(g&&g.r&&g.r!=="pending")x.r=g.r}else{const g=gradeProp(sp,d,x);if(g&&!(x.r==="void"&&g.r==="void")){x.r=g.r;if(g.v!=null)x.v=g.v}}}

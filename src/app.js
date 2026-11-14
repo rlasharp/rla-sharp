@@ -184,7 +184,7 @@ function viewToday(){
   const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
   const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].map(sp=>loMovesCard(sp,5)).join(""):"";
   const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p>
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p><div id="liveTrk"></div>
   ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}
@@ -331,13 +331,19 @@ function sgpHtml(a){
     if(r.tag!=="n")adj*=Math.max(.6,Math.min(1.6,1+(r.lift-1)*r.n/(r.n+10)));
     rows.push(`<div class="sgr ${r.tag}"><b>${r.tag==="t"?"🤝":r.tag==="a"?"⚔️":"➖"} ${nm(a[i])} + ${nm(a[j])}</b><span class="small">Both hit in <b>${r.both} of ${r.n}</b> shared games — about ${r.exp.toFixed(1)} if they were unrelated. ${r.tag==="t"?"They tend to <b class='up'>hit together</b>.":r.tag==="a"?"They tend to <b class='dn'>work against each other</b> — when one hits, the other often misses.":"No strong link either way."}</span></div>`)}
   return rows.length?{html:`<div class="sgp"><div class="small" style="font-weight:700;margin-bottom:4px">🔗 Same-game check (from past games they both played)</div>${rows.join("")}</div>`,adj}:null}
+/* every leg from the same game hitting together, in the past games all those players shared (real history, not a multiplied guess) */
+function slipJoint(a){try{const G=[];for(const l of a){const g=G.find(x=>x.some(y=>sgpSame(y,l)));if(g)g.push(l);else G.push([l])}
+  const out=G.filter(g=>g.length>=2).map(g=>{const M=g.map(sgpLog);const ks=Object.keys(M[0]).filter(k=>M.every(m=>k in m));if(ks.length<5)return "";const all=ks.filter(k=>M.every(m=>m[k])).length,pc=all/ks.length;
+    return `<div class="sgr"><b>🧩 All ${g.length} legs (${g.map(l=>esc(l.player.split(" ").slice(-1)[0])).join(", ")}) hit together in ${all} of ${ks.length} shared games</b><div class="slbar"><i style="width:${Math.round(pc*100)}%;background:#3987e5"></i></div><span class="small">${Math.round(pc*100)}% of the games they all played — a real-history check that already includes how the legs move together.</span></div>`}).filter(Boolean);
+  return out.length?`<div class="sgp" style="margin-top:8px">${out.join("")}</div>`:""}catch(e){return ""}}
 function slipOpen(){
   const a=slipGet();let p=document.getElementById("slipPanel");if(!p){p=document.createElement("div");p.id="slipPanel";document.body.appendChild(p)}
   const c=slipCalc(a),stake=LS.get("slipStake",10),pay=stake*c.dec;let SG=null;try{SG=sgpHtml(a)}catch(e){}
   const games={};a.forEach(l=>{const g=l.k==="nbaprop"||l.k==="nhlprop"?l.date+[l.team,l.opp].sort().join(""):l.team||l.game;if(g)games[g]=(games[g]||0)+1});
   const same=a.filter(l=>l.k==="nbaprop").map(l=>[l.team,l.opp].sort().join("-")).filter((x,i,arr)=>arr.indexOf(x)!==i).length;
   p.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div><h2 style="margin:4px 0 8px">🎟 Parlay builder</h2>
-   ${a.map((l,i)=>`<div class="rcr"><div style="flex:1;min-width:0"><b>${esc(betTitle(l))}</b><div class="small">${oddsFmt(l.odds)}${l.est?" (assumed)":""}${l.book?" · "+esc(l.book):""}${c.hs[i]!=null?` · our chance ${Math.round(c.hs[i]*100)}%`:""}</div></div><button class="btn" data-rmleg="${i}">✕</button></div>`).join("")}
+   ${a.map((l,i)=>`<div class="rcr"><div style="flex:1;min-width:0"><b>${esc(betTitle(l))}</b><div class="small">${oddsFmt(l.odds)}${l.est?" (assumed)":""}${l.book?" · "+esc(l.book):""}${c.hs[i]!=null?` · our chance ${Math.round(c.hs[i]*100)}%`:""}</div>${c.hs[i]!=null&&l.odds!=null?`<div class="slbar" title="green = our chance · line = what the price needs"><i style="width:${Math.round(c.hs[i]*100)}%;background:${c.hs[i]>=1/betDec(l.odds)?"#22c55e":"#ef4444"}"></i><em style="left:${(100/betDec(l.odds)).toFixed(1)}%"></em></div>`:""}</div><button class="btn" data-rmleg="${i}">✕</button></div>`).join("")}
+   ${slipJoint(a)}
    <div class="grid g2" style="gap:8px;margin-top:10px">
     <div class="stat"><div class="l">Parlay odds</div><div style="font-size:22px;font-weight:800">${a.length>1?(c.am>0?"+":"")+c.am:oddsFmt(a[0].odds)}</div><div class="small">book's chance ${(c.impl*100).toFixed(1)}%</div></div>
     <div class="stat"><div class="l">Our estimate</div><div style="font-size:22px;font-weight:800">${c.est!=null?(c.est*100).toFixed(1)+"%":"–"}</div><div class="small">${c.est!=null?(c.est>c.impl?"<b class='up'>above</b> the book's price":"<b class='dn'>below</b> the book's price"):"needs hit scores for every leg"}</div></div>

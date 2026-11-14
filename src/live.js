@@ -100,6 +100,7 @@ async function liveDecorate(){
   const h=decodeURIComponent((location.hash||"#games").slice(1));
   if(typeof nhlLiveDecorate!=="undefined"&&(h.startsWith("nhl")||h==="today"||h==="bets"))try{await nhlLiveDecorate()}catch(e){}
   if(h==="bets")try{await liveBetsDecorate()}catch(e){}
+  if(h==="today"||h==="")try{await liveTrackerCard()}catch(e){}
   /* NHL game cards + game page */
   if(h.startsWith("nhl")&&typeof nhGame!=="undefined"){
     document.querySelectorAll("#v-nhl [data-nhg]").forEach(c=>{const g=nhGame(c.dataset.nhg);if(!g)return;livePut(c,liveBar("nhl",liveGet("nhl",g.a,g.h)),c.querySelector(".nhgh")&&c.querySelector(".nhgh").nextSibling)});
@@ -226,6 +227,18 @@ function livePace(sp,nm,k,v,line,over,lg){try{if(!lg||lg.st!=="in"||v==null||lin
   let p;if(over){if(v>line)return "";p=1-cdf(need-1)}else{if(v>line)return "";p=cdf(Math.floor(line-v-1e-9))}
   p=Math.max(.01,Math.min(.99,p));return ` · <b>~${Math.round(p*100)}%</b> to ${over?"get there":"stay under"} at his usual pace`}catch(e){return ""}}
 
+/* live value of one tracked NBA / NFL prop: {lg, v, u} (null when its game isn't on / done) */
+async function liveBetVal(b){let lg=null,v=null,u="";
+  if(b.k==="nbaprop"&&typeof NBA_SLATE_DATE!=="undefined"&&b.date===NBA_SLATE_DATE){const g=nbaGameOf(b.team);lg=g&&liveGet("nba",g.a,g.h,g.id);if(lg&&lg.st!=="pre"){const bx=await liveBox(lg.id);v=bx&&liveVal(bx[b.player],b.market)}u=NBA_MK[b.market]?NBA_MK[b.market][2]:""}
+  else if(b.k==="prop"&&typeof liveNflGame!=="undefined"){lg=liveNflGame(b.team);if(lg&&lg.st!=="pre"){const bx=await liveNflBox(lg.id);v=bx&&liveNflVal(bx[b.player]||{},b.market)}u=MARKETS[b.market]?MARKETS[b.market].n:""}
+  return lg&&lg.st!=="pre"&&v!=null?{lg,v,u}:null}
+function liveBar(v,line,over){const mx=Math.max(v,line)*1.18||1,hit=over?v>line:v<line;return `<div class="lvbar"><i style="width:${Math.min(100,v/mx*100).toFixed(1)}%;background:${hit?"#16a34a":over?"#3987e5":"#f59e0b"}"></i><em style="left:${(line/mx*100).toFixed(1)}%"></em></div>`}
+/* 📡 Today page: every tracked prop whose game is on (or just finished), filling up as it happens */
+async function liveTrackerCard(){const host=document.getElementById("liveTrk");if(!host||typeof betsLoad==="undefined")return;const rows=[];
+  for(const b of betsLoad()){if(b.k!=="nbaprop"&&b.k!=="prop")continue;let r=null;try{r=await liveBetVal(b)}catch(e){}if(!r)continue;
+    const over=b.side!=="under",fin=r.lg.st==="post",hit=over?r.v>b.line:r.v<b.line;
+    rows.push(`<a class="lvt" href="#bets"><div class="row" style="gap:6px;align-items:baseline"><b>${esc(betTitle(b))}</b><span class="sp"></span><span class="small">${fin?(hit?"✅ Hit":"❌ Missed"):esc(r.lg.det||"")}</span></div><div class="small"><b>${r.v}</b> ${esc(r.u)} · line ${b.line}${!fin&&over&&!hit?` · needs ${Math.floor(b.line-r.v)+1} more`:""}</div>${liveBar(r.v,b.line,over)}</a>`)}
+  host.innerHTML=rows.length?`<div class="card" style="margin-bottom:12px"><h2 style="margin-bottom:6px"><span class="lvdot"></span>&nbsp; Live tracker</h2>${rows.join("")}<div class="small" style="margin-top:4px">Your tracked props (My Bets) during games — refreshes every minute or so.</div></div>`:""}
 /* My Bets: live progress + "on pace" chance for NBA and NFL props (NHL has its own, xsport.js) */
 async function liveBetsDecorate(){if((location.hash||"").slice(1)!=="bets"||typeof betsLoad==="undefined")return;
   for(const b of betsLoad()){try{const el=document.querySelector(`[data-clv="${b.id}"]`);if(!el)continue;const host=el.parentElement,over=b.side!=="under";let lg=null,v=null,u="",sp="";
@@ -234,5 +247,5 @@ async function liveBetsDecorate(){if((location.hash||"").slice(1)!=="bets"||type
     else continue;
     let x=host.querySelector(".lvp");if(!lg||lg.st==="pre"||v==null){if(x)x.remove();continue}
     const line=b.line,hit=over?v>line:v<line,fin=lg.st==="post";
-    const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${fin?`${hit?"✅ Hit":"❌ Missed"} — finished with <b>${v}</b> ${esc(u)}`:`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${esc(u)} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${Math.floor(line-v)+1} more`):(v>line?" · already over ❌":"")}${livePace(sp,b.player,b.market,v,line,over,lg)}`}</div>`;
+    const html=`<div class="lvp ${fin?(hit?"w":"l"):"on"}">${fin?`${hit?"✅ Hit":"❌ Missed"} — finished with <b>${v}</b> ${esc(u)}`:`<span class="lvdot"></span>&nbsp; So far: <b>${v}</b> ${esc(u)} (line ${line}) · ${esc(lg.det)}${over?(v>line?" · already over ✅":` · needs ${Math.floor(line-v)+1} more`):(v>line?" · already over ❌":"")}${livePace(sp,b.player,b.market,v,line,over,lg)}`}${liveBar(v,line,over)}</div>`;
     x=host.querySelector(".lvp");if(x)x.outerHTML=html;else host.insertAdjacentHTML("beforeend",html)}catch(e){}}}

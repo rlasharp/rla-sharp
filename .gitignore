@@ -4,3 +4,4 @@ package-lock.json
 src/index.html
 src/shell_built.html
 src/nba_data_core.js
+src/adv_core.js
