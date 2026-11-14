@@ -262,7 +262,7 @@ print(f'var UFC_GEN="{NOW.astimezone(dt.timezone(dt.timedelta(hours=-5))).strfti
 print(f"var UFC_EV={J(EV)};  /* cards: fights main event first; c = [id, name, record, winner, country] */")
 print(f"var UFC_F={J(FT)};  /* fighters: bio, record split (R), last 10 fights h = [date, oppId, opp, W/L/D/NC, method, detail, round, time, seconds, weight class, sig landed, sig att, sig absorbed, opp sig att, TD landed, TD att, opp TD landed, opp TD att, knockdowns, control sec, sub att, [head, body, leg], [distance, clinch, ground], opponent's [head, body, leg], opponent's [distance, clinch, ground], opponent's current record] */")
 print(f"var UFC_RK={J(RK)};  /* ESPN rankings: athleteId -> [[list, rank], ...] */")
-print(f"var UFC_RANKS={J(RKL)};  /* ESPN ranking lists: {n: list, r: [[rank, id, name, record, trend]]} */")
+print(f"var UFC_RANKS={J(RKL)};  /* ESPN ranking lists: {{n: list, r: [[rank, id, name, record, trend]]}} */")
 print("var UFC_OK=1;")
 _names = set()
 for f in list(C["fights"].values())[:30]:
