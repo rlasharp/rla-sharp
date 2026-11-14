@@ -401,8 +401,8 @@ function ufJudges(f){if(!f.jd||!f.jd.length)return "";const w=f.c.findIndex(c=>c
 /* 🏆 ESPN rankings by division, with each fighter's next booked fight */
 function ufRankPage(el){const L=(window.UFC_RANKS||[]).filter(x=>x.r&&x.r.length);if(!L.length){el.innerHTML=ufHead("Rankings")+`<div class="card small">Rankings load with the next data update.</div>`;return}
   const nextOf=aid=>ufFights().find(f=>f.st!=="post"&&f.c.some(c=>c[0]===aid));const sel=UFC.rk&&L.find(x=>x.n===UFC.rk)?UFC.rk:L[0].n,R=L.find(x=>x.n===sel);
-  el.innerHTML=`${ufHead("ESPN rankings by division")}<div class="ufevs">${L.map(x=>`<button class="fxp${x.n===sel?" on":""}" data-ufrk="${ufE(x.n)}">${ufE(x.n.replace(/^Men's /,"").replace(/Pound for Pound/,"P4P"))}</button>`).join("")}</div>
-   <div class="card"><h2>${ufE(sel)}</h2>${R.r.map(([rk,aid,nm,rec,tr])=>{const nx=nextOf(aid),inF=(window.UFC_F||{})[aid];
+  el.innerHTML=`${ufHead("ESPN rankings by division")}<div class="ufevs">${L.map(x=>`<button class="fxp${x.n===sel?" on":""}" data-ufrk="${ufE(x.n)}">${ufE(x.n.replace(/^Men's /,"").replace(/Pound for Pound/,"P4P").replace(/\s*Division.*$/,"").replace(/^Women's /,"W "))}</button>`).join("")}</div>
+   <div class="card"><h2>${ufE(sel.replace(/\s*Division\s*/," "))}</h2>${R.r.map(([rk,aid,nm,rec,tr])=>{const nx=nextOf(aid),inF=(window.UFC_F||{})[aid];
      return `<div class="ufval"><b>${rk===0?"C":"#"+rk}</b>${inF?`<a href="#ufc-fighter-${aid}">${ufE(nm)}</a>`:`<span>${ufE(nm)}</span>`}<span class="small">${ufE(rec)}${tr&&tr!=="-"?` · ${ufE(tr)}`:""}</span>${nx?`<a class="small" href="#ufc-fight-${nx.id}">🥊 vs ${ufE(ufLast(nx.c.find(c=>c[0]!==aid)[1]))} · ${ufDate(nx.t||nx.ev.d)}</a>`:`<span class="small">no fight booked</span>`}</div>`}).join("")}</div>
    <p class="note">Rankings: ESPN's panel. Trend = moves since the last update.</p>`;
   el.querySelectorAll("[data-ufrk]").forEach(b=>b.onclick=()=>{UFC.rk=b.dataset.ufrk;ufRankPage(el)})}
