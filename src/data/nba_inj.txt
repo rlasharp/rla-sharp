@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 19:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 20:23Z
 #Atlanta Hawks
 Kingston Flemings|G|Day-To-Day|back|Nov 15
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -65,8 +65,10 @@ Austin Reaves|G|Day-To-Day|heel|Nov 15
 Luka Doncic|G|Day-To-Day|ankle|Nov 15
 Collin Sexton|G|Day-To-Day|head|Nov 15
 #Memphis Grizzlies
-Quinten Post|C|Day-To-Day|concussion|Nov 14
+Quinten Post|C|Out|concussion|Nov 16
+Jerami Grant|F|Day-To-Day|head|Nov 14
 Zach Edey|C|Day-To-Day|ankle|Nov 14
+Ty Jerome|G|Out|hip soreness|Nov 16
 Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
