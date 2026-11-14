@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 22:33Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 23:05Z
 #Atlanta Hawks
 Kingston Flemings|G|Day-To-Day|back|Nov 15
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -19,15 +19,15 @@ Jalen Smith|F|Day-To-Day|finger sprain|Nov 14
 Norman Powell|G|Day-To-Day|back|Nov 14
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
-Peyton Watson|G|Day-To-Day|hamstring|Nov 14
+Jarrett Allen|C|Out|knee|Nov 16
+Peyton Watson|G|Day-To-Day|hamstring|Nov 16
 Evan Mobley|C|Out|toe sprain|Nov 16
-Jarrett Allen|C|Day-To-Day|knee|Nov 14
-Donovan Mitchell|G|Day-To-Day|knee bruise|Nov 14
-James Harden|G|Day-To-Day|calf|Nov 14
+Donovan Mitchell|G|Day-To-Day|knee bruise|Nov 16
+James Harden|G|Day-To-Day|calf|Nov 16
 Sam Merrill|G|Out|elbow|Nov 16
 Nae'Qwan Tomlin|F|Out|back|Nov 16
 #Dallas Mavericks
-Max Christie|G|Day-To-Day|ankle sprain|Nov 14
+Max Christie|G|Day-To-Day|ankle sprain|Nov 15
 Morez Johnson Jr.|F|Day-To-Day|lower leg|Nov 14
 Dereck Lively II|C|Out|foot surgery|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 18
@@ -74,11 +74,12 @@ Richie Saunders|G|Out|knee surgery|Dec 1
 Pelle Larsson|G|Day-To-Day|illness|Nov 14
 Klay Thompson|G|Day-To-Day|ankle sprain|Nov 14
 Giannis Antetokounmpo|F|Day-To-Day|wrist sprain|Nov 14
+#Milwaukee Bucks
+Ousmane Dieng|F|Out|finger sprain|Nov 18
 #Minnesota Timberwolves
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Yves Missi|C|Out|knee bruise|Nov 14
 Trendon Watford|F|Out|ankle sprain|Nov 16
 Bryce McGowens|G|Out|elbow infection|Nov 16
 Trey Murphy III|F|Out|knee tendinitis|Nov 16
