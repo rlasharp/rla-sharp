@@ -8,7 +8,7 @@ const MARKET_ASOF="Sat Nov 14, 6 PM ET";
 const MOVE={
  1:{open:{sp:-4.5,tot:49.5},now:{sp:-1.5,tot:40.5,ml:[105,-125]}},
  2:{open:{sp:4.5,tot:48.5},now:{sp:-2.5,tot:49.5,ml:[124,-148]}},
- 3:{open:{sp:-3.5,tot:41.5},now:{sp:3,tot:47.5,ml:[-166,140]}},
+ 3:{open:{sp:-3.5,tot:41.5},now:{sp:3,tot:47.5,ml:[-170,142]}},
  4:{open:{sp:1.5,tot:52.5},now:{sp:4.5,tot:40.5,ml:[-225,185]}},
  5:{open:{sp:3,tot:42.5},now:{sp:-2.5,tot:42.5,ml:[124,-148]}},
  6:{open:{sp:6.5,tot:47.5},now:{sp:10.5,tot:46.5,ml:[-650,470]}},
