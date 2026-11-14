@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 15:19Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 17:17Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Questionable|Knee|Nov 15
@@ -108,25 +108,24 @@ David Montgomery|RB|Questionable|Groin|Nov 15
 Jaylin Smith|CB|IR|Hamstring|Nov 15
 Jake Hummel|LB|IR|Groin|Nov 15
 #IND
+Will Mallory|TE|Out|Hamstring|Nov 19
 Jalen Travis|OT|Out|Knee|Nov 19
 Jaylon Carlies|LB|Out|Neck|Nov 19
 Jerry Tillery|DT|Out|Calf|Nov 19
 Luke Rhodes|LS|Out|Hamstring|Nov 19
-Will Mallory|TE|Questionable|Hamstring|Nov 15
-Akeem Davis-Gaither|LB|Out|Knee|Nov 19
-Mo Alie-Cox|TE|Out|Groin|Nov 19
-Arden Key|DE|IR|Hamstring|Nov 15
+Akeem Davis-Gaither|LB|IR|Knee|Dec 20
+Mo Alie-Cox|TE|IR|Groin|Dec 20
 Alec Pierce|WR|IR|Heel|Nov 29
 #JAX
 B.J. Green II|DE|IR|Forearm|Nov 22
 Jessie Bates III|S|Out|Coach's Decision|Nov 22
 Robert Hainsey|C|Questionable|Concussion|Nov 15
 #KC
+Kenneth Walker III|RB|Out|Groin|Nov 22
 Jaylon Moore|OT|Out|Ankle|Nov 22
 Peter Woods|DT|Out|Neck|Nov 22
 Jaydn Ott|RB|Questionable|Hamstring|Nov 15
 Mansoor Delane|CB|Questionable|Shoulder|Nov 15
-Kenneth Walker III|RB|Questionable|Groin|Nov 15
 #LV
 Thomas Booker IV|DT|Questionable|Ankle|Nov 15
 Dont'e Thornton Jr.|WR|Questionable|Back|Nov 15
@@ -182,12 +181,12 @@ Walter Rouse|OL|Questionable|Concussion|Nov 15
 Cameron Latu|TE|Questionable|Back|Nov 15
 Reggie Gilliam|FB|IR|Knee|Nov 15
 #NO
+Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 Erik McCoy|C|Out|Biceps|Nov 22
 Christen Miller|DT|Out|Knee|Nov 22
 Taliese Fuaga|OT|Out|Knee|Nov 22
 Martin Emerson Jr.|CB|Questionable|Shin|Nov 15
 CJ Donaldson|RB|Out|Shoulder|Nov 22
-Travis Etienne Jr.|RB|IR|Hamstring|Nov 15
 #NYG
 Jason Pinnock|S|Questionable|Back|Nov 22
 Malik Harrison|LB|Out|Groin|Nov 22
