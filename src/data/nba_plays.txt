@@ -31,3 +31,6 @@
 2026-11-13|Jalen Johnson|reb|u|9.5|-110|BetRivers|ATL|CHI
 2026-11-13|Sidy Cissoko|reb|u|3.5|-118|FanDuel|POR|SAC
 2026-11-13|Isaiah Hartenstein|pa|u|13.5|-104|FanDuel|OKC|LAC
+2026-11-14|Rudy Gobert|pts|u|10.5|-115|BetRivers|MIN|CHI
+2026-11-14|Cade Cunningham|ast|u|8.5|125|BetMGM|DET|MIA
+2026-11-14|DeMar DeRozan|ra|o|4.5|104|FanDuel|DEN|NO
