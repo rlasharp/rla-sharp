@@ -449,12 +449,16 @@ function nbaDvpIdx(){
   for(const [nm,p] of Object.entries(NBA_LOGS)){const ps=p.p5;if(!ps)continue;for(const x of p.g){if(x[9]!==1)continue;const key=x[0]+"|"+x[2];const o=idx[key]||(idx[key]={PG:[],SG:[],SF:[],PF:[],C:[]});if(o[ps])o[ps].push({nm,x})}}
   return NBA_DVP_IDX=idx;
 }
-function nbaDvp(team,pos,k,n){
+/* memoized: the league average per position/market and each team's last-n rows (recomputed only if the results change) */
+let NBA_DVPC={},NBA_DVPN=-1;
+function nbaDvp(team,pos,k,n){if(NBA_DVPN!==NBA_RES.length){NBA_DVPC={};NBA_DVPN=NBA_RES.length}const ck=team+"|"+pos+"|"+k+"|"+(n||5);if(NBA_DVPC[ck])return NBA_DVPC[ck];return NBA_DVPC[ck]=nbaDvp0(team,pos,k,n)}
+let NBA_DVPLG={};
+function nbaDvp0(team,pos,k,n){
   const idx=nbaDvpIdx();
   const games=NBA_RES.filter(r=>r[2]===team||r[3]===team).slice(-(n||5));
   const rows=games.map(r=>{const vs=r[2]===team?r[3]:r[2];const xs=(idx[r[0]+"|"+team]||{})[pos]||[];const who=xs.map(o=>({nm:o.nm,v:nbaVal(o.x,k)})).sort((a,b)=>b.v-a.v);return {d:r[1],vs,ha:r[3]===team?"H":"A",v:who.reduce((s,o)=>s+o.v,0),who}});
-  let tot=0,cnt=0;for(const key in idx){const xs=idx[key][pos]||[];if(!xs.length)continue;tot+=xs.reduce((s,o)=>s+nbaVal(o.x,k),0);cnt++}
-  return {rows,lg:cnt?tot/cnt:0};
+  const lk=pos+"|"+k;if(NBA_DVPLG[lk]==null){let tot=0,cnt=0;for(const key in idx){const xs=idx[key][pos]||[];if(!xs.length)continue;tot+=xs.reduce((s,o)=>s+nbaVal(o.x,k),0);cnt++}NBA_DVPLG[lk]=cnt?tot/cnt:0}
+  return {rows,lg:NBA_DVPLG[lk]};
 }
 function nbaPosWord(p){return ({PG:"point guards",SG:"shooting guards",SF:"small forwards",PF:"power forwards",C:"centers",G:"guards",F:"forwards"})[p]||p}
 function nbaDvpChart(team,pos,k){
@@ -635,7 +639,8 @@ function nbaLastNm(n){const w=String(n).split(" ");return /^(Jr\.?|Sr\.?|II|III|
 let NBA_BLOWC={};function nbaBlowP(spA){const key=Math.round(spA);if(key in NBA_BLOWC)return NBA_BLOWC[key];const S=typeof NBA_SPR!=="undefined"?Object.values(NBA_SPR):[];
   const L=S.filter(x=>x[3]!=null&&x[5]!=null&&Math.abs(Math.abs(x[3])-spA)<=2);return NBA_BLOWC[key]=L.length>=15?L.filter(x=>Math.abs(x[5]-x[6])>=15).length/L.length:null}
 /* his minutes in blowouts (decided by 15+) vs other games this season — needs 2+ blowouts and 3+ others */
-function nbaBlowMin(p){const M={};for(const r of NBA_RES)M[r[0]]=Math.abs(r[4]-r[5]);const b=p.g.filter(x=>M[x[0]]>=15),c=p.g.filter(x=>M[x[0]]!=null&&M[x[0]]<15);if(b.length<2||c.length<3)return null;
+let NBA_BLM=null,NBA_BLMN=-1;
+function nbaBlowMin(p){if(NBA_BLMN!==NBA_RES.length){NBA_BLM={};for(const r of NBA_RES)NBA_BLM[r[0]]=Math.abs(r[4]-r[5]);NBA_BLMN=NBA_RES.length}const M=NBA_BLM;const b=p.g.filter(x=>M[x[0]]>=15),c=p.g.filter(x=>M[x[0]]!=null&&M[x[0]]<15);if(b.length<2||c.length<3)return null;
   const a=z=>z.reduce((t,x)=>t+x[4],0)/z.length;return Math.max(.5,Math.min(1.1,a(b)/a(c)))}
 function nbaEval(nm,k,line,side,odds,book,oppIn){
   const p=NBA_LOGS[nm];if(!p||!NBA_MK[k]||odds==null)return null;
@@ -1212,6 +1217,7 @@ function nbaTeamPage(el,t){
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>Next 7 days</h2>${nbaNextHtml(t)}</div>
     <div class="card"><h2>Last 5</h2>${nbaLast5(t)}</div>
+    ${typeof xBetRec!=="undefined"?xBetRec(nbaBetRows(t),{src:"ESPN"}):""}
   </div>
   <div class="card" style="margin-top:14px"><h2>Roster</h2>${nbaPlayerTable(nbaTopPlayers(t,13),{no3:1,nonote:1})}</div>
   <div class="card" style="margin-top:14px"><h2>Injuries</h2>${nbaInjTable(t)}</div>`;

@@ -122,3 +122,73 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
   H.setAttribute("data-theme","light");document.body.classList.add("printing");
   const done=()=>{opened.forEach(c=>c.classList.remove("open"));dets.forEach(d=>d.open=false);if(theme)H.setAttribute("data-theme",theme);else H.removeAttribute("data-theme");document.body.classList.remove("printing");window.removeEventListener("afterprint",done)};
   window.addEventListener("afterprint",done);setTimeout(()=>{try{window.print()}catch(x){}setTimeout(()=>{if(document.body.classList.contains("printing"))done()},1500)},250)},true);
+
+/* ---------- 📒 Team betting record (all sports with closing lines): against the spread, over/under, home/road,
+   favourite/underdog, last 10 games with cover and over chips. rows: {d, opp, home, sp (team spread, − = favoured), tot, pf, pa} ---------- */
+function xBetRec(rows,o){o=o||{};rows=(rows||[]).filter(r=>r.sp!=null&&r.tot!=null&&r.pf!=null&&r.pa!=null);if(!rows.length)return "";
+  const z=()=>[0,0,0],A=z(),O=z(),H=z(),R=z(),F=z(),D=z(),add=(T,v)=>T[v>0?0:v<0?1:2]++;
+  for(const r of rows){const c=r.pf-r.pa+r.sp,t=r.pf+r.pa-r.tot;add(A,c);add(O,t);add(r.home?H:R,c);if(r.sp<0)add(F,c);else if(r.sp>0)add(D,c)}
+  const rec=T=>`${T[0]}-${T[1]}${T[2]?"-"+T[2]:""}`,pc=T=>T[0]+T[1]?Math.round(T[0]/(T[0]+T[1])*100)+"%":"–",u=o.unit||"pts";
+  const L=rows.slice(-10).reverse();
+  return `<div class="card"><h2>📒 Betting record <span class="small">· ${rows.length} games with closing lines${o.src?" · "+o.src:""}</span></h2>
+   <div class="xstrip"><div><b>${rec(A)}</b><span>${o.ats||"vs spread"}</span><small>${pc(A)} covered</small></div><div><b>${rec(O)}</b><span>Over / under</span><small>${pc(O)} overs</small></div>
+    <div><b>${rec(H)}</b><span>Home ${o.ats?"":"ATS"}</span></div><div><b>${rec(R)}</b><span>Road ${o.ats?"":"ATS"}</span></div>${F[0]+F[1]+F[2]?`<div><b>${rec(F)}</b><span>As favourite</span></div>`:""}${D[0]+D[1]+D[2]?`<div><b>${rec(D)}</b><span>As underdog</span></div>`:""}</div>
+   <div class="nbatbl" style="margin-top:8px"><table class="bxt" style="min-width:0"><thead><tr><th>Game</th><th>Score</th><th>Line</th><th>Cover</th><th>Total</th></tr></thead><tbody>
+    ${L.map(r=>{const c=r.pf-r.pa+r.sp,t=r.pf+r.pa-r.tot;return `<tr><td>${gpE(r.d)} ${r.home?"vs":"@"} ${gpE(r.opp)}</td><td>${r.pf>r.pa?"W":r.pf<r.pa?"L":"T"} ${r.pf}-${r.pa}</td><td>${r.sp>0?"+":""}${r.sp}</td><td><span class="ufr ${c>0?"W":c<0?"L":"NC"}">${c>0?"✓":c<0?"✗":"P"}</span></td><td>${r.tot} <span class="ufr ${t>0?"W":t<0?"L":"NC"}">${t>0?"O":t<0?"U":"P"}</span></td></tr>`}).join("")}</tbody></table></div>
+   <div class="small">Cover = won by more than the spread (or lost by less). Closing lines${o.src?" from "+o.src:""}. ${u==="goals"?"Puck line ±1.5.":""}</div></div>`}
+function nbaBetRows(t){if(typeof NBA_SPR==="undefined")return [];return Object.values(NBA_SPR).filter(s=>s[1]===t||s[2]===t).sort((a,b)=>a[0]<b[0]?-1:1).map(s=>{const h=s[2]===t;return {d:s[0].slice(5),opp:h?s[1]:s[2],home:h,sp:h?s[3]:-s[3],tot:s[4],pf:h?s[6]:s[5],pa:h?s[5]:s[6]}})}
+function nflBetRows(t){const A=(typeof NFL_ATS!=="undefined"&&NFL_ATS[t])||[];return A.map(r=>({d:"Wk "+r[0],opp:r[1],home:!!r[2],sp:r[3],tot:r[4],pf:r[5],pa:r[6]}))}
+function nhlBetCard(t){const T=(typeof NHL_TEAM!=="undefined"&&NHL_TEAM[t])||{};if(!T.ats&&!T.ou)return "";const rec=r=>r?`${r[0]}-${r[1]}${r[2]?"-"+r[2]:""}`:"–",pc=r=>r&&r[0]+r[1]?Math.round(r[0]/(r[0]+r[1])*100)+"%":"";
+  return `<div class="card"><h2>📒 Betting record</h2><div class="xstrip"><div><b>${rec(T.ats)}</b><span>Puck line</span><small>${pc(T.ats)}</small></div><div><b>${rec(T.ou)}</b><span>Over / under</span><small>${pc(T.ou)} overs</small></div>
+   <div><b>${rec(T.atsH)}</b><span>PL home</span></div><div><b>${rec(T.atsR)}</b><span>PL road</span></div><div><b>${rec(T.ouH)}</b><span>O/U home</span></div><div><b>${rec(T.ouR)}</b><span>O/U road</span></div></div>
+   <div class="small">Against the closing puck line and total (licensed US books).</div></div>`}
+
+/* ---------- ⚙️ Settings (this device): start page, sports you follow, odds format, times, theme, view, text size,
+   colour-blind friendly colours, default stake ---------- */
+const XSET_DEF={start:"today",hide:[],tz:"et",text:"m",cb:0};
+function xSet(){let o={};try{o=JSON.parse(localStorage.getItem("rla_set")||"{}")||{}}catch(e){}return Object.assign({},XSET_DEF,o)}
+function xSetSave(k,v){const o=xSet();o[k]=v;try{localStorage.setItem("rla_set",JSON.stringify(o))}catch(e){}xSetApply()}
+function xFollow(sp){return !xSet().hide.includes(sp==="soccer"?"soc":sp)}
+function xSetApply(){const o=xSet(),B=document.body;if(!B)return;["nfl","nba","nhl","soc","ufc"].forEach(sp=>B.classList.toggle("hide-"+sp,o.hide.includes(sp)));
+  B.classList.toggle("cbsafe",!!o.cb);B.classList.toggle("txt-l",o.text==="l");B.classList.toggle("txt-xl",o.text==="xl");if(o.tz==="local")xTzSoon()}
+/* game times: the site writes "7:00 PM ET"; with "my time zone" on, every such time on the page is shown in yours */
+const XTZ_RE=/\b(\d{1,2}):(\d{2})\s*([AaPp][Mm])\s*ET\b/g;
+function xEtOffsetMin(){try{const d=new Date(),et=new Date(d.toLocaleString("en-US",{timeZone:"America/New_York"})),loc=new Date(d.toLocaleString("en-US"));return Math.round((loc-et)/6e4)}catch(e){return 0}}
+function xTzConv(h,m,ap){let H=(+h%12)+(/p/i.test(ap)?12:0);let t=H*60+(+m)+xEtOffsetMin();t=((t%1440)+1440)%1440;const d=new Date();d.setHours(Math.floor(t/60),t%60,0,0);
+  let z="";try{z=d.toLocaleTimeString("en-US",{timeZoneName:"short"}).split(" ").pop()}catch(e){}return d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})+(z?" "+z:"")}
+function xTzWalk(root){if(xSet().tz!=="local"||!xEtOffsetMin())return;const W=document.createTreeWalker(root||document.querySelector("main")||document.body,NodeFilter.SHOW_TEXT);const L=[];let n;
+  const A=[];while((n=W.nextNode()))A.push(n);
+  A.forEach((t,i)=>{const v=t.nodeValue;if(XTZ_RE.test(v)){XTZ_RE.lastIndex=0;t.nodeValue=v.replace(XTZ_RE,(_,h,m,ap)=>xTzConv(h,m,ap));return}XTZ_RE.lastIndex=0;
+    /* "7:00 PM" and " ET" in separate pieces of text */
+    const m=/(\d{1,2}):(\d{2})\s*([AaPp][Mm])\s*$/.exec(v),nx=A[i+1];if(m&&nx&&/^\s*ET\b/.test(nx.nodeValue)){t.nodeValue=v.slice(0,m.index)+xTzConv(m[1],m[2],m[3]);nx.nodeValue=nx.nodeValue.replace(/^\s*ET\b/,"")}})}
+let XTZ_T=0;function xTzSoon(){clearTimeout(XTZ_T);XTZ_T=setTimeout(()=>xTzWalk(),80)}
+window.addEventListener("load",()=>{xSetApply();try{new MutationObserver(()=>{if(xSet().tz==="local")xTzSoon()}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}catch(e){}
+  const o=xSet();if((!location.hash||location.hash==="#"||location.hash==="#today")&&o.start&&o.start!=="today"&&!sessionStorage.getItem("rla_started")){try{sessionStorage.setItem("rla_started","1")}catch(e){}location.replace("#"+({nfl:"games",nba:"nba",nhl:"nhl",soc:"soccer",ufc:"ufc"}[o.start]||"today"))}
+  try{sessionStorage.setItem("rla_started","1")}catch(e){}});
+function viewSettings(){const el=document.getElementById("v-settings");if(!el)return;const o=xSet(),of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
+  const SP=[["nfl","🏈 NFL"],["nba","🏀 NBA"],["nhl","🏒 NHL"],["soc","⚽ Soccer"],["ufc","🥊 UFC"]];
+  const seg=(k,opts,cur)=>`<div class="seg">${opts.map(([v,l])=>`<button data-xset="${k}" data-v="${v}" class="${cur===v?"on":""}">${l}</button>`).join("")}</div>`;
+  el.innerHTML=`<h1>⚙️ Settings</h1><p class="sub">Saved on this device.</p>
+   <div class="card"><h2>Open the site on</h2>${seg("start",[["today","🏠 Today"],...SP],o.start)}</div>
+   <div class="card"><h2>Sports I follow</h2><div class="small" style="margin-bottom:6px">Hidden sports leave the sport bar, the Today page and the More menu (you can still open them from search).</div>
+    <div class="xchk">${SP.map(([v,l])=>`<label><input type="checkbox" data-xhide="${v}" ${o.hide.includes(v)?"":"checked"}> ${l}</label>`).join("")}</div></div>
+   <div class="card"><h2>Odds format</h2>${seg("odds",[["am","American (−110)"],["dec","Decimal (1.91)"]],of)}</div>
+   <div class="card"><h2>Game times</h2>${seg("tz",[["et","Eastern (ET)"],["local","My time zone"]],o.tz)}<div class="small" style="margin-top:6px">${o.tz==="local"?`Times show in your zone (${(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone}catch(e){return "local"}})()}).`:"Times show as Eastern, like the sportsbooks."}</div></div>
+   <div class="card"><h2>Theme</h2>${typeof uxThemeSeg!=="undefined"?uxThemeSeg():""}</div>
+   <div class="card"><h2>Detail level</h2>${typeof uxViewSeg!=="undefined"?uxViewSeg():""}</div>
+   <div class="card"><h2>Text size</h2>${seg("text",[["m","Normal"],["l","Large"],["xl","Extra large"]],o.text)}</div>
+   <div class="card"><h2>Colours</h2>${seg("cb",[["0","Standard (green / red)"],["1","Colour-blind friendly (blue / orange)"]],String(o.cb||0))}</div>
+   <div class="card"><h2>Default stake for tracked bets</h2><div class="row" style="gap:8px;align-items:center"><span>$</span><input type="number" min="1" step="1" inputmode="decimal" id="xStake" value="${typeof betStakeDefault!=="undefined"?betStakeDefault():10}" style="width:110px" aria-label="Default stake in dollars"></div></div>
+   <div class="card"><h2>Reset</h2><button class="btn" id="xReset">Reset these settings</button></div>`;
+  el.querySelectorAll("[data-xset]").forEach(b=>b.onclick=()=>{const k=b.dataset.xset,v=b.dataset.v;if(k==="odds"){if(typeof setOddsFmt!=="undefined")setOddsFmt(v);if(typeof syncOddsBtns!=="undefined")syncOddsBtns()}else xSetSave(k,k==="cb"?+v:v);
+    if(k==="tz"&&v==="et")location.reload();viewSettings();if(typeof toast!=="undefined")toast("Saved")});
+  el.querySelectorAll("[data-xhide]").forEach(c=>c.onchange=()=>{const o2=xSet(),sp=c.dataset.xhide;let H=o2.hide.filter(x=>x!==sp);if(!c.checked)H.push(sp);if(H.length>=5){c.checked=true;return}xSetSave("hide",H)});
+  const st=el.querySelector("#xStake");st.onchange=()=>{const v=Math.max(1,+st.value||10);try{LS.set("betStake",v)}catch(e){}if(typeof toast!=="undefined")toast("Saved")};
+  el.querySelector("#xReset").onclick=()=>{try{localStorage.removeItem("rla_set")}catch(e){}xSetApply();location.reload()}}
+
+/* ---------- ♿ Accessibility: names for icon-only buttons, bigger tap targets, visible keyboard focus, less motion ---------- */
+const XA_NAMES={"＋":"Track this bet or add it to a parlay","+":"Add","📸":"Make a snapshot image","ⓘ":"More about this","×":"Close","✕":"Close","☆":"Save to favourites","★":"Remove from favourites","⋯":"More options","☰":"Menu"};
+function xA11y(root){(root||document).querySelectorAll("button:not([aria-label]),a.btn:not([aria-label]),[role=button]:not([aria-label])").forEach(b=>{const t=(b.textContent||"").trim();
+  if(!t||!/[A-Za-z0-9]/.test(t)){const k=Object.keys(XA_NAMES).find(x=>t.startsWith(x));const lab=b.getAttribute("title")||(k&&XA_NAMES[k]);if(lab)b.setAttribute("aria-label",lab)}});
+  (root||document).querySelectorAll("svg:not([role]):not([aria-hidden])").forEach(s=>{if(!s.closest("button,a"))s.setAttribute("aria-hidden","true")})}
+let XA_T=0;window.addEventListener("load",()=>{xA11y();try{new MutationObserver(()=>{clearTimeout(XA_T);XA_T=setTimeout(()=>xA11y(document.querySelector("main")),150)}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}catch(e){}});

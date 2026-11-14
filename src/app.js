@@ -41,7 +41,15 @@ function searchIndex(){
   if(typeof TEAMS!=="undefined")for(const [t,v] of Object.entries(TEAMS))L.push({k:(v[0]+" "+t).toLowerCase(),l:v[0],s:"NFL",sub:"Team",h:"team-"+t,w:99});
   if(window.SOC_OK)for(const [id,t] of Object.entries(SOC_TM)){if(!(t[4]||[]).length)continue;L.push({k:(t[0]+" "+t[1]+" "+t[2]).toLowerCase(),l:t[0],s:"SOC",sub:"Team · "+(t[4]||[]).map(c=>(SOC_LG[c]||{}).sh||c).join(", "),h:"soccer-team-"+id,w:90})}
   if(window.SOC_P_OK)for(const [aid,P] of Object.entries(SOC_P)){if(P[3].length<2)continue;L.push({k:P[0].toLowerCase(),l:P[0],s:"SOC",sub:`${typeof socTm!=="undefined"?socTm(P[1]):""} · ${P[2]||""}`,h:"soccer-player-"+aid,w:P[3].length})}
-  for(const x of L){x.n=srchNorm(x.l+(x.sub==="Team"?" "+x.k:""));x.tk=x.n.split(" ").filter(Boolean);x.ini=srchNorm(x.l).split(/[ -]+/).filter(Boolean).map(w=>w[0]).join("")}
+  /* 🥊 UFC fighters + cards (once the UFC data has loaded) */
+  if(window.UFC_OK){for(const [aid,F] of Object.entries(window.UFC_F||{}))if(F&&F.n)L.push({k:F.n.toLowerCase(),l:F.n,s:"UFC",sub:`${(F.R||{}).rec||""}${F.wc?" · "+F.wc:""}`,h:"ufc-fighter-"+aid,w:30});
+    for(const e of (window.UFC_EV||[]))if(e.f.some(f=>f.st!=="post"))L.push({k:e.n.toLowerCase(),l:e.n,s:"UFC",sub:"Fight card · "+(typeof ufDate!=="undefined"?ufDate(e.d):""),h:"ufc-event-"+e.id,w:60})}
+  /* today's games: "celtics knicks", "leafs habs", "chiefs bills" */
+  try{const TN=(sp,t)=>sp==="nba"?(NBA_TEAMS[t]||t):sp==="nhl"?((NHL_TEAM[t]||{}).n||t):((TEAMS[t]||[])[0]||t);
+    if(typeof NBA_SLATE!=="undefined")for(const g of NBA_SLATE)L.push({k:"",l:`${TN("nba",g.a)} @ ${TN("nba",g.h)}`,s:"NBA",sub:`Game · ${g.t||""} ET`,h:"nba-game-"+g.id,w:80,gk:`${g.a} ${g.h}`});
+    if(typeof NHL_SLATE!=="undefined")for(const g of NHL_SLATE)L.push({k:"",l:`${TN("nhl",g.a)} @ ${TN("nhl",g.h)}`,s:"NHL",sub:`Game · ${g.t||""}`,h:"nhl-game-"+g.id,w:80,gk:`${g.a} ${g.h}`});
+    if(typeof SLATE!=="undefined")for(const g of SLATE)if(!g.final)L.push({k:"",l:`${TN("nfl",g.away)} @ ${TN("nfl",g.home)}`,s:"NFL",sub:`Game · ${g.when||""}`,h:"game-"+g.id,w:80,gk:`${g.away} ${g.home}`})}catch(e){}
+  for(const x of L){x.n=srchNorm(x.l+(x.sub==="Team"?" "+x.k:"")+(x.gk?" "+x.gk:""));x.tk=x.n.split(" ").filter(Boolean);x.ini=srchNorm(x.l).split(/[ -]+/).filter(Boolean).map(w=>w[0]).join("")}
   return SRCH=L;
 }
 /* 🔎 smarter search: ignores accents and punctuation (Jokic = Jokić, DAngelo = D'Angelo), knows initials (SGA, KD, CMC)
@@ -85,12 +93,12 @@ function srchGames(hits){const out=[];const T=hits.filter(x=>/^Team/.test(x.sub|
   return out}
 function appSearchSetup(){
   const inp=document.getElementById("plSearch"),box=document.getElementById("plRes");if(!inp)return;
-  inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure();if(typeof socEnsure!=="undefined"){socEnsure();setTimeout(()=>socPEnsure(),1200)}});
-  inp.placeholder="🔍 Search any player or team (all sports)";
+  inp.addEventListener("focus",()=>{if(typeof nhlEnsure!=="undefined")nhlEnsure();if(typeof ufcEnsure!=="undefined"&&!window.UFC_OK)ufcEnsure(()=>{SRCH=null});if(typeof socEnsure!=="undefined"){socEnsure();setTimeout(()=>socPEnsure(),1200)}});
+  inp.placeholder="🔍 Search players, teams, fighters, games";
   const draw=()=>{const q=inp.value.trim().toLowerCase();if(q.length<2){const R=srchRecent();if(!R.length||document.activeElement!==inp){box.innerHTML="";box.hidden=true;return}
       box.innerHTML='<div class="small" style="padding:6px 8px 2px">Recent</div>'+R.map((x,i)=>`<button data-r="${i}"><span class="small">🕘</span> ${esc(x.l)} <span class="small">${esc(x.sub||"")}</span></button>`).join("");box._rec=R;box._hits=[];box.hidden=false;return}
     const hit0=srchFind(q),hit=hit0.concat(srchGames(hit0));const fz=hit.length&&hit[0]._t===2;
-    box.innerHTML=hit.length?(fz?'<div class="small" style="padding:6px 8px 2px">No exact match — did you mean:</div>':"")+hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":x.s==="NHL"?"nh":x.s==="SOC"?"sc":"nf"}">${x.s==="SOC"?"⚽":x.s}</span> <span>${/^Team/.test(x.sub)?"🛡️ ":""}${esc(x.l)}</span><small>${esc(x.sub)}${x._via?` · “${esc(x._via)}”`:""}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found — try a last name or team</div>';
+    box.innerHTML=hit.length?(fz?'<div class="small" style="padding:6px 8px 2px">No exact match — did you mean:</div>':"")+hit.map((x,i)=>`<button data-i="${i}"><span class="stag ${x.s==="NBA"?"nb":x.s==="NHL"?"nh":x.s==="SOC"?"sc":x.s==="UFC"?"uf":"nf"}">${x.s==="SOC"?"⚽":x.s==="UFC"?"🥊":x.s}</span> <span>${/^Team/.test(x.sub)?"🛡️ ":""}${esc(x.l)}</span><small>${esc(x.sub)}${x._via?` · “${esc(x._via)}”`:""}</small></button>`).join(""):'<div class="small" style="padding:8px">Nothing found — try a last name or team</div>';
     box.hidden=false;box._hits=hit};
   inp.oninput=draw;inp.onfocus=draw;
   inp.onkeydown=e=>{if(e.key==="Enter"){const b=box.querySelector("button");if(b)b.click()}if(e.key==="Escape"){inp.value="";draw();inp.blur()}};
@@ -117,10 +125,10 @@ function moreOpen(){
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
   const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-scores","🧾 Scores"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
   const ufc=[["#ufc","🥊 Fight cards"],["#ufc-props","⭐ Best bets"],["#ufc-results","🧾 Results"]];
-  const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"]];
+  const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
-  sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${grp("NBA",nba)}${grp("NHL",nhl)}${grp("NFL",nfl)}${grp("UFC",ufc)}${grp("More",all)}
+  sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${[["nba","NBA",nba],["nhl","NHL",nhl],["nfl","NFL",nfl],["ufc","UFC",ufc]].filter(x=>typeof xFollow==="undefined"||xFollow(x[0])).map(x=>grp(x[1],x[2])).join("")}${grp("More",all)}
    <h3>Odds format</h3><div class="seg" id="msOdds"><button data-f="am" class="${of==="am"?"on":""}">American (−110)</button><button data-f="dec" class="${of==="dec"?"on":""}">Decimal (1.91)</button></div>
    <h3>Theme</h3>${typeof uxThemeSeg!=="undefined"?uxThemeSeg():""}<h3>View</h3>${typeof uxViewSeg!=="undefined"?uxViewSeg():""}
    <button class="btn" id="msClose" style="width:100%;margin-top:14px">Close</button></div>`;
@@ -179,11 +187,11 @@ function viewToday(){
   /* plays: one card, a tab per sport */
   const nflPlays=typeof PLAYS!=="undefined"&&PLAYS.length?`<div class="card potd"><h2 style="margin-bottom:6px">🏈 NFL Plays of the Week</h2>${PLAYS.map((pl,i)=>{const d=playData(pl);if(!d)return "";const g=gradeOne(pl,PLAYS_WEEK,d);return `<a class="fv" href="#plays"><b>${i+1}. ${esc(d.title)}</b><span class="small">${d.odds!=null?oddsFmt(d.odds)+" · ":""}${g.r==="win"?"✅ Win":g.r==="loss"?"❌ Loss":g.r==="pending"?"Pending":esc(g.r)}</span></a>`}).join("")}<a href="#plays" class="small" style="display:block;margin-top:8px">Why we like them →</a></div>`:"";
   const PX=sp=>typeof prlSportHtml!=="undefined"?prlSportHtml(sp):"";
-  const PT=[["nba","🏀 NBA",(typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():"")+PX("nba")],["nhl","🏒 NHL",(typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():"")+PX("nhl")],["nfl","🏈 NFL",nflPlays+PX("nfl")],["soc","⚽ Soccer",(typeof socPlaysCard!=="undefined"?socPlaysCard():"")+PX("soc")]].filter(x=>x[2]);
+  const PT=[["nba","🏀 NBA",(typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():"")+PX("nba")],["nhl","🏒 NHL",(typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():"")+PX("nhl")],["nfl","🏈 NFL",nflPlays+PX("nfl")],["soc","⚽ Soccer",(typeof socPlaysCard!=="undefined"?socPlaysCard():"")+PX("soc")]].filter(x=>x[2]&&(typeof xFollow==="undefined"||xFollow(x[0])));
   const pc=PT.some(x=>x[0]===TODAY_T.plays)?TODAY_T.plays:(PT[0]||[])[0];
-  const GT=[["nba",`🏀 NBA <small>${nbaGames.length}</small>`,todayRowsNba],["nhl",`🏒 NHL <small>${nhlGames.length||""}</small>`,todayRowsNhl],["nfl",`🏈 NFL <small>${nflUp.length}</small>`,todayRowsNfl],["soc",`⚽ Soccer <small>${typeof socTodayCount!=="undefined"&&socTodayCount()!=null?socTodayCount():""}</small>`,typeof todayRowsSoc!=="undefined"?todayRowsSoc:()=>""]];
+  const GT=[["nba",`🏀 NBA <small>${nbaGames.length}</small>`,todayRowsNba],["nhl",`🏒 NHL <small>${nhlGames.length||""}</small>`,todayRowsNhl],["nfl",`🏈 NFL <small>${nflUp.length}</small>`,todayRowsNfl],["soc",`⚽ Soccer <small>${typeof socTodayCount!=="undefined"&&socTodayCount()!=null?socTodayCount():""}</small>`,typeof todayRowsSoc!=="undefined"?todayRowsSoc:()=>""]].filter(x=>typeof xFollow==="undefined"||xFollow(x[0]));
   const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
-  const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].map(sp=>loMovesCard(sp,5)).join(""):"";
+  const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].filter(sp=>typeof xFollow==="undefined"||xFollow(sp)).map(sp=>loMovesCard(sp,5)).join(""):"";
   const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
   host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p><div id="liveTrk"></div><div id="ufcToday"></div><div id="iaToday">${typeof iaLogCard!=="undefined"?iaLogCard():""}</div>
   ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
@@ -192,7 +200,7 @@ function viewToday(){
   ${PT.length?`<h2 class="tsh">Plays of the day</h2>${PT.length>1?todayTabs("plays",PT,pc):""}<div class="tsec">${(PT.find(x=>x[0]===pc)||PT[0])[2]}</div>`:""}
   <h2 class="tsh">Today's games <span class="small">· every sport, with our pick</span></h2>${typeof tdGamesCard!=="undefined"?tdGamesCard():""}
   <details class="tmore"><summary>Best of tonight <span class="small">— top props &amp; edges</span></summary><div id="xTonight" class="tsec tcap5" style="margin-top:8px">${typeof xTonightCard!=="undefined"?xTonightCard().replace(/<h2[^>]*>.*?<\/h2>/,""):""}</div></details>
-  <details class="tmore"><summary>Games by sport <span class="small">— lines and details</span></summary>${todayTabs("games",GT,gc)}<div class="card tsec tcap5">${(GT.find(x=>x[0]===gc)||GT[0])[2]()}<button class="btn tmorebtn" data-tcap="1">Show all</button>
+  <details class="tmore"><summary>Games by sport <span class="small">— lines and details</span></summary>${GT.length?todayTabs("games",GT,GT.some(x=>x[0]===gc)?gc:GT[0][0]):""}<div class="card tsec tcap5">${(GT.find(x=>x[0]===gc)||GT[0]||[0,0,()=>"<div class='small'>No sports picked in Settings.</div>"])[2]()}<button class="btn tmorebtn" data-tcap="1">Show all</button>
    <a href="${gc==="nba"?"#nba":gc==="nhl"?"#nhl":gc==="soc"?"#soccer":"#games"}" class="small" style="display:block;margin-top:8px">All ${gc==="soc"?"soccer matches":gc.toUpperCase()+" games"}, matchups &amp; props →</a></div></details>
   ${moves||role?`<details class="tmore"><summary>📈 Line moves${role?" &amp; role changes":""} <span class="small">— tap to open</span></summary><div class="grid g2" style="margin-top:10px">${moves}${role}</div></details>`:""}
   ${favs().length?"":`<p class="small" style="margin-top:14px">⭐ Tip: tap ☆ Save on any player or team page to pin them here every day.</p>`}

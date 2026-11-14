@@ -9,6 +9,7 @@
   NFL_PROE  team   -> [pass rate over expected %, pass rate %, plays/game]   (neutral-ish downs: win prob 20-80%, not 4th qtr garbage)
   NFL_DIVX  {lg: division games since 2021 [n, unders, overs, dog covers, fav covers], non: same for non-division,
              tm: team -> [W, L, ATS W, ATS L, O, U] in division games last 3 seasons + this one}, NFL_DIVG: ["wk|away|home", ...] this season
+  NFL_ATS   team   -> [[week, opp, home, team spread (- = favoured), total, pf, pa], ...] this season (closing lines)
   NFL_K     kicker -> {tm, g: [[week, FG made, FG att, PAT made, kicking points, long], ...]}
 Real data only. usage: python3 tools/nflx2.py <nflverse dir> > nfl_x2.js"""
 import csv, gzip, json, sys, os, collections
@@ -131,6 +132,14 @@ for r in games:
 out["NFL_DIVX"] = {"lg": lg, "non": non, "tm": dict(tm), "since": 2021}
 out["NFL_DIVG"] = DIVG
 out["NFL_K"] = K
+# ---- this season, every team: results vs the closing spread and total (nflverse schedule lines) ----
+# NFL_ATS team -> [[week, opp, home 1/0, team spread (- = favoured), total, points for, points against], ...]
+ATS = collections.defaultdict(list)
+for r in games:
+    if int(r["season"]) != yr or r["game_type"] != "REG" or r["home_score"] == "" or r["spread_line"] == "" or r["total_line"] == "": continue
+    h, a_, hs, as_, sl, tl = fx(r["home_team"]), fx(r["away_team"]), int(r["home_score"]), int(r["away_score"]), float(r["spread_line"]), float(r["total_line"])
+    ATS[h].append([int(r["week"]), a_, 1, -sl, tl, hs, as_]); ATS[a_].append([int(r["week"]), h, 0, sl, tl, as_, hs])
+out["NFL_ATS"] = {t: sorted(v) for t, v in ATS.items()}
 print("/* NFL extras — tools/nflx2.py (nflverse play-by-play, weekly stats, schedules) */")
 for k, v in out.items(): print(f"var {k}=" + json.dumps(v, separators=(",", ":"), ensure_ascii=False) + ";")
 print(f"nflx2: {len(out['NFL_RZ'])} RZ players, {len(QBV)} QBs, {len(out['NFL_PROE'])} teams PROE, {len(DIVG)} division games, {len(K)} kickers", file=sys.stderr)

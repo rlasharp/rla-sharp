@@ -42,6 +42,7 @@ function viewNflTeam(t){const host=document.getElementById("v-nflteam");if(!host
     ${pr&&pr[0]!=null?`<div><b class="${pr[0]>0?"up":"dn"}">${pr[0]>0?"+":""}${pr[0]}%</b>Pass rate over expected</div><div><b>${pr[2]}</b>Plays / game</div>`:""}
     ${dv?`<div><b>${dv[2]}-${dv[3]}</b>Division games vs the spread</div><div><b>${dv[4]}-${dv[5]}</b>Division games over-under</div>`:""}</div>
     ${dv?`<div class="small" style="margin-top:6px">Division numbers cover the last 3 seasons plus this one (nflverse closing lines).</div>`:""}</div>`:""}
+  ${typeof xBetRec!=="undefined"?xBetRec(nflBetRows(t),{src:"nflverse"}):""}
   <div class="card"><h2>📅 Results</h2>${res.map(r=>{const home=r[3]===t,me=home?r[4]:r[2],op=home?r[2]:r[4],opp=home?r[1]:r[3],x=me>op?"W":me<op?"L":"D";
     return `<div class="scfr"><i class="scf ${x}">${x}</i><span class="small">Wk ${r[0]}</span><span>${home?"vs":"@"} ${badge(opp)} ${nflTeamLink(opp)}</span><b>${me}-${op}</b></div>`}).join("")||`<div class="small">No games yet.</div>`}</div>
   <div class="card"><h2>⭐ Key players <span class="small">this season</span></h2>
