@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 06:46Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 06:55Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Questionable|Knee|Nov 15
