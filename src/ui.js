@@ -704,7 +704,7 @@ function viewWeeks(){
 /* ---------- Router ---------- */
 function route(){
   const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
-  const SHARED=["calc","record","guide","today","bets","favs","week","potd","settings","futures"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
+  const SHARED=["calc","record","guide","today","bets","favs","week","potd","settings","futures","calib"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
   if(h.startsWith("ufc")&&typeof ufcRoute!=="undefined"){LS.set("sport","ufc");["nav","nbaNav","nhlNav","socNav"].forEach(i=>{const n=document.getElementById(i);if(n)n.hidden=true});const uN=document.getElementById("ufcNav");if(uN)uN.hidden=false;
     document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s==="ufc"));document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-ufc"));
     const nv=h==="ufc-props"?"ufc-props":h==="ufc-results"?"ufc-results":h==="ufc-live"?"ufc-live":h==="ufc-rank"?"ufc-rank":"ufc";document.querySelectorAll("#ufcNav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
@@ -737,12 +737,12 @@ function route(){
   if(h.startsWith("props/")){const [,nm,mk]=h.split("/");if(nm&&(!S.prop||S.prop.player!==nm||!S.prop.open))S.prop={player:nm,market:mk||null,open:true};else if(S.prop&&mk)S.prop.market=mk}
   let v=h.startsWith("game-")?"game":h.startsWith("props/")?"props":h.startsWith("team-")?"nflteam":h;
   if(v==="slate")v="games";
-  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam","week","potd","settings","futures"].includes(v))v="today";
+  if(!["games","game","plays","props","public","weeks","trends","calc","injuries","bets","record","guide","standings","today","favs","nextweek","nflteam","week","potd","settings","futures","calib"].includes(v))v="today";
   if(v!=="props"&&S.prop)S.prop.open=false;
   document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));
   document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v||((v==="game"||v==="nextweek")&&a.dataset.v==="games")||(v==="nflteam"&&a.dataset.v==="standings")));
   banner();if(typeof updateBetsBadge!=="undefined")updateBetsBadge();
-  ({futures:()=>typeof viewFutures!=="undefined"&&viewFutures(),settings:()=>typeof viewSettings!=="undefined"&&viewSettings(),potd:()=>typeof viewPotd!=="undefined"&&viewPotd(),week:()=>typeof viewWeek!=="undefined"&&viewWeek(),nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
+  ({calib:()=>typeof viewCalib!=="undefined"&&viewCalib(),futures:()=>typeof viewFutures!=="undefined"&&viewFutures(),settings:()=>typeof viewSettings!=="undefined"&&viewSettings(),potd:()=>typeof viewPotd!=="undefined"&&viewPotd(),week:()=>typeof viewWeek!=="undefined"&&viewWeek(),nflteam:()=>typeof viewNflTeam!=="undefined"&&viewNflTeam(h.slice(5)),games:viewGames,game:()=>viewGame(h.slice(5)),props:viewProps,public:viewPublic,weeks:viewWeeks,plays:viewPlays,calc:viewCalc,injuries:viewInjuries,bets:viewBets,trends:viewTrends,record:viewRecord,guide:viewGuide,standings:viewStandings,today:viewToday,favs:viewFavs,nextweek:viewNextWeek,data:()=>{viewData();covImportUI();runImportUI()}})[v]();
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",route);

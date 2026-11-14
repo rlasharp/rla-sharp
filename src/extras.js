@@ -63,7 +63,7 @@ function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){
   const recent=R.slice().sort((a,b)=>(b.st==="pending")-(a.st==="pending")||b.sort.localeCompare(a.sort));
   const bySp=grp(r=>r.sport),play=r=>`<div class="rcr"><span class="lc ${chip[r.st]?chip[r.st][1]:"p"} rcc">${chip[r.st]?chip[r.st][0]:r.st}</span><div style="flex:1;min-width:0"><b>${esc(r.label)}</b><div class="small">${r.sport} · ${esc(r.sport==="NBA"?nbaDayS(r.when):r.when)}${r.odds!=null?" · "+oddsFmt(r.odds):""}${r.v!=null?" · finished "+r.v:""}${r.lv?` <span class="livegr" title="Graded from ESPN's final box score — made official at the next site update">⚡</span>`:""}</div></div><span class="${uCls(r.u)}">${r.st==="pending"?"":uTxt(r.u)}</span></div>`;
   const ic={NFL:"🏈",NBA:"🏀",NHL:"🏒",Soccer:"⚽"};
-  host.innerHTML=`<h1>Our record</h1>
+  host.innerHTML=`<h1>Our record</h1><div class="tqlinks"><a class="fxp" href="#calib">🎯 Are our chances right?</a></div>${typeof pkFormCard!=="undefined"?(window.PK_FORM=null,pkFormCard()):""}
   <p class="sub">Every pick we post, graded from official results. Wins and losses both stay up · 1 unit per play.</p>
   ${fbar}${F.per!=="all"||F.sp!=="all"?`<div class="small" style="margin:-4px 0 8px">Showing <b>${perL.toLowerCase()}</b>${F.per==="today"?` (${td})`:""}${F.sp!=="all"?` · <b>${esc(F.sp)}</b> only`:""}${R.length?"":" — no plays yet"}.</div>`:""}
   <div class="card rec"><div class="recs">${tile("Record",recLine(T))}${tile("Hit rate",T.g?Math.round(T.win/T.g*100)+"%":"–")}${tile("Units",uTxt(T.u),uCls(T.u))}</div>

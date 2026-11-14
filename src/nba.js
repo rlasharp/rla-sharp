@@ -772,7 +772,7 @@ function nbaPlaysCard(){
     return `<div class="pod" data-bp="${b.k}|${b.id}" data-nm="${nbaEsc(b.nm)}"><div class="podn">${i+1}</div><div style="min-width:0;flex:1">
       <div><b>${nbaEsc(b.nm)}</b> <span class="small">${b.p.tm} ${b.g.a===b.p.tm?"@":"vs"} ${b.opp} · ${b.g.t} ET</span></div>
       <div class="bpl"><b class="xpk">${b.side==="o"?"Over":"Under"} ${b.line}</b> ${NBA_MK[b.k][1]} <span class="small">${oddsFmt(b.odds)}${b.book?" · "+nbaEsc(b.book):""}</span></div>
-      <div class="small">${why}</div></div><div class="bps"><b>${Math.round(b.sc*100)}%</b><span>our chance</span>${typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""}</div></div>`}).join("")}
+      <div class="small">${why}</div>${typeof pkWhyBox!=="undefined"?pkWhyBox(why+` Our chance ${Math.round(b.sc*100)}% vs ${Math.round((typeof pkImp!=="undefined"?pkImp(b.odds):0)*100)}% the price needs.`,pkNbaRisks(b),pkFormTag("NBA","Player prop",b.side==="o"?"overs":"unders")):""}</div><div class="bps"><b>${Math.round(b.sc*100)}%</b><span>our chance</span>${typeof actBtn!=="undefined"?actBtn(nbaSpec(b.nm,b.k,b.side==="o"?"over":"under"),"＋","plus"):""}</div></div>`}).join("")}
   <button class="btn shbtn" data-shimg="nba">📤 Share today's plays</button>
   <div class="small" style="margin-top:8px">Picked automatically from real posted lines: 7+ of last 10, a winning record this season, a clear edge over what the odds need, no injury tag, odds no worse than −200. Leans, not guarantees — bet small.</div></div>`;
 }

@@ -9,6 +9,7 @@ function betStakeDefault(){return LS.get("betStake",10)}
 function betTitle(b){
   if(b.k==="soc")return b.title||"Soccer bet";
   if(b.k==="ufc")return `🥊 ${b.label||"UFC bet"}`;
+  if(b.k==="fut")return `🏆 ${b.label||"Futures bet"}`;
   if(b.k==="nbaprop"&&(b.market==="dd"||b.market==="td"))return `${b.player} ${b.market==="dd"?"double-double":"triple-double"}`;
   if(b.k==="nbaprop"){const m=typeof NBA_MK!=="undefined"&&NBA_MK[b.market];return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1]:b.market}`}
   if(b.k==="nhlprop"){const m=typeof NH_MK!=="undefined"&&NH_MK[b.market];if(b.market==="hanyG")return `${b.player} anytime goal`;return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1].toLowerCase():b.market}`}
@@ -21,6 +22,8 @@ function betTitle(b){
 function betMatchup(b){if(b.k==="nhlprop")return `NHL · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nhDayS!=="undefined"?nhDayS(b.date):b.date}`;
   if(b.k==="nbaprop")return `NBA · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nbaDayS!=="undefined"?nbaDayS(b.date):b.date}`;
   if(b.k==="parlay")return b.legs.map(l=>betTitle(l)).join(" + ");
+  if(b.k==="fut")return `${String(b.lg||"").toUpperCase()} futures · placed ${b.date||""}`;
+  if(b.k==="ufc")return "UFC";
   if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
   const g=SLATE.find(x=>x.id===b.game);return `${short(b.away)} @ ${short(b.home)}${g?" · "+g.when:""}`}
 const betDec=a=>a>0?1+a/100:1+100/(-a);
@@ -29,6 +32,7 @@ function gradeBet(b){const g=gradeBetCore(b);if(g.r!=="pending"||b.k==="parlay"|
 function gradeBetCore(b){
   if(b.k==="soc")return typeof socGrade!=="undefined"?socGrade(b):{r:"pending"};
   if(b.k==="ufc")return typeof ufGrade!=="undefined"?ufGrade(b):{r:"pending"};
+  if(b.k==="fut")return b.res?{r:b.res,why:"Marked by you"}:{r:"pending",why:"Settles when the season decides it — mark it Won or Lost then"};
   if(b.k==="nhlprop"){if(typeof NH_MK==="undefined")return {r:"pending"};const m=NH_MK[b.market],w=nhWho(b.player);
     const fin=(NHL_RES||[]).some(z=>z[0]===b.date&&(z[1]===b.team||z[3]===b.team));
     const row=w&&w.g.find(x=>x[0]===b.date);if(!row||!m||!m[3])return fin?(w&&!row?{r:"void",why:"Did not play — no action"}:{r:"pending",why:"Result not in our data"}):{r:"pending"};
@@ -90,14 +94,14 @@ function viewBets(){
   const money=v=>(v<0?"−$":"$")+Math.abs(v).toFixed(2);
   const row=({b,g})=>{const c=RES_COL[g.r];const pr=betProfit(b,g);
     return `<div class="card betrow"><div class="row" style="gap:8px;align-items:center;flex-wrap:wrap">
-      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="nhlprop"||b.k==="parlay"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
+      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="nhlprop"||b.k==="parlay"||b.k==="fut"||b.k==="ufc"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
      <h3 style="margin:8px 0 2px">${esc(betTitle(b))}</h3>
      <div data-clv="${b.id}" style="margin-top:4px"></div>
      <div class="small">Odds ${amTxt(b.odds)}${b.est?" (assumed — exact price not published)":""}${b.book?" · "+esc(b.book):""}${g.why?` · <b style="color:${c}">${esc(g.why)}</b>`:""}</div>
      <div class="row" style="gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">
       <label class="small">Stake $ <input type="number" min="0" step="1" value="${b.stake}" data-stake="${b.id}" style="width:80px"></label>
       <span class="small">${g.r==="pending"?`To win ${money(b.stake*(betDec(b.odds)-1))}`:`Result ${money(pr)}`}</span><span class="sp"></span>
-      ${shareBtn(b)}<button class="btn" data-rm="${b.id}">Remove</button></div></div>`};
+      ${b.k==="fut"?(g.r==="pending"?`<button class="btn" data-fres="${b.id}|win">✅ Won</button><button class="btn" data-fres="${b.id}|loss">❌ Lost</button>`:`<button class="btn" data-fres="${b.id}|">Undo</button>`):""}${shareBtn(b)}<button class="btn" data-rm="${b.id}">Remove</button></div></div>`};
   el.innerHTML=`<h1>My Bets</h1>
    <p class="sub">Tap <b>＋ My Bets</b> on any play, prop or game line to track it here. Bets grade themselves after the game. Saved on this device only — nobody else can see them.</p>
    <div id="clvSum"></div>
@@ -114,6 +118,7 @@ function viewBets(){
    <p class="note" style="margin-top:12px">For tracking only — this site doesn't take bets. 21+ (18+ in some states). Gambling problem? Call or text 1-800-GAMBLER. In Canada: Quebec 18+, Jeu : aide et référence 1-800-461-0140 · Ontario 19+, ConnexOntario 1-866-531-2600.</p>`;
   const d=$("#betDef");if(d)d.onchange=()=>{LS.set("betStake",Math.max(0,+d.value||0))};
   el.querySelectorAll("[data-stake]").forEach(i=>i.onchange=()=>{const a=betsLoad(),b=a.find(x=>x.id===i.dataset.stake);if(b){b.stake=Math.max(0,+i.value||0);betsSave(a);viewBets()}});
+  el.querySelectorAll("[data-fres]").forEach(x=>x.onclick=()=>{const [id,r]=x.dataset.fres.split("|"),a=betsLoad(),b=a.find(z=>z.id===id);if(b){b.res=r||null;betsSave(a);updateBetsBadge();viewBets()}});
   el.querySelectorAll("[data-rm]").forEach(x=>x.onclick=()=>{betsSave(betsLoad().filter(b=>b.id!==x.dataset.rm));updateBetsBadge();viewBets()});
   const cl=$("#betClear");if(cl)cl.onclick=()=>{if(cl.dataset.sure){betsSave([]);updateBetsBadge();viewBets()}else{cl.dataset.sure=1;cl.textContent="Tap again to clear all"}};
 ;if(typeof xClvDecorate!=="undefined")setTimeout(xClvDecorate,50)}
