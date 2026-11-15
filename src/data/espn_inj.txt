@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 13:34Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 15:20Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Gardner Minshew II|QB|IR|Elbow|Feb 15
@@ -57,11 +57,11 @@ Denzel Boston|WR|Questionable|Toe|Nov 15
 Michael Burton|FB|IR|Calf|Dec 20
 Ronnie Hickman|S|Out|Concussion|Nov 29
 #DAL
+Joey Porter Jr.|CB|Questionable|Ankle|Nov 15
+DaRon Bland|CB|Questionable|Ankle|Nov 15
 Jonathan Bullard|DT|Questionable|Calf|Nov 15
 Tyler Goodson|RB|IR|Knee - ACL + MCL|Dec 20
 Donovan Ezeiruaku|LB|Out|Ankle|Nov 22
-Joey Porter Jr.|CB|Questionable|Ankle|Nov 15
-DaRon Bland|CB|Questionable|Ankle|Nov 15
 Jonathan Mingo|WR|Out|Ankle|Nov 22
 Juanyeh Thomas|S|Doubtful|Ribs|Nov 15
 Alijah Clark|S|Questionable|Illness|Nov 15
@@ -76,6 +76,7 @@ Jaylen Waddle|WR|Questionable|Concussion|Nov 22
 Riley Moss|CB|Questionable|Concussion|Nov 22
 Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 #DET
+Aidan Hutchinson|DE|Questionable|Knee|Nov 15
 Mekhi Wingo|DT|Out|Coach's Decision|Nov 22
 Amen Ogbongbemiga|LB|Out|Coach's Decision|Nov 22
 D.J. Reed|CB|Out|Hip|Nov 22
@@ -172,6 +173,8 @@ Jauan Jennings|WR|Out|Calf|Nov 22
 T.J. Hockenson|TE|Out|Wrist|Nov 22
 Kyle Van Noy|LB|Questionable|Calf|Nov 15
 #NE
+Morgan Moses|OT|Questionable|Knee|Nov 15
+Drake Maye|QB|Questionable|Ankle|Nov 15
 Brenden Schooler|S|Out|Hamstring|Nov 29
 Walter Rouse|OL|Out|Concussion|Nov 29
 Behren Morton|QB|Out|Coach's Decision|Nov 29
@@ -220,10 +223,10 @@ Pat Freiermuth|TE|Questionable|Illness|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 22
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Trent Williams|OT|Questionable|Shoulder|Nov 15
 C.J. West|DT|IR|Knee|Nov 22
 Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
-Trent Williams|OT|Questionable|Shoulder|Nov 15
 Renardo Green|CB|Questionable|Back|Nov 15
 Deommodore Lenoir|CB|Questionable|Foot|Nov 15
 Dre Greenlaw|LB|Questionable|Knee|Nov 15

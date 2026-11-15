@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 13:34Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 15:20Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 18
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -120,7 +120,7 @@ Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
 Nate Bittle|C|Out|foot fracture|Nov 23
 Scottie Barnes|F|Out|groin strain|Nov 15
-Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 14
+Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 16
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
 Jaxson Hayes|C|Out|knee strain|Nov 17
