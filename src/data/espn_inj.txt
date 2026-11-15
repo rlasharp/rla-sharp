@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 18:16Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 18:20Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Gardner Minshew II|QB|IR|Elbow|Feb 15
@@ -233,6 +233,7 @@ Pat Freiermuth|TE|Questionable|Illness|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 22
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+Mike Evans|WR|Out|Achilles|Nov 22
 Trent Williams|OT|Questionable|Shoulder|Nov 15
 C.J. West|DT|IR|Knee|Nov 22
 Nate Hobbs|CB|IR|Groin|Nov 22
@@ -240,7 +241,6 @@ Gracen Halton|DT|IR|Ankle|Feb 15
 Renardo Green|CB|Questionable|Back|Nov 15
 Deommodore Lenoir|CB|Questionable|Foot|Nov 15
 Dre Greenlaw|LB|Questionable|Knee|Nov 15
-Mike Evans|WR|Out|Achilles|Nov 22
 Upton Stout|CB|Questionable|Shoulder|Nov 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
