@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 18:20Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 19:11Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 15
 Kingston Flemings|G|Out|back strain|Nov 18
@@ -26,9 +26,9 @@ Sam Merrill|G|Out|elbow|Nov 16
 Nae'Qwan Tomlin|F|Out|back|Nov 16
 #Dallas Mavericks
 Santi Aldama|F|Day-To-Day|ankle sprain|Nov 15
+Max Christie|G|Day-To-Day|ankle sprain|Nov 15
 Kyrie Irving|G|Day-To-Day|knee|Nov 15
 Daniel Gafford|F|Day-To-Day|shoulder stinger|Nov 15
-Max Christie|G|Day-To-Day|ankle sprain|Nov 15
 Dereck Lively II|C|Out|foot surgery|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 18
 Sergio de Larrea|F|Out|knee strain|Nov 18
@@ -93,8 +93,8 @@ Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
+Jonathan Isaac|F|Out|knee not specified|Nov 18
 Noah Penda|F|Out|hamstring strain|Nov 22
-Jonathan Isaac|F|Out|knee not specified|Nov 16
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
@@ -116,6 +116,7 @@ Keegan Murray|F|Day-To-Day|illness|Nov 15
 Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
+De'Aaron Fox|G|Day-To-Day|hip|Nov 15
 Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
