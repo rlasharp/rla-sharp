@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-15T01:13:02+00:00",
+  "at": "2026-11-15T01:24:38+00:00",
   "ok": true,
-  "summary": "CFB data FAILED \u2014 kept old:     BX[r[6]] = {\"d\": r[0], \"h\": [hm, sh], \"a\": [aw, sa], \"n\": r[7], \"t\": b.get(\"_t\") or {}, \"p\": {k: [x[1:] for x in v] for k, v in b.items() if k != \"_t\"}}                                                                                                       ~^^^^ TypeError: 'float' object is not subscriptable \nCBB data FAILED \u2014 kept old:     BX[r[6]] = {\"d\": r[0], \"h\": [hm, sh], \"a\": [aw, sa], \"n\": r[7], \"t\": b.get(\"_t\") or {}, \"p\": {k: [x[1:] for x in v] for k, v in b.items() if k != \"_t\"}}                                                                                                       ~^^^^ TypeError: 'float' object is not subscriptable \ntrack: no new snapshots \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-15T01:11:22Z)\n"
+  "summary": "A refs: 0 summaries checked, 183 games cached\nNBA refs: 5 crews posted today\nlive feed is not from 2026-11-14 - nothing merged\nNBA data: teams 30, results 183 (through 2026-11-13), players 467, slate 5, lines 5, props 660, inj teams 29, prev-season players 138, play log 34, adv 393, qtr games 183, h2h 3/2/3/2/2\nnfl-update: 13 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-lines-next: 13 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 7 with a forecast\nnflrefs: 137 games (0 new), 18 referees, 0 of this week's crews posted\n226 players, 32 teams\nnfl-inj: 226 players\nnfl-qtr: 137 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 687 players, 0 ESPN requests this run\nNHL data: 14 games today, 5 tomorrow, 32 teams, 692 skaters, 67 goalies, 759 props, 305 finals, 52 requests\nsocmgr: 9 new headlines, 14 clubs with manager news\nsoccer: 227 upcoming matches (0 with odds, 227 with estimates, 219 with weather, 0 with referee), 0 player props, 5880 players\nUFC: 290 fighters, 2775 past fights, 235 requests\ncfb: 2251 players with logs, 78 focus games, 657 requests\ncbb: 2492 players with logs, 82 focus games, 552 requests\nFutures: nba: 11 futures markets, 152 prices nhl: 11 futures markets, 308 prices nfl: 23 futures markets, 488 prices \ntrack: no new snapshots \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-15T01:22:43Z)\n"
  },
  "site": {
-  "at": "2026-11-15T01:13:02+00:00",
+  "at": "2026-11-15T01:24:38+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-15T01:13:02+00:00",
+  "at": "2026-11-15T01:24:38+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sat Nov 14 8:05 PM ET",
+  "gen": "Sat Nov 14 8:19 PM ET",
   "odds_at": "2026-11-15T00:07:22+00:00",
   "backfill": "1312/1312"
  },
@@ -1909,6 +1909,16 @@
     "CFB data FAILED \u2014 kept old:     BX[r[6]] = {\"d\": r[0], \"h\": [hm, sh], \"a\": [aw, sa], \"n\": r[7], \"t\": b.get(\"_t\") or {}, \"p\": {k: [x[1:] for x in v] for k, v in ",
     "CBB data FAILED \u2014 kept old:     BX[r[6]] = {\"d\": r[0], \"h\": [hm, sh], \"a\": [aw, sa], \"n\": r[7], \"t\": b.get(\"_t\") or {}, \"p\": {k: [x[1:] for x in v] for k, v in "
    ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-15T01:24:38+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
    "check_failed": false,
    "published": true
   }
