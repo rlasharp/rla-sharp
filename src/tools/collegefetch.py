@@ -113,7 +113,9 @@ def sched(tid):
         ot = op.get("team") or {}
         out.append([e.get("date", "")[:10], str(ot.get("id")), ot.get("abbreviation") or "", "H" if me.get("homeAway") == "home" else "A", sc(me), sc(op), e["id"], 1 if c.get("neutralSite") else 0])
     RES[tid] = out
-with ThreadPoolExecutor(12) as ex: list(ex.map(sched, wt))
+# every team (not just this week's): strength of schedule, rankings of team stats and leaderboards need the whole division
+ALLT = sorted(set(TM) | set(wt))
+with ThreadPoolExecutor(14) as ex: list(ex.map(sched, ALLT))
 
 # ---------- box scores (cached): player stats per finished game ----------
 # CFB: [athleteId, name, pos, pass yds, comp, att, pass td, int, rush att, rush yds, rush td, rec, rec yds, rec td, targets?]
@@ -121,9 +123,13 @@ with ThreadPoolExecutor(12) as ex: list(ex.map(sched, wt))
 TKEEP = {"cfb": ["firstDowns", "thirdDownEff", "totalYards", "netPassingYards", "completionAttempts", "rushingYards", "rushingAttempts", "turnovers", "interceptions", "fumblesLost", "totalPenaltiesYards", "possessionTime"],
          "cbb": ["fieldGoalsMade-fieldGoalsAttempted", "threePointFieldGoalsMade-threePointFieldGoalsAttempted", "freeThrowsMade-freeThrowsAttempted", "totalRebounds", "offensiveRebounds", "assists", "steals", "blocks", "totalTurnovers", "fouls", "pointsInPaint", "fastBreakPoints", "turnoverPoints"]}[SP]
 def box(eid):
-    if eid in BOX and "_t" in BOX[eid]: return
+    if eid in BOX and "_t" in BOX[eid] and "_l" in BOX[eid]: return
     s = get(SITE + f"summary?event={eid}") or {}
     out = {"_t": {}}
+    # the closing line ESPN shows for the game (its partner book): home spread, total, home team id
+    pc = (s.get("pickcenter") or [{}])[0] if s.get("pickcenter") else {}
+    hid = next((str((c.get("team") or {}).get("id")) for c in (((s.get("header") or {}).get("competitions") or [{}])[0].get("competitors") or []) if c.get("homeAway") == "home"), "")
+    out["_l"] = [num(pc.get("spread")), num(pc.get("overUnder")), hid] if pc else [None, None, hid]
     for tb in ((s.get("boxscore") or {}).get("teams") or []):
         tid = str((tb.get("team") or {}).get("id")); out["_t"][tid] = {x.get("name"): x.get("displayValue") for x in (tb.get("statistics") or []) if x.get("name") in TKEEP}
     for tb in ((s.get("boxscore") or {}).get("players") or []):
@@ -156,7 +162,7 @@ def box(eid):
             rows.append([x if not isinstance(x, float) or x != int(x) else int(x) for x in r])
         out[tid] = rows
     if len(out) > 1 or out["_t"]: BOX[eid] = out
-need = sorted(e for e in {r[6] for L in RES.values() for r in L} if e not in BOX or "_t" not in BOX[e])
+need = sorted(e for e in {r[6] for L in RES.values() for r in L} if e not in BOX or "_t" not in BOX[e] or "_l" not in BOX[e])
 with ThreadPoolExecutor(14) as ex: list(ex.map(box, need))
 log(f"{SP}: {len(need)} new box scores downloaded ({len(BOX)} cached)")
 
@@ -165,7 +171,7 @@ PL = {}
 for tid in wt:
     for r in RES.get(tid, []):
         b = BOX.get(r[6]) or {}
-        for row in (b.get(tid) or []) if tid != "_t" else []:
+        for row in (b.get(tid) or []):
             aid, nm, pos = row[0], row[1], row[2]
             p = PL.setdefault(aid, {"n": nm, "t": tid, "p": pos, "g": []})
             p["t"] = tid
@@ -216,6 +222,73 @@ for tid, L in RES.items():
         for k, v in a_.items(): off[k] = off.get(k, 0) + v
         for k, v in d_.items(): dfn[k] = dfn.get(k, 0) + v
     if n: TSX[tid] = {"n": n, "o": {k: round(v / n, 2) for k, v in off.items()}, "d": {k: round(v / n, 2) for k, v in dfn.items()}}
+# ---------- strength of schedule: offense / defense ratings adjusted for every opponent (division games only) ----------
+# expected points for t vs o = lg + O[t] + D[o] (+/- home edge); solved by iteration; margins capped so blowouts don't run away
+HFA = 2.5 if SP == "cfb" else 3.0; CAP = 28 if SP == "cfb" else 22
+GM = []
+for tid, L in RES.items():
+    for r in L:
+        if r[1] in RES and r[4] is not None and r[5] is not None:
+            h = 0 if r[7] else (HFA / 2 if r[3] == "H" else -HFA / 2)
+            m = r[4] - r[5]; adj = (max(-CAP, min(CAP, m)) - m) / 2
+            GM.append((tid, r[1], r[4] + adj - h, r[5] - adj + h))
+lg = sum(x[2] for x in GM) / len(GM) if GM else 0
+O = {t: 0.0 for t in RES}; D = {t: 0.0 for t in RES}
+for _ in range(40):
+    sO = {t: [] for t in RES}; sD = {t: [] for t in RES}
+    for t, o, pf, pa in GM: sO[t].append(pf - lg - D[o]); sD[t].append(pa - lg - O[o])
+    O = {t: (sum(v) / (len(v) + 1.5) if v else 0.0) for t, v in sO.items()}   # +1.5: shrink small samples toward average
+    D = {t: (sum(v) / (len(v) + 1.5) if v else 0.0) for t, v in sD.items()}
+TR = {t: {"o": round(O[t], 2), "d": round(D[t], 2), "r": round(O[t] - D[t], 2), "g": sum(1 for x in GM if x[0] == t)} for t in RES if any(x[0] == t for x in GM)}
+for i, (t, v) in enumerate(sorted(TR.items(), key=lambda kv: -kv[1]["r"])): v["rk"] = i + 1
+# ---------- against the spread / over-under this season (closing lines from ESPN's game page) ----------
+TATS = {}
+for tid in wt:
+    rows = []
+    for r in RES.get(tid, []):
+        l = (BOX.get(r[6]) or {}).get("_l") or [None, None, ""]
+        if l[0] is None or r[4] is None: continue
+        hsp = l[0]; home_is_me = (l[2] == tid) if l[2] else (r[3] == "H")
+        rows.append([r[0], r[2], r[3], r[4], r[5], hsp if home_is_me else -hsp, l[1], r[6]])
+    if rows: TATS[tid] = rows
+# ---------- leaderboards across the whole division (every box score this season) ----------
+AGG = {}
+for tid, L in RES.items():
+    for r in L:
+        for row in ((BOX.get(r[6]) or {}).get(tid) or []):
+            a = AGG.setdefault(row[0], {"n": row[1], "t": tid, "p": row[2], "g": 0, "s": [0] * (len(row) - 3)}); a["g"] += 1; a["t"] = tid
+            for i, v in enumerate(row[3:]): a["s"][i] += (v or 0)
+LEAD = {}
+if SP == "cfb":
+    cats = [("Passing yards", 0, 6), ("Rushing yards", 6, 4), ("Receiving yards", 9, 4), ("Touchdowns", None, 4)]
+    for nm, i, mn in cats:
+        L_ = []
+        for aid, a in AGG.items():
+            if a["g"] < 3: continue
+            v = (a["s"][3] + a["s"][7] + a["s"][10]) if i is None else a["s"][i]
+            L_.append([aid, a["n"], a["t"], a["p"], round(v / a["g"], 1), v, a["g"]])
+        LEAD[nm] = sorted(L_, key=lambda x: -x[5])[:25]
+else:
+    for nm, i in (("Points", 1), ("Rebounds", 8), ("Assists", 9), ("3-pointers", 4), ("Steals", 11), ("Blocks", 12)):
+        L_ = [[aid, a["n"], a["t"], a["p"], round(a["s"][i] / a["g"], 1), a["s"][i], a["g"]] for aid, a in AGG.items() if a["g"] >= 3]
+        LEAD[nm] = sorted(L_, key=lambda x: -x[4])[:25]
+# ---------- conference standings ----------
+STAND = []
+st_ = get(f"https://site.api.espn.com/apis/v2/sports/{CFG['path']}/standings?group={CFG['grp']}") or {}
+def walk(node):
+    for ch in node.get("children") or []:
+        if (ch.get("standings") or {}).get("entries"):
+            rows = []
+            for e in ch["standings"]["entries"]:
+                tid = str((e.get("team") or {}).get("id")); S_ = {x.get("name") or x.get("type"): x for x in e.get("stats") or []}
+                def sv(*ks):
+                    for k in ks:
+                        if k in S_: return S_[k].get("displayValue") or S_[k].get("summary") or S_[k].get("value")
+                    return ""
+                rows.append([tid, sv("vs. Conf.", "vsconf", "conferenceRecord", "Conference"), sv("overall", "total", "Overall"), sv("streak")])
+            STAND.append({"n": ch.get("name") or ch.get("abbreviation") or "", "r": rows})
+        walk(ch)
+walk(st_)
 # ---------- injuries (ESPN; college reports are thin, and basketball often has none) ----------
 INJ = {}
 ij = get(SITE + "injuries") or {}
@@ -269,10 +342,15 @@ print(f'var {U}_GEN="{NOW.astimezone(ET).strftime("%a %b %d %I:%M %p")} ET";')
 print(f"var {U}_TM={J(TM)};  /* id -> a: abbr, n: name, s: short name, c: colour, cf: conference, rk: AP rank */")
 print(f"var {U}_RANK={J(RANK)};")
 print(f"var {U}_G={J(G)};  /* window games: a/h = [team id, record, rank, score]; ln = ESPN line (sp = home spread), pred = CFB predictor win % [away, home] */")
-print(f"var {U}_RES={J(RES)};  /* team id -> [[date, opp id, opp abbr, H/A, pts for, pts against, event id, neutral], ...] */")
+print(f"var {U}_RES={J({t: RES[t] for t in wt if t in RES})};  /* team id -> [[date, opp id, opp abbr, H/A, pts for, pts against, event id, neutral], ...] */")
 print(f"var {U}_TS={J(TS)};")
 print(f"var {U}_P={J(PL)};  /* athlete id -> n, t (team id), p (pos), g: [[date, opp, H/A, " + ("pass yds, comp, att, pass td, int, rush att, rush yds, rush td, rec, rec yds, rec td, rec long, rush long" if SP == "cfb" else "min, pts, fgm, fga, 3pm, 3pa, ftm, fta, reb, ast, to, stl, blk") + "], ...] */")
 print(f"var {U}_TSX={J(TSX)};  /* team id -> n games, o: per-game stats, d: what opponents did against them (box scores) */")
+print(f"var {U}_TR={J(TR)};  /* strength-of-schedule ratings: o = points above average on offense, d = points allowed above average (lower = better), r = o - d, rk; lg below */")
+print(f"var {U}_LG={round(lg, 2)};")
+print(f"var {U}_ATS={J(TATS)};  /* team id -> [[date, opp, H/A, pts for, pts against, team spread (- = favoured), total, event id], ...] */")
+print(f"var {U}_LEAD={J(LEAD)};  /* category -> [[athlete id, name, team id, pos, per game, total, games], ...] */")
+print(f"var {U}_STAND={J(STAND)};  /* conference standings: [{{n, r: [[team id, conference record, overall, streak], ...]}}] */")
 print(f"var {U}_INJ={J(INJ)};  /* team id -> [[name, pos, status, note, date], ...] (ESPN) */")
 print(f"var {U}_H2H={J(H2H)};  /* window game id -> meetings [[date, home team's H/A, home pts, away pts, neutral], ...] newest first (home = this game's home team) */")
 print(f"var {U}_OK=1;")
