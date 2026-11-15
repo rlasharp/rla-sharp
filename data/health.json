@@ -1,16 +1,16 @@
 {
  "auto": {
-  "at": "2026-11-14T23:53:50+00:00",
+  "at": "2026-11-15T00:03:22+00:00",
   "ok": true,
-  "summary": "crews posted today\nliveprops: 665 feed lines merged (0 skipped from other days), 660 total, unmatched names: []\nNBA data: teams 30, results 183 (through 2026-11-13), players 467, slate 5, lines 5, props 660, inj teams 29, prev-season players 138, play log 34, adv 393, qtr games 183, h2h 3/2/3/2/2\nnfl-update: 13 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-lines-next: 13 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 7 with a forecast\nnflrefs: 137 games (0 new), 18 referees, 0 of this week's crews posted\n224 players, 32 teams\nnfl-inj: 224 players\nnfl-qtr: 137 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 687 players, 0 ESPN requests this run\nNHL data: 14 games today, 5 tomorrow, 32 teams, 691 skaters, 67 goalies, 1621 props, 305 finals, 55 requests\nsocmgr: 9 new headlines, 14 clubs with manager news\nsoccer: 227 upcoming matches (0 with odds, 227 with estimates, 219 with weather, 0 with referee), 0 player props, 5880 players\nUFC: 290 fighters, 2775 past fights, 235 requests\ncfb: 0 players with logs, 0 focus games, 5 requests\ncbb: 0 players with logs, 0 focus games, 5 requests\nFutures: nba: 15 futures markets, 340 prices nhl: 11 futures markets, 308 prices nfl: 23 futures markets, 488 prices \ntrack: nba 2026-11-14: snapshot 10 props, 5 games \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-14T23:52:12Z)\n"
+  "summary": "cfb: 2241 players with logs, 89 focus games, 1034 requests\ncbb: 2489 players with logs, 103 focus games, 1108 requests\ntrack: nba 2026-11-14: parlay locked (3 legs @ 6.37) \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-15T00:01:45Z)\n"
  },
  "site": {
-  "at": "2026-11-14T23:53:50+00:00",
+  "at": "2026-11-15T00:03:22+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-14T23:53:50+00:00",
+  "at": "2026-11-15T00:03:22+00:00",
   "ok": true,
   "issue": "",
   "gen": "Sat Nov 14 6:50 PM ET",
@@ -1866,6 +1866,16 @@
    "fails": [
     "liveprops: 665 feed lines merged (0 skipped from other days), 660 total, unmatched names: []"
    ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-15T00:03:22+00:00",
+   "what": "cfb,cbb",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
    "check_failed": false,
    "published": true
   }
