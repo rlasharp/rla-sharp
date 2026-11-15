@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-14 23:49Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 00:25Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 18
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -6,16 +6,15 @@ Keshon Gilbert|G|Out|knee inflammation|Nov 20
 Asa Newell|F|Out|toe|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Brooklyn Nets
-Michael Porter Jr.|F|Day-To-Day|personal|Nov 14
+Michael Porter Jr.|F|Out|personal|Nov 16
 #Charlotte Hornets
 Brandon Miller|F|Day-To-Day|groin soreness|Nov 15
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
 Jalen Smith|F|Out|finger sprain|Nov 16
+Nic Claxton|C|Out|hamstring|Nov 16
 Tobe Awaka|F|Out|back|Nov 16
-Nic Claxton|C|Day-To-Day|hamstring|Nov 16
-Norman Powell|G|Day-To-Day|undisclosed|
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
 Peyton Watson|G|Out|hamstring|Nov 16
@@ -58,9 +57,8 @@ Yanic Konan Niederhauser|C|Out|foot surgery|Nov 17
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
+Austin Reaves|G|Out|heel bruise|Nov 17
 Collin Sexton|G|Day-To-Day|head|Nov 15
-Austin Reaves|G|Day-To-Day|heel|Nov 15
-Quentin Grimes|G|Day-To-Day|finger|Nov 15
 #Memphis Grizzlies
 Quinten Post|C|Out|concussion|Nov 16
 Jerami Grant|F|Day-To-Day|head|Nov 14
@@ -120,7 +118,7 @@ Scottie Barnes|F|Out|groin strain|Nov 15
 Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 14
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
-Jaxson Hayes|C|Day-To-Day|knee|Nov 15
+Jaxson Hayes|C|Out|knee strain|Nov 17
 Trey Alexander|G|Out|ankle sprain|Nov 16
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20

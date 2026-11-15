@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-14 23:50Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 00:29Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hunter Long|TE|Questionable|Knee|Nov 15
@@ -20,9 +20,9 @@ Gervon Dexter Sr.|DT|Questionable|Illness|Nov 15
 Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
 Samson Ebukam|DE|IR|Hamstring|Dec 13
 #BAL
+Adam Randall|RB|IR|Neck|Nov 16
 Jaylinn Hawkins|S|Out|Knee|Nov 22
 Lamar Jackson|QB|IR|Thumb|Dec 27
-Adisa Isaac|LB|Questionable|Hamstring|Nov 16
 #BUF
 Tyrell Shavers|WR|Out|Knee - ACL|Nov 22
 Jordan Hancock|CB|Questionable|Hamstring|Nov 15
@@ -133,6 +133,8 @@ Mansoor Delane|CB|Questionable|Shoulder|Nov 15
 Thomas Booker IV|DT|Questionable|Ankle|Nov 15
 Dont'e Thornton Jr.|WR|Questionable|Back|Nov 15
 #LAC
+Justin Eboigbe|DT|Questionable|Ankle|Nov 16
+Denzel Perryman|LB|IR|Pectoral|Nov 16
 David Njoku|TE|IR|Lower Leg|Nov 16
 Ladd McConkey|WR|Questionable|Back|Nov 16
 Kendall Williamson|S|Out|Calf|Nov 22
@@ -222,13 +224,14 @@ Pat Freiermuth|TE|Questionable|Illness|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 22
 Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
+C.J. West|DT|IR|Knee|Nov 22
+Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
 Trent Williams|OT|Questionable|Shoulder|Nov 15
 Renardo Green|CB|Questionable|Back|Nov 15
 Deommodore Lenoir|CB|Questionable|Foot|Nov 15
 Dre Greenlaw|LB|Questionable|Knee|Nov 15
 Mike Evans|WR|Out|Achilles|Nov 22
-C.J. West|DT|IR|Knee|Nov 22
 Upton Stout|CB|Questionable|Shoulder|Nov 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
