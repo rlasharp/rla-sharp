@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 18:20Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 19:26Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Gardner Minshew II|QB|IR|Elbow|Feb 15
@@ -88,7 +88,7 @@ Jaylen Waddle|WR|Questionable|Concussion|Nov 22
 Riley Moss|CB|Questionable|Concussion|Nov 22
 Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 #DET
-Aidan Hutchinson|DE|Questionable|Knee|Nov 22
+Aidan Hutchinson|DE|Doubtful|Knee|Nov 22
 Mekhi Wingo|DT|Out|Coach's Decision|Nov 22
 Amen Ogbongbemiga|LB|Out|Coach's Decision|Nov 22
 D.J. Reed|CB|Out|Hip|Nov 22
@@ -99,6 +99,8 @@ Kerby Joseph|S|Out|Knee|Nov 22
 Jack Campbell|LB|IR|Neck|Dec 6
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 #GB
+Skyy Moore|WR|Questionable|Ankle|Nov 15
+Brandon Cisse|CB|Questionable|Ribs|Nov 15
 Kevin Zeitler|G|Out|Ankle|Nov 25
 Zaire Franklin|LB|Out|Shin|Nov 25
 Pierre Strong Jr.|RB|Out|Coach's Decision|Nov 25
@@ -118,6 +120,7 @@ Azeez Al-Shaair|LB|Out|Groin|Nov 19
 David Montgomery|RB|Out|Groin|Nov 19
 Jaylin Smith|CB|IR|Hamstring|Nov 19
 #IND
+Bernhard Raimann|OT|Questionable|Concussion|Nov 19
 Riley Leonard|QB|Out|Coach's Decision|Nov 19
 Luke Rhodes|LS|Out|Hamstring|Nov 19
 Jerry Tillery|DT|Out|Calf|Nov 19
@@ -134,6 +137,8 @@ Albert Regis|DT|Out|Coach's Decision|Nov 22
 Jessie Bates III|S|Out|Coach's Decision|Nov 22
 B.J. Green II|DE|IR|Forearm|Nov 22
 #KC
+Trey Smith|G|Questionable|Concussion|Nov 22
+Jared Wiley|TE|Questionable|Ankle|Nov 22
 Garrett Nussmeier|QB|Out|Coach's Decision|Nov 22
 Jaydn Ott|RB|Out|Hamstring|Nov 22
 Peter Woods|DT|Out|Neck|Nov 22
@@ -167,6 +172,7 @@ Jordan Whittington|WR|IR|Back|Dec 20
 Joe Cardona|LS|Questionable|Ankle|Nov 15
 Terrance Ferguson|TE|IR|Hamstring|Nov 25
 #MIA
+Zeek Biggers|DT|Questionable|Knee|Nov 15
 Chris Bell|WR|Out|Knee|Nov 22
 Caedan Wallace|OT|Out|Coach's Decision|Nov 22
 Jared Wayne|WR|Out|Quadriceps|Nov 22
@@ -177,6 +183,7 @@ Darrell Baker Jr.|CB|Out|Knee|Nov 22
 Malik Willis|QB|IR|Abdomen|Dec 13
 Zach Sieler|DT|IR|Biceps|Feb 15
 #MIN
+Bo Richter|LB|Questionable|Foot|Nov 22
 Max Brosmer|QB|Out|Coach's Decision|Nov 22
 Jordan Addison|WR|Out|Thumb|Nov 22
 T.J. Hockenson|TE|Out|Wrist|Nov 22
@@ -197,6 +204,7 @@ Dametrious Crownover|OT|Out|Coach's Decision|Nov 29
 Carlton Davis III|CB|Out|Knee|Nov 29
 TreVeyon Henderson|RB|IR|Illness|Dec 21
 #NO
+Pete Werner|LB|Questionable|Hamstring|Nov 15
 Zach Wilson|QB|Out|Coach's Decision|Nov 22
 Mike Reid|CB|Out|Coach's Decision|Nov 22
 Erik McCoy|C|Out|Biceps|Nov 22
@@ -214,6 +222,8 @@ J.C. Davis|OT|Out|Coach's Decision|Nov 22
 Thomas Fidone II|TE|Out|Coach's Decision|Nov 22
 Paulson Adebo|CB|Out|Coach's Decision|Nov 22
 #NYJ
+Dylan Parham|G|Questionable|Knee|Nov 15
+Omar Cooper Jr.|WR|Questionable|Ankle|Nov 15
 Jarvis Brownlee Jr.|CB|Out|Illness|Nov 22
 Tim Patrick|WR|Out|Coach's Decision|Nov 22
 Jelani Woods|TE|Out|Coach's Decision|Nov 22
