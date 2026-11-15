@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 05:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 06:22Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 18
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
