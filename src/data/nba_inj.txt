@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 16:20Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 17:01Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 18
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -47,7 +47,7 @@ Clint Capela|C|Out|ankle sprain|Nov 16
 Steven Adams|C|Out|calf strain|Nov 15
 Fred VanVleet|G|Out|knee|Nov 16
 #Indiana Pacers
-Andrew Nembhard|G|Day-To-Day|hip soreness|Nov 15
+Andrew Nembhard|G|Out|hip soreness|Nov 18
 T.J. McConnell|G|Day-To-Day|hamstring|Nov 15
 Aaron Nesmith|G|Day-To-Day|hand sprain|Nov 15
 Tyrese Haliburton|G|Out|hamstring strain|Nov 22
