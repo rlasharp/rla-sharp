@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 22:36Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 23:19Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 15
 Kingston Flemings|G|Out|back strain|Nov 18
@@ -34,6 +34,7 @@ Ugonna Onyenso|C|Day-To-Day|foot|Nov 14
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
+Gui Santos|F|Day-To-Day|ankle inflammation|Nov 16
 Stephen Curry|G|Out|abdomen|Dec 12
 Brandon Williams|G|Out|hamstring not specified|Nov 22
 Kristaps Porzingis|C|Out|illness|Jan 2
@@ -68,14 +69,14 @@ Pelle Larsson|G|Day-To-Day|illness|Nov 16
 Ousmane Dieng|F|Out|finger fracture|Nov 18
 Ryan Rollins|G|Day-To-Day|illness|Nov 15
 #Minnesota Timberwolves
-Jaylen Clark|G|Day-To-Day|hamstring not specified|Nov 16
+Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Bryce McGowens|G|Out|elbow infection|Nov 18
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 18
-Trendon Watford|F|Out|ankle sprain|Nov 18
 Trey Murphy III|F|Out|knee tendinitis|Nov 18
+Trendon Watford|F|Out|ankle sprain|Nov 18
+Bryce McGowens|G|Out|elbow infection|Nov 18
 Dejounte Murray|G|Out|ankle|Nov 20
 #Oklahoma City Thunder
 Jaylin Williams|F|Out|back spasms|Nov 18
@@ -98,7 +99,7 @@ Ariel Hukporti|C|Out|achilles surgery|Oct 1
 Drew Timme|F|Day-To-Day|hand|Nov 15
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
-Chris Youngblood|G|Day-To-Day|foot bruise|Nov 16
+Chris Youngblood|G|Out|foot bruise|Nov 17
 Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
@@ -111,7 +112,6 @@ De'Aaron Fox|G|Out|hip|Nov 17
 Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Scottie Barnes|F|Out|undisclosed|
 Nate Bittle|C|Out|foot fracture|Nov 23
 Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 16
 Kawhi Leonard|F|Out|knee inflammation|Nov 23

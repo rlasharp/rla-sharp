@@ -1,7 +1,7 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 21:58Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 23:19Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
-Jordan Burch|LB|Questionable|Knee|Nov 15
+Jordan Burch|LB|Questionable|Knee|Nov 22
 Jayden Williams|OT|Out|Knee|Nov 22
 Joey Aguilar|QB|Out|Coach's Decision|Nov 22
 Starling Thomas V|CB|Out|Coach's Decision|Nov 22
@@ -73,6 +73,8 @@ Parker Brailsford|C|Out|Coach's Decision|Nov 29
 Taylen Green|QB|Out|Coach's Decision|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
+Otito Ogbonnia|DT|Questionable|Finger|Nov 15
+DaRon Bland|CB|Questionable|Ankle|Nov 15
 Juanyeh Thomas|S|Out|Ribs|Nov 22
 Jonathan Mingo|WR|Out|Ankle|Nov 22
 Derion Kendrick|CB|Out|Coach's Decision|Nov 22
@@ -114,7 +116,7 @@ Josh Whyle|TE|IR|Concussion|Dec 20
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Warren Brinson|DT|IR|Calf|Nov 25
 #HOU
-Woody Marks|RB|Questionable|Concussion|Nov 19
+Woody Marks|RB|Doubtful|Concussion|Nov 19
 Wyatt Teller|G|Out|Illness|Nov 19
 Keylan Rutledge|G|Out|Neck|Nov 19
 Marvin Harrison Jr.|WR|Out|Hamstring|Nov 19
@@ -145,8 +147,8 @@ Albert Regis|DT|Out|Coach's Decision|Nov 22
 Jessie Bates III|S|Out|Coach's Decision|Nov 22
 B.J. Green II|DE|IR|Forearm|Nov 22
 #KC
+Jared Wiley|TE|Out|Ankle|Dec 13
 Trey Smith|G|Questionable|Concussion|Nov 22
-Jared Wiley|TE|Questionable|Ankle|Dec 13
 Garrett Nussmeier|QB|Out|Coach's Decision|Nov 22
 Jaydn Ott|RB|Out|Hamstring|Nov 22
 Peter Woods|DT|Out|Neck|Nov 22
@@ -155,6 +157,7 @@ Jaylon Moore|OT|Out|Ankle|Nov 22
 Melvin Smith Jr.|CB|Out|Coach's Decision|Nov 22
 Kenneth Walker III|RB|Out|Groin|Nov 22
 #LV
+Brock Bowers|TE|Out|Ankle|Nov 22
 Malik Benson|WR|Out|Coach's Decision|Nov 22
 Thomas Booker IV|DT|Out|Ankle|Nov 22
 Dont'e Thornton Jr.|WR|Out|Back|Nov 22
@@ -173,6 +176,8 @@ Denzel Perryman|LB|IR|Pectoral|Nov 16
 David Njoku|TE|IR|Lower Leg|Nov 16
 Brenen Thompson|WR|Doubtful|Hamstring|Nov 16
 #LAR
+Coleman Shelton|C|Questionable|Hamstring|Nov 25
+Dylan McMahon|C|Questionable|Knee|Nov 25
 Joe Cardona|LS|Out|Ankle|Nov 25
 Ty Simpson|QB|Out|Coach's Decision|Nov 25
 Keagen Trost|OT|Out|Coach's Decision|Nov 25
@@ -183,7 +188,6 @@ Steve Avila|G|Out|Hamstring|Nov 25
 Davante Adams|WR|IR|Hamstring|Nov 25
 Puka Nacua|WR|IR|Knee - MCL|Dec 20
 Jordan Whittington|WR|IR|Back|Dec 20
-Terrance Ferguson|TE|IR|Hamstring|Nov 25
 #MIA
 Andrew Meyer|C|Questionable|Undisclosed|Nov 15
 Zeek Biggers|DT|Questionable|Knee|Nov 22
@@ -271,7 +275,9 @@ Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
-George Holani|RB|Questionable|Knee|Nov 15
+George Holani|RB|Out|Knee|Nov 15
+Jarran Reed|DT|Questionable|Toe|Nov 15
+Abraham Lucas|OT|Questionable|Ankle|Nov 29
 Emanuel Wilson|RB|Out|Coach's Decision|Nov 29
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
