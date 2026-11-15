@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 01:55Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 03:15Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 18
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -24,6 +24,7 @@ Evan Mobley|C|Out|toe sprain|Nov 16
 Sam Merrill|G|Out|elbow|Nov 16
 Nae'Qwan Tomlin|F|Out|back|Nov 16
 #Dallas Mavericks
+Daniel Gafford|F|Out|face|Nov 15
 Max Christie|G|Out|ankle sprain|Nov 15
 Dereck Lively II|C|Out|foot surgery|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 18
@@ -31,6 +32,7 @@ Sergio de Larrea|F|Out|knee strain|Nov 18
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
+Duncan Robinson|F|Day-To-Day|thigh soreness|Nov 14
 Ugonna Onyenso|C|Day-To-Day|foot|Nov 14
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
@@ -61,6 +63,7 @@ Adou Thiero|F|Day-To-Day|ankle sprain|Nov 15
 Collin Sexton|G|Day-To-Day|head|Nov 15
 Austin Reaves|G|Out|heel bruise|Nov 17
 #Memphis Grizzlies
+GG Jackson|F|Out|foot|Nov 16
 Zach Edey|C|Out|ankle|Nov 16
 Jerami Grant|F|Out|head|Nov 16
 Quinten Post|C|Out|concussion|Nov 16
@@ -72,6 +75,7 @@ Pelle Larsson|G|Out|illness|Nov 16
 #Milwaukee Bucks
 Ousmane Dieng|F|Out|finger sprain|Nov 18
 #Minnesota Timberwolves
+Jaylen Clark|G|Out|hamstring not specified|Nov 16
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
