@@ -118,7 +118,7 @@ jobs:
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}" REPO="${{ github.repository }}" python3 src/tools/alert.py || true
           git add data/health.json; git commit -qm "health" || true
           [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ] && exit 0   # nothing to push
-          for i in 1 2 3; do { git pull --rebase -X theirs -q origin main || { git rebase --abort; false; }; } && git push -q origin HEAD:main && exit 0; sleep 7; done   # -X theirs: on a clash in generated files keep this run's fresh copy
+          for i in 1 2 3; do { git pull --rebase --autostash -X theirs -q origin main || { git rebase --abort; false; }; } && git push -q origin HEAD:main && exit 0; sleep 7; done   # -X theirs: on a clash in generated files keep this run's fresh copy
           echo "push failed 3 times"; exit 1
         env:
           RES: ${{ steps.run.outcome }}
