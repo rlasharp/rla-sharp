@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 09:25Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 11:18Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hunter Long|TE|Questionable|Knee|Nov 15
