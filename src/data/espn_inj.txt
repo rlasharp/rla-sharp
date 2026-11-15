@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 01:19Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 01:47Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hunter Long|TE|Questionable|Knee|Nov 15
@@ -133,16 +133,16 @@ Mansoor Delane|CB|Questionable|Shoulder|Nov 15
 Thomas Booker IV|DT|Questionable|Ankle|Nov 15
 Dont'e Thornton Jr.|WR|Questionable|Back|Nov 15
 #LAC
+Branson Taylor|G|Out|Ankle|Nov 22
+Trey Pipkins III|OT|IR|Knee|Nov 16
+Kayode Awosika|G|Questionable|Lower Leg|Nov 16
+Kendall Williamson|S|Out|Calf|Nov 22
+Isas Waxter|CB|Out|Ankle|Nov 22
 Justin Eboigbe|DT|Questionable|Ankle|Nov 16
 Denzel Perryman|LB|IR|Pectoral|Nov 16
 David Njoku|TE|IR|Lower Leg|Nov 16
 Ladd McConkey|WR|Questionable|Back|Nov 16
-Kendall Williamson|S|Out|Calf|Nov 22
-Branson Taylor|G|Out|Ankle|Nov 22
 Brenen Thompson|WR|Doubtful|Hamstring|Nov 16
-Isas Waxter|CB|Out|Ankle|Nov 22
-Trey Pipkins III|OT|IR|Knee|Nov 16
-Kayode Awosika|G|Questionable|Lower Leg|Nov 16
 #LAR
 Steve Avila|G|Out|Hamstring|Nov 25
 Trent McDuffie|CB|Questionable|Back|Nov 15
