@@ -44,7 +44,7 @@ function coModel(sp,g){const TS=coV(sp,"TS")||{},A=TS[g.a[0]],H=TS[g.h[0]];if(!A
   const hfa=g.neu?0:(RH&&RH.h!=null?RH.h:C.hfa);
   let hp=sos?LG+RH.o+RA.d+hfa/2:(ho+ad)/2+hfa/2,ap=sos?LG+RA.o+RH.d-hfa/2:(ao+hd)/2-hfa/2;const L=coLine(sp,g);
   /* pace + efficiency: expected plays/possessions × points per play/possession for each side (opponent-adjusted); averaged in */
-  const EF=coV(sp,"EFF")||{},EL=coV(sp,"EFFLG"),EA=EF[g.a[0]],EH=EF[g.h[0]];let eff=null;
+  const EF=coEF(sp),EL=coV(sp,"EFFLG"),EA=EF[g.a[0]],EH=EF[g.h[0]];let eff=null;
   if(EL&&EA&&EH&&EA.g>=3&&EH.g>=3){const u=EL[1]+EA.t+EH.t,he=(EL[0]+EH.o+EA.d)/100*u+hfa/2,ae=(EL[0]+EA.o+EH.d)/100*u-hfa/2;eff={u,hp:he,ap:ae};hp=(hp+he)/2;ap=(ap+ae)/2}let mh=hp-ap,tot=hp+ap;const raw={m:mh,tot};
   if(L.sp!=null)mh=(mh+(-L.sp))/2;if(L.tot!=null)tot=(tot+L.tot)/2;
   return {m:mh,tot,hp:(tot+mh)/2,ap:(tot-mh)/2,p:coNcdf(mh/C.sd),raw,n:Math.min(A.g,H.g),sos,eff,hfa}}
@@ -212,9 +212,12 @@ function coRoute(sp,h){const el=document.getElementById("v-"+sp);if(!el)return;
 /* ---------- 💪 strength of schedule: power rating, schedule strength ---------- */
 function coOrd(n){return n+(n%10===1&&n%100!==11?"st":n%10===2&&n%100!==12?"nd":n%10===3&&n%100!==13?"rd":"th")}
 /* ratings for this division only (teams with a conference), ranked 1..n */
-let CO_TR={};function coTR(sp){if(CO_TR[sp])return CO_TR[sp];const T=coV(sp,"TR")||{},O={};Object.entries(T).filter(([t])=>coT(sp,t).cf).sort((a,b)=>b[1].r-a[1].r).forEach(([t,v],i)=>O[t]=Object.assign({},v,{rk:i+1}));return CO_TR[sp]=O}
+/* the division: teams in the conference standings (falls back to teams with a conference) */
+let CO_DV={};function coInDiv(sp,t){if(!CO_DV[sp]){const S=coV(sp,"STAND")||[],D=new Set();S.forEach(g=>(g.r||[]).forEach(r=>D.add(String(r[0]))));CO_DV[sp]=D}return CO_DV[sp].size?CO_DV[sp].has(String(t)):!!coT(sp,t).cf}
+function coConf(sp,t){const c=coT(sp,t).cf;if(c)return c;const g=(coV(sp,"STAND")||[]).find(g=>(g.r||[]).some(r=>String(r[0])===String(t)));return g?g.n.replace(/\s*-\s*(East|West|North|South)$/,""):""}
+let CO_TR={};function coTR(sp){if(CO_TR[sp])return CO_TR[sp];const T=coV(sp,"TR")||{},O={};Object.entries(T).filter(([t])=>coInDiv(sp,t)).sort((a,b)=>b[1].r-a[1].r).forEach(([t,v],i)=>O[t]=Object.assign({},v,{rk:i+1}));return CO_TR[sp]=O}
 let CO_SOS={};function coSOS(sp){if(CO_SOS[sp])return CO_SOS[sp];const TR=coTR(sp),RES=coV(sp,"RES")||{},S={};
-  for(const [t,L] of Object.entries(RES)){if(!coT(sp,t).cf)continue;const v=L.map(r=>TR[r[1]]).filter(Boolean).map(x=>x.r);if(v.length)S[t]=v.reduce((a,b)=>a+b,0)/v.length}
+  for(const [t,L] of Object.entries(RES)){if(!coInDiv(sp,t))continue;const v=L.map(r=>TR[r[1]]).filter(Boolean).map(x=>x.r);if(v.length)S[t]=v.reduce((a,b)=>a+b,0)/v.length}
   Object.entries(S).sort((a,b)=>b[1]-a[1]).forEach(([t,v],i)=>S[t]={v,rk:i+1,of:Object.keys(S).length});return CO_SOS[sp]=S}
 function coPower(sp,tid){const TR=coTR(sp),R=TR[tid];if(!R)return "";const n=Object.keys(TR).length,S=coSOS(sp)[tid];
   return `<div class="card"><h2>💪 Power rating <span class="small">· adjusted for strength of schedule</span></h2><div class="xstrip">
@@ -227,7 +230,7 @@ function coPowerVs(sp,g){const TR=coTR(sp),A=TR[g.a[0]],H=TR[g.h[0]];if(!A||!H)r
   const row=(l,a,h)=>`<tr><td>${a}</td><th>${l}</th><td>${h}</td></tr>`,sg=v=>(v>0?"+":"")+coF(v);
   const BR=t=>{const A_=(coV(sp,"ATS")||{})[t]||[];let c=[0,0],o=[0,0];for(const r of A_){const m=r[3]-r[4]+r[5],x=r[3]+r[4]-r[6];if(m)c[m>0?0:1]++;if(x)o[x>0?0:1]++}return A_.length?[`${c[0]}-${c[1]}`,`${o[0]}-${o[1]}`]:["–","–"]},ba=BR(g.a[0]),bh=BR(g.h[0]);
   return `<div class="card"><h2>💪 Power + betting record</h2><div class="nbatbl"><table class="uftape"><thead><tr><th>${coE(an)}</th><th></th><th>${coE(hn)}</th></tr></thead><tbody>
-   ${row("Power rank",coOrd(A.rk),coOrd(H.rk))}${row("Rating (pts)",sg(A.r),sg(H.r))}${row("Offense",sg(A.o),sg(H.o))}${row("Defense (− better)",sg(A.d),sg(H.d))}${row("Schedule rank",sa?coOrd(sa.rk):"–",sh?coOrd(sh.rk):"–")}${(()=>{const EF=coV(sp,"EFF")||{},EL=coV(sp,"EFFLG"),x=EF[g.a[0]],y=EF[g.h[0]];if(!EL||!x||!y)return "";const u=sp==="cfb"?"plays":"poss.";return row(`Offense per 100 ${u}`,coF(EL[0]+x.o),coF(EL[0]+y.o))+row(`Defense per 100 ${u}`,coF(EL[0]+x.d),coF(EL[0]+y.d))+row(sp==="cfb"?"Plays per game":"Tempo (poss./game)",coF(EL[1]+x.t),coF(EL[1]+y.t))})()}${row("Home edge (pts)",A.h!=null?coF(A.h):"–",H.h!=null?coF(H.h):"–")}${row("Vs spread",ba[0],bh[0])}${row("Over / under",ba[1],bh[1])}</tbody></table></div>
+   ${row("Power rank",coOrd(A.rk),coOrd(H.rk))}${row("Rating (pts)",sg(A.r),sg(H.r))}${row("Offense",sg(A.o),sg(H.o))}${row("Defense (− better)",sg(A.d),sg(H.d))}${row("Schedule rank",sa?coOrd(sa.rk):"–",sh?coOrd(sh.rk):"–")}${(()=>{const EF=coEF(sp),EL=coV(sp,"EFFLG"),x=EF[g.a[0]],y=EF[g.h[0]];if(!EL||!x||!y)return "";const u=sp==="cfb"?"plays":"poss.";return row(`Offense per 100 ${u}`,coF(EL[0]+x.o),coF(EL[0]+y.o))+row(`Defense per 100 ${u}`,coF(EL[0]+x.d),coF(EL[0]+y.d))+row(sp==="cfb"?"Plays per game":"Tempo (poss./game)",coF(EL[1]+x.t),coF(EL[1]+y.t))})()}${row("Home edge (pts)",A.h!=null?coF(A.h):"–",H.h!=null?coF(H.h):"–")}${row("Vs spread",ba[0],bh[0])}${row("Over / under",ba[1],bh[1])}</tbody></table></div>
    <div class="small">Ratings adjusted for strength of schedule. Spread / total records use ESPN's closing lines.</div></div>`}
 /* ---------- 📒 against the spread / over-under (closing lines) ---------- */
 function coBetRec(sp,tid){const A=(coV(sp,"ATS")||{})[tid]||[];if(!A.length||typeof xBetRec==="undefined")return "";
@@ -298,7 +301,9 @@ function coRest(sp,g,t){const R=((coV(sp,"RES")||{})[t]||[]).filter(r=>r[0]<coDa
   else{if(rest<=5)out.push(["😴",`short week (${rest} days since the last game)`,"short week"]);else if(rest>=13)out.push(["🔋",`coming off a bye (${rest} days rest)`,"off a bye"]);if(road>=3)out.push(["🧳",`${road}${road===3?"rd":"th"} straight road game`,`road game #${road}`])}
   return out}
 /* ---------- ⚡ pace + efficiency card ---------- */
-function coEffCard(sp,tid){const EF=coV(sp,"EFF")||{},EL=coV(sp,"EFFLG"),x=EF[tid],T=coTR(sp)[tid];if(!EL||!x)return "";const n=Object.keys(EF).length,u=sp==="cfb"?"plays":"possessions";
+/* pace + efficiency for this division only, ranked 1..n by net */
+let CO_EF={};function coEF(sp){if(CO_EF[sp])return CO_EF[sp];const E=coV(sp,"EFF")||{},O={};Object.entries(E).filter(([t])=>coInDiv(sp,t)).sort((a,b)=>(b[1].o-b[1].d)-(a[1].o-a[1].d)).forEach(([t,v],i)=>O[t]=Object.assign({},v,{rk:i+1}));return CO_EF[sp]=O}
+function coEffCard(sp,tid){const EF=coEF(sp),EL=coV(sp,"EFFLG"),x=EF[tid],T=coTR(sp)[tid];if(!EL||!x)return "";const n=Object.keys(EF).length,u=sp==="cfb"?"plays":"possessions";
   const rk=(f,lo)=>{const v=Object.values(EF).map(f).sort((a,b)=>lo?a-b:b-a);return v.indexOf(f(x))+1};
   return `<div class="card"><h2>⚡ ${sp==="cfb"?"Pace + efficiency":"Tempo + efficiency"} <span class="small">· adjusted for opponents</span></h2><div class="xstrip">
    <div><b>${coF(EL[0]+x.o)}</b><span>Offense</span><small>pts / 100 ${u} · ${coOrd(rk(e=>e.o))}</small></div>
@@ -342,7 +347,7 @@ function coPickEmPage(sp,el){const S=(typeof TRACK!=="undefined"&&TRACK&&TRACK.s
    ${Object.keys(wk).sort().reverse().map(w=>{const A=[0,0,0],O=[0,0,0],k={win:0,loss:1,push:2};for(const x of wk[w]){A[k[x.ra]]++;if(x.ro)O[k[x.ro]]++}return `<h2 style="margin:12px 0 8px">Week of ${new Date(w+"T12:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric"})} <span class="small">· ATS ${rec(A)} · totals ${rec(O)}</span></h2><div class="card">${wk[w].map(row).join("")}</div>`}).join("")}`}
 /* ---------- 🔥 rivalries + conference title games ---------- */
 function coBigPage(sp,el){const G=coGames(sp).filter(g=>g.riv||g.ttl);
-  el.innerHTML=`${coHead(sp,"Rivalries + title games")}<p class="sub">This week's rivalry games and conference championships, with every meeting from the last 4 seasons and how each side did against the spread in them.</p>
+  el.innerHTML=`${coHead(sp,"Rivalries + title games")}<p class="sub">This week's rivalry games and title games, with every meeting from the last 4 seasons and how each side did against the spread in them.</p>
    ${G.map(g=>`<h2 style="margin:12px 0 6px">${g.riv?"🔥 "+coE(g.riv):""}${g.riv&&g.ttl?" · ":""}${g.ttl?"🏆 "+coE(g.ttl):""}</h2>${coRow(sp,g)}${coH2H(sp,g)}`).join("")||`<div class="card small">No rivalry or conference title games in the next few days.</div>`}`;
   el.querySelectorAll("[data-cog]").forEach(c=>c.onclick=()=>location.hash=c.dataset.cog)}
 /* ---------- 🏀 bracket watch: a rough 68-team field from our ratings ---------- */
@@ -351,7 +356,7 @@ function coBracketPage(sp,el){const TR=coTR(sp),TS=coV(sp,"TS")||{},AP={};(((coV
   const gp=Object.values(TR).map(v=>v.g).sort((a,b)=>a-b)[Math.floor(Object.keys(TR).length/2)]||0,w=Math.min(1,gp/15),key=t=>w*TR[t].rk+(1-w)*(AP[t]||25+TR[t].rk);
   const T=Object.keys(TR).sort((a,b)=>key(a)-key(b));
   if(T.length<68){el.innerHTML=`${coHead(sp,"Bracket watch")}<div class="card small">Bracket watch needs our ratings — they come with the next data update.</div>`;return}
-  const cf={};for(const t of T){const c=coT(sp,t).cf;if(c&&!cf[c])cf[c]=t}const auto=new Set(Object.values(cf));const atl=T.filter(t=>!auto.has(t)).slice(0,68-auto.size),field=new Set([...auto,...atl]);
+  const cf={};for(const t of T){const c=coConf(sp,t);if(c&&!cf[c])cf[c]=t}const auto=new Set(Object.values(cf));const atl=T.filter(t=>!auto.has(t)).slice(0,68-auto.size),field=new Set([...auto,...atl]);
   const lastIn=atl.slice(-4),autoLow=[...auto].sort((a,b)=>key(b)-key(a)).slice(0,4),ff=new Set([...lastIn,...autoLow]),direct=T.filter(t=>field.has(t)&&!ff.has(t));
   const lines=[];for(let i=0;i<10;i++)lines.push(direct.slice(i*4,i*4+4).map(t=>[t]));lines.push([...direct.slice(40,42).map(t=>[t]),[lastIn[0],lastIn[1]],[lastIn[2],lastIn[3]]]);
   for(let i=0;i<4;i++)lines.push(direct.slice(42+i*4,46+i*4).map(t=>[t]));const lo=autoLow.slice().sort((a,b)=>key(a)-key(b));lines.push([...direct.slice(58,60).map(t=>[t]),[lo[0],lo[1]],[lo[2],lo[3]]]);

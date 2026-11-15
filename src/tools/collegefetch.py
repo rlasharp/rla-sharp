@@ -229,6 +229,15 @@ for tid, L in RES.items():
 # ---------- strength of schedule: offense / defense ratings adjusted for every opponent (division games only) ----------
 # expected points for t vs o = lg + O[t] + D[o] (+/- home edge); solved by iteration; margins capped so blowouts don't run away
 HFA = 2.5 if SP == "cfb" else 3.0; CAP = 28 if SP == "cfb" else 22
+# the division = every team in ESPN's conference standings (the teams listing can miss some)
+def _ids(node, out):
+    for ch in node.get("children") or []:
+        for e in ((ch.get("standings") or {}).get("entries") or []): out.add(str((e.get("team") or {}).get("id")))
+        _ids(ch, out)
+    return out
+_D = _ids(get(f"https://site.api.espn.com/apis/v2/sports/{CFG['path']}/standings?group={CFG['grp']}") or {}, set())
+if len(_D) > 100: DIV = _D
+log(f"{SP}: division = {len(DIV)} teams")
 GM = []
 for tid, L in RES.items():
     for r in L:
@@ -278,7 +287,7 @@ for tid, L in RES.items():
 EFF = {}; EFFLG = None
 if EG:
     lgE = sum(x[2] for x in EG) / len(EG); lgT = sum(x[4] for x in EG) / len(EG)
-    hE = sum(x[2] - x[3] for x in EG if x[5] == 1) / max(1, sum(1 for x in EG if x[5] == 1)) / 2   # home edge in efficiency
+    hE = (HFA / 2) / lgT * 100   # the usual home edge, in points per 100 (raw home margins are skewed by early-season "buy" games)
     tm_ = {x[0] for x in EG}; EO = {t: 0.0 for t in tm_}; ED = {t: 0.0 for t in tm_}; ET_ = {t: 0.0 for t in tm_}
     for _ in range(40):
         sO = {t: [] for t in tm_}; sD = {t: [] for t in tm_}; sT = {t: [] for t in tm_}
