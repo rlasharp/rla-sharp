@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 21:17Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 21:58Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 15
 Kingston Flemings|G|Out|back strain|Nov 18
@@ -12,22 +12,21 @@ Michael Porter Jr.|F|Day-To-Day|personal|Nov 16
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Tobe Awaka|F|Out|back|Nov 18
 Jalen Smith|F|Day-To-Day|finger sprain|Nov 16
-Nic Claxton|C|Day-To-Day|hamstring|Nov 16
-Tobe Awaka|F|Day-To-Day|back|Nov 16
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
 Jarrett Allen|C|Day-To-Day|knee|Nov 16
 Peyton Watson|G|Day-To-Day|hamstring|Nov 16
-Evan Mobley|C|Day-To-Day|toe sprain|Nov 16
+Evan Mobley|C|Day-To-Day|toe sprain|Nov 18
 Donovan Mitchell|G|Day-To-Day|knee bruise|Nov 16
 James Harden|G|Day-To-Day|calf|Nov 16
-Sam Merrill|G|Out|elbow|Nov 16
+Sam Merrill|G|Out|elbow|Nov 18
 Nae'Qwan Tomlin|F|Out|back|Nov 16
 #Dallas Mavericks
+Max Christie|G|Out|ankle sprain|Nov 18
+Kyrie Irving|G|Out|knee|Nov 18
 Santi Aldama|F|Day-To-Day|ankle sprain|Nov 15
-Max Christie|G|Day-To-Day|ankle sprain|Nov 15
-Kyrie Irving|G|Day-To-Day|knee|Nov 15
 Daniel Gafford|F|Day-To-Day|shoulder stinger|Nov 15
 Dereck Lively II|C|Out|foot surgery|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 18

@@ -1,6 +1,7 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 21:17Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 21:58Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Jordan Burch|LB|Questionable|Knee|Nov 15
 Jayden Williams|OT|Out|Knee|Nov 22
 Joey Aguilar|QB|Out|Coach's Decision|Nov 22
 Starling Thomas V|CB|Out|Coach's Decision|Nov 22
@@ -145,7 +146,7 @@ Jessie Bates III|S|Out|Coach's Decision|Nov 22
 B.J. Green II|DE|IR|Forearm|Nov 22
 #KC
 Trey Smith|G|Questionable|Concussion|Nov 22
-Jared Wiley|TE|Questionable|Ankle|Nov 22
+Jared Wiley|TE|Questionable|Ankle|Dec 13
 Garrett Nussmeier|QB|Out|Coach's Decision|Nov 22
 Jaydn Ott|RB|Out|Hamstring|Nov 22
 Peter Woods|DT|Out|Neck|Nov 22
@@ -154,7 +155,6 @@ Jaylon Moore|OT|Out|Ankle|Nov 22
 Melvin Smith Jr.|CB|Out|Coach's Decision|Nov 22
 Kenneth Walker III|RB|Out|Groin|Nov 22
 #LV
-Brock Bowers|TE|Questionable|Leg|Nov 15
 Malik Benson|WR|Out|Coach's Decision|Nov 22
 Thomas Booker IV|DT|Out|Ankle|Nov 22
 Dont'e Thornton Jr.|WR|Out|Back|Nov 22
@@ -271,6 +271,7 @@ Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
+George Holani|RB|Questionable|Knee|Nov 15
 Emanuel Wilson|RB|Out|Coach's Decision|Nov 29
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
