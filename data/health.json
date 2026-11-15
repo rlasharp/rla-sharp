@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-15T02:22:02+00:00",
+  "at": "2026-11-15T03:17:36+00:00",
   "ok": true,
-  "summary": "cfb: 2254 players with logs, 77 focus games, 832 requests\ncbb: 2504 players with logs, 80 focus games, 561 requests\ntrack: cfb 2026-11-14: locked 2 picks \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-15T02:20:00Z)\n"
+  "summary": "NBA finals from ESPN: 78 games kept (2 new), 1749 player lines\nNBA injuries refreshed\nnbalineups: 5 games, 50 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 5 upcoming games with lines\nNBA refs: 0 summaries checked, 183 games cached\nNBA refs: 5 crews posted today\nlive feed is not from 2026-11-14 - nothing merged\nNBA data: teams 30, results 183 (through 2026-11-13), players 467, slate 5, lines 5, props 660, inj teams 29, prev-season players 138, play log 34, adv 393, qtr games 183, h2h 3/2/3/2/2\nnhllines: 32/32 teams\nNHL PP time: 687 players, 0 ESPN requests this run\nNHL data: 14 games today, 5 tomorrow, 32 teams, 695 skaters, 67 goalies, 548 props, 313 finals, 76 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 12-10, best props NBA 23-39 NFL 12-8 NHL 27-40\nSite check OK \u2014 published (2026-11-15T03:15:54Z)\n"
  },
  "site": {
-  "at": "2026-11-15T02:22:02+00:00",
+  "at": "2026-11-15T03:17:36+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-15T02:22:02+00:00",
+  "at": "2026-11-15T03:17:36+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sat Nov 14 9:11 PM ET",
+  "gen": "Sat Nov 14 10:15 PM ET",
   "odds_at": "2026-11-15T02:13:56+00:00",
   "backfill": "1312/1312"
  },
@@ -1955,6 +1955,16 @@
   {
    "at": "2026-11-15T02:22:02+00:00",
    "what": "cfb,cbb",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-15T03:17:36+00:00",
+   "what": "nba,nhl",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
