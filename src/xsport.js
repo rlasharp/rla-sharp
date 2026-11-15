@@ -236,3 +236,30 @@ function xCalK(sp){try{const K=typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRA
   const E=(K.sc-K.imp)/K.n,R=(K.hit-K.imp)/K.n;if(E<=.005)return 1;const ratio=Math.max(.25,Math.min(1.25,R/E));return Math.round((1+(ratio-1)*K.n/(K.n+80))*1000)/1000}catch(e){return 1}}
 function xCalNote(sp){const K=typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].calk;if(!K||!K.n)return "";const k=xCalK(sp),p=x=>Math.round(x/K.n*100)+"%";
   return K.n<25?`${K.n} graded props so far — the model starts adjusting itself at 25.`:`Our best props: we said <b>${p(K.sc)}</b>, the prices said <b>${p(K.imp)}</b>, they hit <b>${p(K.hit)}</b> (${K.n} props). ${k<.98?`So "our chance" now moves <b>${Math.round((1-k)*100)}% less</b> away from the book's price.`:k>1.02?`So "our chance" now trusts the hit rates <b>${Math.round((k-1)*100)}% more</b>.`:"No adjustment needed."}`}
+
+/* ---------- 🎟 game lines as bets: moneyline, spread, total for NBA, NHL, CFB, CBB (NFL has its own) — tap → My Bets or parlay ---------- */
+function glSpec(sp,date,gid,away,home,mk,team,side,line,odds,book){return {k:"gl",sp,date,game:String(gid),away,home,market:mk,team:team||null,side:side||null,line:line==null?null:line,odds:odds==null?null:odds,book:book||null}}
+function glNm(sp,t){return sp==="cfb"||sp==="cbb"?(typeof coT!=="undefined"?coT(sp,t).a:t):t}
+function glBtns(sp,g){try{const L=[],sg=x=>x>0?"+"+x:x<0?"−"+Math.abs(x):"PK",od=o=>o==null?"":` <b>${typeof oddsFmt!=="undefined"?oddsFmt(o):o}</b>`;let d,id,a,h,ml,sp_,spx,tot,ox,bk;
+  if(sp==="nba"){const X=typeof nbaL!=="undefined"&&nbaL(g);if(!X||(typeof nbaStarted!=="undefined"&&nbaStarted(g)))return "";d=g.d||NBA_SLATE_DATE;id=g.id;a=g.a;h=g.h;ml=[X.mla,X.mlh];sp_=X.sp;spx=[null,X.spx];tot=X.tot;ox=[X.ox,X.ux]}
+  else if(sp==="nhl"){if(g.as!=null&&g.st&&["OFF","FINAL","LIVE","CRIT"].includes(g.st))return "";d=g.d;id=g.id;a=g.a;h=g.h;ml=g.ml?[g.ml[0],g.ml[1]]:null;sp_=g.pl?g.pl[0]:null;spx=g.pl?[g.pl[1],g.pl[2]]:null;tot=g.tot?g.tot[0]:null;ox=g.tot?[g.tot[1],g.tot[2]]:null;bk=(g.ml||g.tot||g.pl||[])[3]}
+  else{if(g.st!=="pre")return "";const X=coLine(sp,g);d=coDay(g.t);id=g.id;a=g.a[0];h=g.h[0];ml=X.ml;sp_=X.sp;spx=X.spx;tot=X.tot;ox=X.ox;bk=X.src}
+  const an=glNm(sp,a),hn=glNm(sp,h);
+  if(ml&&ml[0]!=null)L.push([`${an} win${od(ml[0])}`,glSpec(sp,d,id,a,h,"ml",a,null,null,ml[0],bk)]);if(ml&&ml[1]!=null)L.push([`${hn} win${od(ml[1])}`,glSpec(sp,d,id,a,h,"ml",h,null,null,ml[1],bk)]);
+  if(sp_!=null){L.push([`${an} ${sg(-sp_)}${od(spx&&spx[0])}`,glSpec(sp,d,id,a,h,"spread",a,null,-sp_,spx&&spx[0],bk)]);L.push([`${hn} ${sg(sp_)}${od(spx&&spx[1])}`,glSpec(sp,d,id,a,h,"spread",h,null,sp_,spx&&spx[1],bk)])}
+  if(tot!=null){L.push([`Over ${tot}${od(ox&&ox[0])}`,glSpec(sp,d,id,a,h,"total",null,"over",tot,ox&&ox[0],bk)]);L.push([`Under ${tot}${od(ox&&ox[1])}`,glSpec(sp,d,id,a,h,"total",null,"under",tot,ox&&ox[1],bk)])}
+  if(!L.length||typeof actBtn==="undefined")return "";
+  return `<div class="glrow"><div class="small" style="margin:8px 0 4px">🎟 Tap a line to track it or add it to a parlay${sp==="nhl"?" (spread = puck line)":""}</div><div class="obrow" style="flex-wrap:wrap;gap:6px">${L.map(([l,s])=>actBtn(s,l)).join("")}</div></div>`}catch(e){return ""}}
+function glScore(b){try{const sp=b.sp;
+  if(sp==="nba"){const r=(typeof NBA_RES!=="undefined"?NBA_RES:[]).find(r=>r[1]===b.date&&r[2]===b.away&&r[3]===b.home);if(r)return [r[4],r[5]]}
+  if(sp==="nhl"){const r=(typeof NHL_RES!=="undefined"&&NHL_RES||[]).find(z=>z[0]===b.date&&z[1]===b.away&&z[3]===b.home);if(r)return [r[2],r[4]]}
+  if(sp==="cfb"||sp==="cbb"){if(typeof coOk==="undefined"||!coOk(sp))return null;const g=coGame(sp,b.game);if(g&&g.st==="post")return [+g.a[3],+g.h[3]];const r=((coV(sp,"RES")||{})[b.home]||[]).find(r=>String(r[6])===String(b.game));return r?[r[5],r[4]]:null}
+  if((sp==="nba"||sp==="nhl")&&typeof finScore!=="undefined")return finScore(sp,b.date,b.away,b.home)}catch(e){}return null}
+function glGrade(b){const S=glScore(b);if(!S)return {r:"pending"};const [as,hs]=S,w=`Final: ${glNm(b.sp,b.away)} ${as}, ${glNm(b.sp,b.home)} ${hs}`;
+  if(b.market==="ml"){const win=as>hs?b.away:hs>as?b.home:null;return {r:win===null?"push":win===b.team?"win":"loss",why:w}}
+  if(b.market==="spread"){const me=b.team===b.away?as:hs,op=b.team===b.away?hs:as,m=me-op+b.line;return {r:m>0?"win":m<0?"loss":"push",why:w}}
+  const t=as+hs;return {r:t===b.line?"push":((b.side==="over")===(t>b.line))?"win":"loss",why:w}}
+function glTitle(b){const em={nba:"🏀",nhl:"🏒",cfb:"🏈",cbb:"🏀"}[b.sp]||"",t=glNm(b.sp,b.team);return `${em} ${b.market==="ml"?t+" moneyline":b.market==="spread"?`${t} ${b.line>0?"+":""}${b.line}${b.sp==="nhl"?" puck line":""}`:`${glNm(b.sp,b.away)} @ ${glNm(b.sp,b.home)} ${b.side==="over"?"Over":"Under"} ${b.line}`}`}
+/* our chance for a college line (for the parlay estimate); NBA / NHL lines have no per-line chance yet */
+function glHit(b){try{if(b.sp!=="cfb"&&b.sp!=="cbb")return null;const g=coGame(b.sp,b.game),M=g&&coModel(b.sp,g);if(!M)return null;const sd=CO[b.sp].sd;
+  if(b.market==="ml")return b.team===b.home?M.p:1-M.p;if(b.market==="spread"){const hm=b.team===b.home?M.m+b.line:-M.m+b.line;return coNcdf(hm/sd)}return null}catch(e){return null}}

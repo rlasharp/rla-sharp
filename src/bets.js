@@ -9,6 +9,7 @@ function betStakeDefault(){return LS.get("betStake",10)}
 function betTitle(b){
   if(b.k==="soc")return b.title||"Soccer bet";
   if(b.k==="ufc")return `🥊 ${b.label||"UFC bet"}`;
+  if(b.k==="gl")return typeof glTitle!=="undefined"?glTitle(b):"Game line";
   if(b.k==="fut")return `🏆 ${b.label||"Futures bet"}`;
   if(b.k==="col"||b.k==="colg")return `${b.sp==="cbb"?"🏀":"🏈"} ${b.label||"College bet"}`;
   if(b.k==="nbaprop"&&(b.market==="dd"||b.market==="td"))return `${b.player} ${b.market==="dd"?"double-double":"triple-double"}`;
@@ -26,6 +27,7 @@ function betMatchup(b){if(b.k==="nhlprop")return `NHL · ${b.team} ${b.home?"vs"
   if(b.k==="fut")return `${String(b.lg||"").toUpperCase()} futures · placed ${b.date||""}`;
   if(b.k==="col"||b.k==="colg")return `${String(b.sp||"").toUpperCase()} · ${b.date||""}`;
   if(b.k==="ufc")return "UFC";
+  if(b.k==="gl")return `${String(b.sp||"").toUpperCase()} · ${typeof glNm!=="undefined"?glNm(b.sp,b.away):b.away} @ ${typeof glNm!=="undefined"?glNm(b.sp,b.home):b.home} · ${b.date||""}`;
   if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
   const g=SLATE.find(x=>x.id===b.game);return `${short(b.away)} @ ${short(b.home)}${g?" · "+g.when:""}`}
 const betDec=a=>a>0?1+a/100:1+100/(-a);
@@ -34,6 +36,7 @@ function gradeBet(b){const g=gradeBetCore(b);if(g.r!=="pending"||b.k==="parlay"|
 function gradeBetCore(b){
   if(b.k==="soc")return typeof socGrade!=="undefined"?socGrade(b):{r:"pending"};
   if(b.k==="ufc")return typeof ufGrade!=="undefined"?ufGrade(b):{r:"pending"};
+  if(b.k==="gl")return typeof glGrade!=="undefined"?glGrade(b):{r:"pending"};
   if(b.k==="col"||b.k==="colg")return typeof coGrade!=="undefined"?coGrade(b):{r:"pending"};
   if(b.k==="fut")return b.res?{r:b.res,why:"Marked by you"}:{r:"pending",why:"Settles when the season decides it — mark it Won or Lost then"};
   if(b.k==="nhlprop"){if(typeof NH_MK==="undefined")return {r:"pending"};const m=NH_MK[b.market],w=nhWho(b.player);
@@ -91,7 +94,7 @@ function specFromPlay(pl){if(pl.type==="prop")return specProp(pl.player,pl.marke
 
 function viewBets(){
   /* open college bets: load that sport's games and keep their scores live while this page is open */
-  if(typeof coEnsure!=="undefined")for(const sp of ["cfb","cbb"])if(betsLoad().some(b=>(b.k==="col"||b.k==="colg")&&b.sp===sp)){if(!coOk(sp))coEnsure(sp,()=>{if(coOk(sp)&&(location.hash||"").slice(1)==="bets")viewBets()});coLiveStart(sp)}
+  if(typeof coEnsure!=="undefined")for(const sp of ["cfb","cbb"])if(betsLoad().some(b=>((b.k==="col"||b.k==="colg"||b.k==="gl")&&b.sp===sp)||(b.k==="parlay"&&(b.legs||[]).some(l=>l.sp===sp)))){if(!coOk(sp))coEnsure(sp,()=>{if(coOk(sp)&&(location.hash||"").slice(1)==="bets")viewBets()});coLiveStart(sp)}
   const a=betsLoad(),el=$("#v-bets");const gs=a.map(b=>({b,g:gradeBet(b)}));
   const set=gs.filter(x=>x.g.r!=="pending"),pend=gs.filter(x=>x.g.r==="pending");
   const W=set.filter(x=>x.g.r==="win").length,Lo=set.filter(x=>x.g.r==="loss").length,P=set.filter(x=>x.g.r==="push"||x.g.r==="void").length;

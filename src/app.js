@@ -279,6 +279,7 @@ function actBtn(spec,label,cls){if(!spec)return "";return `<button class="obtn $
 function nbaOddsBtns(nm,k){const o=nbaSpec(nm,k,"over"),u=nbaSpec(nm,k,"under");if(!o)return "";
   return `<div class="obrow">${o.odds!=null?actBtn(o,`Over ${o.line} <b>${oddsFmt(o.odds)}</b>`,"ov"):""}${u.odds!=null?actBtn(u,`Under ${u.line} <b>${oddsFmt(u.odds)}</b>`,"un"):""}${snapBtn("nba",nm,k)}</div>`}
 function legHit(s){try{
+  if(s.k==="gl")return typeof glHit!=="undefined"?glHit(s):null;
   if(s.k==="nhlprop"){const sc=typeof nhScore!=="undefined"&&nhScore(s.player,s.market,s.line,s.side==="over"?"o":"u");return sc?sc.p:null}
   if(s.k==="nbaprop"){const e=nbaEval(s.player,s.market,s.line,s.side==="over"?"o":"u",s.odds,s.book,s.opp);return e?e.sc:null}
   if(s.k==="prop"&&typeof nflEval!=="undefined"){const e=nflEval(s.player,s.market,s.side==="over"?"o":"u");return e?e.sc:null}}catch(e){}return null}
