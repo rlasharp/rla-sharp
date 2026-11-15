@@ -141,14 +141,15 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
      for(const S of Object.values(T))for(const x of S.plays||[]){const B=s.by[x.mk]||(s.by[x.mk]=[0,0,0]);if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds);B[0]++;B[2]+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1;B[1]++;B[2]-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d:S.d,...x})}
      s.plays.u=Math.round(s.plays.u*100)/100;for(const B of Object.values(s.by))B[2]=Math.round(B[2]*100)/100;s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,60);return {T,s,log}},[R.T.ufc||{},lo]);
    if(U){R.T.ufc=U.T;R.SUM.ufc=U.s;R.log.push(...U.log)}}}catch(e){console.error("ufc track:",e.message)}
- /* 🏈🏀 College: lock the 3 best props per sport per day (within 6 h of that day's first game), grade from the box scores */
+ /* 🏈🏀 College: lock our 3 biggest game leans per sport per day (within 6 h of that day's first game), grade from the box scores */
  for(const CS of ["cfb","cbb"]){try{let src=null;for(const fn of [path.join(dir,CS+'_data.js'),path.join(dir,'..',CS+'_data.js')])if(fs.existsSync(fn)){src=fs.readFileSync(fn,'utf8');break}
   if(!src||!/_OK=1/.test(src))continue;const lof=path.join(dir,'..','data','live_odds.json');const lo=fs.existsSync(lof)?JSON.parse(fs.readFileSync(lof,'utf8')):null;
   await p.addScriptTag({content:src});
-  const U=await p.evaluate(([CS,T,lo])=>{if(typeof coBest==="undefined")return null;if(lo&&typeof LO!=="undefined")LO.data=lo;const log=[],pay=o=>o>0?o/100:100/-o,r3=x=>Math.round(x*1000)/1000;
+  const U=await p.evaluate(([CS,T,lo])=>{if(typeof coLeans==="undefined")return null;if(lo&&typeof LO!=="undefined")LO.data=lo;const log=[],pay=o=>o>0?o/100:100/-o,r3=x=>Math.round(x*1000)/1000;
+    for(const S of Object.values(T)){if(S.plays&&S.plays.some(x=>x.k!=="colg")){S.plays=S.plays.filter(x=>x.k==="colg");if(!S.plays.length){delete S.plays;delete S.locked}}}   /* old prop picks (props were dropped for college) */
     const byDay={};for(const g of coGames(CS))if(g.st==="pre")(byDay[coDay(g.t)]=byDay[coDay(g.t)]||[]).push(g);
     for(const [d,G] of Object.entries(byDay)){const S=T[d]||(T[d]={});if(S.locked)continue;const first=Math.min(...G.map(g=>Date.parse(g.t)));if(first-Date.now()>6*3600e3)continue;
-      const ids=new Set(G.map(g=>String(g.id))),seen=new Set(),P=[];for(const x of coBest(CS)){if(P.length>=3)break;if(!ids.has(String(x.g.id))||seen.has(x.aid))continue;seen.add(x.aid);const sp=coSpec(x);P.push(Object.assign(sp,{title:sp.label,mk:"Player prop",ch:r3(x.ch),need:r3(x.need)}))}
+      const P=G.flatMap(g=>coLeans(CS,g).map(x=>({g,x}))).sort((a,b)=>b.x.edge-a.x.edge).slice(0,3).map(({g,x})=>{const sp=coSpecG(CS,g,x);return Object.assign(sp,{title:sp.label,mk:x.k,edge:Math.round(x.edge*10)/10})});
       if(P.length){S.plays=P;S.locked=1;log.push(`${CS} ${d}: locked ${P.length} picks`)}}
     for(const S of Object.values(T))for(const x of S.plays||[])if(!x.r||x.r==="pending"){const g=coGrade(x);if(g&&g.r&&g.r!=="pending"){x.r=g.r;x.v=g.why||""}}
     const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}

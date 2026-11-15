@@ -13,7 +13,7 @@ function recAll(){
     rows.push({sport:"Soccer",when:x0.d,sort:x0.d,date:x0.d,label:x0.title||"",type:x0.type==="prop"?"Player prop":({ml:"Match result",tot:"Goals over/under",btts:"Both teams to score",cor:"Corners"}[x0.kind]||"Soccer"),st,u:st==="win"?pay:st==="loss"?-1:0,odds:x0.odds,v:null,lv:g?1:0,cl:null})}}
   for(const CS of ["cfb","cbb"])if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[CS]){for(const x0 of TRACK.sum[CS].recent||[]){const g=(!x0.r||x0.r==="pending")&&typeof coGrade!=="undefined"&&coOk(CS)?coGrade(x0):null,r=g&&g.r!=="pending"?g.r:x0.r;
     const st=r==="win"?"win":r==="loss"?"loss":r==="push"?"push":r==="void"?"void":"pending",pay=x0.odds>0?x0.odds/100:100/-x0.odds;
-    rows.push({sport:CS.toUpperCase(),when:x0.d,sort:x0.d,date:x0.d,label:x0.title||"",type:"Player prop",st,u:st==="win"?pay:st==="loss"?-1:0,odds:x0.odds,v:g&&g.why||x0.v||null,lv:g?1:0,cl:null})}}
+    rows.push({sport:CS.toUpperCase(),when:x0.d,sort:x0.d,date:x0.d,label:x0.title||"",type:x0.mk||"Game",st,u:st==="win"?pay:st==="loss"?-1:0,odds:x0.odds,v:g&&g.why||x0.v||null,lv:g?1:0,cl:null})}}
   if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.ufc){for(const x0 of TRACK.sum.ufc.recent||[]){const g=(!x0.r||x0.r==="pending")&&typeof ufGrade!=="undefined"&&window.UFC_OK?ufGrade({fid:x0.fid,p:x0.p}):null,r=g&&g.r!=="pending"?g.r:x0.r;
     const st=r==="win"?"win":r==="loss"?"loss":r==="push"?"push":r==="void"?"void":"pending",pay=x0.odds>0?x0.odds/100:100/-x0.odds;
     rows.push({sport:"UFC",when:x0.d,sort:x0.d,date:x0.d,label:x0.title||"",type:x0.mk||"UFC",st,u:st==="win"?pay:st==="loss"?-1:0,odds:x0.odds,v:g&&g.why||x0.v||null,lv:g?1:0,cl:null})}}

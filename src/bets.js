@@ -10,7 +10,7 @@ function betTitle(b){
   if(b.k==="soc")return b.title||"Soccer bet";
   if(b.k==="ufc")return `🥊 ${b.label||"UFC bet"}`;
   if(b.k==="fut")return `🏆 ${b.label||"Futures bet"}`;
-  if(b.k==="col")return `${b.sp==="cbb"?"🏀":"🏈"} ${b.label||"College bet"}`;
+  if(b.k==="col"||b.k==="colg")return `${b.sp==="cbb"?"🏀":"🏈"} ${b.label||"College bet"}`;
   if(b.k==="nbaprop"&&(b.market==="dd"||b.market==="td"))return `${b.player} ${b.market==="dd"?"double-double":"triple-double"}`;
   if(b.k==="nbaprop"){const m=typeof NBA_MK!=="undefined"&&NBA_MK[b.market];return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1]:b.market}`}
   if(b.k==="nhlprop"){const m=typeof NH_MK!=="undefined"&&NH_MK[b.market];if(b.market==="hanyG")return `${b.player} anytime goal`;return `${b.player} ${b.side==="over"?"Over":"Under"} ${b.line} ${m?m[1].toLowerCase():b.market}`}
@@ -24,7 +24,7 @@ function betMatchup(b){if(b.k==="nhlprop")return `NHL · ${b.team} ${b.home?"vs"
   if(b.k==="nbaprop")return `NBA · ${b.team} ${b.home?"vs":"@"} ${b.opp} · ${typeof nbaDayS!=="undefined"?nbaDayS(b.date):b.date}`;
   if(b.k==="parlay")return b.legs.map(l=>betTitle(l)).join(" + ");
   if(b.k==="fut")return `${String(b.lg||"").toUpperCase()} futures · placed ${b.date||""}`;
-  if(b.k==="col")return `${String(b.sp||"").toUpperCase()} · ${b.team||""} · ${b.date||""}`;
+  if(b.k==="col"||b.k==="colg")return `${String(b.sp||"").toUpperCase()} · ${b.date||""}`;
   if(b.k==="ufc")return "UFC";
   if(b.k==="prop"){const o=b.team&&oppOf(b.team);return o?`${short(b.team)} ${o.home?"vs":"at"} ${short(o.opp)} · ${o.g.when}`:short(b.team||"")}
   const g=SLATE.find(x=>x.id===b.game);return `${short(b.away)} @ ${short(b.home)}${g?" · "+g.when:""}`}
@@ -34,7 +34,7 @@ function gradeBet(b){const g=gradeBetCore(b);if(g.r!=="pending"||b.k==="parlay"|
 function gradeBetCore(b){
   if(b.k==="soc")return typeof socGrade!=="undefined"?socGrade(b):{r:"pending"};
   if(b.k==="ufc")return typeof ufGrade!=="undefined"?ufGrade(b):{r:"pending"};
-  if(b.k==="col")return typeof coGrade!=="undefined"?coGrade(b):{r:"pending"};
+  if(b.k==="col"||b.k==="colg")return typeof coGrade!=="undefined"?coGrade(b):{r:"pending"};
   if(b.k==="fut")return b.res?{r:b.res,why:"Marked by you"}:{r:"pending",why:"Settles when the season decides it — mark it Won or Lost then"};
   if(b.k==="nhlprop"){if(typeof NH_MK==="undefined")return {r:"pending"};const m=NH_MK[b.market],w=nhWho(b.player);
     const fin=(NHL_RES||[]).some(z=>z[0]===b.date&&(z[1]===b.team||z[3]===b.team));
@@ -97,7 +97,7 @@ function viewBets(){
   const money=v=>(v<0?"−$":"$")+Math.abs(v).toFixed(2);
   const row=({b,g})=>{const c=RES_COL[g.r];const pr=betProfit(b,g);
     return `<div class="card betrow"><div class="row" style="gap:8px;align-items:center;flex-wrap:wrap">
-      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="nhlprop"||b.k==="parlay"||b.k==="fut"||b.k==="ufc"||b.k==="col"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
+      <span class="ptag" style="background:${c}22;color:${c}">${RES_TXT[g.r]}</span><span class="small">${b.k==="nbaprop"||b.k==="nhlprop"||b.k==="parlay"||b.k==="fut"||b.k==="ufc"||b.k==="col"||b.k==="colg"?"":"Week "+b.wk+" · "}${esc(betMatchup(b))}</span></div>
      <h3 style="margin:8px 0 2px">${esc(betTitle(b))}</h3>
      <div data-clv="${b.id}" style="margin-top:4px"></div>
      <div class="small">Odds ${amTxt(b.odds)}${b.est?" (assumed — exact price not published)":""}${b.book?" · "+esc(b.book):""}${g.why?` · <b style="color:${c}">${esc(g.why)}</b>`:""}</div>

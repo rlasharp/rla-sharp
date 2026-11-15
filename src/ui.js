@@ -711,7 +711,7 @@ function route(){
     document.getElementById("banner").innerHTML="";ufcRoute(h);window.scrollTo(0,0);return}
   for(const CS of ["cfb","cbb"])if(h.startsWith(CS)&&typeof coRoute!=="undefined"){LS.set("sport",CS);["nav","nbaNav","nhlNav","socNav","ufcNav","cfbNav","cbbNav"].forEach(i=>{const n=document.getElementById(i);if(n)n.hidden=i!==CS+"Nav"});
     document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s===CS));document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+CS));
-    const nv=/-(props|best|rank)$/.test(h)?h:CS;document.querySelectorAll("#"+CS+"Nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
+    const nv=/-(picks|props|best)$/.test(h)?CS+"-picks":/-rank$/.test(h)?h:CS;document.querySelectorAll("#"+CS+"Nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===nv));
     document.getElementById("banner").innerHTML="";coRoute(CS,h);window.scrollTo(0,0);return}
   const isCo=SHARED.includes(h)&&["cfb","cbb"].includes(LS.get("sport"));["cfbNav","cbbNav"].forEach(i=>{const n=document.getElementById(i);if(n)n.hidden=!(isCo&&i===LS.get("sport")+"Nav")});
   const isUfc=SHARED.includes(h)&&LS.get("sport")==="ufc";{const uN=document.getElementById("ufcNav");if(uN)uN.hidden=!isUfc}
