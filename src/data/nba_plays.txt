@@ -34,3 +34,6 @@
 2026-11-14|Rudy Gobert|pts|u|10.5|-115|BetRivers|MIN|CHI
 2026-11-14|Cade Cunningham|ast|u|8.5|125|BetMGM|DET|MIA
 2026-11-14|DeMar DeRozan|ra|o|4.5|104|FanDuel|DEN|NO
+2026-11-15|Reed Sheppard|reb|u|3.5|100|FanDuel|HOU|WSH
+2026-11-15|Isaiah Hartenstein|reb|o|10.5|104|FanDuel|OKC|SAC
+2026-11-15|Quentin Grimes|pa|u|14.5|-102|FanDuel|LAL|PHX
