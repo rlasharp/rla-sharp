@@ -778,10 +778,12 @@ function nbaPlaysCard(){
   <div class="small" style="margin-top:8px">Picked automatically from real posted lines: 7+ of last 10, a winning record this season, a clear edge over what the odds need, no injury tag, odds no worse than −200. Leans, not guarantees — bet small.</div></div>`;
 }
 function nbaPropTabs(on){return `<div class="seg ptabs"><a class="${on==="best"?"on":""}" href="#nba-best">🔥 Best tonight</a><a class="${on==="all"?"on":""}" href="#nba-props">All props</a></div>`}
-function nbaBestFilter(L){const f=NB.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.min||b.sc>=f.min/100)&&nbaHotOk(b,f.hot))}
+function nbaBestFilter(L){const f=NB.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.min||b.sc>=f.min/100)&&nbaHotOk(b,f.hot)&&mkOk(b.dvOk,f.mu))}
 /* hot streak: hit this side in X of his last 5 / 10 */
 /* shared by NBA / NFL / NHL best-props filters: b.c3 / c5 / c10 = [hits, games] */
 const HOT_OPTS=[["3/3","🔥 Hit 3 of last 3"],["4/5","🔥 Hit 4+ of last 5"],["5/5","🔥 Hit 5 of last 5"],["7/10","🔥 Hit 7+ of last 10"],["8/10","🔥 Hit 8+ of last 10"],["10/10","🔥 Hit 10 of last 10"],["c0/3","🧊 Missed last 3"],["c1/5","🧊 Hit 1 or 0 of last 5"]];
+/* matchup filter (NBA / NFL / NHL best props): "help" = only where the opponent gives up a lot of this stat to his position, "nt" = drop tough matchups */
+function mkOk(dv,f){return !f||(f==="help"?dv===1:dv!==-1)}
 function hotOk(b,h){if(!h)return true;const cold=h[0]==="c",[n,of]=h.replace("c","").split('/').map(Number),c=b["c"+of];if(!c||c[1]<of)return false;return cold?c[0]<=n:c[0]>=n}
 function hotSelect(attr,cur){return `<select ${attr}><option value="">Any streak</option>${HOT_OPTS.map(([v,n])=>`<option value="${v}"${cur===v?" selected":""}>${n}</option>`).join("")}</select>`}
 function nbaHotOk(b,h){return hotOk(b,h)}
@@ -790,7 +792,7 @@ function nbaBestFilterUI(L0){const f=NB.bf||(NB.bf={});const games=NBA_SLATE.fil
    <select data-bf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${NBA_MK[m][1]}</option>`).join("")}</select>
    <select data-bf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
    <select data-bf="min"><option value="">Any chance</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ our chance</option>`).join("")}</select>
-   ${hotSelect('data-bf="hot"',f.hot)}${typeof xResetChip!=="undefined"?xResetChip("nba"):""}</div>`}
+   <select data-bf="mu"><option value="">Any matchup</option><option value="help"${f.mu==="help"?" selected":""}>Matchup helps</option><option value="nt"${f.mu==="nt"?" selected":""}>Skip tough matchups</option></select>${hotSelect('data-bf="hot"',f.hot)}${typeof xResetChip!=="undefined"?xResetChip("nba"):""}</div>`}
 function nbaBestPage(el){
   const L0=nbaBest(),L=nbaBestFilter(L0);
   el.innerHTML=`<h1>NBA Best Props · ${nbaDayS(NBA_SLATE_DATE)}</h1>${nbaPropTabs("best")}

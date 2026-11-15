@@ -424,16 +424,16 @@ function nflBestRow(b,i){const td=b.k==="anyTD";
     odds:b.odds!=null?amTxt(b.odds):"odds not listed",book:b.book?esc(b.book):"",l10:b.c10&&b.c10[1]?b.c10:b.c5,
     hits:[[b.cS[0],b.cS[1],"this season"],b.cH[1]&&[b.cH[0],b.cH[1],"vs "+b.opp]],why:b.dvOk===1?"matchup helps":b.dvOk===-1?"tough matchup":"",
     chance:Math.round(b.sc*100),need:Math.round(b.be*100)})}
-let NFL_BF={g:"",m:"",s:"",pos:"",min:"",hot:""};
+let NFL_BF={g:"",m:"",s:"",pos:"",min:"",hot:"",mu:""};
 function nflTopHtml(){
-  const L0=nflBest(),f=NFL_BF,L=L0.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||b.pl.pos===f.pos)&&(!f.min||b.sc>=f.min/100)&&(typeof hotOk==="undefined"||hotOk(b,f.hot)));
+  const L0=nflBest(),f=NFL_BF,L=L0.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||b.pl.pos===f.pos)&&(!f.min||b.sc>=f.min/100)&&(typeof hotOk==="undefined"||hotOk(b,f.hot))&&(typeof mkOk==="undefined"||mkOk(b.dvOk,f.mu)));
   const games=[...new Map(L0.map(b=>[b.g.id,b.g])).values()],mks=[...new Set(L0.map(b=>b.k))];
   const fil=`<div class="bfil"><select data-nbf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${g.away} @ ${g.home}</option>`).join("")}</select>
    <select data-nbf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${MARKETS[m].n}</option>`).join("")}</select>
    <select data-nbf="pos"><option value="">All positions</option>${["QB","RB","WR","TE"].map(p=>`<option${f.pos===p?" selected":""}>${p}</option>`).join("")}</select>
    <select data-nbf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
    <select data-nbf="min"><option value="">Any chance</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ our chance</option>`).join("")}</select>
-   ${typeof hotSelect!=="undefined"?hotSelect('data-nbf="hot"',f.hot):""}${typeof xResetChip!=="undefined"?xResetChip("nfl"):""}</div>`;
+   <select data-nbf="mu"><option value="">Any matchup</option><option value="help"${f.mu==="help"?" selected":""}>Matchup helps</option><option value="nt"${f.mu==="nt"?" selected":""}>Skip tough matchups</option></select>${typeof hotSelect!=="undefined"?hotSelect('data-nbf="hot"',f.hot):""}${typeof xResetChip!=="undefined"?xResetChip("nfl"):""}</div>`;
   const closed=SLATE.filter(g=>!g.final&&nflStarted(g)).length;
   return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props this week</h2>${closed?`<div class="small" style="margin-bottom:4px">🔒 ${closed} game${closed>1?"s have":" has"} kicked off — those props are hidden.</div>`:""}
    <div class="small" style="margin-bottom:8px">Every real book line we found, over and under, ranked by how often it would have hit (last 5 games 45%, ${CUR} season 35%, vs this opponent 20%, ±5 for the defense's rank vs his position) compared with what the odds need. Where a book's price isn't listed we compare to the standard −110 break-even (52%). Tap one for his full page.</div>

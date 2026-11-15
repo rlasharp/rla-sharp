@@ -56,19 +56,25 @@ function nhBest(){const out=[];for(const r of nhPropRows()){const [nm,k,line,o,u
     const fair=o!=null&&u!=null?(side==="o"?nhImp(o)/(nhImp(o)+nhImp(u)):nhImp(u)/(nhImp(o)+nhImp(u))):imp/1.045,nEff=Math.min(25,s.n10+.5*s.ns),w=.4*nEff/(nEff+10),p0=Math.max(.03,Math.min(.9,fair+w*(s.p-fair))),cm=typeof xCalM!=="undefined"?xCalM("nhl",side,k):1;
     const sc=Object.assign({},s,{raw:s.p,fair,p0,cm,p:Math.max(.03,Math.min(.9,fair+cm*(p0-fair)))});if(sc.p-imp>0)out.push({nm,k,line,side,odds,s:sc,edge:sc.p-imp,g})}}
   return out.sort((a,b)=>b.edge-a.edge)}
-function nhBestFilter(L){const f=NH.bf||{};return L.filter(b=>(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||(f.pos==="G"?!!NHL_G[b.nm]:f.pos==="D"?(NHL_P[b.nm]||{}).pos==="D":NHL_P[b.nm]&&NHL_P[b.nm].pos!=="D"))&&(!f.min||b.s.p>=f.min/100)&&(typeof hotOk==="undefined"||hotOk({c3:b.s.c3,c5:b.s.c5,c10:b.s.c10},f.hot)))}
+/* matchup for an NHL prop: skaters — how many goals / shots the opponent allows (rank 23-32 of 32 = gives up a lot → helps the over);
+   goalie saves — how many shots the opponent takes (top 10 → helps the over). 1 helps this side, -1 tough, 0 neutral */
+function nhDv(b){try{const tm=nhWho(b.nm).tm,opp=b.g.a===tm?b.g.h:b.g.a,O=NHL_TEAM[opp];if(!O||!O.far)return 0;let r;
+  if(b.k==="hsaves"){r=O.far.sog&&O.far.sog[0];if(!r)return 0;r=33-r}else{const c=b.k==="hsog"?"sog":["hgoals","hpts","hast","hanyG","hppp"].includes(b.k)?"g":null;if(!c)return 0;r=O.far[c]&&O.far[c][1];if(!r)return 0}
+  const over=r>=23?1:r<=10?-1:0;return b.side==="u"?-over:over}catch(e){return 0}}
+function nhBestFilter(L){const f=NH.bf||{};return L.filter(b=>(typeof mkOk==="undefined"||mkOk(nhDv(b),f.mu))&&(!f.g||String(b.g.id)===f.g)&&(!f.m||b.k===f.m)&&(!f.s||b.side===f.s)&&(!f.pos||(f.pos==="G"?!!NHL_G[b.nm]:f.pos==="D"?(NHL_P[b.nm]||{}).pos==="D":NHL_P[b.nm]&&NHL_P[b.nm].pos!=="D"))&&(!f.min||b.s.p>=f.min/100)&&(typeof hotOk==="undefined"||hotOk({c3:b.s.c3,c5:b.s.c5,c10:b.s.c10},f.hot)))}
 function nhBestFilterUI(L0){const f=NH.bf||(NH.bf={}),games=[...new Map(L0.map(b=>[b.g.id,b.g])).values()],mks=[...new Set(L0.map(b=>b.k))];
   return `<div class="bfil"><select data-nhbf="g"><option value="">All games</option>${games.map(g=>`<option value="${g.id}"${f.g==String(g.id)?" selected":""}>${nhE(g.a)} @ ${nhE(g.h)}</option>`).join("")}</select>
    <select data-nhbf="m"><option value="">All markets</option>${mks.map(m=>`<option value="${m}"${f.m===m?" selected":""}>${NH_MK[m][1]}</option>`).join("")}</select>
    <select data-nhbf="pos"><option value="">All positions</option>${[["F","Forwards"],["D","Defensemen"],["G","Goalies"]].map(([v,n])=>`<option value="${v}"${f.pos===v?" selected":""}>${n}</option>`).join("")}</select>
    <select data-nhbf="s"><option value="">Overs & unders</option><option value="o"${f.s==="o"?" selected":""}>Overs only</option><option value="u"${f.s==="u"?" selected":""}>Unders only</option></select>
+   <select data-nhbf="mu"><option value="">Any matchup</option><option value="help"${f.mu==="help"?" selected":""}>Matchup helps</option><option value="nt"${f.mu==="nt"?" selected":""}>Skip tough matchups</option></select>
    <select data-nhbf="min"><option value="">Any chance</option>${[60,70,80].map(v=>`<option value="${v}"${f.min==v?" selected":""}>${v}%+ our chance</option>`).join("")}</select>
    ${typeof hotSelect!=="undefined"?hotSelect('data-nhbf="hot"',f.hot):""}${typeof xResetChip!=="undefined"?xResetChip("nhl"):""}</div>`}
 function nhBestRow(b,i){const m=NH_MK[b.k],tm=nhWho(b.nm).tm;
   return xPropRow({i:typeof i==="number"?i:null,href:`#nhl-player-${encodeURIComponent(b.nm)}~${b.k}`,badge:nhBadge(tm),name:nhE(b.nm),sub:b.g?`${b.g.a===tm?"@":"vs"} ${nhE(b.g.a===tm?b.g.h:b.g.a)}`:"",
     chips:(typeof nhInjChip!=="undefined"?nhInjChip(b.nm):"")+(typeof xfLineChip!=="undefined"?xfLineChip(b.nm):"")+(b.s.c5&&b.s.c5[1]>=5&&b.s.c5[0]>=4?` <span class="bfire">🔥 ${b.s.c5[0]}/${b.s.c5[1]}</span>`:"")+(typeof xaChips!=="undefined"?xaChips("nhl",b.nm,b.k,b.side):""),
     pick:b.k==="hanyG"?(b.side==="o"?"Scores a goal":"No goal"):`${b.side==="o"?"Over":"Under"} ${b.line} ${m[1]}`,odds:nhOdds(b.odds),l10:[b.s.l10,b.s.n10],
-    hits:[[b.s.hs,b.s.ns,"this season"]],chance:Math.round(b.s.p*100),need:Math.round(nhImp(b.odds)*100)})}
+    hits:[[b.s.hs,b.s.ns,"this season"]],why:(()=>{const d=nhDv(b);return d===1?"matchup helps":d===-1?"tough matchup":""})(),chance:Math.round(b.s.p*100),need:Math.round(nhImp(b.odds)*100)})}
 
 /* ---------- goalies: probable starter ---------- */
 function nhGoalies(tm){return Object.entries(NHL_G).filter(([,g])=>g.tm===tm).map(([nm,g])=>({nm,...g,last:(g.g.filter(x=>x[7]&&nhCurG(x)).slice(-1)[0]||[])[0]||""}))
