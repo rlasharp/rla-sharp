@@ -104,6 +104,7 @@ log(f"{SP}: {len(TM)} teams, {len(G)} games in the window ({dates}), {sum(1 for 
 # ---------- results this season for every window team (team schedule) ----------
 wt = sorted({g["a"][0] for g in G} | {g["h"][0] for g in G})
 RES = {}
+LOCE = {}   # event id -> [city, state] of where it was played (for travel)
 def sched(tid):
     s = get(SITE + f"teams/{tid}/schedule") or {}
     out = []
@@ -115,6 +116,8 @@ def sched(tid):
         if not me or not op: continue
         sc = lambda x: num((x.get("score") or {}).get("value") if isinstance(x.get("score"), dict) else x.get("score"))
         ot = op.get("team") or {}
+        ad = (c.get("venue") or {}).get("address") or {}
+        if ad.get("city"): LOCE[e["id"]] = [ad.get("city"), ad.get("state") or ""]
         out.append([e.get("date", "")[:10], str(ot.get("id")), ot.get("abbreviation") or "", "H" if me.get("homeAway") == "home" else "A", sc(me), sc(op), e["id"], 1 if c.get("neutralSite") else 0])
     RES[tid] = out
 # every team (not just this week's): strength of schedule, rankings of team stats and leaderboards need the whole division
@@ -528,23 +531,18 @@ try:
         la1, lo1, la2, lo2 = map(math.radians, (p[0], p[1], q[0], q[1]))
         return round(3959 * 2 * math.asin(math.sqrt(math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2)))
     pre = [g for g in G if g["st"] == "pre"]
-    need_t = set()
     for g in pre:
-        for s_ in (g["a"], g["h"]):
-            R_ = [r for r in RES.get(s_[0], []) if r[0] < (g["t"] or "")[:10]]
-            if R_: need_t.add(s_[0] if R_[-1][3] == "H" else R_[-1][1])
-        need_t.add(g["h"][0])
-    with ThreadPoolExecutor(8) as ex: list(ex.map(home, sorted(need_t)))
-    for g in pre:
-        here = geo(*g["loc"]) if g.get("loc") and g["loc"][0] else geo(*home(g["h"][0]))
-        out = {}
+        if not (g.get("loc") and g["loc"][0]): continue
+        here = geo(*g["loc"]); out = {}
         for k_, s_ in (("a", g["a"]), ("h", g["h"])):
             R_ = [r for r in RES.get(s_[0], []) if r[0] < (g["t"] or "")[:10]]
-            if not R_ or R_[-1][7]: continue
-            last = home(s_[0] if R_[-1][3] == "H" else R_[-1][1]); mi = miles(geo(*last), here)
+            if not R_: continue
+            last = LOCE.get(R_[-1][6])
+            if not last: continue
+            mi = miles(geo(*last), here)
             if mi is not None: out[k_] = mi
         if out: TRV[g["id"]] = out
-    json.dump(GEO2, open(GF2, "w"), separators=(",", ":")); json.dump(VEN, open(VF, "w"), separators=(",", ":"))
+    json.dump(GEO2, open(GF2, "w"), separators=(",", ":"))
     log(f"{SP}: travel for {len(TRV)} games")
 except Exception as e: log("travel:", e)
 # focus list for the odds job: ranked teams first, then power conferences, then the rest; soonest first within each
