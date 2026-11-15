@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 00:29Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 01:19Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hunter Long|TE|Questionable|Knee|Nov 15
@@ -24,8 +24,8 @@ Adam Randall|RB|IR|Neck|Nov 16
 Jaylinn Hawkins|S|Out|Knee|Nov 22
 Lamar Jackson|QB|IR|Thumb|Dec 27
 #BUF
-Tyrell Shavers|WR|Out|Knee - ACL|Nov 22
 Jordan Hancock|CB|Questionable|Hamstring|Nov 15
+Tyrell Shavers|WR|Out|Knee - ACL|Nov 22
 Spencer Brown|OT|Doubtful|Ankle|Nov 15
 Christian Benford|CB|Questionable|Wrist|Nov 15
 Sam Franklin Jr.|S|Questionable|Shoulder|Nov 15
@@ -155,10 +155,10 @@ Jordan Whittington|WR|IR|Back|Dec 20
 Joe Cardona|LS|Questionable|Ankle|Nov 15
 Terrance Ferguson|TE|IR|Hamstring|Nov 25
 #MIA
+Darrell Baker Jr.|CB|Out|Knee|Nov 22
 Aaron Brewer|C|Out|Concussion|Nov 22
 Jared Wayne|WR|Out|Quadriceps|Nov 22
 Chris Bell|WR|Doubtful|Knee|Nov 15
-Darrell Baker Jr.|CB|Out|Knee|Nov 22
 Malik Willis|QB|IR|Abdomen|Dec 13
 Zach Sieler|DT|IR|Biceps|Feb 15
 #MIN
@@ -170,11 +170,10 @@ Jauan Jennings|WR|Out|Calf|Nov 22
 Jordan Addison|WR|Questionable|Thumb|Nov 15
 T.J. Hockenson|TE|Out|Wrist|Nov 22
 Kyle Van Noy|LB|Questionable|Calf|Nov 15
-Demond Claiborne|RB|IR|Knee|Dec 6
 #NE
+Greg Van Roten|G|Questionable|Hamstring|Nov 15
 Reggie Gilliam|FB|Questionable|Knee|Nov 15
 TreVeyon Henderson|RB|IR|Illness|Dec 21
-Greg Van Roten|G|Questionable|Hamstring|Nov 15
 Brenden Schooler|S|Questionable|Hamstring|Nov 15
 Charles Woods|CB|Questionable|Hamstring|Nov 15
 Kevin Byard|S|Questionable|Chest|Nov 15
@@ -185,9 +184,9 @@ Carlton Davis III|CB|Out|Knee|Nov 29
 Walter Rouse|OL|Questionable|Concussion|Nov 15
 Cameron Latu|TE|Questionable|Back|Nov 15
 #NO
+Christen Miller|DT|IR|Knee|Dec 13
 Travis Etienne Jr.|RB|Questionable|Hamstring|Nov 15
 Erik McCoy|C|Out|Biceps|Nov 22
-Christen Miller|DT|IR|Knee|Dec 13
 Taliese Fuaga|OT|Out|Knee|Nov 22
 Martin Emerson Jr.|CB|Questionable|Shin|Nov 15
 CJ Donaldson|RB|Out|Shoulder|Nov 22
@@ -244,8 +243,8 @@ Yaya Diaby|LB|Out|Knee - MCL|Nov 22
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 22
 #TEN
-Peter Skoronski|G|IR|Hamstring|Dec 13
 Tommy Townsend|P|IR|Knee|Dec 13
+Peter Skoronski|G|IR|Hamstring|Dec 13
 Cody Barton|LB|Out|Concussion|Nov 22
 Anthony Hill Jr.|LB|Out|Neck|Nov 22
 Tyjae Spears|RB|Questionable|Knee|Nov 15
