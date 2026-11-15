@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 20:36Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 21:17Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 15
 Kingston Flemings|G|Out|back strain|Nov 18
@@ -49,7 +49,7 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Clint Capela|C|Out|ankle sprain|Nov 16
 Fred VanVleet|G|Out|knee|Nov 16
 #Indiana Pacers
-Andrew Nembhard|G|Out|hip soreness|Nov 18
+Andrew Nembhard|G|Day-To-Day|hip soreness|Nov 18
 Tyrese Haliburton|G|Out|hamstring strain|Nov 22
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -96,7 +96,7 @@ Noah Penda|F|Out|hamstring strain|Nov 22
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
-Joel Embiid|C|Out|foot|Nov 16
+Joel Embiid|C|Day-To-Day|foot|Nov 16
 Dominick Barlow|F|Out|back fracture|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
@@ -113,7 +113,7 @@ Maxime Raynaud|C|Out|knee dislocated|Nov 18
 Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 15
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-De'Aaron Fox|G|Day-To-Day|hip|Nov 15
+De'Aaron Fox|G|Out|hip|Nov 17
 Tobias Harris|F|Out|calf strain|Nov 19
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors

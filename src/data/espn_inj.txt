@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 20:36Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 21:17Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Out|Knee|Nov 22
@@ -11,6 +11,7 @@ Gardner Minshew II|QB|IR|Elbow|Feb 15
 Zachary Carter|DT|IR|Knee|Nov 22
 Michael Wilson|WR|IR|Neck|Feb 15
 #ATL
+Drake London|WR|Questionable|Concussion|Nov 15
 Andy Dalton|QB|Out|Coach's Decision|Nov 29
 Avieon Terrell|CB|Out|Coach's Decision|Nov 29
 Cameron Williams|OL|Out|Coach's Decision|Nov 29
@@ -24,7 +25,9 @@ Adam Randall|RB|IR|Neck|Nov 16
 Jaylinn Hawkins|S|Out|Knee|Nov 22
 Lamar Jackson|QB|IR|Thumb|Dec 27
 #BUF
-Dee Alford|CB|Questionable|Head|Nov 15
+Dorian Williams|LB|Questionable|Calf|Nov 15
+Dee Alford|CB|Questionable|Concussion|Nov 22
+Christian Benford|CB|Questionable|Groin|Nov 22
 Ar'maj Reed-Adams|G|Out|Coach's Decision|Nov 22
 Jalon Kilgore|S|Out|Coach's Decision|Nov 22
 Jude Bowry|OT|Out|Coach's Decision|Nov 22
@@ -110,7 +113,7 @@ Josh Whyle|TE|IR|Concussion|Dec 20
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Warren Brinson|DT|IR|Calf|Nov 25
 #HOU
-Woody Marks|RB|Out|Concussion|Nov 19
+Woody Marks|RB|Questionable|Concussion|Nov 19
 Wyatt Teller|G|Out|Illness|Nov 19
 Keylan Rutledge|G|Out|Neck|Nov 19
 Marvin Harrison Jr.|WR|Out|Hamstring|Nov 19
@@ -151,6 +154,7 @@ Jaylon Moore|OT|Out|Ankle|Nov 22
 Melvin Smith Jr.|CB|Out|Coach's Decision|Nov 22
 Kenneth Walker III|RB|Out|Groin|Nov 22
 #LV
+Brock Bowers|TE|Questionable|Leg|Nov 15
 Malik Benson|WR|Out|Coach's Decision|Nov 22
 Thomas Booker IV|DT|Out|Ankle|Nov 22
 Dont'e Thornton Jr.|WR|Out|Back|Nov 22
@@ -169,18 +173,19 @@ Denzel Perryman|LB|IR|Pectoral|Nov 16
 David Njoku|TE|IR|Lower Leg|Nov 16
 Brenen Thompson|WR|Doubtful|Hamstring|Nov 16
 #LAR
+Joe Cardona|LS|Out|Ankle|Nov 25
 Ty Simpson|QB|Out|Coach's Decision|Nov 25
 Keagen Trost|OT|Out|Coach's Decision|Nov 25
 Darryl Peterson III|LB|Out|Coach's Decision|Nov 25
 Maximus Pulley|S|Out|Coach's Decision|Nov 25
 Desjuan Johnson|DE|Out|Coach's Decision|Nov 25
-Joe Cardona|LS|Out|Ankle|Nov 25
 Steve Avila|G|Out|Hamstring|Nov 25
 Davante Adams|WR|IR|Hamstring|Nov 25
 Puka Nacua|WR|IR|Knee - MCL|Dec 20
 Jordan Whittington|WR|IR|Back|Dec 20
 Terrance Ferguson|TE|IR|Hamstring|Nov 25
 #MIA
+Andrew Meyer|C|Questionable|Undisclosed|Nov 15
 Zeek Biggers|DT|Questionable|Knee|Nov 22
 Chris Bell|WR|Out|Knee|Nov 22
 Caedan Wallace|OT|Out|Coach's Decision|Nov 22
@@ -192,6 +197,7 @@ Darrell Baker Jr.|CB|Out|Knee|Nov 22
 Malik Willis|QB|IR|Abdomen|Dec 13
 Zach Sieler|DT|IR|Biceps|Feb 15
 #MIN
+Andrew Van Ginkel|LB|Questionable|Quadriceps|Nov 15
 Jeshaun Jones|WR|Questionable|Shoulder|Nov 15
 Bo Richter|LB|Questionable|Foot|Nov 22
 Max Brosmer|QB|Out|Coach's Decision|Nov 22
@@ -214,6 +220,7 @@ Dametrious Crownover|OT|Out|Coach's Decision|Nov 29
 Carlton Davis III|CB|Out|Knee|Nov 29
 TreVeyon Henderson|RB|IR|Illness|Dec 21
 #NO
+Asim Richards|OT|Questionable|Knee|Nov 15
 Pete Werner|LB|Questionable|Hamstring|Nov 22
 Zach Wilson|QB|Out|Coach's Decision|Nov 22
 Mike Reid|CB|Out|Coach's Decision|Nov 22
@@ -232,8 +239,8 @@ J.C. Davis|OT|Out|Coach's Decision|Nov 22
 Thomas Fidone II|TE|Out|Coach's Decision|Nov 22
 Paulson Adebo|CB|Out|Coach's Decision|Nov 22
 #NYJ
-Geno Smith|QB|Questionable|Ankle|Nov 15
-Omar Cooper Jr.|WR|Out|Ankle|Nov 22
+Geno Smith|QB|Questionable|Ankle|Nov 22
+Omar Cooper Jr.|WR|Questionable|Ankle|Nov 22
 Dylan Parham|G|Questionable|Knee|Nov 15
 Jarvis Brownlee Jr.|CB|Out|Illness|Nov 22
 Tim Patrick|WR|Out|Coach's Decision|Nov 22
@@ -259,7 +266,6 @@ Kurtis Rourke|QB|Out|Coach's Decision|Nov 22
 Tatum Bethune|LB|Out|Coach's Decision|Nov 22
 Enrique Cruz Jr.|OT|Out|Coach's Decision|Nov 22
 Mike Evans|WR|Out|Achilles|Nov 22
-Trent Williams|OT|Questionable|Shoulder|Nov 22
 C.J. West|DT|IR|Knee|Nov 22
 Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
@@ -278,6 +284,8 @@ Yaya Diaby|LB|Out|Knee - MCL|Nov 22
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 22
 #TEN
+Wan'Dale Robinson|WR|Questionable|Ankle|Nov 15
+Tony Adams|S|Questionable|Concussion|Nov 22
 Nicholas Singleton|RB|Out|Coach's Decision|Nov 22
 Carnell Tate|WR|Out|Shoulder|Nov 22
 Anthony Hill Jr.|LB|Out|Neck|Nov 22
