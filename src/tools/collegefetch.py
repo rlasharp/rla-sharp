@@ -40,6 +40,7 @@ for t in (((tj.get("sports") or [{}])[0].get("leagues") or [{}])[0].get("teams")
     t = t.get("team") or {}
     TM[str(t["id"])] = {"a": t.get("abbreviation") or "", "n": t.get("displayName") or "", "s": t.get("shortDisplayName") or t.get("location") or "",
                         "c": ("#" + t["color"]) if t.get("color") else "", "cf": "", "rk": None}
+DIV = set(TM)   # this division only (FBS / Division I); opponents from lower divisions are added to TM later
 RANK = []
 rk = get(SITE + "rankings") or {}
 for L in (rk.get("rankings") or [])[:2]:
@@ -228,7 +229,7 @@ HFA = 2.5 if SP == "cfb" else 3.0; CAP = 28 if SP == "cfb" else 22
 GM = []
 for tid, L in RES.items():
     for r in L:
-        if r[1] in RES and r[4] is not None and r[5] is not None:
+        if tid in DIV and r[1] in DIV and r[1] in RES and r[4] is not None and r[5] is not None:
             h = 0 if r[7] else (HFA / 2 if r[3] == "H" else -HFA / 2)
             m = r[4] - r[5]; adj = (max(-CAP, min(CAP, m)) - m) / 2
             GM.append((tid, r[1], r[4] + adj - h, r[5] - adj + h))

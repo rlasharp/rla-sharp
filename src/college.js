@@ -39,7 +39,7 @@ function coModel(sp,g){const TS=coV(sp,"TS")||{},A=TS[g.a[0]],H=TS[g.h[0]];if(!A
   const b=(x,y)=>x==null?y:y==null?x:x*.55+y*.45,ao=b(A.pf,A.pf5),ad=b(A.pa,A.pa5),ho=b(H.pf,H.pf5),hd=b(H.pa,H.pa5),hfa=g.neu?0:C.hfa;
   /* strength of schedule: when the fitted ratings exist (tools/collegefetch.py — every result, adjusted for who it came against),
      expected points = league average + this offense's rating + the other defense's rating ± home edge */
-  const TR=coV(sp,"TR")||{},LG=coV(sp,"LG"),RA=TR[g.a[0]],RH=TR[g.h[0]],sos=!!(RA&&RH&&LG&&RA.g>=3&&RH.g>=3);
+  const TR=coTR(sp),LG=coV(sp,"LG"),RA=TR[g.a[0]],RH=TR[g.h[0]],sos=!!(RA&&RH&&LG&&RA.g>=3&&RH.g>=3);
   const hp=sos?LG+RH.o+RA.d+hfa/2:(ho+ad)/2+hfa/2,ap=sos?LG+RA.o+RH.d-hfa/2:(ao+hd)/2-hfa/2,L=coLine(sp,g);let mh=hp-ap,tot=hp+ap;const raw={m:mh,tot};
   if(L.sp!=null)mh=(mh+(-L.sp))/2;if(L.tot!=null)tot=(tot+L.tot)/2;
   return {m:mh,tot,hp:(tot+mh)/2,ap:(tot-mh)/2,p:coNcdf(mh/C.sd),raw,n:Math.min(A.g,H.g),sos}}
@@ -199,17 +199,19 @@ function coRoute(sp,h){const el=document.getElementById("v-"+sp);if(!el)return;
 
 /* ---------- 💪 strength of schedule: power rating, schedule strength ---------- */
 function coOrd(n){return n+(n%10===1&&n%100!==11?"st":n%10===2&&n%100!==12?"nd":n%10===3&&n%100!==13?"rd":"th")}
-let CO_SOS={};function coSOS(sp){if(CO_SOS[sp])return CO_SOS[sp];const TR=coV(sp,"TR")||{},RES=coV(sp,"RES")||{},S={};
-  for(const [t,L] of Object.entries(RES)){const v=L.map(r=>TR[r[1]]).filter(Boolean).map(x=>x.r);if(v.length)S[t]=v.reduce((a,b)=>a+b,0)/v.length}
+/* ratings for this division only (teams with a conference), ranked 1..n */
+let CO_TR={};function coTR(sp){if(CO_TR[sp])return CO_TR[sp];const T=coV(sp,"TR")||{},O={};Object.entries(T).filter(([t])=>coT(sp,t).cf).sort((a,b)=>b[1].r-a[1].r).forEach(([t,v],i)=>O[t]=Object.assign({},v,{rk:i+1}));return CO_TR[sp]=O}
+let CO_SOS={};function coSOS(sp){if(CO_SOS[sp])return CO_SOS[sp];const TR=coTR(sp),RES=coV(sp,"RES")||{},S={};
+  for(const [t,L] of Object.entries(RES)){if(!coT(sp,t).cf)continue;const v=L.map(r=>TR[r[1]]).filter(Boolean).map(x=>x.r);if(v.length)S[t]=v.reduce((a,b)=>a+b,0)/v.length}
   Object.entries(S).sort((a,b)=>b[1]-a[1]).forEach(([t,v],i)=>S[t]={v,rk:i+1,of:Object.keys(S).length});return CO_SOS[sp]=S}
-function coPower(sp,tid){const TR=coV(sp,"TR")||{},R=TR[tid];if(!R)return "";const n=Object.keys(TR).length,S=coSOS(sp)[tid];
+function coPower(sp,tid){const TR=coTR(sp),R=TR[tid];if(!R)return "";const n=Object.keys(TR).length,S=coSOS(sp)[tid];
   return `<div class="card"><h2>💪 Power rating <span class="small">· adjusted for strength of schedule</span></h2><div class="xstrip">
    <div><b>${coOrd(R.rk)}</b><span>of ${n}</span><small>${R.r>0?"+":""}${coF(R.r)} pts vs average</small></div>
    <div><b>${R.o>0?"+":""}${coF(R.o)}</b><span>Offense</span><small>pts above avg</small></div>
    <div><b>${R.d>0?"+":""}${coF(R.d)}</b><span>Defense</span><small>pts allowed vs avg (− = better)</small></div>
    ${S?`<div><b>${coOrd(S.rk)}</b><span>Schedule so far</span><small>of ${S.of} · 1st = hardest</small></div>`:""}</div>
    <div class="small">From ${R.g} games against ${CO[sp].U==="CFB"?"FBS":"Division I"} teams. Each result is compared with what those opponents usually score and allow; margins over ${sp==="cfb"?28:22} count as ${sp==="cfb"?28:22}.</div></div>`}
-function coPowerVs(sp,g){const TR=coV(sp,"TR")||{},A=TR[g.a[0]],H=TR[g.h[0]];if(!A||!H)return "";const S=coSOS(sp),sa=S[g.a[0]],sh=S[g.h[0]],an=coT(sp,g.a[0]).a,hn=coT(sp,g.h[0]).a;
+function coPowerVs(sp,g){const TR=coTR(sp),A=TR[g.a[0]],H=TR[g.h[0]];if(!A||!H)return "";const S=coSOS(sp),sa=S[g.a[0]],sh=S[g.h[0]],an=coT(sp,g.a[0]).a,hn=coT(sp,g.h[0]).a;
   const row=(l,a,h)=>`<tr><td>${a}</td><th>${l}</th><td>${h}</td></tr>`,sg=v=>(v>0?"+":"")+coF(v);
   const BR=t=>{const A_=(coV(sp,"ATS")||{})[t]||[];let c=[0,0],o=[0,0];for(const r of A_){const m=r[3]-r[4]+r[5],x=r[3]+r[4]-r[6];if(m)c[m>0?0:1]++;if(x)o[x>0?0:1]++}return A_.length?[`${c[0]}-${c[1]}`,`${o[0]}-${o[1]}`]:["–","–"]},ba=BR(g.a[0]),bh=BR(g.h[0]);
   return `<div class="card"><h2>💪 Power + betting record</h2><div class="nbatbl"><table class="uftape"><thead><tr><th>${coE(an)}</th><th></th><th>${coE(hn)}</th></tr></thead><tbody>
@@ -242,7 +244,7 @@ function coCFP(sp){if(sp!=="cfb")return "";const RK=coV(sp,"RANK")||[],P=RK.find
    <h3 style="margin:10px 0 4px">Seeds 5–12</h3>${S.slice(4).map((x,i)=>tm(x,i+4)).join("")}
    ${out.length?`<h3 style="margin:10px 0 4px">First out</h3>${out.map(r=>`<a class="ufval" href="#${sp}-team-${r[1]}"><span>${coBadge(sp,r[1])} ${coE(coT(sp,r[1]).s||coT(sp,r[1]).n)}</span><span class="small">CFP #${r[0]} · ${coE(r[2]||"")}</span></a>`).join("")}`:""}</div>`}
 function coStandPage(sp,el){const ST=(coV(sp,"STAND")||[]).filter(g=>g.r&&g.r.length);const names=ST.map(g=>g.n);
-  const P5=/SEC|Southeastern|Big Ten|Big 12|ACC|Atlantic Coast|Big East/;let k=COS.st&&COS.st[sp]!=null?COS.st[sp]:Math.max(0,names.findIndex(n=>P5.test(n)));if(k>=ST.length)k=0;const G=ST[k],TR=coV(sp,"TR")||{};
+  const P5=/SEC|Southeastern|Big Ten|Big 12|ACC|Atlantic Coast|Big East/;let k=COS.st&&COS.st[sp]!=null?COS.st[sp]:Math.max(0,names.findIndex(n=>P5.test(n)));if(k>=ST.length)k=0;const G=ST[k],TR=coTR(sp);
   el.innerHTML=`${coHead(sp,"Standings")}${coCFP(sp)}
    ${ST.length?`<div class="card"><h2>📊 Conference standings</h2><select data-cost style="width:100%;margin-bottom:8px">${ST.map((g,i)=>`<option value="${i}"${i===k?" selected":""}>${coE(g.n)}</option>`).join("")}</select>
    <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Team</th><th>Conf</th><th>Overall</th><th>Streak</th><th>Power</th></tr></thead><tbody>
