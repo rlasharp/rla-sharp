@@ -221,6 +221,17 @@ function socParlayCard(f){if(!f||socStarted(f)||!f.proj||!f.odds)return "";const
    in real results? If we've been overconfident, "our chance" moves less far from the book's fair price (and more if we've
    been under-confident), blended in gradually — no change until 25 graded props, full weight only after ~100.
    Returns the multiplier for the "how far to move toward the player's hit rates" weight. */
+/* 🎯 how much to trust our prop chances, from our own graded best props (tools/track.js fits it):
+   chance = book's fair price + m × (our unadjusted chance − fair price). m = 1: trust our numbers as they are; m = 0: our picks
+   have done no better than the price, so the price is the honest chance. Fitted per side (overs / unders) when there are 15+
+   graded picks on that side, and pulled toward 1 a little while the sample is small. */
+function xCalM(sp,side){try{const F=TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].fit;let m=null,n=0;
+  if(F){const S=F[side==="u"?"u":"o"],A=F.all;if(S&&S.n>=15){m=S.m;n=S.n}else if(A&&A.n){m=A.m;n=A.n}}
+  else{const K=TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].calk;if(K&&K.n>=25){const E=(K.sc-K.imp)/K.n,R=(K.hit-K.imp)/K.n;if(E>.005){m=Math.max(0,Math.min(1.2,R/E));n=K.n}}}
+  if(m==null)return 1;return Math.round(((n*m+15)/(n+15))*1000)/1000}catch(e){return 1}}
+/* short note shown above the best props when our record says to lean on the price */
+function xCalNote(sp){const o=xCalM(sp,"o"),u=xCalM(sp,"u"),m=Math.max(o,u);if(m>=.75)return "";
+  return `<div class="nbsay" style="margin-bottom:8px">🎯 <b>Recalibrated.</b> Our graded best props haven't beaten the price yet, so chances now stay close to what the odds say (we trust our numbers ${Math.round(o*100)}% on overs, ${Math.round(u*100)}% on unders). Fewer picks make the list — only the ones that still clear the price. <a href="#calib">How we checked</a></div>`}
 function xCalK(sp){try{const K=typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].calk;if(!K||K.n<25)return 1;
   const E=(K.sc-K.imp)/K.n,R=(K.hit-K.imp)/K.n;if(E<=.005)return 1;const ratio=Math.max(.25,Math.min(1.25,R/E));return Math.round((1+(ratio-1)*K.n/(K.n+80))*1000)/1000}catch(e){return 1}}
 function xCalNote(sp){const K=typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].calk;if(!K||!K.n)return "";const k=xCalK(sp),p=x=>Math.round(x/K.n*100)+"%";

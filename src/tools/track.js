@@ -21,13 +21,13 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
   // NBA
   if(typeof NBA_SLATE!=="undefined"&&NBA_SLATE.length){const d=NBA_SLATE_DATE,S=T.nba[d]||(T.nba[d]={});
     if(!NBA_SLATE.some(nbaStarted)){
-      S.best=(typeof nbaBest!=="undefined"?nbaBest():[]).slice(0,10).map(b=>({nm:b.nm,k:b.k,side:b.side,line:b.line,odds:b.odds,book:b.book||"",tm:b.p?b.p.tm:"",sc:Math.round((b.sc||0)*100)/100}));
+      S.best=(typeof nbaBest!=="undefined"?nbaBest():[]).slice(0,10).map(b=>({nm:b.nm,k:b.k,side:b.side,line:b.line,odds:b.odds,book:b.book||"",tm:b.p?b.p.tm:"",sc:Math.round((b.sc||0)*100)/100,sc0:Math.round((b.sc0!=null?b.sc0:b.sc||0)*1000)/1000}));
       S.games=NBA_SLATE.map(g=>{const M=nbaModel(g.a,g.h),L=NBA_LINES[g.a+"@"+g.h];if(!M)return null;const E=typeof nbaOddsEdges!=="undefined"?nbaOddsEdges(g):[];
         return {a:g.a,h:g.h,p:Math.round(M.p*1000)/1000,m:M.m,tot:M.tot,L:L?{sp:L.sp,tot:L.tot}:null,edges:E.filter(e=>e.edge>=.04).map(e=>({mk:e.mk,pick:e.pick,odds:e.odds,me:Math.round(e.me*1000)/1000,bk:Math.round(e.bk*1000)/1000}))}}).filter(Boolean);
       log.push(`nba ${d}: snapshot ${S.best.length} props, ${S.games.length} games`)}}
   // NHL
   if(typeof NHL_SLATE!=="undefined"&&NHL_DATE&&NHL_SLATE.length){const d=NHL_DATE,S=T.nhl[d]||(T.nhl[d]={});const open=NHL_SLATE.filter(g=>!nhStarted(g));
-    if(open.length===NHL_SLATE.length){S.best=nhBest().filter(b=>b.g&&b.g.d===d).slice(0,10).map(b=>({nm:b.nm,k:b.k,side:b.side,line:b.line,odds:b.odds,tm:nhWho(b.nm).tm,sc:Math.round(b.s.p*100)/100}))}   /* only that day's games (the props list also has tomorrow's) */
+    if(open.length===NHL_SLATE.length){S.best=nhBest().filter(b=>b.g&&b.g.d===d).slice(0,10).map(b=>({nm:b.nm,k:b.k,side:b.side,line:b.line,odds:b.odds,tm:nhWho(b.nm).tm,sc:Math.round(b.s.p*100)/100,sc0:Math.round((b.s.p0!=null?b.s.p0:b.s.p)*1000)/1000}))}   /* only that day's games (the props list also has tomorrow's) */
     // Plays of the day: lock once, within 6 h of the first puck drop (never with zero plays)
     const first=Math.min(...NHL_SLATE.map(g=>Date.parse(g.iso)));
     if(!S.locked&&open.length===NHL_SLATE.length&&first-Date.now()<=6*3600e3){
@@ -112,6 +112,10 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
     /* claimed vs real edge on the graded best props: sum of our chance, of the price's chance (vig removed ~4.5%), and wins */
     {const K={n:0,hit:0,sc:0,imp:0};for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){if((x.r!=="win"&&x.r!=="loss")||x.sc==null||x.odds==null)continue;K.n++;K.hit+=x.r==="win";K.sc+=x.sc;K.imp+=imp(x.odds)/1.045}
      K.sc=Math.round(K.sc*1000)/1000;K.imp=Math.round(K.imp*1000)/1000;s.calk=K}
+    /* fitted trust multiplier m (0–1.2, by log-likelihood) on the unadjusted chances: overall and per side */
+    {const X=[];for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){if((x.r!=="win"&&x.r!=="loss")||x.odds==null)continue;const c=x.sc0!=null?x.sc0:x.sc;if(c==null)continue;X.push({c,f:imp(x.odds)/1.045,y:x.r==="win"?1:0,side:x.side})}
+     const fit=A=>{if(!A.length)return {m:1,n:0};let best=null;for(let i=0;i<=24;i++){const m=i*.05;let ll=0;for(const o of A){const p=Math.min(.97,Math.max(.03,o.f+m*(o.c-o.f)));ll+=Math.log(o.y?p:1-p)}if(!best||ll>best[1])best=[m,ll]}return {m:Math.round(best[0]*100)/100,n:A.length}};
+     s.fit={all:fit(X),o:fit(X.filter(o=>o.side==="o")),u:fit(X.filter(o=>o.side==="u"))}}
     s.best.u=Math.round(s.best.u*100)/100;s.plays.u=Math.round(s.plays.u*100)/100;for(const E of Object.values(s.edge))E[2]=Math.round(E[2]*100)/100;
     s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM[sp]=s}
   {const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T.soc))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}

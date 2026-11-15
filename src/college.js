@@ -37,9 +37,12 @@ function coLine(sp,g){const O=coOdds(sp,g.id),L=g.ln||{};const r={src:L.bk||"ESP
 function coNcdf(z){const t=1/(1+.2316419*Math.abs(z)),d=.3989423*Math.exp(-z*z/2),p=d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return z>0?1-p:p}
 function coModel(sp,g){const TS=coV(sp,"TS")||{},A=TS[g.a[0]],H=TS[g.h[0]];if(!A||!H||A.g<2||H.g<2)return null;const C=CO[sp];
   const b=(x,y)=>x==null?y:y==null?x:x*.55+y*.45,ao=b(A.pf,A.pf5),ad=b(A.pa,A.pa5),ho=b(H.pf,H.pf5),hd=b(H.pa,H.pa5),hfa=g.neu?0:C.hfa;
-  const hp=(ho+ad)/2+hfa/2,ap=(ao+hd)/2-hfa/2,L=coLine(sp,g);let mh=hp-ap,tot=hp+ap;const raw={m:mh,tot};
+  /* strength of schedule: when the fitted ratings exist (tools/collegefetch.py — every result, adjusted for who it came against),
+     expected points = league average + this offense's rating + the other defense's rating ± home edge */
+  const TR=coV(sp,"TR")||{},LG=coV(sp,"LG"),RA=TR[g.a[0]],RH=TR[g.h[0]],sos=!!(RA&&RH&&LG&&RA.g>=3&&RH.g>=3);
+  const hp=sos?LG+RH.o+RA.d+hfa/2:(ho+ad)/2+hfa/2,ap=sos?LG+RA.o+RH.d-hfa/2:(ao+hd)/2-hfa/2,L=coLine(sp,g);let mh=hp-ap,tot=hp+ap;const raw={m:mh,tot};
   if(L.sp!=null)mh=(mh+(-L.sp))/2;if(L.tot!=null)tot=(tot+L.tot)/2;
-  return {m:mh,tot,hp:(tot+mh)/2,ap:(tot-mh)/2,p:coNcdf(mh/C.sd),raw,n:Math.min(A.g,H.g)}}
+  return {m:mh,tot,hp:(tot+mh)/2,ap:(tot-mh)/2,p:coNcdf(mh/C.sd),raw,n:Math.min(A.g,H.g),sos}}
 /* leans: where our own number (before the blend) is far from the market */
 function coLeans(sp,g){if(g.st!=="pre")return [];const M=coModel(sp,g),L=coLine(sp,g),C=CO[sp];if(!M||M.n<3)return [];const out=[];
   if(L.sp!=null){const e=M.raw.m-(-L.sp);if(Math.abs(e)>=C.lean[0]){const home=e>0;out.push({k:"Spread",tid:home?g.h[0]:g.a[0],txt:`${coT(sp,home?g.h[0]:g.a[0]).s||coT(sp,home?g.h[0]:g.a[0]).a} ${home?(L.sp>0?"+":"")+L.sp:(L.sp<0?"+":"")+(-L.sp)}`,edge:Math.abs(e),odds:L.spx?L.spx[home?1:0]:null})}}
@@ -94,7 +97,7 @@ function coGamesPage(sp,el){const G=coGames(sp),days=[...new Set(G.map(g=>coDay(
    <p class="sub">${L.length} game${L.length===1?"":"s"}${flt==="top"?" with a ranked team":""}. Tap a game for the matchup, stats, head-to-head and box scores.</p>
    <div class="grid g2">${L.map(g=>coRow(sp,g)).join("")||`<div class="card small">No ${flt==="top"?"Top 25 ":""}games that day${flt!=="all"?" — try All games":""}.</div>`}</div>
    <a href="#${sp}-picks" class="btn" style="display:block;text-align:center;margin-top:10px">⭐ Our picks + predicted scores →</a>
-   <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary><p class="small" style="margin:8px 0 0"><b>Spread</b>: the favorite (minus number) has to win by more than that; the underdog can lose by less. <b>Win</b>: moneyline odds. <b>Team total</b>: points the line implies for that team. Our number = each team's points scored and allowed this season (recent games weighted up) plus home edge, blended 50/50 with the line — it doesn't adjust for strength of schedule, so treat it as rough. Lines: licensed US books via our odds feed, or ESPN's partner book. 21+.</p></details>`;
+   <details class="adv" style="margin-top:14px"><summary><b>How to read this</b></summary><p class="small" style="margin:8px 0 0"><b>Spread</b>: the favorite (minus number) has to win by more than that; the underdog can lose by less. <b>Win</b>: moneyline odds. <b>Team total</b>: points the line implies for that team. Our number = each team's offense and defense ratings, adjusted for strength of schedule (every result compared with what those opponents usually score and allow, blowouts capped), plus home edge, blended 50/50 with the line. Lines: licensed US books via our odds feed, or ESPN's partner book. 21+.</p></details>`;
   el.querySelectorAll("[data-cog]").forEach(c=>c.onclick=()=>location.hash=c.dataset.cog);
   el.querySelectorAll("[data-coday]").forEach(b=>b.onclick=e=>{e.preventDefault();COS.day[sp]=b.dataset.coday;coGamesPage(sp,el)});el.querySelectorAll("[data-coflt]").forEach(b=>b.onclick=()=>{COS.flt[sp]=b.dataset.coflt;coGamesPage(sp,el)})}
 /* ⭐ picks: every upcoming game's predicted score, and our leans where our number is far from the line */
@@ -111,7 +114,7 @@ function coPicksPage(sp,el){const G=coGames(sp).filter(g=>g.st==="pre"),P=G.flat
 function coMatchup(sp,g){const X=coV(sp,"TSX")||{},A=X[g.a[0]],H=X[g.h[0]],TS=coV(sp,"TS")||{};if(!A||!H)return `<div class="card small">Matchup stats appear once both teams have box scores.</div>`;
   const tbl=(off,def,oN,dN)=>`<div class="nbatbl"><table class="uftape"><thead><tr><th>${coE(oN)} gets</th><th></th><th>${coE(dN)} allows</th></tr></thead><tbody>${CO_ST[sp].map(([lab,f,hi],i)=>{const v=coSV(off.o,f),w=coSV(def.d,f),r1=coRk(sp,i,"o",v),r2=coRk(sp,i,"d",w);return v==null&&w==null?"":`<tr><td>${coF(v)} ${coRkTxt(r1)}</td><th>${lab}</th><td>${coF(w)} ${coRkTxt(r2)}</td></tr>`}).join("")}</tbody></table></div>`;
   const an=coT(sp,g.a[0]).s,hn=coT(sp,g.h[0]).s;
-  return `<div class="card"><h2>${coE(an)} offense vs ${coE(hn)} defense</h2>${tbl(A,H,an,hn)}</div><div class="card"><h2>${coE(hn)} offense vs ${coE(an)} defense</h2>${tbl(H,A,hn,an)}</div>
+  return `${coPowerVs(sp,g)}<div class="card"><h2>${coE(an)} offense vs ${coE(hn)} defense</h2>${tbl(A,H,an,hn)}</div><div class="card"><h2>${coE(hn)} offense vs ${coE(an)} defense</h2>${tbl(H,A,hn,an)}</div>
    <div class="small">Per game this season, from ESPN box scores (${A.n} and ${H.n} games). Ranks among the ${Object.keys(X).length} teams playing in the next few days (1st = best for that side).</div>`}
 function coInj(sp,t){const I=(coV(sp,"INJ")||{})[t]||[];return I.length?I.map(r=>`<div class="ufval"><b>${coE(r[0])}</b><span class="small">${coE(r[1])}</span><span>${coE(r[2])}</span><span class="small">${coE(r[3]).slice(0,120)}</span></div>`).join(""):`<div class="small">No injuries listed by ESPN${sp==="cbb"?" (college basketball reports are rare)":""}.</div>`}
 function coH2H(sp,g){const H=(coV(sp,"H2H")||{})[g.id]||[],h=coT(sp,g.h[0]).a,a=coT(sp,g.a[0]).a;if(!H.length)return `<div class="card small">${coE(coT(sp,g.a[0]).s)} and ${coE(coT(sp,g.h[0]).s)} haven't met in the last ${sp==="cfb"?"4 seasons":"4 seasons"}.</div>`;
@@ -177,8 +180,10 @@ function coTeamPage(sp,el,tid){const T=coT(sp,tid),TS=(coV(sp,"TS")||{})[tid]||{
   const roster=Object.entries(P).filter(([a,p])=>p.t===tid).map(([a,p])=>{const n=p.g.length||1,f=sp==="cfb"?(r=>(r[3]||0)+(r[9]||0)+(r[12]||0)):(r=>r[4]||0);return [a,p,p.g.reduce((s,r)=>s+f(r),0)/n]}).sort((x,y)=>y[2]-x[2]);
   el.innerHTML=`<p>${typeof xBack!=="undefined"?xBack("#"+sp,"Back"):""}</p><div class="phead tch" style="--tc:${T.c||"#555"}"><div>${coBadge(sp,tid)}</div><div><h1 style="margin:0">${T.rk?`<small class="corank">#${T.rk}</small> `:""}${coE(T.n)}</h1><div class="small">${coE(T.cf||"")}${TS.g?` · ${TS.w}-${TS.g-TS.w} vs D-I`:""}</div></div></div>
    ${typeof xStrip!=="undefined"?xStrip([["Scored",coF(TS.pf)],["Allowed",coF(TS.pa)],["Margin",TS.pf!=null?coF(TS.pf-TS.pa):"–"],["Last 5 scored",coF(TS.pf5)],["Last 5 allowed",coF(TS.pa5)]].map(x=>[x[0],x[1],""]),"Per game this season"):""}
+   ${coPower(sp,tid)}
    ${nx.length?`<h2 style="margin:12px 0 8px">Next</h2>${nx.map(g=>coRow(sp,g)).join("")}`:""}
    ${(()=>{const X=(coV(sp,"TSX")||{})[tid];return X?`<div class="card"><h2>Stats per game <span class="small">· ${X.n} games with box scores</span></h2><div class="nbatbl"><table class="uftape"><thead><tr><th>${coE(T.a)}</th><th></th><th>Opponents</th></tr></thead><tbody>${CO_ST[sp].map(([lab,f],i)=>{const v=coSV(X.o,f),w=coSV(X.d,f);return v==null&&w==null?"":`<tr><td>${coF(v)} ${coRkTxt(coRk(sp,i,"o",v))}</td><th>${lab}</th><td>${coF(w)} ${coRkTxt(coRk(sp,i,"d",w))}</td></tr>`}).join("")}</tbody></table></div><div class="small">Ranks among the teams playing in the next few days.</div></div>`:""})()}
+   ${coBetRec(sp,tid)}
    <div class="card"><h2>🚑 Injuries</h2>${coInj(sp,tid)}</div>
    <div class="card"><h2>Results <span class="small">· tap for the box score</span></h2>${R.slice().reverse().map(r=>`<a class="ufval" href="#${sp}-box-${r[6]}"><span class="small">${coE(r[0].slice(5))}</span><span>${r[3]==="H"?"vs":"@"} ${coE(r[2])}${r[7]?" (N)":""}</span><b class="${r[4]>r[5]?"up":"dn"}">${r[4]>r[5]?"W":"L"} ${r[4]}-${r[5]}</b><span class="small">box →</span></a>`).join("")||`<div class="small">No games yet.</div>`}</div>
    <div class="card"><h2>Players</h2>${roster.slice(0,15).map(([a,p,v])=>`<a class="ufval" href="#${sp}-player-${a}"><b>${coE(p.n)}</b><span class="small">${coE(p.p)} · ${p.g.length} games</span><span>${coF(v)} ${sp==="cfb"?"yds":"pts"}/g</span></a>`).join("")||`<div class="small">No player logs yet.</div>`}</div>`}
@@ -189,5 +194,77 @@ function coRankPage(sp,el){const L=coV(sp,"RANK")||[];const k=Math.min(COS.rk||0
 function coRoute(sp,h){const el=document.getElementById("v-"+sp);if(!el)return;
   if(!coOk(sp)){el.innerHTML=`<div class="small" style="padding:30px 0;text-align:center">Loading ${CO[sp].nm.toLowerCase()}…</div>`;coEnsure(sp,()=>{if(!coOk(sp)){el.innerHTML=`<div class="card">${CO[sp].nm} data isn't ready yet — it comes with the next data update.</div>`;return}if((location.hash||"").slice(1).startsWith(sp))coRoute(sp,decodeURIComponent((location.hash||"").slice(1)))});return}
   if(!(typeof LO!=="undefined"&&LO.data)&&!COS["w"+sp]){COS["w"+sp]=1;let n=0;const t=setInterval(()=>{n++;if(typeof LO!=="undefined"&&LO.data){clearInterval(t);const hh=decodeURIComponent((location.hash||"").slice(1));if(hh.startsWith(sp)){const y=scrollY;coRoute(sp,hh);scrollTo(0,y)}}else if(n>20)clearInterval(t)},500)}
-  const r=h.slice(sp.length);if(r.startsWith("-game-"))return coGamePage(sp,el,r.slice(6));if(r.startsWith("-player-"))return coPlayerPage(sp,el,r.slice(8));if(r.startsWith("-team-"))return coTeamPage(sp,el,r.slice(6));
-  if(r.startsWith("-box-"))return coBoxPage(sp,el,r.slice(5));if(r==="-picks"||r==="-props"||r==="-best")return coPicksPage(sp,el);if(r==="-rank")return coRankPage(sp,el);return coGamesPage(sp,el)}
+  coLiveStart(sp);const r=h.slice(sp.length);if(r.startsWith("-game-"))return coGamePage(sp,el,r.slice(6));if(r.startsWith("-player-"))return coPlayerPage(sp,el,r.slice(8));if(r.startsWith("-team-"))return coTeamPage(sp,el,r.slice(6));
+  if(r.startsWith("-box-"))return coBoxPage(sp,el,r.slice(5));if(r==="-picks"||r==="-props"||r==="-best")return coPicksPage(sp,el);if(r==="-rank")return coRankPage(sp,el);if(r==="-stand")return coStandPage(sp,el);if(r==="-lead")return coLeadPage(sp,el);return coGamesPage(sp,el)}
+
+/* ---------- 💪 strength of schedule: power rating, schedule strength ---------- */
+function coOrd(n){return n+(n%10===1&&n%100!==11?"st":n%10===2&&n%100!==12?"nd":n%10===3&&n%100!==13?"rd":"th")}
+let CO_SOS={};function coSOS(sp){if(CO_SOS[sp])return CO_SOS[sp];const TR=coV(sp,"TR")||{},RES=coV(sp,"RES")||{},S={};
+  for(const [t,L] of Object.entries(RES)){const v=L.map(r=>TR[r[1]]).filter(Boolean).map(x=>x.r);if(v.length)S[t]=v.reduce((a,b)=>a+b,0)/v.length}
+  Object.entries(S).sort((a,b)=>b[1]-a[1]).forEach(([t,v],i)=>S[t]={v,rk:i+1,of:Object.keys(S).length});return CO_SOS[sp]=S}
+function coPower(sp,tid){const TR=coV(sp,"TR")||{},R=TR[tid];if(!R)return "";const n=Object.keys(TR).length,S=coSOS(sp)[tid];
+  return `<div class="card"><h2>💪 Power rating <span class="small">· adjusted for strength of schedule</span></h2><div class="xstrip">
+   <div><b>${coOrd(R.rk)}</b><span>of ${n}</span><small>${R.r>0?"+":""}${coF(R.r)} pts vs average</small></div>
+   <div><b>${R.o>0?"+":""}${coF(R.o)}</b><span>Offense</span><small>pts above avg</small></div>
+   <div><b>${R.d>0?"+":""}${coF(R.d)}</b><span>Defense</span><small>pts allowed vs avg (− = better)</small></div>
+   ${S?`<div><b>${coOrd(S.rk)}</b><span>Schedule so far</span><small>of ${S.of} · 1st = hardest</small></div>`:""}</div>
+   <div class="small">From ${R.g} games against ${CO[sp].U==="CFB"?"FBS":"Division I"} teams. Each result is compared with what those opponents usually score and allow; margins over ${sp==="cfb"?28:22} count as ${sp==="cfb"?28:22}.</div></div>`}
+function coPowerVs(sp,g){const TR=coV(sp,"TR")||{},A=TR[g.a[0]],H=TR[g.h[0]];if(!A||!H)return "";const S=coSOS(sp),sa=S[g.a[0]],sh=S[g.h[0]],an=coT(sp,g.a[0]).a,hn=coT(sp,g.h[0]).a;
+  const row=(l,a,h)=>`<tr><td>${a}</td><th>${l}</th><td>${h}</td></tr>`,sg=v=>(v>0?"+":"")+coF(v);
+  const BR=t=>{const A_=(coV(sp,"ATS")||{})[t]||[];let c=[0,0],o=[0,0];for(const r of A_){const m=r[3]-r[4]+r[5],x=r[3]+r[4]-r[6];if(m)c[m>0?0:1]++;if(x)o[x>0?0:1]++}return A_.length?[`${c[0]}-${c[1]}`,`${o[0]}-${o[1]}`]:["–","–"]},ba=BR(g.a[0]),bh=BR(g.h[0]);
+  return `<div class="card"><h2>💪 Power + betting record</h2><div class="nbatbl"><table class="uftape"><thead><tr><th>${coE(an)}</th><th></th><th>${coE(hn)}</th></tr></thead><tbody>
+   ${row("Power rank",coOrd(A.rk),coOrd(H.rk))}${row("Rating (pts)",sg(A.r),sg(H.r))}${row("Offense",sg(A.o),sg(H.o))}${row("Defense (− better)",sg(A.d),sg(H.d))}${row("Schedule rank",sa?coOrd(sa.rk):"–",sh?coOrd(sh.rk):"–")}${row("Vs spread",ba[0],bh[0])}${row("Over / under",ba[1],bh[1])}</tbody></table></div>
+   <div class="small">Ratings adjusted for strength of schedule. Spread / total records use ESPN's closing lines.</div></div>`}
+/* ---------- 📒 against the spread / over-under (closing lines) ---------- */
+function coBetRec(sp,tid){const A=(coV(sp,"ATS")||{})[tid]||[];if(!A.length||typeof xBetRec==="undefined")return "";
+  return xBetRec(A.map(r=>({d:String(r[0]).slice(5),opp:r[1],home:r[2]==="H",sp:r[5],tot:r[6],pf:r[3],pa:r[4]})),{src:"ESPN (DraftKings)"})}
+/* ---------- 📊 conference standings + 🏈 playoff picture ---------- */
+const CO_AUTO=[["SEC",/^SEC$|Southeastern/],["Big Ten",/Big Ten/],["Big 12",/Big 12/],["ACC",/^ACC$|Atlantic Coast/]],CO_G6=/American|Conference USA|C-USA|Mid-American|^MAC$|Mountain West|Pac-12|Sun Belt/;
+function coStandCf(sp,grp){const c={};for(const r of grp.r){const f=coT(sp,r[0]).cf||"";if(f)c[f]=(c[f]||0)+1}return Object.entries(c).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0]||grp.n}
+function coCFP(sp){if(sp!=="cfb")return "";const RK=coV(sp,"RANK")||[],P=RK.find(x=>/playoff|cfp/i.test(x.n));const ST=coV(sp,"STAND")||[];
+  if(!P||!P.r||!P.r.length)return `<div class="card"><h2>🏈 Playoff picture</h2><div class="small">Shows once the committee's rankings are out (weekly from early November).</div></div>`;
+  const rk={};P.r.forEach(r=>rk[r[1]]=+r[0]);const R=t=>rk[t]||99;
+  /* projected champion = the team at the top of each conference's standings */
+  const leaders={};for(const g of ST){if(!g.r||!g.r.length)continue;const cf=coStandCf(sp,g);if(!leaders[cf])leaders[cf]=g.r[0][0]}
+  const auto=[];for(const [nm,re] of CO_AUTO){const cf=Object.keys(leaders).find(c=>re.test(c));if(cf)auto.push({t:leaders[cf],why:nm+" leader"})}
+  const g6=P.r.map(r=>r[1]).filter(t=>CO_G6.test(coT(sp,t).cf||"")).sort((a,b)=>R(a)-R(b))[0];if(g6)auto.push({t:g6,why:"Top Group of Six"});
+  const nd=Object.keys(coV(sp,"TM")||{}).find(t=>/Notre Dame/.test(coT(sp,t).n));const inn=new Set(auto.map(x=>x.t));
+  const F=auto.slice();if(nd&&R(nd)<=12&&!inn.has(nd)){F.push({t:nd,why:"Notre Dame, top 12"});inn.add(nd)}
+  for(const r of P.r){if(F.length>=12)break;if(!inn.has(r[1])){F.push({t:r[1],why:"At-large"});inn.add(r[1])}}
+  while(F.length>12){const i=F.map((x,j)=>[x,j]).filter(([x])=>x.why==="At-large").sort((a,b)=>R(b[0].t)-R(a[0].t))[0];if(!i)break;F.splice(i[1],1)}
+  const S=F.slice().sort((a,b)=>R(a.t)-R(b.t));const out=P.r.filter(r=>!inn.has(r[1])).slice(0,4);
+  const tm=(x,i)=>`<a class="ufval" href="#${sp}-team-${x.t}"><b>${i+1}</b><span>${coBadge(sp,x.t)} ${coE(coT(sp,x.t).s||coT(sp,x.t).n)}</span><span class="small">${rk[x.t]?"CFP #"+rk[x.t]:"unranked"} · ${coE(x.why)}</span></a>`;
+  const pair=(a,b)=>`<div class="ufval"><span>${S[a-1]?coE(coT(sp,S[a-1].t).a):"?"} <span class="small">(${a})</span> vs ${S[b-1]?coE(coT(sp,S[b-1].t).a):"?"} <span class="small">(${b})</span></span><span class="small">at ${S[a-1]?coE(coT(sp,S[a-1].t).a):"?"}</span></div>`;
+  return `<div class="card"><h2>🏈 Playoff picture <span class="small">· if it ended today</span></h2>
+   <div class="small" style="margin-bottom:6px">From the latest committee rankings (${coE(P.n)}). In: the SEC, Big Ten, Big 12 and ACC champions, the top Group of Six team, Notre Dame if it's top 12, then the highest-ranked others. Today's conference leaders stand in for the champions. Seeds 1–4 (first-round byes) go to the four highest-ranked teams.</div>
+   <h3 style="margin:8px 0 4px">Byes</h3>${S.slice(0,4).map(tm).join("")}
+   <h3 style="margin:10px 0 4px">First round (Dec 18–19, higher seed hosts)</h3>${pair(5,12)}${pair(6,11)}${pair(7,10)}${pair(8,9)}
+   <h3 style="margin:10px 0 4px">Seeds 5–12</h3>${S.slice(4).map((x,i)=>tm(x,i+4)).join("")}
+   ${out.length?`<h3 style="margin:10px 0 4px">First out</h3>${out.map(r=>`<a class="ufval" href="#${sp}-team-${r[1]}"><span>${coBadge(sp,r[1])} ${coE(coT(sp,r[1]).s||coT(sp,r[1]).n)}</span><span class="small">CFP #${r[0]} · ${coE(r[2]||"")}</span></a>`).join("")}`:""}</div>`}
+function coStandPage(sp,el){const ST=(coV(sp,"STAND")||[]).filter(g=>g.r&&g.r.length);const names=ST.map(g=>g.n);
+  const P5=/SEC|Southeastern|Big Ten|Big 12|ACC|Atlantic Coast|Big East/;let k=COS.st&&COS.st[sp]!=null?COS.st[sp]:Math.max(0,names.findIndex(n=>P5.test(n)));if(k>=ST.length)k=0;const G=ST[k],TR=coV(sp,"TR")||{};
+  el.innerHTML=`${coHead(sp,"Standings")}${coCFP(sp)}
+   ${ST.length?`<div class="card"><h2>📊 Conference standings</h2><select data-cost style="width:100%;margin-bottom:8px">${ST.map((g,i)=>`<option value="${i}"${i===k?" selected":""}>${coE(g.n)}</option>`).join("")}</select>
+   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Team</th><th>Conf</th><th>Overall</th><th>Streak</th><th>Power</th></tr></thead><tbody>
+   ${G.r.map((r,i)=>`<tr><td>${i+1}</td><td><a href="#${sp}-team-${r[0]}">${coBadge(sp,r[0])} ${coT(sp,r[0]).rk?`<small class="corank">${coT(sp,r[0]).rk}</small> `:""}${coE(coT(sp,r[0]).s||coT(sp,r[0]).n)}</a></td><td>${coE(r[1]||"–")}</td><td>${coE(r[2]||"–")}</td><td>${coE(r[3]||"")}</td><td>${TR[r[0]]?coOrd(TR[r[0]].rk):"–"}</td></tr>`).join("")}</tbody></table></div>
+   <div class="small">Standings from ESPN. Power = our strength-of-schedule rating rank.</div></div>`:`<div class="card small">Standings come with the next data update.</div>`}`;
+  const s=el.querySelector("[data-cost]");if(s)s.onchange=()=>{(COS.st=COS.st||{})[sp]=+s.value;coStandPage(sp,el)}}
+/* ---------- 🏅 leaderboards (every box score this season) ---------- */
+function coLeadPage(sp,el){const L=coV(sp,"LEAD")||{},cats=Object.keys(L);const c=cats.includes((COS.ld||{})[sp])?COS.ld[sp]:cats[0],P=coV(sp,"P")||{};
+  const tot=sp==="cfb";el.innerHTML=`${coHead(sp,"Leaders")}${cats.length?`<div class="seg" style="margin-bottom:8px;flex-wrap:wrap">${cats.map(x=>`<button class="${x===c?"on":""}" data-cold="${coE(x)}">${coE(x)}</button>`).join("")}</div>
+   <div class="card"><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Player</th><th>${tot?"Total":"Per game"}</th><th>${tot?"Per game":"Total"}</th><th>GP</th></tr></thead><tbody>
+   ${(L[c]||[]).map((r,i)=>{const nm=P[r[0]]?`<a href="#${sp}-player-${r[0]}"><b>${coE(r[1])}</b></a>`:`<b>${coE(r[1])}</b>`;return `<tr><td>${i+1}</td><td>${nm} <span class="small">${coE(r[3]||"")} · <a href="#${sp}-team-${r[2]}">${coE(coT(sp,r[2]).a)}</a></span></td><td><b>${tot?r[5]:coF(r[4])}</b></td><td>${tot?coF(r[4]):r[5]}</td><td>${r[6]}</td></tr>`}).join("")}</tbody></table></div>
+   <div class="small">${tot?"Ranked by season total":"Ranked by per-game average"} · minimum 3 games · from ESPN box scores of every ${sp==="cfb"?"FBS":"Division I"} game this season.</div></div>`:`<div class="card small">Leaderboards come with the next data update.</div>`}`;
+  el.querySelectorAll("[data-cold]").forEach(b=>b.onclick=()=>{(COS.ld=COS.ld||{})[sp]=b.dataset.cold;coLeadPage(sp,el)})}
+/* ---------- 🔴 live scores: ESPN scoreboard every 30 s while a college page is open and games are on ---------- */
+const CO_PATH={cfb:["football/college-football",80],cbb:["basketball/mens-college-basketball",50]};
+function coLiveStart(sp){if(COS["lv"+sp])return;COS["lv"+sp]=1;const tick=async()=>{try{
+    const h=(location.hash||"").slice(1);if(!h.startsWith(sp)||document.hidden||!coOk(sp))return;
+    const G=coV(sp,"G")||[],now=Date.now(),on=G.filter(g=>g.st==="in"||(g.st==="pre"&&new Date(g.t).getTime()<=now+5*60e3&&new Date(g.t).getTime()>now-6*3600e3));if(!on.length)return;
+    const days=[...new Set(on.map(g=>coDay(g.t).replace(/-/g,"")))];let ch=0;
+    for(const d of days){const r=await fetch(`https://site.api.espn.com/apis/site/v2/sports/${CO_PATH[sp][0]}/scoreboard?groups=${CO_PATH[sp][1]}&limit=400&dates=${d}`);if(!r.ok)continue;const J=await r.json();
+      for(const e of J.events||[]){const g=G.find(x=>String(x.id)===String(e.id));if(!g)continue;const c=(e.competitions||[{}])[0],st=(c.status||{}).type||{};
+        for(const x of c.competitors||[]){const s=String((x.team||{}).id)===String(g.h[0])?g.h:String((x.team||{}).id)===String(g.a[0])?g.a:null;if(s&&x.score!=null&&s[3]!==x.score){s[3]=x.score;ch=1}}
+        if(st.state&&(st.state!==g.st||st.shortDetail!==g.det)){g.st=st.state;g.det=st.shortDetail||g.det;ch=1}}}
+    if(ch&&(location.hash||"").slice(1).startsWith(sp)){const y=scrollY;coRoute(sp,decodeURIComponent((location.hash||"").slice(1)));scrollTo(0,y)}
+  }catch(e){}};setInterval(tick,30000);setTimeout(tick,1500)}

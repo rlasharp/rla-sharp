@@ -362,6 +362,6 @@ for tid in wt:
         if not b or r[6] in BX: continue
         hm = tid if r[3] == "H" else r[1]; aw = r[1] if r[3] == "H" else tid
         sh, sa = (r[4], r[5]) if r[3] == "H" else (r[5], r[4])
-        BX[r[6]] = {"d": r[0], "h": [hm, sh], "a": [aw, sa], "n": r[7], "t": b.get("_t") or {}, "p": {k: [x[1:] for x in v] for k, v in b.items() if k != "_t"}}
+        BX[r[6]] = {"d": r[0], "h": [hm, sh], "a": [aw, sa], "n": r[7], "t": b.get("_t") or {}, "p": {k: [x[1:] for x in v] for k, v in b.items() if not k.startswith("_")}}
 open(os.path.join(R, f"src/{SP}_box.js"), "w").write(f"/* {SP.upper()} box scores (window teams, last 8 games each) — tools/collegefetch.py */\nvar {U}_BX={J(BX)};\nvar {U}_BX_OK=1;\n")
 log(f"{SP}: {len(PL)} players with logs, {len(focus)} focus games, {NREQ[0]} requests")

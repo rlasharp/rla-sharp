@@ -127,7 +127,7 @@ function moreOpen(){
   const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
   const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-scores","🧾 Scores"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
   const ufc=[["#ufc","🥊 Fight cards"],["#ufc-props","⭐ Best bets"],["#ufc-results","🧾 Results"]];
-  const cfb=[["#cfb","🏈 Games"],["#cfb-picks","⭐ Picks"],["#cfb-rank","🏆 Rankings"]],cbb=[["#cbb","🏀 Games"],["#cbb-picks","⭐ Picks"],["#cbb-rank","🏆 Rankings"]];
+  const cfb=[["#cfb","🏈 Games"],["#cfb-picks","⭐ Picks"],["#cfb-rank","🏆 Rankings"],["#cfb-stand","📊 Standings + playoff"],["#cfb-lead","🏅 Leaders"]],cbb=[["#cbb","🏀 Games"],["#cbb-picks","⭐ Picks"],["#cbb-rank","🏆 Rankings"],["#cbb-stand","📊 Standings"],["#cbb-lead","🏅 Leaders"]];
   const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#futures","🏆 Futures"],["#calib","🎯 Calibration"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";

@@ -658,7 +658,7 @@ function nbaEval(nm,k,line,side,odds,book,oppIn){
      toward the player's hit rates only part of the way — more with more games behind them. */
   const row=NBA_PROPS.find(r=>r[0]===nm&&r[1]===k&&r[2]===line&&r[3]!=null&&r[4]!=null);
   let fair=row?(()=>{const io=nbaImpl(row[3]),iu=nbaImpl(row[4]);return side==="o"?io/(io+iu):iu/(io+iu)})():be/1.045;
-  const nEff=Math.min(25,l10.length+.5*ss.length),w=.4*nEff/(nEff+10)*(typeof xCalK!=="undefined"?xCalK("nba"):1);   /* × what the record says (xsport.js) */
+  const nEff=Math.min(25,l10.length+.5*ss.length),w=.4*nEff/(nEff+10);   /* the record's correction is applied at the end (xCalM, xsport.js) */
   let sc=fair+w*(raw-fair)+(dvOk?.02*dvOk:0);
   /* usage bump (Nov 2026): key teammates out tonight -> his hit rate in this season's games without them, blended in by sample size */
   let bump=null;try{const so=nbaStarsOut(p.tm).filter(n=>n!==nm);if(so.length){const outIds=so.map(n=>new Set((NBA_LOGS[n]||{g:[]}).g.map(x=>x[0]))),TG=new Set(NBA_RES.filter(r=>r[2]===p.tm||r[3]===p.tm).map(r=>r[0]));
@@ -669,8 +669,9 @@ function nbaEval(nm,k,line,side,odds,book,oppIn){
   let blow=null;try{const Lg=g&&nbaL(g),spA=Lg?Math.abs(Lg.sp):0,mn=nbaAvg(p,"min");
     if(spA>=9&&mn>=24&&NBA_MK[k]&&!["stl","blk"].includes(k)){const pB=nbaBlowP(spA),r=nbaBlowMin(p);
       if(pB!=null&&r!=null&&r<.97){const f=pB*(1-r),r10s=l10.filter(o=>{const v=nbaVal(o.x,k)*(1-f);return side==="o"?v>line:v<line}).length/l10.length,d=Math.max(-.06,Math.min(.06,.4*(r10s-r10)));sc+=d;blow={pB,r,f,d}}}}catch(e){}
-  sc=Math.max(.03,Math.min(.9,sc));
-  return {nm,k,line,side,odds,book,p,opp,g,sc,raw,fair,be,edge:sc-be,dvOk,n10:l10.length,bump,blow,
+  /* our track record: how far our chance may move from the book's fair price, fitted on every graded best prop (xsport.js) */
+  const sc0=Math.max(.03,Math.min(.9,sc)),cm=typeof xCalM!=="undefined"?xCalM("nba",side):1;sc=Math.max(.03,Math.min(.9,fair+cm*(sc0-fair)));
+  return {nm,k,line,side,odds,book,p,opp,g,sc,sc0,cm,raw,fair,be,edge:sc-be,dvOk,n10:l10.length,bump,blow,
     c3:[hit(l10.slice(-3)),l10.slice(-3).length],c5:[hit(l5),l5.length],c10:[hit(l10),l10.length],cS:[hit(ss),ss.length],cH:[hit(h2),h2.length],
     id:"pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k};
 }
@@ -708,7 +709,7 @@ function nbaBestCard(n,more){
   if(!NBA_PROPS.length||!top.length)return "";
   return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props tonight</h2>
   <div class="small" style="margin-bottom:8px">Every posted line, over and under, ranked by how often it would have hit vs what the odds need. Tap one for charts.</div>
-  ${top.map(nbaBestRow).join("")}
+  ${typeof xCalNote!=="undefined"?xCalNote("nba"):""}${top.map(nbaBestRow).join("")}
   ${more&&L.length>n?`<a href="#nba-props" class="small" style="display:block;text-align:center;margin-top:8px;color:var(--text2)">See all ${L.length} →</a>`:""}
   <div class="small" style="margin-top:8px">Hit score blends last 10 (45%), this season (35%) and vs tonight's opponent (20%), ±5 for the position matchup. A lean, not a guarantee.</div></div>`;
 }
