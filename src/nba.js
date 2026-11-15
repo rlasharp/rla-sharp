@@ -670,7 +670,7 @@ function nbaEval(nm,k,line,side,odds,book,oppIn){
     if(spA>=9&&mn>=24&&NBA_MK[k]&&!["stl","blk"].includes(k)){const pB=nbaBlowP(spA),r=nbaBlowMin(p);
       if(pB!=null&&r!=null&&r<.97){const f=pB*(1-r),r10s=l10.filter(o=>{const v=nbaVal(o.x,k)*(1-f);return side==="o"?v>line:v<line}).length/l10.length,d=Math.max(-.06,Math.min(.06,.4*(r10s-r10)));sc+=d;blow={pB,r,f,d}}}}catch(e){}
   /* our track record: how far our chance may move from the book's fair price, fitted on every graded best prop (xsport.js) */
-  const sc0=Math.max(.03,Math.min(.9,sc)),cm=typeof xCalM!=="undefined"?xCalM("nba",side):1;sc=Math.max(.03,Math.min(.9,fair+cm*(sc0-fair)));
+  const sc0=Math.max(.03,Math.min(.9,sc)),cm=typeof xCalM!=="undefined"?xCalM("nba",side,k):1;sc=Math.max(.03,Math.min(.9,fair+cm*(sc0-fair)));
   return {nm,k,line,side,odds,book,p,opp,g,sc,sc0,cm,raw,fair,be,edge:sc-be,dvOk,n10:l10.length,bump,blow,
     c3:[hit(l10.slice(-3)),l10.slice(-3).length],c5:[hit(l5),l5.length],c10:[hit(l10),l10.length],cS:[hit(ss),ss.length],cH:[hit(h2),h2.length],
     id:"pc_"+nm.replace(/[^A-Za-z0-9]/g,"")+"_"+k};

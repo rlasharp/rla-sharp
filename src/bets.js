@@ -90,6 +90,8 @@ function specFromPlay(pl){if(pl.type==="prop")return specProp(pl.player,pl.marke
   const g=SLATE.find(x=>x.id===pl.game);return specGame(g,pl.type==="total"?"total":pl.type,pl.type==="total"?pl.side:pl.team)}
 
 function viewBets(){
+  /* open college bets: load that sport's games and keep their scores live while this page is open */
+  if(typeof coEnsure!=="undefined")for(const sp of ["cfb","cbb"])if(betsLoad().some(b=>(b.k==="col"||b.k==="colg")&&b.sp===sp)){if(!coOk(sp))coEnsure(sp,()=>{if(coOk(sp)&&(location.hash||"").slice(1)==="bets")viewBets()});coLiveStart(sp)}
   const a=betsLoad(),el=$("#v-bets");const gs=a.map(b=>({b,g:gradeBet(b)}));
   const set=gs.filter(x=>x.g.r!=="pending"),pend=gs.filter(x=>x.g.r==="pending");
   const W=set.filter(x=>x.g.r==="win").length,Lo=set.filter(x=>x.g.r==="loss").length,P=set.filter(x=>x.g.r==="push"||x.g.r==="void").length;

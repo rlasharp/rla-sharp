@@ -18,14 +18,16 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
   if(sc===null)errs.push('soccer section missing');else if(!sc.g&&vw===390)console.log('note: no upcoming soccer matches in the data')}
  /* college: load the data, then its pages (a page still saying "Loading…" after the data is in counts as broken) */
  for(const CS of ['cfb','cbb']){const c=await p.evaluate(CS=>new Promise(r=>{if(typeof coEnsure==='undefined')return r(null);coEnsure(CS,()=>{if(!coOk(CS))return r({none:1});const G=coGames(CS),T=Object.keys(coV(CS,'TS')||{}),P=Object.keys(coV(CS,'P')||{});r({g:(G.find(g=>g.st==='pre')||G[0]||{}).id,f:(G.find(g=>g.st==='post')||{}).id,t:T[0],p:P[0]})})}),CS);
-  if(c&&!c.none){H.push(CS,CS+'-picks',CS+'-rank',CS+'-stand',CS+'-lead',CS+'-big',CS==='cfb'?CS+'-pickem':CS+'-bracket');if(c.g)H.push(CS+'-game-'+c.g);if(c.t)H.push(CS+'-team-'+c.t);if(c.p)H.push(CS+'-player-'+c.p);
+  if(c&&!c.none){H.push(CS,CS+'-picks',CS+'-rank',CS+'-stand',CS+'-lead',CS+'-big',CS==='cfb'?CS+'-pickem':CS+'-bracket',CS+'-more');if(c.g)H.push(CS+'-game-'+c.g);if(c.t)H.push(CS+'-team-'+c.t);if(c.p)H.push(CS+'-player-'+c.p);
    await p.goto('file://'+f+'#'+CS);await p.waitForTimeout(1500);const t=await p.evaluate(CS=>(document.getElementById('v-'+CS)||{}).innerText||'',CS);if(/Loading/.test(t.slice(0,200)))errs.push(`#${CS} stuck on Loading after its data loaded`)}}
  H.push('ufc','ufc-props','ufc-results','ufc-rank','futures','calib','settings');
- for(const h of H){await p.goto('file://'+f+'#'+h);await p.waitForTimeout(350);
+ const BADSEEN=globalThis.BADSEEN||(globalThis.BADSEEN=new Set());for(const h of H){await p.goto('file://'+f+'#'+h);await p.waitForTimeout(350);
   let r=await p.evaluate(()=>({w:document.documentElement.scrollWidth,t:(document.querySelector('section:not([hidden]),main')||document.body).innerText.length}));
   if(r.w>vw+1){await p.waitForTimeout(900);   /* re-measure once: a page still drawing (slow runner) isn't a real overflow */
    r=await p.evaluate(vw=>({w:document.documentElement.scrollWidth,who:[...document.querySelectorAll('body *')].filter(e=>e.offsetParent!==null&&e.getBoundingClientRect().right>vw+1).slice(-3).map(e=>e.tagName.toLowerCase()+(e.id?'#'+e.id:'')+(e.className&&typeof e.className==='string'?'.'+e.className.split(' ').slice(0,2).join('.'):'')+' "'+(e.innerText||'').trim().slice(0,30).replace(/\n/g,' ')+'"').join(' | ')}),vw);
-   if(r.w>vw+1)errs.push(`overflow #${h} @${vw}: ${r.w} — ${r.who}`)}}
+   if(r.w>vw+1)errs.push(`overflow #${h} @${vw}: ${r.w} — ${r.who}`)}
+  /* broken numbers: NaN / undefined / [object Object] / Infinity anywhere on the page someone is looking at */
+  if(!BADSEEN.has(h)){const bad=await p.evaluate(()=>{const t=[...document.querySelectorAll('section:not([hidden])')].map(e=>e.innerText).join('\n')||document.body.innerText;const m=t.match(/.{0,40}(\bNaN\b|\bundefined\b|\[object Object\]|-?Infinity).{0,30}/);return m?m[0].replace(/\n/g,' '):null});if(bad){BADSEEN.add(h);errs.push(`bad value on #${h}: "${bad}"`)}}}
  if(ids.nflP){await p.evaluate(n=>{S.prop={player:n,market:null,open:true};location.hash="props"},ids.nflP);await p.waitForTimeout(400);await p.evaluate(n=>{S.prop={player:n,market:null,open:true};viewPlayer()},ids.nflP);await p.waitForTimeout(300);
   const w=await p.evaluate(()=>document.documentElement.scrollWidth);if(w>vw+1)errs.push(`overflow nfl player @${vw}: ${w}`)}
  await p.close()}

@@ -225,8 +225,8 @@ function socParlayCard(f){if(!f||socStarted(f)||!f.proj||!f.odds)return "";const
    chance = book's fair price + m × (our unadjusted chance − fair price). m = 1: trust our numbers as they are; m = 0: our picks
    have done no better than the price, so the price is the honest chance. Fitted per side (overs / unders) when there are 15+
    graded picks on that side, and pulled toward 1 a little while the sample is small. */
-function xCalM(sp,side){try{const F=TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].fit;let m=null,n=0;
-  if(F){const S=F[side==="u"?"u":"o"],A=F.all;if(S&&S.n>=15){m=S.m;n=S.n}else if(A&&A.n){m=A.m;n=A.n}}
+function xCalM(sp,side,k){try{const F=TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].fit;let m=null,n=0;
+  if(F){const S=F[side==="u"?"u":"o"],A=F.all,K=k&&F.mk&&F.mk[k];if(K&&K.n>=12){m=K.m;n=K.n}else if(S&&S.n>=15){m=S.m;n=S.n}else if(A&&A.n){m=A.m;n=A.n}}
   else{const K=TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].calk;if(K&&K.n>=25){const E=(K.sc-K.imp)/K.n,R=(K.hit-K.imp)/K.n;if(E>.005){m=Math.max(0,Math.min(1.2,R/E));n=K.n}}}
   if(m==null)return 1;return Math.round(((n*m+15)/(n+15))*1000)/1000}catch(e){return 1}}
 /* short note shown above the best props when our record says to lean on the price */

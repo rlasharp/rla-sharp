@@ -254,6 +254,48 @@ for _ in range(40):
     D = {t: (sum(v) / (len(v) + 1.5) if v else 0.0) for t, v in sD.items()}
 TR = {t: {"o": round(O[t], 2), "d": round(D[t], 2), "r": round(O[t] - D[t], 2), "g": sum(1 for x in GM if x[0] == t)} for t in RES if any(x[0] == t for x in GM)}
 for i, (t, v) in enumerate(sorted(TR.items(), key=lambda kv: -kv[1]["r"])): v["rk"] = i + 1
+# ---------- backtest: replay the season week by week — ratings from earlier games only — against ESPN's closing lines ----------
+def _fit(games):
+    tm_ = {x[1] for x in games} | {x[2] for x in games}; O_ = {t: 0.0 for t in tm_}; D_ = {t: 0.0 for t in tm_}
+    lg_ = sum(x[3] for x in games) / len(games)
+    for _ in range(30):
+        sO = {t: [] for t in tm_}; sD = {t: [] for t in tm_}
+        for d, t, o, pf, pa in games: sO[t].append(pf - lg_ - D_[o]); sD[t].append(pa - lg_ - O_[o])
+        O_ = {t: (sum(v) / (len(v) + 1.5) if v else 0.0) for t, v in sO.items()}; D_ = {t: (sum(v) / (len(v) + 1.5) if v else 0.0) for t, v in sD.items()}
+    return O_, D_, lg_
+GMD = []; ONE = {}
+for tid, L in RES.items():
+    for r in L:
+        if tid in DIV and r[1] in DIV and r[4] is not None and r[5] is not None:
+            h = 0 if r[7] else (HFA / 2 if r[3] == "H" else -HFA / 2); m = r[4] - r[5]; adj = (max(-CAP, min(CAP, m)) - m) / 2
+            GMD.append((r[0], tid, r[1], r[4] + adj - h, r[5] - adj + h))
+            if r[6] not in ONE and (r[3] == "H" or r[7]): ONE[r[6]] = (r[0], tid, r[1], r[4], r[5], r[7])
+THR = [3, 5, 7, 10] if SP == "cfb" else [2, 4, 6, 8]
+BT = {"sp": {str(t): [0, 0, 0] for t in THR}, "tot": {str(t): [0, 0, 0] for t in THR}, "n": 0, "wk": 0}
+if GMD:
+    d0_ = dt.date.fromisoformat(min(x[0] for x in GMD)); wk = d0_ + dt.timedelta(days=(7 - d0_.weekday()) % 7 or 7)
+    while wk <= NOW.date():
+        prior = [x for x in GMD if x[0] < wk.isoformat()]; nxt = wk + dt.timedelta(days=7)
+        cnt = {}
+        for x in prior: cnt[x[1]] = cnt.get(x[1], 0) + 1
+        todo = [(e, v) for e, v in ONE.items() if wk.isoformat() <= v[0] < nxt.isoformat() and cnt.get(v[1], 0) >= 3 and cnt.get(v[2], 0) >= 3]
+        if prior and todo:
+            O_, D_, lg_ = _fit(prior); BT["wk"] += 1
+            for e, (d, h, a, hs, as_, neu) in todo:
+                l = (BOX.get(e) or {}).get("_l") or [None, None, ""]
+                if l[0] is None: continue
+                hsp = l[0] if (not l[2] or l[2] == h) else -l[0]
+                hf = 0 if neu else HFA / 2
+                ph = lg_ + O_.get(h, 0) + D_.get(a, 0) + hf; pa_ = lg_ + O_.get(a, 0) + D_.get(h, 0) - hf
+                BT["n"] += 1; e1 = (ph - pa_) + hsp; res = (hs - as_) + hsp
+                for t in THR:
+                    if abs(e1) >= t: BT["sp"][str(t)][0 if res * e1 > 0 else 1 if res * e1 < 0 else 2] += 1
+                if l[1] is not None:
+                    e2 = ph + pa_ - l[1]; r2 = hs + as_ - l[1]
+                    for t in THR:
+                        if abs(e2) >= t: BT["tot"][str(t)][0 if r2 * e2 > 0 else 1 if r2 * e2 < 0 else 2] += 1
+        wk = nxt
+log(f"{SP}: backtest {BT['n']} games over {BT['wk']} weeks")
 # each team's own home edge: how much better it does at home than on the road against what its ratings expect (shrunk to the default)
 for t, v in TR.items():
     hm, rd = [], []
@@ -415,6 +457,12 @@ for g in G:
     if rows and (g.get("riv") or g.get("ttl")):
         with ThreadPoolExecutor(6) as ex: list(ex.map(box, [x[5] for x in rows if x[5]]))
         for x in rows:
+            b_ = BOX.get(x[5]) if x[5] else None
+            if b_ is not None and (b_.get("_l") or [None])[0] is None and not b_.get("_l2"):
+                b_["_l2"] = 1
+                co = get(f"https://sports.core.api.espn.com/v2/sports/{CFG['path'].replace('/', '/leagues/')}/events/{x[5]}/competitions/{x[5]}/odds") or {}
+                it = next((i for i in co.get("items") or [] if i.get("spread") is not None), None)
+                if it: b_["_l"] = [num(it.get("spread")), num(it.get("overUnder")), (b_.get("_l") or [None, None, ""])[2]]
             l = (BOX.get(x[5]) or {}).get("_l") if x[5] else None
             if l and l[0] is not None: x += [l[0] if (l[2] == h or (not l[2] and x[1] == "H")) else -l[0], l[1]]   # spread for this game's home team, total
     if rows: H2H[g["id"]] = sorted(rows, reverse=True)
@@ -450,6 +498,55 @@ if SP == "cfb":
     with ThreadPoolExecutor(6) as ex: list(ex.map(wx, G))
     json.dump(GEO, open(GF, "w"), separators=(",", ":"))
     log(f"{SP}: weather for {len(WX)} outdoor games")
+# ---------- travel: miles from where each team last played to this game (team home cities from ESPN, places via Open-Meteo) ----------
+TRV = {}
+try:
+    import urllib.parse, math
+    GF2 = os.path.join(R, f"data/{SP}_geo.json")
+    try: GEO2 = json.load(open(GF2))
+    except Exception: GEO2 = {}
+    VF = os.path.join(R, f"data/{SP}_venue.json")
+    try: VEN = json.load(open(VF))
+    except Exception: VEN = {}
+    STN = {"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming","DC":"District of Columbia"}
+    def home(tid):
+        if tid not in VEN:
+            t = (get(SITE + f"teams/{tid}") or {}).get("team") or {}
+            ad = ((t.get("franchise") or {}).get("venue") or {}).get("address") or {}
+            VEN[tid] = [ad.get("city") or "", ad.get("state") or ""]
+        return VEN[tid]
+    def geo(city, stt):
+        k = f"{city}|{stt}"
+        if not city: return None
+        if k not in GEO2:
+            q = get("https://geocoding-api.open-meteo.com/v1/search?count=10&language=en&format=json&name=" + urllib.parse.quote(city)) or {}
+            hit = next((x for x in q.get("results") or [] if x.get("admin1") == STN.get(stt, stt)), None) or next((x for x in q.get("results") or [] if x.get("country_code") == "US"), None)
+            GEO2[k] = [hit["latitude"], hit["longitude"]] if hit else None
+        return GEO2[k]
+    def miles(p, q):
+        if not p or not q: return None
+        la1, lo1, la2, lo2 = map(math.radians, (p[0], p[1], q[0], q[1]))
+        return round(3959 * 2 * math.asin(math.sqrt(math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2)))
+    pre = [g for g in G if g["st"] == "pre"]
+    need_t = set()
+    for g in pre:
+        for s_ in (g["a"], g["h"]):
+            R_ = [r for r in RES.get(s_[0], []) if r[0] < (g["t"] or "")[:10]]
+            if R_: need_t.add(s_[0] if R_[-1][3] == "H" else R_[-1][1])
+        need_t.add(g["h"][0])
+    with ThreadPoolExecutor(8) as ex: list(ex.map(home, sorted(need_t)))
+    for g in pre:
+        here = geo(*g["loc"]) if g.get("loc") and g["loc"][0] else geo(*home(g["h"][0]))
+        out = {}
+        for k_, s_ in (("a", g["a"]), ("h", g["h"])):
+            R_ = [r for r in RES.get(s_[0], []) if r[0] < (g["t"] or "")[:10]]
+            if not R_ or R_[-1][7]: continue
+            last = home(s_[0] if R_[-1][3] == "H" else R_[-1][1]); mi = miles(geo(*last), here)
+            if mi is not None: out[k_] = mi
+        if out: TRV[g["id"]] = out
+    json.dump(GEO2, open(GF2, "w"), separators=(",", ":")); json.dump(VEN, open(VF, "w"), separators=(",", ":"))
+    log(f"{SP}: travel for {len(TRV)} games")
+except Exception as e: log("travel:", e)
 # focus list for the odds job: ranked teams first, then power conferences, then the rest; soonest first within each
 def pri(g):
     rk = min([x for x in (g["a"][2], g["h"][2]) if x] or [99])
@@ -476,6 +573,8 @@ print(f"var {U}_LG={round(lg, 2)};")
 print(f"var {U}_EFF={J(EFF)};  /* pace + efficiency, opponent-adjusted: o / d = points per 100 {'plays' if SP == 'cfb' else 'possessions'} above average (d: allowed, lower = better), t = {'plays' if SP == 'cfb' else 'possessions'} per game above average, rk */")
 print(f"var {U}_EFFLG={J(EFFLG)};  /* [league points per 100, league {'plays' if SP == 'cfb' else 'possessions'} per game, home edge per 100] */")
 print(f"var {U}_WX={J(WX)};  /* game id -> [temp F, wind mph, gusts mph, rain chance %, WMO weather code] at kickoff */")
+print(f"var {U}_BT={J(BT)};  /* backtest: leans by how far our ratings were from ESPN's closing line (≥ threshold) -> [won, lost, push]; n games, wk weeks */")
+print(f"var {U}_TRV={J(TRV)};  /* game id -> {{a, h}}: miles from where each team last played */")
 print(f"var {U}_ATS={J(TATS)};  /* team id -> [[date, opp, H/A, pts for, pts against, team spread (- = favoured), total, event id], ...] */")
 print(f"var {U}_LEAD={J(LEAD)};  /* category -> [[athlete id, name, team id, pos, per game, total, games], ...] */")
 print(f"var {U}_STAND={J(STAND)};  /* conference standings: [{{n, r: [[team id, conference record, overall, streak], ...]}}] */")

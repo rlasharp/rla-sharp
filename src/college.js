@@ -49,9 +49,13 @@ function coModel(sp,g){const TS=coV(sp,"TS")||{},A=TS[g.a[0]],H=TS[g.h[0]];if(!A
   if(L.sp!=null)mh=(mh+(-L.sp))/2;if(L.tot!=null)tot=(tot+L.tot)/2;
   return {m:mh,tot,hp:(tot+mh)/2,ap:(tot-mh)/2,p:coNcdf(mh/C.sd),raw,n:Math.min(A.g,H.g),sos,eff,hfa}}
 /* leans: where our own number (before the blend) is far from the market */
-function coLeans(sp,g){if(g.st!=="pre")return [];const M=coModel(sp,g),L=coLine(sp,g),C=CO[sp];if(!M||M.n<3)return [];const out=[];
-  if(L.sp!=null){const e=M.raw.m-(-L.sp);if(Math.abs(e)>=C.lean[0]){const home=e>0;out.push({k:"Spread",tid:home?g.h[0]:g.a[0],txt:`${coT(sp,home?g.h[0]:g.a[0]).s||coT(sp,home?g.h[0]:g.a[0]).a} ${home?(L.sp>0?"+":"")+L.sp:(L.sp<0?"+":"")+(-L.sp)}`,edge:Math.abs(e),odds:L.spx?L.spx[home?1:0]:null})}}
-  if(L.tot!=null){const e=M.raw.tot-L.tot;if(Math.abs(e)>=C.lean[1])out.push({k:"Total",txt:`${e>0?"Over":"Under"} ${L.tot}`,edge:Math.abs(e),odds:L.ox?L.ox[e>0?0:1]:null})}
+/* lean thresholds from the season replay (tools/collegefetch.py, CFB_BT/CBB_BT): the smallest gap from the line whose leans won
+   53.5%+ over 40+ games; if none did, no leans of that kind (null); with too few games yet, the defaults */
+function coThr(sp,kind){const B=coV(sp,"BT"),d=CO[sp].lean[kind==="sp"?0:1];if(!B||!B[kind])return d;const E=Object.entries(B[kind]).map(([t,r])=>[+t,r]).sort((a,b)=>a[0]-b[0]);
+  if(!E.length||E[0][1][0]+E[0][1][1]<40)return d;for(const [t,[w,l]] of E)if(w+l>=40&&w/(w+l)>=.535)return t;return null}
+function coLeans(sp,g){if(g.st!=="pre")return [];const M=coModel(sp,g),L=coLine(sp,g),C=CO[sp];if(!M||M.n<3)return [];const out=[],t1=coThr(sp,"sp"),t2=coThr(sp,"tot");
+  if(L.sp!=null&&t1!=null){const e=M.raw.m-(-L.sp);if(Math.abs(e)>=t1){const home=e>0;out.push({k:"Spread",tid:home?g.h[0]:g.a[0],txt:`${coT(sp,home?g.h[0]:g.a[0]).s||coT(sp,home?g.h[0]:g.a[0]).a} ${home?(L.sp>0?"+":"")+L.sp:(L.sp<0?"+":"")+(-L.sp)}`,edge:Math.abs(e),odds:L.spx?L.spx[home?1:0]:null})}}
+  if(L.tot!=null&&t2!=null){const e=M.raw.tot-L.tot;if(Math.abs(e)>=t2)out.push({k:"Total",txt:`${e>0?"Over":"Under"} ${L.tot}`,edge:Math.abs(e),odds:L.ox?L.ox[e>0?0:1]:null})}
   return out}
 /* ---------- props: his values, hit rates, our chance ---------- */
 /* ---------- picks: our leans on spread / total, tracked in My Bets and graded from the final score ---------- */
@@ -110,9 +114,10 @@ function coGamesPage(sp,el){const G=coGames(sp),days=[...new Set(G.map(g=>coDay(
 function coPicksPage(sp,el){const G=coGames(sp).filter(g=>g.st==="pre"),P=G.flatMap(g=>coLeans(sp,g).map(x=>({g,x}))).sort((a,b)=>b.x.edge-a.x.edge),flt=COS.pf||"top";
   const S=G.filter(g=>flt==="all"||g.a[2]||g.h[2]).filter(g=>coModel(sp,g));
   el.innerHTML=`<h1>${CO[sp].em} ${CO[sp].U} picks</h1><p class="sub">Predicted scores for every game, and our leans where our number is far from the line.</p>
-   <div class="card potd"><h2 style="margin-bottom:2px">⭐ Our leans</h2><div class="small" style="margin-bottom:6px">Where our own number (before blending with the market) is ${CO[sp].lean[0]}+ points off the spread or ${CO[sp].lean[1]}+ off the total.</div>
+   ${coBTCard(sp)}<div class="card potd"><h2 style="margin-bottom:2px">⭐ Best bets</h2><div class="small" style="margin-bottom:6px">${(()=>{const a=coThr(sp,"sp"),b=coThr(sp,"tot");return `Where our own number (before blending with the market) is ${a==null?"— (spread leans off: none held up in the replay)":a+"+ points off the spread"}${b==null?" · total leans off (none held up in the replay)":" or "+b+"+ off the total"}.`})()}</div>
     ${P.slice(0,10).map(({g,x},i)=>`<div class="pod"><div class="podn">${i+1}</div><div style="min-width:0;flex:1"><a href="#${sp}-game-${g.id}"><b>${coE(x.txt)}</b></a> <span class="small">${x.k.toLowerCase()}${x.odds!=null?" · "+coAm(x.odds):""}</span><div class="small">${coE(coT(sp,g.a[0]).s)} @ ${coE(coT(sp,g.h[0]).s)} · ${coWhen(g.t)}</div>${(()=>{const M=coModel(sp,g);return M?`<div class="small">Predicted: ${coE(coT(sp,g.a[0]).a)} ${coSc(M)[0]} – ${coSc(M)[1]} ${coE(coT(sp,g.h[0]).a)} · our number ${coF(x.edge)} ${CO[sp].unit} off the market</div>`:""})()}</div><div class="bps"><b>${coF(x.edge)}</b><span>pts off</span>${typeof actBtn!=="undefined"?actBtn(coSpecG(sp,g,x),"＋","plus"):""}</div></div>`).join("")||`<div class="small">No game passes our threshold right now.</div>`}
-    <div class="small" style="margin-top:6px">Our number is simple (points for/against, home edge) and doesn't adjust for strength of schedule — research, not a sure thing. Bet small.</div></div>
+    <div class="small" style="margin-top:6px">Our number: strength-of-schedule ratings + pace and efficiency + each team's home edge. Research, not a sure thing. Bet small.</div></div>
+   ${coPickEmSec(sp)}
    <div class="seg" style="margin:10px 0">${[["top","Top 25 games"],["all","All games"]].map(([k,l])=>`<button class="${flt===k?"on":""}" data-copf="${k}">${l}</button>`).join("")}</div>
    <div class="card"><h2>🔮 Predicted scores</h2>${S.map(g=>{const M=coModel(sp,g),L=coLine(sp,g),[a,h]=coSc(M);return `<a class="ufval" href="#${sp}-game-${g.id}"><span class="small">${coWhen(g.t).split(" · ")[0]}</span><b>${coE(coT(sp,g.a[0]).a)} ${a} – ${h} ${coE(coT(sp,g.h[0]).a)}</b><span class="small">${coPc(M.p>=.5?M.p:1-M.p)} ${coE(coT(sp,M.p>=.5?g.h[0]:g.a[0]).a)}</span><span class="small">${L.sp!=null?`line ${coE(coT(sp,L.sp<=0?g.h[0]:g.a[0]).a)} ${-Math.abs(L.sp)} · ${L.tot??"–"}`:"no line"}</span></a>`}).join("")||`<div class="small">No games.</div>`}</div>`;
   el.querySelectorAll("[data-copf]").forEach(b=>b.onclick=()=>{COS.pf=b.dataset.copf;coPicksPage(sp,el)})}
@@ -127,7 +132,7 @@ function coH2H(sp,g){const H=(coV(sp,"H2H")||{})[g.id]||[],h=coT(sp,g.h[0]).a,a=
   const hw=H.filter(r=>r[2]>r[3]).length,WL=H.filter(r=>r[6]!=null);let cv=[0,0,0],ou=[0,0,0];for(const r of WL){const m=r[2]-r[3]+r[6];cv[m>0?0:m<0?1:2]++;if(r[7]!=null){const t=r[2]+r[3]-r[7];ou[t>0?0:t<0?1:2]++}}
   const ats=WL.length?`<div class="small" style="margin:4px 0 6px">With closing lines (${WL.length}): <b>${coE(h)}</b> ${cv[0]}-${cv[1]}${cv[2]?"-"+cv[2]:""} against the spread · overs ${ou[0]}-${ou[1]}${ou[2]?"-"+ou[2]:""}</div>`:"";
   return `<div class="card"><h2>Head to head <span class="small">· last ${H.length} meeting${H.length>1?"s":""}</span></h2><div class="nbsay"><b>${coE(h)}</b> ${hw}-${H.length-hw} vs <b>${coE(a)}</b></div>
-   ${H.map(r=>`<div class="ufval"><span class="small">${coE(r[0])}</span><span>${r[1]==="H"?`${coE(a)} @ ${coE(h)}`:`${coE(h)} @ ${coE(a)}`}${r[4]?" (N)":""}</span><b>${coE(r[2]>r[3]?h:a)} ${Math.max(r[2],r[3])}-${Math.min(r[2],r[3])}</b><span class="small">total ${r[2]+r[3]}${r[6]!=null?` · ${coE(h)} ${r[6]>0?"+":""}${r[6]} ${r[2]-r[3]+r[6]>0?"✓":r[2]-r[3]+r[6]<0?"✗":"P"}${r[7]!=null?` · ${r[2]+r[3]>r[7]?"O":r[2]+r[3]<r[7]?"U":"P"} ${r[7]}`:""}`:""}</span></div>`).join("")}${ats}</div>`}
+   ${H.map(r=>`<div class="ufval"><span class="small">${coE(r[0])}</span><span>${r[1]==="H"?`${coE(a)} @ ${coE(h)}`:`${coE(h)} @ ${coE(a)}`}${r[4]?" (N)":""}</span><b>${coE(r[2]>r[3]?h:a)} ${Math.max(r[2],r[3])}-${Math.min(r[2],r[3])}</b><span class="small">total ${r[2]+r[3]}${r[6]!=null?` · ${coE(h)} ${r[6]>0?"+":""}${r[6]} ${r[2]-r[3]+r[6]>0?"✓":r[2]-r[3]+r[6]<0?"✗":"P"}${r[7]!=null?` · ${r[2]+r[3]>r[7]?"O":r[2]+r[3]<r[7]?"U":"P"} ${r[7]}`:""}`:g.riv||g.ttl?" · line unavailable":""}</span></div>`).join("")}${ats}</div>`}
 /* box scores (separate file, loaded when one is opened) */
 function coBoxEnsure(sp,cb){if(window[CO[sp].U+"_BX_OK"])return cb();if(typeof socLoad!=="undefined")socLoad(sp+"_box.js",CO[sp].U+"_BX_OK",COS["bw"+sp]||(COS["bw"+sp]=[]),()=>{},cb);else cb()}
 function coBoxPage(sp,el,eid){el.innerHTML=`<div class="small" style="padding:30px 0;text-align:center">Loading box score…</div>`;coBoxEnsure(sp,()=>{const B=(window[CO[sp].U+"_BX"]||{})[eid];
@@ -154,7 +159,7 @@ function coFacts(sp,g){const RES=coV(sp,"RES")||{},TS=coV(sp,"TS")||{},F=[];
   for(const s of [g.a,g.h])for(const r of coRest(sp,g,s[0]))F.push(["",r[0],`<b>${coE(coT(sp,s[0]).s)}</b>: ${r[1]}.`]);
   {const w=coWxTxt(sp,g);if(w)F.push(["","🌦️",w])}
   if(g.riv||g.ttl)F.unshift(["","🔥",`<b>${coE(g.riv||g.ttl)}</b>${g.riv&&g.ttl?" · "+coE(g.ttl):""}.`]);
-  if(g.pred)F.push(["","🧮",`ESPN's matchup predictor: ${coE(coT(sp,g.h[0]).s)} ${Math.round(g.pred[1])}% to win.`]);
+  if(g.pred&&g.pred[1]>2&&g.pred[1]<98)F.push(["","🧮",`ESPN's matchup predictor: ${coE(coT(sp,g.h[0]).s)} ${Math.round(g.pred[1])}% to win.`]);
   return F.length?`<div class="cofacts">${F.map(([c,i,t])=>`<div class="${c==="good"?"up":c==="bad"?"dn":""}">${i} ${t}</div>`).join("")}</div>`:""}
 function coGamePage(sp,el,id0){const id=String(id0).replace(/-props$/,""),g=coGame(sp,id);if(!g){el.innerHTML=coHead(sp,"Game not found.")+`<a href="#${sp}">← Games</a>`;return}
   const TS=coV(sp,"TS")||{},RES=coV(sp,"RES")||{},L=coLine(sp,g),M=coModel(sp,g),Le=coLeans(sp,g),W=coWin(sp,g),A=TS[g.a[0]]||{},H=TS[g.h[0]]||{},tab=COS.gtab&&!(COS.gtab==="bx"&&g.st==="pre")?COS.gtab:"ov";
@@ -207,7 +212,7 @@ function coRoute(sp,h){const el=document.getElementById("v-"+sp);if(!el)return;
   if(!coOk(sp)){el.innerHTML=`<div class="small" style="padding:30px 0;text-align:center">Loading ${CO[sp].nm.toLowerCase()}…</div>`;coEnsure(sp,()=>{if(!coOk(sp)){el.innerHTML=`<div class="card">${CO[sp].nm} data isn't ready yet — it comes with the next data update.</div>`;return}if((location.hash||"").slice(1).startsWith(sp))coRoute(sp,decodeURIComponent((location.hash||"").slice(1)))});return}
   if(!(typeof LO!=="undefined"&&LO.data)&&!COS["w"+sp]){COS["w"+sp]=1;let n=0;const t=setInterval(()=>{n++;if(typeof LO!=="undefined"&&LO.data){clearInterval(t);const hh=decodeURIComponent((location.hash||"").slice(1));if(hh.startsWith(sp)){const y=scrollY;coRoute(sp,hh);scrollTo(0,y)}}else if(n>20)clearInterval(t)},500)}
   coLiveStart(sp);const r=h.slice(sp.length);if(r.startsWith("-game-"))return coGamePage(sp,el,r.slice(6));if(r.startsWith("-player-"))return coPlayerPage(sp,el,r.slice(8));if(r.startsWith("-team-"))return coTeamPage(sp,el,r.slice(6));
-  if(r.startsWith("-box-"))return coBoxPage(sp,el,r.slice(5));if(r==="-picks"||r==="-props"||r==="-best")return coPicksPage(sp,el);if(r==="-rank")return coRankPage(sp,el);if(r==="-stand")return coStandPage(sp,el);if(r==="-pickem")return coPickEmPage(sp,el);if(r==="-big")return coBigPage(sp,el);if(r==="-bracket")return coBracketPage(sp,el);if(r==="-lead")return coLeadPage(sp,el);return coGamesPage(sp,el)}
+  if(r.startsWith("-box-"))return coBoxPage(sp,el,r.slice(5));if(r==="-picks"||r==="-props"||r==="-best")return coPicksPage(sp,el);if(r==="-rank")return coRankPage(sp,el);if(r==="-stand")return coStandPage(sp,el);if(r==="-pickem"){coPicksPage(sp,el);setTimeout(()=>{const x=document.getElementById("pickem");x&&x.scrollIntoView()},50);return}if(r==="-more")return coMorePage(sp,el);if(r==="-big")return coBigPage(sp,el);if(r==="-bracket")return coBracketPage(sp,el);if(r==="-lead")return coLeadPage(sp,el);return coGamesPage(sp,el)}
 
 /* ---------- 💪 strength of schedule: power rating, schedule strength ---------- */
 function coOrd(n){return n+(n%10===1&&n%100!==11?"st":n%10===2&&n%100!==12?"nd":n%10===3&&n%100!==13?"rd":"th")}
@@ -276,13 +281,14 @@ function coLeadPage(sp,el){const L=coV(sp,"LEAD")||{},cats=Object.keys(L);const 
 /* ---------- 🔴 live scores: ESPN scoreboard every 30 s while a college page is open and games are on ---------- */
 const CO_PATH={cfb:["football/college-football",80],cbb:["basketball/mens-college-basketball",50]};
 function coLiveStart(sp){if(COS["lv"+sp])return;COS["lv"+sp]=1;const tick=async()=>{try{
-    const h=(location.hash||"").slice(1);if(!h.startsWith(sp)||document.hidden||!coOk(sp))return;
+    const h=(location.hash||"").slice(1),onBets=h==="bets"&&typeof betsLoad!=="undefined"&&betsLoad().some(b=>(b.k==="col"||b.k==="colg")&&b.sp===sp);if(!(h.startsWith(sp)||onBets)||document.hidden||!coOk(sp))return;
     const G=coV(sp,"G")||[],now=Date.now(),on=G.filter(g=>g.st==="in"||(g.st==="pre"&&new Date(g.t).getTime()<=now+5*60e3&&new Date(g.t).getTime()>now-6*3600e3));if(!on.length)return;
     const days=[...new Set(on.map(g=>coDay(g.t).replace(/-/g,"")))];let ch=0;
     for(const d of days){const r=await fetch(`https://site.api.espn.com/apis/site/v2/sports/${CO_PATH[sp][0]}/scoreboard?groups=${CO_PATH[sp][1]}&limit=400&dates=${d}`);if(!r.ok)continue;const J=await r.json();
       for(const e of J.events||[]){const g=G.find(x=>String(x.id)===String(e.id));if(!g)continue;const c=(e.competitions||[{}])[0],st=(c.status||{}).type||{};
         for(const x of c.competitors||[]){const s=String((x.team||{}).id)===String(g.h[0])?g.h:String((x.team||{}).id)===String(g.a[0])?g.a:null;if(s&&x.score!=null&&s[3]!==x.score){s[3]=x.score;ch=1}}
         if(st.state&&(st.state!==g.st||st.shortDetail!==g.det)){g.st=st.state;g.det=st.shortDetail||g.det;ch=1}}}
+    if(ch&&onBets&&typeof viewBets!=="undefined"){const y=scrollY;viewBets();scrollTo(0,y)}
     if(ch&&(location.hash||"").slice(1).startsWith(sp)){const y=scrollY;coRoute(sp,decodeURIComponent((location.hash||"").slice(1)));scrollTo(0,y)}
   }catch(e){}};setInterval(tick,30000);setTimeout(tick,1500)}
 
@@ -299,6 +305,7 @@ function coRest(sp,g,t){const R=((coV(sp,"RES")||{})[t]||[]).filter(r=>r[0]<coDa
   const out=[],away=!g.neu&&g.a[0]===t;let road=away?1:0;if(away)for(let i=R.length-1;i>=0&&R[i][3]==="A"&&!R[i][7];i--)road++;
   if(sp==="cbb"){const n4=R.filter(r=>gd-day(r[0])<=4*864e5).length;if(rest<=1)out.push(["😴","2nd game in 2 days","on no rest"]);else if(n4>=2)out.push(["😴",`${n4+1}${n4+1===3?"rd":"th"} game in 5 days`,`${n4+1} games / 5 days`]);if(road>=3)out.push(["🧳",`${road}${road===3?"rd":"th"} straight road game`,`road game #${road}`])}
   else{if(rest<=5)out.push(["😴",`short week (${rest} days since the last game)`,"short week"]);else if(rest>=13)out.push(["🔋",`coming off a bye (${rest} days rest)`,"off a bye"]);if(road>=3)out.push(["🧳",`${road}${road===3?"rd":"th"} straight road game`,`road game #${road}`])}
+  const mi=((coV(sp,"TRV")||{})[g.id]||{})[g.a[0]===t?"a":"h"];if(mi!=null&&mi>=(sp==="cbb"?800:1200))out.push(["✈️",`traveled about ${mi.toLocaleString()} miles since the last game`,`${(Math.round(mi/100)*100).toLocaleString()} mi trip`]);
   return out}
 /* ---------- ⚡ pace + efficiency card ---------- */
 /* pace + efficiency for this division only, ranked 1..n by net */
@@ -334,17 +341,23 @@ function coProps(sp,g){const R=coPropRows(sp,g);if(!R.length)return "";const see
 function coPickEm(sp,g){const M=coModel(sp,g),L=coLine(sp,g);if(!M||L.sp==null)return null;const m=M.raw.m,ps=m+L.sp>=0?g.h[0]:g.a[0],po=L.tot!=null?(M.raw.tot>=L.tot?"over":"under"):null;
   return {eid:String(g.id),t:g.t,a:g.a[0],h:g.h[0],an:coT(sp,g.a[0]).a,hn:coT(sp,g.h[0]).a,ar:g.a[2]||null,hr:g.h[2]||null,sp:L.sp,tot:L.tot,ps,po,m:Math.round(m*10)/10,mt:Math.round(M.raw.tot*10)/10}}
 function coWeek(t){const d=new Date(coDay(t)+"T12:00:00Z"),s=new Date(d.getTime()+((6-d.getUTCDay()+7)%7)*864e5);return s.toISOString().slice(0,10)}
-function coPickEmPage(sp,el){const S=(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].pe)||null,locked=new Map(((S&&S.rows)||[]).map(x=>[x.eid,x]));
-  const up=coGames(sp).filter(g=>g.st!=="post"&&(g.a[2]||g.h[2])).map(g=>locked.get(String(g.id))||coPickEm(sp,g)).filter(Boolean);
+function coPickEmPage(sp,el){el.innerHTML=coHead(sp,"Picks")+coPickEmSec(sp)}
+function coPickEmSec(sp){if(sp!=="cfb")return "";const S=(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].pe)||null,locked=new Map(((S&&S.rows)||[]).map(x=>[x.eid,x]));
+  const up=coGames(sp).filter(g=>g.st!=="post"&&coPeOk(sp,g)).map(g=>locked.get(String(g.id))||coPickEm(sp,g)).filter(Boolean);
   const rec=a=>a?`${a[0]}-${a[1]}${a[2]?"-"+a[2]:""}`:"0-0",pc=a=>a&&a[0]+a[1]?Math.round(a[0]/(a[0]+a[1])*100)+"%":"–";
   const row=x=>{const pick=`${coE(coT(sp,x.ps).a)} ${(x.ps===x.h?x.sp:-x.sp)>0?"+":""}${x.ps===x.h?x.sp:-x.sp}`,res=r=>r?`<span class="ufr ${r==="win"?"W":r==="loss"?"L":"NC"}">${r==="win"?"✓":r==="loss"?"✗":"P"}</span>`:"";
     return `<a class="ufval" href="#${sp}-game-${x.eid}"><span>${x.ar?`<small class="corank">${x.ar}</small> `:""}${coE(x.an)} @ ${x.hr?`<small class="corank">${x.hr}</small> `:""}${coE(x.hn)}${x.f?` <span class="small">${x.f[0]}-${x.f[1]}</span>`:""}</span><span><b>${pick}</b> ${res(x.ra)}</span><span>${x.po?`<b>${x.po==="over"?"O":"U"} ${x.tot}</b> ${res(x.ro)}`:"–"}</span><span class="small">our ${coE(coT(sp,x.m>=0?x.h:x.a).a)} by ${coF(Math.abs(x.m))}, ${coF(x.mt)}</span></a>`};
   const done=((S&&S.rows)||[]).filter(x=>x.r),wk={};for(const x of done)(wk[coWeek(x.t)]=wk[coWeek(x.t)]||[]).push(x);
-  el.innerHTML=`${coHead(sp,"Weekly pick'em")}
+  return `<h2 id="pickem" style="margin:16px 0 8px">✅ Every ranked + power-conference game</h2>
    <div class="card"><div class="xstrip"><div><b>${rec(S&&S.ats)}</b><span>Against the spread</span><small>${pc(S&&S.ats)}</small></div><div><b>${rec(S&&S.ou)}</b><span>Totals</span><small>${pc(S&&S.ou)}</small></div><div><b>${done.length}</b><span>Games graded</span></div></div>
-   <div class="small">Our side and total on every game with a ranked team, from our own number (strength-of-schedule ratings + pace and efficiency, before blending with the line). Picks lock 3 hours before kickoff and are graded at the closing line ESPN shows. Need 52.4% to beat a −110 price.</div></div>
-   <h2 style="margin:12px 0 8px">This week</h2><div class="card">${up.map(row).join("")||`<div class="small">No ranked games with lines yet.</div>`}</div>
-   ${Object.keys(wk).sort().reverse().map(w=>{const A=[0,0,0],O=[0,0,0],k={win:0,loss:1,push:2};for(const x of wk[w]){A[k[x.ra]]++;if(x.ro)O[k[x.ro]]++}return `<h2 style="margin:12px 0 8px">Week of ${new Date(w+"T12:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric"})} <span class="small">· ATS ${rec(A)} · totals ${rec(O)}</span></h2><div class="card">${wk[w].map(row).join("")}</div>`}).join("")}`}
+   <div class="small">Our side and total on every game with a ranked or power-conference team, from our own number (strength-of-schedule ratings + pace and efficiency, before blending with the line). Picks lock 3 hours before kickoff and are graded at the closing line ESPN shows. Need 52.4% to beat a −110 price.</div></div>
+   <h3 style="margin:12px 0 8px">This week</h3><div class="card">${up.map(row).join("")||`<div class="small">No ranked games with lines yet.</div>`}</div>
+   ${Object.keys(wk).sort().reverse().map(w=>{const A=[0,0,0],O=[0,0,0],k={win:0,loss:1,push:2};for(const x of wk[w]){A[k[x.ra]]++;if(x.ro)O[k[x.ro]]++}return `<h3 style="margin:12px 0 8px">Week of ${new Date(w+"T12:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric"})} <span class="small">· ATS ${rec(A)} · totals ${rec(O)}</span></h3><div class="card">${wk[w].map(row).join("")}</div>`}).join("")}`}
+function coPeOk(sp,g){return !!(g.a[2]||g.h[2]||[g.a[0],g.h[0]].some(t=>/^(SEC|Big Ten|Big 12|ACC)$|Southeastern|Atlantic Coast|Big Ten|Big 12/.test(coConf(sp,t))))}
+/* the season replay: how our ratings' leans would have done against the closing line, week by week, using only earlier games */
+function coBTCard(sp){const B=coV(sp,"BT");if(!B||!B.n)return "";const row=(k,lab)=>Object.entries(B[k]||{}).map(([t,[w,l,p]])=>`<tr><td>${lab} ${t}+ pts off</td><td>${w}-${l}${p?"-"+p:""}</td><td><b class="${w+l>=40&&w/(w+l)>=.535?"up":w+l&&w/(w+l)<.5?"dn":""}">${w+l?Math.round(w/(w+l)*100)+"%":"–"}</b></td></tr>`).join("");
+  return `<details class="card adv"><summary><b>🧪 Season replay</b> <span class="small">· ${B.n} games, ${B.wk} weeks</span></summary><div class="small" style="margin:6px 0">Every week of this season replayed: ratings built only from the games before that week, compared with ESPN's closing line. Shows how often our side would have covered when our number was at least that far from the line. 52.4% breaks even at −110. Leans are only listed at gaps that cleared 53.5% over 40+ games.</div>
+   <div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Lean</th><th>Record</th><th>Won</th></tr></thead><tbody>${row("sp","Spread")}${row("tot","Total")}</tbody></table></div></details>`}
 /* ---------- 🔥 rivalries + conference title games ---------- */
 function coBigPage(sp,el){const G=coGames(sp).filter(g=>g.riv||g.ttl);
   el.innerHTML=`${coHead(sp,"Rivalries + title games")}<p class="sub">This week's rivalry games and title games, with every meeting from the last 4 seasons and how each side did against the spread in them.</p>
@@ -365,3 +378,8 @@ function coBracketPage(sp,el){const TR=coTR(sp),TS=coV(sp,"TS")||{},AP={};(((coV
   el.innerHTML=`${coHead(sp,"Bracket watch")}<div class="card"><div class="small">A rough projection of the 68-team NCAA field from our ratings${w<1?` blended with the AP poll (${Math.round(w*100)}% ours so far — teams have played about ${gp} games; it's all ours by about 15)`:""}. Not the committee's, and early-season numbers move a lot. 🎟️ = projected automatic bid (top team in each conference by this order). Seeds follow the order; the last four at-large teams and the four lowest-rated automatic qualifiers play in the First Four (shown as "A / B").</div></div>
    <div class="card"><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th>Seed</th><th>Teams</th></tr></thead><tbody>${lines.map((L,i)=>`<tr><td><b>${i+1}</b></td><td>${L.map(p=>p.length>1?`<div>${nm(p[0])} / ${nm(p[1])} <span class="small">First Four</span></div>`:`<div>${nm(p[0])}</div>`).join("")}</td></tr>`).join("")}</tbody></table></div></div>
    <div class="card"><h2>Last four in</h2>${lastIn.map(t=>`<div class="ufval">${nm(t)}<span class="small">rating ${coF(TR[t].r)}</span></div>`).join("")}<h2 style="margin-top:10px">First eight out</h2>${out.map(t=>`<div class="ufval">${nm(t)}<span class="small">rating ${coF(TR[t].r)}</span></div>`).join("")}</div>`}
+
+/* ☰ More: the less-used college pages, so the tab bar fits on a phone */
+function coMorePage(sp,el){const L=[["-stand",sp==="cfb"?"📊 Standings + playoff picture":"📊 Standings"],["-lead","🏅 Leaders"],["-big","🔥 Rivalries + title games"],...(sp==="cbb"?[["-bracket","🗂️ Bracket watch"]]:[]),["-rank","📈 Our ratings"]];
+  el.innerHTML=`${coHead(sp,"More")}<div class="card">${L.map(([h,l])=>`<a class="ufval" href="#${sp}${h}"${h==="-rank"?` data-ours="1"`:""}><b>${l}</b><span class="small">→</span></a>`).join("")}<a class="ufval" href="#record"><b>📒 Our record</b><span class="small">→</span></a><a class="ufval" href="#calib"><b>🎯 Calibration</b><span class="small">→</span></a></div>`;
+  const o=el.querySelector("[data-ours]");if(o)o.onclick=()=>{COS.rk=-1}}

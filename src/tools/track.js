@@ -113,9 +113,12 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
     {const K={n:0,hit:0,sc:0,imp:0};for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){if((x.r!=="win"&&x.r!=="loss")||x.sc==null||x.odds==null)continue;K.n++;K.hit+=x.r==="win";K.sc+=x.sc;K.imp+=imp(x.odds)/1.045}
      K.sc=Math.round(K.sc*1000)/1000;K.imp=Math.round(K.imp*1000)/1000;s.calk=K}
     /* fitted trust multiplier m (0–1.2, by log-likelihood) on the unadjusted chances: overall and per side */
-    {const X=[];for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){if((x.r!=="win"&&x.r!=="loss")||x.odds==null)continue;const c=x.sc0!=null?x.sc0:x.sc;if(c==null)continue;X.push({c,f:imp(x.odds)/1.045,y:x.r==="win"?1:0,side:x.side})}
+    {const X=[];for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){if((x.r!=="win"&&x.r!=="loss")||x.odds==null)continue;const c=x.sc0!=null?x.sc0:x.sc;if(c==null)continue;X.push({c,f:imp(x.odds)/1.045,y:x.r==="win"?1:0,side:x.side,k:x.k})}
      const fit=A=>{if(!A.length)return {m:1,n:0};let best=null;for(let i=0;i<=24;i++){const m=i*.05;let ll=0;for(const o of A){const p=Math.min(.97,Math.max(.03,o.f+m*(o.c-o.f)));ll+=Math.log(o.y?p:1-p)}if(!best||ll>best[1])best=[m,ll]}return {m:Math.round(best[0]*100)/100,n:A.length}};
-     s.fit={all:fit(X),o:fit(X.filter(o=>o.side==="o")),u:fit(X.filter(o=>o.side==="u"))}}
+     s.fit={all:fit(X),o:fit(X.filter(o=>o.side==="o")),u:fit(X.filter(o=>o.side==="u")),mk:{}};
+     /* per market (points, rebounds, shots...): its own trust level and record, so the ones that work aren't held back by the ones that don't */
+     s.mkrec={};for(const o of X){const R=s.mkrec[o.k]||(s.mkrec[o.k]=[0,0]);R[o.y?0:1]++}
+     for(const k of Object.keys(s.mkrec)){const A=X.filter(o=>o.k===k);if(A.length>=8)s.fit.mk[k]=fit(A)}}
     s.best.u=Math.round(s.best.u*100)/100;s.plays.u=Math.round(s.plays.u*100)/100;for(const E of Object.values(s.edge))E[2]=Math.round(E[2]*100)/100;
     s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM[sp]=s}
   {const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T.soc))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}
@@ -161,7 +164,7 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
   if(U){R.T[CS]=U.T;R.SUM[CS]=U.s;R.log.push(...U.log)}
   /* 🏈 weekly pick'em: our side and total on every game with a ranked team, locked 3 h before kickoff, kept all season */
   if(CS==="cfb"){const PE=await p.evaluate(PE=>{if(typeof coPickEm==="undefined")return null;const now=Date.now();let n=0;
-    for(const g of coGames("cfb")){if(g.st!=="pre"||PE[g.id]||!(g.a[2]||g.h[2]))continue;const t=Date.parse(g.t);if(t-now>3*3600e3||t<now)continue;const x=coPickEm("cfb",g);if(x){PE[g.id]=x;n++}}
+    for(const g of coGames("cfb")){if(g.st!=="pre"||PE[g.id]||!(typeof coPeOk!=="undefined"?coPeOk("cfb",g):(g.a[2]||g.h[2])))continue;const t=Date.parse(g.t);if(t-now>3*3600e3||t<now)continue;const x=coPickEm("cfb",g);if(x){PE[g.id]=x;n++}}
     for(const x of Object.values(PE))if(!x.r){let g=coGame("cfb",x.eid);if(!g||g.st!=="post"){const r=((coV("cfb","RES")||{})[x.h]||[]).find(r=>String(r[6])===String(x.eid));if(r)g={st:"post",a:[0,0,0,r[5]],h:[0,0,0,r[4]]}}if(g&&g.st==="post"){const a=+g.a[3],h=+g.h[3];if(isFinite(a)&&isFinite(h)){x.f=[a,h];const m=h-a+x.sp,cv=x.ps===x.h?m:-m;x.ra=cv>0?"win":cv<0?"loss":"push";if(x.tot!=null){const d=a+h-x.tot;x.ro=d===0?"push":(d>0)===(x.po==="over")?"win":"loss"}x.r=1}}}
     const S={ats:[0,0,0],ou:[0,0,0]},k={win:0,loss:1,push:2};for(const x of Object.values(PE))if(x.r){S.ats[k[x.ra]]++;if(x.ro)S.ou[k[x.ro]]++}
     return {PE,S,n}},R.T.cfbpe||{});
