@@ -1,20 +1,20 @@
 {
  "auto": {
-  "at": "2026-11-15T02:13:37+00:00",
+  "at": "2026-11-15T02:22:02+00:00",
   "ok": true,
-  "summary": "nhllines: 32/32 teams\nNHL PP time: 687 players, 0 ESPN requests this run\nNHL data: 14 games today, 5 tomorrow, 32 teams, 692 skaters, 67 goalies, 759 props, 305 finals, 52 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-15T02:11:55Z)\n"
+  "summary": "cfb: 2254 players with logs, 77 focus games, 832 requests\ncbb: 2504 players with logs, 80 focus games, 561 requests\ntrack: cfb 2026-11-14: locked 2 picks \u00b7 graded: NHL plays 12-10, best props NBA 22-38 NFL 12-8 NHL 23-38\nSite check OK \u2014 published (2026-11-15T02:20:00Z)\n"
  },
  "site": {
-  "at": "2026-11-15T02:13:37+00:00",
+  "at": "2026-11-15T02:22:02+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-15T02:13:37+00:00",
+  "at": "2026-11-15T02:22:02+00:00",
   "ok": true,
   "issue": "",
   "gen": "Sat Nov 14 9:11 PM ET",
-  "odds_at": "2026-11-15T00:07:22+00:00",
+  "odds_at": "2026-11-15T02:13:56+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -1945,6 +1945,16 @@
   {
    "at": "2026-11-15T02:13:37+00:00",
    "what": "nhl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-15T02:22:02+00:00",
+   "what": "cfb,cbb",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
