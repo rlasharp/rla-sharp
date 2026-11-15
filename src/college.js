@@ -88,7 +88,7 @@ function coGamesPage(sp,el){const G=coGames(sp),days=[...new Set(G.map(g=>coDay(
   const lab=x=>{const t=coDay(new Date().toISOString()),tm=coDay(new Date(Date.now()+864e5).toISOString());return x===t?"Today":x===tm?"Tomorrow":new Date(x+"T12:00:00").toLocaleDateString("en-US",{weekday:"short"})};
   const best=coGames(sp).filter(g=>g.st==="pre").flatMap(g=>coLeans(sp,g).map(x=>({g,x}))).sort((a,b)=>b.x.edge-a.x.edge)[0];
   el.innerHTML=`<h1>${CO[sp].em} ${CO[sp].U} · ${new Date(d+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric"})}</h1>
-   <div class="gtabs">${days.slice(0,6).map(x=>`<a href="javascript:void 0" data-coday="${x}" class="${x===d?"on":""}">${lab(x)}<small>${G.filter(g=>coDay(g.t)===x).filter(inF).length}</small></a>`).join("")}</div>
+   <div class="gtabs">${days.filter(x=>x===d||G.some(g=>coDay(g.t)===x&&inF(g))).slice(0,4).map(x=>`<a href="javascript:void 0" data-coday="${x}" class="${x===d?"on":""}">${lab(x)}<small>${G.filter(g=>coDay(g.t)===x).filter(inF).length}</small></a>`).join("")}</div>
    ${best?`<a class="card pdteas" href="#${sp}-picks"><span>⭐ <b>Top pick</b></span><span class="pdtx"><b>${coE(best.x.txt)}</b> <span class="small">${coE(coT(sp,best.g.a[0]).a)} @ ${coE(coT(sp,best.g.h[0]).a)}${best.x.odds!=null?" · "+coAm(best.x.odds):""}</span></span><span class="small">All picks →</span></a>`:""}
    <div class="seg" style="margin:8px 0">${[["top","Top 25"],["p5","+ Power conferences"],["all","All games"]].map(([k,l])=>`<button class="${flt===k?"on":""}" data-coflt="${k}">${l}</button>`).join("")}</div>
    <p class="sub">${L.length} game${L.length===1?"":"s"}${flt==="top"?" with a ranked team":""}. Tap a game for the matchup, stats, head-to-head and box scores.</p>
