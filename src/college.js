@@ -4,10 +4,10 @@
    sportsbook lines + player props: live_odds.json "cfb" / "cbb" (tools/college_odds.py, PropLine).
    Routes: #cfb · #cfb-game-<id> · #cfb-props · #cfb-best · #cfb-player-<id> · #cfb-team-<id> · #cfb-rank (same for cbb) ---------- */
 const CO={
-  cfb:{U:"CFB",nm:"College football",em:"🏈",hfa:2.5,sd:15.5,lean:[4,6],unit:"pts",
+  cfb:{U:"CFB",nm:"College football",em:"🏈",hfa:2.5,sd:15.5,lean:[7,10],unit:"pts",
     mk:{player_pass_yds:["Pass yds",r=>r[3]],player_rush_yds:["Rush yds",r=>r[9]],player_reception_yds:["Rec yds",r=>r[12]],player_receptions:["Receptions",r=>r[11]],player_pass_tds:["Pass TDs",r=>r[6]],player_anytime_td:["Anytime TD",r=>(r[10]||0)+(r[13]||0)]},
     cols:[["Pass",r=>r[3]!=null&&r[5]?`${r[4]}/${r[5]} · ${r[3]} yds${r[6]?` · ${r[6]} TD`:""}${r[7]?` · ${r[7]} INT`:""}`:""],["Rush",r=>r[8]?`${r[8]}-${r[9]}${r[10]?` · ${r[10]} TD`:""}`:""],["Rec",r=>r[11]?`${r[11]}-${r[12]}${r[13]?` · ${r[13]} TD`:""}`:""]]},
-  cbb:{U:"CBB",nm:"College basketball",em:"🏀",hfa:3.0,sd:11,lean:[3,5],unit:"pts",
+  cbb:{U:"CBB",nm:"College basketball",em:"🏀",hfa:3.0,sd:11,lean:[5,8],unit:"pts",
     mk:{player_points:["Points",r=>r[4]],player_rebounds:["Rebounds",r=>r[11]],player_assists:["Assists",r=>r[12]],player_threes:["3-pointers",r=>r[7]],player_points_rebounds_assists:["Pts+Reb+Ast",r=>(r[4]||0)+(r[11]||0)+(r[12]||0)]},
     cols:[["MIN",r=>r[3]],["PTS",r=>r[4]],["REB",r=>r[11]],["AST",r=>r[12]],["3PM",r=>r[7]],["FG",r=>r[6]?`${r[5]}/${r[6]}`:""]]}};
 const COS={day:{},flt:{},mk:{},wait:{cfb:[],cbb:[]}};
@@ -19,7 +19,7 @@ function coAm(o){return o==null?"–":typeof oddsFmt!=="undefined"?oddsFmt(o):(o
 function coImp(o){return o==null?null:o<0?-o/(-o+100):100/(o+100)}
 function coPc(p){return p==null?"–":Math.round(p*100)+"%"}
 function coF(v,d){return v==null||!isFinite(v)?"–":(+v).toFixed(d==null?1:d)}
-function coT(sp,id){return (coV(sp,"TM")||{})[id]||{a:"?",n:"?",s:"?"}}
+function coT(sp,id){const T=(coV(sp,"TM")||{})[id]||{a:"?",n:"?",s:"?"};if(T.cf&&/^\d{4}/.test(T.cf))T.cf=T.cf.replace(/^\d{4}(-\d{2})?\s*/,"").replace(/ Conference$/,"").replace("Atlantic Coast","ACC").replace("Southeastern","SEC");return T}
 function coTN(sp,id,full){const T=coT(sp,id);return `${T.rk?`<small class="corank">${T.rk}</small> `:""}${coE(full?T.n:(T.s||T.a))}`}
 function coBadge(sp,id){const T=coT(sp,id);return `<span class="cobd" style="background:${T.c||"#555"}">${coE(T.a)}</span>`}
 function coDay(t){try{return new Date(t).toLocaleDateString("en-CA",{timeZone:"America/New_York"})}catch(e){return (t||"").slice(0,10)}}
@@ -41,7 +41,7 @@ function coModel(sp,g){const TS=coV(sp,"TS")||{},A=TS[g.a[0]],H=TS[g.h[0]];if(!A
   if(L.sp!=null)mh=(mh+(-L.sp))/2;if(L.tot!=null)tot=(tot+L.tot)/2;
   return {m:mh,tot,hp:(tot+mh)/2,ap:(tot-mh)/2,p:coNcdf(mh/C.sd),raw,n:Math.min(A.g,H.g)}}
 /* leans: where our own number (before the blend) is far from the market */
-function coLeans(sp,g){const M=coModel(sp,g),L=coLine(sp,g),C=CO[sp];if(!M||M.n<3)return [];const out=[];
+function coLeans(sp,g){if(g.st!=="pre")return [];const M=coModel(sp,g),L=coLine(sp,g),C=CO[sp];if(!M||M.n<3)return [];const out=[];
   if(L.sp!=null){const e=M.raw.m-(-L.sp);if(Math.abs(e)>=C.lean[0]){const home=e>0;out.push({k:"Spread",txt:`${coT(sp,home?g.h[0]:g.a[0]).s||coT(sp,home?g.h[0]:g.a[0]).a} ${home?(L.sp>0?"+":"")+L.sp:(L.sp<0?"+":"")+(-L.sp)}`,edge:Math.abs(e),odds:L.spx?L.spx[home?1:0]:null})}}
   if(L.tot!=null){const e=M.raw.tot-L.tot;if(Math.abs(e)>=C.lean[1])out.push({k:"Total",txt:`${e>0?"Over":"Under"} ${L.tot}`,edge:Math.abs(e),odds:L.ox?L.ox[e>0?0:1]:null})}
   return out}
@@ -73,7 +73,7 @@ function coRow(sp,g){const L=coLine(sp,g),M=coModel(sp,g),Le=coLeans(sp,g),fin=g
    ${Le.length&&!fin?`<div class="small">⭐ ${Le.map(x=>`${coE(x.txt)} <span class="small">(${coF(x.edge)} ${CO[sp].unit} off the market)</span>`).join(" · ")}</div>`:""}</a>`}
 function coGamesPage(sp,el){const G=coGames(sp),days=[...new Set(G.map(g=>coDay(g.t)))];const d=days.includes(COS.day[sp])?COS.day[sp]:days.find(x=>G.some(g=>coDay(g.t)===x&&g.st!=="post"))||days[0];
   const flt=COS.flt[sp]||"top",TM=coV(sp,"TM")||{},P5=/SEC|Big Ten|Big 12|ACC|Big East|Pac/;
-  const L=G.filter(g=>coDay(g.t)===d).filter(g=>flt==="all"||(flt==="top"?(g.a[2]||g.h[2]):(P5.test((TM[g.a[0]]||{}).cf||"")||P5.test((TM[g.h[0]]||{}).cf||"")||g.a[2]||g.h[2])));
+  const ord={in:0,pre:1,post:2};const L=G.filter(g=>coDay(g.t)===d).sort((a,b)=>(ord[a.st]??1)-(ord[b.st]??1)||(a.t<b.t?-1:1)).filter(g=>flt==="all"||(flt==="top"?(g.a[2]||g.h[2]):(P5.test((TM[g.a[0]]||{}).cf||"")||P5.test((TM[g.h[0]]||{}).cf||"")||g.a[2]||g.h[2])));
   el.innerHTML=`${coHead(sp,`${G.length} games in the next few days · data ${coE(coV(sp,"GEN")||"")}`)}
    <div class="ufevs">${days.map(x=>`<button class="fxp${x===d?" on":""}" data-coday="${x}">${new Date(x+"T12:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})} <small>${G.filter(g=>coDay(g.t)===x).length}</small></button>`).join("")}</div>
    <div class="seg" style="margin:6px 0 10px">${[["top","Top 25"],["p5","Top 25 + power conferences"],["all","All games"]].map(([k,l])=>`<button class="${flt===k?"on":""}" data-coflt="${k}">${l}</button>`).join("")}</div>
@@ -107,7 +107,7 @@ function coGamePage(sp,el,id){const g=coGame(sp,id);if(!g){el.innerHTML=coHead(s
    <div class="card cohero"><div class="small">${g.st==="in"?`<b class="dn">● ${coE(g.det)}</b>`:g.st==="post"?"Final":coWhen(g.t)}${g.ven?" · "+coE(g.ven):""}${g.neu?" (neutral)":""}${g.tv?" · "+coE(g.tv):""}</div>
     <div class="copair big">${[g.a,g.h].map((s,i)=>`<a class="cosd" href="#${sp}-team-${s[0]}">${coBadge(sp,s[0])}<b>${coTN(sp,s[0],1)}</b><span class="small">${coE(s[1])}${coT(sp,s[0]).cf?" · "+coE(coT(sp,s[0]).cf):""}</span>${g.st!=="pre"?`<b class="cosc">${coE(s[3])}</b>`:""}</a>${i===0?`<span class="small">@</span>`:""}`).join("")}</div>
     ${M?`<div class="nbwp" style="margin-top:8px"><div style="width:${Math.round((1-M.p)*100)}%;background:${coT(sp,g.a[0]).c||"#d33f49"}"></div><div style="width:${Math.round(M.p*100)}%;background:${coT(sp,g.h[0]).c||"#3987e5"}"></div></div><div class="small" style="text-align:center">Our win chance: ${coE(coT(sp,g.a[0]).a)} ${coPc(1-M.p)} · ${coE(coT(sp,g.h[0]).a)} ${coPc(M.p)}${g.pred?` · ESPN predictor ${coE(coT(sp,g.h[0]).a)} ${Math.round(g.pred[1])}%`:""}</div>`:""}</div>
-   ${typeof gpSummary!=="undefined"?gpSummary({pick:Le.length?`<b>${coE(Le[0].txt)}</b> <span class="small">${Le[0].k.toLowerCase()} · ${coF(Le[0].edge)} ${CO[sp].unit} off the market${Le[0].odds!=null?" · "+coAm(Le[0].odds):""}</span>`:M?`Our number: <b>${coE(coT(sp,M.m>=0?g.h[0]:g.a[0]).a)} by ${coF(Math.abs(M.m))}</b>, about ${coF(M.tot)} total — no strong lean`:"",props:props.filter(x=>x.edge>=.04).slice(0,2).map(x=>`<a href="#${sp}-player-${x.aid}"><b>${coE(x.nm)}</b></a> ${x.side==="o"?"Over":"Under"} ${x.line} ${CO[sp].mk[x.mk][0]} <span class="small">${coAm(x.odds)} · our chance ${coPc(x.ch)}</span>`)}):""}
+   ${g.st==="post"?`<div class="card"><h2>Final</h2><div class="nbsay">${coE(coT(sp,+g.a[3]>+g.h[3]?g.a[0]:g.h[0]).n)} won ${Math.max(+g.a[3],+g.h[3])}–${Math.min(+g.a[3],+g.h[3])}.${L.sp!=null?` ${(()=>{const m=(+g.h[3])-(+g.a[3])+L.sp;return m===0?"Push against the spread":`${coE(coT(sp,m>0?g.h[0]:g.a[0]).a)} covered ${L.sp>0?"+":""}${m>0?L.sp:-L.sp}`})()}.`:""}${L.tot!=null?` Total ${(+g.a[3])+(+g.h[3])} — ${(+g.a[3])+(+g.h[3])>L.tot?"over":(+g.a[3])+(+g.h[3])<L.tot?"under":"push"} ${L.tot}.`:""}</div></div>`:typeof gpSummary!=="undefined"?gpSummary({pick:Le.length?`<b>${coE(Le[0].txt)}</b> <span class="small">${Le[0].k.toLowerCase()} · ${coF(Le[0].edge)} ${CO[sp].unit} off the market${Le[0].odds!=null?" · "+coAm(Le[0].odds):""}</span>`:M?`Our number: <b>${coE(coT(sp,M.m>=0?g.h[0]:g.a[0]).a)} by ${coF(Math.abs(M.m))}</b>, about ${coF(M.tot)} total — no strong lean`:"",props:props.filter(x=>x.edge>=.04).slice(0,2).map(x=>`<a href="#${sp}-player-${x.aid}"><b>${coE(x.nm)}</b></a> ${x.side==="o"?"Over":"Under"} ${x.line} ${CO[sp].mk[x.mk][0]} <span class="small">${coAm(x.odds)} · our chance ${coPc(x.ch)}</span>`)}):""}
    <div class="card"><h2>Lines</h2><div class="nbatbl"><table class="bxt ufog"><thead><tr><th></th><th>${coE(coT(sp,g.a[0]).a)}</th><th>${coE(coT(sp,g.h[0]).a)}</th></tr></thead><tbody>
     <tr><th>Spread</th><td>${L.sp!=null?`${-L.sp>0?"+":""}${-L.sp}${L.spx?` <span class="small">${coAm(L.spx[0])}</span>`:""}`:"–"}</td><td>${L.sp!=null?`${L.sp>0?"+":""}${L.sp}${L.spx?` <span class="small">${coAm(L.spx[1])}</span>`:""}`:"–"}</td></tr>
     <tr><th>Moneyline</th><td>${L.ml?coAm(L.ml[0]):"–"}</td><td>${L.ml?coAm(L.ml[1]):"–"}</td></tr>

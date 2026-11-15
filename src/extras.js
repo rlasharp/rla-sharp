@@ -11,6 +11,9 @@ function recAll(){
   if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.soc){for(const x0 of TRACK.sum.soc.recent||[]){const g=(!x0.r||x0.r==="pending")&&typeof socGrade!=="undefined"&&window.SOC_OK?socGrade(x0):null,r=g&&g.r!=="pending"?g.r:x0.r;
     const st=r==="win"?"win":r==="loss"?"loss":r==="push"?"push":r==="void"?"void":"pending",pay=x0.odds>0?x0.odds/100:100/-x0.odds;
     rows.push({sport:"Soccer",when:x0.d,sort:x0.d,date:x0.d,label:x0.title||"",type:x0.type==="prop"?"Player prop":({ml:"Match result",tot:"Goals over/under",btts:"Both teams to score",cor:"Corners"}[x0.kind]||"Soccer"),st,u:st==="win"?pay:st==="loss"?-1:0,odds:x0.odds,v:null,lv:g?1:0,cl:null})}}
+  for(const CS of ["cfb","cbb"])if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[CS]){for(const x0 of TRACK.sum[CS].recent||[]){const g=(!x0.r||x0.r==="pending")&&typeof coGrade!=="undefined"&&coOk(CS)?coGrade(x0):null,r=g&&g.r!=="pending"?g.r:x0.r;
+    const st=r==="win"?"win":r==="loss"?"loss":r==="push"?"push":r==="void"?"void":"pending",pay=x0.odds>0?x0.odds/100:100/-x0.odds;
+    rows.push({sport:CS.toUpperCase(),when:x0.d,sort:x0.d,date:x0.d,label:x0.title||"",type:"Player prop",st,u:st==="win"?pay:st==="loss"?-1:0,odds:x0.odds,v:g&&g.why||x0.v||null,lv:g?1:0,cl:null})}}
   if(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.ufc){for(const x0 of TRACK.sum.ufc.recent||[]){const g=(!x0.r||x0.r==="pending")&&typeof ufGrade!=="undefined"&&window.UFC_OK?ufGrade({fid:x0.fid,p:x0.p}):null,r=g&&g.r!=="pending"?g.r:x0.r;
     const st=r==="win"?"win":r==="loss"?"loss":r==="push"?"push":r==="void"?"void":"pending",pay=x0.odds>0?x0.odds/100:100/-x0.odds;
     rows.push({sport:"UFC",when:x0.d,sort:x0.d,date:x0.d,label:x0.title||"",type:x0.mk||"UFC",st,u:st==="win"?pay:st==="loss"?-1:0,odds:x0.odds,v:g&&g.why||x0.v||null,lv:g?1:0,cl:null})}}
@@ -51,9 +54,9 @@ function viewRecord(){if(typeof nhlEnsure!=="undefined"&&!NHL_READY&&!NHL_DATE){
   const etDay=o=>{const d=new Date(Date.now()-(o||0)*864e5);return d.toLocaleDateString("en-CA",{timeZone:"America/New_York"})},td=etDay(0),yd=etDay(1),wk=etDay(6);
   const perOk=r=>F.per==="all"||!r.date?F.per==="all":F.per==="today"?r.date===td:F.per==="yday"?r.date===yd:r.date>=wk&&r.date<=td;
   const R=RA.filter(r=>perOk(r)&&(F.sp==="all"||r.sport===F.sp)),T=recSum(R);
-  const PER=[["today","Today"],["yday","Yesterday"],["week","Last 7 days"],["all","All time"]],SPS=[["all","All sports"],...["NFL","NBA","NHL","Soccer","UFC"].filter(k=>RA.some(r=>r.sport===k)).map(k=>[k,k])];
+  const PER=[["today","Today"],["yday","Yesterday"],["week","Last 7 days"],["all","All time"]],SPS=[["all","All sports"],...["NFL","NBA","NHL","Soccer","UFC","CFB","CBB"].filter(k=>RA.some(r=>r.sport===k)).map(k=>[k,k])];
   const perL=(PER.find(x=>x[0]===F.per)||PER[3])[1];
-  const fbar=`<div class="recf"><div class="seg">${PER.map(([k,l])=>`<button class="btn${F.per===k?" on":""}" data-recp="${k}">${l}</button>`).join("")}</div><div class="seg">${SPS.map(([k,l])=>`<button class="btn${F.sp===k?" on":""}" data-recs="${k}">${({NFL:"🏈 ",NBA:"🏀 ",NHL:"🏒 ",Soccer:"⚽ ",UFC:"🥊 "}[k]||"")+l}</button>`).join("")}</div></div>`;
+  const fbar=`<div class="recf"><div class="seg">${PER.map(([k,l])=>`<button class="btn${F.per===k?" on":""}" data-recp="${k}">${l}</button>`).join("")}</div><div class="seg">${SPS.map(([k,l])=>`<button class="btn${F.sp===k?" on":""}" data-recs="${k}">${({NFL:"🏈 ",NBA:"🏀 ",NHL:"🏒 ",Soccer:"⚽ ",UFC:"🥊 ",CFB:"🏈 ",CBB:"🏀 "}[k]||"")+l}</button>`).join("")}</div></div>`;
   const tile=(l,v,c)=>`<div><b class="${c||""}">${v}</b>${l}</div>`;
   const uTxt=u=>(u>0?"+":"")+u.toFixed(2)+"u",uCls=u=>u>0?"up":u<0?"dn":"";
   const grp=(key)=>{const m={};for(const r of R){const k=key(r);(m[k]=m[k]||[]).push(r)}return Object.entries(m).map(([k,a])=>[k,recSum(a)])};
