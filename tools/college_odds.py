@@ -1,11 +1,11 @@
-"""🏈🏀 College odds from the PropLine feed: game lines (moneyline, spread, total) and player props for college football
+"""🏈🏀 College odds from the PropLine feed: game lines (moneyline, spread, total) and game lines for college football
 (FBS) and men's college basketball. Uses the focus list written by src/tools/collegefetch.py (ranked teams first, then
 power conferences) and a small share of the day's request budget: each game is refreshed at most every 6 hours (every
 90 min once it is within 6 hours of tip/kickoff), a few games per run.
 Output: live_odds.json -> "cfb" / "cbb": {at, ev: {espnId: {at, a, h, t, ml, sp, tot, props: [[market, player, line, over, under, book over, book under]]}}}"""
 import datetime as dt, json, os
-SPORTS = {"cfb": ("football_ncaaf", ["h2h", "spreads", "totals", "player_pass_yds", "player_rush_yds", "player_reception_yds", "player_receptions", "player_pass_tds", "player_anytime_td"], 5, 4),
-          "cbb": ("basketball_ncaab", ["h2h", "spreads", "totals", "player_points", "player_rebounds", "player_assists", "player_threes", "player_points_rebounds_assists"], 2, 6)}
+SPORTS = {"cfb": ("football_ncaaf", ["h2h", "spreads", "totals"], 5, 4),
+          "cbb": ("basketball_ncaab", ["h2h", "spreads", "totals"], 2, 6)}
 def g(o, k, d=None): return o.get(k, d) if isinstance(o, dict) else getattr(o, k, d)
 def ts(s):
     try: return dt.datetime.fromisoformat(str(s).replace("Z", "+00:00"))

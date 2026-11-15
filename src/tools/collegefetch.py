@@ -118,10 +118,14 @@ with ThreadPoolExecutor(12) as ex: list(ex.map(sched, wt))
 # ---------- box scores (cached): player stats per finished game ----------
 # CFB: [athleteId, name, pos, pass yds, comp, att, pass td, int, rush att, rush yds, rush td, rec, rec yds, rec td, targets?]
 # CBB: [athleteId, name, pos, min, pts, fgm, fga, 3pm, 3pa, ftm, fta, reb, ast, to, stl, blk]
+TKEEP = {"cfb": ["firstDowns", "thirdDownEff", "totalYards", "netPassingYards", "completionAttempts", "rushingYards", "rushingAttempts", "turnovers", "interceptions", "fumblesLost", "totalPenaltiesYards", "possessionTime"],
+         "cbb": ["fieldGoalsMade-fieldGoalsAttempted", "threePointFieldGoalsMade-threePointFieldGoalsAttempted", "freeThrowsMade-freeThrowsAttempted", "totalRebounds", "offensiveRebounds", "assists", "steals", "blocks", "totalTurnovers", "fouls", "pointsInPaint", "fastBreakPoints", "turnoverPoints"]}[SP]
 def box(eid):
-    if eid in BOX: return
+    if eid in BOX and "_t" in BOX[eid]: return
     s = get(SITE + f"summary?event={eid}") or {}
-    out = {}
+    out = {"_t": {}}
+    for tb in ((s.get("boxscore") or {}).get("teams") or []):
+        tid = str((tb.get("team") or {}).get("id")); out["_t"][tid] = {x.get("name"): x.get("displayValue") for x in (tb.get("statistics") or []) if x.get("name") in TKEEP}
     for tb in ((s.get("boxscore") or {}).get("players") or []):
         tid = str((tb.get("team") or {}).get("id")); P = {}
         for cat in tb.get("statistics") or []:
@@ -151,8 +155,8 @@ def box(eid):
                      f("REB"), f("AST"), f("TO"), f("STL"), f("BLK")]
             rows.append([x if not isinstance(x, float) or x != int(x) else int(x) for x in r])
         out[tid] = rows
-    if out: BOX[eid] = out
-need = sorted({r[6] for L in RES.values() for r in L} - set(BOX))
+    if len(out) > 1 or out["_t"]: BOX[eid] = out
+need = sorted(e for e in {r[6] for L in RES.values() for r in L} if e not in BOX or "_t" not in BOX[e])
 with ThreadPoolExecutor(14) as ex: list(ex.map(box, need))
 log(f"{SP}: {len(need)} new box scores downloaded ({len(BOX)} cached)")
 
@@ -161,7 +165,7 @@ PL = {}
 for tid in wt:
     for r in RES.get(tid, []):
         b = BOX.get(r[6]) or {}
-        for row in b.get(tid, []):
+        for row in (b.get(tid) or []) if tid != "_t" else []:
             aid, nm, pos = row[0], row[1], row[2]
             p = PL.setdefault(aid, {"n": nm, "t": tid, "p": pos, "g": []})
             p["t"] = tid
@@ -180,6 +184,74 @@ for tid, L in RES.items():
     pf = [r[4] for r in L if r[4] is not None]; pa = [r[5] for r in L if r[5] is not None]
     TS[tid] = {"g": len(L), "w": sum(1 for r in L if (r[4] or 0) > (r[5] or 0)), "pf": round(sum(pf) / len(pf), 1) if pf else None, "pa": round(sum(pa) / len(pa), 1) if pa else None,
                "pf5": round(sum(pf[-5:]) / len(pf[-5:]), 1) if pf else None, "pa5": round(sum(pa[-5:]) / len(pa[-5:]), 1) if pa else None}
+# ---------- team stats per game (and what each team allows), from the box scores ----------
+def nums(v):
+    v = str(v or "")
+    try:
+        if ":" in v: m, s_ = v.split(":"); return [int(m) + int(s_) / 60]
+        return [float(x) for x in v.replace("/", "-").split("-") if x != ""]
+    except Exception: return []
+def tline(tb):
+    o = {}
+    for k, v in (tb or {}).items():
+        n = nums(v)
+        if not n: continue
+        if SP == "cfb":
+            if k == "completionAttempts" and len(n) == 2: o["comp"], o["patt"] = n
+            elif k == "thirdDownEff" and len(n) == 2: o["3dc"], o["3da"] = n
+            elif k == "totalPenaltiesYards" and len(n) == 2: o["pen"], o["peny"] = n
+            elif k == "possessionTime": o["top"] = n[0]
+            else: o[k] = n[0]
+        else:
+            if "-" in k and len(n) == 2: o[k.split("Made")[0] + "M"], o[k.split("Made")[0] + "A"] = n
+            else: o[k] = n[0]
+    return o
+TSX = {}
+for tid, L in RES.items():
+    off, dfn, n = {}, {}, 0
+    for r in L:
+        b = BOX.get(r[6]) or {}; T = b.get("_t") or {}
+        if tid not in T or r[1] not in T: continue
+        a_, d_ = tline(T[tid]), tline(T[r[1]]); n += 1
+        for k, v in a_.items(): off[k] = off.get(k, 0) + v
+        for k, v in d_.items(): dfn[k] = dfn.get(k, 0) + v
+    if n: TSX[tid] = {"n": n, "o": {k: round(v / n, 2) for k, v in off.items()}, "d": {k: round(v / n, 2) for k, v in dfn.items()}}
+# ---------- injuries (ESPN; college reports are thin, and basketball often has none) ----------
+INJ = {}
+ij = get(SITE + "injuries") or {}
+for T in ij.get("injuries") or []:
+    tid = str(T.get("id"))
+    for x in T.get("injuries") or []:
+        a = x.get("athlete") or {}
+        INJ.setdefault(tid, []).append([a.get("displayName") or "", ((a.get("position") or {}).get("abbreviation") or ""), x.get("status") or (x.get("type") or {}).get("description") or "",
+                                        x.get("shortComment") or "", (x.get("date") or "")[:10]])
+# ---------- head to head: this season + the last 4 seasons (past seasons cached for good) ----------
+SEAS = int(next((e.get("season") or {}).get("year") for e in EVS if (e.get("season") or {}).get("year")) if any((e.get("season") or {}).get("year") for e in EVS) else (NOW.year if SP == "cfb" else NOW.year + 1))
+def past(tid, yr):
+    k = f"sch|{tid}|{yr}"
+    if k in BOX: return BOX[k]
+    s = get(SITE + f"teams/{tid}/schedule?season={yr}") or {}
+    out = []
+    for e in s.get("events") or []:
+        c = (e.get("competitions") or [{}])[0]
+        if not ((c.get("status") or {}).get("type") or {}).get("completed"): continue
+        me = next((x for x in c.get("competitors") or [] if str((x.get("team") or {}).get("id")) == tid), None)
+        op = next((x for x in c.get("competitors") or [] if str((x.get("team") or {}).get("id")) != tid), None)
+        if not me or not op: continue
+        sc = lambda x: num((x.get("score") or {}).get("value") if isinstance(x.get("score"), dict) else x.get("score"))
+        out.append([e.get("date", "")[:10], str((op.get("team") or {}).get("id")), "H" if me.get("homeAway") == "home" else "A", sc(me), sc(op), 1 if c.get("neutralSite") else 0])
+    BOX[k] = out; return out
+jobs = [(g["h"][0], y) for g in G for y in range(SEAS - 4, SEAS)]
+with ThreadPoolExecutor(12) as ex: list(ex.map(lambda x: past(*x), jobs))
+H2H = {}
+for g in G:
+    h, a = g["h"][0], g["a"][0]; rows = []
+    for y in range(SEAS - 4, SEAS):
+        for r in BOX.get(f"sch|{h}|{y}") or []:
+            if r[1] == a: rows.append([r[0], r[2], r[3], r[4], r[5]])
+    for r in RES.get(h, []):
+        if r[1] == a: rows.append([r[0], r[3], r[4], r[5], r[7]])
+    if rows: H2H[g["id"]] = sorted(rows, reverse=True)
 # focus list for the odds job: ranked teams first, then power conferences, then the rest; soonest first within each
 def pri(g):
     rk = min([x for x in (g["a"][2], g["h"][2]) if x] or [99])
@@ -200,5 +272,18 @@ print(f"var {U}_G={J(G)};  /* window games: a/h = [team id, record, rank, score]
 print(f"var {U}_RES={J(RES)};  /* team id -> [[date, opp id, opp abbr, H/A, pts for, pts against, event id, neutral], ...] */")
 print(f"var {U}_TS={J(TS)};")
 print(f"var {U}_P={J(PL)};  /* athlete id -> n, t (team id), p (pos), g: [[date, opp, H/A, " + ("pass yds, comp, att, pass td, int, rush att, rush yds, rush td, rec, rec yds, rec td, rec long, rush long" if SP == "cfb" else "min, pts, fgm, fga, 3pm, 3pa, ftm, fta, reb, ast, to, stl, blk") + "], ...] */")
+print(f"var {U}_TSX={J(TSX)};  /* team id -> n games, o: per-game stats, d: what opponents did against them (box scores) */")
+print(f"var {U}_INJ={J(INJ)};  /* team id -> [[name, pos, status, note, date], ...] (ESPN) */")
+print(f"var {U}_H2H={J(H2H)};  /* window game id -> meetings [[date, home team's H/A, home pts, away pts, neutral], ...] newest first (home = this game's home team) */")
 print(f"var {U}_OK=1;")
+# box scores of every window team's games this season -> a separate file the site loads only when a box score is opened
+BX = {}
+for tid in wt:
+    for r in RES.get(tid, [])[-8:]:
+        b = BOX.get(r[6])
+        if not b or r[6] in BX: continue
+        hm = tid if r[3] == "H" else r[1]; aw = r[1] if r[3] == "H" else tid
+        sh, sa = (r[4], r[5]) if r[3] == "H" else (r[5], r[4])
+        BX[r[6]] = {"d": r[0], "h": [hm, sh], "a": [aw, sa], "n": r[7], "t": b.get("_t") or {}, "p": {k: [x[1:] for x in v] for k, v in b.items() if k != "_t"}}
+open(os.path.join(R, f"src/{SP}_box.js"), "w").write(f"/* {SP.upper()} box scores (window teams, last 8 games each) — tools/collegefetch.py */\nvar {U}_BX={J(BX)};\nvar {U}_BX_OK=1;\n")
 log(f"{SP}: {len(PL)} players with logs, {len(focus)} focus games, {NREQ[0]} requests")

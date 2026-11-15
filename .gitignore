@@ -11,3 +11,5 @@ src/cfb_data.js
 src/cbb_data.js
 data/cfb_box.json
 data/cbb_box.json
+src/cfb_box.js
+src/cbb_box.js
