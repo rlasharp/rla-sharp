@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 20:00Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-15 20:36Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 15
 Kingston Flemings|G|Out|back strain|Nov 18
@@ -71,8 +71,8 @@ Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
 Pelle Larsson|G|Day-To-Day|illness|Nov 16
 #Milwaukee Bucks
+Ousmane Dieng|F|Out|finger fracture|Nov 18
 Ryan Rollins|G|Day-To-Day|illness|Nov 15
-Ousmane Dieng|F|Out|finger sprain|Nov 18
 #Minnesota Timberwolves
 Jaylen Clark|G|Day-To-Day|hamstring not specified|Nov 16
 Anthony Edwards|G|Out|knee surgery|Dec 21
