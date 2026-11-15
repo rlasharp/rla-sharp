@@ -692,7 +692,7 @@ function nbaBest(){
   for(const r of NBA_PROPS){
     const [nm,k,line,op,up,book]=r,p=NBA_LOGS[nm];if(!p||!NBA_MK[k])continue;
     const g=nbaGameOf(p.tm);if(!g||nbaStarted(g)||/out/i.test((nbaInjOf(nm)||[])[2]||""))continue;
-    for(const side of ["o","u"]){const bs=nbaBestPrice(r,side),e=nbaEval(nm,k,line,side,bs?bs[0]:(side==="o"?op:up),bs?bs[1]:book);if(e&&e.n10>=5&&nbaQualOk(e))out.push(e)}
+    for(const side of ["o","u"]){const bs=nbaBestPrice(r,side),e=nbaEval(nm,k,line,side,bs?bs[0]:(side==="o"?op:up),bs?bs[1]:book);if(e&&e.n10>=5&&nbaQualOk(e)&&(typeof xCutOk==="undefined"||xCutOk("nba",e)))out.push(e)}
   }
   const seen=new Set(),per={},top=[],rest=[];
   for(const x of out.sort((a,b)=>b.edge-a.edge)){const key=x.nm+"|"+x.k;if(seen.has(key)||x.edge<=0)continue;seen.add(key);per[x.nm]=(per[x.nm]||0)+1;(per[x.nm]<=2?top:rest).push(x)}
@@ -709,7 +709,7 @@ function nbaBestCard(n,more){
   if(!NBA_PROPS.length||!top.length)return "";
   return `<div class="card bpc"><h2 style="margin-bottom:2px">🔥 Best props tonight</h2>
   <div class="small" style="margin-bottom:8px">Every posted line, over and under, ranked by how often it would have hit vs what the odds need. Tap one for charts.</div>
-  ${typeof xCalNote!=="undefined"?xCalNote("nba"):""}${top.map(nbaBestRow).join("")}
+  ${typeof xCalNote!=="undefined"?xCalNote("nba"):""}${typeof xCutNote!=="undefined"?xCutNote("nba"):""}${top.map(nbaBestRow).join("")}
   ${more&&L.length>n?`<a href="#nba-props" class="small" style="display:block;text-align:center;margin-top:8px;color:var(--text2)">See all ${L.length} →</a>`:""}
   <div class="small" style="margin-top:8px">Hit score blends last 10 (45%), this season (35%) and vs tonight's opponent (20%), ±5 for the position matchup. A lean, not a guarantee.</div></div>`;
 }

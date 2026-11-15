@@ -302,7 +302,7 @@ def nfl_roll(force=False):
         OL[gid] = {"sp": float(sp), "ml": [int(float(mla)), int(float(mlh))] if mla else None, "tot": float(tot)}
     RP = {k: json.loads(v) for k, v in re.findall(r'"([^"]+\|\w+)":\s*(\[[^\]]*\])', js.split("const REAL_PROPS=")[1].split("\n")[0])}
     G = {r[0].strip('"'): (r[1], r[2]) for r in rows}
-    pm = re.search(r"const PLAYS=\[\n(.*?)\n\];", pj, re.S); arch = []
+    pm = re.search(r"const PLAYS=\[\n?(.*?)\n?\];", pj, re.S)   # empty list ("[\n]") when the plays are automatic; arch = []
     for typ, body in re.findall(r'\{type:"(\w+)",(.*?)\n\s*why:', pm.group(1), re.S) if pm else []:
         f_ = dict(re.findall(r'(\w+):"([^"]*)"', body)); gm = re.search(r"game:(\w+)", body)
         if typ == "prop":
@@ -340,7 +340,7 @@ def nfl_roll(force=False):
     if arch:
         pj = re.sub(r"(const PLAY_ARCHIVE=\{\n)", lambda m_: m_.group(1) + f" {wk}:" + json.dumps(arch, ensure_ascii=False) + ",\n", pj, count=1)
     pj = re.sub(r"const PLAYS_WEEK=\d+, PLAYS_ASOF=\"[^\"]*\";", f'const PLAYS_WEEK={nw}, PLAYS_ASOF="{now:%a %b} {now.day}";', pj, count=1)
-    pj = re.sub(r"const PLAYS=\[\n.*?\n\];", "const PLAYS=[\n];", pj, count=1, flags=re.S)
+    pj = re.sub(r"const PLAYS=\[\n?.*?\n?\];", "const PLAYS=[\n];", pj, count=1, flags=re.S)   # the automatic plays (TRACK.potw) keep their own history
     open("engine.js", "w", encoding="utf-8").write(js); open("plays.js", "w", encoding="utf-8").write(pj)
     print(f"nfl-roll: Week {wk} -> Week {nw}: {len(games)} games, {ln.count('sp:')} with lines; {len(arch)} plays archived")
 

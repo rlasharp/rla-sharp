@@ -40,7 +40,7 @@ jobs:
         run: |
           U="https://rlasharp.github.io/rla-sharp/"; L="$RUNNER_TEMP/live.html"; ISSUE=""
           CODE=$(curl -sS -L -A "Mozilla/5.0" -o "$L" -w '%{http_code}' --retry 3 --retry-delay 10 "$U?t=$(date +%s)" || echo 000)
-          for F in nba_detail.js nhl_data.js lines_hist.js soccer_data.js soccer_players.js; do curl -sS -L -A "Mozilla/5.0" -o "$RUNNER_TEMP/$F" "${U}$F?t=$(date +%s)" || true; done
+          for F in nfl_tgt_lazy.js nba_detail.js nhl_data.js lines_hist.js soccer_data.js soccer_players.js; do curl -sS -L -A "Mozilla/5.0" -o "$RUNNER_TEMP/$F" "${U}$F?t=$(date +%s)" || true; done
           SZ=$(stat -c %s "$L" 2>/dev/null || echo 0); RSZ=$(stat -c %s index.html)
           if [ "$CODE" != 200 ]; then ISSUE="site returned HTTP $CODE"
           elif [ "$SZ" -lt $((RSZ/2)) ]; then ISSUE="site page is too small ($SZ bytes vs $RSZ) — blank or broken"
@@ -76,7 +76,7 @@ jobs:
           git config user.name "rla-sharp-bot"
           git config user.email "actions@users.noreply.github.com"
           if [ -n "$GATE_STATE" ]; then mkdir -p data; printf '%s\n' "$GATE_STATE" > data/quick.json; git add data/quick.json; fi
-          git add -A index.html nhl_data.js nba_detail.js lines_hist.js nfl_boxq.js nfl_box2.js ufc_data.js cfb_data.js cbb_data.js cfb_box.js cbb_box.js data/cfb_focus.json data/cbb_focus.json data/ufc_cache.json data/futures_hist.json data/futures_names.json 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json data/nhl_lines.json data/soccer_next.json data/nhl_pp_hist.json
+          git add -A index.html nfl_tgt_lazy.js nhl_data.js nba_detail.js lines_hist.js nfl_boxq.js nfl_box2.js ufc_data.js cfb_data.js cbb_data.js cfb_box.js cbb_box.js data/cfb_focus.json data/cbb_focus.json data/ufc_cache.json data/futures_hist.json data/futures_names.json 'soccer_*.js' version.json src data/soccer_box.json data/soccer_geo.json data/soccer_sched.json data/nfl_box.json data/nfl_geo.json data/nfl_refs.json data/soccer_mgr.json data/nhl_lines.json data/soccer_next.json data/nhl_pp_hist.json
           for f in data/geo.json data/cfb_geo.json data/cbb_geo.json; do [ -f "$f" ] && git add "$f"; done; true   # place caches for weather / travel
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -qm "Auto refresh $(TZ=America/Toronto date '+%a %b %-d %-I:%M %p ET')"

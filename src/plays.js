@@ -23,6 +23,22 @@ function potwAuto(){try{const imp_=o=>o<0?-o/(-o+100):100/(o+100);
   return out}catch(e){return []}}
 function potwWhy(pl,d){try{if(pl.type==="prop")return `${esc(pl.player)} went ${pl.side} ${d.line} in <b>${d.ov} of ${d.n}</b> games this season (average ${d.avg}).${d.o&&Number.isFinite(d.dv.rank)?` ${esc(short(d.o.opp))} allow the ${d.rankTxt} ${MARKETS[pl.market].n.toLowerCase()} to ${esc(d.P.pos)}s.`:""}${pl.ch?` Our chance: <b>${pl.ch}%</b> vs ${impl(d.odds!=null?d.odds:pl.odds)}% the price needs.`:""}`;
   const g=d.g,x=d.x;return `Our model: <b>${esc(short(g.away))} ${x.a} – ${esc(short(g.home))} ${x.h}</b> (${esc(short(x.win))} ${x.winP}% to win, total ${x.total}).${pl.type==="spread"?` That's ${pl.edge} points off the spread — the biggest gap on the slate.`:pl.type==="total"?` That's ${pl.edge} points ${pl.side==="over"?"over":"under"} the posted ${d.L.tot} — the biggest total gap this week.`:` We give ${esc(short(pl.team))} ${pl.edge} percentage points more than the moneyline (margin removed).`}`}catch(e){return ""}}
+/* how the 5 weekly plays compare with everything else we track for the NFL (best props, every week) */
+function potwVs(){try{const {all}=playRecord(),g=all.filter(x=>x.r==="win"||x.r==="loss"),w=g.filter(x=>x.r==="win").length,u=all.reduce((a,x)=>a+unitsFor(x.r,x.odds),0);
+  const B=typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum.nfl&&TRACK.sum.nfl.best;if(!g.length||!B||!(B.w+B.l))return "";
+  const pc=(a,b)=>a+b?Math.round(a/(a+b)*100)+"%":"–",r=(a,b,uu)=>`<b>${a}-${b}</b> (${pc(a,b)}, ${uu>0?"+":""}${(+uu).toFixed(2)}u)`;
+  return `<div class="card" style="margin:-6px 0 16px"><h2>📊 Plays of the Week vs everything else</h2><div class="ufval"><span>⭐ Plays of the Week</span>${r(w,g.length-w,u)}</div><div class="ufval"><span>🎯 All NFL best props we track</span>${r(B.w,B.l,B.u)}</div>
+   <div class="small">${g.length<20||B.w+B.l<20?"Small samples so far — this comparison means more after a few more weeks.":(w/g.length>B.w/(B.w+B.l)?"The weekly five are doing better than the full list.":"The weekly five aren't beating the full list yet.")}</div></div>`}catch(e){return ""}}
+/* 🔀 teaser spots (6-point NFL teasers): favourites of −7.5 to −8.5 teased down through 7 and 3, underdogs of +1.5 to +2.5 teased up
+   through 3 and 7 — the classic "crosses both key numbers" legs. Our chance per leg from the game model (margin sd ≈ 13.5). */
+function teaserSpots(){try{const nc=typeof coNcdf!=="undefined"?coNcdf:(z=>.5*(1+Math.tanh(z*.7978845608*(1+.044715*z*z)))),out=[];
+  for(const g of SLATE){if(g.final||(typeof nflStarted!=="undefined"&&nflStarted(g))||!LINES[g.id])continue;const L=LINES[g.id],M=projScore(g).P.spread;
+    for(const [t,sp] of [[g.home,L.sp],[g.away,-L.sp]]){const ok=(sp<=-7.5&&sp>=-8.5)||(sp>=1.5&&sp<=2.5);if(!ok)continue;const ts=sp+6,m=t===g.home?M:-M,p=nc((m+ts)/13.5);out.push({g,t,sp,ts,p})}}
+  return out.sort((a,b)=>b.p-a.p)}catch(e){return []}}
+function teaserCard(){const L=teaserSpots();if(!L.length)return `<div class="card"><h2>🔀 Teaser spots</h2><div class="small">No game this week has a line in the classic teaser range (favourites −7.5 to −8.5, underdogs +1.5 to +2.5).</div></div>`;
+  const sg=x=>(x>0?"+":"")+x;return `<div class="card"><h2>🔀 Teaser spots <span class="small">· 6-point NFL teasers</span></h2>
+   ${L.map(x=>`<a class="ufval" href="#game-${x.g.id}"><span><b>${esc(TEAMS[x.t]?TEAMS[x.t][0]:x.t)}</b> <span class="small">${sg(x.sp)} → ${sg(x.ts)}</span></span><span class="small">${esc(short(x.g.away))} @ ${esc(short(x.g.home))}</span><b class="${x.p>=.739?"up":""}">${Math.round(x.p*100)}%</b></a>`).join("")}
+   <div class="small" style="margin-top:6px">These legs move across both 3 and 7, the most common NFL margins. Our chance = how often our game model says the teased line covers. A 2-team, 6-point teaser at −120 needs each leg to cover about <b>74%</b> of the time; green = at or above that. Not every book offers 6 points at −120 — check the price.</div></div>`}
 let POTW_ON=0,POTW_LIVE=0;const PLAYS_HAND=PLAYS.length;   /* hand-picked plays (if any) win over the automatic ones */
 function potwInit(){if(POTW_ON)return;POTW_ON=1;if(PLAYS.length)return;const L=typeof TRACK!=="undefined"&&TRACK&&TRACK.potw&&TRACK.potw[PLAYS_WEEK];
   const src=L&&L.length?L:potwAuto();POTW_LIVE=!(L&&L.length);for(const x of src)PLAYS.push(Object.assign({},x,{why:d=>potwWhy(x,d)}))}
@@ -109,7 +125,7 @@ function viewPlays(){potwInit();
    <p class="sub">${PLAYS.length?`Week ${PLAYS_WEEK} · our ${PLAYS.length} favourite spots, picked automatically from the numbers on this site — the two player props furthest above their price, and the spread, moneyline and total where our game model is furthest from the line. ${POTW_LIVE?"Provisional: they lock at the next data update and are graded after that.":"Locked for the week and graded automatically."} Check your sportsbook before betting, prices move.`:`Week ${PLAYS_WEEK}: this week's Plays of the Week aren't posted yet. Last week's results are in the record below; the ${typeof prlSportHtml!=="undefined"?"parlay of the day and ":""}best props are on the Props page.`}</p>
    <div class="row" style="gap:8px;margin:-4px 0 10px;flex-wrap:wrap"><button class="btn" id="nflShare">📤 Share this week's plays</button><a class="btn" href="#record">📒 Full record</a></div>
    ${typeof prlSportHtml!=="undefined"?prlSportHtml("nfl"):""}
-   ${recordPanel()}
+   ${recordPanel()}${potwVs()}${teaserCard()}
    <div class="grid g2">${cards}</div>
    <div class="card" style="margin-top:14px;padding:14px 18px"><p class="note" style="margin:0"><b>How these are chosen:</b> props need a strong season hit rate against the posted line plus a matchup that doesn't work against it (defense vs position rank). Game plays come from our score model disagreeing with the betting line by a meaningful margin. These are data-based leans, <b>not guarantees</b> — football is high-variance and even good plays lose often. Never bet more than you can afford to lose. Must be 21+ (18+ in some states). Gambling problem? Call or text 1-800-GAMBLER (24/7, free). In Canada: Quebec 18+, Jeu : aide et référence 1-800-461-0140 · Ontario 19+, ConnexOntario 1-866-531-2600.</p></div>`;
   if(document.getElementById("nflShare"))document.getElementById("nflShare").onclick=shareNflPlays;

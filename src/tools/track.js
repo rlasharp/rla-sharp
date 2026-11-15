@@ -27,10 +27,11 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
       S.best=(typeof nbaBest!=="undefined"?nbaBest():[]).slice(0,10).map(b=>({nm:b.nm,k:b.k,side:b.side,line:b.line,odds:b.odds,book:b.book||"",tm:b.p?b.p.tm:"",sc:Math.round((b.sc||0)*100)/100,sc0:Math.round((b.sc0!=null?b.sc0:b.sc||0)*1000)/1000}));
       S.games=NBA_SLATE.map(g=>{const M=nbaModel(g.a,g.h),L=NBA_LINES[g.a+"@"+g.h];if(!M)return null;const E=typeof nbaOddsEdges!=="undefined"?nbaOddsEdges(g):[];
         return {a:g.a,h:g.h,p:Math.round(M.p*1000)/1000,m:M.m,tot:M.tot,L:L?{sp:L.sp,tot:L.tot}:null,edges:E.filter(e=>e.edge>=.04).map(e=>({mk:e.mk,pick:e.pick,odds:e.odds,me:Math.round(e.me*1000)/1000,bk:Math.round(e.bk*1000)/1000}))}}).filter(Boolean);
+      S.op=S.op||{};for(const b of S.best){const q=b.nm+"|"+b.k+"|"+b.side;if(!S.op[q])S.op[q]=[b.odds,b.line]}   /* first price we listed (for closing-line value) */
       log.push(`nba ${d}: snapshot ${S.best.length} props, ${S.games.length} games`)}}
   // NHL
   if(typeof NHL_SLATE!=="undefined"&&NHL_DATE&&NHL_SLATE.length){const d=NHL_DATE,S=T.nhl[d]||(T.nhl[d]={});const open=NHL_SLATE.filter(g=>!nhStarted(g));
-    if(open.length===NHL_SLATE.length){S.best=nhBest().filter(b=>b.g&&b.g.d===d).slice(0,10).map(b=>({nm:b.nm,k:b.k,side:b.side,line:b.line,odds:b.odds,tm:nhWho(b.nm).tm,sc:Math.round(b.s.p*100)/100,sc0:Math.round((b.s.p0!=null?b.s.p0:b.s.p)*1000)/1000}))}   /* only that day's games (the props list also has tomorrow's) */
+    if(open.length===NHL_SLATE.length){S.best=nhBest().filter(b=>b.g&&b.g.d===d).slice(0,10).map(b=>({nm:b.nm,k:b.k,side:b.side,line:b.line,odds:b.odds,tm:nhWho(b.nm).tm,sc:Math.round(b.s.p*100)/100,sc0:Math.round((b.s.p0!=null?b.s.p0:b.s.p)*1000)/1000}));S.op=S.op||{};for(const b of S.best){const q=b.nm+"|"+b.k+"|"+b.side;if(!S.op[q])S.op[q]=[b.odds,b.line]}}   /* only that day's games (the props list also has tomorrow's) */
     // Plays of the day: lock once, within 6 h of the first puck drop (never with zero plays)
     const first=Math.min(...NHL_SLATE.map(g=>Date.parse(g.iso)));
     if(!S.locked&&open.length===NHL_SLATE.length&&first-Date.now()<=6*3600e3){
@@ -122,6 +123,14 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
      /* per market (points, rebounds, shots...): its own trust level and record, so the ones that work aren't held back by the ones that don't */
      s.mkrec={};for(const o of X){const R=s.mkrec[o.k]||(s.mkrec[o.k]=[0,0]);R[o.y?0:1]++}
      for(const k of Object.keys(s.mkrec)){const A=X.filter(o=>o.k===k);if(A.length>=8)s.fit.mk[k]=fit(A)}}
+    /* slices of the graded best props — over/under, price, market × side — with units, so losing slices can be cut */
+    {const Sl={side:{},price:{},mks:{}},add=(g,k,x)=>{const R=Sl[g][k]||(Sl[g][k]=[0,0,0]);if(x.r==="win"){R[0]++;R[2]+=pay(x.odds)}else{R[1]++;R[2]-=1}};
+     for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){if((x.r!=="win"&&x.r!=="loss")||x.odds==null)continue;add("side",x.side,x);add("price",x.odds<=-130?"fav":x.odds>=100?"dog":"even",x);add("mks",x.k+"|"+x.side,x)}
+     for(const g of Object.values(Sl))for(const R of Object.values(g))R[2]=Math.round(R[2]*100)/100;s.slices=Sl}
+    /* closing-line value: the first price we listed vs the last one before the game started */
+    {const C={n:0,beat:0,sum:0,sn:0};for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){const o=S.op&&S.op[x.nm+"|"+x.k+"|"+x.side];if(!o||o[0]==null||x.odds==null)continue;
+       if(o[1]===x.line){if(o[0]===x.odds)continue;const dv=imp(x.odds)-imp(o[0]);C.n++;C.sn++;C.sum+=dv;if(dv>0)C.beat++}else{const lm=(x.line-o[1])*(x.side==="o"?1:-1);C.n++;if(lm>0)C.beat++}}
+     C.sum=Math.round(C.sum*1000)/1000;s.clv=C}
     s.best.u=Math.round(s.best.u*100)/100;s.plays.u=Math.round(s.plays.u*100)/100;for(const E of Object.values(s.edge))E[2]=Math.round(E[2]*100)/100;
     s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,40);SUM[sp]=s}
   {const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T.soc))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}
@@ -168,10 +177,13 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
   /* 🏈 weekly pick'em: our side and total on every game with a ranked team, locked 3 h before kickoff, kept all season */
   if(CS==="cfb"){const PE=await p.evaluate(PE=>{if(typeof coPickEm==="undefined")return null;const now=Date.now();let n=0;
     for(const g of coGames("cfb")){if(g.st!=="pre"||PE[g.id]||!(typeof coPeOk!=="undefined"?coPeOk("cfb",g):(g.a[2]||g.h[2])))continue;const t=Date.parse(g.t);if(t-now>3*3600e3||t<now)continue;const x=coPickEm("cfb",g);if(x){PE[g.id]=x;n++}}
+    for(const x of Object.values(PE))if(x.cl==null){const A=((coV("cfb","ATS")||{})[x.h]||[]).find(r=>String(r[7])===String(x.eid));if(A){x.cl=A[5];x.clt=A[6]}}
     for(const x of Object.values(PE))if(!x.r){let g=coGame("cfb",x.eid);if(!g||g.st!=="post"){const r=((coV("cfb","RES")||{})[x.h]||[]).find(r=>String(r[6])===String(x.eid));if(r)g={st:"post",a:[0,0,0,r[5]],h:[0,0,0,r[4]]}}if(g&&g.st==="post"){const a=+g.a[3],h=+g.h[3];if(isFinite(a)&&isFinite(h)){x.f=[a,h];const m=h-a+x.sp,cv=x.ps===x.h?m:-m;x.ra=cv>0?"win":cv<0?"loss":"push";if(x.tot!=null){const d=a+h-x.tot;x.ro=d===0?"push":(d>0)===(x.po==="over")?"win":"loss"}x.r=1}}}
-    const S={ats:[0,0,0],ou:[0,0,0]},k={win:0,loss:1,push:2};for(const x of Object.values(PE))if(x.r){S.ats[k[x.ra]]++;if(x.ro)S.ou[k[x.ro]]++}
+    const S={ats:[0,0,0],ou:[0,0,0],clv:{n:0,beat:0,pts:0,tn:0,tbeat:0}},k={win:0,loss:1,push:2};for(const x of Object.values(PE)){if(x.r){S.ats[k[x.ra]]++;if(x.ro)S.ou[k[x.ro]]++}
+      if(x.cl!=null&&x.sp!=null){const t=x.ps===x.h?x.sp:-x.sp,c=x.ps===x.h?x.cl:-x.cl,v=t-c;S.clv.n++;S.clv.pts+=v;if(v>0)S.clv.beat++}
+      if(x.clt!=null&&x.tot!=null&&x.po){const v=x.po==="over"?x.clt-x.tot:x.tot-x.clt;S.clv.tn++;if(v>0)S.clv.tbeat++}}
     return {PE,S,n}},R.T.cfbpe||{});
-   if(PE){R.T.cfbpe=PE.PE;(R.SUM.cfb=R.SUM.cfb||{}).pe={ats:PE.S.ats,ou:PE.S.ou,rows:Object.values(PE.PE).sort((a,b)=>a.t<b.t?1:-1).slice(0,150)};if(PE.n)R.log.push(`cfb pick'em: locked ${PE.n}`)}}
+   if(PE){R.T.cfbpe=PE.PE;(R.SUM.cfb=R.SUM.cfb||{}).pe={ats:PE.S.ats,ou:PE.S.ou,clv:PE.S.clv,rows:Object.values(PE.PE).sort((a,b)=>a.t<b.t?1:-1).slice(0,150)};if(PE.n)R.log.push(`cfb pick'em: locked ${PE.n}`)}}
   }catch(e){console.error(CS+" track:",e.message)}}
  /* keep ~60 days */
  const cut=new Date(Date.now()-60*864e5).toISOString().slice(0,10);for(const s of ['nba','nfl','nhl','soc'])for(const d of Object.keys(R.T[s]))if(d<cut)delete R.T[s][d];for(const [k,S] of Object.entries(R.T.ufc||{}))if((S.d||k)<cut)delete R.T.ufc[k];for(const CS of ['cfb','cbb'])for(const k of Object.keys(R.T[CS]||{}))if(k<cut)delete R.T[CS][k];

@@ -273,32 +273,6 @@ for tid, L in RES.items():
             h = 0 if r[7] else (HFA / 2 if r[3] == "H" else -HFA / 2); m = r[4] - r[5]; adj = (max(-CAP, min(CAP, m)) - m) / 2
             GMD.append((r[0], tid, r[1], r[4] + adj - h, r[5] - adj + h))
             if r[6] not in ONE and (r[3] == "H" or r[7]): ONE[r[6]] = (r[0], tid, r[1], r[4], r[5], r[7])
-THR = [3, 5, 7, 10] if SP == "cfb" else [2, 4, 6, 8]
-BT = {"sp": {str(t): [0, 0, 0] for t in THR}, "tot": {str(t): [0, 0, 0] for t in THR}, "n": 0, "wk": 0}
-if GMD:
-    d0_ = dt.date.fromisoformat(min(x[0] for x in GMD)); wk = d0_ + dt.timedelta(days=(7 - d0_.weekday()) % 7 or 7)
-    while wk <= NOW.date():
-        prior = [x for x in GMD if x[0] < wk.isoformat()]; nxt = wk + dt.timedelta(days=7)
-        cnt = {}
-        for x in prior: cnt[x[1]] = cnt.get(x[1], 0) + 1
-        todo = [(e, v) for e, v in ONE.items() if wk.isoformat() <= v[0] < nxt.isoformat() and cnt.get(v[1], 0) >= 3 and cnt.get(v[2], 0) >= 3]
-        if prior and todo:
-            O_, D_, lg_ = _fit(prior); BT["wk"] += 1
-            for e, (d, h, a, hs, as_, neu) in todo:
-                l = (BOX.get(e) or {}).get("_l") or [None, None, ""]
-                if l[0] is None: continue
-                hsp = l[0] if (not l[2] or l[2] == h) else -l[0]
-                hf = 0 if neu else HFA / 2
-                ph = lg_ + O_.get(h, 0) + D_.get(a, 0) + hf; pa_ = lg_ + O_.get(a, 0) + D_.get(h, 0) - hf
-                BT["n"] += 1; e1 = (ph - pa_) + hsp; res = (hs - as_) + hsp
-                for t in THR:
-                    if abs(e1) >= t: BT["sp"][str(t)][0 if res * e1 > 0 else 1 if res * e1 < 0 else 2] += 1
-                if l[1] is not None:
-                    e2 = ph + pa_ - l[1]; r2 = hs + as_ - l[1]
-                    for t in THR:
-                        if abs(e2) >= t: BT["tot"][str(t)][0 if r2 * e2 > 0 else 1 if r2 * e2 < 0 else 2] += 1
-        wk = nxt
-log(f"{SP}: backtest {BT['n']} games over {BT['wk']} weeks")
 # each team's own home edge: how much better it does at home than on the road against what its ratings expect (shrunk to the default)
 for t, v in TR.items():
     hm, rd = [], []
@@ -342,6 +316,61 @@ if EG:
     EFF = {t: {"o": round(EO[t], 2), "d": round(ED[t], 2), "t": round(ET_[t], 2), "g": len(sO[t])} for t in tm_}
     for i, (t, v) in enumerate(sorted(EFF.items(), key=lambda kv: -(kv[1]["o"] - kv[1]["d"]))): v["rk"] = i + 1
     EFFLG = [round(lgE, 2), round(lgT, 2), round(hE, 2)]
+# ---------- backtest: replay the season week by week (ratings from earlier games only) vs ESPN's closing line ----------
+# two versions of our number are replayed: "tr" = points-based ratings only; "mix" = the average of those and the pace + efficiency
+# projection (what the site shows). The site lists leans only for a version + gap that held up (see coThr in college.js).
+EGD = []
+for tid, L in RES.items():
+    for r in L:
+        if tid not in DIV or r[1] not in DIV or r[4] is None or r[5] is None: continue
+        T = (BOX.get(r[6]) or {}).get("_t") or {}
+        if tid not in T or r[1] not in T: continue
+        u1, u2 = units(T[tid]), units(T[r[1]])
+        if not u1 or not u2: continue
+        tempo = (u1 + u2) / 2; h = 0 if r[7] else (1 if r[3] == "H" else -1)
+        EGD.append((r[0], tid, r[1], 100 * r[4] / (u1 if SP == "cfb" else tempo), 100 * r[5] / (u2 if SP == "cfb" else tempo), tempo, h))
+def _fitE(games):
+    tm_ = {x[1] for x in games} | {x[2] for x in games}; lgE_ = sum(x[3] for x in games) / len(games); lgT_ = sum(x[5] for x in games) / len(games); hE_ = (HFA / 2) / lgT_ * 100
+    EO_ = {t: 0.0 for t in tm_}; ED_ = {t: 0.0 for t in tm_}; ET2 = {t: 0.0 for t in tm_}
+    for _ in range(25):
+        sO = {t: [] for t in tm_}; sD = {t: [] for t in tm_}; sT = {t: [] for t in tm_}
+        for d, t, o, ef, ea, tp, h in games: sO[t].append(ef - h * hE_ - lgE_ - ED_[o]); sD[t].append(ea + h * hE_ - lgE_ - EO_[o]); sT[t].append(tp - lgT_ - ET2[o])
+        EO_ = {t: sum(v) / (len(v) + 1.5) if v else 0.0 for t, v in sO.items()}; ED_ = {t: sum(v) / (len(v) + 1.5) if v else 0.0 for t, v in sD.items()}; ET2 = {t: sum(v) / (len(v) + 1.5) if v else 0.0 for t, v in sT.items()}
+    return EO_, ED_, ET2, lgE_, lgT_
+THR = [3, 5, 7, 10] if SP == "cfb" else [2, 4, 6, 8]
+VARS = ["tr", "mix"]
+BT = {"v": {v: {"sp": {str(t): [0, 0, 0] for t in THR}, "tot": {str(t): [0, 0, 0] for t in THR}} for v in VARS}, "n": 0, "wk": 0}
+if GMD:
+    d0_ = dt.date.fromisoformat(min(x[0] for x in GMD)); wk = d0_ + dt.timedelta(days=(7 - d0_.weekday()) % 7 or 7)
+    while wk <= NOW.date():
+        W = wk.isoformat(); prior = [x for x in GMD if x[0] < W]; nxt = wk + dt.timedelta(days=7)
+        cnt = {}
+        for x in prior: cnt[x[1]] = cnt.get(x[1], 0) + 1
+        todo = [(e, v) for e, v in ONE.items() if W <= v[0] < nxt.isoformat() and cnt.get(v[1], 0) >= 3 and cnt.get(v[2], 0) >= 3]
+        if prior and todo:
+            O_, D_, lg_ = _fit(prior); BT["wk"] += 1
+            pe = [x for x in EGD if x[0] < W]; FE = _fitE(pe) if len(pe) > 50 else None
+            for e, (d, h, a, hs, as_, neu) in todo:
+                l = (BOX.get(e) or {}).get("_l") or [None, None, ""]
+                if l[0] is None: continue
+                hsp = l[0] if (not l[2] or l[2] == h) else -l[0]; hf = 0 if neu else HFA / 2
+                ph = lg_ + O_.get(h, 0) + D_.get(a, 0) + hf; pa_ = lg_ + O_.get(a, 0) + D_.get(h, 0) - hf
+                P = {"tr": (ph, pa_)}
+                if FE and h in FE[0] and a in FE[0]:
+                    EO_, ED_, ET2, lgE_, lgT_ = FE; u = lgT_ + ET2[h] + ET2[a]
+                    P["mix"] = ((ph + (lgE_ + EO_[h] + ED_[a]) / 100 * u + hf) / 2, (pa_ + (lgE_ + EO_[a] + ED_[h]) / 100 * u - hf) / 2)
+                BT["n"] += 1; res = (hs - as_) + hsp
+                for v, (x1, x2) in P.items():
+                    B_ = BT["v"][v]; e1 = (x1 - x2) + hsp
+                    for t in THR:
+                        if abs(e1) >= t: B_["sp"][str(t)][0 if res * e1 > 0 else 1 if res * e1 < 0 else 2] += 1
+                    if l[1] is not None:
+                        e2 = x1 + x2 - l[1]; r2 = hs + as_ - l[1]
+                        for t in THR:
+                            if abs(e2) >= t: B_["tot"][str(t)][0 if r2 * e2 > 0 else 1 if r2 * e2 < 0 else 2] += 1
+        wk = nxt
+BT["sp"], BT["tot"] = BT["v"]["tr"]["sp"], BT["v"]["tr"]["tot"]
+log(f"{SP}: backtest {BT['n']} games over {BT['wk']} weeks")
 # ---------- against the spread / over-under this season (closing lines from ESPN's game page) ----------
 TATS = {}
 for tid in wt:

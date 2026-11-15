@@ -702,8 +702,16 @@ function viewWeeks(){
   document.querySelectorAll("[data-bx]").forEach(b=>b.onclick=()=>{W.sel=W.sel===b.dataset.bx?null:b.dataset.bx;viewWeeks();if(W.sel){const o=document.getElementById("boxOut");if(o)o.scrollIntoView({behavior:"smooth",block:"start"})}});
 }
 /* ---------- Router ---------- */
+/* NFL target / zone / red-zone tables load on demand (tools/nfllazy.py): NFL pages (and the shared ones) wait for them;
+   other sports' pages render straight away and the file loads in the background a few seconds later */
+const NFLZ={wait:[],loading:0};
+function nflLazy(cb){if(window.NFL_TGT_OK||NFLZ.failed)return cb&&cb();if(cb)NFLZ.wait.push(cb);if(NFLZ.loading)return;NFLZ.loading=1;
+  const sc=document.createElement("script");sc.src="nfl_tgt_lazy.js?v="+(typeof BUILD_AT!=="undefined"&&BUILD_AT?BUILD_AT.replace(/\D/g,""):Date.now());
+  const done=()=>{NFLZ.loading=0;NFLZ.wait.splice(0).forEach(f=>{try{f()}catch(e){console.error(e)}})};sc.onload=done;sc.onerror=()=>{NFLZ.failed=1;done()};document.head.appendChild(sc)}
+function nflNeeds(h){return !/^(nba|nhl|soccer|ufc|cfb|cbb|futures|calib|settings|bets|guide|calc|favs)/.test(h)}
 function route(){
   const h=decodeURIComponent((location.hash||"#today").slice(1))||"today";
+  if(!window.NFL_TGT_OK&&!NFLZ.failed){if(nflNeeds(h)){const el=document.querySelector("main>section:not(.hide)");return nflLazy(()=>route())}else setTimeout(()=>nflLazy(),3000)}
   const SHARED=["calc","record","guide","today","bets","favs","week","potd","settings","futures","calib"],isSoc=h.startsWith("soccer")||(SHARED.includes(h)&&LS.get("sport")==="soc"),isNhl=!isSoc&&(h.startsWith("nhl")||(SHARED.includes(h)&&LS.get("sport")==="nhl")),isNba=!isSoc&&!isNhl&&(h.startsWith("nba")||(SHARED.includes(h)&&LS.get("sport")==="nba"));
   if(h.startsWith("ufc")&&typeof ufcRoute!=="undefined"){LS.set("sport","ufc");["nav","nbaNav","nhlNav","socNav"].forEach(i=>{const n=document.getElementById(i);if(n)n.hidden=true});const uN=document.getElementById("ufcNav");if(uN)uN.hidden=false;
     document.querySelectorAll("#sport a").forEach(a=>a.classList.toggle("on",a.dataset.s==="ufc"));document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-ufc"));

@@ -263,3 +263,13 @@ function glTitle(b){const em={nba:"🏀",nhl:"🏒",cfb:"🏈",cbb:"🏀"}[b.sp]
 /* our chance for a college line (for the parlay estimate); NBA / NHL lines have no per-line chance yet */
 function glHit(b){try{if(b.sp!=="cfb"&&b.sp!=="cbb")return null;const g=coGame(b.sp,b.game),M=g&&coModel(b.sp,g);if(!M)return null;const sd=CO[b.sp].sd;
   if(b.market==="ml")return b.team===b.home?M.p:1-M.p;if(b.market==="spread"){const hm=b.team===b.home?M.m+b.line:-M.m+b.line;return coNcdf(hm/sd)}return null}catch(e){return null}}
+
+/* ---------- ✂️ cut losing slices of the best props (from our graded record): a price range or a market+side that has lost 15%+ of
+   its stake over 20+ picks stays off the best list (it still shows in the full props list) ---------- */
+const XCUT={};
+function xSliceKeys(b){const o=b.odds;return [["price",o==null?null:o<=-130?"fav":o>=100?"dog":"even"],["mks",b.k+"|"+b.side]]}
+function xCutOk(sp,b){try{const S=TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].slices;if(!S)return true;for(const [g,k] of xSliceKeys(b)){const R=k&&S[g]&&S[g][k];if(R&&R[0]+R[1]>=20&&R[2]/(R[0]+R[1])<=-.15){XCUT[sp]=(XCUT[sp]||new Set());XCUT[sp].add(g+":"+k);return false}}return true}catch(e){return true}}
+function xSliceLab(sp,key){const [g,k]=key.split(":");if(g==="price")return {fav:"favourites (−130 or shorter)",even:"near-even prices",dog:"plus-money prices"}[k]||k;const [m,sd]=k.split("|"),M=sp==="nba"&&typeof NBA_MK!=="undefined"&&NBA_MK[m]?NBA_MK[m][1]:sp==="nhl"&&typeof NH_MK!=="undefined"&&NH_MK[m]?NH_MK[m][1]:m;return `${M} ${sd==="o"?"overs":"unders"}`}
+function xCutNote(sp){const C=XCUT[sp];if(!C||!C.size)return "";return `<div class="small" style="margin:-2px 0 8px">✂️ Left off because they've lost money in our record: ${[...C].map(k=>xSliceLab(sp,k)).join(", ")}. <a href="#calib">Details</a></div>`}
+/* closing-line value text for a sport's best props */
+function xClvTxt(sp){const C=TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].clv;if(!C||!C.n)return "";return `Closing line: the price moved our way after we listed it on <b>${C.beat} of ${C.n}</b> (${Math.round(C.beat/C.n*100)}%)${C.sn?`, by ${(C.sum/C.sn*100>0?"+":"")+(C.sum/C.sn*100).toFixed(1)} percentage points on average`:""}. Beating the close more than half the time is the earliest sign of a real edge — it shows up long before the win-loss record settles.`}
