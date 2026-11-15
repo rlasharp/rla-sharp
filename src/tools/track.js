@@ -158,7 +158,15 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
     for(const S of Object.values(T))for(const x of S.plays||[])if(!x.r||x.r==="pending"){const g=coGrade(x);if(g&&g.r&&g.r!=="pending"){x.r=g.r;x.v=g.why||""}}
     const s={plays:{w:0,l:0,p:0,u:0},recent:[]};for(const [d,S] of Object.entries(T))for(const x of S.plays||[]){if(x.r==="win"){s.plays.w++;s.plays.u+=pay(x.odds)}else if(x.r==="loss"){s.plays.l++;s.plays.u-=1}else if(x.r==="push"||x.r==="void")s.plays.p++;s.recent.push({d,...x})}
     s.plays.u=Math.round(s.plays.u*100)/100;s.recent=s.recent.sort((a,b)=>a.d<b.d?1:-1).slice(0,60);return {T,s,log}},[CS,R.T[CS]||{},lo]);
-  if(U){R.T[CS]=U.T;R.SUM[CS]=U.s;R.log.push(...U.log)}}catch(e){console.error(CS+" track:",e.message)}}
+  if(U){R.T[CS]=U.T;R.SUM[CS]=U.s;R.log.push(...U.log)}
+  /* 🏈 weekly pick'em: our side and total on every game with a ranked team, locked 3 h before kickoff, kept all season */
+  if(CS==="cfb"){const PE=await p.evaluate(PE=>{if(typeof coPickEm==="undefined")return null;const now=Date.now();let n=0;
+    for(const g of coGames("cfb")){if(g.st!=="pre"||PE[g.id]||!(g.a[2]||g.h[2]))continue;const t=Date.parse(g.t);if(t-now>3*3600e3||t<now)continue;const x=coPickEm("cfb",g);if(x){PE[g.id]=x;n++}}
+    for(const x of Object.values(PE))if(!x.r){let g=coGame("cfb",x.eid);if(!g||g.st!=="post"){const r=((coV("cfb","RES")||{})[x.h]||[]).find(r=>String(r[6])===String(x.eid));if(r)g={st:"post",a:[0,0,0,r[5]],h:[0,0,0,r[4]]}}if(g&&g.st==="post"){const a=+g.a[3],h=+g.h[3];if(isFinite(a)&&isFinite(h)){x.f=[a,h];const m=h-a+x.sp,cv=x.ps===x.h?m:-m;x.ra=cv>0?"win":cv<0?"loss":"push";if(x.tot!=null){const d=a+h-x.tot;x.ro=d===0?"push":(d>0)===(x.po==="over")?"win":"loss"}x.r=1}}}
+    const S={ats:[0,0,0],ou:[0,0,0]},k={win:0,loss:1,push:2};for(const x of Object.values(PE))if(x.r){S.ats[k[x.ra]]++;if(x.ro)S.ou[k[x.ro]]++}
+    return {PE,S,n}},R.T.cfbpe||{});
+   if(PE){R.T.cfbpe=PE.PE;(R.SUM.cfb=R.SUM.cfb||{}).pe={ats:PE.S.ats,ou:PE.S.ou,rows:Object.values(PE.PE).sort((a,b)=>a.t<b.t?1:-1).slice(0,150)};if(PE.n)R.log.push(`cfb pick'em: locked ${PE.n}`)}}
+  }catch(e){console.error(CS+" track:",e.message)}}
  /* keep ~60 days */
  const cut=new Date(Date.now()-60*864e5).toISOString().slice(0,10);for(const s of ['nba','nfl','nhl','soc'])for(const d of Object.keys(R.T[s]))if(d<cut)delete R.T[s][d];for(const [k,S] of Object.entries(R.T.ufc||{}))if((S.d||k)<cut)delete R.T.ufc[k];for(const CS of ['cfb','cbb'])for(const k of Object.keys(R.T[CS]||{}))if(k<cut)delete R.T[CS][k];
  fs.mkdirSync(path.dirname(SF),{recursive:true});fs.writeFileSync(SF,JSON.stringify(R.T));

@@ -18,7 +18,7 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
   if(sc===null)errs.push('soccer section missing');else if(!sc.g&&vw===390)console.log('note: no upcoming soccer matches in the data')}
  /* college: load the data, then its pages (a page still saying "Loading…" after the data is in counts as broken) */
  for(const CS of ['cfb','cbb']){const c=await p.evaluate(CS=>new Promise(r=>{if(typeof coEnsure==='undefined')return r(null);coEnsure(CS,()=>{if(!coOk(CS))return r({none:1});const G=coGames(CS),T=Object.keys(coV(CS,'TS')||{}),P=Object.keys(coV(CS,'P')||{});r({g:(G.find(g=>g.st==='pre')||G[0]||{}).id,f:(G.find(g=>g.st==='post')||{}).id,t:T[0],p:P[0]})})}),CS);
-  if(c&&!c.none){H.push(CS,CS+'-picks',CS+'-rank',CS+'-stand',CS+'-lead');if(c.g)H.push(CS+'-game-'+c.g);if(c.t)H.push(CS+'-team-'+c.t);if(c.p)H.push(CS+'-player-'+c.p);
+  if(c&&!c.none){H.push(CS,CS+'-picks',CS+'-rank',CS+'-stand',CS+'-lead',CS+'-big',CS==='cfb'?CS+'-pickem':CS+'-bracket');if(c.g)H.push(CS+'-game-'+c.g);if(c.t)H.push(CS+'-team-'+c.t);if(c.p)H.push(CS+'-player-'+c.p);
    await p.goto('file://'+f+'#'+CS);await p.waitForTimeout(1500);const t=await p.evaluate(CS=>(document.getElementById('v-'+CS)||{}).innerText||'',CS);if(/Loading/.test(t.slice(0,200)))errs.push(`#${CS} stuck on Loading after its data loaded`)}}
  H.push('ufc','ufc-props','ufc-results','ufc-rank','futures','calib','settings');
  for(const h of H){await p.goto('file://'+f+'#'+h);await p.waitForTimeout(350);

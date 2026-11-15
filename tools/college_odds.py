@@ -1,4 +1,4 @@
-"""🏈🏀 College odds from the PropLine feed: game lines (moneyline, spread, total) and game lines for college football
+"""🏈🏀 College odds from the PropLine feed: game lines (moneyline, spread, total) for college football
 (FBS) and men's college basketball. Uses the focus list written by src/tools/collegefetch.py (ranked teams first, then
 power conferences) and a small share of the day's request budget: each game is refreshed at most every 6 hours (every
 90 min once it is within 6 hours of tip/kickoff), a few games per run.
@@ -10,13 +10,15 @@ def g(o, k, d=None): return o.get(k, d) if isinstance(o, dict) else getattr(o, k
 def ts(s):
     try: return dt.datetime.fromisoformat(str(s).replace("Z", "+00:00"))
     except Exception: return None
+# player props only for men's college basketball games with a ranked team (cheap: a few games a day)
+PROPS = {"cbb": ["player_points", "player_rebounds", "player_assists", "player_threes", "player_points_rebounds_assists"]}
 def run(client, prev, used, cap, BOOK_NAME, NOT_BOOKS, root="."):
     out = {}
     now = dt.datetime.now(dt.timezone.utc)
     for key, (sk, MK, days, per_run) in SPORTS.items():
         P = prev.get(key) or {}; EV = {k: v for k, v in (P.get("ev") or {}).items() if (ts(v.get("t")) or now) > now - dt.timedelta(hours=6)}
-        try: focus = json.load(open(os.path.join(root, f"data/{key}_focus.json"))).get("ids") or []
-        except Exception: focus = []
+        try: FJ = json.load(open(os.path.join(root, f"data/{key}_focus.json"))); focus = FJ.get("ids") or []; top = set(FJ.get("top") or [])
+        except Exception: focus = []; top = set()
         if used >= cap or not focus: out[key] = {"at": P.get("at"), "ev": EV}; continue
         try: evs = client.get_events(sk); used += 1
         except Exception as e: print(f"{key} events failed:", e); out[key] = {"at": P.get("at"), "ev": EV}; continue
@@ -34,7 +36,8 @@ def run(client, prev, used, cap, BOOK_NAME, NOT_BOOKS, root="."):
         n = 0
         for eid, e, t in todo:
             if used >= cap or n >= per_run: break
-            try: od = client.get_odds(sk, event_id=g(e, "id"), markets=MK); used += 1; n += 1
+            mk_ = MK + (PROPS.get(key, []) if str(eid) in top else [])
+            try: od = client.get_odds(sk, event_id=g(e, "id"), markets=mk_); used += 1; n += 1
             except Exception as ex: print(f"{key} odds failed:", eid, ex); used += 1; n += 1; continue
             best = {}; lines = {}
             for bk in g(od, "bookmakers", []) or []:
@@ -42,7 +45,7 @@ def run(client, prev, used, cap, BOOK_NAME, NOT_BOOKS, root="."):
                 if b in NOT_BOOKS or b not in BOOK_NAME: continue
                 for m in g(bk, "markets", []) or []:
                     k = g(m, "key")
-                    if k not in MK or g(m, "period"): continue
+                    if k not in mk_ or g(m, "period"): continue
                     for oc in g(m, "outcomes", []) or []:
                         pr = g(oc, "price")
                         if pr is None: continue
