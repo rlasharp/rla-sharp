@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 17:32Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 18:16Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Gardner Minshew II|QB|IR|Elbow|Feb 15
@@ -99,9 +99,9 @@ Kerby Joseph|S|Out|Knee|Nov 22
 Jack Campbell|LB|IR|Neck|Dec 6
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 #GB
+Kevin Zeitler|G|Out|Ankle|Nov 25
 Zaire Franklin|LB|Out|Shin|Nov 25
 Pierre Strong Jr.|RB|Out|Coach's Decision|Nov 25
-Kevin Zeitler|G|Out|Ankle|Nov 25
 Sean Rhyan|G|Out|Ankle|Nov 25
 Josh Jacobs|RB|Out|Finger|Nov 25
 Donovan Jennings|G|Out|Coach's Decision|Nov 25
@@ -109,8 +109,8 @@ Josh Whyle|TE|IR|Concussion|Dec 20
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Warren Brinson|DT|IR|Calf|Nov 25
 #HOU
-Keylan Rutledge|G|Out|Neck|Nov 19
 Wyatt Teller|G|Out|Illness|Nov 19
+Keylan Rutledge|G|Out|Neck|Nov 19
 Marvin Harrison Jr.|WR|Out|Hamstring|Nov 19
 Danielle Hunter|DE|Out|Hamstring|Nov 19
 Brevin Jordan|TE|Out|Finger|Nov 19
@@ -185,10 +185,10 @@ Jauan Jennings|WR|Out|Calf|Nov 22
 Blake Cashman|LB|Out|Concussion|Nov 22
 Kyler Murray|QB|Out|Hamstring|Nov 29
 #NE
+Drake Maye|QB|Questionable|Ankle|Nov 29
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 15
-A.J. Brown|WR|Out|Hamstring|Nov 29
+A.J. Brown|WR|Questionable|Hamstring|Nov 29
 Robert Spillane|LB|Questionable|Illness|Nov 15
-Drake Maye|QB|Out|Ankle|Nov 29
 Brenden Schooler|S|Out|Hamstring|Nov 29
 Walter Rouse|OL|Out|Concussion|Nov 29
 Behren Morton|QB|Out|Coach's Decision|Nov 29
