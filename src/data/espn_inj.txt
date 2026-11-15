@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 01:55Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 04:38Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hunter Long|TE|Questionable|Knee|Nov 15
@@ -209,6 +209,7 @@ Harrison Phillips|DT|Questionable|Ankle|Nov 15
 Joseph Ossai|DE|Questionable|Ankle|Nov 15
 Jarvis Brownlee Jr.|CB|Questionable|Illness|Nov 15
 Trevin Wallace|LB|Out|Groin|Nov 22
+Max Mitchell|OT|IR|Concussion|Dec 13
 #PHI
 Dontayvion Wicks|WR|Out|Ankle|Nov 22
 DeVonta Smith|WR|Out|Hamstring|Nov 22

@@ -1,5 +1,5 @@
 # AWAY@HOME|open home spread|open total|home spread|spread price|total|over price|under price|away ML|home ML   (ESPN odds feed, DraftKings) — auto
-# asof: Sat Nov 14, 10:15 PM ET
+# asof: Sat Nov 14, 11:38 PM ET
 DEN@NO|10.5|234.5|12.5|-115|235.5|-108|-112|-620|453
 DAL@CLE|-3.5|231.5|8.5|-113|228.5|-108|-112|-344|276
 DET@MIA|5.5|226.5|4.5|-112|228.5|-108|-112|-173|146
