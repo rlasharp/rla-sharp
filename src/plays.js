@@ -6,6 +6,26 @@ const PLAYS_WEEK=10, PLAYS_ASOF="Wed Nov 11";
 const PLAYS=[
 ];
 
+/* ---------- automatic Plays of the Week: picked from the site's own numbers, locked once per week by tools/track.js (TRACK.potw) ----------
+   2 player props (best edge vs the price, odds −200…+150, our chance 55%+), then the spread, moneyline and total where our game model
+   is furthest from the line — each from a different game that hasn't kicked off. */
+function potwAuto(){try{const imp_=o=>o<0?-o/(-o+100):100/(o+100);
+  const open=SLATE.filter(g=>LINES[g.id]&&!g.final&&!(typeof nflStarted!=="undefined"&&nflStarted(g))&&!RESULTS.some(r=>r[0]===PLAYS_WEEK&&r[1]===g.away&&r[3]===g.home));if(open.length<3)return [];
+  const ids=new Set(open.map(g=>g.id)),used=new Set(),out=[];
+  const P=(typeof nflBest!=="undefined"?nflBest():[]).filter(b=>b.k!=="anyTD"&&b.odds!=null&&b.odds>=-200&&b.odds<=150&&b.sc>=.55&&b.edge>0&&b.g&&ids.has(b.g.id)).sort((a,c)=>c.edge-a.edge);
+  for(const b of P){if(out.length>=2)break;if(used.has(b.g.id))continue;used.add(b.g.id);out.push({type:"prop",player:b.name,market:b.k,side:b.side==="o"?"over":"under",line:b.line,odds:b.odds,book:b.book||"",team:b.pl.team,ch:Math.round(b.sc*100)})}
+  const G=open.map(g=>{const x=projScore(g),L=LINES[g.id],M=x.P;let me=null;if(L.ml&&L.ml[0]!=null&&L.ml[1]!=null){const a=imp_(L.ml[0]),h=imp_(L.ml[1]);me=M.modelHomeWp-h/(a+h)}return {g,L,se:M.spread+L.sp,te:M.total-L.tot,me}});
+  const pick=f=>G.filter(x=>!used.has(x.g.id)&&f(x)!=null).sort((a,c)=>Math.abs(f(c))-Math.abs(f(a)))[0];
+  const base=x=>({game:x.g.id,away:x.g.away,home:x.g.home,L:{sp:x.L.sp,tot:x.L.tot,ml:x.L.ml||null}});
+  let x=pick(z=>z.se);if(x){used.add(x.g.id);out.push(Object.assign({type:"spread",team:x.se>0?x.g.home:x.g.away,edge:Math.round(Math.abs(x.se)*10)/10},base(x)))}
+  x=pick(z=>z.me);if(x){used.add(x.g.id);const t=x.me>0?x.g.home:x.g.away;out.push(Object.assign({type:"ml",team:t,odds:t===x.g.home?x.L.ml[1]:x.L.ml[0],edge:Math.round(Math.abs(x.me)*1000)/10},base(x)))}
+  x=pick(z=>z.te);if(x){used.add(x.g.id);out.push(Object.assign({type:"total",side:x.te>0?"over":"under",edge:Math.round(Math.abs(x.te)*10)/10},base(x)))}
+  return out}catch(e){return []}}
+function potwWhy(pl,d){try{if(pl.type==="prop")return `${esc(pl.player)} went ${pl.side} ${d.line} in <b>${d.ov} of ${d.n}</b> games this season (average ${d.avg}).${d.o&&Number.isFinite(d.dv.rank)?` ${esc(short(d.o.opp))} allow the ${d.rankTxt} ${MARKETS[pl.market].n.toLowerCase()} to ${esc(d.P.pos)}s.`:""}${pl.ch?` Our chance: <b>${pl.ch}%</b> vs ${impl(d.odds!=null?d.odds:pl.odds)}% the price needs.`:""}`;
+  const g=d.g,x=d.x;return `Our model: <b>${esc(short(g.away))} ${x.a} – ${esc(short(g.home))} ${x.h}</b> (${esc(short(x.win))} ${x.winP}% to win, total ${x.total}).${pl.type==="spread"?` That's ${pl.edge} points off the spread — the biggest gap on the slate.`:pl.type==="total"?` That's ${pl.edge} points ${pl.side==="over"?"over":"under"} the posted ${d.L.tot} — the biggest total gap this week.`:` We give ${esc(short(pl.team))} ${pl.edge} percentage points more than the moneyline (margin removed).`}`}catch(e){return ""}}
+let POTW_ON=0,POTW_LIVE=0;const PLAYS_HAND=PLAYS.length;   /* hand-picked plays (if any) win over the automatic ones */
+function potwInit(){if(POTW_ON)return;POTW_ON=1;if(PLAYS.length)return;const L=typeof TRACK!=="undefined"&&TRACK&&TRACK.potw&&TRACK.potw[PLAYS_WEEK];
+  const src=L&&L.length?L:potwAuto();POTW_LIVE=!(L&&L.length);for(const x of src)PLAYS.push(Object.assign({},x,{why:d=>potwWhy(x,d)}))}
 function impl(o){return Math.round((o>0?100/(o+100):-o/(-o+100))*100)}
 function teamRec(t){let w=0,l=0,pf=0,pa=0,n=0;RESULTS.forEach(([wk,a,ap,h,hp])=>{if(a!==t&&h!==t)return;n++;const me=a===t?ap:hp,op=a===t?hp:ap;pf+=me;pa+=op;if(me>op)w++;else if(me<op)l++});return{w,l,str:w+"–"+l,pf:(pf/n).toFixed(1),pa:(pa/n).toFixed(1)}}
 function rankOf(stat,team,low){const arr=Object.entries(TEAM_STATS).sort((a,b)=>low?a[1][stat]-b[1][stat]:b[1][stat]-a[1][stat]);return arr.findIndex(e=>e[0]===team)+1}
@@ -55,7 +75,8 @@ function gradeOne(pl,wk,d){
   if(pl.type==="total"){const t=ap+hp;return {r:t===L.tot?"push":((pl.side==="over")===(t>L.tot))?"win":"loss",why:fin+` (${t} total)`}}
   return {r:"pending"}}
 function unitsFor(r,odds){if(r==="win")return odds==null?0.91:odds>0?odds/100:100/(-odds);if(r==="loss")return -1;return 0}
-function playRecord(){const all=[];
+function playRecord(){potwInit();const all=[];
+  const AW=(typeof TRACK!=="undefined"&&TRACK&&TRACK.potw)||{};for(const [wk,a] of Object.entries(AW))if(+wk!==PLAYS_WEEK&&!PLAY_ARCHIVE[wk])a.forEach(pl=>{const g=gradeOne(pl,+wk,null);all.push({wk:+wk,title:pl.title,odds:pl.odds,...g})});
   Object.entries(PLAY_ARCHIVE).forEach(([wk,a])=>a.forEach(pl=>{const g=gradeOne(pl,+wk,null);all.push({wk:+wk,title:pl.title,odds:pl.odds,...g})}));
   PLAYS.forEach(pl=>{const d=playData(pl);const g=gradeOne(pl,PLAYS_WEEK,d);all.push({wk:PLAYS_WEEK,title:d?d.title:"",odds:d?d.odds:null,...g})});
   const c={win:0,loss:0,push:0,void:0,pending:0};let u=0;all.forEach(x=>{c[x.r]++;u+=unitsFor(x.r,x.odds)});return {all,c,u}}
@@ -69,7 +90,7 @@ function recordPanel(){const {all,c,u}=playRecord();const graded=c.win+c.loss;
    <p class="note" style="margin:8px 0 0">Every play is graded automatically from the final score or the player's official stat line — wins and losses both stay on the record. Pushes and "did not play" props are no action.</p></div>`}
 const RES_COL={win:"#22c55e",loss:"#f05252",push:"#9aa3b2",void:"#9aa3b2",pending:"#fab219"},RES_TXT={win:"✓ Win",loss:"✗ Loss",push:"Push",void:"No action",pending:"Pending"};
 
-function viewPlays(){
+function viewPlays(){potwInit();
   const TAG={prop:["Player prop","#2563eb"],spread:["Spread (ATS)","#7c3aed"],ml:["Moneyline","#059669"],total:["Over / Under","#d97706"]};
   const cards=PLAYS.map((pl,i)=>{const d=playData(pl);if(!d)return "";const [tn,tc]=TAG[pl.type];const g=d.game;
     const stats=pl.type==="prop"
@@ -85,7 +106,7 @@ function viewPlays(){
       <p style="margin:12px 0 0;line-height:1.55">${pl.why(pl.type==="prop"?d:d)}</p>
       <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap"><a href="#" class="btn plink" data-i="${i}">${pl.type==="prop"?"Open player page →":"Open matchup →"}</a>${betBtn(specFromPlay(pl))}${shareBtn(specFromPlay(pl))}</div></div>`}).join("");
   $("#v-plays").innerHTML=`<h1>Plays of the Week</h1>
-   <p class="sub">${PLAYS.length?`Week ${PLAYS_WEEK} · our ${PLAYS.length} favourite spots based on the matchup data on this site — two player props, a spread, a moneyline and a total. Lines as of ${PLAYS_ASOF}; check your sportsbook before betting, prices move.`:`Week ${PLAYS_WEEK}: this week's Plays of the Week aren't posted yet. Last week's results are in the record below; the ${typeof prlSportHtml!=="undefined"?"parlay of the day and ":""}best props are on the Props page.`}</p>
+   <p class="sub">${PLAYS.length?`Week ${PLAYS_WEEK} · our ${PLAYS.length} favourite spots, picked automatically from the numbers on this site — the two player props furthest above their price, and the spread, moneyline and total where our game model is furthest from the line. ${POTW_LIVE?"Provisional: they lock at the next data update and are graded after that.":"Locked for the week and graded automatically."} Check your sportsbook before betting, prices move.`:`Week ${PLAYS_WEEK}: this week's Plays of the Week aren't posted yet. Last week's results are in the record below; the ${typeof prlSportHtml!=="undefined"?"parlay of the day and ":""}best props are on the Props page.`}</p>
    <div class="row" style="gap:8px;margin:-4px 0 10px;flex-wrap:wrap"><button class="btn" id="nflShare">📤 Share this week's plays</button><a class="btn" href="#record">📒 Full record</a></div>
    ${typeof prlSportHtml!=="undefined"?prlSportHtml("nfl"):""}
    ${recordPanel()}

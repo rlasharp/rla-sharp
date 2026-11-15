@@ -24,6 +24,7 @@ function recAll(){
       rows.push({sport:"NFL",when:"Week "+wk,sort:"w"+String(wk).padStart(2,"0"),date:sun,label:pl.title||(d&&d.title)||"",type:tn[pl.type]||"Other",st:g.r,u:unitsFor(g.r,odds),odds,
         cl:pl.type==="prop"&&pl.line!=null?{sp:"nfl",nm:pl.player,k:pl.market,side:pl.side==="over"?"o":"u",line:pl.line,odds,dates:dd}:null})};
     Object.entries(PLAY_ARCHIVE).forEach(([wk,a])=>a.forEach(pl=>add(pl,+wk,null)));
+    if(typeof potwInit!=="undefined")potwInit();
     if(typeof PLAYS!=="undefined")PLAYS.forEach(pl=>add(pl,PLAYS_WEEK,playData(pl)));
   }
   return rows;

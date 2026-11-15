@@ -17,6 +17,9 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
  const R=await p.evaluate((T)=>{
   const imp=o=>o==null?null:o<0?-o/(-o+100):100/(o+100),pay=o=>o==null?.909:o>0?o/100:100/-o,log=[];
   const keep=(o,ks)=>{const x={};for(const k of ks)if(o[k]!==undefined)x[k]=o[k];return x};
+  /* ---------- NFL Plays of the Week: picked automatically and locked once per week ---------- */
+  try{if(typeof potwAuto!=="undefined"&&typeof PLAYS_WEEK!=="undefined"&&!PLAYS_HAND){T.potw=T.potw||{};if(!T.potw[PLAYS_WEEK]){const P=potwAuto();
+    if(P.length>=3){T.potw[PLAYS_WEEK]=P.map(x=>{const d=playData(x);return Object.assign(x,{title:d?d.title:"",odds:x.odds!=null?x.odds:(d?d.odds:null),line:x.line!=null?x.line:(d&&d.line!=null?d.line:null)})});log.push(`nfl: Plays of the Week ${PLAYS_WEEK} locked (${P.length})`)}}}}catch(e){log.push("potw: "+e.message)}
   /* ---------- snapshots ---------- */
   // NBA
   if(typeof NBA_SLATE!=="undefined"&&NBA_SLATE.length){const d=NBA_SLATE_DATE,S=T.nba[d]||(T.nba[d]={});
@@ -173,6 +176,6 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
  /* keep ~60 days */
  const cut=new Date(Date.now()-60*864e5).toISOString().slice(0,10);for(const s of ['nba','nfl','nhl','soc'])for(const d of Object.keys(R.T[s]))if(d<cut)delete R.T[s][d];for(const [k,S] of Object.entries(R.T.ufc||{}))if((S.d||k)<cut)delete R.T.ufc[k];for(const CS of ['cfb','cbb'])for(const k of Object.keys(R.T[CS]||{}))if(k<cut)delete R.T[CS][k];
  fs.mkdirSync(path.dirname(SF),{recursive:true});fs.writeFileSync(SF,JSON.stringify(R.T));
- fs.writeFileSync(OUT,`/* tracker summaries — tools/track.js */\nvar TRACK=${JSON.stringify({sum:R.SUM,nhlPlays:R.todayPlays,today:R.today,at:new Date().toISOString()})};\n`);
+ fs.writeFileSync(OUT,`/* tracker summaries — tools/track.js */\nvar TRACK=${JSON.stringify({sum:R.SUM,nhlPlays:R.todayPlays,today:R.today,potw:R.T.potw||{},at:new Date().toISOString()})};\n`);
  console.log("track: "+(R.log.join("; ")||"no new snapshots")+` · graded: NHL plays ${R.SUM.nhl.plays.w}-${R.SUM.nhl.plays.l}, best props NBA ${R.SUM.nba.best.w}-${R.SUM.nba.best.l} NFL ${R.SUM.nfl.best.w}-${R.SUM.nfl.best.l} NHL ${R.SUM.nhl.best.w}-${R.SUM.nhl.best.l}`);
  await b.close()})().catch(e=>{console.error("track failed:",e.message);process.exit(1)});

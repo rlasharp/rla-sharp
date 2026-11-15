@@ -188,6 +188,7 @@ function viewToday(){
   const today=new Date().toLocaleDateString("en-US",{timeZone:"America/Toronto",weekday:"long",month:"long",day:"numeric"});
   const T=typeof recAll!=="undefined"?recSum(recAll()):null;
   /* plays: one card, a tab per sport */
+  if(typeof potwInit!=="undefined")potwInit();
   const nflPlays=typeof PLAYS!=="undefined"&&PLAYS.length?`<div class="card potd"><h2 style="margin-bottom:6px">🏈 NFL Plays of the Week</h2>${PLAYS.map((pl,i)=>{const d=playData(pl);if(!d)return "";const g=gradeOne(pl,PLAYS_WEEK,d);return `<a class="fv" href="#plays"><b>${i+1}. ${esc(d.title)}</b><span class="small">${d.odds!=null?oddsFmt(d.odds)+" · ":""}${g.r==="win"?"✅ Win":g.r==="loss"?"❌ Loss":g.r==="pending"?"Pending":esc(g.r)}</span></a>`}).join("")}<a href="#plays" class="small" style="display:block;margin-top:8px">Why we like them →</a></div>`:"";
   const PX=sp=>typeof prlSportHtml!=="undefined"?prlSportHtml(sp):"";
   const PT=[["nba","🏀 NBA",(typeof nbaPlaysCard!=="undefined"?nbaPlaysCard():"")+PX("nba")],["nhl","🏒 NHL",(typeof nhlPlaysCard!=="undefined"?nhlPlaysCard():"")+PX("nhl")],["nfl","🏈 NFL",nflPlays+PX("nfl")],["soc","⚽ Soccer",(typeof socPlaysCard!=="undefined"?socPlaysCard():"")+PX("soc")]].filter(x=>x[2]&&(typeof xFollow==="undefined"||xFollow(x[0])));
