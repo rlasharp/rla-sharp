@@ -57,6 +57,12 @@ const TR_SRC={ats:"https://github.com/nflverse/nflverse-data/releases/tag/schedu
 function recPct(r){if(!r)return NaN;const[w,l]=r.split("-").map(Number);return w+l?w/(w+l):NaN}
 function recCell(r,kind){if(!r)return '<span class="small">n/a</span>';const p=recPct(r),c=p>=.6?"#7fdc95":p<=.4?"#ff9a9d":"var(--text)";return `<b style="color:${c};display:inline-block;min-width:44px" class="num">${r}</b>`}
 function trendsBox(g){
+  if(typeof nflBetRows!=="undefined"&&typeof xSplits!=="undefined"&&nflBetRows(g.away).length){
+    const pc=T=>T[0]+T[1]?Math.round(T[0]/(T[0]+T[1])*100)+"%":"",row=(t,k,lab)=>{const S=xSplits(nflBetRows(t))[k];return `<tr><td>${badge(t)} ${short(t)} <span class="small">${lab}</span></td><td>${xRec(S[0])}</td><td>${xRec(S[1])} <span class="small">${pc(S[1])}</span></td><td>${xRec(S[2])} <span class="small">${pc(S[2])} over</span></td></tr>`};
+    return `<div class="card"><div class="row"><h2 style="margin:0">Betting records this season</h2><span class="sp"></span><span class="tag real">Real</span></div>
+     <div class="nbatbl"><table class="bxt" style="margin-top:8px;min-width:0"><thead><tr><th>Team</th><th>Record</th><th>Vs spread</th><th>Over / under</th></tr></thead><tbody>
+     ${row(g.away,"all","all")}${row(g.away,"road","on the road")}${row(g.home,"all","all")}${row(g.home,"home","at home")}</tbody></table></div>
+     <p class="small" style="margin:8px 0 0">Wins-losses-pushes vs the closing spread and total (<a href="${TR_SRC.ats}" target="_blank" rel="noopener">nflverse</a>). The ${esc(short(g.away))} row "on the road" and ${esc(short(g.home))} "at home" match where this game is played.</p></div>`}
   const row=t=>`<tr><td>${badge(t)} ${short(t)}</td><td>${recCell(ATS[t])} <span class="small">${pct(recPct(ATS[t]))} covers</span></td><td>${recCell(OU[t])} <span class="small">${OU[t]?pct(recPct(OU[t]))+" overs":""}</span></td></tr>`;
   return `<div class="card"><div class="row"><h2 style="margin:0">Betting records this season</h2><span class="sp"></span><span class="tag real">Real</span></div>
    <table style="margin-top:8px"><thead><tr><th>Team</th><th>Against the spread</th><th>Over / under</th></tr></thead><tbody>${row(g.away)}${row(g.home)}</tbody></table>
@@ -130,8 +136,8 @@ function betOdds(title,g){const o=bookML(g),sp=bookSpread(g),tl=bookTotal(g);
   return `<div class="odds2">${rows.map(([a,b,sp])=>`<div><span>${a}</span><b>${b}</b>${g.final?"":`<button class="betplus" data-bet='${esc(JSON.stringify(sp))}' title="Add to My Bets" aria-label="Add ${esc(a)} to My Bets">＋</button>`}</div>`).join("")}<span class="small">${title==="Moneyline"?"Best available odds":`Best available line · standard ${amTxt(-110)} price (the book's exact price wasn't published)`}</span></div>`}
 function viewGame(id){
   const tabP=/-props$/.test(String(id));id=String(id).replace(/-props$/,"");
-  const g=SLATE.find(x=>x.id==id);if(!g){location.hash="games";return}
-  const head=`<a class="btn" href="#games">← All games</a>
+  const g=SLATE.find(x=>x.id==id)||(typeof nfNextGame!=="undefined"?nfNextGame(id):null);if(!g){location.hash="games";return}
+  const head=`<a class="btn" href="${g.next?"#nextweek":"#games"}">← ${g.next?"Next week":"All games"}</a>${g.next?`<div class="small" style="margin-top:8px">📅 Week ${g.wk} preview — matchup, stats, trends and history from this season so far. Player props post once the week rolls over.</div>`:""}
    <div class="card section" style="margin-top:14px"><div class="small" style="text-align:center">${g.when}${g.tv?" · "+g.tv:""} ${typeof cdChip!=="undefined"?cdChip("nfl",g):""}</div>${g.final?"":wxHead(g)}`;
   if(g.final){$("#v-game").innerHTML=head+`<div class="scoreboard"><div class="sbteam">${badge(g.away)}<div class="nm">${TEAMS[g.away][0]}</div></div><div class="sbscore">${g.final[0]}</div><div class="sbmid">FINAL</div><div class="sbscore">${g.final[1]}</div><div class="sbteam">${badge(g.home)}<div class="nm">${TEAMS[g.home][0]}</div></div></div></div>
     ${typeof nflFinalBlock!=="undefined"?`<div class="card" style="margin-top:12px">${nflFinalBlock(g,g.final[0],g.final[1])}</div>`:""}
@@ -184,9 +190,9 @@ function nflGsWire(g){const el=$("#v-game");if(!el)return;gsWire(el,()=>{const c
 function nflGamePlayers(g){const tms=[g.away,g.home];
   return Object.values(PINFO).filter(p=>tms.includes(p.team)&&marketsFor(p.pos).some(m=>realProp(p.name,m)))
    .sort((a,b)=>tms.indexOf(a.team)-tms.indexOf(b.team)||POS.indexOf(a.pos)-POS.indexOf(b.pos)||a.name.localeCompare(b.name))}
-function nflGamePropCount(g){if(g.final||nflStarted(g))return 0;return nflGamePlayers(g).reduce((n,p)=>n+marketsFor(p.pos).filter(m=>realProp(p.name,m)).length,0)}
+function nflGamePropCount(g){if(g.final||g.next||nflStarted(g))return 0;return nflGamePlayers(g).reduce((n,p)=>n+marketsFor(p.pos).filter(m=>realProp(p.name,m)).length,0)}
 function nflGameTabs(g,tabP){if(g.final)return "";const n=nflGamePropCount(g),T=tabP?"props":({inj:"ov"}[S.gtab]||S.gtab||"ov"),h=`#game-${g.id}`;
-  return gpTabs(T,[["ov","Overview",h,'data-nfgt="ov"'],["mu","Matchup",h,'data-nfgt="mu"'],["tr","Trends",h,'data-nfgt="tr"'],["h2h","H2H",h,'data-nfgt="h2h"'],["props",`Props${n?` <small>${n}</small>`:""}`,h+"-props"]])}
+  return gpTabs(T,[["ov","Overview",h,'data-nfgt="ov"'],["mu","Matchup",h,'data-nfgt="mu"'],["tr","Trends",h,'data-nfgt="tr"'],["h2h","H2H",h,'data-nfgt="h2h"'],...(g.next?[]:[["props",`Props${n?` <small>${n}</small>`:""}`,h+"-props"]])])}
 let NFL_GPT="all",NFL_GPP="all",NFL_GPM="all";   /* game props filters: team, position, prop */
 function nflGameProps(g){
   if(nflStarted(g))return `<div class="info"><span>🔒 This game has kicked off — pregame player props are closed.</span></div>`;

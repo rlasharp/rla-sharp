@@ -127,20 +127,28 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
    favourite/underdog, last 10 games with cover and over chips. rows: {d, opp, home, sp (team spread, − = favoured), tot, pf, pa} ---------- */
 function xBetRec(rows,o){o=o||{};rows=(rows||[]).filter(r=>r.sp!=null&&r.tot!=null&&r.pf!=null&&r.pa!=null);if(!rows.length)return "";
   const z=()=>[0,0,0],A=z(),O=z(),H=z(),R=z(),F=z(),D=z(),add=(T,v)=>T[v>0?0:v<0?1:2]++;
-  for(const r of rows){const c=r.pf-r.pa+r.sp,t=r.pf+r.pa-r.tot;add(A,c);add(O,t);add(r.home?H:R,c);if(r.sp<0)add(F,c);else if(r.sp>0)add(D,c)}
+  /* home / road / favourite / underdog splits: straight-up record, against the spread, over/under */
+  const SP={all:[z(),z(),z()],home:[z(),z(),z()],road:[z(),z(),z()],fav:[z(),z(),z()],dog:[z(),z(),z()]};
+  for(const r of rows){const c=r.pf-r.pa+r.sp,t=r.pf+r.pa-r.tot;add(A,c);add(O,t);add(r.home?H:R,c);if(r.sp<0)add(F,c);else if(r.sp>0)add(D,c);
+    for(const k of ["all",r.home?"home":"road",...(r.sp<0?["fav"]:r.sp>0?["dog"]:[])]){const X=SP[k];add(X[0],r.pf-r.pa);add(X[1],c);add(X[2],t)}}
   const rec=T=>`${T[0]}-${T[1]}${T[2]?"-"+T[2]:""}`,pc=T=>T[0]+T[1]?Math.round(T[0]/(T[0]+T[1])*100)+"%":"–",u=o.unit||"pts";
   const L=rows.slice(-10).reverse();
   return `<div class="card"><h2>📒 Betting record <span class="small">· ${rows.length} games with closing lines${o.src?" · "+o.src:""}</span></h2>
    <div class="xstrip"><div><b>${rec(A)}</b><span>${o.ats||"vs spread"}</span><small>${pc(A)} covered</small></div><div><b>${rec(O)}</b><span>Over / under</span><small>${pc(O)} overs</small></div>
     <div><b>${rec(H)}</b><span>Home ${o.ats?"":"ATS"}</span></div><div><b>${rec(R)}</b><span>Road ${o.ats?"":"ATS"}</span></div>${F[0]+F[1]+F[2]?`<div><b>${rec(F)}</b><span>As favourite</span></div>`:""}${D[0]+D[1]+D[2]?`<div><b>${rec(D)}</b><span>As underdog</span></div>`:""}</div>
+   <div class="nbatbl" style="margin-top:8px"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Record</th><th>${o.ats||"Vs spread"}</th><th>Over / under</th></tr></thead><tbody>
+    ${[["all","All games"],["home","Home"],["road","Road"],["fav","As favourite"],["dog","As underdog"]].filter(([k])=>SP[k][0].some(x=>x)).map(([k,l])=>`<tr><td><b>${l}</b></td><td>${rec(SP[k][0])}</td><td>${rec(SP[k][1])} <span class="small">${pc(SP[k][1])}</span></td><td>${rec(SP[k][2])} <span class="small">${pc(SP[k][2])} over</span></td></tr>`).join("")}</tbody></table></div>
    <div class="nbatbl" style="margin-top:8px"><table class="bxt" style="min-width:0"><thead><tr><th>Game</th><th>Score</th><th>Line</th><th>Cover</th><th>Total</th></tr></thead><tbody>
     ${L.map(r=>{const c=r.pf-r.pa+r.sp,t=r.pf+r.pa-r.tot;return `<tr><td>${gpE(r.d)} ${r.home?"vs":"@"} ${gpE(r.opp)}</td><td>${r.pf>r.pa?"W":r.pf<r.pa?"L":"T"} ${r.pf}-${r.pa}</td><td>${r.sp>0?"+":""}${r.sp}</td><td><span class="ufr ${c>0?"W":c<0?"L":"NC"}">${c>0?"✓":c<0?"✗":"P"}</span></td><td>${r.tot} <span class="ufr ${t>0?"W":t<0?"L":"NC"}">${t>0?"O":t<0?"U":"P"}</span></td></tr>`}).join("")}</tbody></table></div>
    <div class="small">Cover = won by more than the spread (or lost by less). Closing lines${o.src?" from "+o.src:""}. ${u==="goals"?"Puck line ±1.5.":""}</div></div>`}
 function nbaBetRows(t){if(typeof NBA_SPR==="undefined")return [];return Object.values(NBA_SPR).filter(s=>s[1]===t||s[2]===t).sort((a,b)=>a[0]<b[0]?-1:1).map(s=>{const h=s[2]===t;return {d:s[0].slice(5),opp:h?s[1]:s[2],home:h,sp:h?s[3]:-s[3],tot:s[4],pf:h?s[6]:s[5],pa:h?s[5]:s[6]}})}
 function nflBetRows(t){const A=(typeof NFL_ATS!=="undefined"&&NFL_ATS[t])||[];return A.map(r=>({d:"Wk "+r[0],opp:r[1],home:!!r[2],sp:r[3],tot:r[4],pf:r[5],pa:r[6]}))}
 function nhlBetCard(t){const T=(typeof NHL_TEAM!=="undefined"&&NHL_TEAM[t])||{};if(!T.ats&&!T.ou)return "";const rec=r=>r?`${r[0]}-${r[1]}${r[2]?"-"+r[2]:""}`:"–",pc=r=>r&&r[0]+r[1]?Math.round(r[0]/(r[0]+r[1])*100)+"%":"";
-  return `<div class="card"><h2>📒 Betting record</h2><div class="xstrip"><div><b>${rec(T.ats)}</b><span>Puck line</span><small>${pc(T.ats)}</small></div><div><b>${rec(T.ou)}</b><span>Over / under</span><small>${pc(T.ou)} overs</small></div>
-   <div><b>${rec(T.atsH)}</b><span>PL home</span></div><div><b>${rec(T.atsR)}</b><span>PL road</span></div><div><b>${rec(T.ouH)}</b><span>O/U home</span></div><div><b>${rec(T.ouR)}</b><span>O/U road</span></div></div>
+  const wl=r=>r?`${r[0]}-${r[1]}${r[2]?"-"+r[2]:""}`:"–";
+  return `<div class="card"><h2>📒 Betting record</h2><div class="nbatbl"><table class="bxt" style="min-width:0"><thead><tr><th></th><th>Record</th><th>Puck line</th><th>Over / under</th></tr></thead><tbody>
+   <tr><td><b>All games</b></td><td>${T.w!=null?`${T.w}-${T.l}-${T.otl}`:"–"}</td><td>${rec(T.ats)} <span class="small">${pc(T.ats)}</span></td><td>${rec(T.ou)} <span class="small">${pc(T.ou)} over</span></td></tr>
+   <tr><td><b>Home</b></td><td>${wl(T.home)}</td><td>${rec(T.atsH)} <span class="small">${pc(T.atsH)}</span></td><td>${rec(T.ouH)} <span class="small">${pc(T.ouH)} over</span></td></tr>
+   <tr><td><b>Road</b></td><td>${wl(T.road)}</td><td>${rec(T.atsR)} <span class="small">${pc(T.atsR)}</span></td><td>${rec(T.ouR)} <span class="small">${pc(T.ouR)} over</span></td></tr></tbody></table></div>
    <div class="small">Against the closing puck line and total (licensed US books).</div></div>`}
 
 /* ---------- ⚙️ Settings (this device): start page, sports you follow, odds format, times, theme, view, text size,
@@ -192,3 +200,8 @@ function xA11y(root){(root||document).querySelectorAll("button:not([aria-label])
   if(!t||!/[A-Za-z0-9]/.test(t)){const k=Object.keys(XA_NAMES).find(x=>t.startsWith(x));const lab=b.getAttribute("title")||(k&&XA_NAMES[k]);if(lab)b.setAttribute("aria-label",lab)}});
   (root||document).querySelectorAll("svg:not([role]):not([aria-hidden])").forEach(s=>{if(!s.closest("button,a"))s.setAttribute("aria-hidden","true")})}
 let XA_T=0;window.addEventListener("load",()=>{xA11y();try{new MutationObserver(()=>{clearTimeout(XA_T);XA_T=setTimeout(()=>xA11y(document.querySelector("main")),150)}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}catch(e){}});
+
+/* home / road splits for one team: straight-up, against the spread, over/under — from the same closing-line rows as xBetRec */
+function xSplits(rows){const z=()=>[0,0,0],add=(T,v)=>T[v>0?0:v<0?1:2]++,S={all:[z(),z(),z()],home:[z(),z(),z()],road:[z(),z(),z()]};
+  for(const r of (rows||[]).filter(r=>r.sp!=null&&r.tot!=null&&r.pf!=null&&r.pa!=null))for(const k of ["all",r.home?"home":"road"]){add(S[k][0],r.pf-r.pa);add(S[k][1],r.pf-r.pa+r.sp);add(S[k][2],r.pf+r.pa-r.tot)}return S}
+function xRec(T){return `${T[0]}-${T[1]}${T[2]?"-"+T[2]:""}`}

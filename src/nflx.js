@@ -91,6 +91,11 @@ function nfNextCard(g){if(!NFX)return "";
 function nfWeekGames(wk){const out=[];if(!NFX)return out;
   for(const [t,L] of Object.entries(NFL_NEXT))for(const [w,d,op,ha,tm] of L)if(w===wk&&ha==="H")out.push({away:op,home:t,d,tm});
   return out.sort((a,b)=>(a.d+a.tm).localeCompare(b.d+b.tm));}
+/* next week's games open the full game page: a game object like this week's (id "n<week>-<away>-<home>"), with the lookahead line */
+function nfNextGame(id){const m=String(id).match(/^n(\d+)-(\w+)-(\w+)$/);if(!m)return null;const wk=+m[1],g0=nfWeekGames(wk).find(x=>x.away===m[2]&&x.home===m[3]);if(!g0)return null;
+  let when=g0.d;try{const ds=new Date(g0.d+"T12:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});let [h,mi]=(g0.tm||"13:00").split(":").map(Number);const ap=h>=12?"PM":"AM";h=h%12||12;when=`${ds} · ${h}:${String(mi).padStart(2,"0")} ${ap}`}catch(e){}
+  const L=typeof NFL_LINES_NEXT!=="undefined"&&NFL_LINES_NEXT[wk+"|"+g0.away+"@"+g0.home];if(L&&!LINES[id])LINES[id]={sp:L.sp,tot:L.tot,ml:L.mla!=null&&L.mlh!=null?[L.mla,L.mlh]:undefined};
+  return {id,away:g0.away,home:g0.home,when,wk,next:1,wp:null}}
 function nfWeekTabs(cur){const wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:0;
   return `<div class="gtabs"><a href="#games" class="${cur==="games"?"on":""}">This week · Wk ${wk}</a><a href="#nextweek" class="${cur==="nextweek"?"on":""}">Next week · Wk ${wk+1}<small>${nfWeekGames(wk+1).length}</small></a></div>`}
 function viewNextWeek(){
@@ -100,7 +105,7 @@ function viewNextWeek(){
   const divOf=t=>NFX?Object.keys(NFL_DIV).find(k=>NFL_DIV[k].includes(t)):null;
   const outs=t=>(INJ[t]||[]).filter(x=>(x[2]==="Out"||/IR|Reserve|PUP/.test(x[2]))&&["QB","RB","WR","TE"].includes(x[1])).map(x=>esc(x[0])+" ("+x[1]+")");
   const card=g=>{const o=[...outs(g.away),...outs(g.home)];const div=divOf(g.away)&&divOf(g.away)===divOf(g.home);
-    return `<div class="card game nw"><div class="when"><span>${fmt(g.d,g.tm)}</span>${div?`<span class="tag real">Division game</span>`:""}</div>
+    return `<div class="card game nw" data-nwg="n${wk}-${g.away}-${g.home}" style="cursor:pointer"><div class="when"><span>${fmt(g.d,g.tm)}</span><span>${div?`<span class="tag real">Division game</span> `:""}Matchup →</span></div>
       <div class="tm">${badge(g.away)}<span class="nm">${TEAMS[g.away]?TEAMS[g.away][0]:g.away}<small>${recTxt(g.away)}</small></span></div>
       <div class="tm" style="margin-top:8px">${badge(g.home)}<span class="nm">${TEAMS[g.home]?TEAMS[g.home][0]:g.home}<small>${recTxt(g.home)}</small></span></div>
       ${(()=>{const L=typeof NFL_LINES_NEXT!=="undefined"&&NFL_LINES_NEXT[wk+"|"+g.away+"@"+g.home];if(!L)return `<div class="pubmini small">Lines not posted yet — they appear here as soon as books post them.</div>`;
@@ -110,6 +115,7 @@ function viewNextWeek(){
    <p class="sub">${G.length} games. Lookahead spreads and totals post Sunday night, and player props Tuesday–Wednesday — they show up on the This week tab once the week rolls over.</p>
    <div class="games">${G.map(card).join("")||`<div class="card">Schedule not posted yet.</div>`}</div>
    ${byes.length&&G.length?`<p class="note" style="margin-top:10px">On bye: ${byes.map(t=>esc(short(t))).join(", ")}</p>`:""}`;
+  host.querySelectorAll("[data-nwg]").forEach(c=>c.onclick=()=>location.hash="game-"+c.dataset.nwg);
 }
 
 /* ---------- Receiver matrix: target map + production matchup + coverage (nfl_tgt.js) ---------- */
