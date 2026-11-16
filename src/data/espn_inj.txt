@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-15 23:19Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 00:02Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Questionable|Knee|Nov 22
@@ -73,7 +73,6 @@ Parker Brailsford|C|Out|Coach's Decision|Nov 29
 Taylen Green|QB|Out|Coach's Decision|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
-Otito Ogbonnia|DT|Questionable|Finger|Nov 15
 DaRon Bland|CB|Questionable|Ankle|Nov 15
 Juanyeh Thomas|S|Out|Ribs|Nov 22
 Jonathan Mingo|WR|Out|Ankle|Nov 22
@@ -157,6 +156,7 @@ Jaylon Moore|OT|Out|Ankle|Nov 22
 Melvin Smith Jr.|CB|Out|Coach's Decision|Nov 22
 Kenneth Walker III|RB|Out|Groin|Nov 22
 #LV
+Kwity Paye|DE|Questionable|Neck|Nov 15
 Brock Bowers|TE|Out|Ankle|Nov 22
 Malik Benson|WR|Out|Coach's Decision|Nov 22
 Thomas Booker IV|DT|Out|Ankle|Nov 22
@@ -260,6 +260,7 @@ Jihaad Campbell|LB|Out|Hamstring|Nov 22
 Michael Carter II|CB|Out|Abdomen|Nov 22
 Zack Baun|LB|Questionable|Back|Nov 22
 #PIT
+DeShon Elliott|S|Out|Knee|Nov 22
 Derrick Harmon|DT|Questionable|Foot|Nov 15
 Pat Freiermuth|TE|Questionable|Illness|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 22
@@ -275,7 +276,7 @@ Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
-George Holani|RB|Out|Knee|Nov 15
+George Holani|RB|Out|Knee|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 15
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
 Emanuel Wilson|RB|Out|Coach's Decision|Nov 29
