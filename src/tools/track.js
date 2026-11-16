@@ -127,6 +127,11 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
     {const Sl={side:{},price:{},mks:{}},add=(g,k,x)=>{const R=Sl[g][k]||(Sl[g][k]=[0,0,0]);if(x.r==="win"){R[0]++;R[2]+=pay(x.odds)}else{R[1]++;R[2]-=1}};
      for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){if((x.r!=="win"&&x.r!=="loss")||x.odds==null)continue;add("side",x.side,x);add("price",x.odds<=-130?"fav":x.odds>=100?"dog":"even",x);add("mks",x.k+"|"+x.side,x)}
      for(const g of Object.values(Sl))for(const R of Object.values(g))R[2]=Math.round(R[2]*100)/100;s.slices=Sl}
+    /* per team: how our game-line picks involving each team have done (spread / moneyline on that team, totals count for both) */
+    {const TR={},addT=(tm,x)=>{const R=TR[tm]||(TR[tm]=[0,0,0]);if(x.r==="win"){R[0]++;R[2]+=pay(x.odds)}else{R[1]++;R[2]-=1}};
+     for(const [d,S] of Object.entries(T[sp])){for(const G of S.games||[])for(const e of G.edges||[]){if(e.r!=="win"&&e.r!=="loss")continue;if(e.mk==="Total"){addT(G.a,e);addT(G.h,e)}else{const tm=String(e.pick||"").startsWith(G.h)?G.h:String(e.pick||"").startsWith(G.a)?G.a:null;if(tm)addT(tm,e)}}
+       for(const x of S.plays||[]){if(x.type!=="game"||(x.r!=="win"&&x.r!=="loss"))continue;if(/total/i.test(x.mk||"")){addT(x.a,x);addT(x.h,x)}else{const tm=String(x.pick||"").startsWith(x.h)?x.h:String(x.pick||"").startsWith(x.a)?x.a:null;if(tm)addT(tm,x)}}}
+     for(const R of Object.values(TR))R[2]=Math.round(R[2]*100)/100;s.teamrec=TR}
     /* closing-line value: the first price we listed vs the last one before the game started */
     {const C={n:0,beat:0,sum:0,sn:0};for(const [d,S] of Object.entries(T[sp]))for(const x of S.best||[]){const o=S.op&&S.op[x.nm+"|"+x.k+"|"+x.side];if(!o||o[0]==null||x.odds==null)continue;
        if(o[1]===x.line){if(o[0]===x.odds)continue;const dv=imp(x.odds)-imp(o[0]);C.n++;C.sn++;C.sum+=dv;if(dv>0)C.beat++}else{const lm=(x.line-o[1])*(x.side==="o"?1:-1);C.n++;if(lm>0)C.beat++}}

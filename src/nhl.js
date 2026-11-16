@@ -318,7 +318,7 @@ function nhlPlayer(el,nm){
     :`${w.s[0]} GP · ${w.s[1]} G · ${w.s[2]} A · ${w.s[3]} PTS · ${(w.s[4]/w.s[0]).toFixed(1)} SOG/g · ${(w.s[5]/w.s[0]).toFixed(1)} BLK/g · ${(w.s[6]/w.s[0]).toFixed(1)} hits/g · ${w.s[7]} PPG · ${w.s[8]} min TOI`;
   const lg=isG?w.g.slice().reverse().map(x=>`<tr class="${x[9]===1?"nhprev":""}"><td>${x[9]===1?"'25 ":""}${nhE(x[0].slice(5))}</td><td>${nhLab(x)}</td><td>${x[7]?"✔":""}</td><td>${x[3]}</td><td>${x[4]}</td><td>${x[5]}</td><td>${x[3]?(x[4]/x[3]).toFixed(3).slice(1):"–"}</td><td>${Math.round(x[6]/60)}</td></tr>`).join("")
     :w.g.slice().reverse().map(x=>`<tr class="${x[16]===1?"nhprev":""}"><td>${x[16]===1?"'25 ":""}${nhE(x[0].slice(5))}</td><td>${nhLab(x)}</td><td>${x[3]}</td><td>${x[4]}</td><td>${x[5]}</td><td>${x[6]}</td><td>${x[7]}</td><td>${x[8]}</td><td>${x[11]}</td><td>${x[13]!=null&&(x[13]+x[14])?x[13]+"/"+(x[13]+x[14]):"–"}</td><td>${(x[10]/60).toFixed(1)}</td></tr>`).join("");
-  el.innerHTML=`<p class="small">${xBack(g?"#nhl-game-"+g.id:"#nhl","Back")}</p>
+  el.innerHTML=`<p class="small">${xBack(g?"#nhl-game-"+g.id:"#nhl","Back")} ${typeof cmpBtn!=="undefined"?cmpBtn("nhl",nm):""}</p>
    <div class="phead tch" style="--tc:${NH_COL[w.tm]||"#555"}"><div>${nhBadge(w.tm)}</div><div><h1 style="margin:0">${nhE(nm)}${nhInjChip(nm)}</h1><div class="small">${nhE(nhTm(w.tm))} · ${nhE(isG?"G":w.pos)}${g?` · next: ${g.a===w.tm?"@":"vs"} ${nhE(nhTm(opp))} ${g.d===NHL_DATE?"today":"tomorrow"} ${nhE(g.t)}`:""}</div></div></div>
    ${typeof nhlStrip!=="undefined"?nhlStrip(w,isG):""}${typeof fuCard!=="undefined"?fuCard("nhl",[nm],"Awards odds"):""}
    ${typeof newsCard!=="undefined"?newsCard("nhl",{player:nm,hrs:72},"News about "+nhE(nm)):""}
@@ -594,7 +594,7 @@ function nhEdges(g){const pr=nhProject(g);if(!pr)return [];const out=[],add=(mk,
   if(g.tot&&g.tot[0]>=4.5){const nv=nhNoVig(g.tot[1],g.tot[2]),o=pr.overL(g.tot[0]);if(nv){add("Total",`Over ${g.tot[0]}`,g.tot[1],o,nv[0]);add("Total",`Under ${g.tot[0]}`,g.tot[2],1-o,nv[1])}}
   if(g.p1&&g.p1.tot){const t=g.p1.tot,nv=nhNoVig(t[1],t[2]),o=pr.over1(t[0]);if(nv){add("1st period total",`Over ${t[0]}`,t[1],o,nv[0]);add("1st period total",`Under ${t[0]}`,t[2],1-o,nv[1])}}
   /* a gap over 20 points usually means a stale or odd line, not a real edge */
-  return out.filter(e=>Math.abs(e.edge)<=.2).sort((a,b)=>b.edge-a.edge)}
+  return out.filter(e=>Math.abs(e.edge)<=.2&&(typeof xTeamOk==="undefined"||xEdgeTeams(e,g.a,g.h).every(t=>xTeamOk("nhl",t)))).sort((a,b)=>b.edge-a.edge)}
 function nhEdgeRow(e,showGame){return `<a class="nher" href="#nhl-game-${e.g.id}"><span>${showGame?`<span class="small">${nhE(e.g.a)} @ ${nhE(e.g.h)} · ${nhE(e.mk)}</span>`:`<span class="small">${nhE(e.mk)}</span>`}<b>${nhE(e.pick)}</b> <span class="small">${nhOdds(e.odds)}</span></span>
   <span class="nhedv"><b class="${e.edge>=.04?"up":e.edge<=-.04?"dn":""}">${e.edge>0?"+":""}${Math.round(e.edge*100)}%</b><span class="small">us ${Math.round(e.me*100)}% · books ${Math.round(e.bk*100)}%</span></span></a>`}
 function nhEdgesCard(){const L=nhAllGames().filter(g=>!nhStarted(g)&&(g.d===NHL_DATE||g.d===NHL_TOM)).flatMap(g=>nhEdges(g)).filter(e=>e.edge>=.03).sort((a,b)=>b.edge-a.edge).slice(0,8);

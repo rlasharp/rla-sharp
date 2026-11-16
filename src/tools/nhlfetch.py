@@ -609,6 +609,12 @@ for gl_ in GO.values():
     for x in gl_:
         if x[7]: _sa += x[3]; _sv += x[4]
 LSV = _sv / _sa if _sa else .9
+NHL_LL = {"ANA": (33.81, -117.88), "BOS": (42.37, -71.06), "BUF": (42.88, -78.88), "CAR": (35.80, -78.72), "CBJ": (39.97, -83.01), "CGY": (51.04, -114.05),
+          "CHI": (41.88, -87.67), "COL": (39.75, -105.01), "DAL": (32.79, -96.81), "DET": (42.34, -83.06), "EDM": (53.55, -113.50), "FLA": (26.16, -80.33),
+          "LAK": (34.04, -118.27), "MIN": (44.94, -93.10), "MTL": (45.50, -73.57), "NJD": (40.73, -74.17), "NSH": (36.16, -86.78), "NYI": (40.72, -73.59),
+          "NYR": (40.75, -73.99), "OTT": (45.30, -75.93), "PHI": (39.90, -75.17), "PIT": (40.44, -79.99), "SEA": (47.62, -122.35), "SJS": (37.33, -121.90),
+          "STL": (38.63, -90.20), "TBL": (27.94, -82.45), "TOR": (43.64, -79.38), "UTA": (40.77, -111.90), "VAN": (49.28, -123.11), "VGK": (36.10, -115.18),
+          "WPG": (49.89, -97.14), "WSH": (38.90, -77.02)}   # home rinks (approximate city coordinates)
 def played_on(t, d): return any(r[0] == d and t in (r[1], r[3]) for r in RES) or any(g["d"] == d and t in (g["a"], g["h"]) for g in SLATE + NEXT + LATER)
 def b2b(t, d): return played_on(t, (dt.date.fromisoformat(d) - dt.timedelta(days=1)).isoformat())
 def out_inj(nm):
@@ -701,6 +707,24 @@ def project(g):
     la = lg * att(A) * dfn(H) * st_(A, H) * .985 * gH; lh = lg * att(H) * dfn(A) * st_(H, A) * 1.015 * gA
     if b2b(g["a"], g["d"]): la *= .98; lh *= 1.02
     if b2b(g["h"], g["d"]): lh *= .98; la *= 1.02
+    # 3 games in 4 nights, and a long trip since the last game (team home rinks; 1,500+ miles), each a small fatigue nudge
+    def busy(tm, d):
+        D = dt.date.fromisoformat(d); return sum(played_on(tm, (D - dt.timedelta(days=k)).isoformat()) for k in (1, 2, 3)) >= 2
+    def trip(tm, d):
+        last = None
+        for r in RES:
+            if tm in (r[1], r[3]) and r[0] < d and (last is None or r[0] > last[0]): last = r
+        if not last: return 0
+        p, q = NHL_LL.get(last[3]), NHL_LL.get(g["h"])
+        if not p or not q: return 0
+        import math
+        la1, lo1, la2, lo2 = map(math.radians, (p[0], p[1], q[0], q[1]))
+        return 3959 * 2 * math.asin(math.sqrt(math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2))
+    for tm, mine, other in ((g["a"], "la", "lh"), (g["h"], "lh", "la")):
+        f = (.99 if busy(tm, g["d"]) else 1) * (.99 if trip(tm, g["d"]) >= 1500 else 1)
+        if f < 1:
+            if mine == "la": la *= f; lh *= 2 - f
+            else: lh *= f; la *= 2 - f
     p1s = lambda T: max(.22, min(.42, T["per"][0][0] / max(.1, sum(x[0] for x in T["per"])))) if T.get("per") else .31
     f1 = (p1s(A) + p1s(H)) / 2
     return {"la": round(la, 3), "lh": round(lh, 3), "l1a": round(la * f1, 3), "l1h": round(lh * f1, 3), "ga": nA, "gh": nH, "wa": wA, "wh": wH,

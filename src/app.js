@@ -124,11 +124,11 @@ function tabbarRender(){
 function moreOpen(){
   let sh=document.getElementById("moresheet");if(!sh){sh=document.createElement("div");sh.id="moresheet";document.body.appendChild(sh)}
   const nba=[["#nba","🏀 Games"],["#nba-best","🔥 Best props"],["#nba-props","🎯 All props"],["#nba-players","👤 Players"],["#nba-teams","📊 Standings"],["#nba-scores","🧾 Scores"],["#nba-injuries","🚑 Injuries"]];
-  const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"],["#bets","🎟️ My bets"]];
+  const nfl=[["#games","🏈 Games"],["#plays","⭐ Plays of the Week"],["#props","🎯 Player props"],["#weeks","🧾 Scores"],["#standings","📊 Standings & trends"],["#injuries","🚑 Injuries"]];
   const nhl=[["#nhl","🏒 Games"],["#nhl-props","🎯 Player props"],["#nhl-scores","🧾 Scores"],["#nhl-standings","📊 Standings"],["#nhl-injuries","🚑 Injuries"]];
   const ufc=[["#ufc","🥊 Fight cards"],["#ufc-props","⭐ Best bets"],["#ufc-results","🧾 Results"]];
   const cfb=[["#cfb","🏈 Games"],["#cfb-picks","⭐ Picks"],["#cfb-big","🔥 Rivalries + title games"],["#cfb-rank","🏆 Rankings"],["#cfb-stand","📊 Standings + playoff"],["#cfb-lead","🏅 Leaders"]],cbb=[["#cbb","🏀 Games"],["#cbb-picks","⭐ Picks"],["#cbb-bracket","🗂️ Bracket watch"],["#cbb-big","🔥 Rivalries"],["#cbb-rank","🏆 Rankings"],["#cbb-stand","📊 Standings"],["#cbb-lead","🏅 Leaders"]];
-  const all=[["#record","📒 Our record"],["#favs","⭐ Favorites"],["#bets","🎟️ My bets"],["#futures","🏆 Futures"],["#calib","🎯 Calibration"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
+  const all=[["#allpicks","⭐ All picks"],["#record","📒 Our record"],["#calib","🎯 How accurate"],["#favs","⭐ Favorites"],["#futures","🏆 Futures"],["#compare/nba","⚖️ Compare players"],["#calc","🧮 Odds calculator"],["#guide","📘 Betting 101"],["#settings","⚙️ Settings"]];
   const grp=(t,L)=>`<h3>${t}</h3><div class="mgrid">${L.map(([h,l])=>`<a href="${h}">${l}</a>`).join("")}</div>`;
   const of=typeof ODDS_FMT!=="undefined"?ODDS_FMT:"am";
   sh.innerHTML=`<div class="msback"></div><div class="mspanel"><div class="msgrab"></div>${[["nba","NBA",nba],["nhl","NHL",nhl],["nfl","NFL",nfl],["ufc","UFC",ufc],["cfb","College football",cfb],["cbb","College basketball",cbb]].filter(x=>typeof xFollow==="undefined"||xFollow(x[0])).map(x=>grp(x[1],x[2])).join("")}${grp("More",all)}
@@ -197,7 +197,7 @@ function viewToday(){
   const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
   const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].filter(sp=>typeof xFollow==="undefined"||xFollow(sp)).map(sp=>loMovesCard(sp,5)).join(""):"";
   const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p>${typeof xFreshStrip!=="undefined"?xFreshStrip():""}${typeof xMovesCard!=="undefined"?xMovesCard():""}<div class="tqlinks"><a class="fxp" href="#futures">🏆 Futures</a><a class="fxp" href="#record">📒 Our record</a><a class="fxp" href="#calib">🎯 Are our chances right?</a><a class="fxp" href="#settings">⚙️ Settings</a></div><div id="liveTrk"></div><div id="ufcToday"></div><div id="iaToday">${typeof iaLogCard!=="undefined"?iaLogCard():""}</div>
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p>${typeof xFreshStrip!=="undefined"?xFreshStrip():""}${typeof xMovesCard!=="undefined"?xMovesCard():""}<div class="tqlinks"><a class="fxp" href="#allpicks">⭐ All picks</a><a class="fxp" href="#futures">🏆 Futures</a><a class="fxp" href="#record">📒 Our record</a><a class="fxp" href="#calib">🎯 Are our chances right?</a><a class="fxp" href="#settings">⚙️ Settings</a></div><div id="liveTrk"></div><div id="ufcToday"></div><div id="iaToday">${typeof iaLogCard!=="undefined"?iaLogCard():""}</div>
   ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}

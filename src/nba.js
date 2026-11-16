@@ -126,16 +126,24 @@ function nbaDay(d){return NBA_DF.format(new Date(d+"T12:00:00"))}
 function nbaDayS(d){return NBA_DFS.format(new Date(d+"T12:00:00"))}
 
 /* simple model: shrunk scoring margin + home court; total from points for/against */
-function nbaModel(a,h){
+/* 😴 rest + travel (Nov 17 2026): 2nd night of a back-to-back −1.5 pts, 3 games in 4 nights −0.8, a 1,500+ mile trip since the last
+   game −0.5 (arena cities); back-to-backs also shave a point off the total */
+const NBA_LL={ATL:[33.76,-84.40],BOS:[42.37,-71.06],BKN:[40.68,-73.97],CHA:[35.23,-80.84],CHI:[41.88,-87.67],CLE:[41.50,-81.69],DAL:[32.79,-96.81],DEN:[39.75,-105.01],DET:[42.34,-83.06],GS:[37.77,-122.39],HOU:[29.75,-95.36],IND:[39.76,-86.16],LAC:[33.94,-118.34],LAL:[34.04,-118.27],MEM:[35.14,-90.05],MIA:[25.78,-80.19],MIL:[43.04,-87.92],MIN:[44.98,-93.28],NO:[29.95,-90.08],NY:[40.75,-73.99],OKC:[35.46,-97.52],ORL:[28.54,-81.38],PHI:[39.90,-75.17],PHX:[33.45,-112.07],POR:[45.53,-122.67],SAC:[38.58,-121.50],SA:[29.43,-98.44],TOR:[43.64,-79.38],UTAH:[40.77,-111.90],WSH:[38.90,-77.02]};
+function nbaMiles(p,q){if(!p||!q)return 0;const R=Math.PI/180,a=Math.sin((q[0]-p[0])*R/2)**2+Math.cos(p[0]*R)*Math.cos(q[0]*R)*Math.sin((q[1]-p[1])*R/2)**2;return 3959*2*Math.asin(Math.sqrt(a))}
+function nbaFatigue(t,h,d){try{d=d||NBA_SLATE_DATE;const G=(NBA_RES||[]).filter(r=>(r[2]===t||r[3]===t)&&r[1]<d).sort((x,y)=>x[1]<y[1]?-1:1),last=G[G.length-1];if(!last)return {pen:0,tot:0};
+  const day=x=>Date.parse(x+"T12:00:00Z"),rest=Math.round((day(d)-day(last[1]))/864e5)-1,n3=G.filter(r=>day(d)-day(r[1])<=3*864e5).length,mi=nbaMiles(NBA_LL[last[3]],NBA_LL[h]);
+  const why=[];let pen=0,tot=0;if(rest===0){pen+=1.5;tot+=1;why.push("2nd night of a back-to-back")}if(n3>=2){pen+=.8;why.push("3 games in 4 nights")}if(mi>=1500){pen+=.5;why.push(`${Math.round(mi/100)*100} mile trip`)}
+  return {pen,tot,rest,mi,why}}catch(e){return {pen:0,tot:0}}}
+function nbaModel(a,h,d){
   const A=NBA_TEAM[a],H=NBA_TEAM[h];if(!A||!H)return null;
-  const r=t=>t.mar*t.g/(t.g+5);
-  const m=r(H)-r(A)+NBA_HCA;
-  const tot=(H.ppg+A.opp)/2+(A.ppg+H.opp)/2;
+  const r=t=>t.mar*t.g/(t.g+5),FA=nbaFatigue(a,h,d),FH=nbaFatigue(h,h,d);
+  const m=r(H)-r(A)+NBA_HCA+FA.pen-FH.pen;
+  const tot=(H.ppg+A.opp)/2+(A.ppg+H.opp)/2-FA.tot-FH.tot;
   /* 🚑 injuries: take out what the missing players usually score (injadj.js) */
   const IA_=typeof iaTeam!=="undefined"?[iaTeam("nba",a),iaTeam("nba",h)]:[null,null],da=IA_[0]?IA_[0].d:0,dh=IA_[1]?IA_[1].d:0;
   const m2=m-dh+da,tot2=tot-dh-da;
   const z=m2/12,p=1/(1+Math.exp(-1.702*z));
-  return {m:Math.round(m2*2)/2,tot:Math.round(tot2*2)/2,p,g:Math.min(A.g,H.g),ia:da||dh?{a:da,h:dh}:null};
+  return {m:Math.round(m2*2)/2,tot:Math.round(tot2*2)/2,p,g:Math.min(A.g,H.g),ia:da||dh?{a:da,h:dh}:null,fat:{a:FA,h:FH}};
 }
 /* regulars (24+ min a game) listed Out who have played this season — the model's numbers include them */
 /* a key player (24+ min) who is out AND was playing lately (in the last 10 days of his team's games): a NEW absence our team
@@ -186,6 +194,7 @@ const NBPASS={};
 function nbaGamePick(g){const L=nbaL(g),M=nbaModel(g.a,g.h);delete NBPASS[g.id];if(!L||!M)return null;
   const P=z=>1/(1+Math.exp(-1.702*z)),C=[],ge=typeof xGameEdge!=="undefined"?xGameEdge:(mk,o,raw,bk)=>bk+.5*(raw-bk),fair=(a,b)=>{const x=nbaImpl(a),y=nbaImpl(b);return x/(x+y)};
   if(nbaKeyOut(g.a).length+nbaKeyOut(g.h).length){NBPASS[g.id]="key";return null}
+  if(typeof xTeamOk!=="undefined"&&(!xTeamOk("nba",g.a)||!xTeamOk("nba",g.h))){NBPASS[g.id]="team";return null}
   if(L.sp!=null){const ph=P((M.m+L.sp)/13);for(const home of [true,false]){const raw=home?ph:1-ph,odds=home?(L.spx||-110):-110,ch=ge("Spread",odds,raw,.5);if(ch!=null)C.push({k:"Spread",txt:`${home?g.h:g.a} ${nbaSg(home?L.sp:-L.sp)}`,ch,odds})}}
   if(L.tot!=null){const po=P((M.tot-L.tot)/19);for(const ov of [true,false]){const raw=ov?po:1-po,odds=(ov?L.ox:L.ux)||-110,ch=ge("Total",odds,raw,.5);if(ch!=null)C.push({k:"Total",txt:`${ov?"Over":"Under"} ${L.tot}`,ch,odds})}}
   if(L.mla&&L.mlh){const fh=fair(L.mlh,L.mla);for(const home of [true,false]){const raw=home?M.p:1-M.p,odds=home?L.mlh:L.mla,ch=ge("Moneyline",odds,raw,home?fh:1-fh);if(ch!=null)C.push({k:"Moneyline",txt:`${home?g.h:g.a} to win`,ch,odds})}}
@@ -193,10 +202,11 @@ function nbaGamePick(g){const L=nbaL(g),M=nbaModel(g.a,g.h);delete NBPASS[g.id];
   const best=C.filter(c=>c.edge>=.03).sort((x,y)=>y.edge-x.edge)[0];if(!best){NBPASS[g.id]="none";return null}
   const le=nbaLean(g);if(le.length&&((le[0].k==="sp"&&best.k==="Spread")||(le[0].k!=="sp"&&best.k==="Total")))best.strong=1;
   return Object.assign(best,{M})}
+function nbaFatTxt(g,M){const f=M&&M.fat;if(!f)return "";const w=[[g.a,f.a],[g.h,f.h]].filter(x=>x[1].why&&x[1].why.length).map(([t,x])=>`${t} ${x.why.join(", ")}`);return w.length?` · 😴 ${nbaEsc(w.join(" · "))} (in our number)`:""}
 function nbaPickTxt(g){const x=nbaGamePick(g),M=nbaModel(g.a,g.h);
-  const est=why=>M?`<div class="nbpick est">🔮 Our number: ${nbaEsc(M.m>=0?g.h:g.a)} by ${Math.max(.5,Math.round(Math.abs(M.m)*10)/10)} · total ${M.tot}<span class="small"> · ${why}</span></div>`:"";
-  if(!x)return est(NBPASS[g.id]==="key"?"no pick: a key player is out and our team ratings don't account for it":NBPASS[g.id]==="none"?"no pick: nothing beats the price by enough":"our pick posts with the lines");
-  return `<div class="nbpick${x.strong?"":" est"}">${x.strong?"⭐":"🔮"} Our pick: <b>${nbaEsc(x.txt)}</b> <span class="small">${x.k.toLowerCase()} · ${oddsFmt(x.odds)} · our chance ${Math.round(x.ch*100)}% vs ${Math.round(x.need*100)}% the price needs${x.strong?" · strong lean":""}</span></div>`}
+  const est=why=>M?`<div class="nbpick est">🔮 Our number: ${nbaEsc(M.m>=0?g.h:g.a)} by ${Math.max(.5,Math.round(Math.abs(M.m)*10)/10)} · total ${M.tot}<span class="small"> · ${why}${nbaFatTxt(g,M)}</span></div>`:"";
+  if(!x)return est(NBPASS[g.id]==="key"?"no pick: a key player is out and our team ratings don't account for it":NBPASS[g.id]==="none"?"no pick: nothing beats the price by enough":NBPASS[g.id]==="team"?"no pick: our model has misjudged one of these teams lately":"our pick posts with the lines");
+  return `<div class="nbpick${x.strong?"":" est"}">${x.strong?"⭐":"🔮"} Our pick: <b>${nbaEsc(x.txt)}</b> <span class="small">${x.k.toLowerCase()} · ${oddsFmt(x.odds)} · our chance ${Math.round(x.ch*100)}% vs ${Math.round(x.need*100)}% the price needs${x.strong?" · strong lean":""}${nbaFatTxt(g,M)}</span></div>`}
 /* line movement: ESPN opening number vs now (home spread stored) */
 function nbaMove(g){
   const L=nbaL(g);if(!L||!L.open)return null;
@@ -1110,7 +1120,7 @@ function nbaPlayer(el,nm){nm=(typeof xMkFromHash!=="undefined"?xMkFromHash(nm,k=
     return `<div class="nbtabs pmk">${P.map(r=>`<button data-pmk="${r[1]}" class="${r[1]===sel?"on":""}">${NBA_MK[r[1]]?NBA_MK[r[1]][2]:r[1]} <small>${r[2]}</small></button>`).join("")}</div><div class="small swh">👆 Swipe the chart left or right for the next prop</div>
 ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSpread(p.tm):null,t=typeof pxNbaTot!=="undefined"?pxNbaTot(p.tm):null;const g0=nbaGameOf(p.tm),R0=NBA_REST&&NBA_REST[p.tm],st0=p.g.filter(x=>x[9]===1||x[9]===true).length;const fg0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[11]||0),0)/p.g.length):null,mn0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[4]||0),0)/p.g.length):null,tp0=p.g.length?Math.round(p.g.reduce((q,x)=>q+(x[15]||0),0)/p.g.length):null;return {fga:fg0,min:mn0,tpa:tp0>0?tp0:null,it:sp!=null&&t!=null?Math.round((t/2-sp/2)*2)/2:null,sp:sp!=null?Math.round(sp*2)/2:null,tot:t,nm,ha:g0?(g0.h===p.tm?"H":"A"):null,rest:R0?(R0.rest===0?"b2b":R0.rest===1?"r1":"r2"):"",oppT:g0?(g0.h===p.tm?g0.a:g0.h):"",opp:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"opp"):"",pace:g0?nbaOppTier(g0.h===p.tm?g0.a:g0.h,"pace"):"",role:p.g.length?(st0*2>=p.g.length?"st":"bn"):"",ven:g0?(g0.h===p.tm?"H":"A"):null}})())}
     <div class="pmkw">${P.map((r,i)=>`<div class="pmkc" data-pmkc="${r[1]}"${r[1]===sel?"":" hidden"}>${nbaPropCard(r,100+i)}${typeof vxScatter!=="undefined"?vxScatter(nm,r[1],r[2]):""}${typeof vxLnRec!=="undefined"?vxLnRec("nba",nm,r[1]):""}</div>`).join("")}</div>`})()}`:(g?`<div class="info"><span>${gStarted&&hadProps?"🔒 His game has started — tonight's pregame lines are closed.":(typeof OUT_DROP!=="undefined"&&OUT_DROP.nba.has(nm)?"🚑 He's ruled out — his props are removed.":"No prop lines posted for him today.")}</span></div>`:"");
-  el.innerHTML=`${xBack("#"+back,"Back")}
+  el.innerHTML=`${xBack("#"+back,"Back")} ${typeof cmpBtn!=="undefined"?cmpBtn("nba",nm):""}
   <div class="phead tch" style="--tc:${nbaCol(p.tm)}">
     <div class="pnum" style="background:${nbaCol(p.tm)}">${bio&&bio[3]?"#"+nbaEsc(bio[3]):p.tm}</div>
     <div style="min-width:0"><h1 style="margin:0">${nbaEsc(nm)}${nbaInjChip(inj)}</h1>

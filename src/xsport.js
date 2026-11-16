@@ -21,12 +21,16 @@ function xGameEdge(mk,odds,raw,bk){if(raw==null||bk==null)return null;
   const me=bk+XGL.w*(raw-bk);
   if(mk==="Moneyline"&&!(raw>=.5&&odds!=null&&odds>=XGL.mlMin&&odds<=XGL.mlMax))return null;   /* ML: a team we expect to win, priced −250 to +150 */
   return me}
+/* teams our game model keeps getting wrong: 8+ graded game-line picks involving them and 20%+ of the stakes lost → no game picks
+   on them until that improves (TRACK.sum[sp].teamrec, tools/track.js) */
+function xTeamOk(sp,tm){try{const R=TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].teamrec&&TRACK.sum[sp].teamrec[tm];return !(R&&R[0]+R[1]>=8&&R[2]/(R[0]+R[1])<=-.2)}catch(e){return true}}
+function xEdgeTeams(e,a,h){return e.mk==="Total"||/total/i.test(e.mk)?[a,h]:[String(e.pick).startsWith(h)?h:a]}
 function nbaOddsEdges(g){const L=typeof NBA_LINES!=="undefined"&&NBA_LINES[g.a+"@"+g.h],M=typeof nbaModel!=="undefined"&&nbaModel(g.a,g.h);if(!L||!M||(typeof nbaStarted!=="undefined"&&nbaStarted(g)))return [];
   const out=[],gm=`${g.a} @ ${g.h}`,href=`#nba-game-${g.id}`,add=(mk,pick,odds,raw,bk,est)=>{const me=xGameEdge(mk,odds,raw,bk);if(me==null)return;out.push({g,game:gm,href,mk,pick,odds,me,raw,bk,edge:me-bk,est})};
   if(L.sp!=null){const ph=xNorm((M.m+L.sp)/12),hp=L.spx??-110,nv=xNoVig(hp,-110);add("Spread",`${g.h} ${L.sp>0?"+":""}${L.sp}`,hp,ph,nv[0],L.spx==null);add("Spread",`${g.a} ${-L.sp>0?"+":""}${-L.sp}`,-110,1-ph,nv[1],true)}
   if(L.tot!=null){const po=1-xNorm((L.tot-M.tot)/18),nv=xNoVig(L.ox??-110,L.ux??-110);add("Total",`Over ${L.tot}`,L.ox??-110,po,nv[0],L.ox==null);add("Total",`Under ${L.tot}`,L.ux??-110,1-po,nv[1],L.ux==null)}
   if(L.mla!=null&&L.mlh!=null){const nv=xNoVig(L.mla,L.mlh);add("Moneyline",g.h,L.mlh,M.p,nv[1]);add("Moneyline",g.a,L.mla,1-M.p,nv[0])}
-  const out2=typeof nbaKeyOutAll!=="undefined"&&nbaKeyOutAll(g).length?[]:out;   // key player out: our ratings don't know it
+  const out2=(typeof nbaKeyOutAll!=="undefined"&&nbaKeyOutAll(g).length?[]:out).filter(e=>xEdgeTeams(e,g.a,g.h).every(t=>xTeamOk("nba",t)));   // key player out: our ratings don't know it
   return out2.filter(e=>e.edge>0&&e.edge<=.2).sort((a,b)=>b.edge-a.edge)}
 /* NFL: our pure projected score (no market blend), margin sd 13.5, total sd 13 */
 function nflOddsEdges(g){if(typeof projectGame==="undefined"||g.final||(typeof nflStarted!=="undefined"&&nflStarted(g)))return [];const L=LINES[g.id];if(!L)return [];const P=projectGame(g),m=P.shp-P.sap,t=P.shp+P.sap;
@@ -34,7 +38,7 @@ function nflOddsEdges(g){if(typeof projectGame==="undefined"||g.final||(typeof n
   if(L.sp!=null){const ph=xNorm((m+L.sp)/13.5);add("Spread",`${g.home} ${L.sp>0?"+":""}${L.sp}`,-110,ph,.5,true);add("Spread",`${g.away} ${-L.sp>0?"+":""}${-L.sp}`,-110,1-ph,.5,true)}
   if(L.tot!=null){const po=1-xNorm((L.tot-t)/13);add("Total",`Over ${L.tot}`,-110,po,.5,true);add("Total",`Under ${L.tot}`,-110,1-po,.5,true)}
   if(L.ml&&L.ml[0]!=null&&L.ml[1]!=null){const nv=xNoVig(L.ml[0],L.ml[1]),pw=xNorm(m/13.5);add("Moneyline",g.home,L.ml[1],pw,nv[1]);add("Moneyline",g.away,L.ml[0],1-pw,nv[0])}
-  return out.filter(e=>e.edge>0&&e.edge<=.2).sort((a,b)=>b.edge-a.edge)}
+  return out.filter(e=>xEdgeTeams(e,g.away,g.home).every(t=>xTeamOk("nfl",t))).filter(e=>e.edge>0&&e.edge<=.2).sort((a,b)=>b.edge-a.edge)}
 function xEdgesCard(sp){const L=(sp==="nba"?(typeof NBA_SLATE!=="undefined"?NBA_SLATE:[]).flatMap(nbaOddsEdges):(typeof SLATE!=="undefined"?SLATE:[]).flatMap(nflOddsEdges)).filter(e=>e.edge>=.03).sort((a,b)=>b.edge-a.edge).slice(0,8);
   if(!L.length)return "";
   return `<div class="card" style="margin-bottom:12px"><h2 style="margin-bottom:2px">💰 Biggest gaps vs the odds</h2><div class="small" style="margin-bottom:8px">${sp==="nba"?"Our team-rating numbers (scoring margin, points for and against, home court)":"Our projected score from points for and against this season and lately, home field"} vs the books, after removing their margin.${sp==="nba"?" Games with a key player out are left out.":""}</div>${L.map(e=>xEdgeRow(e,true)).join("")}
