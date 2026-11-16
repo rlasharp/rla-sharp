@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 19:37Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 20:54Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
@@ -99,6 +99,7 @@ Dominick Barlow|F|Out|back fracture|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
+Ryan Dunn|F|Day-To-Day|thumb soreness|Nov 16
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|foot bruise|Nov 17
@@ -112,8 +113,8 @@ Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 18
 Maxime Raynaud|C|Out|knee dislocated|Nov 18
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-De'Aaron Fox|G|Day-To-Day|hip|Nov 17
 Tobias Harris|F|Out|calf strain|Dec 3
+De'Aaron Fox|G|Day-To-Day|hip|Nov 17
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
 Nate Bittle|C|Out|foot fracture|Nov 23
