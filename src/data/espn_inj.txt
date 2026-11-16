@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 01:27Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 02:03Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Questionable|Knee|Nov 22
@@ -10,7 +10,6 @@ Hjalte Froholdt|C|Out|Concussion|Nov 22
 Jon Gaines II|G|Out|Ankle|Nov 22
 Gardner Minshew II|QB|IR|Elbow|Feb 15
 Zachary Carter|DT|IR|Knee|Nov 22
-Michael Wilson|WR|IR|Neck|Feb 15
 #ATL
 Drake London|WR|Questionable|Concussion|Nov 15
 Andy Dalton|QB|Out|Coach's Decision|Nov 29
@@ -212,8 +211,8 @@ Jauan Jennings|WR|Out|Calf|Nov 22
 Blake Cashman|LB|Out|Concussion|Nov 22
 Kyler Murray|QB|Out|Hamstring|Nov 29
 #NE
-A.J. Brown|WR|Questionable|Hamstring|Nov 29
 Drake Maye|QB|Questionable|Ankle|Nov 29
+A.J. Brown|WR|Questionable|Hamstring|Nov 29
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 15
 Robert Spillane|LB|Questionable|Illness|Nov 15
 Brenden Schooler|S|Out|Hamstring|Nov 29
@@ -277,9 +276,9 @@ Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
+Abraham Lucas|OT|Questionable|Ankle|Nov 29
 George Holani|RB|Questionable|Knee|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 15
-Abraham Lucas|OT|Questionable|Ankle|Nov 29
 Emanuel Wilson|RB|Out|Coach's Decision|Nov 29
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
