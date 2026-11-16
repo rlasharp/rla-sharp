@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 11:49Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 15:42Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Questionable|Knee|Nov 22
@@ -93,7 +93,7 @@ Jaylen Waddle|WR|Questionable|Concussion|Nov 22
 Riley Moss|CB|Questionable|Concussion|Nov 22
 Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 #DET
-Aidan Hutchinson|DE|Doubtful|Knee|Nov 22
+Aidan Hutchinson|DE|Out|Knee - ACL|Feb 15
 Mekhi Wingo|DT|Out|Coach's Decision|Nov 22
 Amen Ogbongbemiga|LB|Out|Coach's Decision|Nov 22
 D.J. Reed|CB|Out|Hip|Nov 22
@@ -210,7 +210,7 @@ Jauan Jennings|WR|Out|Calf|Nov 22
 Blake Cashman|LB|Out|Concussion|Nov 22
 Kyler Murray|QB|Out|Hamstring|Nov 29
 #NE
-Drake Maye|QB|Questionable|Ankle|Nov 29
+Drake Maye|QB|Doubtful|Ankle|Nov 29
 A.J. Brown|WR|Questionable|Hamstring|Nov 29
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 29
 Robert Spillane|LB|Questionable|Illness|Nov 29
@@ -241,8 +241,8 @@ J.C. Davis|OT|Out|Coach's Decision|Nov 22
 Thomas Fidone II|TE|Out|Coach's Decision|Nov 22
 Paulson Adebo|CB|Out|Coach's Decision|Nov 22
 #NYJ
-Geno Smith|QB|Questionable|Ankle|Nov 22
 Omar Cooper Jr.|WR|Questionable|Ankle|Nov 22
+Geno Smith|QB|Questionable|Ankle|Nov 22
 Dylan Parham|G|Questionable|Knee|Nov 22
 Jarvis Brownlee Jr.|CB|Out|Illness|Nov 22
 Tim Patrick|WR|Out|Coach's Decision|Nov 22
@@ -275,9 +275,9 @@ C.J. West|DT|IR|Knee|Nov 22
 Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
 #SEA
-Abraham Lucas|OT|Questionable|Ankle|Nov 29
 George Holani|RB|Questionable|Knee|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 29
+Abraham Lucas|OT|Questionable|Ankle|Nov 29
 Emanuel Wilson|RB|Out|Coach's Decision|Nov 29
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
@@ -286,15 +286,15 @@ Charles Cross|OT|Out|Ankle|Nov 29
 Sam Darnold|QB|Out|Quadriceps|Nov 29
 Deven Eastern|DT|Out|Coach's Decision|Nov 29
 #TB
-Baker Mayfield|QB|Questionable|Lower Leg|Nov 22
+Baker Mayfield|QB|Questionable|Foot|Nov 22
 Yaya Diaby|LB|Out|Knee - MCL|Nov 22
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 22
 #TEN
+Carnell Tate|WR|Out|Shoulder|Nov 22
 Wan'Dale Robinson|WR|Questionable|Ankle|Nov 22
 Tony Adams|S|Questionable|Concussion|Nov 22
 Nicholas Singleton|RB|Out|Coach's Decision|Nov 22
-Carnell Tate|WR|Out|Shoulder|Nov 22
 Anthony Hill Jr.|LB|Out|Neck|Nov 22
 Jaylon Jones|CB|Out|Coach's Decision|Nov 22
 Jackie Marshall|DT|Out|Coach's Decision|Nov 22
