@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 21:27Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 23:24Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
@@ -6,18 +6,16 @@ Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Asa Newell|F|Out|toe|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
-Neemias Queta|C|Day-To-Day|rest|Nov 16
+Neemias Queta|C|Out|rest|Nov 18
 #Charlotte Hornets
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
 Tobe Awaka|F|Out|back|Nov 18
-Jalen Smith|F|Day-To-Day|finger sprain|Nov 16
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
-Jaylon Tyson|G|Day-To-Day|ankle|Nov 16
-Peyton Watson|G|Day-To-Day|abdomen soreness|Nov 16
-Evan Mobley|C|Out|toe sprain|Nov 18
+Jaylon Tyson|G|Out|ankle|Nov 18
+Evan Mobley|C|Out|toe sprain|Nov 29
 Sam Merrill|G|Out|elbow|Nov 18
 Nae'Qwan Tomlin|F|Out|back|Nov 18
 #Dallas Mavericks
@@ -30,8 +28,10 @@ Sergio de Larrea|F|Out|knee strain|Nov 18
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
-Duncan Robinson|F|Day-To-Day|thigh soreness|Nov 17
+Taurean Prince|F|Out|knee soreness|Nov 18
+Ronald Holland II|F|Out|knee bruise|Nov 18
 Isaiah Joe|G|Out|hip bruise|Nov 17
+Duncan Robinson|F|Out|quadriceps strain|Nov 18
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
 Gui Santos|F|Day-To-Day|ankle inflammation|Nov 16
@@ -62,12 +62,12 @@ Isaiah Stewart|C|Out|illness|Nov 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 GG Jackson|F|Out|foot surgery|Jan 18
 Ty Jerome|G|Out|hip soreness|Nov 18
-Quinten Post|C|Out|concussion|Nov 16
-Zach Edey|C|Day-To-Day|ankle|Nov 16
+Quinten Post|C|Out|undisclosed|
+Zach Edey|C|Day-To-Day|undisclosed|
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Nikola Jovic|F|Day-To-Day|illness|Nov 16
-Pelle Larsson|G|Day-To-Day|illness|Nov 16
+Nikola Jovic|F|Out|illness|Nov 18
+Pelle Larsson|G|Out|illness|Nov 18
 #Milwaukee Bucks
 Ryan Rollins|G|Day-To-Day|illness|Nov 18
 Ousmane Dieng|F|Out|finger surgery|Dec 14
@@ -114,7 +114,6 @@ Maxime Raynaud|C|Out|knee dislocated|Nov 18
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
 Tobias Harris|F|Out|calf strain|Dec 3
-De'Aaron Fox|G|Day-To-Day|hip|Nov 17
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
 Nate Bittle|C|Out|foot fracture|Nov 23
@@ -122,12 +121,10 @@ Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 16
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
 Jaxson Hayes|C|Day-To-Day|knee strain|Nov 17
-Trey Alexander|G|Out|ankle sprain|Nov 16
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
-Tre Johnson|G|Day-To-Day|back soreness|Nov 16
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 24
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25

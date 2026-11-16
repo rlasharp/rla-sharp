@@ -1,9 +1,10 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 21:28Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 23:24Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Andrew Wingard|S|Out|Wrist|Dec 20
 Jon Gaines II|G|Out|Ankle|Nov 22
 Hjalte Froholdt|C|Out|Concussion|Nov 22
-Jordan Burch|LB|Questionable|Knee|Nov 22
+Jordan Burch|LB|Out|Knee - MCL|Feb 15
 Jayden Williams|OT|Out|Knee|Nov 22
 Gardner Minshew II|QB|IR|Elbow|Feb 15
 Zachary Carter|DT|IR|Knee|Nov 22
@@ -47,7 +48,7 @@ Cashius Howell|DE|IR|Wrist|Dec 6
 Ronnie Hickman|S|Out|Concussion|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
-DaRon Bland|CB|Doubtful|Ankle|Nov 22
+DaRon Bland|CB|Out|Ankle|Nov 26
 Tyler Booker|G|Out|Ankle|Dec 7
 Jonathan Mingo|WR|Out|Ankle|Nov 22
 Juanyeh Thomas|S|Out|Ribs|Nov 22
@@ -90,13 +91,13 @@ David Montgomery|RB|Out|Groin|Nov 19
 Woody Marks|RB|Doubtful|Concussion|Nov 19
 Jaylin Smith|CB|IR|Hamstring|Nov 19
 #IND
+Charvarius Ward|CB|Questionable|Shin|Nov 19
+Sauce Gardner|CB|Questionable|Calf|Nov 19
 Jalen Travis|OT|Out|Knee|Nov 19
 Luke Rhodes|LS|Out|Hamstring|Nov 19
 Jerry Tillery|DT|Out|Calf|Nov 19
 Will Mallory|TE|Out|Hamstring|Nov 19
 Jaylon Carlies|LB|Out|Neck|Nov 19
-Sauce Gardner|CB|Questionable|Calf|Nov 19
-Charvarius Ward|CB|Questionable|Shin|Nov 19
 Bernhard Raimann|OT|Questionable|Concussion|Nov 19
 Akeem Davis-Gaither|LB|IR|Knee|Dec 20
 Mo Alie-Cox|TE|IR|Groin|Dec 20
@@ -118,9 +119,8 @@ Kwity Paye|DE|Questionable|Neck|Nov 22
 Thomas Booker IV|DT|Out|Ankle|Nov 22
 Dont'e Thornton Jr.|WR|Out|Back|Nov 22
 #LAC
-Branson Taylor|G|IR|Ankle|Dec 13
-David Njoku|TE|Questionable|Lower Leg|Nov 16
 Denzel Perryman|LB|Questionable|Pectoral|Nov 16
+Branson Taylor|G|IR|Ankle|Dec 13
 Brenen Thompson|WR|Doubtful|Hamstring|Nov 16
 Ladd McConkey|WR|Out|Back|Nov 22
 Trey Pipkins III|OT|IR|Knee|Nov 22
@@ -129,9 +129,9 @@ Kendall Williamson|S|Out|Calf|Nov 22
 Isas Waxter|CB|Out|Ankle|Nov 22
 Justin Eboigbe|DT|Questionable|Ankle|Nov 16
 #LAR
+Dylan McMahon|C|IR|Knee|Dec 25
 Steve Avila|G|Out|Hamstring|Nov 25
 Coleman Shelton|C|Questionable|Hamstring|Nov 25
-Dylan McMahon|C|Questionable|Knee|Nov 25
 Joe Cardona|LS|Out|Ankle|Nov 25
 Davante Adams|WR|IR|Hamstring|Nov 25
 Puka Nacua|WR|IR|Knee - MCL|Dec 20
@@ -195,6 +195,7 @@ Roman Wilson|WR|IR|Finger|Nov 22
 Mason McCormick|G|Doubtful|Ankle|Nov 22
 DeShon Elliott|S|Out|Knee|Nov 22
 #SF
+Renardo Green|CB|Questionable|Back|Nov 22
 Mike Evans|WR|Out|Achilles|Nov 22
 C.J. West|DT|IR|Knee|Nov 22
 Nate Hobbs|CB|IR|Groin|Nov 22
