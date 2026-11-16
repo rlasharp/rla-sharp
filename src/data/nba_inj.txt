@@ -1,10 +1,12 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 17:44Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 19:37Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Asa Newell|F|Out|toe|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
+#Boston Celtics
+Neemias Queta|C|Day-To-Day|rest|Nov 16
 #Charlotte Hornets
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
@@ -39,9 +41,10 @@ Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
+Amen Thompson|G|Day-To-Day|knee soreness|Nov 16
+Clint Capela|C|Out|ankle sprain|Nov 18
+Steven Adams|C|Out|calf|Nov 18
 Julian Phillips|F|Day-To-Day|wrist|Nov 16
-Fred VanVleet|G|Day-To-Day|knee|Nov 16
-Clint Capela|C|Out|ankle sprain|Nov 16
 #Indiana Pacers
 Andrew Nembhard|G|Day-To-Day|hip soreness|Nov 18
 Tyrese Haliburton|G|Out|hamstring strain|Nov 22
@@ -55,9 +58,9 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Austin Reaves|G|Day-To-Day|heel bruise|Nov 17
 #Memphis Grizzlies
+Isaiah Stewart|C|Out|illness|Nov 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 GG Jackson|F|Out|foot surgery|Jan 18
-Isaiah Stewart|C|Day-To-Day|illness|Nov 16
 Ty Jerome|G|Out|hip soreness|Nov 18
 Quinten Post|C|Out|concussion|Nov 16
 Zach Edey|C|Day-To-Day|ankle|Nov 16
@@ -91,6 +94,7 @@ Paolo Banchero|F|Out|ankle sprain|Nov 22
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
 Joel Embiid|C|Day-To-Day|foot|Nov 16
+LeBron James|F|Out|back|Nov 18
 Dominick Barlow|F|Out|back fracture|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
@@ -109,7 +113,7 @@ Maxime Raynaud|C|Out|knee dislocated|Nov 18
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
 De'Aaron Fox|G|Day-To-Day|hip|Nov 17
-Tobias Harris|F|Out|calf strain|Nov 19
+Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
 Nate Bittle|C|Out|foot fracture|Nov 23
@@ -122,8 +126,8 @@ Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
-Tre Johnson|G|Day-To-Day|back|Nov 16
-Tristan Vukcevic|F|Out|hip pinched nerve|Nov 16
+Tre Johnson|G|Day-To-Day|back soreness|Nov 16
+Tristan Vukcevic|F|Out|hip pinched nerve|Nov 24
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
 Jamir Watkins|G|Out|knee surgery|Apr 2
