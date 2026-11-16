@@ -29,7 +29,7 @@ const SLATE = [
  {id:10,away:"SEA",home:"LV",final:[21,13],when:"Sun Nov 15 · 4:05 PM",wp:null},
  {id:11,away:"LAR",home:"ARI",final:[34,6],when:"Sun Nov 15 · 4:05 PM",wp:null},
  {id:12,away:"SF",home:"DAL",final:[46,40],when:"Sun Nov 15 · 4:25 PM",wp:null},
- {id:13,away:"PIT",home:"CIN",when:"Sun Nov 15 · 8:20 PM",wp:null,tv:"SNF"},
+ {id:13,away:"PIT",home:"CIN",final:[18,38],when:"Sun Nov 15 · 8:20 PM",wp:null,tv:"SNF"},
  {id:14,away:"LAC",home:"BAL",when:"Mon Nov 16 · 8:15 PM",wp:null,tv:"MNF"}
 ];
 // REAL lines: DraftKings via ESPN, Wed Nov 11 2026 (updated by every automatic run until kickoff). sp = HOME spread, ml = [away, home]

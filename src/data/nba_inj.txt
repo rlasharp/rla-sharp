@@ -1,9 +1,8 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 03:42Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 05:36Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 18
 Kingston Flemings|G|Out|back strain|Nov 18
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
-Keshon Gilbert|G|Out|knee inflammation|Nov 20
 Asa Newell|F|Out|toe|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Charlotte Hornets
