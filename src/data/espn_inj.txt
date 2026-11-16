@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 02:03Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 03:45Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Questionable|Knee|Nov 22
@@ -56,6 +56,7 @@ Zavier Scott|RB|IR|Wrist|Dec 13
 Kentavius Street|DT|IR|Knee|Feb 15
 Braxton Jones|OT|IR|Knee|Feb 15
 #CIN
+Dalton Risner|G|Questionable|Knee|Nov 15
 Myles Hinton|OT|Out|Illness|Nov 23
 Landon Robinson|DT|Out|Coach's Decision|Nov 23
 Connor Lew|C|Out|Coach's Decision|Nov 23
@@ -186,7 +187,6 @@ Desjuan Johnson|DE|Out|Coach's Decision|Nov 25
 Steve Avila|G|Out|Hamstring|Nov 25
 Davante Adams|WR|IR|Hamstring|Nov 25
 Puka Nacua|WR|IR|Knee - MCL|Dec 20
-Jordan Whittington|WR|IR|Back|Dec 20
 #MIA
 Andrew Meyer|C|Questionable|Undisclosed|Nov 15
 Zeek Biggers|DT|Questionable|Knee|Nov 22
@@ -198,7 +198,6 @@ Aaron Brewer|C|Out|Concussion|Nov 22
 Marcellas Dial Jr.|CB|Out|Coach's Decision|Nov 22
 Darrell Baker Jr.|CB|Out|Knee|Nov 22
 Malik Willis|QB|IR|Abdomen|Dec 13
-Zach Sieler|DT|IR|Biceps|Feb 15
 #MIN
 Andrew Van Ginkel|LB|Questionable|Quadriceps|Nov 15
 Jeshaun Jones|WR|Questionable|Shoulder|Nov 15
@@ -259,6 +258,7 @@ Jihaad Campbell|LB|Out|Hamstring|Nov 22
 Michael Carter II|CB|Out|Abdomen|Nov 22
 Zack Baun|LB|Questionable|Back|Nov 22
 #PIT
+Mason McCormick|G|Questionable|Ankle|Nov 22
 Will Howard|QB|Out|Coach's Decision|Nov 22
 Eli Heidenreich|RB|Out|Coach's Decision|Nov 22
 Sean Murphy-Bunting|CB|Out|Coach's Decision|Nov 22
