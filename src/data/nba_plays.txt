@@ -37,3 +37,4 @@
 2026-11-15|Reed Sheppard|reb|u|3.5|100|FanDuel|HOU|WSH
 2026-11-15|Isaiah Hartenstein|reb|o|10.5|104|FanDuel|OKC|SAC
 2026-11-15|Quentin Grimes|pa|u|14.5|-102|FanDuel|LAL|PHX
+2026-11-16|Jayson Tatum|reb|u|7.5|-136|BetRivers|BOS|ORL

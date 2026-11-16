@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 20:55Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 21:28Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Out|Ankle|Nov 22
@@ -11,7 +11,7 @@ Zachary Carter|DT|IR|Knee|Nov 22
 Divine Deablo|LB|Out|Forearm|Nov 29
 Zachariah Branch|WR|Out|Hamstring|Nov 29
 #BAL
-Adam Randall|RB|IR|Neck|Nov 16
+Adam Randall|RB|IR|Neck|Nov 22
 Jaylinn Hawkins|S|Out|Knee|Nov 22
 Lamar Jackson|QB|IR|Thumb|Dec 27
 #BUF
@@ -118,16 +118,16 @@ Kwity Paye|DE|Questionable|Neck|Nov 22
 Thomas Booker IV|DT|Out|Ankle|Nov 22
 Dont'e Thornton Jr.|WR|Out|Back|Nov 22
 #LAC
+Branson Taylor|G|IR|Ankle|Dec 13
+David Njoku|TE|Questionable|Lower Leg|Nov 16
+Denzel Perryman|LB|Questionable|Pectoral|Nov 16
 Brenen Thompson|WR|Doubtful|Hamstring|Nov 16
 Ladd McConkey|WR|Out|Back|Nov 22
-Branson Taylor|G|Out|Ankle|Nov 22
-Trey Pipkins III|OT|IR|Knee|Nov 16
+Trey Pipkins III|OT|IR|Knee|Nov 22
 Kayode Awosika|G|Questionable|Lower Leg|Nov 16
 Kendall Williamson|S|Out|Calf|Nov 22
 Isas Waxter|CB|Out|Ankle|Nov 22
 Justin Eboigbe|DT|Questionable|Ankle|Nov 16
-Denzel Perryman|LB|IR|Pectoral|Nov 16
-David Njoku|TE|IR|Lower Leg|Nov 16
 #LAR
 Steve Avila|G|Out|Hamstring|Nov 25
 Coleman Shelton|C|Questionable|Hamstring|Nov 25
@@ -145,13 +145,13 @@ Andrew Meyer|C|Questionable|Undisclosed|Nov 22
 Zeek Biggers|DT|Questionable|Knee|Nov 22
 Darrell Baker Jr.|CB|Out|Knee|Nov 22
 #MIN
+Andrew Van Ginkel|LB|Questionable|Quadriceps|Nov 22
 Jordan Addison|WR|Out|Thumb|Nov 29
 T.J. Hockenson|TE|Out|Wrist|Nov 22
 Tyrion Ingram-Dawkins|DE|Out|Ankle|Nov 22
 Blake Cashman|LB|Out|Concussion|Nov 22
 Jauan Jennings|WR|Out|Calf|Nov 22
 Kyler Murray|QB|Out|Hamstring|Nov 29
-Andrew Van Ginkel|LB|Questionable|Quadriceps|Nov 22
 Jeshaun Jones|WR|Questionable|Shoulder|Nov 22
 Bo Richter|LB|Questionable|Foot|Nov 22
 #NE
@@ -181,6 +181,7 @@ Omar Cooper Jr.|WR|Questionable|Ankle|Nov 22
 Geno Smith|QB|Questionable|Ankle|Nov 22
 Dylan Parham|G|Questionable|Knee|Nov 22
 #PHI
+Will Shipley|RB|IR|Foot|Nov 22
 Dontayvion Wicks|WR|Out|Ankle|Nov 22
 DeVonta Smith|WR|Out|Hamstring|Nov 22
 Jonathan Jones|CB|Out|Hamstring|Nov 22
@@ -199,11 +200,11 @@ C.J. West|DT|IR|Knee|Nov 22
 Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
 #SEA
+George Holani|RB|Questionable|Knee - MCL|Nov 29
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
 Charles Cross|OT|Out|Ankle|Nov 29
 Sam Darnold|QB|Out|Quadriceps|Nov 29
-George Holani|RB|Questionable|Knee - MCL|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 29
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
 #TB
