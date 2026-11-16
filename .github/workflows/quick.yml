@@ -1,5 +1,5 @@
 name: Game-night quick updates (results right after games, pre-game refresh, watchdog)
-# Every 20 min from ~10 AM to 3 AM ET (hourly overnight) a ~15-second check looks at ESPN's scoreboards and only starts
+# Every 20 min from ~10 AM ET, every 10 min on game nights (~5 PM–midnight ET) a ~15-second check looks at ESPN's scoreboards and only starts
 # a real site update (auto.yml) when something happened: a game went final, the last game of the night ended (full
 # update), or a game starts within ~90 / ~30 min (injuries, goalies, lines). It also watches the site's health and
 # opens a GitHub issue (= email + GitHub app notification) if updates stop or fail, closing it once things are fine.
@@ -8,8 +8,10 @@ name: Game-night quick updates (results right after games, pre-game refresh, wat
 # Exact timing (optional): any outside scheduler can POST a repository_dispatch {"event_type":"refresh"} — see RUNBOOK.
 on:
   schedule:
-    - cron: "4,24,44 15-23 * * *"
-    - cron: "4,24,44 0-7 * * *"
+    - cron: "4,24,44 15-21 * * *"
+    - cron: "4,14,24,34,44,54 22-23 * * *"   # game nights (~5–11 PM ET, then the late games): every 10 min — results land soon after the final
+    - cron: "4,14,24,34,44,54 0-4 * * *"
+    - cron: "4,24,44 5-7 * * *"
     - cron: "34 8-9 * * *"
     - cron: "4,24,44 10-14 * * *"     # European kickoffs and full-times (soccer) — every 20 min from ~6 AM ET
   workflow_dispatch:

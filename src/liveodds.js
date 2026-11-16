@@ -62,12 +62,14 @@ async function loFetch(first){
   if(location.protocol==="file:")return;
   try{const r=await fetch("data/live_odds.json",{cache:"no-store"});if(!r.ok)return;const d=await r.json();if(!d||!d.updated)return;
     if(LO.data&&LO.data.updated===d.updated)return;
+    const before={};for(const [k,m] of Object.entries(LO.move||{}))before[k]=[m.now,m.oNow,m.uNow];
     LO.data=d;const n=loApply(d);if(!n)return;
+    if(!first)loJustMoved(before);
     if(first||!LO.applied){LO.applied=1;loRerender();return}
     let b=document.getElementById("loPill");if(!b){b=document.createElement("button");b.id="loPill";document.body.appendChild(b);b.onclick=()=>{b.remove();loRerender()}}
     b.textContent="🔄 New odds — tap to update";
   }catch(e){}}
-window.addEventListener("load",()=>{setTimeout(()=>loFetch(true),300);setInterval(()=>loFetch(false),5*60*1000)});
+window.addEventListener("load",()=>{setTimeout(()=>loFetch(true),300);setInterval(()=>loFetch(false),2*60*1000)});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)loFetch(false)});
 
 /* ---------- 🪜 Alternate lines (other lines books post for the same prop; best price per line across books) ----------
@@ -261,3 +263,18 @@ async function loInjLive(force){if(location.protocol==="file:"||LO_INJ.busy)retu
   finally{LO_INJ.busy=0}}
 window.addEventListener("load",()=>{setTimeout(()=>loInjLive(1),4000);setInterval(()=>loInjLive(0),60e3)});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)loInjLive(0)});
+
+/* ⚡ "just moved": props whose line (or price, 25¢+) changed since the last odds refresh this page saw — kept 45 min,
+   shown on Today and as a short heads-up when it happens */
+LO.jm=[];
+function loJustMoved(before){const now=Date.now(),add=[];
+  for(const [k,m] of Object.entries(LO.move||{})){const b=before[k];if(!b||m.now==null||b[0]==null)continue;const dl=m.now-b[0],dp=m.oNow!=null&&b[1]!=null?m.oNow-b[1]:0;
+    if(Math.abs(dl)>=.5||Math.abs(dp)>=25)add.push({...m,from:b[0],fromO:b[1],dl,dp,t:now})}
+  LO.jm=add.concat(LO.jm.filter(x=>now-x.t<45*60000&&!add.some(y=>y.sp===x.sp&&y.nm===x.nm&&y.k===x.k))).slice(0,20);
+  if(add.length&&!document.hidden&&typeof toast!=="undefined"){const x=add.sort((a,b)=>Math.abs(b.dl)-Math.abs(a.dl))[0];
+    toast(`⚡ Line move: ${x.nm} ${x.dl?`${x.from} → ${x.now}`:`over ${x.fromO>0?"+":""}${x.fromO} → ${x.oNow>0?"+":""}${x.oNow}`}${add.length>1?` (+${add.length-1} more on Today)`:""}`)}}
+function xMovesCard(){const L=(LO.jm||[]).filter(x=>Date.now()-x.t<45*60000);if(!L.length)return "";
+  const mk=m=>m.sp==="nba"&&typeof NBA_MK!=="undefined"&&NBA_MK[m.k]?NBA_MK[m.k][1]:m.sp==="nhl"&&typeof NH_MK!=="undefined"&&NH_MK[m.k]?NH_MK[m.k][1]:m.sp==="nfl"&&typeof MARKETS!=="undefined"&&MARKETS[m.k]?MARKETS[m.k].n:m.k;
+  const ago=t=>{const m=Math.round((Date.now()-t)/60000);return m<1?"just now":m+" min ago"};
+  return `<div class="card lmc"><h2 style="margin-bottom:2px">⚡ Just moved</h2><div class="small" style="margin-bottom:6px">Prop lines that changed in the last odds refresh (live sportsbook feed, every few minutes before games).</div>
+   ${L.slice(0,8).map(m=>`<a class="lmr" href="${m.sp==="nba"?`#nba-player-${encodeURIComponent(m.nm)}~${m.k}`:m.sp==="nhl"?`#nhl-player-${encodeURIComponent(m.nm)}~${m.k}`:"#props"}"><span><b>${esc(m.nm)}</b> <span class="small">${m.sp.toUpperCase()} · ${esc(mk(m))}</span></span><span>${m.dl?`<b>${m.from} → ${m.now}</b> <span class="lmv ${m.dl>0?"up":"dn"}">${m.dl>0?"▲":"▼"}</span>`:`<span class="lmv fl">over ${m.fromO>0?"+":""}${m.fromO} → ${m.oNow>0?"+":""}${m.oNow}</span>`}</span><span class="small">${ago(m.t)}</span></a>`).join("")}</div>`}

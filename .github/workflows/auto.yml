@@ -36,6 +36,8 @@ jobs:
           echo "NODE_PATH=$PWD/node_modules" >> $GITHUB_ENV
       - name: Check the live public site (what visitors see)
         id: live
+        # quick game-night updates skip this (~1.5 min) so results land sooner; every full update still checks the live site
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.what == 'all' || github.event.inputs.reason == ''
         continue-on-error: true
         run: |
           U="https://rlasharp.github.io/rla-sharp/"; L="$RUNNER_TEMP/live.html"; ISSUE=""
@@ -91,7 +93,8 @@ jobs:
           p="data/health.json"; h=json.load(open(p)) if os.path.exists(p) else {}
           h["auto"]={"at":datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),"ok":os.environ.get("RES")=="success",
                      "summary":open(os.path.join(os.environ["RUNNER_TEMP"],"rla","summary.txt")).read()[-1500:] if os.path.exists(os.path.join(os.environ["RUNNER_TEMP"],"rla","summary.txt")) else ""}
-          iss=os.environ.get("LIVE_ISSUE",""); h["site"]={"at":h["auto"]["at"],"ok":os.environ.get("LIVE")=="success" and not iss,"issue":iss or ("" if os.environ.get("LIVE")=="success" else "live check did not run")}
+          iss=os.environ.get("LIVE_ISSUE","")
+          if os.environ.get("LIVE")!="skipped" or "site" not in h: h["site"]={"at":h["auto"]["at"],"ok":os.environ.get("LIVE") in ("success","skipped") and not iss,"issue":iss or ("" if os.environ.get("LIVE") in ("success","skipped") else "live check did not run")}
           # NHL health: data generated, fresh, odds flowing, last-season backfill progress
           try:
               import re

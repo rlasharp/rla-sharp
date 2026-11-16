@@ -81,7 +81,8 @@ bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 # tracker: snapshot best props / game numbers / NHL plays before games, grade after (uses the site's own functions)
 if node tools/track.js "$ROOT/src/index.html" > "$WORK/track.log" 2>&1; then log "$(tail -1 "$WORK/track.log")"; bash build.sh > /dev/null || { log "BUILD FAILED"; exit 1; }
 else log "tracker FAILED (kept old): $(tail -2 "$WORK/track.log" | tr '\n' ' ')"; fi
-if node tools/check.js "$ROOT/src/index.html" > "$WORK/check.log" 2>&1; then
+FAST=0; [ "$WHAT" != all ] && FAST=1   # quick game-night updates: lighter site check (full updates every ~2 h run all of it)
+if CHECK_FAST=$FAST node tools/check.js "$ROOT/src/index.html" > "$WORK/check.log" 2>&1; then
   AT=$(bash tools/publish_copy.sh "$ROOT" "$WHAT")   # copies the build + stamps version.json (the open site checks it to refresh itself)
   log "Site check OK — published ($AT)"
 else

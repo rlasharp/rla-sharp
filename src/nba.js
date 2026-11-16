@@ -757,7 +757,9 @@ function nbaTodayPlays(){
 function nbaGradeOne(r){
   const [d,nm,k,side,line,odds,book,tm,opp]=r,p=NBA_LOGS[nm];
   const x=p&&p.g.find(y=>y[1]===d&&(!opp||y[2]===opp));
-  if(!x){const done=NBA_RES.some(z=>z[1]===d&&(z[2]===tm||z[3]===tm));return {st:done?"void":"pending"}}
+  if(!x){const L=typeof finProp!=="undefined"?finProp("nba",d,tm,nm,k,side,line):null;   /* ⚡ graded from ESPN's box score the moment it's final */
+    if(L){const u=L.r==="win"?(odds>0?odds/100:100/-odds):L.r==="loss"?-1:0;return {st:L.r,v:L.v,u,live:1}}
+    const done=NBA_RES.some(z=>z[1]===d&&(z[2]===tm||z[3]===tm));return {st:done?"void":"pending"}}
   const v=nbaVal(x,k),st=v===line?"push":(side==="o"?v>line:v<line)?"win":"loss";
   const u=st==="win"?(odds>0?odds/100:100/-odds):st==="loss"?-1:0;
   return {st,v,u};

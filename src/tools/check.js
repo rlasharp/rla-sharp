@@ -5,7 +5,8 @@ const {chromium}=require('playwright');const f=process.argv[2];
 (async()=>{const b=await chromium.launch();const errs=[];
 {const src=require('fs').readFileSync(f,'utf8'),tail=src.slice(src.lastIndexOf('</script>'));   /* code pasted after the closing tags shows up as text on the page */
  if(!/^<\/script>\s*<\/body>\s*<\/html>\s*$/.test(tail))errs.push('index.html: something after the last </script> — code outside the script would show as text on the page');}
-for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:900}});p.on('pageerror',e=>errs.push(`@${vw} ${p.url().split('#')[1]}: ${e.message}`));
+const FAST=process.env.CHECK_FAST==='1';   /* quick game-night updates: phone width only, no theme/contrast sweep (full updates do both) */
+for(const vw of (FAST?[390]:[390,1200])){const p=await b.newPage({viewport:{width:vw,height:900}});p.on('pageerror',e=>errs.push(`@${vw} ${p.url().split('#')[1]}: ${e.message}`));
  await p.route(/espn|fonts\.g|cdnjs|jsdelivr/,r=>r.abort());
  await p.addInitScript(()=>{window.Chart=class{constructor(){}destroy(){}update(){}};window.Chart.defaults={font:{},borderColor:''}});
  await p.goto('file://'+f+'#today');await p.waitForTimeout(600);
@@ -71,7 +72,7 @@ for(const vw of [390,1200]){const p=await b.newPage({viewport:{width:vw,height:9
  if(g!=null)for(const t of ['mu','tr','h2h'])CH.push('game-'+g+'|gt:[data-nfgt="'+t+'"]');
  if(nhId!=null){CH.push('nhl-game-'+nhId);for(const t of ['matchup','trends','h2h'])CH.push('nhl-game-'+nhId+'|gt:[data-nhtab="'+t+'"]')}
  const DARK=['today',nb!=null?'nba-game-'+nb:'nba',g!=null?'game-'+g:'games','potd','nba-best','record'];if(nb!=null)DARK.push('nba-game-'+nb+'|gt:[data-nbgt="mu"]');if(nhId!=null)DARK.push('nhl-game-'+nhId);
- for(const theme of ['light','dark']){await p.evaluate(t=>setTheme(t),theme);
+ for(const theme of (FAST?[]:['light','dark'])){await p.evaluate(t=>setTheme(t),theme);
  for(const h0 of (theme==='light'?CH:DARK)){const [h,tab]=h0.split('|');await p.goto('file://'+f+'#'+h);await p.waitForTimeout(900);
   if(tab&&tab.startsWith('gt:')){await p.evaluate(sel=>{const a=[...document.querySelectorAll(sel)].find(x=>x.offsetParent);a&&a.click()},tab.slice(3));await p.waitForTimeout(700)}
   else if(tab){await p.evaluate(t=>new Promise(r=>{const go=()=>{const b=document.querySelector(`[data-tt="games|${t}"]`);if(b)b.click();setTimeout(r,500)};typeof nhlEnsure!=='undefined'?nhlEnsure(go):go()}),tab)}

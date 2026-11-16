@@ -189,7 +189,30 @@ def pick_yes(book_rows):
                 return ln, s["Over"], None, b, best, bb, None, None
     return None
 
-def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=None, periods=False):
+def due_min(hrs, sport):
+    """how old (minutes) an event's odds may get before we spend a request on it again: the closer to the start, the fresher"""
+    if hrs <= 1.5: return 0          # every run (~15 min) in the last 90 minutes: lineups, scratches, steam
+    if hrs <= 4: return 25
+    if hrs <= 12: return 60
+    return 360 if sport == "football_nfl" and hrs > 48 else 180
+def sport_due(prev_sp, sport):
+    """skip the whole sport this run (no events request either) when nothing it already knows is due and the slate was checked < 60 min ago"""
+    if not prev_sp or not prev_sp.get("at") or "FORCE" in os.environ and os.environ.get("FORCE"): return True
+    now = dt.datetime.now(dt.timezone.utc)
+    try: last = dt.datetime.fromisoformat(prev_sp["at"])
+    except Exception: return True
+    if (now - last).total_seconds() >= 3600: return True
+    for e in prev_sp.get("events") or []:
+        try: t = dt.datetime.fromisoformat(str(e["start"]).replace("Z", "+00:00")); at = dt.datetime.fromisoformat(e.get("at") or prev_sp["at"])
+        except Exception: return True
+        if t < now: continue
+        if (now - at).total_seconds() / 60 >= due_min((t - now).total_seconds() / 3600, sport): return True
+    return False
+def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=None, periods=False, prev_sp=None):
+    PE = {str(e.get("id")): e for e in ((prev_sp or {}).get("events") or [])}
+    PR = {}
+    for r in (prev_sp or {}).get("props") or []:
+        if len(r) > 13: PR.setdefault(str(r[13]), []).append(r)
     try:
         events = client.get_events(sport)
     except Exception as e:
@@ -203,7 +226,13 @@ def fetch_sport(sport, mk_map, window_h, prev_open, used, with_game=False, core=
         if not t or t < now or (t - now).total_seconds() > window_h * 3600:
             continue  # started already, or too far out
         eid = g(ev, "id")
-        evs.append({"id": eid, "home": g(ev, "home_team"), "away": g(ev, "away_team"), "start": start, "date": d})
+        old = PE.get(str(eid))
+        if old and old.get("at") and not os.environ.get("FORCE"):
+            try: age = (now - dt.datetime.fromisoformat(old["at"])).total_seconds() / 60
+            except Exception: age = 1e9
+            if age < due_min((t - now).total_seconds() / 3600, sport):
+                evs.append(old); rows.extend(PR.get(str(eid), [])); continue   # fresh enough: keep, no request spent
+        evs.append({"id": eid, "home": g(ev, "home_team"), "away": g(ev, "away_team"), "start": start, "date": d, "at": now.isoformat(timespec="seconds")})
         mks = list(mk_map) + (GAME_MK if with_game else ["h2h"])   # h2h: prediction-market win prices (Kalshi / Polymarket)
         if "markets" in os.environ.get("FORCE", "") and not MKLIST.get(sport):
             try: MKLIST[sport] = [g(m, "key") for m in client.get_markets(sport, eid)]; used += 1
@@ -341,49 +370,46 @@ def main():
            "nba": prev.get("nba") or {}, "nfl": prev.get("nfl") or {}, "nhl": prev.get("nhl") or {}}
     used = budget["used"]
     # NBA: every run (games in the next 30 hours). NFL: at most every 3 hours (games in the next 8 days).
-    if used < 900:
-        evs, rows, used = fetch_sport("basketball_nba", NBA_MK, 30, opens, used, periods=True)
+    if used < 900 and sport_due(prev.get("nba"), "basketball_nba"):
+        evs, rows, used = fetch_sport("basketball_nba", NBA_MK, 30, opens, used, periods=True, prev_sp=prev.get("nba"))
         if evs or rows: out["nba"] = {"at": out["updated"], "events": evs, "props": rows, "q1": [[pl, mk, sorted([[n, v[0], v[1]] for n, v in L.items()])] for (pl, mk), L in Q1S.items()]}
         try: save_close("nba", evs, rows, out["updated"])
         except Exception as e: print("close (nba) failed:", e)
-    last_nfl = (prev.get("nfl") or {}).get("at")
-    stale = True
-    if last_nfl:
-        try: stale = (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_nfl)).total_seconds() > 3 * 3600
-        except Exception: stale = True
-    if "markets" in os.environ.get("FORCE", "") or "nfl" in os.environ.get("FORCE", ""): stale = True
-    if stale and used < 900:
-        evs, rows, used = fetch_sport("football_nfl", NFL_MK, 8 * 24, opens, used)
+    if used < 900 and sport_due(prev.get("nfl"), "football_nfl"):
+        evs, rows, used = fetch_sport("football_nfl", NFL_MK, 8 * 24, opens, used, prev_sp=prev.get("nfl"))
         if evs or rows: out["nfl"] = {"at": out["updated"], "events": evs, "props": rows}
         try: save_close("nfl", evs, rows, out["updated"])
         except Exception as e: print("close (nfl) failed:", e)
     # NHL: at most every 2 hours (games in the next 30 hours), props + moneyline / total / puck line
-    last_nhl = (prev.get("nhl") or {}).get("at"); stale = True
-    if last_nhl:
-        try: stale = (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(last_nhl)).total_seconds() > 2 * 3600 - 300
-        except Exception: stale = True
-    if "nhl" in os.environ.get("FORCE", ""): stale = True
-    if stale and used < 850:
-        evs, rows, used = fetch_sport("icehockey_nhl", NHL_MK, 30, opens, used, with_game=True, core=NHL_CORE)
+    if used < 850 and sport_due(prev.get("nhl"), "icehockey_nhl"):
+        evs, rows, used = fetch_sport("icehockey_nhl", NHL_MK, 30, opens, used, with_game=True, core=NHL_CORE, prev_sp=prev.get("nhl"))
         if evs or rows: out["nhl"] = {"at": out["updated"], "events": evs, "props": rows}
         try: save_close("nhl", evs, rows, out["updated"])
         except Exception as e: print("close (nhl) failed:", e)
+    # soccer / UFC / college keep their own per-match throttling, but each run also reads their event lists: on the 15-min
+    # schedule only do that every ~30 min so the extra runs go to the games about to start
+    def older(k, mins=25):
+        try: return (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(((prev.get(k) or {}).get("at") or "").replace("Z", "+00:00"))).total_seconds() >= mins * 60
+        except Exception: return True
     # Soccer (8 competitions): its own throttling per match — see tools/soccer_odds.py
     try:
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         import soccer_odds
-        out["soc"], used = soccer_odds.run(client, prev, used, 950)
+        if older("soc") or os.environ.get("FORCE"): out["soc"], used = soccer_odds.run(client, prev, used, 950)
+        else: out["soc"] = prev.get("soc") or {}
     except Exception as e:
         print("soccer odds failed:", e); out["soc"] = prev.get("soc") or {}
     try:
         import ufc_odds
-        out["ufc"], used = ufc_odds.run(client, prev, used, 960, BOOK_NAME, NOT_BOOKS)
+        if older("ufc", 55) or os.environ.get("FORCE"): out["ufc"], used = ufc_odds.run(client, prev, used, 960, BOOK_NAME, NOT_BOOKS)
+        else: out["ufc"] = prev.get("ufc") or {}
     except Exception as e:
         print("ufc odds failed:", e); out["ufc"] = prev.get("ufc") or {}
     try:
         import college_odds
-        col, used = college_odds.run(client, prev, used, 975, BOOK_NAME, NOT_BOOKS, root=".")
-        out.update(col)
+        if older("cfb") or older("cbb") or os.environ.get("FORCE"):
+            col, used = college_odds.run(client, prev, used, 975, BOOK_NAME, NOT_BOOKS, root="."); out.update(col)
+        else: out["cfb"] = prev.get("cfb") or {}; out["cbb"] = prev.get("cbb") or {}
     except Exception as e:
         print("college odds failed:", e); out["cfb"] = prev.get("cfb") or {}; out["cbb"] = prev.get("cbb") or {}
     keep = {e["id"] for s in ("nba", "nfl", "nhl") for e in (out[s].get("events") or [])}

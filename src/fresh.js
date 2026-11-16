@@ -1,7 +1,7 @@
 /* ---------- 🔄 Fresh data: "updated X ago" chip + automatic refresh when a newer site update is out ----------
    Every site update writes version.json next to index.html. While the page is open we check it every 3 minutes
-   (and whenever you come back to the tab). If a newer update is out we reload quietly when you're not using the
-   page, otherwise a "tap to update" button appears. You stay on the same page and scroll spot. */
+   (every minute now, and whenever you come back to the tab). If a newer update is out we reload quietly when you
+   haven't touched the page for 45 s, otherwise a "tap to update" button appears. You stay on the same page and scroll spot. */
 const FRESH={at:typeof BUILD_AT!=="undefined"?BUILD_AT:"",live:"",last:Date.now()};
 function freshAge(iso){const m=Math.max(0,Math.round((Date.now()-Date.parse(iso))/60000));return m<1?"just now":m<60?m+" min ago":m<1440?Math.floor(m/60)+" h ago":Math.floor(m/1440)+" d ago"}
 /* already reloaded for this version and the page is still older → the server copy can't get newer right now; don't nag again */
@@ -13,7 +13,7 @@ function freshPaint(){const el=document.getElementById("fresh");if(!el||!FRESH.a
     e.innerHTML=`<span class="fdot"></span><span class="ftx">${freshNew()?"New data — tap to update":`<span class="fpre">Updated </span>`+freshAge(FRESH.at)}</span>`}
   document.querySelectorAll(".freshtx").forEach(t=>{t.className="freshtx "+cls;t.textContent=freshNew()?"🔄 Newer data is out — tap to update":`Updated ${freshAge(FRESH.at)}`;t.onclick=freshNew()?freshGo:null});
   el.title=freshNew()?"A newer update is out — tap to load it":`Stats & results updated ${freshAge(FRESH.at)}${cls==="bad"?" — the automatic update may be stuck":""}. Live scores and odds refresh on their own.`}
-function freshIdle(){return document.hidden||Date.now()-FRESH.last>90000}
+function freshIdle(){return document.hidden||Date.now()-FRESH.last>45000}
 ["pointerdown","keydown","touchstart","wheel"].forEach(ev=>addEventListener(ev,()=>{FRESH.last=Date.now()},{passive:true}));
 async function freshGo(){try{sessionStorage.setItem("freshY",JSON.stringify({h:location.hash,y:scrollY}));sessionStorage.setItem("freshTry",FRESH.live);sessionStorage.setItem("freshFrom",FRESH.at)}catch(e){}
   try{await fetch(location.pathname,{cache:"reload"})}catch(e){}   /* refresh the browser's saved copy, then reload */
@@ -31,7 +31,7 @@ window.addEventListener("load",()=>{
   try{const s=JSON.parse(sessionStorage.getItem("freshY")||"null");sessionStorage.removeItem("freshY");if(s&&s.h===location.hash&&s.y)setTimeout(()=>scrollTo(0,s.y),700)}catch(e){}
   for(const el of [document.getElementById("fresh"),document.getElementById("freshM")])if(el)el.onclick=e=>{e.preventDefault();if(freshNew())freshGo();else{el.classList.add("spin");freshCheck().finally(()=>setTimeout(()=>el.classList.remove("spin"),400))}};
   freshPaint();setTimeout(freshCheck,4000)});
-setInterval(()=>{if(!document.hidden)freshCheck();else freshPaint()},180000);
+setInterval(()=>{if(!document.hidden)freshCheck();else freshPaint()},60000);   /* every minute: a new update shows up within ~1 min (quiet reload when you are not touching the page, else a button) */
 setInterval(freshPaint,60000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)freshCheck()});
 
@@ -82,3 +82,11 @@ function wnRun(){if(!FRESH.at)return;let old=null;try{old=JSON.parse(localStorag
   const close=()=>{b.classList.remove("on");setTimeout(()=>b.remove(),300)};b.querySelector("button").onclick=close;b.onclick=e=>{if(e.target===b||e.target.closest("span"))close()};
   requestAnimationFrame(()=>b.classList.add("on"));setTimeout(close,15000)}
 window.addEventListener("load",()=>setTimeout(()=>{if(!navigator.webdriver||window.WN_TEST)wnRun()},1500));
+
+/* 🕒 freshness strip (Today + sport pages): how old the stats/results, odds and scores are, and a warning when something is
+   stale on a game day (stats > 3 h, odds > 90 min while games are still to come) */
+function xFreshStrip(){try{const ago=iso=>{const m=Math.max(0,Math.round((Date.now()-Date.parse(iso))/60000));return {m,t:m<1?"just now":m<60?m+" min":Math.floor(m/60)+" h "+(m%60?m%60+" min":"")}};
+  const st=FRESH.at?ago(FRESH.at):null,od=typeof LO!=="undefined"&&LO.data&&LO.data.updated?ago(LO.data.updated):null;
+  const gameDay=(typeof NBA_SLATE!=="undefined"&&NBA_SLATE.some(g=>!(typeof nbaStarted!=="undefined"&&nbaStarted(g))))||(typeof NHL_SLATE!=="undefined"&&NHL_SLATE.some(g=>!(typeof nhStarted!=="undefined"&&nhStarted(g))))||(typeof SLATE!=="undefined"&&SLATE.some(g=>!g.final&&!(typeof nflStarted!=="undefined"&&nflStarted(g))));
+  const w=[];if(st&&st.m>180&&gameDay)w.push("stats haven't updated in over 3 hours");if(od&&od.m>90&&gameDay)w.push("odds are over 90 min old");
+  return `<div class="xfresh${w.length?" stale":""}">🕒 Stats &amp; results <b>${st?st.t+" ago":"–"}</b> · odds <b>${od?od.t+" ago":"–"}</b> · scores <b>live</b>${w.length?` · ⚠️ ${w.join(", ")} — the next update should fix it`:""}</div>`}catch(e){return ""}}

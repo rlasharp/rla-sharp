@@ -197,7 +197,7 @@ function viewToday(){
   const gc=TODAY_T.games||(nbaGames.some(g=>!nbaStarted(g))?"nba":nhlGames.length?"nhl":"nfl");
   const moves=typeof loMovesCard!=="undefined"?["nba","nhl","nfl"].filter(sp=>typeof xFollow==="undefined"||xFollow(sp)).map(sp=>loMovesCard(sp,5)).join(""):"";
   const role=nbaGames.some(g=>!nbaStarted(g))&&typeof nbaRoleCard!=="undefined"?nbaRoleCard(5):"";
-  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p><div class="tqlinks"><a class="fxp" href="#futures">🏆 Futures</a><a class="fxp" href="#record">📒 Our record</a><a class="fxp" href="#calib">🎯 Are our chances right?</a><a class="fxp" href="#settings">⚙️ Settings</a></div><div id="liveTrk"></div><div id="ufcToday"></div><div id="iaToday">${typeof iaLogCard!=="undefined"?iaLogCard():""}</div>
+  host.innerHTML=`<h1>Today</h1><p class="sub">${today} · <span class="freshtx"></span></p>${typeof xFreshStrip!=="undefined"?xFreshStrip():""}${typeof xMovesCard!=="undefined"?xMovesCard():""}<div class="tqlinks"><a class="fxp" href="#futures">🏆 Futures</a><a class="fxp" href="#record">📒 Our record</a><a class="fxp" href="#calib">🎯 Are our chances right?</a><a class="fxp" href="#settings">⚙️ Settings</a></div><div id="liveTrk"></div><div id="ufcToday"></div><div id="iaToday">${typeof iaLogCard!=="undefined"?iaLogCard():""}</div>
   ${typeof pxRecentHtml!=="undefined"?pxRecentHtml(null,6):""}
   <div id="todayLive">${todayLive()}</div>
   ${favs().length?`<div class="tsec">${favListHtml(false)}</div>`:""}

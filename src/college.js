@@ -350,7 +350,10 @@ function coPickEmPage(sp,el){el.innerHTML=coHead(sp,"Picks")+coPickEmSec(sp)}
 function coPickEmSec(sp){if(sp!=="cfb")return "";const S=(typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]&&TRACK.sum[sp].pe)||null,locked=new Map(((S&&S.rows)||[]).map(x=>[x.eid,x]));
   const up=coGames(sp).filter(g=>g.st!=="post"&&coPeOk(sp,g)).map(g=>locked.get(String(g.id))||coPickEm(sp,g)).filter(Boolean);
   const rec=a=>a?`${a[0]}-${a[1]}${a[2]?"-"+a[2]:""}`:"0-0",pc=a=>a&&a[0]+a[1]?Math.round(a[0]/(a[0]+a[1])*100)+"%":"–";
-  const row=x=>{const pick=`${coE(coT(sp,x.ps).a)} ${(x.ps===x.h?x.sp:-x.sp)>0?"+":""}${x.ps===x.h?x.sp:-x.sp}`,res=r=>r?`<span class="ufr ${r==="win"?"W":r==="loss"?"L":"NC"}">${r==="win"?"✓":r==="loss"?"✗":"P"}</span>`:"";
+  /* ⚡ grade a locked pick as soon as the game is final here (live scores), before the tracker gets to it */
+  const live=x=>{if(x.r)return x;const g=coGame(sp,x.eid);if(!g||g.st!=="post")return x;const a=+g.a[3],h=+g.h[3];if(!isFinite(a)||!isFinite(h))return x;const m=h-a+x.sp,cv=x.ps===x.h?m:-m,y={...x,f:[a,h],ra:cv>0?"win":cv<0?"loss":"push"};
+    if(x.tot!=null&&x.po){const d=a+h-x.tot;y.ro=d===0?"push":(d>0)===(x.po==="over")?"win":"loss"}return y};
+  const row=x0=>{const x=live(x0),pick=`${coE(coT(sp,x.ps).a)} ${(x.ps===x.h?x.sp:-x.sp)>0?"+":""}${x.ps===x.h?x.sp:-x.sp}`,res=r=>r?`<span class="ufr ${r==="win"?"W":r==="loss"?"L":"NC"}">${r==="win"?"✓":r==="loss"?"✗":"P"}</span>`:"";
     return `<a class="ufval" href="#${sp}-game-${x.eid}"><span>${x.ar?`<small class="corank">${x.ar}</small> `:""}${coE(x.an)} @ ${x.hr?`<small class="corank">${x.hr}</small> `:""}${coE(x.hn)}${x.f?` <span class="small">${x.f[0]}-${x.f[1]}</span>`:""}</span><span><b>${pick}</b> ${res(x.ra)}</span><span>${x.po?`<b>${x.po==="over"?"O":"U"} ${x.tot}</b> ${res(x.ro)}`:"–"}</span><span class="small">our ${coE(coT(sp,x.m>=0?x.h:x.a).a)} by ${coF(Math.abs(x.m))}, ${coF(x.mt)}</span></a>`};
   const done=((S&&S.rows)||[]).filter(x=>x.r),wk={};for(const x of done)(wk[coWeek(x.t)]=wk[coWeek(x.t)]||[]).push(x);
   return `<h2 id="pickem" style="margin:16px 0 8px">✅ Every ranked + power-conference game</h2>
