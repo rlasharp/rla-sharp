@@ -28,7 +28,7 @@ const SLATE = [
  {id:9,away:"BUF",home:"NYJ",final:[31,12],when:"Sun Nov 15 · 1:00 PM",wp:null},
  {id:10,away:"SEA",home:"LV",final:[21,13],when:"Sun Nov 15 · 4:05 PM",wp:null},
  {id:11,away:"LAR",home:"ARI",final:[34,6],when:"Sun Nov 15 · 4:05 PM",wp:null},
- {id:12,away:"SF",home:"DAL",when:"Sun Nov 15 · 4:25 PM",wp:null},
+ {id:12,away:"SF",home:"DAL",final:[46,40],when:"Sun Nov 15 · 4:25 PM",wp:null},
  {id:13,away:"PIT",home:"CIN",when:"Sun Nov 15 · 8:20 PM",wp:null,tv:"SNF"},
  {id:14,away:"LAC",home:"BAL",when:"Mon Nov 16 · 8:15 PM",wp:null,tv:"MNF"}
 ];

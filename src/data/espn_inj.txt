@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 00:02Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 01:27Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Questionable|Knee|Nov 22
@@ -57,10 +57,11 @@ Zavier Scott|RB|IR|Wrist|Dec 13
 Kentavius Street|DT|IR|Knee|Feb 15
 Braxton Jones|OT|IR|Knee|Feb 15
 #CIN
-Dalton Risner|G|Questionable|Illness|Nov 15
-Myles Hinton|OT|Questionable|Illness|Nov 15
-Andrei Iosivas|WR|IR|Thumb|Nov 23
+Myles Hinton|OT|Out|Illness|Nov 23
+Landon Robinson|DT|Out|Coach's Decision|Nov 23
+Connor Lew|C|Out|Coach's Decision|Nov 23
 Kyle Dugger|S|Out|Quadriceps|Nov 23
+Andrei Iosivas|WR|IR|Thumb|Nov 23
 Brian Parker II|OT|IR|Knee|Nov 23
 Jalen Davis|CB|IR|Hamstring|Nov 23
 Cashius Howell|DE|IR|Wrist|Dec 6
@@ -73,7 +74,8 @@ Parker Brailsford|C|Out|Coach's Decision|Nov 29
 Taylen Green|QB|Out|Coach's Decision|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
-DaRon Bland|CB|Questionable|Ankle|Nov 15
+Tyler Booker|G|Questionable|Ankle|Nov 22
+DaRon Bland|CB|Questionable|Ankle|Nov 22
 Juanyeh Thomas|S|Out|Ribs|Nov 22
 Jonathan Mingo|WR|Out|Ankle|Nov 22
 Derion Kendrick|CB|Out|Coach's Decision|Nov 22
@@ -112,9 +114,8 @@ Sean Rhyan|G|Out|Ankle|Nov 25
 Josh Jacobs|RB|Out|Finger|Nov 25
 Donovan Jennings|G|Out|Coach's Decision|Nov 25
 Josh Whyle|TE|IR|Concussion|Dec 20
-Micah Parsons|DE|Out|Knee - ACL|Nov 25
-Warren Brinson|DT|IR|Calf|Nov 25
 #HOU
+David Montgomery|RB|Out|Groin|Nov 19
 Woody Marks|RB|Doubtful|Concussion|Nov 19
 Wyatt Teller|G|Out|Illness|Nov 19
 Keylan Rutledge|G|Out|Neck|Nov 19
@@ -122,7 +123,6 @@ Marvin Harrison Jr.|WR|Out|Hamstring|Nov 19
 Danielle Hunter|DE|Out|Hamstring|Nov 19
 Brevin Jordan|TE|Out|Finger|Nov 19
 Azeez Al-Shaair|LB|Out|Groin|Nov 19
-David Montgomery|RB|Out|Groin|Nov 19
 Jaylin Smith|CB|IR|Hamstring|Nov 19
 #IND
 Sauce Gardner|CB|Questionable|Calf|Nov 15
@@ -156,8 +156,8 @@ Jaylon Moore|OT|Out|Ankle|Nov 22
 Melvin Smith Jr.|CB|Out|Coach's Decision|Nov 22
 Kenneth Walker III|RB|Out|Groin|Nov 22
 #LV
+Brock Bowers|TE|Questionable|Ankle|Nov 22
 Kwity Paye|DE|Questionable|Neck|Nov 15
-Brock Bowers|TE|Out|Ankle|Nov 22
 Malik Benson|WR|Out|Coach's Decision|Nov 22
 Thomas Booker IV|DT|Out|Ankle|Nov 22
 Dont'e Thornton Jr.|WR|Out|Back|Nov 22
@@ -212,9 +212,9 @@ Jauan Jennings|WR|Out|Calf|Nov 22
 Blake Cashman|LB|Out|Concussion|Nov 22
 Kyler Murray|QB|Out|Hamstring|Nov 29
 #NE
+A.J. Brown|WR|Questionable|Hamstring|Nov 29
 Drake Maye|QB|Questionable|Ankle|Nov 29
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 15
-A.J. Brown|WR|Questionable|Hamstring|Nov 29
 Robert Spillane|LB|Questionable|Illness|Nov 15
 Brenden Schooler|S|Out|Hamstring|Nov 29
 Walter Rouse|OL|Out|Concussion|Nov 29
@@ -260,11 +260,12 @@ Jihaad Campbell|LB|Out|Hamstring|Nov 22
 Michael Carter II|CB|Out|Abdomen|Nov 22
 Zack Baun|LB|Questionable|Back|Nov 22
 #PIT
+Will Howard|QB|Out|Coach's Decision|Nov 22
+Eli Heidenreich|RB|Out|Coach's Decision|Nov 22
+Sean Murphy-Bunting|CB|Out|Coach's Decision|Nov 22
+Drew Allar|QB|Out|Coach's Decision|Nov 22
 DeShon Elliott|S|Out|Knee|Nov 22
-Derrick Harmon|DT|Questionable|Foot|Nov 15
-Pat Freiermuth|TE|Questionable|Illness|Nov 15
 Michael Pittman Jr.|WR|IR|Foot|Nov 22
-Sebastian Joseph-Day|DT|IR|Triceps|Nov 27
 #SF
 Brandin Cooks|WR|Out|Coach's Decision|Nov 22
 Kurtis Rourke|QB|Out|Coach's Decision|Nov 22
@@ -276,7 +277,7 @@ Nate Hobbs|CB|IR|Groin|Nov 22
 Gracen Halton|DT|IR|Ankle|Feb 15
 Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
-George Holani|RB|Out|Knee|Nov 29
+George Holani|RB|Questionable|Knee|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 15
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
 Emanuel Wilson|RB|Out|Coach's Decision|Nov 29
