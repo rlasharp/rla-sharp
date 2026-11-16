@@ -18,8 +18,11 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
   const imp=o=>o==null?null:o<0?-o/(-o+100):100/(o+100),pay=o=>o==null?.909:o>0?o/100:100/-o,log=[];
   const keep=(o,ks)=>{const x={};for(const k of ks)if(o[k]!==undefined)x[k]=o[k];return x};
   /* ---------- NFL Plays of the Week: picked automatically and locked once per week ---------- */
-  try{if(typeof potwAuto!=="undefined"&&typeof PLAYS_WEEK!=="undefined"&&!PLAYS_HAND){T.potw=T.potw||{};if(!T.potw[PLAYS_WEEK]){const P=potwAuto();
-    if(P.length>=3){T.potw[PLAYS_WEEK]=P.map(x=>{const d=playData(x);return Object.assign(x,{title:d?d.title:"",odds:x.odds!=null?x.odds:(d?d.odds:null),line:x.line!=null?x.line:(d&&d.line!=null?d.line:null)})});log.push(`nfl: Plays of the Week ${PLAYS_WEEK} locked (${P.length})`)}}}}catch(e){log.push("potw: "+e.message)}
+  try{if(typeof potwAuto!=="undefined"&&typeof PLAYS_WEEK!=="undefined"&&!PLAYS_HAND){T.potw=T.potw||{};const et=new Date(new Date().toLocaleString("en-US",{timeZone:"America/New_York"})),dow=et.getDay(),hr=et.getHours()+et.getMinutes()/60;
+    const kicks=SLATE.filter(g=>!g.final&&!nflStarted(g)).map(g=>typeof potwKick!=="undefined"?potwKick(g):null).filter(Boolean),soon=kicks.length&&Math.min(...kicks)-Date.now()<=3*3600e3;
+    const lockNow=(dow===4&&hr>=9)||dow===5||dow===6||dow===0||dow===1||soon;   /* Thu 9 AM ET → Mon: lock; Tue/Wed: wait for the week's injury news */
+    if(!T.potw[PLAYS_WEEK]&&lockNow){const P=potwAuto();
+    {T.potw[PLAYS_WEEK]=P.map(x=>{const d=playData(x);return Object.assign(x,{title:d?d.title:"",odds:x.odds!=null?x.odds:(d?d.odds:null),line:x.line!=null?x.line:(d&&d.line!=null?d.line:null)})});log.push(`nfl: Plays of the Week ${PLAYS_WEEK} locked (${P.length})`)}}}}catch(e){log.push("potw: "+e.message)}
   /* ---------- snapshots ---------- */
   // NBA
   if(typeof NBA_SLATE!=="undefined"&&NBA_SLATE.length){const d=NBA_SLATE_DATE,S=T.nba[d]||(T.nba[d]={});
@@ -35,16 +38,13 @@ for(const s of ['nba','nfl','nhl','soc','ufc','cfb','cbb'])T[s]=T[s]||{};
     // Plays of the day: lock once, within 6 h of the first puck drop (never with zero plays)
     const first=Math.min(...NHL_SLATE.map(g=>Date.parse(g.iso)));
     if(!S.locked&&open.length===NHL_SLATE.length&&first-Date.now()<=6*3600e3){
-      const used=new Set(),P=[];
-      for(const b of nhBest()){if(P.length>=3)break;if(!b.g||b.g.d!==d)continue;if(used.has(b.nm)||b.s.n10<8||b.s.l10<7||b.edge<.05||b.odds==null||b.odds<-200||nhOutNow(b.nm))continue;used.add(b.nm);
-        P.push({type:"prop",nm:b.nm,tm:nhWho(b.nm).tm,k:b.k,side:b.side,line:b.line,odds:b.odds,why:`hit ${b.s.l10}/${b.s.n10} last 10 · ${b.s.hs}/${b.s.ns} this season · ${Math.round(b.s.p*100)}% vs ${Math.round(imp(b.odds)*100)}% the odds need`})}
-      const ge=[];for(const g of NHL_SLATE){const E=nhEdges(g).filter(e=>e.edge>=.05&&e.odds>=-200&&e.odds<=250&&e.mk!=="1st period total");if(E[0])ge.push(E[0])}
-      for(const e of ge.sort((a,b)=>b.edge-a.edge).slice(0,2))P.push({type:"game",mk:e.mk,pick:e.pick,a:e.g.a,h:e.g.h,odds:e.odds,line:e.mk==="Total"?e.g.tot[0]:e.mk==="Puck line"?e.g.pl[0]:null,why:`our estimate ${Math.round(e.me*100)}% vs ${Math.round(e.bk*100)}% from the odds`});
-      if(P.length){S.plays=P;S.locked=1;log.push(`nhl ${d}: locked ${P.length} plays`)}}}
+      const P=nhDayPlays().map(x=>{if(x.type==="prop"){const b=x.b;return {type:"prop",nm:b.nm,tm:nhWho(b.nm).tm,k:b.k,side:b.side,line:b.line,odds:b.odds,why:`hit ${b.s.l10}/${b.s.n10} last 10 · ${b.s.hs}/${b.s.ns} this season · ${Math.round(b.s.p*100)}% vs ${Math.round(imp(b.odds)*100)}% the odds need`}}
+        const e=x.e;return {type:"game",mk:e.mk,pick:e.pick,a:e.g.a,h:e.g.h,odds:e.odds,line:e.mk==="Total"?e.g.tot[0]:e.mk==="Puck line"?e.g.pl[0]:null,why:`our estimate ${Math.round(e.me*100)}% vs ${Math.round(e.bk*100)}% from the odds`}});
+      S.plays=P;S.locked=1;log.push(`nhl ${d}: locked ${P.length} plays${P.length?"":" (none cleared the bar)"}`)}}
   // NFL (by game date, this week's games that haven't started)
   if(typeof SLATE!=="undefined"){const by={};for(const g of SLATE){if(g.final||nflStarted(g))continue;const d=nflDate(g);if(d)(by[d]=by[d]||[]).push(g)}
     for(const [d,G] of Object.entries(by)){const S=T.nfl[d]||(T.nfl[d]={});S.wk=typeof PLAYS_WEEK!=="undefined"?PLAYS_WEEK:null;
-      const ids=new Set(G.map(g=>g.id));S.best=nflBest().filter(b=>ids.has(b.g.id)).slice(0,10).map(b=>({nm:b.name,k:b.k,side:b.side,line:b.line,odds:b.odds,tm:b.pl.team,sc:Math.round(b.sc*100)/100}));
+      const ids=new Set(G.map(g=>g.id));S.best=nflBest().filter(b=>ids.has(b.g.id)).slice(0,10).map(b=>({nm:b.name,k:b.k,side:b.side,line:b.line,odds:b.odds,tm:b.pl.team,sc:Math.round(b.sc*100)/100}));S.op=S.op||{};for(const b of S.best){const q=b.nm+"|"+b.k+"|"+b.side;if(!S.op[q])S.op[q]=[b.odds,b.line]}
       S.games=G.map(g=>{const P=projectGame(g),L=LINES[g.id],m=P.shp-P.sap,E=typeof nflOddsEdges!=="undefined"?nflOddsEdges(g):[];
         return {id:g.id,a:g.away,h:g.home,p:Math.round(normCdf(m/13.5)*1000)/1000,m:Math.round(m*10)/10,tot:Math.round((P.shp+P.sap)*10)/10,L:L?{sp:L.sp,tot:L.tot}:null,edges:E.filter(e=>e.edge>=.04).map(e=>({mk:e.mk,pick:e.pick,odds:e.odds,me:Math.round(e.me*1000)/1000,bk:Math.round(e.bk*1000)/1000}))}})}}
   // Soccer: plays of the day per ET date, locked once within 6 h of that day's first kickoff (matches with odds only)

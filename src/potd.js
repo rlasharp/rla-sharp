@@ -50,12 +50,8 @@ function potdNba(){if(typeof nbaTodayPlays==="undefined")return `<div class="car
 
 /* ---- NHL ---- */
 /* the same rule the tracker locks with (tools/track.js) — shown as a preview until the lock */
-function potdNhlPreview(){if(typeof nhBest==="undefined"||!NHL_DATE)return [];const d=NHL_DATE,used=new Set(),P=[];
-  for(const b of nhBest()){if(P.length>=3)break;if(!b.g||b.g.d!==d)continue;if(used.has(b.nm)||b.s.n10<8||b.s.l10<7||b.edge<.05||b.odds==null||b.odds<-200||nhOutNow(b.nm))continue;used.add(b.nm);
-    P.push({type:"prop",nm:b.nm,tm:nhWho(b.nm).tm,k:b.k,side:b.side,line:b.line,odds:b.odds,b})}
-  const ge=[];for(const g of NHL_SLATE||[]){if(nhStarted(g))continue;const E=nhEdges(g).filter(e=>e.edge>=.05&&e.odds>=-200&&e.odds<=250&&e.mk!=="1st period total");if(E[0])ge.push(E[0])}
-  for(const e of ge.sort((a,b)=>b.edge-a.edge).slice(0,2))P.push({type:"game",mk:e.mk,pick:e.pick,a:e.g.a,h:e.g.h,odds:e.odds,e});
-  return P}
+function potdNhlPreview(){if(typeof nhDayPlays==="undefined"||!NHL_DATE)return [];
+  return nhDayPlays().map(x=>x.type==="prop"?{type:"prop",nm:x.b.nm,tm:nhWho(x.b.nm).tm,k:x.b.k,side:x.b.side,line:x.b.line,odds:x.b.odds,b:x.b}:{type:"game",mk:x.e.mk,pick:x.e.pick,a:x.e.g.a,h:x.e.g.h,odds:x.e.odds,e:x.e})}
 function potdNhl(){if(typeof NHL_DATE==="undefined"||!NHL_DATE){if(typeof nhlEnsure!=="undefined")nhlEnsure(()=>{if(location.hash==="#potd")viewPotd()});return `<div class="card small">Loading NHL data…</div>`}
   const T=typeof TRACK!=="undefined"&&TRACK?TRACK:null,lk=T&&T.nhlPlays||[],locked=lk.length>0,P=locked?lk:potdNhlPreview(),day=nhDayS(NHL_DATE);
   const S=T&&T.sum&&T.sum.nhl&&T.sum.nhl.plays;
@@ -85,6 +81,7 @@ function potdNhl(){if(typeof NHL_DATE==="undefined"||!NHL_DATE){if(typeof nhlEns
 function viewPotd(){const el=document.getElementById("v-potd");if(!el)return;const sp=potdSp();
   el.innerHTML=`<h1>⭐ Plays of the Day</h1><p class="sub">Our strongest leans for today's games, written up like the NFL Plays of the Week — every day, locked before the games and graded after.</p>
    <div class="seg ttabs" style="margin-bottom:10px">${[["nba","🏀 NBA"],["nhl","🏒 NHL"],["soc","⚽ Soccer"]].map(([k,l])=>`<button class="btn${sp===k?" on":""}" data-pdsp="${k}">${l}</button>`).join("")}<a class="btn" href="#plays">🏈 NFL week</a></div>
+   ${(sp==="nba"||sp==="nhl")&&typeof pkRulesTxt!=="undefined"?`<div class="small" style="margin:-4px 0 10px">🎯 ${pkRulesTxt(sp)}</div>`:""}
    <div id="pdBody">${sp==="nhl"?potdNhl():sp==="soc"?potdSoc():potdNba()}</div>`;
   el.querySelectorAll("[data-pdsp]").forEach(b=>b.onclick=()=>{POTD_SP=b.dataset.pdsp;try{LS.set("potdSp",POTD_SP)}catch(e){}viewPotd()});
   el.querySelectorAll("[data-pdnba]").forEach(c=>c.onclick=e=>{if(e.target.closest("[data-act],button,a"))return;const [nm,k]=c.dataset.pdnba.split("|");nbaGoPlayer(typeof nbaUnesc!=="undefined"?nbaUnesc(nm):nm,k)});

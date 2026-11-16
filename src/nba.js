@@ -722,13 +722,29 @@ function nbaWireBest(root){
   root.querySelectorAll("[data-gopl]").forEach(b=>b.onclick=e=>{e.preventDefault();const v=nbaUnesc(b.dataset.gopl),i=v.lastIndexOf("|");nbaGoPlayer(v.slice(0,i),v.slice(i+1))});
 }
 /* plays of the day: the 2-3 strongest leans from the ranking, with stricter rules */
+/* 🎯 How Plays of the Day (NBA, NHL) and the NFL Plays of the Week are picked — one set of rules for every sport (Nov 16 2026).
+   Only picks that clear the bar are posted: fewer than the maximum, or none, is fine. */
+var PICK_RULES={
+  odds:[-200,120],                                             // price limits: no long shots, no heavy favourites
+  prop:{edge:.06,chance:.56},                                  // our chance 56%+ AND 6+ points above what the price needs
+  max:{nba:3,nhl:3,nfl:5},                                     // at most this many
+  mix:{nba:{props:3,games:0},nhl:{props:2,games:1},nfl:{props:3,games:2}},
+  game:{nflSpread:3,nflTotal:4,nflMl:.06,nhl:.06},             // game lines: how far our number must be from the line
+  cut:{n:20,roi:-.15},                                         // follow what works: skip a price range / market+side that lost 15%+ over 20+ graded picks
+  clv:{n:30,low:.45,add:.02}};                                 // if we beat the closing line under 45% of the time (30+ picks), the bar rises 2 points
+function pkTrack(sp){try{return typeof TRACK!=="undefined"&&TRACK&&TRACK.sum&&TRACK.sum[sp]||null}catch(e){return null}}
+function pkBar(sp){const C=(pkTrack(sp)||{}).clv,R=PICK_RULES;return R.prop.edge+(C&&C.n>=R.clv.n&&C.beat/C.n<R.clv.low?R.clv.add:0)}
+function pkPriceOk(o){return o!=null&&o>=PICK_RULES.odds[0]&&o<=PICK_RULES.odds[1]}
+function pkSliceOk(sp,b){const S=(pkTrack(sp)||{}).slices;if(!S)return true;const o=b.odds,R=PICK_RULES.cut;
+  for(const [g,k] of [["price",o==null?null:o<=-130?"fav":o>=100?"dog":"even"],["mks",b.k+"|"+b.side]]){const x=k&&S[g]&&S[g][k];if(x&&x[0]+x[1]>=R.n&&x[2]/(x[0]+x[1])<=R.roi)return false}return true}
+function pkPropOk(sp,b,chance,edge){return pkPriceOk(b.odds)&&chance>=PICK_RULES.prop.chance&&edge>=pkBar(sp)&&pkSliceOk(sp,b)}
+function pkGameMkOk(sp,mk){const E=(pkTrack(sp)||{}).edge,x=E&&E[mk],R=PICK_RULES.cut;return !(x&&x[0]+x[1]>=R.n&&x[2]/(x[0]+x[1])<=R.roi)}
+function pkRulesTxt(sp){const R=PICK_RULES,bar=Math.round(pkBar(sp)*100);return `Picked only when our chance is ${Math.round(R.prop.chance*100)}%+ and at least ${bar} points above what the price needs, at odds between ${R.odds[0]} and +${R.odds[1]}, skipping bet types that have lost money in our record${bar>Math.round(R.prop.edge*100)?" (bar raised: we haven't been beating the closing line)":""}. Up to ${R.max[sp]}; some days none qualify.`}
 function nbaPlays(){
   const out=[],games=new Set(),used=new Set();
-  const ok=b=>b.c10[0]>=7&&b.edge>=.07&&b.odds>=-200&&b.odds<=150&&!/day|quest|doubt|out/i.test((nbaInjOf(b.nm)||[])[2]||"")&&b.cS[1]>=3&&b.cS[0]/b.cS[1]>=.6;
-  /* second tier (Nov 11 2026) so a full slate always has a play of the day: 6+ of the last 10, 55%+ this season, a 4-point edge */
-  const ok2=b=>b.c10[0]>=6&&b.edge>=.04&&b.odds>=-200&&b.odds<=150&&!/day|quest|doubt|out/i.test((nbaInjOf(b.nm)||[])[2]||"")&&b.cS[1]>=3&&b.cS[0]/b.cS[1]>=.55;
-  const B=nbaBest();let L=B.filter(ok);if(!L.length)L=B.filter(ok2);
-  for(const pass of [0,1])for(const b of L){if(out.length>=3)break;if(used.has(b.nm))continue;if(!pass&&games.has(b.g.id))continue;out.push(b);used.add(b.nm);games.add(b.g.id)}
+  const ok=b=>b.c10[0]>=6&&b.cS[1]>=3&&b.cS[0]/b.cS[1]>=.55&&!/day|quest|doubt|out/i.test((nbaInjOf(b.nm)||[])[2]||"")&&pkPropOk("nba",b,b.sc,b.edge);
+  const L=nbaBest().filter(ok),mx=Math.min(PICK_RULES.max.nba,PICK_RULES.mix.nba.props);
+  for(const pass of [0,1])for(const b of L){if(out.length>=mx)break;if(used.has(b.nm))continue;if(!pass&&games.has(b.g.id))continue;out.push(b);used.add(b.nm);games.add(b.g.id)}
   return out;
 }
 const NBA_PL=(typeof NBA_PLAYLOG!=="undefined"&&NBA_PLAYLOG)||[];

@@ -672,3 +672,11 @@ document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.c
   out.innerHTML=`<h2 style="margin:18px 0 0">${nhE(nhTm(a))} ${as} – ${nhE(nhTm(h))} ${hs} · box score</h2><div class="card small" style="margin-top:12px">Loading the box score…</div>`;out.scrollIntoView({behavior:"smooth",block:"start"});
   try{const k="nhl|"+d+"|"+a+"|"+h,S=BXH.c[k]||(BXH.c[k]=await bxhFind("nhl",d,a,h));if(NH.bsel!==id)return;out.innerHTML=`<h2 style="margin:18px 0 0">${nhE(nhTm(a))} ${as} – ${nhE(nhTm(h))} ${hs} · box score</h2><div class="bxpage">${bxhHtml("nhl",S)}</div>`}
   catch(err){out.innerHTML=`<div class="card small" style="margin-top:12px">Couldn't load this box score from ESPN right now. Try again in a minute.</div>`}});
+
+/* ⭐ NHL Plays of the Day — the shared rules (PICK_RULES in nba.js): props first, then the best game line */
+function nhDayPlays(){const d=NHL_DATE,R=PICK_RULES,used=new Set(),P=[];
+  for(const b of nhBest()){if(P.length>=R.mix.nhl.props)break;if(!b.g||b.g.d!==d||used.has(b.nm)||b.s.n10<8||b.s.l10<7||nhOutNow(b.nm))continue;
+    if(!pkPropOk("nhl",{odds:b.odds,k:b.k,side:b.side},b.s.p,b.edge))continue;used.add(b.nm);P.push({type:"prop",b})}
+  const ge=[];for(const g of NHL_SLATE||[]){if(nhStarted(g))continue;const E=nhEdges(g).filter(e=>e.edge>=R.game.nhl&&pkPriceOk(e.odds)&&e.mk!=="1st period total"&&pkGameMkOk("nhl",e.mk));if(E[0])ge.push(E[0])}
+  for(const e of ge.sort((a,b)=>b.edge-a.edge).slice(0,R.mix.nhl.games))P.push({type:"game",e});
+  return P.slice(0,R.max.nhl)}

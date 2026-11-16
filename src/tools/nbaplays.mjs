@@ -6,7 +6,8 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ctx = { window: {}, document: { addEventListener() {}, querySelector() { return null; }, querySelectorAll() { return []; } }, setInterval() {}, setTimeout() {}, LS: { get() { return null; }, set() {} }, oddsFmt: x => (x > 0 ? "+" + x : "" + x), console,
   /* helpers that live in live.js on the site; pregame lock = nothing has started */ startedKey: () => "", nbaStarted: () => false, nflStarted: () => false, etNow: () => ({ d: "", m: 0 }) };
 vm.createContext(ctx);
-const src = fs.readFileSync(path.join(root, "nba_data.js"), "utf8") + "\n" + fs.readFileSync(path.join(root, "nba.js"), "utf8")
+const trk = fs.existsSync(path.join(root, "track_data.js")) ? fs.readFileSync(path.join(root, "track_data.js"), "utf8") + "\n" : "";   // our graded record: the pick rules skip bet types that have lost
+const src = trk + fs.readFileSync(path.join(root, "nba_data.js"), "utf8") + "\n" + fs.readFileSync(path.join(root, "nba.js"), "utf8")
   + "\n;globalThis.__out={date:NBA_SLATE_DATE,slate:NBA_SLATE,plays:nbaPlays().map(b=>[NBA_SLATE_DATE,b.nm,b.k,b.side,b.line,b.odds,b.book||'',b.p.tm,b.opp])};";
 vm.runInContext(src.replace(/^(const|let) /gm, "var "), ctx);
 const { date, slate, plays } = ctx.__out;
