@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 15:41Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 17:44Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
@@ -29,7 +29,6 @@ Sergio de Larrea|F|Out|knee strain|Nov 18
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
 Duncan Robinson|F|Day-To-Day|thigh soreness|Nov 17
-Ugonna Onyenso|C|Day-To-Day|foot|Nov 14
 Isaiah Joe|G|Out|hip bruise|Nov 17
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
@@ -56,14 +55,15 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Austin Reaves|G|Day-To-Day|heel bruise|Nov 17
 #Memphis Grizzlies
-GG Jackson|F|Out|foot|Nov 18
+Scotty Pippen Jr.|G|Out|back soreness|Nov 25
+GG Jackson|F|Out|foot surgery|Jan 18
 Isaiah Stewart|C|Day-To-Day|illness|Nov 16
 Ty Jerome|G|Out|hip soreness|Nov 18
 Quinten Post|C|Out|concussion|Nov 16
 Zach Edey|C|Day-To-Day|ankle|Nov 16
-Scotty Pippen Jr.|G|Out|back soreness|Nov 21
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
+Nikola Jovic|F|Day-To-Day|illness|Nov 16
 Pelle Larsson|G|Day-To-Day|illness|Nov 16
 #Milwaukee Bucks
 Ryan Rollins|G|Day-To-Day|illness|Nov 18
@@ -95,7 +95,6 @@ Dominick Barlow|F|Out|back fracture|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
-Drew Timme|F|Day-To-Day|hand|Nov 15
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|foot bruise|Nov 17

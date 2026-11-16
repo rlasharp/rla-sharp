@@ -1,24 +1,18 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 15:42Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-16 17:45Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Hjalte Froholdt|C|Out|Concussion|Nov 22
 Jordan Burch|LB|Questionable|Knee|Nov 22
 Jayden Williams|OT|Out|Knee|Nov 22
-Joey Aguilar|QB|Out|Coach's Decision|Nov 22
-Starling Thomas V|CB|Out|Coach's Decision|Nov 22
-Eku Leota|LB|Out|Coach's Decision|Nov 22
-Hjalte Froholdt|C|Out|Concussion|Nov 22
+Starling Thomas V|CB|Out|Undisclosed|
+Eku Leota|LB|Out|Undisclosed|
 Jon Gaines II|G|Out|Ankle|Nov 22
 Gardner Minshew II|QB|IR|Elbow|Feb 15
 Zachary Carter|DT|IR|Knee|Nov 22
 #ATL
-Drake London|WR|Questionable|Concussion|Nov 29
-Andy Dalton|QB|Out|Coach's Decision|Nov 29
-Avieon Terrell|CB|Out|Coach's Decision|Nov 29
-Cameron Williams|OL|Out|Coach's Decision|Nov 29
-Jack Strand|QB|Out|Coach's Decision|Nov 29
-Robert Longerbeam|CB|Out|Coach's Decision|Nov 29
-Zachariah Branch|WR|Out|Hamstring|Nov 29
 Divine Deablo|LB|Out|Forearm|Nov 29
+Zachariah Branch|WR|Out|Hamstring|Nov 29
+Drake London|WR|Questionable|Concussion|Nov 29
 Brian Robinson Jr.|RB|IR|Hamstring|Dec 13
 #BAL
 Adam Randall|RB|IR|Neck|Nov 16
@@ -75,8 +69,8 @@ Parker Brailsford|C|Out|Coach's Decision|Nov 29
 Taylen Green|QB|Out|Coach's Decision|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
-Tyler Booker|G|Questionable|Ankle|Nov 22
-DaRon Bland|CB|Questionable|Ankle|Nov 22
+Tyler Booker|G|Out|Ankle|Dec 7
+DaRon Bland|CB|Doubtful|Ankle|Nov 22
 Juanyeh Thomas|S|Out|Ribs|Nov 22
 Jonathan Mingo|WR|Out|Ankle|Nov 22
 Derion Kendrick|CB|Out|Coach's Decision|Nov 22
@@ -188,6 +182,8 @@ Steve Avila|G|Out|Hamstring|Nov 25
 Davante Adams|WR|IR|Hamstring|Nov 25
 Puka Nacua|WR|IR|Knee - MCL|Dec 20
 #MIA
+Malik Willis|QB|IR|Abdomen|Dec 13
+Jordan Phillips|DT|Questionable|Arm|Nov 22
 Andrew Meyer|C|Questionable|Undisclosed|Nov 22
 Zeek Biggers|DT|Questionable|Knee|Nov 22
 Chris Bell|WR|Out|Knee|Nov 22
@@ -197,7 +193,6 @@ Justin Joly|TE|Out|Coach's Decision|Nov 22
 Aaron Brewer|C|Out|Concussion|Nov 22
 Marcellas Dial Jr.|CB|Out|Coach's Decision|Nov 22
 Darrell Baker Jr.|CB|Out|Knee|Nov 22
-Malik Willis|QB|IR|Abdomen|Dec 13
 #MIN
 Andrew Van Ginkel|LB|Questionable|Quadriceps|Nov 22
 Jeshaun Jones|WR|Questionable|Shoulder|Nov 22
