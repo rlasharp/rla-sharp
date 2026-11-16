@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-16T05:40:52+00:00",
+  "at": "2026-11-16T05:47:57+00:00",
   "ok": true,
-  "summary": " 333 total, unmatched names: []\nFirst tip is 1104 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 188 (through 2026-11-14), players 469, slate 8, lines 8, props 333, inj teams 28, prev-season players 218, play log 37, adv 397, qtr games 188, h2h 4/4/2/4/2/4/3/3\nnfl-update: 1 lines refreshed, 1 new finals (weeks [9, 10])\nnfl-lines-next: 13 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 1 with a forecast\nnflrefs: 149 games (1 new), 21 referees, 0 of this week's crews posted\n279 players, 32 teams\nnfl-inj: 279 players\nnfl-qtr: 149 games with quarter scores\nnflbox: 1 new ESPN box scores, 12 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 692 players, 6 ESPN requests this run\nNHL data: 2 games today, 11 tomorrow, 32 teams, 700 skaters, 67 goalies, 163 props, 322 finals, 46 requests\nsocmgr: 7 new headlines, 14 clubs with manager news\nsoccer: 228 upcoming matches (0 with odds, 228 with estimates, 224 with weather, 0 with referee), 0 player props, 5880 players\nUFC: 266 fighters, 2539 past fights, 217 requests\ncfb: 2250 players with logs, 70 focus games, 671 requests\ncbb: 2820 players with logs, 172 focus games, 782 requests\nFutures: nba: 18 futures markets, 430 prices nhl: 9 futures markets, 206 prices nfl: 20 futures markets, 387 prices \ntrack: nba 2026-11-16: snapshot 3 props, 8 games \u00b7 graded: NHL plays 14-12, best props NBA 29-50 NFL 17-13 NHL 37-43\nSite check OK \u2014 published (2026-11-16T05:38:49Z)\n"
+  "summary": ", 333 total, unmatched names: []\nFirst tip is 1097 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 188 (through 2026-11-14), players 469, slate 8, lines 8, props 333, inj teams 28, prev-season players 218, play log 37, adv 397, qtr games 188, h2h 4/4/2/4/2/4/3/3\nnfl-update: 1 lines refreshed, 1 new finals (weeks [9, 10])\nnfl-lines-next: 13 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 1 with a forecast\nnflrefs: 149 games (1 new), 21 referees, 0 of this week's crews posted\n279 players, 32 teams\nnfl-inj: 279 players\nnfl-qtr: 149 games with quarter scores\nnflbox: 1 new ESPN box scores, 12 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 692 players, 6 ESPN requests this run\nNHL data: 2 games today, 11 tomorrow, 32 teams, 700 skaters, 67 goalies, 163 props, 322 finals, 46 requests\nsocmgr: 7 new headlines, 14 clubs with manager news\nsoccer: 228 upcoming matches (0 with odds, 228 with estimates, 224 with weather, 0 with referee), 0 player props, 5880 players\nUFC: 266 fighters, 2539 past fights, 217 requests\ncfb: 2250 players with logs, 70 focus games, 671 requests\ncbb: 2812 players with logs, 171 focus games, 625 requests\nFutures: nba: 17 futures markets, 415 prices nhl: 1 futures markets, 78 prices nfl: 20 futures markets, 387 prices \ntrack: nba 2026-11-16: snapshot 3 props, 8 games \u00b7 graded: NHL plays 14-12, best props NBA 29-50 NFL 17-13 NHL 37-43\nSite check OK \u2014 published (2026-11-16T05:45:54Z)\n"
  },
  "site": {
-  "at": "2026-11-16T05:40:52+00:00",
+  "at": "2026-11-16T05:47:57+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-16T05:40:52+00:00",
+  "at": "2026-11-16T05:47:57+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Mon Nov 16 12:37 AM ET",
+  "gen": "Mon Nov 16 12:43 AM ET",
   "odds_at": "2026-11-16T02:39:51+00:00",
   "backfill": "1312/1312"
  },
@@ -2293,7 +2293,7 @@
    "published": true
   },
   {
-   "at": "2026-11-16T05:40:52+00:00",
+   "at": "2026-11-16T05:47:57+00:00",
    "what": "all",
    "ok": true,
    "site_ok": true,
