@@ -59,8 +59,9 @@ function coThrV(sp,kind){const B=coV(sp,"BT"),d=CO[sp].lean[kind==="sp"?0:1];if(
   let best=null;for(const [v,X] of Object.entries(V))for(const [t,[w,l]] of Object.entries(X[kind]||{}).sort((a,b)=>a[0]-b[0]))if(w+l>=40&&w/(w+l)>=bar){const c={t:+t,v,p:w/(w+l),n:w+l};if(!best||c.p>best.p)best=c;break}
   return best}
 function coLeans(sp,g){if(g.st!=="pre")return [];const M=coModel(sp,g),L=coLine(sp,g),C=CO[sp];if(!M||M.n<3)return [];const out=[],V1=coThrV(sp,"sp"),V2=coThrV(sp,"tot"),t1=V1&&V1.t,t2=V2&&V2.t,R1=V1&&V1.v==="tr"?M.rawTR:M.raw,R2=V2&&V2.v==="tr"?M.rawTR:M.raw;
-  if(L.sp!=null&&V1){const e=R1.m-(-L.sp);if(Math.abs(e)>=t1){const home=e>0;out.push({k:"Spread",tid:home?g.h[0]:g.a[0],txt:`${coT(sp,home?g.h[0]:g.a[0]).s||coT(sp,home?g.h[0]:g.a[0]).a} ${home?(L.sp>0?"+":"")+L.sp:(L.sp<0?"+":"")+(-L.sp)}`,edge:Math.abs(e),odds:L.spx?L.spx[home?1:0]:null})}}
-  if(L.tot!=null&&V2){const e=R2.tot-L.tot;if(Math.abs(e)>=t2)out.push({k:"Total",txt:`${e>0?"Over":"Under"} ${L.tot}`,edge:Math.abs(e),odds:L.ox?L.ox[e>0?0:1]:null})}
+  const CAP=sp==="cfb"?14:10;   /* a gap this big vs the line = something our ratings don't know (early season, injuries) — not a pick */
+  if(L.sp!=null&&V1){const e=R1.m-(-L.sp);if(Math.abs(e)<=CAP&&Math.abs(e)>=t1){const home=e>0;out.push({k:"Spread",tid:home?g.h[0]:g.a[0],txt:`${coT(sp,home?g.h[0]:g.a[0]).s||coT(sp,home?g.h[0]:g.a[0]).a} ${home?(L.sp>0?"+":"")+L.sp:(L.sp<0?"+":"")+(-L.sp)}`,edge:Math.abs(e),odds:L.spx?L.spx[home?1:0]:null})}}
+  if(L.tot!=null&&V2){const e=R2.tot-L.tot;if(Math.abs(e)<=CAP&&Math.abs(e)>=t2)out.push({k:"Total",txt:`${e>0?"Over":"Under"} ${L.tot}`,edge:Math.abs(e),odds:L.ox?L.ox[e>0?0:1]:null})}
   return out}
 /* ---------- props: his values, hit rates, our chance ---------- */
 /* ---------- picks: our leans on spread / total, tracked in My Bets and graded from the final score ---------- */

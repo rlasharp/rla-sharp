@@ -138,7 +138,11 @@ function nbaModel(a,h){
   return {m:Math.round(m2*2)/2,tot:Math.round(tot2*2)/2,p,g:Math.min(A.g,H.g),ia:da||dh?{a:da,h:dh}:null};
 }
 /* regulars (24+ min a game) listed Out who have played this season — the model's numbers include them */
-function nbaKeyOut(tm){return nbaOutNames(tm).filter(n=>{const p=NBA_LOGS[n];return p&&p.tm===tm&&nbaAvg(p,"min")>=24})}
+/* a key player (24+ min) who is out AND was playing lately (in the last 10 days of his team's games): a NEW absence our team
+   ratings haven't absorbed yet. Players out for weeks are already reflected in the team's recent results. */
+function nbaKeyOut(tm){const last=(NBA_RES||[]).filter(r=>r[2]===tm||r[3]===tm).map(r=>r[1]).sort().pop();
+  return nbaOutNames(tm).filter(n=>{const p=NBA_LOGS[n];if(!p||p.tm!==tm||nbaAvg(p,"min")<24)return false;const pl=(p.g[p.g.length-1]||[])[1];
+    return !last||!pl||(Date.parse(last)-Date.parse(pl))/864e5<=10})}
 function nbaLean(g){
   const L=nbaL(g),M=nbaModel(g.a,g.h);if(!L||!M)return [];
   if(nbaKeyOut(g.a).length||nbaKeyOut(g.h).length)return [];
@@ -173,20 +177,26 @@ function nbaPills(g){
   return `<div class="nbl"><span>Spread <b>${fav} ${nbaSg(-Math.abs(L.sp))}</b></span><span>Total <b>${L.tot}</b></span><span>Win <b>${g.a} ${oddsFmt(L.mla)}</b> / <b>${g.h} ${oddsFmt(L.mlh)}</b></span></div>`;
 }
 function nbaKeyOutAll(g){return [...nbaKeyOut(g.a),...nbaKeyOut(g.h)]}
-/* every game gets our pick — moneyline, spread or over/under, whichever our model likes most against the posted price.
-   Chances from the model's margin/total with the usual spread of results (sd ≈ 12 pts margin, 17 pts total; logistic approx). */
-function nbaGamePick(g){const L=nbaL(g),M=nbaModel(g.a,g.h);if(!L||!M)return null;
-  const P=z=>1/(1+Math.exp(-1.702*z)),C=[];
-  if(L.sp!=null){const ph=P((M.m+L.sp)/12),home=ph>=.5,pr=home?(L.spx||-110):-110;C.push({k:"Spread",txt:`${home?g.h:g.a} ${nbaSg(home?L.sp:-L.sp)}`,ch:home?ph:1-ph,odds:pr})}
-  if(L.tot!=null){const po=P((M.tot-L.tot)/17),ov=po>=.5;C.push({k:"Total",txt:`${ov?"Over":"Under"} ${L.tot}`,ch:ov?po:1-po,odds:(ov?L.ox:L.ux)||-110})}
-  if(L.mla&&L.mlh){const home=M.p-nbaImpl(L.mlh)>=(1-M.p)-nbaImpl(L.mla);C.push({k:"Moneyline",txt:`${home?g.h:g.a} to win`,ch:home?M.p:1-M.p,odds:home?L.mlh:L.mla})}
+/* every game: our pick — spread, total or moneyline — only when it makes sense (Nov 17 2026 rework):
+   • our chance = the book's fair price moved halfway toward our model (xGameEdge), so no more "88%" overs/unders;
+   • moneyline only on a team our model expects to win, at −250 to +150 (no long-shot underdogs);
+   • gaps of 25+ points vs the market are treated as something the model is missing; a key player out = no pick;
+   • a pick needs a 3+ point edge over the price; otherwise the card shows our projected score, not a forced pick. */
+const NBPASS={};
+function nbaGamePick(g){const L=nbaL(g),M=nbaModel(g.a,g.h);delete NBPASS[g.id];if(!L||!M)return null;
+  const P=z=>1/(1+Math.exp(-1.702*z)),C=[],ge=typeof xGameEdge!=="undefined"?xGameEdge:(mk,o,raw,bk)=>bk+.5*(raw-bk),fair=(a,b)=>{const x=nbaImpl(a),y=nbaImpl(b);return x/(x+y)};
+  if(nbaKeyOut(g.a).length+nbaKeyOut(g.h).length){NBPASS[g.id]="key";return null}
+  if(L.sp!=null){const ph=P((M.m+L.sp)/13);for(const home of [true,false]){const raw=home?ph:1-ph,odds=home?(L.spx||-110):-110,ch=ge("Spread",odds,raw,.5);if(ch!=null)C.push({k:"Spread",txt:`${home?g.h:g.a} ${nbaSg(home?L.sp:-L.sp)}`,ch,odds})}}
+  if(L.tot!=null){const po=P((M.tot-L.tot)/19);for(const ov of [true,false]){const raw=ov?po:1-po,odds=(ov?L.ox:L.ux)||-110,ch=ge("Total",odds,raw,.5);if(ch!=null)C.push({k:"Total",txt:`${ov?"Over":"Under"} ${L.tot}`,ch,odds})}}
+  if(L.mla&&L.mlh){const fh=fair(L.mlh,L.mla);for(const home of [true,false]){const raw=home?M.p:1-M.p,odds=home?L.mlh:L.mla,ch=ge("Moneyline",odds,raw,home?fh:1-fh);if(ch!=null)C.push({k:"Moneyline",txt:`${home?g.h:g.a} to win`,ch,odds})}}
   for(const c of C){c.need=nbaImpl(c.odds);c.edge=c.ch-c.need}
-  const le=nbaLean(g);let best=C.sort((x,y)=>y.edge-x.edge)[0];
-  if(le.length){const k=le[0].k==="sp"?"Spread":"Total";best=C.find(c=>c.k===k)||best;best.strong=1}
-  return best?Object.assign(best,{ko:nbaKeyOut(g.a).length+nbaKeyOut(g.h).length,M}):null}
-function nbaPickTxt(g){const x=nbaGamePick(g);
-  if(!x){const M=nbaModel(g.a,g.h);return M?`<div class="nbpick est">🔮 Our estimate: ${nbaEsc(M.m>=0?g.h:g.a)} by ${Math.max(.5,Math.abs(M.m))} · total ${M.tot}<span class="small"> · our pick posts with the lines</span></div>`:""}
-  return `<div class="nbpick${x.strong?"":" est"}">${x.strong?"⭐":"🔮"} Our pick: <b>${nbaEsc(x.txt)}</b> <span class="small">${x.k.toLowerCase()} · ${oddsFmt(x.odds)} · our chance ${Math.round(x.ch*100)}%${x.strong?" · strong lean":x.edge>0?"":" · small lean"}${x.ko?" · key player out, bet light":""}</span></div>`}
+  const best=C.filter(c=>c.edge>=.03).sort((x,y)=>y.edge-x.edge)[0];if(!best){NBPASS[g.id]="none";return null}
+  const le=nbaLean(g);if(le.length&&((le[0].k==="sp"&&best.k==="Spread")||(le[0].k!=="sp"&&best.k==="Total")))best.strong=1;
+  return Object.assign(best,{M})}
+function nbaPickTxt(g){const x=nbaGamePick(g),M=nbaModel(g.a,g.h);
+  const est=why=>M?`<div class="nbpick est">🔮 Our number: ${nbaEsc(M.m>=0?g.h:g.a)} by ${Math.max(.5,Math.round(Math.abs(M.m)*10)/10)} · total ${M.tot}<span class="small"> · ${why}</span></div>`:"";
+  if(!x)return est(NBPASS[g.id]==="key"?"no pick: a key player is out and our team ratings don't account for it":NBPASS[g.id]==="none"?"no pick: nothing beats the price by enough":"our pick posts with the lines");
+  return `<div class="nbpick${x.strong?"":" est"}">${x.strong?"⭐":"🔮"} Our pick: <b>${nbaEsc(x.txt)}</b> <span class="small">${x.k.toLowerCase()} · ${oddsFmt(x.odds)} · our chance ${Math.round(x.ch*100)}% vs ${Math.round(x.need*100)}% the price needs${x.strong?" · strong lean":""}</span></div>`}
 /* line movement: ESPN opening number vs now (home spread stored) */
 function nbaMove(g){
   const L=nbaL(g);if(!L||!L.open)return null;
