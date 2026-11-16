@@ -9,8 +9,20 @@ const xOdds=o=>o==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(o):(o>0?"+":"
 function xEdgeRow(e,showGame){return `<a class="nher" href="${e.href}"><span>${showGame?`<span class="small">${e.game} · ${e.mk}</span>`:`<span class="small">${e.mk}</span>`}<b>${e.pick}</b> <span class="small">${xOdds(e.odds)}${e.est?" (assumed)":""}</span></span>
   <span class="nhedv"><b class="${e.edge>=.04?"up":""}">+${Math.round(e.edge*100)}%</b><span class="small">us ${Math.round(e.me*100)}% · books ${Math.round(e.bk*100)}%</span></span></a>`}
 /* NBA: margin ~ normal(sd 12), total ~ normal(sd 18) around our team-rating numbers */
+/* 🧠 sanity for game-line edges (Nov 16 2026: our raw team models over-rate long underdogs — NBA moneyline edges went 2-5,
+   NFL 0-3, with picks like a +341 dog the model itself had losing):
+   1) our chance is moved only halfway from the book's (margin removed) toward our model — the model is a second opinion, not the truth;
+   2) a moneyline is only suggested for a team our model expects to WIN, at −250 to +150 (no long shots, no −600 favourites);
+      if we like an underdog, the spread is the bet (still listed);
+   3) a gap of 25+ points between our model and the market is treated as something the model is missing, not an edge. */
+const XGL={w:.5,mlMin:-250,mlMax:150,maxGap:.25};
+function xGameEdge(mk,odds,raw,bk){if(raw==null||bk==null)return null;
+  if(raw-bk>XGL.maxGap)return null;   /* our model 25+ points away from the market = almost always something the model doesn't know (injury, rest, lineup) */
+  const me=bk+XGL.w*(raw-bk);
+  if(mk==="Moneyline"&&!(raw>=.5&&odds!=null&&odds>=XGL.mlMin&&odds<=XGL.mlMax))return null;   /* ML: a team we expect to win, priced −250 to +150 */
+  return me}
 function nbaOddsEdges(g){const L=typeof NBA_LINES!=="undefined"&&NBA_LINES[g.a+"@"+g.h],M=typeof nbaModel!=="undefined"&&nbaModel(g.a,g.h);if(!L||!M||(typeof nbaStarted!=="undefined"&&nbaStarted(g)))return [];
-  const out=[],gm=`${g.a} @ ${g.h}`,href=`#nba-game-${g.id}`,add=(mk,pick,odds,me,bk,est)=>{if(me==null||bk==null)return;out.push({g,game:gm,href,mk,pick,odds,me,bk,edge:me-bk,est})};
+  const out=[],gm=`${g.a} @ ${g.h}`,href=`#nba-game-${g.id}`,add=(mk,pick,odds,raw,bk,est)=>{const me=xGameEdge(mk,odds,raw,bk);if(me==null)return;out.push({g,game:gm,href,mk,pick,odds,me,raw,bk,edge:me-bk,est})};
   if(L.sp!=null){const ph=xNorm((M.m+L.sp)/12),hp=L.spx??-110,nv=xNoVig(hp,-110);add("Spread",`${g.h} ${L.sp>0?"+":""}${L.sp}`,hp,ph,nv[0],L.spx==null);add("Spread",`${g.a} ${-L.sp>0?"+":""}${-L.sp}`,-110,1-ph,nv[1],true)}
   if(L.tot!=null){const po=1-xNorm((L.tot-M.tot)/18),nv=xNoVig(L.ox??-110,L.ux??-110);add("Total",`Over ${L.tot}`,L.ox??-110,po,nv[0],L.ox==null);add("Total",`Under ${L.tot}`,L.ux??-110,1-po,nv[1],L.ux==null)}
   if(L.mla!=null&&L.mlh!=null){const nv=xNoVig(L.mla,L.mlh);add("Moneyline",g.h,L.mlh,M.p,nv[1]);add("Moneyline",g.a,L.mla,1-M.p,nv[0])}
@@ -18,7 +30,7 @@ function nbaOddsEdges(g){const L=typeof NBA_LINES!=="undefined"&&NBA_LINES[g.a+"
   return out2.filter(e=>e.edge>0&&e.edge<=.2).sort((a,b)=>b.edge-a.edge)}
 /* NFL: our pure projected score (no market blend), margin sd 13.5, total sd 13 */
 function nflOddsEdges(g){if(typeof projectGame==="undefined"||g.final||(typeof nflStarted!=="undefined"&&nflStarted(g)))return [];const L=LINES[g.id];if(!L)return [];const P=projectGame(g),m=P.shp-P.sap,t=P.shp+P.sap;
-  const out=[],gm=`${g.away} @ ${g.home}`,href=`#game-${g.id}`,add=(mk,pick,odds,me,bk,est)=>{if(me==null||bk==null)return;out.push({g,game:gm,href,mk,pick,odds,me,bk,edge:me-bk,est})};
+  const out=[],gm=`${g.away} @ ${g.home}`,href=`#game-${g.id}`,add=(mk,pick,odds,raw,bk,est)=>{const me=xGameEdge(mk,odds,raw,bk);if(me==null)return;out.push({g,game:gm,href,mk,pick,odds,me,raw,bk,edge:me-bk,est})};
   if(L.sp!=null){const ph=xNorm((m+L.sp)/13.5);add("Spread",`${g.home} ${L.sp>0?"+":""}${L.sp}`,-110,ph,.5,true);add("Spread",`${g.away} ${-L.sp>0?"+":""}${-L.sp}`,-110,1-ph,.5,true)}
   if(L.tot!=null){const po=1-xNorm((L.tot-t)/13);add("Total",`Over ${L.tot}`,-110,po,.5,true);add("Total",`Under ${L.tot}`,-110,1-po,.5,true)}
   if(L.ml&&L.ml[0]!=null&&L.ml[1]!=null){const nv=xNoVig(L.ml[0],L.ml[1]),pw=xNorm(m/13.5);add("Moneyline",g.home,L.ml[1],pw,nv[1]);add("Moneyline",g.away,L.ml[0],1-pw,nv[0])}

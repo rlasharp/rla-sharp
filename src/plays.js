@@ -23,7 +23,7 @@ function potwAuto(){try{const imp_=o=>o<0?-o/(-o+100):100/(o+100);
   const C=[];for(const x of G){
     if(Math.abs(x.se)>=R.game.nflSpread)C.push({s:Math.abs(x.se)/R.game.nflSpread,p:Object.assign({type:"spread",team:x.se>0?x.g.home:x.g.away,edge:Math.round(Math.abs(x.se)*10)/10},base(x))});
     if(Math.abs(x.te)>=R.game.nflTotal)C.push({s:Math.abs(x.te)/R.game.nflTotal,p:Object.assign({type:"total",side:x.te>0?"over":"under",edge:Math.round(Math.abs(x.te)*10)/10},base(x))});
-    if(x.me!=null&&Math.abs(x.me)>=R.game.nflMl){const t=x.me>0?x.g.home:x.g.away,o=t===x.g.home?x.L.ml[1]:x.L.ml[0];if(pkPriceOk(o))C.push({s:Math.abs(x.me)/R.game.nflMl,p:Object.assign({type:"ml",team:t,odds:o,edge:Math.round(Math.abs(x.me)*1000)/10},base(x))})}}
+    if(x.me!=null&&Math.abs(x.me)>=R.game.nflMl){const t=x.me>0?x.g.home:x.g.away,o=t===x.g.home?x.L.ml[1]:x.L.ml[0],wp=projScore(x.g).P.modelHomeWp,mine=t===x.g.home?wp:1-wp;if(pkPriceOk(o)&&mine>=.5)   /* moneyline only on a team we expect to win */C.push({s:Math.abs(x.me)/R.game.nflMl,p:Object.assign({type:"ml",team:t,odds:o,edge:Math.round(Math.abs(x.me)*1000)/10},base(x))})}}
   let ng=0;for(const c of C.sort((a,b)=>b.s-a.s)){if(ng>=R.mix.nfl.games||out.length>=R.max.nfl)break;if(used.has(c.p.game))continue;used.add(c.p.game);out.push(c.p);ng++}
   return out}catch(e){return []}}
 function potwWhy(pl,d){try{if(pl.type==="prop")return `${esc(pl.player)} went ${pl.side} ${d.line} in <b>${d.ov} of ${d.n}</b> games this season (average ${d.avg}).${d.o&&Number.isFinite(d.dv.rank)?` ${esc(short(d.o.opp))} allow the ${d.rankTxt} ${MARKETS[pl.market].n.toLowerCase()} to ${esc(d.P.pos)}s.`:""}${pl.ch?` Our chance: <b>${pl.ch}%</b> vs ${impl(d.odds!=null?d.odds:pl.odds)}% the price needs.`:""}`;

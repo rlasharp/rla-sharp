@@ -588,7 +588,7 @@ function nhProjFrom(g,q){const la=q.la,lh=q.lh,P=(l,k)=>{let p=Math.exp(-l);for(
   const over1=L=>{let o=0;for(let i=0;i<8;i++)for(let j=0;j<8;j++)if(i+j>L)o+=P(q.l1a,i)*P(q.l1h,j);return o};
   return {la,lh,hwin,tot,line,over:overL(line),overL,h2,a2,l1a:q.l1a,l1h:q.l1h,over1,fa:q.fa?{aA:q.fa[0],dH:1,aH:q.fa[1],dA:1}:null}}
 function nhNoVig(a,b){const x=nhImpP(a),y=nhImpP(b);return x!=null&&y!=null?[x/(x+y),y/(x+y)]:null}
-function nhEdges(g){const pr=nhProject(g);if(!pr)return [];const out=[],add=(mk,pick,odds,me,bk,txt)=>{if(odds==null||bk==null)return;out.push({g,mk,pick,odds,me,bk,edge:me-bk,txt})};
+function nhEdges(g){const pr=nhProject(g);if(!pr)return [];const out=[],add=(mk,pick,odds,raw,bk,txt)=>{if(odds==null||bk==null)return;const me=typeof xGameEdge!=="undefined"?xGameEdge(mk,odds,raw,bk):raw;if(me==null)return;out.push({g,mk,pick,odds,me,raw,bk,edge:me-bk,txt})};
   if(g.ml){const nv=nhNoVig(g.ml[0],g.ml[1]);if(nv){add("Moneyline",g.h,g.ml[1],pr.hwin,nv[1]);add("Moneyline",g.a,g.ml[0],1-pr.hwin,nv[0])}}
   if(g.pl){const hp=g.pl[0],nv=nhNoVig(g.pl[2],g.pl[1]);if(nv){const hCov=hp<0?pr.h2:1-pr.a2;add("Puck line",`${g.h} ${hp>0?"+":""}${hp}`,g.pl[2],hCov,nv[0]);add("Puck line",`${g.a} ${hp>0?"−":"+"}${Math.abs(hp)}`,g.pl[1],1-hCov,nv[1])}}
   if(g.tot&&g.tot[0]>=4.5){const nv=nhNoVig(g.tot[1],g.tot[2]),o=pr.overL(g.tot[0]);if(nv){add("Total",`Over ${g.tot[0]}`,g.tot[1],o,nv[0]);add("Total",`Under ${g.tot[0]}`,g.tot[2],1-o,nv[1])}}
