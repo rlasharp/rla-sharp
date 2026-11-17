@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 13:52Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 15:35Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jayden Williams|OT|Questionable|Knee|Nov 22
@@ -65,8 +65,8 @@ Jaylen Waddle|WR|Questionable|Concussion|Nov 22
 Riley Moss|CB|Questionable|Concussion|Nov 22
 Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 #DET
+Cade Mays|C|Doubtful|Ankle|Nov 22
 D.J. Reed|CB|Questionable|Hip|Nov 22
-Cade Mays|C|Questionable|Ankle|Nov 22
 Aidan Hutchinson|DE|Out|Knee - ACL|Feb 15
 Kerby Joseph|S|Out|Knee|Nov 22
 Jack Campbell|LB|IR|Neck|Dec 6
@@ -204,8 +204,8 @@ Sam Darnold|QB|Out|Quadriceps|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 29
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
 #TB
-Yaya Diaby|LB|Doubtful|Knee - MCL|Nov 22
 Baker Mayfield|QB|Questionable|Foot|Nov 22
+Yaya Diaby|LB|Doubtful|Knee - MCL|Nov 22
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 22
 #TEN
