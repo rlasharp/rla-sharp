@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 22:37Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 22:51Z
 #Atlanta Hawks
 Asa Newell|F|Out|toe|Mar 17
 CJ McCollum|G|Out|calf strain|Dec 19
@@ -22,12 +22,13 @@ Sam Merrill|G|Out|elbow|Nov 18
 Peyton Watson|G|Day-To-Day|back bruise|Nov 18
 Evan Mobley|C|Out|toe sprain|Nov 29
 #Dallas Mavericks
+Walter Clayton Jr.|G|Day-To-Day|ankle sprain|Nov 18
+Tarik Biberovic|F|Out|heel inflammation|Nov 30
+Tobi Lawal|F|Day-To-Day|groin|Nov 18
 Max Christie|G|Day-To-Day|ankle sprain|Nov 18
 Santi Aldama|F|Day-To-Day|ankle sprain|Nov 18
-Kyrie Irving|G|Day-To-Day|knee|Nov 18
 Dereck Lively II|C|Out|foot surgery|Nov 18
-Tarik Biberovic|F|Out|heel inflammation|Nov 18
-Sergio de Larrea|F|Out|knee strain|Nov 18
+Sergio de Larrea|F|Out|knee strain|Nov 27
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
