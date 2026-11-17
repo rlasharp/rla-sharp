@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 03:27Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 04:48Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Out|Knee - MCL|Feb 15
@@ -12,6 +12,8 @@ Zachary Carter|DT|IR|Knee|Nov 22
 Divine Deablo|LB|Out|Forearm|Nov 29
 Zachariah Branch|WR|Out|Hamstring|Nov 29
 #BAL
+Nnamdi Madubuike|DT|Questionable|Hamstring|Nov 22
+Olaivavega Ioane|G|Questionable|Shoulder|Nov 16
 Kedon Slovis|QB|Out|Coach's Decision|Nov 22
 Aeneas Peebles|DT|Out|Coach's Decision|Nov 22
 Chandler Rivers|CB|Out|Coach's Decision|Nov 22
@@ -84,7 +86,6 @@ Sean Rhyan|G|Out|Ankle|Nov 25
 Josh Jacobs|RB|Out|Finger|Nov 25
 Zaire Franklin|LB|Out|Shin|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
-Josh Whyle|TE|IR|Concussion|Dec 20
 #HOU
 Azeez Al-Shaair|LB|Out|Groin|Nov 19
 Jake Hummel|LB|Questionable|Groin|Nov 19

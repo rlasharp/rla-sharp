@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 03:27Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 04:48Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
@@ -6,18 +6,18 @@ Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Asa Newell|F|Out|toe|Nov 20
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
-Neemias Queta|C|Out|rest|Nov 18
+Neemias Queta|C|Day-To-Day|rest|Nov 18
 #Charlotte Hornets
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
-Jalen Smith|F|Day-To-Day|undisclosed|Nov 18
+Jalen Smith|F|Day-To-Day|head|Nov 18
 Patrick Williams|F|Day-To-Day|finger|Nov 18
 Tobe Awaka|F|Out|back|Nov 18
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
+Jaylon Tyson|G|Day-To-Day|ankle|Nov 18
 Peyton Watson|G|Day-To-Day|head not specified|Nov 18
-Jaylon Tyson|G|Out|ankle|Nov 18
 Evan Mobley|C|Out|toe sprain|Nov 29
 Sam Merrill|G|Out|elbow|Nov 18
 Nae'Qwan Tomlin|F|Out|back|Nov 18
@@ -43,9 +43,10 @@ Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
-Amen Thompson|G|Out|knee soreness|Nov 18
+Amen Thompson|G|Day-To-Day|knee soreness|Nov 18
+Marcus Smart|G|Day-To-Day|suspension|Nov 18
+Steven Adams|C|Day-To-Day|calf|Nov 18
 Clint Capela|C|Out|ankle sprain|Nov 18
-Steven Adams|C|Out|calf|Nov 18
 Julian Phillips|F|Day-To-Day|wrist|Nov 16
 #Indiana Pacers
 Andrew Nembhard|G|Day-To-Day|hip soreness|Nov 18
@@ -61,25 +62,26 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 Austin Reaves|G|Out|heel bruise|Nov 18
 Walker Kessler|C|Out|lower leg soreness|Nov 18
 #Memphis Grizzlies
-Isaiah Stewart|C|Out|illness|Nov 18
+Isaiah Stewart|C|Day-To-Day|illness|Nov 18
+Ty Jerome|G|Day-To-Day|hip soreness|Nov 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 GG Jackson|F|Out|foot surgery|Jan 18
-Ty Jerome|G|Out|hip soreness|Nov 18
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
+Nikola Jovic|F|Day-To-Day|illness|Nov 18
 Bam Adebayo|C|Day-To-Day|hip|Nov 18
-Nikola Jovic|F|Out|illness|Nov 18
 Pelle Larsson|G|Out|illness|Nov 18
 #Milwaukee Bucks
 Ryan Rollins|G|Day-To-Day|illness|Nov 18
 Ousmane Dieng|F|Out|finger surgery|Dec 14
 #Minnesota Timberwolves
+Jonathan Kuminga|F|Day-To-Day|shoulder|Nov 17
 Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
+Bennedict Mathurin|G|Day-To-Day|foot plantar fasciitis|Nov 18
 Bryce McGowens|G|Out|elbow infection|Nov 18
-Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 18
 Trey Murphy III|F|Out|knee tendinitis|Nov 18
 Trendon Watford|F|Out|ankle sprain|Nov 18
 Dejounte Murray|G|Out|ankle|Nov 20
@@ -90,14 +92,15 @@ Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
-Jonathan Isaac|F|Out|knee not specified|Nov 18
+Jonathan Isaac|F|Out|knee not specified|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 22
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
+Jaylen Brown|G|Day-To-Day|hamstring not specified|Nov 18
+LeBron James|F|Day-To-Day|back|Nov 18
 Dominick Barlow|F|Out|back fracture|Nov 18
-LeBron James|F|Out|back|Nov 18
-Adem Bona|C|Out|back sprain|Nov 18
+Adem Bona|C|Out|back sprain|Nov 21
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
