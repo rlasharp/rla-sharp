@@ -32,6 +32,13 @@ for(const vw of (FAST?[390]:[390,1200])){const p=await b.newPage({viewport:{widt
  if(ids.nflP){await p.evaluate(n=>{S.prop={player:n,market:null,open:true};location.hash="props"},ids.nflP);await p.waitForTimeout(400);await p.evaluate(n=>{S.prop={player:n,market:null,open:true};viewPlayer()},ids.nflP);await p.waitForTimeout(300);
   const w=await p.evaluate(()=>document.documentElement.scrollWidth);if(w>vw+1)errs.push(`overflow nfl player @${vw}: ${w}`)}
  await p.close()}
+// ---- missing-data pass: the lazily loaded data files can be absent or fail to download (the live-site check runs without
+// some of them) — pages that load them must not crash or loop (the "All picks" page looped forever on Nov 16) ----
+{const p=await b.newPage({viewport:{width:390,height:900}});p.on('pageerror',e=>errs.push(`@nodata ${p.url().split('#')[1]}: ${e.message}`));
+ await p.route(/espn|fonts\.g|cdnjs|jsdelivr|(cfb|cbb)_(data|box)\.js|ufc_data\.js|soccer_(data|old|players)\.js|nfl_tgt_lazy\.js/,r=>r.abort());
+ await p.addInitScript(()=>{window.Chart=class{constructor(){}destroy(){}update(){}};window.Chart.defaults={font:{},borderColor:''}});
+ for(const h of ['today','allpicks','cfb','cbb','ufc','soccer','compare/nba','games']){await p.goto('file://'+f+'#'+h);await p.waitForTimeout(500)}
+ await p.close()}
 // ---- extra checks (phone width): update banner logic, late-data note, Jump to, Simple view, light theme, contrast ----
 {const p=await b.newPage({viewport:{width:390,height:900}});p.on('pageerror',e=>errs.push(`@extra ${p.url().split('#')[1]}: ${e.message}`));
  await p.route(/espn|fonts\.g|cdnjs|jsdelivr/,r=>r.abort());
