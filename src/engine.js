@@ -15,39 +15,37 @@ const TEAMS = {
  TEN:["Tennessee Titans",1,6,"#4B92DB"], WAS:["Washington Commanders",1,4,"#5A1414"]
 };
 const TEAM_IDS = Object.keys(TEAMS);
-// Week 10 slate (ESPN schedule, kickoff times ET; set up automatically by tools/auto_espn.py nfl-roll). wp = home win probability from feed (null = not provided)
+// Week 11 slate (ESPN schedule, kickoff times ET; set up automatically by tools/auto_espn.py nfl-roll). wp = home win probability from feed (null = not provided)
 const SLATE = [
- {id:1,away:"WAS",home:"NYG",final:[24,21],when:"Thu Nov 12 · 8:15 PM",wp:null,tv:"TNF"},
- {id:2,away:"NE",home:"DET",final:[10,35],when:"Sun Nov 15 · 9:30 AM",wp:null},
- {id:3,away:"KC",home:"ATL",final:[35,13],when:"Sun Nov 15 · 1:00 PM",wp:null},
- {id:4,away:"HOU",home:"CLE",final:[24,27],when:"Sun Nov 15 · 1:00 PM",wp:null},
- {id:5,away:"MIN",home:"GB",final:[30,10],when:"Sun Nov 15 · 1:00 PM",wp:null},
- {id:6,away:"JAX",home:"TEN",final:[40,23],when:"Sun Nov 15 · 1:00 PM",wp:null},
- {id:7,away:"MIA",home:"IND",final:[22,24],when:"Sun Nov 15 · 1:00 PM",wp:null},
- {id:8,away:"CAR",home:"NO",final:[20,17],when:"Sun Nov 15 · 1:00 PM",wp:null},
- {id:9,away:"BUF",home:"NYJ",final:[31,12],when:"Sun Nov 15 · 1:00 PM",wp:null},
- {id:10,away:"SEA",home:"LV",final:[21,13],when:"Sun Nov 15 · 4:05 PM",wp:null},
- {id:11,away:"LAR",home:"ARI",final:[34,6],when:"Sun Nov 15 · 4:05 PM",wp:null},
- {id:12,away:"SF",home:"DAL",final:[46,40],when:"Sun Nov 15 · 4:25 PM",wp:null},
- {id:13,away:"PIT",home:"CIN",final:[18,38],when:"Sun Nov 15 · 8:20 PM",wp:null,tv:"SNF"},
- {id:14,away:"LAC",home:"BAL",final:[23,20],when:"Mon Nov 16 · 8:15 PM",wp:null,tv:"MNF"}
+ {id:1,away:"IND",home:"HOU",when:"Thu Nov 19 · 8:15 PM",wp:null,tv:"TNF"},
+ {id:2,away:"MIA",home:"BUF",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:3,away:"NO",home:"CHI",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:4,away:"TEN",home:"DAL",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:5,away:"TB",home:"DET",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:6,away:"ARI",home:"KC",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:7,away:"PIT",home:"PHI",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:8,away:"BAL",home:"CAR",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:9,away:"NYJ",home:"LAC",when:"Sun Nov 22 · 4:05 PM",wp:null},
+ {id:10,away:"LV",home:"DEN",when:"Sun Nov 22 · 4:25 PM",wp:null},
+ {id:11,away:"JAX",home:"NYG",when:"Sun Nov 22 · 4:25 PM",wp:null},
+ {id:12,away:"MIN",home:"SF",when:"Sun Nov 22 · 8:20 PM",wp:null,tv:"SNF"},
+ {id:13,away:"CIN",home:"WAS",when:"Mon Nov 23 · 8:15 PM",wp:null,tv:"MNF"}
 ];
-// REAL lines: DraftKings via ESPN, Wed Nov 11 2026 (updated by every automatic run until kickoff). sp = HOME spread, ml = [away, home]
+// REAL lines: DraftKings via ESPN, Tue Nov 17 2026 (updated by every automatic run until kickoff). sp = HOME spread, ml = [away, home]
 const LINES = {
- 1:{sp:-1.5,ml:[105,-125],tot:40.5},
- 2:{sp:-2.5,ml:[124,-148],tot:50.5},
- 3:{sp:3,ml:[-175,145],tot:47.5},
- 4:{sp:4.5,ml:[-198,164],tot:40.5},
- 5:{sp:-2.5,ml:[124,-148],tot:42.5},
- 6:{sp:10.5,ml:[-650,470],tot:45.5},
- 7:{sp:-4.5,ml:[180,-218],tot:37.5},
- 8:{sp:-1.5,ml:[-110,-110],tot:48.5},
- 9:{sp:8.5,ml:[-485,370],tot:50.5},
- 10:{sp:6.5,ml:[-298,240],tot:40.5},
- 11:{sp:10,ml:[-550,410],tot:38.5},
- 12:{sp:3.5,ml:[-205,170],tot:55.5},
- 13:{sp:-3.5,ml:[160,-192],tot:49.5},
- 14:{sp:-4.5,ml:[185,-225],tot:39.5}
+ 1:{sp:-11.5,ml:[490,-675],tot:44.5},
+ 2:{sp:-16.5,ml:[800,-1350],tot:45.5},
+ 3:{sp:-11.5,ml:[470,-650],tot:48.5},
+ 4:{sp:-8.5,ml:[330,-425],tot:54.5},
+ 5:{sp:-6.5,ml:[225,-278],tot:46.5},
+ 6:{sp:-16.5,ml:[1000,-1800],tot:41.5},
+ 7:{sp:4.5,ml:[-218,180],tot:38.5},
+ 8:{sp:-2.5,ml:[120,-142],tot:44.5},
+ 9:{sp:-3,ml:[140,-166],tot:40.5},
+ 10:{sp:-10,ml:[410,-550],tot:40.5},
+ 11:{sp:6,ml:[-258,210],tot:46.5},
+ 12:{sp:-3,ml:[136,-162],tot:46.5},
+ 13:{sp:6.5,ml:[-305,245],tot:52.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
 const SPLITS = {};
