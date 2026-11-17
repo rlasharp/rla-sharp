@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 05:24Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 05:37Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Out|Knee - MCL|Feb 15
@@ -33,7 +33,6 @@ Will Lee III|CB|Out|Hamstring|Nov 22
 Brady Christensen|G|IR|Hamstring|Nov 22
 Mike Jackson|CB|IR|Groin|Nov 22
 Jonathon Brooks|RB|IR|Groin|Nov 22
-Jaycee Horn|CB|IR|Quadriceps|Nov 22
 #CHI
 Luther Burden III|WR|Questionable|Concussion|Nov 22
 Kyle Monangai|RB|Out|Toe|Nov 22
