@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-17T22:39:03+00:00",
+  "at": "2026-11-17T22:52:45+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1635 player lines\nNBA injuries refreshed\nnbalineups: 5 games, 0 confirmed / 50 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 205 games cached\nNBA refs: 4 crews posted today\nliveprops: 681 feed lines merged (0 skipped from other days), 635 total, unmatched names: []\nLocked 1 plays for 2026-11-17: Javonte Green U3.5 reb\nNBA data: teams 30, results 205 (through 2026-11-16), players 471, slate 5, lines 5, props 635, inj teams 29, prev-season players 139, play log 39, adv 406, qtr games 205, h2h 5/4/2/3/2\nnhllines: 32/32 teams\nNHL PP time: 693 players, 0 ESPN requests this run\nNHL data: 11 games today, 3 tomorrow, 32 teams, 633 skaters, 67 goalies, 1354 props, 324 finals, 49 requests\ntrack: nba 2026-11-17: snapshot 10 props, 5 games \u00b7 graded: NHL plays 14-12, best props NBA 35-52 NFL 20-19 NHL 42-44\nSite check OK \u2014 published (2026-11-17T22:38:31Z)\n"
+  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1635 player lines\nNBA injuries refreshed\nnbalineups: 5 games, 0 confirmed / 50 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 205 games cached\nNBA refs: 4 crews posted today\nliveprops: 681 feed lines merged (0 skipped from other days), 635 total, unmatched names: []\nNBA data: teams 30, results 205 (through 2026-11-16), players 471, slate 5, lines 5, props 635, inj teams 29, prev-season players 139, play log 39, adv 406, qtr games 205, h2h 5/4/2/3/2\nnhllines: 32/32 teams\nNHL PP time: 693 players, 0 ESPN requests this run\nNHL data: 11 games today, 3 tomorrow, 32 teams, 633 skaters, 67 goalies, 1354 props, 324 finals, 49 requests\ntrack: nba 2026-11-17: snapshot 10 props, 5 games \u00b7 graded: NHL plays 14-12, best props NBA 35-52 NFL 20-19 NHL 42-44\nSite check OK \u2014 published (2026-11-17T22:52:10Z)\n"
  },
  "site": {
   "at": "2026-11-17T21:36:59+00:00",
@@ -10,10 +10,10 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-17T22:39:03+00:00",
+  "at": "2026-11-17T22:52:45+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Tue Nov 17 5:38 PM ET",
+  "gen": "Tue Nov 17 5:52 PM ET",
   "odds_at": "2026-11-17T21:53:17+00:00",
   "backfill": "1312/1312"
  },
@@ -2671,6 +2671,16 @@
   },
   {
    "at": "2026-11-17T22:39:03+00:00",
+   "what": "nba,nhl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-17T22:52:45+00:00",
    "what": "nba,nhl",
    "ok": true,
    "site_ok": true,
