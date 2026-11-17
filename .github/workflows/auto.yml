@@ -111,7 +111,7 @@ jobs:
           # rolling history for the weekly health report (tools/weekly_health.py): one short line per run, last ~40 days
           import re as _re
           summ=h["auto"].get("summary","")
-          fails=[l.strip()[:160] for l in summ.splitlines() if _re.search(r"FAILED|kept old|skipped|error",l,_re.I)]
+          fails=[l.strip()[:160] for l in summ.splitlines() if _re.search(r"FAILED|kept old|error|skipped(?! from other days)",l,_re.I)]
           h.setdefault("hist",[]).append({"at":h["auto"]["at"],"what":os.environ.get("WHAT") or "all","ok":h["auto"]["ok"],
               "site_ok":h["site"]["ok"],"site_issue":h["site"].get("issue","")[:160],"fails":fails[:12],
               "check_failed":"SITE CHECK FAILED" in summ,"published":"published (" in summ})
