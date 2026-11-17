@@ -1,12 +1,12 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 21:29Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 23:34Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 James Conner|RB|IR|Foot|Nov 29
 Jayden Williams|OT|Questionable|Knee|Nov 22
 Hjalte Froholdt|C|Questionable|Concussion|Nov 22
 Jon Gaines II|G|Questionable|Ankle|Nov 22
-Jordan Burch|LB|Out|Knee - MCL|Feb 15
-Andrew Wingard|S|Out|Wrist|Dec 20
+Jordan Burch|LB|IR|Knee - MCL|Feb 15
+Andrew Wingard|S|IR|Wrist|Dec 27
 Gardner Minshew II|QB|IR|Elbow|Feb 15
 Zachary Carter|DT|IR|Knee|Nov 22
 #ATL
@@ -47,6 +47,7 @@ Brian Parker II|OT|IR|Knee|Nov 23
 Jalen Davis|CB|IR|Hamstring|Nov 23
 Cashius Howell|DE|IR|Wrist|Dec 6
 #CLE
+Elijah Chatman|DT|Questionable|Quadriceps|Nov 29
 Ronnie Hickman|S|Out|Concussion|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
@@ -66,10 +67,10 @@ Jaylen Waddle|WR|Questionable|Concussion|Nov 22
 Riley Moss|CB|Questionable|Concussion|Nov 22
 Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 #DET
+Kerby Joseph|S|Out|Knee|Nov 22
 Cade Mays|C|Doubtful|Ankle|Nov 22
 D.J. Reed|CB|Questionable|Hip|Nov 22
 Aidan Hutchinson|DE|Out|Knee - ACL|Feb 15
-Kerby Joseph|S|Out|Knee|Nov 22
 Jack Campbell|LB|IR|Neck|Dec 6
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 #GB
@@ -82,20 +83,21 @@ Skyy Moore|WR|Questionable|Ankle|Nov 25
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
 #HOU
+Marvin Harrison Jr.|WR|Questionable|Hamstring|Nov 19
+Woody Marks|RB|Doubtful|Concussion|Nov 19
+Kamari Lassiter|CB|Questionable|Wrist|Nov 19
 Azeez Al-Shaair|LB|IR|Groin|Dec 20
 Danielle Hunter|DE|Questionable|Hamstring|Nov 19
 Brevin Jordan|TE|Questionable|Foot|Nov 19
 Jake Hummel|LB|Questionable|Groin|Nov 19
-Woody Marks|RB|Doubtful|Concussion|Nov 19
-Marvin Harrison Jr.|WR|Questionable|Hamstring|Nov 19
 Jaylin Smith|CB|IR|Hamstring|Nov 19
 #IND
+Anthony Gould|WR|Questionable|Toe|Nov 19
 Jaylon Carlies|LB|IR|Neck|Dec 27
 Luke Rhodes|LS|Questionable|Hamstring|Nov 19
 Jerry Tillery|DT|Questionable|Calf|Nov 19
 Jalen Travis|OT|Doubtful|Knee|Nov 19
 Will Mallory|TE|Questionable|Hamstring|Nov 19
-Anthony Gould|WR|Questionable|Toe|Nov 19
 Charvarius Ward|CB|Questionable|Knee|Nov 19
 Sauce Gardner|CB|Questionable|Calf|Nov 19
 Bernhard Raimann|OT|Questionable|Concussion|Nov 19
@@ -210,10 +212,10 @@ Yaya Diaby|LB|Doubtful|Knee - MCL|Nov 22
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 22
 #TEN
+Wan'Dale Robinson|WR|IR|Ankle|Dec 20
 Anthony Hill Jr.|LB|Questionable|Neck|Nov 22
 Cody Barton|LB|Questionable|Concussion|Nov 22
 Carnell Tate|WR|Questionable|Shoulder|Nov 22
-Wan'Dale Robinson|WR|Questionable|Ankle|Nov 22
 Tony Adams|S|Questionable|Concussion|Nov 22
 Tommy Townsend|P|IR|Knee|Dec 13
 Peter Skoronski|G|IR|Hamstring|Dec 13
