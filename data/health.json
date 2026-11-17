@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-17T00:16:56+00:00",
+  "at": "2026-11-17T01:01:26+00:00",
   "ok": false,
-  "summary": "NBA finals from ESPN: 74 games kept (0 new), 1652 player lines\nNBA injuries refreshed\nnbalineups: 8 games, 50 confirmed / 30 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 197 games cached\nNBA refs: 7 crews posted today\nliveprops: 1097 feed lines merged (0 skipped from other days), 1079 total, unmatched names: []\nNBA data: teams 30, results 197 (through 2026-11-15), players 471, slate 8, lines 8, props 1079, inj teams 29, prev-season players 219, play log 38, adv 401, qtr games 197, h2h 4/4/2/4/2/4/3/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-lines-next: 13 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 0 with a forecast\nnflrefs: 149 games (0 new), 21 referees, 1 of this week's crews posted\n200 players, 32 teams\nnfl-inj: 200 players\nnfl-qtr: 149 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 692 players, 0 ESPN requests this run\nNHL data: 2 games today, 11 tomorrow, 32 teams, 701 skaters, 67 goalies, 860 props, 322 finals, 40 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 14-12, best props NBA 29-50 NFL 17-13 NHL 37-43\nSITE CHECK FAILED \u2014 live site left unchanged\n"
+  "summary": "NBA finals from ESPN: 74 games kept (0 new), 1652 player lines\nNBA injuries refreshed\nnbalineups: 8 games, 70 confirmed / 10 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 4 upcoming games with lines\nNBA refs: 0 summaries checked, 197 games cached\nNBA refs: 7 crews posted today\nlive feed is not from 2026-11-16 - nothing merged\nNBA data: teams 30, results 197 (through 2026-11-15), players 471, slate 8, lines 8, props 1067, inj teams 29, prev-season players 219, play log 38, adv 401, qtr games 197, h2h 4/4/2/4/2/4/3/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-lines-next: 13 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 1 with a forecast\nnflrefs: 149 games (0 new), 21 referees, 1 of this week's crews posted\n199 players, 32 teams\nnfl-inj: 199 players\nnfl-qtr: 149 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 692 players, 0 ESPN requests this run\nNHL data: 2 games today, 11 tomorrow, 32 teams, 701 skaters, 67 goalies, 994 props, 322 finals, 40 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 14-12, best props NBA 29-50 NFL 17-13 NHL 37-43\nSITE CHECK FAILED \u2014 live site left unchanged\n"
  },
  "site": {
   "at": "2026-11-16T23:32:25+00:00",
@@ -10,11 +10,11 @@
   "issue": "live page fails the site check: CHECK FAILED: @390 allpicks: Maximum call stack size exceeded @1200 allpicks: Maximum call stack size exceeded "
  },
  "nhl": {
-  "at": "2026-11-17T00:16:56+00:00",
+  "at": "2026-11-17T01:01:26+00:00",
   "ok": true,
   "issue": "",
   "gen": "Mon Nov 16 6:24 PM ET",
-  "odds_at": "2026-11-16T23:32:45+00:00",
+  "odds_at": "2026-11-17T00:17:19+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -2415,6 +2415,18 @@
    "site_issue": "live page fails the site check: CHECK FAILED: @390 allpicks: Maximum call stack size exceeded @1200 allpicks: Maximum call stack size exceeded ",
    "fails": [
     "liveprops: 1097 feed lines merged (0 skipped from other days), 1079 total, unmatched names: []",
+    "SITE CHECK FAILED \u2014 live site left unchanged"
+   ],
+   "check_failed": true,
+   "published": false
+  },
+  {
+   "at": "2026-11-17T01:01:26+00:00",
+   "what": "nba,nfl,nhl",
+   "ok": false,
+   "site_ok": false,
+   "site_issue": "live page fails the site check: CHECK FAILED: @390 allpicks: Maximum call stack size exceeded @1200 allpicks: Maximum call stack size exceeded ",
+   "fails": [
     "SITE CHECK FAILED \u2014 live site left unchanged"
    ],
    "check_failed": true,
