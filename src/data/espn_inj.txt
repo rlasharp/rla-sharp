@@ -1,6 +1,7 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 15:35Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 17:40Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+James Conner|RB|IR|Foot|Nov 29
 Jayden Williams|OT|Questionable|Knee|Nov 22
 Hjalte Froholdt|C|Questionable|Concussion|Nov 22
 Jon Gaines II|G|Questionable|Ankle|Nov 22
@@ -72,18 +73,18 @@ Kerby Joseph|S|Out|Knee|Nov 22
 Jack Campbell|LB|IR|Neck|Dec 6
 Jimmy Rolder|LB|IR|Hamstring|Feb 15
 #GB
+Josh Jacobs|RB|Out|Finger|Nov 25
 Kevin Zeitler|G|Out|Triceps|Nov 25
 Sean Rhyan|G|Out|Ankle|Nov 25
 Zaire Franklin|LB|Out|Shin|Nov 25
 Brandon Cisse|CB|Questionable|Ribs|Nov 25
 Skyy Moore|WR|Questionable|Ankle|Nov 25
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
-Josh Jacobs|RB|Out|Finger|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
 #HOU
+Azeez Al-Shaair|LB|IR|Groin|Dec 20
 Danielle Hunter|DE|Questionable|Hamstring|Nov 19
-Brevin Jordan|TE|Questionable|Finger|Nov 19
-Azeez Al-Shaair|LB|Questionable|Groin|Nov 19
+Brevin Jordan|TE|Questionable|Foot|Nov 19
 Jake Hummel|LB|Questionable|Groin|Nov 19
 Woody Marks|RB|Doubtful|Concussion|Nov 19
 Marvin Harrison Jr.|WR|Questionable|Hamstring|Nov 19

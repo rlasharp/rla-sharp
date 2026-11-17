@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 15:31Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 17:39Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
@@ -31,10 +31,10 @@ Sergio de Larrea|F|Out|knee strain|Nov 18
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
+Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Taurean Prince|F|Out|knee soreness|Nov 18
 Ronald Holland II|F|Out|knee bruise|Nov 18
 Isaiah Joe|G|Out|hip bruise|Nov 17
-Duncan Robinson|F|Out|quadriceps strain|Nov 18
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
 Stephen Curry|G|Out|abdomen|Dec 12
@@ -119,6 +119,7 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Scottie Barnes|F|Day-To-Day|illness|Nov 17
 Nate Bittle|C|Out|foot fracture|Nov 23
 Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 20
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
@@ -128,6 +129,7 @@ Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
+Felix Okpara|F|Day-To-Day|back strain|Nov 18
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 24
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
