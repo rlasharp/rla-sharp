@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-16 23:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 01:55Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
@@ -34,14 +34,13 @@ Isaiah Joe|G|Out|hip bruise|Nov 17
 Duncan Robinson|F|Out|quadriceps strain|Nov 18
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
-Gui Santos|F|Day-To-Day|ankle inflammation|Nov 16
 Stephen Curry|G|Out|abdomen|Dec 12
 Brandon Williams|G|Out|hamstring not specified|Nov 22
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
-Amen Thompson|G|Day-To-Day|knee soreness|Nov 16
+Amen Thompson|G|Out|knee soreness|Nov 18
 Clint Capela|C|Out|ankle sprain|Nov 18
 Steven Adams|C|Out|calf|Nov 18
 Julian Phillips|F|Day-To-Day|wrist|Nov 16
@@ -51,19 +50,18 @@ Tyrese Haliburton|G|Out|hamstring strain|Nov 22
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
+Yanic Konan Niederhauser|C|Out|foot surgery|Nov 23
 Brandon Ingram|F|Out|achilles surgery|Nov 19
-Yanic Konan Niederhauser|C|Out|foot surgery|Nov 17
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Austin Reaves|G|Day-To-Day|heel bruise|Nov 17
+Austin Reaves|G|Out|heel bruise|Nov 18
+Walker Kessler|C|Out|lower leg soreness|Nov 18
 #Memphis Grizzlies
 Isaiah Stewart|C|Out|illness|Nov 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 GG Jackson|F|Out|foot surgery|Jan 18
 Ty Jerome|G|Out|hip soreness|Nov 18
-Quinten Post|C|Out|undisclosed|
-Zach Edey|C|Day-To-Day|undisclosed|
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
 Nikola Jovic|F|Out|illness|Nov 18
@@ -93,13 +91,11 @@ Noah Penda|F|Out|hamstring strain|Nov 22
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 Izaiyah Nelson|F|Out|ankle surgery|Nov 18
 #Philadelphia 76ers
-Joel Embiid|C|Day-To-Day|foot|Nov 16
-LeBron James|F|Out|back|Nov 18
 Dominick Barlow|F|Out|back fracture|Nov 18
+LeBron James|F|Out|back|Nov 18
 Adem Bona|C|Out|back sprain|Nov 18
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
-Ryan Dunn|F|Day-To-Day|thumb soreness|Nov 16
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|foot bruise|Nov 17
@@ -120,7 +116,7 @@ Nate Bittle|C|Out|foot fracture|Nov 23
 Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 16
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
-Jaxson Hayes|C|Day-To-Day|knee strain|Nov 17
+Jaxson Hayes|C|Out|knee strain|Nov 18
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
