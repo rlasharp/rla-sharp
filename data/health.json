@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-17T02:01:32+00:00",
-  "ok": true,
-  "summary": ": 0 summaries checked, 197 games cached\nNBA refs: 7 crews posted today\nlive feed is not from 2026-11-16 - nothing merged\nNBA data: teams 30, results 197 (through 2026-11-15), players 471, slate 8, lines 8, props 1067, inj teams 29, prev-season players 219, play log 38, adv 401, qtr games 197, h2h 4/4/2/4/2/4/3/3\nnfl-update: 0 lines refreshed, 0 new finals (weeks [9, 10])\nnfl-lines-next: 11 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 10 \u00b7 6 indoors, 1 with a forecast\nnflrefs: 149 games (0 new), 21 referees, 1 of this week's crews posted\n197 players, 32 teams\nnfl-inj: 197 players\nnfl-qtr: 149 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 692 players, 0 ESPN requests this run\nNHL data: 2 games today, 11 tomorrow, 32 teams, 701 skaters, 67 goalies, 869 props, 322 finals, 40 requests\nsocmgr: 7 new headlines, 14 clubs with manager news\nsoccer: 244 upcoming matches (0 with odds, 244 with estimates, 225 with weather, 0 with referee), 0 player props, 5880 players\nUFC: 266 fighters, 2539 past fights, 217 requests\ncfb: 2250 players with logs, 70 focus games, 671 requests\ncbb: 2861 players with logs, 144 focus games, 590 requests\nFutures: nba: 13 futures markets, 152 prices nhl: 1 futures markets, 78 prices nfl: 19 futures markets, 361 prices \ntrack: no new snapshots \u00b7 graded: NHL plays 14-12, best props NBA 29-50 NFL 17-13 NHL 37-43\nSite check OK \u2014 published (2026-11-17T01:59:25Z)\n"
+  "at": "2026-11-17T02:12:19+00:00",
+  "ok": false,
+  "summary": "nhllines: 32/32 teams\nNHL PP time: 692 players, 0 ESPN requests this run\nNHL data: 2 games today, 11 tomorrow, 32 teams, 701 skaters, 67 goalies, 869 props, 322 finals, 40 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 14-12, best props NBA 29-50 NFL 17-13 NHL 37-43\nSITE CHECK FAILED \u2014 live site left unchanged\n"
  },
  "site": {
   "at": "2026-11-17T02:01:32+00:00",
@@ -10,7 +10,7 @@
   "issue": "live page fails the site check: CHECK FAILED: @390 allpicks: Maximum call stack size exceeded @1200 allpicks: Maximum call stack size exceeded "
  },
  "nhl": {
-  "at": "2026-11-17T02:01:32+00:00",
+  "at": "2026-11-17T02:12:19+00:00",
   "ok": true,
   "issue": "",
   "gen": "Mon Nov 16 8:55 PM ET",
@@ -2441,6 +2441,18 @@
    "fails": [],
    "check_failed": false,
    "published": true
+  },
+  {
+   "at": "2026-11-17T02:12:19+00:00",
+   "what": "nhl",
+   "ok": false,
+   "site_ok": false,
+   "site_issue": "live page fails the site check: CHECK FAILED: @390 allpicks: Maximum call stack size exceeded @1200 allpicks: Maximum call stack size exceeded ",
+   "fails": [
+    "SITE CHECK FAILED \u2014 live site left unchanged"
+   ],
+   "check_failed": true,
+   "published": false
   }
  ]
 }
