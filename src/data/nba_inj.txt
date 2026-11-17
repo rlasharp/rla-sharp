@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 01:55Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 03:27Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
@@ -11,9 +11,12 @@ Neemias Queta|C|Out|rest|Nov 18
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Jalen Smith|F|Day-To-Day|undisclosed|Nov 18
+Patrick Williams|F|Day-To-Day|finger|Nov 18
 Tobe Awaka|F|Out|back|Nov 18
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
+Peyton Watson|G|Day-To-Day|head not specified|Nov 18
 Jaylon Tyson|G|Out|ankle|Nov 18
 Evan Mobley|C|Out|toe sprain|Nov 29
 Sam Merrill|G|Out|elbow|Nov 18
@@ -64,6 +67,7 @@ GG Jackson|F|Out|foot surgery|Jan 18
 Ty Jerome|G|Out|hip soreness|Nov 18
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
+Bam Adebayo|C|Day-To-Day|hip|Nov 18
 Nikola Jovic|F|Out|illness|Nov 18
 Pelle Larsson|G|Out|illness|Nov 18
 #Milwaukee Bucks
