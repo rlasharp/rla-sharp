@@ -46,8 +46,10 @@ function allPicks(){const out=[],pc=x=>x==null?null:Math.round(x*100),odd=o=>o==
   for(const sp of ["cfb","cbb"])try{if(typeof coOk!=="undefined"&&coOk(sp))for(const g of coGames(sp).filter(g=>g.st==="pre"))for(const x of coLeans(sp,g))out.push({sp,kind:"Lean",txt:x.txt,odds:x.odds,edgePts:x.edge,game:`${coT(sp,g.a[0]).a} @ ${coT(sp,g.h[0]).a}`,when:coWhen(g.t),href:`#${sp}-game-${g.id}`})}catch(e){}
   return out}
 function viewAllPicks(){const el=document.getElementById("v-allpicks");if(!el)return;
-  for(const sp of ["cfb","cbb"])if(typeof coOk!=="undefined"&&!coOk(sp)&&typeof coEnsure!=="undefined")coEnsure(sp,()=>{if((location.hash||"").slice(1)==="allpicks")viewAllPicks()});
-  if(typeof nhlEnsure!=="undefined"&&typeof NHL_DATE!=="undefined"&&!NHL_DATE)nhlEnsure(()=>{if((location.hash||"").slice(1)==="allpicks")viewAllPicks()});
+  /* load college / NHL data once; redraw once when it arrives (never re-request from the redraw — that looped when a sport had no data) */
+  const again=()=>setTimeout(()=>{if((location.hash||"").slice(1)==="allpicks")viewAllPicks()},0);
+  for(const sp of ["cfb","cbb"])if(!ALLP["ld"+sp]&&typeof coOk!=="undefined"&&!coOk(sp)&&typeof coEnsure!=="undefined"){ALLP["ld"+sp]=1;coEnsure(sp,again)}
+  if(!ALLP.ldnhl&&typeof nhlEnsure!=="undefined"&&typeof NHL_DATE!=="undefined"&&!NHL_DATE){ALLP.ldnhl=1;nhlEnsure(again)}
   const L=allPicks(),SPN={nba:"🏀 NBA",nhl:"🏒 NHL",nfl:"🏈 NFL",cfb:"🏈 CFB",cbb:"🏀 CBB"},f=ALLP.sp,shown=L.filter(x=>f==="all"||x.sp===f);
   const n=sp=>L.filter(x=>x.sp===sp).length,odd=o=>o==null?"":(typeof oddsFmt!=="undefined"?oddsFmt(o):o);
   el.innerHTML=`<h1>⭐ All picks</h1><p class="sub">Every sport's picks in one place, same format. All follow the same rules: real posted lines only, our chance has to beat what the price needs, no long-shot moneylines. <a href="#record">📒 Our record</a> · <a href="#calib">🎯 How accurate</a></p>
