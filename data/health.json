@@ -1,16 +1,16 @@
 {
  "auto": {
-  "at": "2026-11-17T04:51:25+00:00",
-  "ok": true,
-  "summary": "nes: PHI failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: PIT failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: SEA failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: SJS failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: STL failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: TBL failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: TOR failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: UTA failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: VAN failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: VGK failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: WPG failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: WSH failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: 0/32 teams\nNHL PP time: 692 players, 0 ESPN requests this run\nNHL data: 2 games today, 11 tomorrow, 32 teams, 701 skaters, 67 goalies, 826 props, 323 finals, 40 requests\nsocmgr: 7 new headlines, 14 clubs with manager news\nsoccer: 244 upcoming matches (1 with odds, 244 with estimates, 225 with weather, 0 with referee), 272 player props, 5880 players\nUFC: 266 fighters, 2539 past fights, 217 requests\ncfb: 2250 players with logs, 70 focus games, 671 requests\ncbb: 2883 players with logs, 139 focus games, 583 requests\nFutures: nba: 13 futures markets, 152 prices nhl: 1 futures markets, 78 prices nfl: 20 futures markets, 377 prices \ntrack: no new snapshots \u00b7 graded: NHL plays 14-12, best props NBA 35-52 NFL 20-18 NHL 37-43\nSite check OK \u2014 published (2026-11-17T04:49:22Z)\n"
+  "at": "2026-11-17T05:12:07+00:00",
+  "ok": false,
+  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1635 player lines\nNBA injuries refreshed\nnbalineups: NBA.com hasn't posted 2026-11-17's lineups yet\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 197 games cached\nNBA refs: 7 crews posted today\nNBA props reset for 2026-11-17\nliveprops: 15 feed lines merged (0 skipped from other days), 15 total, unmatched names: []\nFirst tip is 1159 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 197 (through 2026-11-15), players 471, slate 5, lines 5, props 15, inj teams 29, prev-season players 139, play log 38, adv 401, qtr games 197, h2h 5/4/2/3/2\ntrack: nba 2026-11-17: snapshot 0 props, 5 games \u00b7 graded: NHL plays 14-12, best props NBA 35-52 NFL 20-18 NHL 37-43\nSITE CHECK FAILED \u2014 live site left unchanged\n"
  },
  "site": {
-  "at": "2026-11-17T04:51:25+00:00",
+  "at": "2026-11-17T05:12:07+00:00",
   "ok": false,
   "issue": "live page fails the site check: CHECK FAILED: @390 allpicks: Maximum call stack size exceeded @1200 allpicks: Maximum call stack size exceeded "
  },
  "nhl": {
-  "at": "2026-11-17T04:51:25+00:00",
+  "at": "2026-11-17T05:12:07+00:00",
   "ok": true,
   "issue": "",
   "gen": "Mon Nov 16 11:48 PM ET",
@@ -2510,6 +2510,19 @@
    ],
    "check_failed": false,
    "published": true
+  },
+  {
+   "at": "2026-11-17T05:12:07+00:00",
+   "what": "nba",
+   "ok": false,
+   "site_ok": false,
+   "site_issue": "live page fails the site check: CHECK FAILED: @390 allpicks: Maximum call stack size exceeded @1200 allpicks: Maximum call stack size exceeded ",
+   "fails": [
+    "liveprops: 15 feed lines merged (0 skipped from other days), 15 total, unmatched names: []",
+    "SITE CHECK FAILED \u2014 live site left unchanged"
+   ],
+   "check_failed": true,
+   "published": false
   }
  ]
 }
