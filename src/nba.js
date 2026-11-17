@@ -330,7 +330,7 @@ function nbaLast5(t){
 function nbaGame(el,id){
   const tabP=/-props$/.test(id);id=String(id).replace(/-props$/,"");
   const g=NBA_SLATE.find(x=>String(x.id)===String(id))||nbaFutGame(id);
-  if(!g){location.hash="nba";return}
+  if(!g){if(/^\d+$/.test(String(id))&&NBA_RES.some(r=>String(r[0])===String(id))){location.replace("#box/nba/"+id);return}location.hash="nba";return}
   const fut=!!g.fut;
   const A=NBA_TADV[g.a],H=NBA_TADV[g.h],M=nbaModel(g.a,g.h),k=nbaKeyOutAll(g),L=nbaL(g),W=nbaWinPct(L);
   const ra=(typeof NBA_REST!=="undefined"&&NBA_REST)||{};
@@ -1144,6 +1144,7 @@ ${nbaMinUI("nbaMinPl",(()=>{const sp=typeof pxNbaSpread!=="undefined"?pxNbaSprea
   <div class="grid g2" style="margin-top:14px">
     <div class="card"><h2>${opp?`Where he scores vs where ${nbaEsc(nbaShort(opp))} allow`:"Where he scores"}</h2>${opp?nbaShotMatchup(nm,opp):nbaCourt(nm)}</div>
     ${typeof vxShotDots!=="undefined"&&NBA_SHOTD&&NBA_SHOTD[nm]?`<div class="card"><h2>Every shot · last ${NBA_SHOTD[nm][2].length} games</h2>${vxShotDots(nm)}</div>`:""}
+    ${nbaPlayTypes(nm,opp)}
     ${nbaShotTypes(nm)}
     ${typeof vxQMin!=="undefined"?vxQMin(nm):""}
     ${typeof vxFouls!=="undefined"?vxFouls(nm):""}
@@ -1200,7 +1201,7 @@ function nbaScores(el){
     const row=(t,sc,w)=>`<div class="rsr${w?" w":""}"><span class="rsn">${nbaBadge(t)}<b>${nbaEsc(nbaShort(t))}</b><span class="small">${nbaRec(t)}</span></span>${w?`<span class="rsw">W</span>`:""}<span class="rss">${sc}</span></div>`;
     return `<div class="card sbox click rsc${NB.sel===r[0]?" sel":""}" data-nbx="${r[0]}" style="cursor:pointer;--ca:${nbaCol(r[2])};--ch:${nbaCol(r[3])};--cw:${nbaCol(W)}">
     ${row(r[2],r[4],aw)}${row(r[3],r[5],!aw)}
-    <div class="rsf"><span class="rsfin">FINAL${ot?"/"+ot:""}</span><span class="rsm">${nbaEsc(nbaShort(W))} by ${m}</span>${top?`<span class="small">🔥 ${nbaEsc(pxLast?pxLast(top[0]):top[0])} ${top[1]}</span>`:""}<span class="rsbx">${NB.sel===r[0]?"Hide box ▴":"Box score ▾"}</span></div></div>`}).join("")}</div>
+    <div class="rsf"><span class="rsfin">FINAL${ot?"/"+ot:""}</span><span class="rsm">${nbaEsc(nbaShort(W))} by ${m}</span>${top?`<span class="small">🔥 ${nbaEsc(pxLast?pxLast(top[0]):top[0])} ${top[1]}</span>`:""}<span class="rsbx">${NB.sel===r[0]?"Hide box ▴":"Box score ▾"}</span>${typeof bxLink!=="undefined"?bxLink("nba",r[0],"Full page"):""}</div></div>`}).join("")}</div>
   <div id="nbaBoxOut">${NB.sel?nbaBox(NB.sel):""}</div>`;
   el.querySelectorAll("[data-nd]").forEach(b=>b.onclick=()=>{NB.date=b.dataset.nd;NB.sel=null;nbaScores(el)});
   el.querySelectorAll("[data-nbx]").forEach(b=>b.onclick=()=>{const id=+b.dataset.nbx;NB.sel=NB.sel===id?null:id;nbaScores(el);if(NB.sel)document.getElementById("nbaBoxOut").scrollIntoView({behavior:"smooth",block:"start"})});
@@ -1341,3 +1342,26 @@ function nbaLuCard(g){const L=typeof NBA_LU!=="undefined"&&NBA_LU&&NBA_LU.g&&NBA
       ${X.out&&X.out.length?`<div class="small" style="margin-top:4px">Inactive: ${X.out.slice(0,8).map(nbaEsc).join(", ")}</div>`:""}</div>`};
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:6px">🏀 Starting lineups</h2><div class="grid g2">${side(g.a,L.a)}${side(g.h,L.h)}</div>
    <div class="small" style="margin-top:6px">From NBA.com · checked ${new Date(NBA_LU.at).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})} · the site re-checks about every 20 minutes before tip-off.</div></div>`}
+
+/* ---------- 🏀 How he scores: play types (PnR/drives, spot-up, transition, isolation, cuts & rolls, post-ups, putbacks, free throws)
+   vs how tonight's defense ranks at stopping each one. Estimated from ESPN play-by-play (NBA.com's official play-type numbers aren't
+   reachable from our data servers). NBA_PTYPE / NBA_TPTYPE from tools/nbagen.mjs. ---------- */
+const NBA_PTN=[["🔁","Pick & roll / drives","Unassisted drives, pull-ups and runners — mostly as the pick-and-roll ball handler"],["🎯","Spot-up","Catch-and-shoot jumpers and catch-and-drive (assisted)"],["💨","Transition","Shots within 7 seconds of getting the ball (defensive rebound, steal or the other team's basket)"],["🧍","Isolation","Step-backs, fadeaways and unassisted long jumpers"],["✂️","Cuts & rolls","Cutting shots, alley-oops and other assisted layups/dunks (incl. the roll man)"],["🧱","Post-ups","Hooks and turnarounds inside 16 feet"],["🔄","Putbacks","Tip-ins and putbacks off offensive rebounds"],["🎳","Free throws","Points from the line"]];
+let NBA_PTR=null;
+function nbaPtRanks(){if(NBA_PTR)return NBA_PTR;const T=typeof NBA_TPTYPE!=="undefined"&&NBA_TPTYPE;if(!T)return null;
+  const tm=Object.keys(T).filter(t=>T[t][0]>0),pg={};for(const t of tm)pg[t]=T[t][1].map(v=>v/T[t][0]);
+  const rk={},lg=[0,1,2,3,4,5,6,7].map(i=>tm.reduce((s,t)=>s+pg[t][i],0)/tm.length);
+  for(const t of tm)rk[t]=[];for(let i=0;i<8;i++){const S=tm.slice().sort((a,b)=>pg[a][i]-pg[b][i]);S.forEach((t,j)=>rk[t][i]=j+1)}
+  return NBA_PTR={pg,rk,lg,n:tm.length}}
+function nbaPlayTypes(nm,opp,inPanel){const P=typeof NBA_PTYPE!=="undefined"&&NBA_PTYPE[nm];if(!P)return "";const g=P[0],tot=P[1].reduce((a,b)=>a+b,0);if(g<3||tot<15)return "";
+  const R=opp?nbaPtRanks():null,rk=R&&R.rk[opp],N=R?R.n:30,ord=typeof nbaOrd!=="undefined"?nbaOrd:(x=>x);
+  const rows=NBA_PTN.map((d,i)=>({i,d,ppg:P[1][i]/g,sh:P[1][i]/tot,a:P[2][i],m:P[3][i]})).filter(x=>x.sh>=.03).sort((a,b)=>b.sh-a.sh);
+  let mScore=null;if(rk){let s=0,w=0;for(const x of rows){s+=x.sh*(R.pg[opp][x.i]/R.lg[x.i]);w+=x.sh}mScore=w?(s/w-1)*100:null}
+  const tier=r=>r>=N-9?["soft","up"]:r<=10?["tough","dn"]:["avg",""];
+  const tb=`<table class="bxt xat"><thead><tr><th>How he scores</th><th>Pts/g</th><th>Share</th><th>Made/g</th>${rk?`<th>${nbaEsc(opp)} D rank</th>`:""}</tr></thead><tbody>${rows.map(x=>{const r=rk&&rk[x.i],t=r?tier(r):null;
+     return `<tr><td title="${nbaEsc(x.d[2])}">${x.d[0]} ${x.d[1]}</td><td><b>${x.ppg.toFixed(1)}</b></td><td>${Math.round(x.sh*100)}%</td><td>${(x.m/g).toFixed(1)}${x.i===7&&x.a?` <span class="small">(${Math.round(x.m/x.a*100)}% FT)</span>`:""}</td>${rk?`<td class="${t[1]}" title="${R.pg[opp][x.i].toFixed(1)} pts/g allowed (NBA avg ${R.lg[x.i].toFixed(1)})"><b>${ord(r)}</b> <span class="small">${t[0]}</span></td>`:""}</tr>`}).join("")}</tbody></table>`;
+  const top=rows.slice(0,3),soft=rk?top.filter(x=>rk[x.i]>=N-9):[],tough=rk?top.filter(x=>rk[x.i]<=10):[];
+  const say=rk?`<div class="small" style="margin-top:4px">${mScore!=null?`His scoring mix vs ${nbaEsc(opp)}: <b class="${mScore>=4?"up":mScore<=-4?"dn":""}">${mScore>=0?"+":""}${mScore.toFixed(0)}%</b> points allowed vs an average defense. `:""}${soft.length?`Soft spot: ${soft.map(x=>x.d[1].toLowerCase()).join(", ")}. `:""}${tough.length?`Tough spot: ${tough.map(x=>x.d[1].toLowerCase()).join(", ")}.`:""}</div>`:"";
+  const foot=`<div class="small" style="margin-top:4px">${g} games this season. D rank = points per game allowed on that play type, 1st = allows the fewest (toughest), ${ord(N)} = allows the most. Made baskets sorted by ESPN's play-by-play wording and possession timing (misses can't be sorted the same way, so there's no FG% per type) — close to, but not the same as, NBA.com's Synergy play types.</div>`;
+  if(inPanel)return `<h4>🏀 How he scores vs ${opp?nbaEsc(opp)+"'s defense":"the league"}</h4>${tb}${say}${foot}`;
+  return `<div class="card"><h2>${opp?`How he scores vs ${nbaEsc(nbaShort(opp))}' defense`:"How he scores"}</h2>${tb}${say}${foot}</div>`}

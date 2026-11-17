@@ -98,7 +98,7 @@ function xaPanelBody(sp,nm,k,line,side){const over=xaOver(side),word=over?"Over"
   const WO=xaWithout(sp,nm,k,line,side);if(WO.length)rows.push(`<h4>👥 With / without teammates who are out now</h4><table class="bxt xat"><thead><tr><th>Teammate</th><th>With him</th><th>Without</th></tr></thead><tbody>${WO.map(o=>`<tr class="xame"><td>${xaEsc(o.m)}</td><td>${o.w.h}/${o.w.n} · ${o.w.av.toFixed(1)}</td><td><b>${o.wo.h}/${o.wo.n} · ${o.wo.av.toFixed(1)}</b></td></tr>`).join("")}</tbody></table><div class="small">${word} ${line} hits / games · average.</div>`);
   /* NBA extras */
   if(sp==="nba"){const pj=xaProjBody(nm,k,line);if(pj)rows.unshift(pj);const us=xaUsageSay(nm);if(us)rows.push(`<h4>📊 Usage</h4><div class="small">${us}</div>`);
-    if(["pts","pa","pr","pra"].includes(k)){const ft=xaFTSay(nm);if(ft)rows.push(`<h4>🎯 Free throws</h4><div class="small">${ft}</div>`)}
+    if(["pts","pa","pr","pra"].includes(k)){const ft=xaFTSay(nm);if(ft)rows.push(`<h4>🎯 Free throws</h4><div class="small">${ft}</div>`);if(typeof nbaPlayTypes!=="undefined"){const pt=nbaPlayTypes(nm,O&&O.opp,1);if(pt)rows.unshift(pt)}}
     const pc=xaPaceBody(nm,k,line,over);if(pc)rows.push(pc);
     if(["pts","3pm","3pa","pa","pr","pra"].includes(k)){const t=xa3PSay(nm);if(t)rows.push(`<h4>🎯 3-point shooting</h4><div class="small">${t}</div>`)}
     const f=xaFoulSay(nm);if(f)rows.push(`<h4>🟨 Fouls</h4><div class="small">${f}</div>`);

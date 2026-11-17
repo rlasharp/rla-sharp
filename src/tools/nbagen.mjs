@@ -223,7 +223,7 @@ const zoneOf = (x, y, pts) => {
   const ang = Math.atan2(dx, dy) * 180 / Math.PI; return ang < -30 ? 2 : ang > 30 ? 4 : 3;
 };
 const SHOTD_ = {};   /* player -> game -> [[x, y, made]] — every shot location, for the dot shot chart */
-const QMIN = {}; const FOULQ = {}; const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const CHANCE = {}; const QTR = {}; const DZONE = {}; const OZONE = {}; const DZG = {}; const TST = {};
+const QMIN = {}; const FOULQ = {}; const SHOT = {}; let LGZ = null; const STYPE = {}; let LGST = null; const CHANCE = {}; const QTR = {}; const DZONE = {}; const OZONE = {}; const DZG = {}; const TST = {}; const PTYPE = {}; const TPTYPE = {};
 const SD_A = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
 function shotdOut() { const o = {}; for (const [n, D] of Object.entries(SHOTD_)) { const G = Object.keys(D).sort().slice(-10); const L = G.map(g => D[g]); const tot = L.reduce((s, a) => s + a.length, 0); if (tot < 6 * G.length) continue;
   o[n] = [L.flat().map(([x, y]) => SD_A[Math.max(0, Math.min(63, x + 6))] + SD_A[Math.max(0, Math.min(63, y + 5))]).join(""), L.flat().map(v => v[2]).join(""), L.map(a => a.length)]; } return o; }
@@ -255,6 +255,50 @@ if (fs.existsSync(pbpFile)) {
     const t = STYPE[n] || (STYPE[n] = [0, 1, 2, 3].map(() => [0, 0, 0, 0])); t[st][0]++; t[st][1] += made; t[st][2] += th; t[st][3] += th && made;
   }
   LGZ = lg;
+  // ---------- How he scores (play types), estimated from ESPN play-by-play wording + possession timing ----------
+  // 0 pick & roll / drives (unassisted drives, pull-ups, runners), 1 spot-up (assisted catch-and-shoot jumpers and catch-and-drive), 2 transition (shot within 7 s of
+  // getting the ball off a defensive rebound, steal/turnover or the other team's basket), 3 isolation (step-backs, fadeaways, unassisted long jumpers),
+  // 4 cuts & rolls (cutting shots, alley-oops, assisted layups/dunks), 5 post-ups (hooks, turnarounds inside 16 ft), 6 putbacks, 7 free throws.
+  // per player: [games, pts[8], att[8], made[8]]; per team: [games, pts allowed[8]]
+  { const byG2 = {}; for (const r of pbp) (byG2[r.game_id] || (byG2[r.game_id] = [])).push(r);
+    const ck = r => { const m = /^(\d+):(\d+(?:\.\d+)?)$/.exec(String(r.clock_display_value || "")); return m ? +m[1] * 60 + +m[2] : NaN; };
+    const PT = {}, TD = {}, z8 = () => [0, 0, 0, 0, 0, 0, 0, 0];
+    for (const [gid, ev0] of Object.entries(byG2)) {
+      const ev = ev0.slice().sort((a, b) => (+a.sequence_number) - (+b.sequence_number)); if (!ev.length) continue;
+      const h = String(ev[0].home_team_id), A_ = ev[0].away_team_abbrev, H_ = ev[0].home_team_abbrev, ab = t => String(t) === h ? H_ : A_, oth = t => String(t) === h ? A_ : H_;
+      const gain = {}, seenP = new Set(), seenT = new Set();
+      for (const r of ev) {
+        const tt = String(r.type_text || ""), tx = String(r.text || ""), q = +r.period_number, c = ck(r), T = r.team_id == null ? null : ab(r.team_id);
+        if (!T) continue;
+        if (/Defensive Rebound/i.test(tt)) { gain[T] = [q, c]; continue; }
+        if (/Offensive Rebound/i.test(tt)) { gain[T] = null; continue; }
+        if (/Turnover/i.test(tt) && !r.shooting_play) { gain[oth(r.team_id)] = [q, c]; continue; }
+        if (!r.shooting_play) continue;
+        const ft = /Free Throw/i.test(tt), made = r.scoring_play ? 1 : 0, pts = made ? (+r.score_value || 0) : 0, D = oth(r.team_id);
+        const shooter = /\bblocks\b/i.test(tx) && r.athlete_id_2 != null ? r.athlete_id_2 : r.athlete_id_1, n = idToName[shooter];
+        let cat;
+        if (ft) { cat = 7; if (/Technical/i.test(tt)) continue; const m = /(\d) of (\d)/.exec(tt); if (made && m && m[1] === m[2]) gain[D] = [q, c]; }
+        else {
+          const fm = /(\d+)-foot/.exec(tx), dist = fm ? +fm[1] : (/layup|dunk|tip/i.test(tx) ? 1 : 15), ast = /assists\)/i.test(tx), gn = gain[T];
+          if (/Putback|Tip/i.test(tt)) cat = 6;
+          else if (gn && gn[0] === q && Number.isFinite(c) && gn[1] - c <= 7) cat = 2;
+          else if (/Cutting|Alley Oop/i.test(tt)) cat = 4;
+          else if (/Hook|Turnaround/i.test(tt) && dist <= 16) cat = 5;
+          else if (ast && /Jump Shot/i.test(tt) && !/Pullup|Step Back|Driving|Floating/i.test(tt)) cat = 1;
+          else if (/Step Back|Fade Away/i.test(tt) || (!ast && /^(Jump Shot|Turnaround)/i.test(tt) && dist > 16)) cat = 3;
+          else if (ast && /Driving|Pullup|Step Back/i.test(tt)) cat = 1;   // catch, then attack the closeout = spot-up
+          else if (ast) cat = 4;
+          else cat = 0;
+          if (made) gain[D] = [q, c]; gain[T] = made ? null : gain[T];
+        }
+        const td = TD[D] || (TD[D] = [0, z8()]); td[1][cat] += pts; if (!seenT.has(D)) { seenT.add(D); td[0]++; }
+        if (!n) continue; const p = PT[n] || (PT[n] = [0, z8(), z8(), z8()]); p[1][cat] += pts; p[2][cat]++; p[3][cat] += made; if (!seenP.has(n)) { seenP.add(n); p[0]++; }
+      }
+      // count the offense side too so a team with no allowed rows still gets its games
+      for (const t of [A_, H_]) if (!seenT.has(t)) { const td = TD[t] || (TD[t] = [0, z8()]); td[0]++; }
+    }
+    for (const [n, p] of Object.entries(PT)) if (p[0] >= 3) PTYPE[n] = p;
+    for (const [t, v] of Object.entries(TD)) TPTYPE[t] = v; }
   // ---------- Fouls by quarter (for "foul trouble" splits): player -> [[game id, Q1 fouls, 1st-half fouls, game fouls]] ----------
   { const FQ = {}; const idToName2 = {}; for (const [n, p] of Object.entries(LOGS)) idToName2[p.id] = n;
     for (const r of pbp) { const t = String(r.type_text || ""); if (!/Foul/i.test(t) || /Technical|Flagrant Foul Type 2|Too Many/i.test(t)) continue;
@@ -470,6 +514,8 @@ const NBA_CHANCE=${JSON.stringify(CHANCE)};
 const NBA_FOULQ=${JSON.stringify(FOULQ)}; /* player -> [[game id, 1st-quarter fouls, 1st-half fouls, game fouls]] (ESPN play-by-play) */
 const NBA_QMIN=${JSON.stringify(Object.fromEntries(Object.entries(QMIN).map(([n, a]) => [n, a.sort((x, y) => x[0] < y[0] ? -1 : 1).slice(-25)])))}; /* minutes by quarter (rebuilt from substitutions): [date, Q1, Q2, Q3, Q4, OT, his team's final margin] */ /* rebound + assist chances rebuilt from ESPN play-by-play lineups: s/l10/l5 = [games, ownMiss, oppMiss, oreb, dreb, teammateFGM, ast, min] */
 const NBA_TSTYPE=${JSON.stringify(TST)}; /* per team: o = shots taken, d = shots allowed; [catch&shoot, pull-up, <10 ft, other 10+ ft] each [FGA, FGM, 3PA, 3PM] */
+const NBA_PTYPE=${JSON.stringify(PTYPE)}; /* how he scores (play types, estimated from ESPN play-by-play): [games, pts[8], attempts[8], made[8]] — 0 PnR/drives 1 spot-up 2 transition 3 isolation 4 cuts & rolls 5 post-ups 6 putbacks 7 free throws */
+const NBA_TPTYPE=${JSON.stringify(TPTYPE)}; /* per team: [games, points allowed by play type[8]] */
 const NBA_DZONE=${JSON.stringify(DZONE)};
 const NBA_OZONE=${JSON.stringify(OZONE)}; /* per team: shots taken by zone [FGA, FGM], this season */
 const NBA_DZG=${JSON.stringify(Object.fromEntries(Object.entries(DZG).map(([t, g]) => [t, g.size])))};

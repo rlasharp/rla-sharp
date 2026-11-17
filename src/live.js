@@ -54,7 +54,7 @@ function liveBar(sp,g){
   const lead=g.as===g.hs?"":g.as>g.hs?g.a:g.h;
   const tm=(ab,sc)=>`<span class="lvt${lead===ab?" lead":""}">${g.poss===ab?"🏈 ":""}${ab} <b>${sc}</b></span>`;
   return `<div class="livebar ${g.st==="in"?"on":"fin"}">${g.st==="in"?`<span class="lvdot"></span><b class="lvl">LIVE</b>`:`<b class="lvl">FINAL</b>`}
-    ${tm(g.a,g.as)}<span class="small">–</span>${tm(g.h,g.hs)}<span class="lvd">${g.st==="in"?esc(g.det):""}${g.st==="in"&&g.dd?" · "+esc(g.dd)+(g.rz?" 🔴 red zone":""):""}</span></div>`;
+    ${tm(g.a,g.as)}<span class="small">–</span>${tm(g.h,g.hs)}<span class="lvd">${g.st==="in"?esc(g.det):""}${g.st==="in"&&g.dd?" · "+esc(g.dd)+(g.rz?" 🔴 red zone":""):""}</span>${(sp==="nba"||sp==="nhl")&&g.id&&typeof bxLink!=="undefined"?bxLink(sp,g.id,g.st==="in"?"Live box":"Box score"):""}</div>`;
 }
 function livePut(host,html,before){
   if(!host)return;let el=host.querySelector(":scope > .livebar");

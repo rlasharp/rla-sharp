@@ -702,7 +702,9 @@ def project(g):
         G_ = G[p_[0]]
         if not G_.get("svp") or G_["gs"] < 3: return 1, p_[0], p_[1]
         w = min(1, G_["gs"] / 20) * .3
-        return 1 + ((1 - G_["svp"] / 100) / (1 - LSV) - 1) * w, p_[0], p_[1]
+        # relative to his own team's save rate: the team's goals-against already includes how its goalies have played
+        T_ = TEAM.get(t) or {}; tsv = 1 - T_["ga"] / T_["sa"] if T_.get("sa") and T_.get("ga") is not None else LSV
+        return 1 + ((1 - G_["svp"] / 100) / (1 - tsv) - 1) * w, p_[0], p_[1]
     gH, nH, wH = gk(g["h"]); gA, nA, wA = gk(g["a"])
     la = lg * att(A) * dfn(H) * st_(A, H) * .985 * gH; lh = lg * att(H) * dfn(A) * st_(H, A) * 1.015 * gA
     if b2b(g["a"], g["d"]): la *= .98; lh *= 1.02
@@ -725,6 +727,8 @@ def project(g):
         if f < 1:
             if mine == "la": la *= f; lh *= 2 - f
             else: lh *= f; la *= 2 - f
+    cap = lambda x: 4.2 + (x - 4.2) * .4 if x > 4.2 else x   # no team averages much over 4 a game: pull back stacked extremes
+    la, lh = cap(la), cap(lh)
     p1s = lambda T: max(.22, min(.42, T["per"][0][0] / max(.1, sum(x[0] for x in T["per"])))) if T.get("per") else .31
     f1 = (p1s(A) + p1s(H)) / 2
     return {"la": round(la, 3), "lh": round(lh, 3), "l1a": round(la * f1, 3), "l1h": round(lh * f1, 3), "ga": nA, "gh": nH, "wa": wA, "wh": wH,
