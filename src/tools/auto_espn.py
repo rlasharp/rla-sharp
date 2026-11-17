@@ -302,7 +302,8 @@ def nfl_roll(force=False):
         OL[gid] = {"sp": float(sp), "ml": [int(float(mla)), int(float(mlh))] if mla else None, "tot": float(tot)}
     RP = {k: json.loads(v) for k, v in re.findall(r'"([^"]+\|\w+)":\s*(\[[^\]]*\])', js.split("const REAL_PROPS=")[1].split("\n")[0])}
     G = {r[0].strip('"'): (r[1], r[2]) for r in rows}
-    pm = re.search(r"const PLAYS=\[\n?(.*?)\n?\];", pj, re.S)   # empty list ("[\n]") when the plays are automatic; arch = []
+    pm = re.search(r"const PLAYS=\[\n?(.*?)\n?\];", pj, re.S)   # empty list ("[\n]") when the plays are automatic
+    arch = []   # (this used to sit inside the comment above, so the roll crashed with NameError once the plays went automatic)
     for typ, body in re.findall(r'\{type:"(\w+)",(.*?)\n\s*why:', pm.group(1), re.S) if pm else []:
         f_ = dict(re.findall(r'(\w+):"([^"]*)"', body)); gm = re.search(r"game:(\w+)", body)
         if typ == "prop":

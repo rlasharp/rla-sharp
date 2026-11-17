@@ -31,7 +31,7 @@ if want nfl; then
   for f in engine.js real.js market.js inj.js data/espn_inj.txt; do cp "$f" "$WORK/$(basename $f).bak"; done
   python3 tools/auto_espn.py nfl-update >> "$WORK/summary.txt" 2>&1 || log "NFL lines/finals: kept old"
   python3 tools/auto_espn.py nfl-lines-next >> "$WORK/summary.txt" 2>&1 || log "NFL next-week lines: kept old"
-  python3 tools/auto_espn.py nfl-roll >> "$WORK/summary.txt" 2>&1 || log "NFL new week: not set up yet (kept this week)"   # writes nothing unless it completes   # once every game of the week is final: next week's games + lines, plays archived
+  python3 tools/auto_espn.py nfl-roll >> "$WORK/summary.txt" 2>&1 || log "NFL new week FAILED (kept this week) — see nfl-roll in the run log"   # writes nothing unless it completes   # once every game of the week is final: next week's games + lines, plays archived
   grep -q "nfl-roll: Week" "$WORK/summary.txt" && python3 tools/auto_espn.py nfl-update >> "$WORK/summary.txt" 2>&1   # fill the new week's lines right away
   python3 tools/nflwx.py > "$WORK/nflwx.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_WX" "$WORK/nflwx.js" && cp "$WORK/nflwx.js" nfl_wx.js || log "NFL weather: kept old"   # kickoff forecast for every outdoor game, refreshed each NFL update
   python3 tools/nflrefs.py > "$WORK/nflrefs.js" 2>> "$WORK/summary.txt" && grep -q "^var NFL_REFS" "$WORK/nflrefs.js" && cp "$WORK/nflrefs.js" nfl_refs.js || log "NFL referees: kept old"   # referee crew tendencies + this week's crews once posted
