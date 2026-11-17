@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 04:48Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-17 05:24Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 18
 Kingston Flemings|G|Day-To-Day|back strain|Nov 18
@@ -47,7 +47,7 @@ Amen Thompson|G|Day-To-Day|knee soreness|Nov 18
 Marcus Smart|G|Day-To-Day|suspension|Nov 18
 Steven Adams|C|Day-To-Day|calf|Nov 18
 Clint Capela|C|Out|ankle sprain|Nov 18
-Julian Phillips|F|Day-To-Day|wrist|Nov 16
+Julian Phillips|F|Day-To-Day|wrist|Nov 17
 #Indiana Pacers
 Andrew Nembhard|G|Day-To-Day|hip soreness|Nov 18
 Tyrese Haliburton|G|Out|hamstring strain|Nov 22
@@ -120,7 +120,7 @@ Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
 Nate Bittle|C|Out|foot fracture|Nov 23
-Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 16
+Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 20
 Kawhi Leonard|F|Out|knee inflammation|Nov 23
 #Utah Jazz
 Jaxson Hayes|C|Out|knee strain|Nov 18

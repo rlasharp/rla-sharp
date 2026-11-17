@@ -1,2 +1,2 @@
-/* NFL kickoff weather — ESPN venues + Open-Meteo forecasts (tools/nflwx.py), Week 10, 2026-11-17T04:48Z */
-var NFL_WX={"wk":10,"at":"2026-11-17T04:48Z","g":{"14":{"stad":"M&T Bank Stadium","city":"Baltimore, MD","t":44,"wc":0,"pp":0,"sn":0,"ws":3,"wg":6},"3":{"dome":"Mercedes-Benz Stadium"},"7":{"dome":"Lucas Oil Stadium"},"8":{"dome":"Caesars Superdome"},"10":{"dome":"Allegiant Stadium"},"11":{"dome":"State Farm Stadium"},"12":{"dome":"AT&T Stadium"}}};
+/* NFL kickoff weather — ESPN venues + Open-Meteo forecasts (tools/nflwx.py), Week 10, 2026-11-17T05:24Z */
+var NFL_WX={"wk":10,"at":"2026-11-17T05:24Z","g":{"3":{"dome":"Mercedes-Benz Stadium"},"7":{"dome":"Lucas Oil Stadium"},"8":{"dome":"Caesars Superdome"},"10":{"dome":"Allegiant Stadium"},"11":{"dome":"State Farm Stadium"},"12":{"dome":"AT&T Stadium"}}};

@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 04:48Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 05:24Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Out|Knee - MCL|Feb 15
@@ -138,7 +138,6 @@ Coleman Shelton|C|Doubtful|Hamstring|Nov 25
 Steve Avila|G|Out|Hamstring|Nov 25
 Joe Cardona|LS|Out|Ankle|Nov 25
 Davante Adams|WR|IR|Hamstring|Nov 25
-Puka Nacua|WR|IR|Knee - MCL|Dec 20
 #MIA
 Zeek Biggers|DT|Out|Knee - Meniscus|Feb 15
 Jordan Phillips|DT|Questionable|Arm|Nov 22
