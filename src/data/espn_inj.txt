@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 09:39Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 11:26Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jordan Burch|LB|Out|Knee - MCL|Feb 15
