@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-17T17:49:01+00:00",
+  "at": "2026-11-17T17:55:03+00:00",
   "ok": true,
-  "summary": "s), 579 total, unmatched names: []\nFirst tip is 411 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 205 (through 2026-11-16), players 471, slate 5, lines 5, props 579, inj teams 29, prev-season players 139, play log 38, adv 406, qtr games 205, h2h 5/4/2/3/2\nnfl-update: 13 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 0 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 150 games (0 new), 21 referees, 0 of this week's crews posted\n190 players, 32 teams\nnfl-inj: 190 players\nnfl-qtr: 150 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 693 players, 0 ESPN requests this run\nNHL data: 11 games today, 3 tomorrow, 32 teams, 633 skaters, 67 goalies, 1160 props, 324 finals, 49 requests\nsocmgr: 7 new headlines, 14 clubs with manager news\nsoccer: 244 upcoming matches (2 with odds, 244 with estimates, 225 with weather, 0 with referee), 840 player props, 5880 players\nUFC: 266 fighters, 2539 past fights, 217 requests\ncfb: 2250 players with logs, 72 focus games, 676 requests\ncbb: 2818 players with logs, 172 focus games, 581 requests\nFutures: nba: 20 futures markets, 444 prices nhl: 1 futures markets, 86 prices nfl: 23 futures markets, 425 prices \ntrack: nba 2026-11-17: snapshot 10 props, 5 games \u00b7 graded: NHL plays 14-12, best props NBA 35-52 NFL 20-19 NHL 42-44\nSite check OK \u2014 published (2026-11-17T17:46:54Z)\n"
+  "summary": " 403: Forbidden) \u2014 kept old\nnhllines: PIT failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: SEA failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: SJS failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: STL failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: TBL failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: TOR failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: UTA failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: VAN failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: VGK failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: WPG failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: WSH failed (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: 0/32 teams\nNHL PP time: 693 players, 0 ESPN requests this run\nNHL data: 11 games today, 3 tomorrow, 32 teams, 633 skaters, 67 goalies, 1160 props, 324 finals, 49 requests\nsocmgr: 7 new headlines, 14 clubs with manager news\nsoccer: 244 upcoming matches (2 with odds, 244 with estimates, 225 with weather, 0 with referee), 840 player props, 5880 players\nUFC: 266 fighters, 2539 past fights, 217 requests\ncfb: 2250 players with logs, 72 focus games, 675 requests\ncbb: 2818 players with logs, 172 focus games, 580 requests\nFutures: nba: 20 futures markets, 444 prices nhl: 1 futures markets, 86 prices nfl: 23 futures markets, 425 prices \ntrack: nba 2026-11-17: snapshot 10 props, 5 games \u00b7 graded: NHL plays 14-12, best props NBA 35-52 NFL 20-19 NHL 42-44\nSite check OK \u2014 published (2026-11-17T17:52:54Z)\n"
  },
  "site": {
-  "at": "2026-11-17T17:49:01+00:00",
+  "at": "2026-11-17T17:55:03+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-17T17:49:01+00:00",
+  "at": "2026-11-17T17:55:03+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Tue Nov 17 12:40 PM ET",
+  "gen": "Tue Nov 17 12:52 PM ET",
   "odds_at": "2026-11-17T16:34:54+00:00",
   "backfill": "1312/1312"
  },
@@ -2627,12 +2627,25 @@
    "published": true
   },
   {
-   "at": "2026-11-17T17:49:01+00:00",
+   "at": "2026-11-17T17:55:03+00:00",
    "what": "all",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
-   "fails": [],
+   "fails": [
+    "403: Forbidden) \u2014 kept old",
+    "nhllines: PIT failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: SEA failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: SJS failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: STL failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: TBL failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: TOR failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: UTA failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: VAN failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: VGK failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: WPG failed (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: WSH failed (HTTP Error 403: Forbidden) \u2014 kept old"
+   ],
    "check_failed": false,
    "published": true
   }
