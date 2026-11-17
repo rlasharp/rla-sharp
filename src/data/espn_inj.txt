@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 17:51Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-17 19:44Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 James Conner|RB|IR|Foot|Nov 29
@@ -30,13 +30,12 @@ Brady Christensen|G|IR|Hamstring|Nov 22
 Mike Jackson|CB|IR|Groin|Nov 22
 Jonathon Brooks|RB|IR|Groin|Nov 22
 #CHI
+Kyler Gordon|CB|Questionable|Shoulder|Nov 22
 Malik Muhammad II|CB|Questionable|Toe|Nov 22
 Kyle Monangai|RB|Questionable|Toe|Nov 22
-Luther Burden III|WR|Questionable|Concussion|Nov 22
 Tyrique Stevenson Sr.|CB|Questionable|Hand|Nov 22
 Zavier Scott|RB|IR|Wrist|Dec 13
 Kentavius Street|DT|IR|Knee|Feb 15
-Braxton Jones|OT|IR|Knee|Feb 15
 #CIN
 Kyle Dugger|S|Questionable|Quadriceps|Nov 23
 Myles Hinton|OT|Questionable|Illness|Nov 23
@@ -218,7 +217,7 @@ Tony Adams|S|Questionable|Concussion|Nov 22
 Tommy Townsend|P|IR|Knee|Dec 13
 Peter Skoronski|G|IR|Hamstring|Dec 13
 #WAS
+Jacory Croskey-Merritt|RB|IR|Groin|Nov 23
 Colson Yankoff|TE|Questionable|Knee|Nov 23
 Lucas Patrick|G|Questionable|Concussion|Nov 23
 Laremy Tunsil|OT|IR|Triceps|Dec 20
-Jacory Croskey-Merritt|RB|IR|Groin|Nov 23
