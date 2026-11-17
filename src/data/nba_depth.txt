@@ -7,10 +7,10 @@ PF|Jalen Johnson|Aaron Wiggins|Luguentz Dort|Asa Newell|Dorian Finney-Smith
 C|Onyeka Okongwu|Jock Landale|Zuby Ejiofor|Asa Newell|Dorian Finney-Smith
 #BOS
 PG|Derrick White|Payton Pritchard|Mike Conley|Devin Carter
-SG|Paul George|Baylor Scheierman|Payton Pritchard|Hugo Gonzalez|Derrick White
+SG|Hugo Gonzalez|Baylor Scheierman|Payton Pritchard|Derrick White|Ron Harper Jr.
 SF|Jayson Tatum|Sam Hauser|Paul George|Baylor Scheierman|Hugo Gonzalez
-PF|Jordan Walsh|Jayson Tatum|Paul George|Sam Hauser|Hugo Gonzalez
-C|Mitchell Robinson|Neemias Queta|Luka Garza|Chris Cenac Jr.|Amari Williams
+PF|Paul George|Jordan Walsh|Jayson Tatum|Sam Hauser|Baylor Scheierman
+C|Neemias Queta|Mitchell Robinson|Luka Garza|Chris Cenac Jr.|Amari Williams
 #BKN
 PG|Egor Demin|Mikel Brown Jr.|Nolan Traore|Keon Ellis|Ben Saraf
 SG|Keon Ellis|Nolan Traore|Egor Demin|Mikel Brown Jr.|Drake Powell
@@ -19,9 +19,9 @@ PF|Julius Randle|Noah Clowney|Josh Minott|Danny Wolf|Chaney Johnson
 C|Day'Ron Sharpe|Moritz Wagner|Danny Wolf|Josh Minott|Chaney Johnson
 #CHA
 PG|Coby White|Dennis Schroder|Christian Anderson|Kylan Boswell
-SG|Kon Knueppel|Sion James|Grayson Allen|Coby White|Dennis Schroder
-SF|Brandon Miller|Grayson Allen|Sion James|Royce O'Neale|Liam McNeeley
-PF|Naz Reid|Royce O'Neale|Tidjane Salaun|Sion James|Liam McNeeley
+SG|Kon Knueppel|Grayson Allen|Coby White|Dennis Schroder|Sion James
+SF|Brandon Miller|Sion James|Grayson Allen|Royce O'Neale|Liam McNeeley
+PF|Naz Reid|Royce O'Neale|Grant Williams|Tidjane Salaun|Sion James
 C|Moussa Diabate|Ryan Kalkbrenner|Naz Reid|Hannes Steinbach|PJ Hall
 #CHI
 PG|Josh Giddey|Tre Jones|Jaylin Sellers
@@ -44,7 +44,7 @@ C|Daniel Gafford|Dereck Lively II|Moussa Cisse|Santi Aldama|Morez Johnson Jr.
 #DEN
 PG|Jamal Murray|Tyus Jones|RJ Nembhard Jr.
 SG|Christian Braun|DeMar DeRozan|Julian Strawther|Spencer Jones|Tyus Jones
-SF|Cameron Johnson|DeMar DeRozan|Julian Strawther|Alpha Diallo|Spencer Jones
+SF|Cameron Johnson|Bryce Hopkins|DeMar DeRozan|Julian Strawther|Alpha Diallo
 PF|Aaron Gordon|DeMar DeRozan|Spencer Jones|Alpha Diallo|Trevon Brazile
 C|Nikola Jokic|Marvin Bagley III|DaRon Holmes II|Trevon Brazile|Aaron Gordon
 #DET
