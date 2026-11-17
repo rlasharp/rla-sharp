@@ -33,15 +33,15 @@ const SLATE = [
 ];
 // REAL lines: DraftKings via ESPN, Tue Nov 17 2026 (updated by every automatic run until kickoff). sp = HOME spread, ml = [away, home]
 const LINES = {
- 1:{sp:-11.5,ml:[490,-675],tot:44.5},
+ 1:{sp:-11.5,ml:[470,-650],tot:44.5},
  2:{sp:-16.5,ml:[800,-1350],tot:45.5},
  3:{sp:-11.5,ml:[470,-650],tot:49.5},
  4:{sp:-8.5,ml:[330,-425],tot:54.5},
  5:{sp:-6.5,ml:[220,-270],tot:46.5},
  6:{sp:-16.5,ml:[1000,-1800],tot:41.5},
  7:{sp:4.5,ml:[-218,180],tot:38.5},
- 8:{sp:-2.5,ml:[120,-142],tot:44.5},
- 9:{sp:-3,ml:[140,-166],tot:40.5},
+ 8:{sp:-2.5,ml:[114,-135],tot:43.5},
+ 9:{sp:-3,ml:[130,-155],tot:40.5},
  10:{sp:-10,ml:[400,-535],tot:40.5},
  11:{sp:6,ml:[-265,215],tot:46.5},
  12:{sp:-3,ml:[136,-162],tot:46.5},
