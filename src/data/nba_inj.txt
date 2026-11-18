@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 17:35Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 18:14Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -68,9 +68,7 @@ Ty Jerome|G|Out|hip|Nov 19
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Myron Gardner|F|Day-To-Day|hamstring|Nov 18
-Nikola Jovic|F|Day-To-Day|illness|Nov 18
-Bam Adebayo|C|Day-To-Day|hip|Nov 18
+Myron Gardner|F|Day-To-Day|hamstring|Nov 22
 #Milwaukee Bucks
 Ousmane Dieng|F|Out|finger surgery|Dec 14
 #Minnesota Timberwolves
@@ -97,6 +95,7 @@ Jonathan Isaac|F|Out|knee not specified|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 22
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 #Philadelphia 76ers
+Dean Wade|F|Day-To-Day|hamstring soreness|Nov 18
 Dominick Barlow|F|Out|back fracture|Nov 21
 Jaylen Brown|G|Out|hamstring not specified|Nov 21
 Adem Bona|C|Out|back sprain|Nov 21
@@ -119,6 +118,8 @@ Dylan Harper|G|Day-To-Day|undisclosed|Nov 19
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+RJ Barrett|F|Day-To-Day|hamstring soreness|Nov 18
+Scottie Barnes|F|Out|groin|Nov 20
 Kawhi Leonard|F|Out|knee inflammation|Nov 27
 Nate Bittle|C|Out|foot fracture|Nov 23
 Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 20
