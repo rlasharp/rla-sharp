@@ -51,3 +51,22 @@ async function viewBox(h){const el=document.getElementById("v-box");if(!el)retur
 /* small "📋 Box score" link that works inside clickable cards */
 function bxLink(sp,id,txt){return `<span class="lvbx" role="link" tabindex="0" data-bxgo="box/${sp}/${bxE(id)}">📋 ${txt||"Box score"}</span>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-bxgo]");if(!b)return;e.preventDefault();e.stopPropagation();location.hash=b.dataset.bxgo},true);
+
+/* ---------- ⚡ Last night's NBA games on the page right away: when ESPN marks a game final and the site's data doesn't have it yet,
+   its box score is added to the results and every player's game log in the browser (hit rates, last-10, averages, defense numbers
+   update at once). The next site update brings the same numbers from our own data. Only ESPN's final numbers; nothing is estimated. ---------- */
+const BXP={busy:0,done:new Set()};
+async function bxPatchNba(){if(BXP.busy||typeof NBA_RES==="undefined"||typeof finDay==="undefined"||typeof etNow==="undefined")return;BXP.busy=1;let n=0;
+  try{const t=etNow().d,y=new Date(Date.parse(t+"T12:00:00Z")-864e5).toISOString().slice(0,10),have=new Set(NBA_RES.map(r=>String(r[0])));
+    for(const d of [y,t]){const G=await finDay("nba",d);
+      for(const g of G){if(g.st!=="post"||have.has(String(g.id))||BXP.done.has(g.id))continue;let o;try{o=await bxLoad("nba",g.id)}catch(e){continue}
+        if(!o||o.st!=="post")continue;const [A,H]=o.teams;if(!A||!H)continue;
+        const rows=[];for(const T of [A,H]){const opp=T===A?H:A;for(const grp of o.pl[T.ab]||[]){const ix=l=>grp.lab.indexOf(l),v=(r,l)=>{const i=ix(l);return i<0?null:r.s[i]},pr=x=>String(x||"").split("-").map(Number);
+          for(const r of grp.rows){if(r.dnp)continue;const mn=+v(r,"MIN");if(!(mn>0))continue;const [fgm,fga]=pr(v(r,"FG")),[tpm,tpa]=pr(v(r,"3PT")),[ftm,fta]=pr(v(r,"FT"));
+            rows.push([r.n,T.ab,r.pos,[+g.id,d,opp.ab,T.home?"H":"A",mn,+v(r,"PTS")||0,+v(r,"REB")||0,+v(r,"AST")||0,tpm||0,r.st?1:0,fgm||0,fga||0,+v(r,"STL")||0,+v(r,"BLK")||0,+v(r,"TO")||0,tpa||0,ftm||0,fta||0,v(r,"PF")==null?null:+v(r,"PF")]])}}}
+        if(rows.length<10)continue;
+        NBA_RES.push([+g.id,d,A.ab,H.ab,+A.sc,+H.sc]);for(const [nm,tm,pos,row] of rows){const p=NBA_LOGS[nm]||(NBA_LOGS[nm]={tm,pos,id:0,g:[]});if(!p.g.some(x=>String(x[0])===String(row[0])))p.g.push(row)}
+        BXP.done.add(g.id);have.add(String(g.id));n++}}}catch(e){}
+  BXP.busy=0;
+  if(n){try{NBA_DVP_IDX=null;NBA_ALLOW=null;NBA_RESTM=null}catch(e){}const h=(location.hash||"").slice(1);if(/^(nba|today|allpicks|compare\/nba)/.test(h)&&typeof route!=="undefined")route()}}
+setTimeout(bxPatchNba,4000);setInterval(bxPatchNba,5*60*1000);

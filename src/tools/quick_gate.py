@@ -74,10 +74,17 @@ def main():
         pre.add(key)
         if key not in pre0:
             sports.add(SP(g["sp"])); why.append(f"{g['name']} starts in {int(mins)} min — pre-game update")
+    # new NBA box scores from hoopR (our main NBA source posts a night's games some time the next day, at no fixed hour):
+    # a free `git ls-remote` of its repository each run; when it moves, start an NBA update so the site picks it up right away
+    hoopr = S.get("hoopr")
+    try:
+        hoopr = subprocess.check_output(["git", "ls-remote", "https://github.com/sportsdataverse/hoopr-nba-data", "HEAD"], timeout=30, text=True).split()[0]
+        if S.get("hoopr") and hoopr != S.get("hoopr"): sports.add("nba"); why.append("new NBA box scores posted (hoopR)")
+    except Exception as e: errs.append(f"hoopR check: {e}")
     # keep state small: only games we can still see (+ the last 10 'done' days)
     ids = {g["id"] for g in allg}
     state = {"finals": sorted(finals | {f for f in finals0 if f in ids}), "pre": sorted(pre | {p for p in pre0 if p.rsplit(":", 1)[0] in ids}),
-             "done": done[-10:], "at": now.isoformat(timespec="seconds")}
+             "done": done[-10:], "at": now.isoformat(timespec="seconds"), "hoopr": hoopr}
     why = list(dict.fromkeys(why))
     run = bool(full or sports)
     what = "all" if full else ",".join(sorted(sports))
@@ -92,8 +99,12 @@ def main():
         try: last = dt.datetime.fromtimestamp(int(subprocess.check_output(["git", "log", "-1", "--format=%ct", "--", "index.html"]).strip()), dt.timezone.utc)
         except Exception: last = None
     age = (now - last).total_seconds() / 3600 if last else None
-    if age is not None and age > 3.5:
-        alert.append(f"The site has not been updated for {age:.1f} hours (last update {last.astimezone(ET):%a %b %-d %-I:%M %p} ET). Updates normally run at least every 2 hours.")
+    # game nights (a game live, or finished within the last 3 hours): updates run every ~10 min, so 90 minutes without one means
+    # something is stuck — say so while the games are still on, not 4 hours later
+    live_now = any(g["st"] == "in" for g in allg) or any(g["st"] == "post" and g["start"] and (now - g["start"]).total_seconds() < 6 * 3600 for g in allg)
+    lim = 1.5 if live_now else 3.5
+    if age is not None and age > lim:
+        alert.append(f"The site has not been updated for {age:.1f} hours (last update {last.astimezone(ET):%a %b %-d %-I:%M %p} ET). " + ("It's a game night — updates should be running every ~10 minutes." if live_now else "Updates normally run at least every 2 hours."))
         title = f"Site data is {age:.0f} h old"
     try:
         h = json.load(open("data/health.json"))

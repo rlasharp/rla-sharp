@@ -18,12 +18,21 @@ NOW = dt.datetime.now(dt.timezone.utc)
 for ab, nm in sorted(TEAMS.items()):
     ft = (C.get(ab) or {}).get("ft")
     if ft and (NOW - dt.datetime.fromisoformat(ft)).total_seconds() < 75 * 60: ok += 1; continue   # read at most every 75 min
-    try:
-        with urllib.request.urlopen(urllib.request.Request(f"https://www.dailyfaceoff.com/teams/{slug(nm)}/line-combinations", headers=UA), timeout=30) as r: h = r.read().decode("utf8", "replace")
-        m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', h, re.S)
-        cmb = json.loads(m.group(1))["props"]["pageProps"]["combinations"]
-    except Exception as e:
-        print(f"nhllines: {ab} failed ({e}) — kept old", file=sys.stderr); continue
+    # be gentle with the site: a pause between teams, and a short wait + one retry only for temporary errors (timeouts, 5xx).
+    # A 403 means the site doesn't want the request right now — we respect that and keep the team's last saved lines.
+    cmb, err = None, None
+    for i in range(2):
+        if i: time.sleep(10)
+        try:
+            with urllib.request.urlopen(urllib.request.Request(f"https://www.dailyfaceoff.com/teams/{slug(nm)}/line-combinations", headers=UA), timeout=30) as r: h = r.read().decode("utf8", "replace")
+            m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', h, re.S)
+            cmb = json.loads(m.group(1))["props"]["pageProps"]["combinations"]; break
+        except Exception as e:
+            err = e
+            if not re.search(r"HTTP Error 5\d\d|timed out|reset", str(e)): break
+    time.sleep(1.5)
+    if cmb is None:
+        print(f"nhllines: {ab} not read ({err}) — kept old", file=sys.stderr); continue
     G = {}
     for p in cmb.get("players") or []:
         g = p.get("groupIdentifier") or ""; G.setdefault(g, []).append([p.get("name"), p.get("positionIdentifier") or "", 1 if p.get("gameTimeDecision") else 0, p.get("injuryStatus") or ""])

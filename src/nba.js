@@ -1331,17 +1331,23 @@ function nbaUpcoming(el,h){
 
 /* ---------- 🏀 Starting lineups (NBA.com, refreshed every ~20 min before tip-off): Confirmed / Expected starters,
    and a warning when a player who started most of the team's last 5 games isn't in tonight's five ---------- */
-function nbaLuCard(g){const L=typeof NBA_LU!=="undefined"&&NBA_LU&&NBA_LU.g&&NBA_LU.g[g.a+"@"+g.h];if(!L||nbaStarted(g))return "";
+function nbaLuCard(g){const L0=typeof NBA_LU!=="undefined"&&NBA_LU&&NBA_LU.g&&NBA_LU.g[g.a+"@"+g.h];if(nbaStarted(g))return "";const L=L0||{a:null,h:null};
   const usual=t=>{const S={};let n=0;const last=NBA_RES.filter(r=>r[2]===t||r[3]===t).sort((x,y)=>x[1]<y[1]?1:-1).slice(0,5).map(r=>r[1]);n=last.length;
     for(const [nm,p] of Object.entries(NBA_LOGS))if(p.tm===t)for(const x of p.g)if(last.includes(x[1])&&(x[9]===1||x[9]===true))S[nm]=(S[nm]||0)+1;return Object.keys(S).filter(k=>S[k]>=3&&n>=3)};
-  const side=(t,X)=>{if(!X||!X.st.length)return `<div><h3 style="margin:0 0 6px">${nbaBadge(t)} ${nbaEsc(nbaShort(t))}</h3><div class="small">Not posted yet — teams announce about 30 minutes before tip-off.</div></div>`;
+  /* until NBA.com posts the five: the players who started most of the team's last 5 games, minus anyone listed Out — clearly marked as our read */
+  const likely=t=>{const U=usual(t).filter(n=>{const r=nbaInjOf(n);return !(r&&/out/i.test(r[2]))}),O=usual(t).filter(n=>{const r=nbaInjOf(n);return r&&/out/i.test(r[2])});
+    return `<div><h3 style="margin:0 0 6px">${nbaBadge(t)} ${nbaEsc(nbaShort(t))} <span class="gkt l">📋 Likely</span></h3>
+     ${U.length?U.map(n=>`<div class="lur"><span class="small lup">${nbaEsc((NBA_LOGS[n]&&NBA_LOGS[n].pos)||"")}</span>${nbaLink(n)}</div>`).join(""):`<div class="small">No steady starting five in the last 5 games.</div>`}
+     ${O.length?`<div class="small lumiss">⚠️ Regular starter${O.length>1?"s":""} listed Out: <b>${O.map(nbaEsc).join(", ")}</b></div>`:""}
+     <div class="small" style="margin-top:4px">Not posted by NBA.com yet — these started 3+ of the last 5 games.</div></div>`};
+  const side=(t,X)=>{if(!X||!X.st.length)return likely(t);
     const conf=X.st.every(p=>p[2]==="Confirmed"),inl=new Set(X.st.map(p=>typeof newsNorm!=="undefined"?newsNorm(p[0]):p[0])),miss=usual(t).filter(n=>!inl.has(typeof newsNorm!=="undefined"?newsNorm(n):n));
     return `<div><h3 style="margin:0 0 6px">${nbaBadge(t)} ${nbaEsc(nbaShort(t))} <span class="gkt ${conf?"c":"l"}">${conf?"✅ Confirmed":"🟡 Expected"}</span></h3>
       ${X.st.map(p=>`<div class="lur"><span class="small lup">${nbaEsc(p[1])}</span>${NBA_LOGS[p[0]]?nbaLink(p[0]):nbaEsc(p[0])}</div>`).join("")}
       ${X.st.length>=5&&miss.length?`<div class="small lumiss">⚠️ Not in the lineup: <b>${miss.map(nbaEsc).join(", ")}</b> (started most of the last 5)</div>`:""}
       ${X.out&&X.out.length?`<div class="small" style="margin-top:4px">Inactive: ${X.out.slice(0,8).map(nbaEsc).join(", ")}</div>`:""}</div>`};
   return `<div class="card" style="margin-top:12px"><h2 style="margin-bottom:6px">🏀 Starting lineups</h2><div class="grid g2">${side(g.a,L.a)}${side(g.h,L.h)}</div>
-   <div class="small" style="margin-top:6px">From NBA.com · checked ${new Date(NBA_LU.at).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})} · the site re-checks about every 20 minutes before tip-off.</div></div>`}
+   <div class="small" style="margin-top:6px">${L0?`From NBA.com · checked ${new Date(NBA_LU.at).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})}`:"NBA.com hasn't posted tonight's lineups yet (usually a few hours before tip-off) — 📋 Likely = who has been starting"} · the site re-checks about every 20 minutes before tip-off.</div></div>`}
 
 /* ---------- 🏀 How he scores: play types (PnR/drives, spot-up, transition, isolation, cuts & rolls, post-ups, putbacks, free throws)
    vs how tonight's defense ranks at stopping each one. Estimated from ESPN play-by-play (NBA.com's official play-type numbers aren't
