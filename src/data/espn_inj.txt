@@ -1,13 +1,13 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-18 03:32Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-18 05:40Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Gardner Minshew II|QB|IR|Elbow|Feb 15
 Jordan Burch|LB|IR|Knee - MCL|Feb 15
 Andrew Wingard|S|IR|Wrist|Dec 27
 James Conner|RB|IR|Foot|Nov 29
 Jayden Williams|OT|Questionable|Knee|Nov 22
 Hjalte Froholdt|C|Questionable|Concussion|Nov 22
 Jon Gaines II|G|Questionable|Ankle|Nov 22
-Gardner Minshew II|QB|IR|Elbow|Feb 15
 Zachary Carter|DT|IR|Knee|Nov 22
 #ATL
 Divine Deablo|LB|Out|Forearm|Nov 29
@@ -140,7 +140,6 @@ Chris Bell|WR|Questionable|Knee|Nov 22
 Aaron Brewer|C|Questionable|Concussion|Nov 22
 Malik Willis|QB|IR|Abdomen|Dec 13
 Andrew Meyer|C|Questionable|Undisclosed|Nov 22
-Darrell Baker Jr.|CB|Out|Knee|Nov 22
 #MIN
 Tyrion Ingram-Dawkins|DE|Questionable|Ankle|Nov 22
 Jauan Jennings|WR|Questionable|Calf|Nov 22
