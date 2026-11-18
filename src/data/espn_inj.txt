@@ -1,12 +1,12 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-18 01:57Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-18 03:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Jordan Burch|LB|IR|Knee - MCL|Feb 15
 Andrew Wingard|S|IR|Wrist|Dec 27
 James Conner|RB|IR|Foot|Nov 29
 Jayden Williams|OT|Questionable|Knee|Nov 22
 Hjalte Froholdt|C|Questionable|Concussion|Nov 22
 Jon Gaines II|G|Questionable|Ankle|Nov 22
-Jordan Burch|LB|IR|Knee - MCL|Feb 15
 Gardner Minshew II|QB|IR|Elbow|Feb 15
 Zachary Carter|DT|IR|Knee|Nov 22
 #ATL
@@ -45,9 +45,7 @@ Dalton Risner|G|Questionable|Knee|Nov 23
 Andrei Iosivas|WR|IR|Thumb|Nov 23
 Brian Parker II|OT|IR|Knee|Nov 23
 Jalen Davis|CB|IR|Hamstring|Nov 23
-Cashius Howell|DE|IR|Wrist|Dec 6
 #CLE
-Elijah Chatman|DT|Questionable|Quadriceps|Nov 29
 Ronnie Hickman|S|Out|Concussion|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
@@ -161,7 +159,6 @@ Drake Maye|QB|Doubtful|Ankle|Nov 29
 A.J. Brown|WR|Questionable|Hamstring|Nov 29
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 29
 Robert Spillane|LB|Questionable|Illness|Nov 29
-TreVeyon Henderson|RB|IR|Illness|Dec 21
 #NO
 Erik McCoy|C|Doubtful|Biceps|Nov 22
 CJ Donaldson|RB|Questionable|Shoulder|Nov 22
