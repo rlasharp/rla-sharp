@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 19:42Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 21:30Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -60,8 +60,7 @@ Brandon Ingram|F|Out|achilles surgery|Nov 19
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Austin Reaves|G|Day-To-Day|heel bruise|Nov 18
-Walker Kessler|C|Day-To-Day|lower leg soreness|Nov 18
+Austin Reaves|G|Out|heel bruise|Nov 20
 #Memphis Grizzlies
 GG Jackson|F|Out|foot surgery|Jan 18
 Isaiah Stewart|C|Out|illness|Nov 19
@@ -112,8 +111,6 @@ Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
 Maxime Raynaud|C|Out|knee dislocated|Nov 25
-De'Andre Hunter|F|Day-To-Day|hip soreness|Nov 18
-Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 18
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
 Dylan Harper|G|Day-To-Day|undisclosed|Nov 19
@@ -124,7 +121,6 @@ RJ Barrett|F|Day-To-Day|hamstring soreness|Nov 18
 Scottie Barnes|F|Out|groin|Nov 20
 Kawhi Leonard|F|Out|knee inflammation|Nov 27
 Nate Bittle|C|Out|foot fracture|Nov 23
-Kevin McCullar Jr.|G|Day-To-Day|illness|Nov 20
 #Utah Jazz
 Jaxson Hayes|C|Day-To-Day|knee strain|Nov 18
 Lauri Markkanen|F|Out|hand fracture|Jan 4
