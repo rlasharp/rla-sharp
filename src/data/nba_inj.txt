@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 17:09Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 17:35Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -37,10 +37,10 @@ Isaiah Joe|G|Out|hip bruise|Nov 18
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
+Brandon Williams|G|Out|hamstring strain|Nov 22
 Draymond Green|F|Day-To-Day|elbow inflammation|Nov 18
 Al Horford|C|Day-To-Day|back|Nov 18
 Stephen Curry|G|Out|abdomen|Dec 12
-Brandon Williams|G|Out|hamstring not specified|Nov 22
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
