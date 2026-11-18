@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 03:32Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 04:10Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -115,6 +115,7 @@ Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 18
 Maxime Raynaud|C|Out|knee dislocated|Nov 18
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
+Dylan Harper|G|Out|undisclosed|Nov 19
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
