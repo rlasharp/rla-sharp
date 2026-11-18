@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 02:20Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 03:13Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -7,6 +7,7 @@ CJ McCollum|G|Out|calf strain|Dec 19
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Henri Veesaar|C|Out|knee|Jul 1
 #Charlotte Hornets
+Grayson Allen|G|Out|concussion|Nov 20
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
@@ -58,8 +59,8 @@ Brandon Ingram|F|Out|achilles surgery|Nov 19
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Austin Reaves|G|Out|heel bruise|Nov 18
 Walker Kessler|C|Out|lower leg soreness|Nov 18
+Austin Reaves|G|Out|heel bruise|Nov 18
 #Memphis Grizzlies
 GG Jackson|F|Out|foot surgery|Jan 18
 Isaiah Stewart|C|Out|illness|Nov 19
