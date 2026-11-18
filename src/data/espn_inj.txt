@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-18 13:54Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-18 15:33Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Gardner Minshew II|QB|IR|Elbow|Feb 15
@@ -102,7 +102,7 @@ Bernhard Raimann|OT|Questionable|Concussion|Nov 19
 Akeem Davis-Gaither|LB|IR|Knee|Dec 20
 Mo Alie-Cox|TE|IR|Groin|Dec 20
 #JAX
-Robert Hainsey|C|Questionable|Knee|Nov 22
+Robert Hainsey|C|Doubtful|Knee|Nov 22
 Danny Striggow|DE|Questionable|Concussion|Nov 22
 B.J. Green II|DE|IR|Forearm|Nov 22
 #KC
@@ -184,8 +184,8 @@ Britain Covey|WR|Questionable|Knee|Nov 22
 Will Shipley|RB|IR|Foot|Nov 22
 Zack Baun|LB|Questionable|Back|Nov 22
 #PIT
+Mason McCormick|G|Out|Ankle|Jan 3
 DeShon Elliott|S|Questionable|Knee|Nov 22
-Mason McCormick|G|Doubtful|Ankle|Nov 22
 Michael Pittman Jr.|WR|IR|Foot|Nov 22
 Roman Wilson|WR|IR|Finger|Nov 22
 #SF
