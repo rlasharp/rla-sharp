@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 18:14Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 19:42Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -15,10 +15,10 @@ Patrick Williams|F|Day-To-Day|finger dislocated|Nov 18
 Tobe Awaka|F|Out|back|Nov 25
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
-Nae'Qwan Tomlin|F|Out|back|Nov 29
-Jaylon Tyson|G|Day-To-Day|ankle|Nov 18
-Sam Merrill|G|Out|elbow|Nov 18
 Peyton Watson|G|Day-To-Day|back bruise|Nov 18
+Jaylon Tyson|G|Out|ankle|Nov 20
+Nae'Qwan Tomlin|F|Out|back|Nov 29
+Sam Merrill|G|Out|elbow|Nov 18
 Evan Mobley|C|Out|toe sprain|Nov 29
 #Dallas Mavericks
 Sergio de Larrea|F|Out|knee strain|Nov 27
@@ -31,9 +31,10 @@ Santi Aldama|F|Day-To-Day|ankle sprain|Nov 18
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
-Taurean Prince|F|Day-To-Day|knee soreness|Nov 18
-Ronald Holland II|F|Day-To-Day|knee bruise|Nov 18
+Cade Cunningham|G|Day-To-Day|knee soreness|Nov 18
 Isaiah Joe|G|Out|hip bruise|Nov 18
+Taurean Prince|F|Out|knee soreness|Nov 20
+Ronald Holland II|F|Out|knee bruise|Nov 20
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
@@ -68,8 +69,9 @@ Ty Jerome|G|Out|hip|Nov 19
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Myron Gardner|F|Day-To-Day|hamstring|Nov 22
+Myron Gardner|F|Out|hamstring|Nov 22
 #Milwaukee Bucks
+Ryan Rollins|G|Out|illness|Nov 19
 Ousmane Dieng|F|Out|finger surgery|Dec 14
 #Minnesota Timberwolves
 Zyon Pullin|G|Day-To-Day|quadriceps bruise|Nov 19
