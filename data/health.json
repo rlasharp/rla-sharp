@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-17T23:38:05+00:00",
+  "at": "2026-11-18T00:32:42+00:00",
   "ok": true,
-  "summary": "\nliveprops: 688 feed lines merged (0 skipped from other days), 646 total, unmatched names: []\nNBA data: teams 30, results 205 (through 2026-11-16), players 471, slate 5, lines 5, props 646, inj teams 28, prev-season players 139, play log 39, adv 406, qtr games 205, h2h 5/4/2/3/2\nnfl-update: 13 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 7 with a forecast\nnflrefs: 150 games (0 new), 21 referees, 0 of this week's crews posted\n192 players, 32 teams\nnfl-inj: 192 players\nnfl-qtr: 150 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 693 players, 0 ESPN requests this run\nNHL data: 11 games today, 3 tomorrow, 32 teams, 633 skaters, 67 goalies, 1375 props, 324 finals, 49 requests\nsocmgr: 7 new headlines, 14 clubs with manager news\nsoccer: 245 upcoming matches (5 with odds, 245 with estimates, 235 with weather, 0 with referee), 1210 player props, 5880 players\nUFC: 266 fighters, 2539 past fights, 217 requests\ncfb: 2250 players with logs, 71 focus games, 674 requests\ncbb: 2815 players with logs, 164 focus games, 580 requests\nFutures: nba: 20 futures markets, 443 prices nhl: 11 futures markets, 310 prices nfl: 23 futures markets, 425 prices \ntrack: nba 2026-11-17: snapshot 10 props, 5 games \u00b7 graded: NHL plays 14-12, best props NBA 35-52 NFL 20-19 NHL 42-44\nSite check OK \u2014 published (2026-11-17T23:35:54Z)\n"
+  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1635 player lines\nNBA injuries refreshed\nnbalineups: 5 games, 10 confirmed / 40 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 3 upcoming games with lines\nNBA refs: 0 summaries checked, 205 games cached\nNBA refs: 4 crews posted today\nliveprops: 690 feed lines merged (103 skipped from other days), 648 total, unmatched names: []\nNBA data: teams 30, results 205 (through 2026-11-16), players 471, slate 5, lines 5, props 648, inj teams 28, prev-season players 139, play log 39, adv 406, qtr games 205, h2h 5/4/2/3/2\nnhllines: 32/32 teams\nNHL PP time: 693 players, 0 ESPN requests this run\nNHL data: 11 games today, 3 tomorrow, 32 teams, 633 skaters, 67 goalies, 1505 props, 324 finals, 49 requests\ntrack: nhl 2026-11-17: parlay locked (4 legs @ 6.49) \u00b7 graded: NHL plays 14-12, best props NBA 35-52 NFL 20-19 NHL 42-44\nSite check OK \u2014 published (2026-11-18T00:32:07Z)\n"
  },
  "site": {
   "at": "2026-11-17T23:38:05+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-17T23:38:05+00:00",
+  "at": "2026-11-18T00:32:42+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Tue Nov 17 6:35 PM ET",
-  "odds_at": "2026-11-17T22:54:24+00:00",
+  "gen": "Tue Nov 17 7:31 PM ET",
+  "odds_at": "2026-11-17T23:50:23+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -2692,6 +2692,16 @@
   {
    "at": "2026-11-17T23:38:05+00:00",
    "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-18T00:32:42+00:00",
+   "what": "nba,nhl",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
