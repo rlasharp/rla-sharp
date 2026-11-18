@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 15:33Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 17:09Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -47,7 +47,6 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
 Clint Capela|C|Out|ankle sprain|Nov 20
 Amen Thompson|G|Day-To-Day|knee soreness|Nov 18
-Julian Phillips|F|Day-To-Day|wrist|Nov 17
 #Indiana Pacers
 T.J. McConnell|G|Day-To-Day|hamstring|Nov 18
 Andrew Nembhard|G|Day-To-Day|hip soreness|Nov 18
