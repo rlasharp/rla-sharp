@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 05:39Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 06:07Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -37,6 +37,7 @@ Taurean Prince|F|Out|knee soreness|Nov 18
 Ronald Holland II|F|Out|knee bruise|Nov 18
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
+Draymond Green|F|Day-To-Day|elbow inflammation|Nov 18
 Al Horford|C|Day-To-Day|back|Nov 18
 Stephen Curry|G|Out|abdomen|Dec 12
 Brandon Williams|G|Out|hamstring not specified|Nov 22
@@ -110,9 +111,9 @@ Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
+Maxime Raynaud|C|Out|knee dislocated|Nov 25
 De'Andre Hunter|F|Day-To-Day|hip soreness|Nov 18
 Precious Achiuwa|F|Day-To-Day|ankle soreness|Nov 18
-Maxime Raynaud|C|Out|knee dislocated|Nov 18
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
 Dylan Harper|G|Day-To-Day|undisclosed|Nov 19
