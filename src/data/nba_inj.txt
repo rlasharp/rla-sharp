@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 19:41Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 21:27Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 20
 Kingston Flemings|G|Day-To-Day|back strain|Nov 20
@@ -7,7 +7,7 @@ CJ McCollum|G|Out|calf strain|Dec 19
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Henri Veesaar|C|Out|knee|Jul 1
 #Brooklyn Nets
-Grant Nelson|F|Day-To-Day|ankle sprain|Nov 24
+Grant Nelson|F|Out|ankle sprain|Nov 23
 #Charlotte Hornets
 Grayson Allen|G|Day-To-Day|concussion|Nov 20
 Kon Knueppel|G|Out|hamstring strain|Dec 12
@@ -76,10 +76,10 @@ Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 20
-Bryce McGowens|G|Out|elbow infection|Nov 20
-Trendon Watford|F|Out|ankle sprain|Nov 20
+Trendon Watford|F|Out|ankle sprain|Nov 27
+Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Trey Murphy III|F|Out|knee tendinitis|Nov 20
+Bryce McGowens|G|Out|elbow infection|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #Oklahoma City Thunder
 Alex Caruso|G|Day-To-Day|hip soreness|Nov 20
@@ -113,11 +113,11 @@ Shaedon Sharpe|G|Out|knee surgery|Mar 2
 Maxime Raynaud|C|Out|knee dislocated|Nov 25
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-Dylan Harper|G|Out|hip soreness|Nov 21
+Dylan Harper|G|Out|hip soreness|Dec 13
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-RJ Barrett|F|Day-To-Day|hamstring soreness|Nov 20
+RJ Barrett|F|Out|hamstring strain|Dec 13
 Scottie Barnes|F|Day-To-Day|groin|Nov 20
 Collin Murray-Boyles|F|Day-To-Day|illness|Nov 20
 Kawhi Leonard|F|Out|knee inflammation|Nov 27
