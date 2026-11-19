@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 04:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 05:30Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -122,7 +122,7 @@ Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
-Felix Okpara|F|Day-To-Day|back strain|Nov 18
+Felix Okpara|F|Day-To-Day|back strain|Nov 20
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 24
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
