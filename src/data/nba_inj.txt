@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 01:55Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 02:20Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -116,7 +116,6 @@ Scottie Barnes|F|Out|groin|Nov 20
 Kawhi Leonard|F|Out|knee inflammation|Nov 27
 Nate Bittle|C|Out|foot fracture|Nov 23
 #Utah Jazz
-Jaxson Hayes|C|Day-To-Day|knee strain|Nov 18
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 20
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
