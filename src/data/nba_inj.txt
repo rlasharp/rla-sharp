@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 03:15Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 03:31Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -77,6 +77,7 @@ Trendon Watford|F|Out|ankle sprain|Nov 20
 Trey Murphy III|F|Out|knee tendinitis|Nov 20
 Dejounte Murray|G|Out|ankle|Nov 20
 #Oklahoma City Thunder
+Alex Caruso|G|Out|hip soreness|Nov 20
 Thomas Sorber|C|Out|knee|Jan 31
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
