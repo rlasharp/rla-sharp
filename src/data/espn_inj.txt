@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-19 05:42Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-19 06:06Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Walter Nolen III|DT|Questionable|Illness|Nov 22
