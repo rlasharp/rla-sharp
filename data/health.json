@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-19T22:35:12+00:00",
+  "at": "2026-11-19T22:48:37+00:00",
   "ok": true,
-  "summary": "nhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 681 skaters, 67 goalies, 1347 props, 338 finals, 50 requests\ntrack: nba 2026-11-19: snapshot 3 props, 4 games \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-52\nSite check OK \u2014 published (2026-11-19T22:34:36Z)\n"
+  "summary": "nhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 681 skaters, 67 goalies, 1353 props, 338 finals, 50 requests\ntrack: nba 2026-11-19: snapshot 3 props, 4 games \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-52\nSite check OK \u2014 published (2026-11-19T22:48:00Z)\n"
  },
  "site": {
   "at": "2026-11-19T21:35:28+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-19T22:35:12+00:00",
+  "at": "2026-11-19T22:48:37+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Thu Nov 19 5:34 PM ET",
-  "odds_at": "2026-11-19T21:50:43+00:00",
+  "gen": "Thu Nov 19 5:47 PM ET",
+  "odds_at": "2026-11-19T22:36:14+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3195,6 +3195,16 @@
   },
   {
    "at": "2026-11-19T22:35:12+00:00",
+   "what": "nhl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-19T22:48:37+00:00",
    "what": "nhl",
    "ok": true,
    "site_ok": true,
