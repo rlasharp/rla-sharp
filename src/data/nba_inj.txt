@@ -1,7 +1,7 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 13:55Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 15:35Z
 #Atlanta Hawks
-Jock Landale|C|Out|hip inflammation|Nov 20
-Kingston Flemings|G|Out|back strain|Nov 20
+Jock Landale|C|Day-To-Day|hip inflammation|Nov 20
+Kingston Flemings|G|Day-To-Day|back strain|Nov 20
 Asa Newell|F|Out|toe|Mar 17
 CJ McCollum|G|Out|calf strain|Dec 19
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -14,25 +14,26 @@ Dennis Schroder|G|Out|hamstring strain|Nov 25
 Tobe Awaka|F|Out|back|Nov 25
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
-Peyton Watson|G|Out|back bruise|Nov 20
-Jaylon Tyson|G|Out|ankle|Nov 20
+Jaylon Tyson|G|Day-To-Day|ankle|Nov 20
+Peyton Watson|G|Day-To-Day|back bruise|Nov 20
 Nae'Qwan Tomlin|F|Out|back|Nov 29
 Evan Mobley|C|Out|toe sprain|Nov 29
 #Dallas Mavericks
-Tobi Lawal|F|Out|groin|Nov 21
+Tobi Lawal|F|Day-To-Day|groin|Nov 21
 Sergio de Larrea|F|Out|knee strain|Nov 27
 Dereck Lively II|C|Out|foot surgery|Nov 27
 Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
-Cade Cunningham|G|Out|knee soreness|Nov 20
-Taurean Prince|F|Out|knee soreness|Nov 20
-Ronald Holland II|F|Out|knee bruise|Nov 20
+Taurean Prince|F|Day-To-Day|knee soreness|Nov 20
+Ronald Holland II|F|Day-To-Day|knee bruise|Nov 20
+Cade Cunningham|G|Day-To-Day|knee soreness|Nov 20
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
-Al Horford|C|Out|back|Nov 19
+Draymond Green|F|Day-To-Day|rest|Nov 19
+Al Horford|C|Day-To-Day|back|Nov 19
 Brandon Williams|G|Out|hamstring strain|Nov 22
 Stephen Curry|G|Out|abdomen|Dec 12
 Kristaps Porzingis|C|Out|illness|Jan 2
@@ -42,27 +43,27 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 Alperen Sengun|C|Day-To-Day|eye|Nov 20
 Clint Capela|C|Out|ankle sprain|Nov 20
 #Indiana Pacers
+Andrew Nembhard|G|Day-To-Day|hip soreness|Nov 20
 Braden Smith|G|Day-To-Day|ankle sprain|Nov 20
-Andrew Nembhard|G|Out|hip soreness|Nov 20
 Tyrese Haliburton|G|Out|hamstring strain|Nov 28
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
-Brandon Ingram|F|Out|achilles surgery|Nov 19
+Brandon Ingram|F|Out|achilles surgery|Nov 21
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Austin Reaves|G|Out|heel bruise|Nov 20
 #Memphis Grizzlies
+Isaiah Stewart|C|Day-To-Day|illness|Nov 19
 GG Jackson|F|Out|foot surgery|Jan 18
-Isaiah Stewart|C|Out|illness|Nov 19
 Ty Jerome|G|Out|hip|Nov 19
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Myron Gardner|F|Out|hamstring|Nov 22
+Myron Gardner|F|Day-To-Day|hamstring|Nov 22
 #Milwaukee Bucks
-Ryan Rollins|G|Out|illness|Nov 19
+Ryan Rollins|G|Day-To-Day|illness|Nov 19
 Ousmane Dieng|F|Out|finger surgery|Dec 14
 #Minnesota Timberwolves
 Zyon Pullin|G|Day-To-Day|quadriceps bruise|Nov 19
@@ -77,30 +78,30 @@ Trendon Watford|F|Out|ankle sprain|Nov 20
 Trey Murphy III|F|Out|knee tendinitis|Nov 20
 Dejounte Murray|G|Out|ankle|Nov 20
 #Oklahoma City Thunder
-Alex Caruso|G|Out|hip soreness|Nov 20
+Alex Caruso|G|Day-To-Day|hip soreness|Nov 20
 Thomas Sorber|C|Out|knee|Jan 31
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
-Izaiyah Nelson|F|Out|ankle surgery|Nov 28
+Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Jonathan Isaac|F|Out|knee not specified|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 22
-Paolo Banchero|F|Out|ankle sprain|Nov 22
+Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
-Tyrese Maxey|G|Out|foot soreness|Nov 21
-Dean Wade|F|Out|hamstring soreness|Nov 21
-Jaylen Brown|G|Out|hamstring not specified|Nov 21
+Dean Wade|F|Day-To-Day|hamstring soreness|Nov 21
+Tyrese Maxey|G|Day-To-Day|foot soreness|Nov 21
+Jaylen Brown|G|Out|hamstring not specified|Nov 23
 Dominick Barlow|F|Out|back fracture|Nov 21
 Adem Bona|C|Out|back sprain|Nov 21
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
+Chris Youngblood|G|Out|heel bruise|Nov 21
 Robert Williams III|C|Out|rest|Nov 21
 Deni Avdija|F|Day-To-Day|foot|Nov 19
 Toumani Camara|F|Day-To-Day|rest|Nov 19
-Chris Youngblood|G|Out|heel bruise|Nov 19
 Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
@@ -112,9 +113,9 @@ Dylan Harper|G|Out|hip soreness|Nov 21
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+RJ Barrett|F|Day-To-Day|hamstring soreness|Nov 20
+Scottie Barnes|F|Day-To-Day|groin|Nov 20
 Collin Murray-Boyles|F|Day-To-Day|illness|Nov 20
-RJ Barrett|F|Out|hamstring soreness|Nov 20
-Scottie Barnes|F|Out|groin|Nov 20
 Kawhi Leonard|F|Out|knee inflammation|Nov 27
 Nate Bittle|C|Out|foot fracture|Nov 23
 #Utah Jazz

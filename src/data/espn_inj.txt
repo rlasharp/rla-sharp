@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-19 13:55Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-19 15:35Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Walter Nolen III|DT|Questionable|Illness|Nov 22
@@ -227,6 +227,7 @@ DeShon Elliott|S|Questionable|Knee|Nov 22
 Roman Wilson|WR|IR|Finger|Nov 22
 Michael Pittman Jr.|WR|IR|Foot|Nov 22
 #SF
+Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
 Ji'Ayir Brown|S|Questionable|Ankle|Nov 22
 Mac Jones|QB|Questionable|Illness|Nov 22
 Upton Stout|CB|Questionable|Shoulder|Nov 22
