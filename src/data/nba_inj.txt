@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 15:35Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 17:09Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 20
 Kingston Flemings|G|Day-To-Day|back strain|Nov 20
@@ -6,6 +6,8 @@ Asa Newell|F|Out|toe|Mar 17
 CJ McCollum|G|Out|calf strain|Dec 19
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Henri Veesaar|C|Out|knee|Jul 1
+#Brooklyn Nets
+Grant Nelson|F|Day-To-Day|ankle sprain|Nov 24
 #Charlotte Hornets
 Grayson Allen|G|Day-To-Day|concussion|Nov 20
 Kon Knueppel|G|Out|hamstring strain|Dec 12
@@ -26,6 +28,7 @@ Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
+Ugonna Onyenso|C|Day-To-Day|foot|Nov 21
 Taurean Prince|F|Day-To-Day|knee soreness|Nov 20
 Ronald Holland II|F|Day-To-Day|knee bruise|Nov 20
 Cade Cunningham|G|Day-To-Day|knee soreness|Nov 20
