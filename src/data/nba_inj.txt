@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 00:38Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 01:05Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -26,8 +26,7 @@ Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
-Cade Cunningham|G|Day-To-Day|knee soreness|Nov 18
-Isaiah Joe|G|Out|hip bruise|Nov 18
+Cade Cunningham|G|Out|knee soreness|Nov 20
 Taurean Prince|F|Out|knee soreness|Nov 20
 Ronald Holland II|F|Out|knee bruise|Nov 20
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
