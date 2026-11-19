@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-19T21:35:28+00:00",
+  "at": "2026-11-19T22:35:12+00:00",
   "ok": true,
-  "summary": "ay\nliveprops: 466 feed lines merged (0 skipped from other days), 495 total, unmatched names: []\nNBA data: teams 30, results 222 (through 2026-11-18), players 472, slate 4, lines 4, props 495, inj teams 29, prev-season players 107, play log 41, adv 412, qtr games 222, h2h 3/2/2/3\nnfl-update: 13 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 150 games (0 new), 21 referees, 0 of this week's crews posted\n232 players, 32 teams\nnfl-inj: 232 players\nnfl-qtr: 150 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 681 skaters, 67 goalies, 1343 props, 338 finals, 50 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 294 upcoming matches (71 with odds, 294 with estimates, 248 with weather, 0 with referee), 20761 player props, 5880 players\nUFC: 266 fighters, 2540 past fights, 217 requests\ncfb: 2160 players with logs, 68 focus games, 667 requests\ncbb: 2530 players with logs, 151 focus games, 548 requests\nFutures: nba: 18 futures markets, 373 prices nhl: 1 futures markets, 86 prices nfl: 23 futures markets, 425 prices \ntrack: nba 2026-11-19: snapshot 3 props, 4 games \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-52\nSite check OK \u2014 published (2026-11-19T21:33:12Z)\n"
+  "summary": "nhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 681 skaters, 67 goalies, 1347 props, 338 finals, 50 requests\ntrack: nba 2026-11-19: snapshot 3 props, 4 games \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-52\nSite check OK \u2014 published (2026-11-19T22:34:36Z)\n"
  },
  "site": {
   "at": "2026-11-19T21:35:28+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-19T21:35:28+00:00",
+  "at": "2026-11-19T22:35:12+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Thu Nov 19 4:29 PM ET",
-  "odds_at": "2026-11-19T20:54:21+00:00",
+  "gen": "Thu Nov 19 5:34 PM ET",
+  "odds_at": "2026-11-19T21:50:43+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3186,6 +3186,16 @@
   {
    "at": "2026-11-19T21:35:28+00:00",
    "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-19T22:35:12+00:00",
+   "what": "nhl",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
