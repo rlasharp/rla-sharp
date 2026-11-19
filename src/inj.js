@@ -1,6 +1,6 @@
 /* ---------- Injuries: ESPN NFL injury report (espn.com/nfl/injuries + ESPN team injury pages) ----------
    Every player ESPN lists, incl. injured reserve / PUP / NFI. Regenerate with tools/injgen.py data/espn_inj.txt "<date>". */
-const INJ_ASOF="Wed Nov 18";
+const INJ_ASOF="Thu Nov 19";
 const INJ={
   ARI:[["Walter Nolen III", "DT", "Questionable", "Illness", "Nov 22"], ["Max Melton", "CB", "Questionable", "Knee", "Nov 22"], ["Roy Lopez", "DT", "Questionable", "Toe", "Nov 22"], ["James Conner", "RB", "IR", "Foot", "Dec 20"], ["Gardner Minshew II", "QB", "IR", "Elbow", "Feb 15"], ["Jordan Burch", "LB", "IR", "Knee - MCL", "Feb 15"], ["Andrew Wingard", "S", "IR", "Wrist", "Dec 27"], ["Jayden Williams", "OT", "Questionable", "Knee", "Nov 22"], ["Hjalte Froholdt", "C", "Questionable", "Concussion", "Nov 22"], ["Jon Gaines II", "G", "Questionable", "Ankle", "Nov 22"]],
   ATL:[["Divine Deablo", "LB", "Out", "Forearm", "Nov 29"], ["Zachariah Branch", "WR", "Out", "Hamstring", "Nov 29"]],
