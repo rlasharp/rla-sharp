@@ -4,21 +4,21 @@
          (WIN DAILY odds comparison — Week 9 page not posted yet on Nov 2; added when available). US books — availability varies; in Quebec the
          only provincially regulated sportsbook is Loto-Québec's Mise-o-jeu.
    PROP_MOVE: player-prop line moves where both the opening and current number were published. */
-const MARKET_ASOF="Thu Nov 19, 12 PM ET";
+const MARKET_ASOF="Thu Nov 19, 2 PM ET";
 const MOVE={
- 1:{open:{sp:-4.5,tot:49.5},now:{sp:-12.5,tot:43.5,ml:[525,-740]}},
+ 1:{open:{sp:-4.5,tot:49.5},now:{sp:-12.5,tot:44.5,ml:[499,-690]}},
  2:{open:{sp:4.5,tot:48.5},now:{sp:-16.5,tot:44.5,ml:[850,-1440]}},
- 3:{open:{sp:-3.5,tot:41.5},now:{sp:-11.5,tot:48.5,ml:[467,-640]}},
- 4:{open:{sp:1.5,tot:52.5},now:{sp:-8.5,tot:54.5,ml:[306,-386]}},
- 5:{open:{sp:3,tot:42.5},now:{sp:-6,tot:45.5,ml:[229,-279]}},
- 6:{open:{sp:6.5,tot:47.5},now:{sp:-15.5,tot:40.5,ml:[830,-1400]}},
- 7:{open:{sp:4.5,tot:50.5},now:{sp:4.5,tot:37.5,ml:[-216,180]}},
- 8:{open:{sp:-5.5,tot:44.5},now:{sp:-2.5,tot:43.5,ml:[120,-142]}},
- 9:{open:{sp:-9.5,tot:41.5},now:{sp:-3,tot:41.5,ml:[135,-161]}},
- 10:{open:{sp:-1.5,tot:43.5},now:{sp:-10,tot:40.5,ml:[428,-570]}},
+ 3:{open:{sp:-3.5,tot:41.5},now:{sp:-11.5,tot:48.5,ml:[469,-640]}},
+ 4:{open:{sp:1.5,tot:52.5},now:{sp:-8.5,tot:55.5,ml:[308,-388]}},
+ 5:{open:{sp:3,tot:42.5},now:{sp:-6,tot:45.5,ml:[234,-287]}},
+ 6:{open:{sp:6.5,tot:47.5},now:{sp:-15.5,tot:40.5,ml:[840,-1420]}},
+ 7:{open:{sp:4.5,tot:50.5},now:{sp:4.5,tot:37.5,ml:[-212,177]}},
+ 8:{open:{sp:-5.5,tot:44.5},now:{sp:-3,tot:43.5,ml:[125,-147]}},
+ 9:{open:{sp:-9.5,tot:41.5},now:{sp:-3,tot:41.5,ml:[143,-170]}},
+ 10:{open:{sp:-1.5,tot:43.5},now:{sp:-10,tot:40.5,ml:[427,-569]}},
  11:{open:{sp:-8.5,tot:46.5},now:{sp:6,tot:46.5,ml:[-266,218]}},
  12:{open:{sp:-13.5,tot:45.5},now:{sp:-3,tot:46.5,ml:[138,-163]}},
- 13:{open:{sp:-1.5,tot:46.5},now:{sp:6.5,tot:53.5,ml:[-308,250]}},
+ 13:{open:{sp:-1.5,tot:46.5},now:{sp:6,tot:54.5,ml:[-282,231]}},
  14:{open:{sp:-3.5,tot:48.5},now:{sp:-4.5,tot:39.5,ml:[185,-225]}},
  15:{open:{sp:3,tot:48.5},now:{sp:3,tot:45.5,ml:[-185,154]}}};
 // [awayLine,price,book],[homeLine,price,book] · ml [price,book] x2 · tot [line,price,book] over/under

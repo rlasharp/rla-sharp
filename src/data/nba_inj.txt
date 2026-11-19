@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 18:18Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 19:41Z
 #Atlanta Hawks
 Jock Landale|C|Day-To-Day|hip inflammation|Nov 20
 Kingston Flemings|G|Day-To-Day|back strain|Nov 20
@@ -35,8 +35,8 @@ Cade Cunningham|G|Day-To-Day|knee soreness|Nov 20
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
-Draymond Green|F|Day-To-Day|rest|Nov 19
-Al Horford|C|Day-To-Day|back|Nov 19
+Draymond Green|F|Out|rest|Nov 22
+LJ Cryer|G|Day-To-Day|back|Nov 19
 Brandon Williams|G|Out|hamstring strain|Nov 22
 Stephen Curry|G|Out|abdomen|Dec 12
 Kristaps Porzingis|C|Out|illness|Jan 2
@@ -59,17 +59,18 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 Austin Reaves|G|Out|heel bruise|Nov 20
 #Memphis Grizzlies
 Isaiah Stewart|C|Day-To-Day|illness|Nov 19
+Zach Edey|C|Out|ankle|Nov 21
+Ty Jerome|G|Out|hip|Nov 21
 GG Jackson|F|Out|foot surgery|Jan 18
-Ty Jerome|G|Out|hip|Nov 19
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
 Myron Gardner|F|Day-To-Day|hamstring|Nov 22
 #Milwaukee Bucks
-Ryan Rollins|G|Day-To-Day|illness|Nov 19
+Kyle Kuzma|F|Out|shoulder bruise|Nov 21
+Myles Turner|C|Out|shoulder bruise|Nov 21
 Ousmane Dieng|F|Out|finger surgery|Dec 14
 #Minnesota Timberwolves
-Zyon Pullin|G|Day-To-Day|quadriceps bruise|Nov 19
 Jonathan Kuminga|F|Day-To-Day|shoulder|Nov 19
 Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
@@ -79,7 +80,7 @@ Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 20
 Bryce McGowens|G|Out|elbow infection|Nov 20
 Trendon Watford|F|Out|ankle sprain|Nov 20
 Trey Murphy III|F|Out|knee tendinitis|Nov 20
-Dejounte Murray|G|Out|ankle|Nov 20
+Dejounte Murray|G|Out|ankle|Nov 27
 #Oklahoma City Thunder
 Alex Caruso|G|Day-To-Day|hip soreness|Nov 20
 Thomas Sorber|C|Out|knee|Jan 31
