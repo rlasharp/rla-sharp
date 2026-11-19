@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 23:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 23:31Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 22
 Kingston Flemings|G|Day-To-Day|back strain|Nov 20
@@ -46,8 +46,9 @@ Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
-Alperen Sengun|C|Day-To-Day|eye|Nov 20
+Steven Adams|C|Day-To-Day|quadriceps bruise|Nov 20
 Clint Capela|C|Out|ankle sprain|Nov 23
+Alperen Sengun|C|Day-To-Day|eye|Nov 20
 #Indiana Pacers
 T.J. McConnell|G|Day-To-Day|hamstring strain|Nov 20
 Andrew Nembhard|G|Day-To-Day|hip soreness|Nov 20
