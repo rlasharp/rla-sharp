@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-18 23:28Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 00:38Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
@@ -14,18 +14,15 @@ Dennis Schroder|G|Out|hamstring strain|Nov 25
 Tobe Awaka|F|Out|back|Nov 25
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
-Peyton Watson|G|Day-To-Day|back bruise|Nov 18
+Peyton Watson|G|Out|back bruise|Nov 20
 Jaylon Tyson|G|Out|ankle|Nov 20
 Nae'Qwan Tomlin|F|Out|back|Nov 29
 Evan Mobley|C|Out|toe sprain|Nov 29
 #Dallas Mavericks
+Tobi Lawal|F|Out|groin|Nov 21
 Sergio de Larrea|F|Out|knee strain|Nov 27
-Walter Clayton Jr.|G|Day-To-Day|ankle sprain|Nov 18
 Dereck Lively II|C|Out|foot surgery|Nov 27
-Tobi Lawal|F|Day-To-Day|groin|Nov 18
 Tarik Biberovic|F|Out|heel inflammation|Nov 27
-Max Christie|G|Day-To-Day|ankle sprain|Nov 18
-Santi Aldama|F|Day-To-Day|ankle sprain|Nov 18
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
@@ -36,9 +33,8 @@ Ronald Holland II|F|Out|knee bruise|Nov 20
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
+Al Horford|C|Out|back|Nov 19
 Brandon Williams|G|Out|hamstring strain|Nov 22
-Draymond Green|F|Day-To-Day|elbow inflammation|Nov 18
-Al Horford|C|Day-To-Day|back|Nov 18
 Stephen Curry|G|Out|abdomen|Dec 12
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
@@ -81,7 +77,6 @@ Trey Murphy III|F|Out|knee tendinitis|Nov 20
 Dejounte Murray|G|Out|ankle|Nov 20
 #Oklahoma City Thunder
 Thomas Sorber|C|Out|knee|Jan 31
-Jaylin Williams|F|Out|back spasms|Nov 18
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
@@ -91,8 +86,8 @@ Jonathan Isaac|F|Out|knee not specified|Nov 22
 Noah Penda|F|Out|hamstring strain|Nov 22
 Paolo Banchero|F|Out|ankle sprain|Nov 22
 #Philadelphia 76ers
+Tyrese Maxey|G|Out|foot soreness|Nov 21
 Dean Wade|F|Out|hamstring soreness|Nov 21
-Tyrese Maxey|G|Day-To-Day|foot soreness|Nov 18
 Jaylen Brown|G|Out|hamstring not specified|Nov 21
 Dominick Barlow|F|Out|back fracture|Nov 21
 Adem Bona|C|Out|back sprain|Nov 21
