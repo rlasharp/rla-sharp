@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-19T04:26:49+00:00",
+  "at": "2026-11-19T05:30:55+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 80 games kept (1 new), 1790 player lines\nnbaespn: 9 game(s) filled from ESPN box scores (hoopR doesn't have them yet): DET@NO, ATL@OKC, GS@DAL, CHI@BKN, WSH@TOR, MEM@CLE, HOU@IND, MIL@MIA, PHI@ORL\nNBA injuries refreshed\nnbalineups: 12 games, 120 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 1 upcoming games with lines\nNBA refs: 2 summaries checked, 218 games cached\nNBA refs: 12 crews posted today\nlive feed is not from 2026-11-18 - nothing merged\nNBA data: teams 30, results 219 (through 2026-11-18), players 472, slate 12, lines 12, props 1610, inj teams 28, prev-season players 326, play log 40, adv 411, qtr games 210, h2h 2/2/3/4/4/3/2/2/3/2/4/4\nnhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 3 games today, 12 tomorrow, 32 teams, 702 skaters, 67 goalies, 862 props, 337 finals, 41 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 15-13, best props NBA 46-58 NFL 20-19 NHL 47-51\nSite check OK \u2014 published (2026-11-19T04:26:13Z)\n"
+  "summary": "NBA finals from ESPN: 75 games kept (2 new), 1677 player lines\nnbaespn: 11 game(s) filled from ESPN box scores (hoopR doesn't have them yet): PHX@SAC, BOS@DEN, DET@NO, ATL@OKC, GS@DAL, CHI@BKN, WSH@TOR, MEM@CLE, HOU@IND, MIL@MIA, PHI@ORL\nNBA injuries refreshed\nnbalineups: NBA.com hasn't posted 2026-11-19's lineups yet\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 1 summaries checked, 219 games cached\nNBA refs: 12 crews posted today\nNBA props reset for 2026-11-19\nliveprops: 83 feed lines merged (0 skipped from other days), 83 total, unmatched names: []\nFirst tip is 1170 min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 221 (through 2026-11-18), players 472, slate 4, lines 4, props 83, inj teams 28, prev-season players 107, play log 40, adv 412, qtr games 210, h2h 3/2/2/3\ntrack: nba 2026-11-19: snapshot 3 props, 4 games \u00b7 graded: NHL plays 15-13, best props NBA 47-58 NFL 20-19 NHL 47-51\nSite check OK \u2014 published (2026-11-19T05:30:21Z)\n"
  },
  "site": {
   "at": "2026-11-19T03:36:54+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-19T04:26:49+00:00",
+  "at": "2026-11-19T05:30:55+00:00",
   "ok": true,
   "issue": "",
   "gen": "Wed Nov 18 11:26 PM ET",
-  "odds_at": "2026-11-19T03:26:55+00:00",
+  "odds_at": "2026-11-19T04:35:36+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3046,6 +3046,16 @@
   {
    "at": "2026-11-19T04:26:49+00:00",
    "what": "nba,nhl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-19T05:30:55+00:00",
+   "what": "nba",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
