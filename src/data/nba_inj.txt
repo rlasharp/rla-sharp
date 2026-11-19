@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 09:40Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-19 11:32Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 20
 Kingston Flemings|G|Out|back strain|Nov 20
