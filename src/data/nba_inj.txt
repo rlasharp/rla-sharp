@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-20 01:52Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-20 03:27Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 22
 Kingston Flemings|G|Day-To-Day|back strain|Nov 20
@@ -62,6 +62,7 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Austin Reaves|G|Out|heel bruise|Nov 23
 #Memphis Grizzlies
+Jerami Grant|F|Day-To-Day|calf not specified|Nov 21
 Zach Edey|C|Out|ankle|Nov 21
 Ty Jerome|G|Out|hip|Nov 21
 GG Jackson|F|Out|foot surgery|Jan 18
