@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 00:21Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 01:01Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Carson Beck|QB|Questionable|Back|Nov 22
@@ -219,6 +219,7 @@ Gennings Dunker|G|IR|Knee|Nov 22
 Mason McCormick|G|IR|Ankle|Jan 3
 Patrick Queen|LB|Questionable|Hand|Nov 27
 #SF
+Isaac Guerendo|RB|Out|Pectoral|Nov 22
 Jordan James|RB|Questionable|Calf|Nov 22
 Mike Evans|WR|Questionable|Achilles|Nov 22
 Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
