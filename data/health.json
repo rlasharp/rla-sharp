@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-20T02:08:28+00:00",
+  "at": "2026-11-20T03:02:47+00:00",
   "ok": true,
-  "summary": "nhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 681 skaters, 67 goalies, 332 props, 338 finals, 50 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-52\nSite check OK \u2014 published (2026-11-20T02:07:51Z)\n"
+  "summary": "nhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 683 skaters, 67 goalies, 221 props, 343 finals, 65 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 295 upcoming matches (71 with odds, 295 with estimates, 241 with weather, 0 with referee), 21770 player props, 5880 players\ntrack: ufc UFC Fight Night: Proch\u00e1zka vs. Stirling: locked 5 picks \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-55\nSite check OK \u2014 published (2026-11-20T03:02:09Z)\n"
  },
  "site": {
   "at": "2026-11-20T02:01:26+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-20T02:08:28+00:00",
+  "at": "2026-11-20T03:02:47+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Thu Nov 19 9:07 PM ET",
-  "odds_at": "2026-11-20T01:02:15+00:00",
+  "gen": "Thu Nov 19 9:56 PM ET",
+  "odds_at": "2026-11-20T02:11:19+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3266,6 +3266,16 @@
   {
    "at": "2026-11-20T02:08:28+00:00",
    "what": "nhl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-20T03:02:47+00:00",
+   "what": "nhl,soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
