@@ -41,3 +41,5 @@
 2026-11-17|Javonte Green|reb|u|3.5|-164|DraftKings|DET|SA
 2026-11-18|Collin Gillespie|reb|u|3.5|-150|BetRivers|PHX|SAC
 2026-11-19|Damian Lillard|ra|u|8.5|-130|Fanatics|POR|MIL
+2026-11-20|Darryn Peterson|ast|u|4.5|-145|Fanatics|UTAH|PHX
+2026-11-20|Collin Gillespie|reb|u|3.5|-163|DraftKings|PHX|UTAH
