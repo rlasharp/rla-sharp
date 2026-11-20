@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 03:27Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 03:54Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 22
@@ -97,7 +97,7 @@ Jake Andrews|C|Out|Coach's Decision|Nov 29
 Danielle Hunter|DE|Out|Hamstring|Nov 29
 Brevin Jordan|TE|Out|Foot|Nov 29
 #IND
-Seth McGowan|RB|Questionable|Hamstring|Nov 19
+Seth McGowan|RB|Out|Hamstring|Nov 29
 Riley Leonard|QB|Out|Coach's Decision|Nov 29
 Sauce Gardner|CB|Out|Calf|Nov 29
 Bernhard Raimann|OT|Out|Concussion|Nov 29
