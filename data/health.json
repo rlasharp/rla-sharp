@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-20T00:24:35+00:00",
+  "at": "2026-11-20T01:01:59+00:00",
   "ok": true,
-  "summary": " refreshed\nnbalineups: 4 games, 0 confirmed / 40 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 4 upcoming games with lines\nNBA refs: 0 summaries checked, 222 games cached\nNBA refs: 3 crews posted today\nliveprops: 536 feed lines merged (0 skipped from other days), 563 total, unmatched names: []\nNBA data: teams 30, results 222 (through 2026-11-18), players 472, slate 4, lines 4, props 563, inj teams 29, prev-season players 107, play log 41, adv 412, qtr games 222, h2h 3/2/2/3\nnfl-update: 13 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 150 games (0 new), 21 referees, 1 of this week's crews posted\n225 players, 32 teams\nnfl-inj: 225 players\nnfl-qtr: 150 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 681 skaters, 67 goalies, 1354 props, 338 finals, 50 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 294 upcoming matches (71 with odds, 294 with estimates, 248 with weather, 0 with referee), 20757 player props, 5880 players\ntrack: nba 2026-11-19: snapshot 6 props, 4 games; nhl 2026-11-19: parlay locked (4 legs @ 6.06) \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-52\nSite check OK \u2014 published (2026-11-20T00:24:01Z)\n"
+  "summary": "nfl-update: 13 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 150 games (0 new), 21 referees, 1 of this week's crews posted\n226 players, 32 teams\nnfl-inj: 226 players\nnfl-qtr: 150 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 681 skaters, 67 goalies, 662 props, 338 finals, 50 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-52\nSite check OK \u2014 published (2026-11-20T01:01:25Z)\n"
  },
  "site": {
   "at": "2026-11-19T23:28:58+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-20T00:24:35+00:00",
+  "at": "2026-11-20T01:01:59+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Thu Nov 19 7:23 PM ET",
-  "odds_at": "2026-11-19T23:29:17+00:00",
+  "gen": "Thu Nov 19 8:01 PM ET",
+  "odds_at": "2026-11-20T00:24:54+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3236,6 +3236,16 @@
   {
    "at": "2026-11-20T00:24:35+00:00",
    "what": "nba,nfl,nhl,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-20T01:01:59+00:00",
+   "what": "nfl,nhl",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
