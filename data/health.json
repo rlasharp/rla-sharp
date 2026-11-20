@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-20T03:02:47+00:00",
+  "at": "2026-11-20T03:34:29+00:00",
   "ok": true,
-  "summary": "nhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 683 skaters, 67 goalies, 221 props, 343 finals, 65 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 295 upcoming matches (71 with odds, 295 with estimates, 241 with weather, 0 with referee), 21770 player props, 5880 players\ntrack: ufc UFC Fight Night: Proch\u00e1zka vs. Stirling: locked 5 picks \u00b7 graded: NHL plays 15-13, best props NBA 47-59 NFL 20-19 NHL 50-55\nSite check OK \u2014 published (2026-11-20T03:02:09Z)\n"
+  "summary": "s: 0 summaries checked, 222 games cached\nNBA refs: 3 crews posted today\nlive feed is not from 2026-11-19 - nothing merged\nNBA data: teams 30, results 223 (through 2026-11-19), players 472, slate 4, lines 4, props 563, inj teams 29, prev-season players 107, play log 41, adv 412, qtr games 222, h2h 3/2/2/3\nnfl-update: 12 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 14 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 150 games (0 new), 21 referees, 1 of this week's crews posted\n228 players, 32 teams\nnfl-inj: 228 players\nnfl-qtr: 150 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 695 players, 0 ESPN requests this run\nNHL data: 12 games today, 0 tomorrow, 32 teams, 682 skaters, 67 goalies, 221 props, 345 finals, 56 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 296 upcoming matches (70 with odds, 296 with estimates, 249 with weather, 0 with referee), 20278 player props, 5880 players\nUFC: 266 fighters, 2540 past fights, 217 requests\ncfb: 2160 players with logs, 67 focus games, 668 requests\ncbb: 2566 players with logs, 119 focus games, 562 requests\nFutures: nba: 13 futures markets, 162 prices nhl: 1 futures markets, 78 prices nfl: 19 futures markets, 361 prices \ntrack: no new snapshots \u00b7 graded: NHL plays 15-14, best props NBA 47-59 NFL 20-19 NHL 51-57\nSite check OK \u2014 published (2026-11-20T03:32:18Z)\n"
  },
  "site": {
-  "at": "2026-11-20T02:01:26+00:00",
+  "at": "2026-11-20T03:34:29+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-20T03:02:47+00:00",
+  "at": "2026-11-20T03:34:29+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Thu Nov 19 9:56 PM ET",
+  "gen": "Thu Nov 19 10:28 PM ET",
   "odds_at": "2026-11-20T02:11:19+00:00",
   "backfill": "1312/1312"
  },
@@ -3276,6 +3276,16 @@
   {
    "at": "2026-11-20T03:02:47+00:00",
    "what": "nhl,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-20T03:34:29+00:00",
+   "what": "all",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
