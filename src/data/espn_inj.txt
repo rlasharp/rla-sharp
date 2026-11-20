@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 03:54Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 04:51Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 22
@@ -87,8 +87,10 @@ Skyy Moore|WR|Questionable|Ankle|Nov 25
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
 #HOU
-Sheldon Rankins|DT|Questionable|Ankle|Nov 19
-Chris Braswell|DE|Out|Knee|Nov 29
+Keylan Rutledge|G|Questionable|Undisclosed|Nov 29
+Kayshon Boutte|WR|Questionable|Hip|Nov 29
+Sheldon Rankins|DT|Questionable|Ankle|Nov 29
+Chris Braswell|DE|Doubtful|Knee|Nov 29
 Wyatt Teller|G|Out|Back|Nov 29
 Nate Thomas|OT|Out|Coach's Decision|Nov 29
 Woody Marks|RB|Out|Concussion|Nov 29
@@ -97,7 +99,7 @@ Jake Andrews|C|Out|Coach's Decision|Nov 29
 Danielle Hunter|DE|Out|Hamstring|Nov 29
 Brevin Jordan|TE|Out|Foot|Nov 29
 #IND
-Seth McGowan|RB|Out|Hamstring|Nov 29
+Seth McGowan|RB|Questionable|Hamstring|Nov 29
 Riley Leonard|QB|Out|Coach's Decision|Nov 29
 Sauce Gardner|CB|Out|Calf|Nov 29
 Bernhard Raimann|OT|Out|Concussion|Nov 29

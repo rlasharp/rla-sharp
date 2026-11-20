@@ -17,7 +17,7 @@ const TEAMS = {
 const TEAM_IDS = Object.keys(TEAMS);
 // Week 11 slate (ESPN schedule, kickoff times ET; set up automatically by tools/auto_espn.py nfl-roll). wp = home win probability from feed (null = not provided)
 const SLATE = [
- {id:1,away:"IND",home:"HOU",when:"Thu Nov 19 · 8:15 PM",wp:null,tv:"TNF"},
+ {id:1,away:"IND",home:"HOU",final:[3,26],when:"Thu Nov 19 · 8:15 PM",wp:null,tv:"TNF"},
  {id:2,away:"MIA",home:"BUF",when:"Sun Nov 22 · 1:00 PM",wp:null},
  {id:3,away:"NO",home:"CHI",when:"Sun Nov 22 · 1:00 PM",wp:null},
  {id:4,away:"TEN",home:"DAL",when:"Sun Nov 22 · 1:00 PM",wp:null},
@@ -34,17 +34,17 @@ const SLATE = [
 // REAL lines: DraftKings via ESPN, Tue Nov 17 2026 (updated by every automatic run until kickoff). sp = HOME spread, ml = [away, home]
 const LINES = {
  1:{sp:-12.5,ml:[533,-750],tot:44.5},
- 2:{sp:-16.5,ml:[850,-1440],tot:44.5},
+ 2:{sp:-16.5,ml:[940,-1700],tot:44.5},
  3:{sp:-11.5,ml:[449,-610],tot:48.5},
- 4:{sp:-8.5,ml:[307,-387],tot:55.5},
+ 4:{sp:-8.5,ml:[306,-385],tot:54.5},
  5:{sp:-6,ml:[213,-258],tot:45.5},
  6:{sp:-16.5,ml:[840,-1420],tot:40.5},
- 7:{sp:4.5,ml:[-205,171],tot:38.5},
+ 7:{sp:3.5,ml:[-203,170],tot:38.5},
  8:{sp:-3,ml:[123,-146],tot:43.5},
  9:{sp:-3,ml:[143,-170],tot:41.5},
  10:{sp:-10.5,ml:[456,-620],tot:40.5},
  11:{sp:6,ml:[-258,213],tot:46.5},
- 12:{sp:-3.5,ml:[147,-174],tot:46.5},
+ 12:{sp:-3.5,ml:[147,-175],tot:46.5},
  13:{sp:6,ml:[-279,229],tot:53.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
