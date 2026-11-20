@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 13:54Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 15:34Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 22
@@ -200,12 +200,12 @@ Christen Miller|DT|IR|Knee|Dec 13
 Nic Jones|CB|Questionable|Knee|Nov 22
 Tyrone Tracy Jr.|RB|IR|Hamstring|Dec 6
 #NYJ
+Omar Cooper Jr.|WR|Out|Ankle|Nov 29
 Harrison Phillips|DT|Questionable|Ankle|Nov 22
 Geno Smith|QB|Questionable|Ankle|Nov 22
-Isaiah Williams|WR|Questionable|Ribs|Nov 22
-Omar Cooper Jr.|WR|Questionable|Ankle|Nov 22
+Isaiah Williams|WR|Out|Ribs|Nov 29
 Joseph Ossai|DE|Questionable|Foot|Nov 22
-David Onyemata|DT|IR|Abdomen|Nov 22
+David Onyemata|DT|IR|Abdomen|Nov 29
 Trevin Wallace|LB|Questionable|Groin|Nov 22
 Dylan Parham|G|Questionable|Knee|Nov 22
 #PHI
