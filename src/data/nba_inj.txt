@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-20 00:20Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-20 01:52Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 22
 Kingston Flemings|G|Day-To-Day|back strain|Nov 20
@@ -60,9 +60,8 @@ Brandon Ingram|F|Out|achilles surgery|Nov 21
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
-Austin Reaves|G|Out|heel bruise|Nov 20
+Austin Reaves|G|Out|heel bruise|Nov 23
 #Memphis Grizzlies
-Isaiah Stewart|C|Day-To-Day|illness|Nov 19
 Zach Edey|C|Out|ankle|Nov 21
 Ty Jerome|G|Out|hip|Nov 21
 GG Jackson|F|Out|foot surgery|Jan 18
@@ -75,7 +74,6 @@ Kyle Kuzma|F|Out|shoulder bruise|Nov 21
 Myles Turner|C|Out|shoulder bruise|Nov 21
 Ousmane Dieng|F|Out|finger surgery|Dec 14
 #Minnesota Timberwolves
-Jonathan Kuminga|F|Day-To-Day|shoulder|Nov 19
 Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
@@ -106,14 +104,15 @@ Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
+Deni Avdija|F|Out|foot|Nov 21
 Chris Youngblood|G|Out|heel bruise|Nov 21
 Robert Williams III|C|Out|rest|Nov 21
-Deni Avdija|F|Day-To-Day|foot|Nov 19
-Toumani Camara|F|Day-To-Day|rest|Nov 19
 Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
+Precious Achiuwa|F|Day-To-Day|lower leg bruise|Nov 20
+De'Andre Hunter|F|Day-To-Day|hip soreness|Nov 20
 Maxime Raynaud|C|Out|knee dislocated|Nov 25
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
@@ -126,8 +125,8 @@ RJ Barrett|F|Out|hamstring strain|Dec 13
 Kawhi Leonard|F|Out|knee inflammation|Nov 27
 Nate Bittle|C|Out|foot fracture|Nov 23
 #Utah Jazz
-Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jusuf Nurkic|C|Out|foot strain|Nov 27
+Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
 Felix Okpara|F|Day-To-Day|back strain|Nov 20

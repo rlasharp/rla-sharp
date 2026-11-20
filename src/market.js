@@ -10,15 +10,15 @@ const MOVE={
  2:{open:{sp:4.5,tot:48.5},now:{sp:-16.5,tot:44.5,ml:[850,-1440]}},
  3:{open:{sp:-3.5,tot:41.5},now:{sp:-11.5,tot:48.5,ml:[447,-600]}},
  4:{open:{sp:1.5,tot:52.5},now:{sp:-8.5,tot:55.5,ml:[307,-387]}},
- 5:{open:{sp:3,tot:42.5},now:{sp:-6,tot:45.5,ml:[230,-281]}},
+ 5:{open:{sp:3,tot:42.5},now:{sp:-6,tot:45.5,ml:[213,-258]}},
  6:{open:{sp:6.5,tot:47.5},now:{sp:-16.5,tot:40.5,ml:[840,-1420]}},
  7:{open:{sp:4.5,tot:50.5},now:{sp:4.5,tot:38.5,ml:[-205,171]}},
  8:{open:{sp:-5.5,tot:44.5},now:{sp:-3,tot:43.5,ml:[123,-146]}},
  9:{open:{sp:-9.5,tot:41.5},now:{sp:-3,tot:41.5,ml:[143,-170]}},
  10:{open:{sp:-1.5,tot:43.5},now:{sp:-10.5,tot:40.5,ml:[455,-620]}},
- 11:{open:{sp:-8.5,tot:46.5},now:{sp:6,tot:46.5,ml:[-259,214]}},
+ 11:{open:{sp:-8.5,tot:46.5},now:{sp:6,tot:46.5,ml:[-258,213]}},
  12:{open:{sp:-13.5,tot:45.5},now:{sp:-3.5,tot:46.5,ml:[147,-174]}},
- 13:{open:{sp:-1.5,tot:46.5},now:{sp:6,tot:53.5,ml:[-279,228]}},
+ 13:{open:{sp:-1.5,tot:46.5},now:{sp:6,tot:53.5,ml:[-284,232]}},
  14:{open:{sp:-3.5,tot:48.5},now:{sp:-4.5,tot:39.5,ml:[185,-225]}},
  15:{open:{sp:3,tot:48.5},now:{sp:3,tot:45.5,ml:[-185,154]}}};
 // [awayLine,price,book],[homeLine,price,book] · ml [price,book] x2 · tot [line,price,book] over/under
