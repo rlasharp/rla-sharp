@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-20 17:00Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-20 17:35Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 22
 Kingston Flemings|G|Day-To-Day|back strain|Nov 20
@@ -85,6 +85,7 @@ Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Trey Murphy III|F|Out|knee tendinitis|Nov 20
 Dejounte Murray|G|Out|ankle|Nov 27
 #Oklahoma City Thunder
+Nikola Topic|G|Out|hip soreness|Nov 22
 Alex Caruso|G|Day-To-Day|hip soreness|Nov 20
 Thomas Sorber|C|Out|knee|Jan 31
 Cason Wallace|G|Out|shoulder surgery|Mar 2
