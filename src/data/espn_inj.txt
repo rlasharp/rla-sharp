@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 11:31Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-20 13:54Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Hjalte Froholdt|C|Questionable|Concussion|Nov 22
@@ -129,6 +129,8 @@ Trey Smith|G|Questionable|Concussion|Nov 22
 Jaylon Moore|OT|Questionable|Ankle|Nov 22
 Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
+Trey Zuhn III|C|Questionable|Illness|Nov 22
+Ian Thomas|TE|Questionable|Calf|Nov 22
 Brock Bowers|TE|Questionable|Ankle|Nov 22
 Tonka Hemingway|DT|Questionable|Upper Body|Nov 22
 Folorunso Fatukasi|DT|Questionable|Toe|Nov 22
