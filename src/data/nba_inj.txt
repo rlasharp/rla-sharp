@@ -1,7 +1,7 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 21:19Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 22:38Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
-Jock Landale|C|Out|hip inflammation|Nov 22
+Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
 CJ McCollum|G|Out|calf strain|Dec 19
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -52,7 +52,8 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
 Clint Capela|C|Out|ankle sprain|Nov 23
 #Indiana Pacers
-T.J. McConnell|G|Day-To-Day|hamstring|Nov 22
+T.J. McConnell|G|Out|hamstring|Nov 23
+Pascal Siakam|F|Day-To-Day|hip soreness|Nov 22
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -85,19 +86,20 @@ Bryce McGowens|G|Out|elbow infection|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
-OG Anunoby|F|Day-To-Day|calf|Nov 21
+OG Anunoby|F|Out|calf|Nov 22
 Karl-Anthony Towns|C|Day-To-Day|illness|Nov 21
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 22
 #Oklahoma City Thunder
+Jaylin Williams|F|Out|back spasms|Nov 23
+Alex Caruso|G|Out|hip soreness|Nov 23
 Nikola Topic|G|Day-To-Day|hip soreness|Nov 22
-Alex Caruso|G|Day-To-Day|hip soreness|Nov 22
 Thomas Sorber|C|Out|knee|Jan 31
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 Jalen Williams|G|Out|leg fracture|Mar 2
 #Orlando Magic
-Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Jonathan Isaac|F|Out|knee not specified|Nov 29
+Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
@@ -110,7 +112,6 @@ Ryan Dunn|F|Day-To-Day|quadriceps|Nov 23
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|heel bruise|Nov 27
-Deni Avdija|F|Day-To-Day|foot|Nov 21
 Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
