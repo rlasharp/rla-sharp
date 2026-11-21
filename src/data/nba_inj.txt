@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 00:18Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 01:03Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 22
@@ -9,6 +9,7 @@ Henri Veesaar|C|Out|knee|Jul 1
 #Brooklyn Nets
 Grant Nelson|F|Out|ankle sprain|Nov 23
 #Charlotte Hornets
+Brandon Miller|F|Day-To-Day|ankle not specified|Nov 20
 Grant Williams|F|Out|hamstring|Nov 23
 Grayson Allen|G|Out|concussion|Nov 23
 Kon Knueppel|G|Out|hamstring strain|Dec 12
@@ -31,10 +32,9 @@ Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
+Ronald Holland II|F|Out|knee bruise|Nov 22
 Taurean Prince|F|Out|knee surgery|Dec 13
-Ronald Holland II|F|Day-To-Day|knee bruise|Nov 20
 Ebuka Okorie|G|Out|oblique strain|Nov 22
-Cade Cunningham|G|Day-To-Day|knee soreness|Nov 20
 Ugonna Onyenso|C|Day-To-Day|foot|Nov 21
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
@@ -129,7 +129,7 @@ Jusuf Nurkic|C|Out|foot strain|Nov 29
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
-Felix Okpara|F|Day-To-Day|back strain|Nov 20
+Felix Okpara|F|Out|back strain|Nov 22
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 24
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
