@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 17:45Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 19:29Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 22
@@ -65,7 +65,6 @@ Austin Reaves|G|Out|heel bruise|Nov 23
 Jerami Grant|F|Out|calf not specified|Nov 23
 Javon Small|G|Out|personal|Nov 23
 Cameron Boozer|F|Out|ankle|Nov 23
-Ty Jerome|G|Out|hip|Nov 21
 GG Jackson|F|Out|foot surgery|Jan 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 Richie Saunders|G|Out|knee surgery|Dec 1
@@ -78,8 +77,9 @@ Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Bryce McGowens|G|Out|elbow infection|Nov 27
+Trey Murphy III|F|Out|knee|Nov 23
 Trendon Watford|F|Out|ankle sprain|Nov 27
+Bryce McGowens|G|Out|elbow infection|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
@@ -130,7 +130,6 @@ Jusuf Nurkic|C|Out|foot strain|Nov 29
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
-Felix Okpara|F|Day-To-Day|back strain|Nov 22
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 24
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
