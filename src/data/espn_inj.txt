@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-21 01:53Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-21 03:27Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Out|Ankle|Nov 29
@@ -88,8 +88,6 @@ Nate Thomas|OT|Out|Coach's Decision|Nov 29
 Woody Marks|RB|Out|Concussion|Nov 29
 Marvin Harrison Jr.|WR|Out|Hamstring|Nov 29
 Jake Andrews|C|Out|Coach's Decision|Nov 29
-Danielle Hunter|DE|Out|Hamstring|Nov 29
-Brevin Jordan|TE|Out|Foot|Nov 29
 #IND
 Riley Leonard|QB|Out|Coach's Decision|Nov 29
 Seth McGowan|RB|Questionable|Hamstring|Nov 29
