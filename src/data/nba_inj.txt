@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-20 23:26Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 00:18Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 22
@@ -15,12 +15,10 @@ Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
 Jalen Smith|F|Out|illness|Nov 22
-Noa Essengue|F|Day-To-Day|wrist soreness|Nov 20
 Tobe Awaka|F|Out|back|Nov 25
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
 Jaylon Tyson|G|Out|ankle|Nov 23
-Peyton Watson|G|Day-To-Day|back bruise|Nov 20
 Nae'Qwan Tomlin|F|Out|back|Nov 29
 Evan Mobley|C|Out|toe sprain|Nov 29
 #Dallas Mavericks
@@ -53,8 +51,6 @@ Clint Capela|C|Out|ankle sprain|Nov 23
 Alperen Sengun|C|Day-To-Day|eye|Nov 20
 #Indiana Pacers
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
-T.J. McConnell|G|Day-To-Day|hamstring strain|Nov 20
-Braden Smith|G|Day-To-Day|undisclosed|
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
@@ -83,14 +79,13 @@ Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 Bryce McGowens|G|Out|elbow infection|Nov 27
 Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
-Trey Murphy III|F|Out|knee tendinitis|Nov 20
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 22
 OG Anunoby|F|Day-To-Day|calf|Nov 21
 #Oklahoma City Thunder
+Alex Caruso|G|Out|hip soreness|Nov 22
 Nikola Topic|G|Out|hip soreness|Nov 22
-Alex Caruso|G|Day-To-Day|hip soreness|Nov 22
 Thomas Sorber|C|Out|knee|Jan 31
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
