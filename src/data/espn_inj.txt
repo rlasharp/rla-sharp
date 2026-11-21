@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-21 15:26Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-21 17:23Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Out|Ankle|Nov 29
@@ -213,22 +213,22 @@ Sam Darnold|QB|Out|Quadriceps|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 29
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
 #TB
+Baker Mayfield|QB|Questionable|Foot|Nov 22
 Josh Hayes|CB|IR|Knee|Nov 30
 Yaya Diaby|LB|Questionable|Knee - MCL|Nov 22
 Antoine Winfield Jr.|S|Out|Ankle|Nov 30
-Baker Mayfield|QB|Questionable|Foot|Nov 22
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 #TEN
+Carnell Tate|WR|Questionable|Shoulder|Nov 22
 Micah Robinson|CB|Questionable|Hip|Nov 22
 Anthony Hill Jr.|LB|Questionable|Neck|Nov 22
 Tony Adams|S|Questionable|Concussion|Nov 22
 Tyjae Spears|RB|Questionable|Knee|Nov 22
-Carnell Tate|WR|Questionable|Shoulder|Nov 22
 Fernando Carmona|G|IR|Ankle|Nov 29
 Wan'Dale Robinson|WR|IR|Ankle|Feb 15
 #WAS
+Rachaad White|RB|Questionable|Heel|Nov 23
 Laremy Tunsil|OT|IR|Triceps|Dec 20
 Treylon Burks|WR|Questionable|Foot|Nov 23
-Rachaad White|RB|Questionable|Heel|Nov 23
 Jacory Croskey-Merritt|RB|IR|Groin|Nov 23
 Quan Martin|S|Questionable|Shoulder|Nov 23
