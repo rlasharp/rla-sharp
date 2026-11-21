@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-21T02:13:50+00:00",
+  "at": "2026-11-21T03:00:21+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 72 games kept (0 new), 1606 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 9 games, 70 confirmed / 20 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 5 upcoming games with lines\nNBA refs: 0 summaries checked, 226 games cached\nNBA refs: 9 crews posted today\nlive feed is not from 2026-11-20 - nothing merged\nNBA data: teams 30, results 226 (through 2026-11-19), players 473, slate 9, lines 9, props 1186, inj teams 31, prev-season players 247, play log 43, adv 414, qtr games 226, h2h 4/3/4/3/3/3/3/4/4\ntrack: no new snapshots \u00b7 graded: NHL plays 15-14, best props NBA 52-60 NFL 24-25 NHL 55-57\nSite check OK \u2014 published (2026-11-21T02:13:11Z)\n"
+  "summary": "NBA finals from ESPN: 74 games kept (2 new), 1649 player lines\nnbaespn: 2 game(s) filled from ESPN box scores (hoopR doesn't have them yet): IND@CLE, CHA@ATL\nNBA injuries refreshed\nnbalineups: 9 games, 90 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 5 upcoming games with lines\nNBA refs: 0 summaries checked, 226 games cached\nNBA refs: 9 crews posted today\nlive feed is not from 2026-11-20 - nothing merged\nNBA data: teams 30, results 228 (through 2026-11-20), players 473, slate 9, lines 9, props 1186, inj teams 31, prev-season players 247, play log 43, adv 415, qtr games 226, h2h 4/3/4/3/3/3/3/4/4\ntrack: no new snapshots \u00b7 graded: NHL plays 15-14, best props NBA 52-62 NFL 24-25 NHL 55-57\nSite check OK \u2014 published (2026-11-21T02:59:43Z)\n"
  },
  "site": {
   "at": "2026-11-21T02:03:18+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-21T02:13:50+00:00",
+  "at": "2026-11-21T03:00:21+00:00",
   "ok": true,
   "issue": "",
   "gen": "Fri Nov 20 8:55 PM ET",
-  "odds_at": "2026-11-21T01:06:24+00:00",
+  "odds_at": "2026-11-21T02:14:19+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3539,6 +3539,16 @@
   },
   {
    "at": "2026-11-21T02:13:50+00:00",
+   "what": "nba",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-21T03:00:21+00:00",
    "what": "nba",
    "ok": true,
    "site_ok": true,
