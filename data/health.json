@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-21T21:33:05+00:00",
+  "at": "2026-11-21T22:27:59+00:00",
   "ok": true,
-  "summary": "nhllines: 32/32 teams\nNHL PP time: 697 players, 0 ESPN requests this run\nNHL data: 14 games today, 5 tomorrow, 32 teams, 710 skaters, 67 goalies, 1302 props, 351 finals, 52 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 289 upcoming matches (47 with odds, 289 with estimates, 281 with weather, 0 with referee), 11826 player props, 5894 players\ntrack: cfb pick'em: locked 5 \u00b7 graded: NHL plays 15-14, best props NBA 56-70 NFL 24-25 NHL 57-57\nSite check OK \u2014 published (2026-11-21T21:32:29Z)\n"
+  "summary": "nhllines: 32/32 teams\nNHL PP time: 697 players, 0 ESPN requests this run\nNHL data: 14 games today, 5 tomorrow, 32 teams, 710 skaters, 67 goalies, 1331 props, 351 finals, 52 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 281 upcoming matches (47 with odds, 281 with estimates, 273 with weather, 0 with referee), 12940 player props, 5896 players\ntrack: no new snapshots \u00b7 graded: NHL plays 15-14, best props NBA 56-70 NFL 24-25 NHL 57-57\nSite check OK \u2014 published (2026-11-21T22:27:22Z)\n"
  },
  "site": {
   "at": "2026-11-21T21:24:11+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-21T21:33:05+00:00",
+  "at": "2026-11-21T22:27:59+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sat Nov 21 4:26 PM ET",
-  "odds_at": "2026-11-21T20:41:04+00:00",
+  "gen": "Sat Nov 21 5:23 PM ET",
+  "odds_at": "2026-11-21T22:15:00+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3791,6 +3791,16 @@
   },
   {
    "at": "2026-11-21T21:33:05+00:00",
+   "what": "nhl,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-21T22:27:59+00:00",
    "what": "nhl,soc",
    "ok": true,
    "site_ok": true,
