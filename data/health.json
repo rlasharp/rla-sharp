@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-21T19:52:07+00:00",
+  "at": "2026-11-21T20:45:29+00:00",
   "ok": true,
-  "summary": "nhllines: 32/32 teams\nNHL PP time: 697 players, 0 ESPN requests this run\nNHL data: 14 games today, 5 tomorrow, 32 teams, 709 skaters, 67 goalies, 1398 props, 350 finals, 52 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 289 upcoming matches (41 with odds, 289 with estimates, 281 with weather, 0 with referee), 15317 player props, 5893 players\ntrack: no new snapshots \u00b7 graded: NHL plays 15-14, best props NBA 54-68 NFL 24-25 NHL 55-57\nSite check OK \u2014 published (2026-11-21T19:51:30Z)\n"
+  "summary": "NBA finals from ESPN: 76 games kept (1 new), 1666 player lines\nnbaespn: 1 game(s) filled from ESPN box scores (hoopR doesn't have them yet): MIL@PHI\nNBA injuries refreshed\nnbalineups: 6 games, 10 confirmed / 50 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 235 games cached\nNBA refs: 5 crews posted today\nliveprops: 540 feed lines merged (0 skipped from other days), 675 total, unmatched names: []\nFirst game of 2026-11-21 has started \u2014 keeping 0 locked plays (use --force to override).\nNBA data: teams 30, results 236 (through 2026-11-21), players 474, slate 6, lines 6, props 675, inj teams 31, prev-season players 163, play log 43, adv 416, qtr games 235, h2h 4/2/4/4/4/2\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 290 upcoming matches (47 with odds, 290 with estimates, 282 with weather, 0 with referee), 11826 player props, 5894 players\ntrack: cfb pick'em: locked 1 \u00b7 graded: NHL plays 15-14, best props NBA 56-70 NFL 24-25 NHL 55-57\nSite check OK \u2014 published (2026-11-21T20:44:53Z)\n"
  },
  "site": {
   "at": "2026-11-21T19:33:46+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-21T19:52:07+00:00",
+  "at": "2026-11-21T20:45:29+00:00",
   "ok": true,
   "issue": "",
   "gen": "Sat Nov 21 2:49 PM ET",
-  "odds_at": "2026-11-21T19:11:31+00:00",
+  "odds_at": "2026-11-21T20:41:04+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3760,6 +3760,16 @@
   {
    "at": "2026-11-21T19:52:07+00:00",
    "what": "nhl,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-21T20:45:29+00:00",
+   "what": "nba,soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
