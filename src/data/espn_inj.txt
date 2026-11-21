@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-21 05:42Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-21 07:50Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Out|Ankle|Nov 29
@@ -112,8 +112,8 @@ Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
 Folorunso Fatukasi|DT|Questionable|Toe|Nov 22
 Tonka Hemingway|DT|Out|Upper Body|Nov 29
-Matt Gay|PK|Questionable|Hip|Nov 22
 Brock Bowers|TE|Questionable|Ankle|Nov 22
+Matt Gay|PK|Questionable|Hip|Nov 22
 #LAC
 Isas Waxter|CB|Questionable|Ankle|Nov 22
 Rodney Shelley|CB|Out|Ankle|Nov 29
