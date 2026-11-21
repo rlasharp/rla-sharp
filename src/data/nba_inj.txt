@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 22:38Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 23:18Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 27
@@ -27,17 +27,17 @@ Jaylon Tyson|G|Out|ankle|Nov 23
 Nae'Qwan Tomlin|F|Out|back|Nov 29
 Evan Mobley|C|Out|toe sprain|Nov 29
 #Dallas Mavericks
-P.J. Washington|F|Day-To-Day|illness|Nov 21
+P.J. Washington|F|Out|illness|Nov 22
 Tobi Lawal|F|Out|groin|Nov 22
-Walter Clayton Jr.|G|Day-To-Day|knee|Nov 21
 Dereck Lively II|C|Out|foot surgery|Nov 27
 Sergio de Larrea|F|Out|knee strain|Nov 27
 Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
-Ebuka Okorie|G|Day-To-Day|oblique strain|Nov 22
 Ronald Holland II|F|Out|knee bruise|Nov 22
+Ebuka Okorie|G|Out|oblique strain|Nov 24
+Cade Cunningham|G|Day-To-Day|knee soreness|Nov 22
 Taurean Prince|F|Out|knee surgery|Dec 13
 Ugonna Onyenso|C|Day-To-Day|foot|Nov 21
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
@@ -86,13 +86,14 @@ Bryce McGowens|G|Out|elbow infection|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
+Karl-Anthony Towns|C|Out|illness|Nov 22
 OG Anunoby|F|Out|calf|Nov 22
-Karl-Anthony Towns|C|Day-To-Day|illness|Nov 21
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 22
 #Oklahoma City Thunder
+Shai Gilgeous-Alexander|G|Day-To-Day|back bruise|Nov 22
+Nikola Topic|G|Out|hip soreness|Nov 23
 Jaylin Williams|F|Out|back spasms|Nov 23
 Alex Caruso|G|Out|hip soreness|Nov 23
-Nikola Topic|G|Day-To-Day|hip soreness|Nov 22
 Thomas Sorber|C|Out|knee|Jan 31
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
