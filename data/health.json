@@ -1,20 +1,20 @@
 {
  "auto": {
-  "at": "2026-11-21T01:03:51+00:00",
+  "at": "2026-11-21T02:03:18+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 72 games kept (0 new), 1606 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 9 games, 60 confirmed / 30 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 4 upcoming games with lines\nNBA refs: 0 summaries checked, 226 games cached\nNBA refs: 9 crews posted today\nlive feed is not from 2026-11-20 - nothing merged\nNBA data: teams 30, results 226 (through 2026-11-19), players 473, slate 9, lines 9, props 1186, inj teams 30, prev-season players 247, play log 43, adv 414, qtr games 226, h2h 4/3/4/3/3/3/3/4/4\ntrack: no new snapshots \u00b7 graded: NHL plays 15-14, best props NBA 52-60 NFL 24-25 NHL 55-57\nSite check OK \u2014 published (2026-11-21T01:03:18Z)\n"
+  "summary": "ata: teams 30, results 226 (through 2026-11-19), players 473, slate 9, lines 9, props 1186, inj teams 31, prev-season players 247, play log 43, adv 414, qtr games 226, h2h 4/3/4/3/3/3/3/4/4\nnfl-update: 12 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 151 games (0 new), 21 referees, 0 of this week's crews posted\n204 players, 32 teams\nnfl-inj: 204 players\nnfl-qtr: 151 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 697 players, 0 ESPN requests this run\nNHL data: 0 games today, 14 tomorrow, 32 teams, 685 skaters, 67 goalies, 1115 props, 350 finals, 38 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 320 upcoming matches (73 with odds, 320 with estimates, 291 with weather, 0 with referee), 22269 player props, 5883 players\nUFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'get' \ncfb: 2185 players with logs, 75 focus games, 686 requests\ncbb: 2465 players with logs, 106 focus games, 575 requests\nFutures: nba: 12 futures markets, 132 prices nhl: 1 futures markets, 86 prices nfl: 23 futures markets, 421 prices \ntrack: no new snapshots \u00b7 graded: NHL plays 15-14, best props NBA 52-60 NFL 24-25 NHL 55-57\nSite check OK \u2014 published (2026-11-21T02:01:09Z)\n"
  },
  "site": {
-  "at": "2026-11-20T23:31:43+00:00",
+  "at": "2026-11-21T02:03:18+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-21T01:03:51+00:00",
+  "at": "2026-11-21T02:03:18+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Fri Nov 20 6:28 PM ET",
-  "odds_at": "2026-11-20T23:21:59+00:00",
+  "gen": "Fri Nov 20 8:55 PM ET",
+  "odds_at": "2026-11-21T01:06:24+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -3522,6 +3522,18 @@
    "site_ok": true,
    "site_issue": "",
    "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-21T02:03:18+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [
+    "UFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'g"
+   ],
    "check_failed": false,
    "published": true
   }
