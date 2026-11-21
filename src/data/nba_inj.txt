@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 03:51Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 05:33Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 22
@@ -51,6 +51,7 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Houston Rockets
 Clint Capela|C|Out|ankle sprain|Nov 23
 #Indiana Pacers
+T.J. McConnell|G|Out|hamstring|Nov 22
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -104,6 +105,7 @@ Adem Bona|C|Out|back sprain|Nov 23
 Jaylen Brown|G|Out|hamstring not specified|Nov 23
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
+Ryan Dunn|F|Out|quadriceps|Nov 23
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|heel bruise|Nov 27
