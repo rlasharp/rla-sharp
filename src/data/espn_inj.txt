@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 13:39Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 15:27Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Carson Beck|QB|Out|Back|Nov 29
@@ -70,10 +70,11 @@ Ennis Rakestraw Jr.|CB|Questionable|Shoulder|Nov 22
 Khalil Dorsey|CB|Questionable|Ankle|Nov 22
 Joe Bachie|LB|Questionable|Knee|Nov 22
 #GB
+Micah Parsons|DE|Out|Knee - ACL|Nov 25
+Luke Musgrave|TE|Out|Neck|Feb 15
 Brandon Cisse|CB|Questionable|Ribs|Nov 25
 Zaire Franklin|LB|Out|Shin|Nov 25
 Skyy Moore|WR|Questionable|Ankle|Nov 25
-Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Josh Jacobs|RB|Out|Finger|Nov 25
 Kevin Zeitler|G|Out|Triceps|Nov 25
 Sean Rhyan|G|Out|Ankle|Nov 25
@@ -89,7 +90,7 @@ Woody Marks|RB|Out|Concussion|Nov 29
 Marvin Harrison Jr.|WR|Out|Hamstring|Nov 29
 Jake Andrews|C|Out|Coach's Decision|Nov 29
 #IND
-Alec Pierce|WR|IR|Heel|Nov 29
+Alec Pierce|WR|IR|Heel|Feb 15
 Riley Leonard|QB|Out|Coach's Decision|Nov 29
 Seth McGowan|RB|Questionable|Hamstring|Nov 29
 Sauce Gardner|CB|Out|Calf|Nov 29
@@ -127,12 +128,12 @@ Brenen Thompson|WR|Doubtful|Hamstring|Nov 22
 Charlie Kolar|TE|Questionable|Concussion|Nov 22
 Branson Taylor|G|IR|Ankle|Dec 13
 #LAR
-Puka Nacua|WR|IR|Knee - MCL|Jan 10
+Davante Adams|WR|IR|Hamstring|Dec 13
+Puka Nacua|WR|IR|Knee - MCL|Feb 15
 Steve Avila|G|Out|Hamstring|Dec 3
 Justin Dedich|G|IR|Undisclosed|Nov 25
 Kobie Turner|DE|IR|Groin|Nov 25
 Kyren Williams|RB|Questionable|Toe|Nov 25
-Davante Adams|WR|IR|Hamstring|Dec 3
 Terrance Ferguson|TE|IR|Hamstring|Nov 25
 Joe Cardona|LS|Out|Ankle|Nov 25
 Coleman Shelton|C|Doubtful|Hamstring|Nov 25

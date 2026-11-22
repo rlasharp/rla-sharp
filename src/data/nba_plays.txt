@@ -43,3 +43,5 @@
 2026-11-19|Damian Lillard|ra|u|8.5|-130|Fanatics|POR|MIL
 2026-11-20|Darryn Peterson|ast|u|4.5|-145|Fanatics|UTAH|PHX
 2026-11-20|Collin Gillespie|reb|u|3.5|-163|DraftKings|PHX|UTAH
+2026-11-22|Draymond Green|pts|u|5.5|-142|DraftKings|GS|BOS
+2026-11-22|Aday Mara|pts|u|12.5|-130|Fanatics|OKC|MIA
