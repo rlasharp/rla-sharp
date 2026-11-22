@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 21:25Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 21:44Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Cody Simon|LB|Questionable|Calf|Nov 22
@@ -16,7 +16,7 @@ Andrew Wingard|S|IR|Wrist|Dec 27
 Divine Deablo|LB|Out|Forearm|Nov 29
 Zachariah Branch|WR|Out|Hamstring|Nov 29
 #BAL
-Derrick Henry|RB|Questionable|Concussion|Nov 22
+Derrick Henry|RB|Questionable|Concussion|Nov 29
 Elijah Sarratt|WR|Out|Coach's Decision|Nov 29
 Adam Randall|RB|Out|Coach's Decision|Nov 29
 Kedon Slovis|QB|Out|Coach's Decision|Nov 29
@@ -35,6 +35,7 @@ Jude Bowry|OT|Out|Coach's Decision|Nov 26
 Dalton Kincaid|TE|Out|Thumb|Nov 26
 Ar'maj Reed-Adams|G|IR|Back|Dec 19
 #CAR
+Jalen Coker|WR|Questionable|Undisclosed|Nov 30
 Ja'Tavion Sanders|TE|Out|Coach's Decision|Nov 30
 Haynes King|QB|Out|Coach's Decision|Nov 30
 Marco Wilson|CB|Out|Coach's Decision|Nov 30
@@ -92,6 +93,7 @@ Keith Abney II|CB|Out|Coach's Decision|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
 Aidan Hutchinson|DE|IR|Knee - ACL|Feb 15
 #GB
+Isaiah McDuffie|LB|Questionable|Ribs|Nov 25
 Josh Jacobs|RB|Out|Finger|Nov 25
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Luke Musgrave|TE|Out|Neck|Feb 15
@@ -149,6 +151,8 @@ Tonka Hemingway|DT|Out|Upper Body|Nov 29
 Malik Benson|WR|Out|Coach's Decision|Nov 29
 Brock Bowers|TE|Out|Ankle|Nov 29
 #LAC
+Keaton Mitchell|RB|Questionable|Back|Nov 22
+David Njoku|TE|Questionable|Shoulder|Nov 22
 Tarheeb Still|CB|Out|Ankle|Nov 29
 Brenen Thompson|WR|Out|Hamstring|Nov 29
 KeAndre Lambert-Smith|WR|Out|Coach's Decision|Nov 29
