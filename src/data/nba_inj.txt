@@ -1,6 +1,5 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 17:24Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 18:49Z
 #Atlanta Hawks
-Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
 CJ McCollum|G|Out|calf strain|Dec 19
@@ -19,10 +18,10 @@ Grayson Allen|G|Day-To-Day|concussion|Nov 23
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Nic Claxton|C|Day-To-Day|illness|Nov 22
+Jalen Smith|F|Day-To-Day|illness|Nov 22
 Norman Powell|G|Out|hamstring strain|Nov 28
 Patrick Williams|F|Day-To-Day|thumb|Nov 22
-Jalen Smith|F|Day-To-Day|illness|Nov 22
-Tobe Awaka|F|Out|back|Nov 25
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
 Jaylon Tyson|G|Out|ankle|Nov 23
@@ -87,9 +86,9 @@ Bryce McGowens|G|Out|elbow infection|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
+OG Anunoby|F|Out|calf soreness|Nov 25
 Karl-Anthony Towns|C|Day-To-Day|illness|Nov 22
-Jordan Clarkson|G|Day-To-Day|foot plantar fasciitis|Nov 22
-OG Anunoby|F|Day-To-Day|calf|Nov 22
+Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 25
 #Oklahoma City Thunder
 Shai Gilgeous-Alexander|G|Day-To-Day|back bruise|Nov 22
 Nikola Topic|G|Out|hip soreness|Nov 23
@@ -134,6 +133,8 @@ Jusuf Nurkic|C|Out|foot strain|Nov 29
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
+Bub Carrington|G|Day-To-Day|illness|Nov 22
+Deandre Ayton|C|Day-To-Day|illness|Nov 22
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 24
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
