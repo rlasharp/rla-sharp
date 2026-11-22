@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 01:52Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 06:00Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Carson Beck|QB|Out|Back|Nov 29
@@ -60,7 +60,6 @@ Tyler Booker|G|Out|Ankle|Dec 7
 #DEN
 Caleb Lohner|TE|IR|Foot|Nov 27
 Brandon Jones|S|Questionable|Hamstring|Nov 22
-Eyioma Uwazurike|DE|IR|Shoulder|Dec 13
 #DET
 Cade Mays|C|IR|Ankle|Dec 20
 D.J. Reed|CB|Questionable|Hip|Nov 22
