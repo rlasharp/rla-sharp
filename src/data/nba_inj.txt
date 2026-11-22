@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 21:44Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 22:29Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -12,22 +12,21 @@ Paul George|F|Out|rest|Nov 24
 Grant Nelson|F|Day-To-Day|ankle sprain|Nov 23
 Nolan Traore|G|Out|hamstring strain|Nov 25
 #Charlotte Hornets
-Grant Williams|F|Day-To-Day|hamstring|Nov 23
-Grayson Allen|G|Day-To-Day|concussion|Nov 23
+Grayson Allen|G|Out|concussion|Nov 25
+Brandon Miller|F|Day-To-Day|knee bruise|Nov 23
+Grant Williams|F|Out|hamstring|Nov 25
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
 Nic Claxton|C|Out|illness|Nov 23
-Jalen Smith|F|Day-To-Day|illness|Nov 22
 Norman Powell|G|Out|hamstring strain|Nov 28
-Patrick Williams|F|Day-To-Day|thumb|Nov 22
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
 Jaylon Tyson|G|Out|ankle|Nov 23
 Nae'Qwan Tomlin|F|Out|back|Nov 29
 Evan Mobley|C|Out|toe sprain|Nov 29
 #Dallas Mavericks
-P.J. Washington|F|Day-To-Day|illness|Nov 22
+P.J. Washington|F|Day-To-Day|illness|Nov 24
 Walter Clayton Jr.|G|Day-To-Day|knee tendinitis|Nov 22
 Tobi Lawal|F|Out|groin|Nov 24
 Dereck Lively II|C|Out|foot surgery|Nov 27
@@ -59,14 +58,14 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Austin Reaves|G|Out|heel bruise|Nov 23
 #Memphis Grizzlies
-Javon Small|G|Day-To-Day|personal|Nov 23
-Cameron Boozer|F|Day-To-Day|ankle|Nov 23
+Cameron Boozer|F|Out|ankle sprain|Nov 25
+Javon Small|G|Day-To-Day|undisclosed|
 Jerami Grant|F|Day-To-Day|calf not specified|Nov 23
 GG Jackson|F|Out|foot surgery|Jan 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Giannis Antetokounmpo|F|Day-To-Day|groin|Nov 22
+Giannis Antetokounmpo|F|Out|groin|Nov 25
 #Milwaukee Bucks
 Ousmane Dieng|F|Out|finger surgery|Nov 23
 #Minnesota Timberwolves
@@ -85,7 +84,7 @@ OG Anunoby|F|Out|calf soreness|Nov 25
 Karl-Anthony Towns|C|Day-To-Day|illness|Nov 22
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 25
 #Oklahoma City Thunder
-Shai Gilgeous-Alexander|G|Day-To-Day|back bruise|Nov 23
+Shai Gilgeous-Alexander|G|Out|back bruise|Nov 23
 Nikola Topic|G|Out|hip soreness|Nov 23
 Jaylin Williams|F|Out|back spasms|Nov 23
 Alex Caruso|G|Out|hip soreness|Nov 23
@@ -99,8 +98,8 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
-Dean Wade|F|Day-To-Day|hamstring soreness|Nov 23
 Jaylen Brown|G|Day-To-Day|hamstring not specified|Nov 23
+Dean Wade|F|Day-To-Day|hamstring soreness|Nov 23
 Adem Bona|C|Out|back sprain|Nov 23
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
