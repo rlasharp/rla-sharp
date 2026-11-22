@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 17:24Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 17:44Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Starling Thomas V|CB|Out|Coach's Decision|Nov 29
@@ -33,9 +33,9 @@ Jude Bowry|OT|Out|Coach's Decision|Nov 26
 Dalton Kincaid|TE|Out|Thumb|Nov 26
 Ar'maj Reed-Adams|G|IR|Back|Dec 19
 #CAR
+Ja'Tavion Sanders|TE|Out|Coach's Decision|Nov 30
 Haynes King|QB|Out|Coach's Decision|Nov 30
 Marco Wilson|CB|Out|Coach's Decision|Nov 30
-Ja'Tavion Sanders|TE|Out|Coach's Decision|Nov 30
 Bobby Okereke|LB|Out|Foot|Nov 30
 AJ Dillon|RB|Out|Coach's Decision|Nov 30
 TeRah Edwards|DT|Out|Coach's Decision|Nov 30
@@ -61,10 +61,10 @@ Dylan Fairchild|G|Questionable|Oblique|Nov 23
 Ronnie Hickman|S|Out|Concussion|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
+Jaishawn Barham|LB|Out|Hip|Nov 26
 P.J. Locke|S|Out|Concussion|Nov 26
 Jonathan Mingo|WR|Out|Ankle|Nov 26
 Jake Ferguson|TE|Out|Knee|Nov 26
-Jaishawn Barham|LB|Out|Hip|Nov 26
 Tyler Booker|G|Out|Ankle|Dec 7
 Jonathan Bullard|DT|Out|Coach's Decision|Nov 26
 Jalen Thompson|S|IR|Hamstring|Nov 26
@@ -73,11 +73,11 @@ DaRon Bland|CB|IR|Ankle|Dec 27
 Caleb Lohner|TE|IR|Foot|Nov 27
 Brandon Jones|S|Questionable|Hamstring|Nov 22
 #DET
+Ennis Rakestraw Jr.|CB|Out|Shoulder|Nov 26
 D.J. Reed|CB|Out|Hip|Nov 26
 Mekhi Wingo|DT|Out|Coach's Decision|Nov 26
 Tyrus Wheat|LB|Out|Coach's Decision|Nov 26
 Amen Ogbongbemiga|LB|Out|Coach's Decision|Nov 26
-Ennis Rakestraw Jr.|CB|Out|Shoulder|Nov 26
 Keith Abney II|CB|Out|Coach's Decision|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
 Aidan Hutchinson|DE|IR|Knee - ACL|Feb 15
@@ -117,13 +117,13 @@ B.J. Green II|DE|IR|Forearm|Nov 29
 Matt Dickerson|DE|Questionable|Neck|Nov 22
 Robert Hainsey|C|Out|Knee|Nov 29
 #KC
-Garrett Nussmeier|QB|Out|Coach's Decision|Nov 26
+Omarr Norman-Lott|DT|Out|Knee - ACL|Nov 26
 Peter Woods|DT|Out|Neck|Nov 26
+Garrett Nussmeier|QB|Out|Coach's Decision|Nov 26
 Melvin Smith Jr.|CB|Out|Coach's Decision|Nov 26
 Trey Smith|G|Out|Concussion|Nov 26
 Kenneth Walker III|RB|Out|Groin|Nov 26
 Jaylon Moore|OT|Out|Ankle|Nov 26
-Omarr Norman-Lott|DT|Out|Knee - ACL|Nov 26
 Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
 Brock Bowers|TE|Questionable|Ankle|Nov 22
@@ -207,10 +207,10 @@ Dontayvion Wicks|WR|IR|Ankle|Dec 19
 #PIT
 Kaden Wetjen|WR|Out|Coach's Decision|Nov 27
 Will Howard|QB|Out|Coach's Decision|Nov 27
-Gabriel Rubio|DE|Out|Coach's Decision|
-Sean Murphy-Bunting|CB|Out|Coach's Decision|
-Eli Heidenreich|RB|Out|Coach's Decision|
-Drew Allar|QB|Out|Coach's Decision|
+Gabriel Rubio|DE|Out|Coach's Decision|Nov 27
+Sean Murphy-Bunting|CB|Out|Coach's Decision|Nov 27
+Eli Heidenreich|RB|Out|Coach's Decision|Nov 27
+Drew Allar|QB|Out|Coach's Decision|Nov 27
 Michael Pittman Jr.|WR|IR|Foot|Nov 27
 Nick Herbig|LB|Out|Hip|Nov 27
 Gennings Dunker|G|IR|Knee|Nov 27
