@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-22T05:49:48+00:00",
-  "ok": false,
-  "summary": ", players 474, slate 7, lines 7, props 276, inj teams 31, prev-season players 190, play log 43, adv 418, qtr games 235, h2h 4/2/4/2/4/4/2\nnfl-update: 12 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 151 games (0 new), 21 referees, 0 of this week's crews posted\n201 players, 32 teams\nnfl-inj: 201 players\nnfl-qtr: 151 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 700 players, 14 ESPN requests this run\nNHL data: 5 games today, 7 tomorrow, 32 teams, 689 skaters, 67 goalies, 308 props, 363 finals, 46 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 279 upcoming matches (46 with odds, 279 with estimates, 272 with weather, 0 with referee), 12791 player props, 5896 players\nUFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'get' \ncfb: 2204 players with logs, 69 focus games, 683 requests\ncbb: 2636 players with logs, 175 focus games, 627 requests\nFutures: nba: 16 futures markets, 258 prices nhl: 1 futures markets, 78 prices nfl: 23 futures markets, 420 prices \ntrack: nba 2026-11-22: snapshot 5 props, 7 games; soc 2026-11-22: locked 3 plays \u00b7 graded: NHL plays 15-14, best props NBA 58-73 NFL 24-25 NHL 60-59\nSITE CHECK FAILED \u2014 live site left unchanged\n"
+  "at": "2026-11-22T06:09:30+00:00",
+  "ok": true,
+  "summary": "ayers 474, slate 7, lines 7, props 276, inj teams 31, prev-season players 190, play log 43, adv 418, qtr games 235, h2h 4/2/4/2/4/4/2\nnfl-update: 12 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 151 games (0 new), 21 referees, 0 of this week's crews posted\n201 players, 32 teams\nnfl-inj: 201 players\nnfl-qtr: 151 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 699 players, 15 ESPN requests this run\nNHL data: 5 games today, 7 tomorrow, 32 teams, 690 skaters, 67 goalies, 309 props, 364 finals, 49 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 279 upcoming matches (46 with odds, 279 with estimates, 272 with weather, 0 with referee), 12791 player props, 5896 players\nUFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'get' \ncfb: 2206 players with logs, 69 focus games, 685 requests\ncbb: 2636 players with logs, 175 focus games, 627 requests\nFutures: nba: 15 futures markets, 243 prices nhl: 1 futures markets, 78 prices nfl: 23 futures markets, 420 prices \ntrack: nba 2026-11-22: snapshot 5 props, 7 games; soc 2026-11-22: locked 3 plays \u00b7 graded: NHL plays 15-14, best props NBA 58-73 NFL 24-25 NHL 63-59\nSite check OK \u2014 published (2026-11-22T06:07:21Z)\n"
  },
  "site": {
-  "at": "2026-11-22T05:49:48+00:00",
+  "at": "2026-11-22T06:09:30+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-22T05:49:48+00:00",
+  "at": "2026-11-22T06:09:30+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sat Nov 21 11:48 PM ET",
+  "gen": "Sun Nov 22 1:00 AM ET",
   "odds_at": "2026-11-22T05:00:07+00:00",
   "backfill": "1312/1312"
  },
@@ -3944,6 +3944,18 @@
    ],
    "check_failed": true,
    "published": false
+  },
+  {
+   "at": "2026-11-22T06:09:30+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [
+    "UFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'g"
+   ],
+   "check_failed": false,
+   "published": true
   }
  ]
 }
