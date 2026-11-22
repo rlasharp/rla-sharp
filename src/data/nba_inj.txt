@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-21 23:57Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 00:59Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 27
@@ -19,6 +19,7 @@ Grayson Allen|G|Day-To-Day|concussion|Nov 23
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Norman Powell|G|Day-To-Day|hamstring|Nov 22
 Jalen Smith|F|Day-To-Day|illness|Nov 22
 Tobe Awaka|F|Out|back|Nov 25
 Caleb Wilson|F|Out|hand|Dec 13
@@ -80,6 +81,7 @@ Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
+Zion Williamson|F|Out|thigh bruise|Nov 23
 Trey Murphy III|F|Out|knee|Nov 23
 Trendon Watford|F|Out|ankle sprain|Nov 27
 Bryce McGowens|G|Out|elbow infection|Nov 27
