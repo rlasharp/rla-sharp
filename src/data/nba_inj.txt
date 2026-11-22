@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 16:47Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 17:24Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 27
@@ -41,7 +41,6 @@ Ronald Holland II|F|Out|knee bruise|Nov 22
 Ebuka Okorie|G|Out|oblique strain|Nov 24
 Cade Cunningham|G|Day-To-Day|knee soreness|Nov 22
 Taurean Prince|F|Out|knee surgery|Dec 13
-Ugonna Onyenso|C|Day-To-Day|foot|Nov 21
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
 #Golden State Warriors
