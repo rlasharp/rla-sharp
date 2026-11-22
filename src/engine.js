@@ -35,17 +35,17 @@ const SLATE = [
 const LINES = {
  1:{sp:-12.5,ml:[533,-750],tot:44.5},
  2:{sp:-16.5,ml:[880,-1540],tot:44.5},
- 3:{sp:-11.5,ml:[457,-620],tot:48.5},
- 4:{sp:-7.5,ml:[286,-357],tot:54.5},
- 5:{sp:-4.5,ml:[185,-223],tot:47.5},
- 6:{sp:-15.5,ml:[900,-1600],tot:40.5},
- 7:{sp:3.5,ml:[-189,159],tot:37.5},
- 8:{sp:-3,ml:[128,-151],tot:43.5},
- 9:{sp:-3,ml:[144,-171],tot:42.5},
- 10:{sp:-10.5,ml:[447,-600],tot:40.5},
- 11:{sp:6,ml:[-256,211],tot:46.5},
- 12:{sp:-3,ml:[145,-172],tot:46.5},
- 13:{sp:6,ml:[-301,245],tot:54.5}
+ 3:{sp:-11.5,ml:[464,-630],tot:48.5},
+ 4:{sp:-7.5,ml:[271,-336],tot:54.5},
+ 5:{sp:-3.5,ml:[171,-204],tot:47.5},
+ 6:{sp:-15.5,ml:[910,-1620],tot:40.5},
+ 7:{sp:3.5,ml:[-193,162],tot:37.5},
+ 8:{sp:-3,ml:[127,-151],tot:43.5},
+ 9:{sp:-3,ml:[143,-170],tot:42.5},
+ 10:{sp:-10.5,ml:[466,-640],tot:40.5},
+ 11:{sp:6,ml:[-255,210],tot:46.5},
+ 12:{sp:-3.5,ml:[145,-172],tot:46.5},
+ 13:{sp:6,ml:[-293,239],tot:54.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
 const SPLITS = {};
