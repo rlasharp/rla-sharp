@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 22:41Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 23:23Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -34,7 +34,7 @@ Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Denver Nuggets
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
-Ebuka Okorie|G|Out|oblique strain|Nov 24
+Ebuka Okorie|G|Day-To-Day|oblique strain|Nov 24
 Taurean Prince|F|Out|knee surgery|Dec 13
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
@@ -51,7 +51,6 @@ Tyrese Haliburton|G|Out|hamstring strain|Dec 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
-Brandon Ingram|F|Out|achilles surgery|Nov 23
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
@@ -82,6 +81,7 @@ OG Anunoby|F|Out|calf soreness|Nov 25
 Karl-Anthony Towns|C|Day-To-Day|illness|Nov 22
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 25
 #Oklahoma City Thunder
+Aday Mara|C|Out|lower leg bruise|Nov 23
 Shai Gilgeous-Alexander|G|Out|back bruise|Nov 23
 Nikola Topic|G|Out|hip soreness|Nov 23
 Jaylin Williams|F|Out|back spasms|Nov 23
@@ -96,9 +96,9 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
+Adem Bona|C|Out|back sprain|Nov 23
 Jaylen Brown|G|Day-To-Day|hamstring not specified|Nov 23
 Dean Wade|F|Day-To-Day|hamstring soreness|Nov 23
-Adem Bona|C|Out|back sprain|Nov 23
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Ryan Dunn|F|Day-To-Day|quadriceps|Nov 23
@@ -125,8 +125,6 @@ Jusuf Nurkic|C|Out|foot strain|Nov 29
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
-Bub Carrington|G|Day-To-Day|illness|Nov 22
-Deandre Ayton|C|Day-To-Day|illness|Nov 22
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 24
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25

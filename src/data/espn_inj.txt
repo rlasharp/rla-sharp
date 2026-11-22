@@ -1,7 +1,7 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 21:44Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 23:23Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
-Cody Simon|LB|Questionable|Calf|Nov 22
+Cody Simon|LB|Questionable|Calf|Nov 29
 Starling Thomas V|CB|Out|Coach's Decision|Nov 29
 Kingsley Eguakun|C|Out|Coach's Decision|Nov 29
 Jon Gaines II|G|Out|Ankle|Nov 29
@@ -16,7 +16,6 @@ Andrew Wingard|S|IR|Wrist|Dec 27
 Divine Deablo|LB|Out|Forearm|Nov 29
 Zachariah Branch|WR|Out|Hamstring|Nov 29
 #BAL
-Derrick Henry|RB|Questionable|Concussion|Nov 29
 Elijah Sarratt|WR|Out|Coach's Decision|Nov 29
 Adam Randall|RB|Out|Coach's Decision|Nov 29
 Kedon Slovis|QB|Out|Coach's Decision|Nov 29
@@ -35,7 +34,7 @@ Jude Bowry|OT|Out|Coach's Decision|Nov 26
 Dalton Kincaid|TE|Out|Thumb|Nov 26
 Ar'maj Reed-Adams|G|IR|Back|Dec 19
 #CAR
-Jalen Coker|WR|Questionable|Undisclosed|Nov 30
+Jalen Coker|WR|Questionable|Concussion|Nov 30
 Ja'Tavion Sanders|TE|Out|Coach's Decision|Nov 30
 Haynes King|QB|Out|Coach's Decision|Nov 30
 Marco Wilson|CB|Out|Coach's Decision|Nov 30
@@ -93,16 +92,16 @@ Keith Abney II|CB|Out|Coach's Decision|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
 Aidan Hutchinson|DE|IR|Knee - ACL|Feb 15
 #GB
-Isaiah McDuffie|LB|Questionable|Ribs|Nov 25
-Josh Jacobs|RB|Out|Finger|Nov 25
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
-Luke Musgrave|TE|Out|Neck|Feb 15
-Brandon Cisse|CB|Questionable|Ribs|Nov 25
-Zaire Franklin|LB|Out|Shin|Nov 25
-Skyy Moore|WR|Questionable|Ankle|Nov 25
-Kevin Zeitler|G|Out|Triceps|Nov 25
+Josh Jacobs|RB|Out|Finger|Nov 25
 Sean Rhyan|G|Out|Ankle|Nov 25
+Zaire Franklin|LB|Out|Shin|Nov 25
+Brandon Cisse|CB|Questionable|Ribs|Nov 25
+Skyy Moore|WR|Questionable|Ankle|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
+Isaiah McDuffie|LB|Questionable|Ribs|Nov 25
+Luke Musgrave|TE|Out|Neck|Feb 15
+Kevin Zeitler|G|Out|Triceps|Nov 25
 #HOU
 Kayshon Boutte|WR|Questionable|Hip|Nov 29
 Keylan Rutledge|G|Questionable|Undisclosed|Nov 29
@@ -124,6 +123,7 @@ Jalen Travis|OT|Out|Knee|Nov 29
 Charvarius Ward|CB|Out|Knee|Nov 29
 Will Mallory|TE|Out|Hamstring|Nov 29
 #JAX
+Jarrian Jones|CB|Questionable|Chest|Nov 29
 Matt Dickerson|DE|Out|Neck|Nov 29
 CJ Williams|WR|Out|Coach's Decision|Nov 29
 Danny Striggow|DE|Out|Concussion|Nov 29
@@ -143,6 +143,9 @@ Kenneth Walker III|RB|Out|Groin|Nov 26
 Jaylon Moore|OT|Out|Ankle|Nov 26
 Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
+Dareke Young|WR|Questionable|Undisclosed|Nov 22
+Adam Butler|DT|Questionable|Head|Nov 22
+Tim Keenan III|DT|Questionable|Knee|Nov 22
 Dont'e Thornton Jr.|WR|Out|Coach's Decision|Nov 29
 Dalton Johnson|S|Out|Coach's Decision|Nov 29
 Tristin McCollum|S|Out|Coach's Decision|Nov 29
@@ -151,8 +154,8 @@ Tonka Hemingway|DT|Out|Upper Body|Nov 29
 Malik Benson|WR|Out|Coach's Decision|Nov 29
 Brock Bowers|TE|Out|Ankle|Nov 29
 #LAC
-Keaton Mitchell|RB|Questionable|Back|Nov 22
-David Njoku|TE|Questionable|Shoulder|Nov 22
+Keaton Mitchell|RB|Questionable|Knee|Nov 22
+Akheem Mesidor|LB|Questionable|Ankle|Nov 22
 Tarheeb Still|CB|Out|Ankle|Nov 29
 Brenen Thompson|WR|Out|Hamstring|Nov 29
 KeAndre Lambert-Smith|WR|Out|Coach's Decision|Nov 29
@@ -172,7 +175,7 @@ Joe Cardona|LS|Out|Ankle|Nov 25
 Coleman Shelton|C|Doubtful|Hamstring|Nov 25
 Dylan McMahon|C|IR|Knee|Dec 25
 #MIA
-JuJu Brents|CB|Questionable|Shoulder|Nov 22
+JuJu Brents|CB|Questionable|Shoulder|Nov 29
 Jaylin Simpson|S|Out|Knee|Nov 29
 Dante Trader Jr.|S|Out|Shoulder|Nov 29
 Caedan Wallace|OT|Out|Coach's Decision|Nov 29
@@ -208,6 +211,7 @@ Martin Emerson Jr.|CB|Out|Concussion|Nov 29
 Taliese Fuaga|OT|Out|Knee|Nov 29
 Christen Miller|DT|IR|Knee|Dec 13
 #NYG
+Greg Newsome II|CB|Questionable|Ankle|Nov 22
 Jason Pinnock|S|Out|Coach's Decision|Nov 29
 Josh Sills|G|Out|Coach's Decision|Nov 29
 Nic Jones|CB|Out|Coach's Decision|Nov 29
@@ -225,6 +229,8 @@ Omar Cooper Jr.|WR|Out|Ankle|Nov 29
 Jarvis Brownlee Jr.|CB|Out|Coach's Decision|Nov 29
 David Onyemata|DT|IR|Abdomen|Nov 29
 #PHI
+Saquon Barkley|RB|Questionable|Arm|Nov 26
+Jonathan Jones|CB|Questionable|Foot|Nov 26
 Quinyon Mitchell|CB|Questionable|Hamstring|Nov 26
 Smael Mondon Jr.|LB|Out|Ankle|Nov 26
 Cole Payton|QB|Out|Coach's Decision|Nov 26
@@ -278,9 +284,9 @@ Ayden Garnes|CB|Out|Coach's Decision|Nov 30
 Josh Hayes|CB|IR|Knee|Nov 30
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 #TEN
-Dan Moore Jr.|OT|Questionable|Knee|Nov 22
+Dan Moore Jr.|OT|Questionable|Knee|Nov 29
 Terrell Burgess|S|Questionable|Knee|Nov 29
-Cor'Dale Flott|CB|Questionable|Neck|Nov 22
+Cor'Dale Flott|CB|Questionable|Neck|Nov 29
 Tony Adams|S|Questionable|Illness|Nov 29
 Nicholas Singleton|RB|Out|Coach's Decision|Nov 29
 Jaylon Jones|CB|Out|Coach's Decision|Nov 29
