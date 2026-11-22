@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-22T19:36:42+00:00",
+  "at": "2026-11-22T19:53:14+00:00",
   "ok": true,
-  "summary": "results 241 (through 2026-11-21), players 474, slate 7, lines 7, props 811, inj teams 31, prev-season players 190, play log 45, adv 418, qtr games 241, h2h 4/2/4/2/4/4/2\nnfl-update: 5 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 1 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 151 games (0 new), 21 referees, 9 of this week's crews posted\n236 players, 32 teams\nnfl-inj: 236 players\nnfl-qtr: 151 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 699 players, 0 ESPN requests this run\nNHL data: 5 games today, 7 tomorrow, 32 teams, 688 skaters, 67 goalies, 459 props, 364 finals, 43 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 263 upcoming matches (30 with odds, 263 with estimates, 255 with weather, 0 with referee), 7261 player props, 5902 players\nUFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'get' \ncfb: 2278 players with logs, 69 focus games, 664 requests\ncbb: 2634 players with logs, 159 focus games, 577 requests\nFutures: nba: 16 futures markets, 261 prices nhl: 1 futures markets, 85 prices nfl: 13 futures markets, 150 prices \ntrack: nba 2026-11-22: snapshot 8 props, 7 games \u00b7 graded: NHL plays 15-14, best props NBA 58-73 NFL 24-25 NHL 63-59\nSite check OK \u2014 published (2026-11-22T19:34:33Z)\n"
+  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1549 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 7 games, 0 confirmed / 70 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 241 games cached\nNBA refs: 7 crews posted today\nliveprops: 828 feed lines merged (0 skipped from other days), 811 total, unmatched names: []\nNBA data: teams 30, results 241 (through 2026-11-21), players 474, slate 7, lines 7, props 811, inj teams 31, prev-season players 190, play log 45, adv 418, qtr games 241, h2h 4/2/4/2/4/4/2\nnfl-update: 5 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 1 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 151 games (0 new), 21 referees, 9 of this week's crews posted\n234 players, 32 teams\nnfl-inj: 234 players\nnfl-qtr: 151 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 269 upcoming matches (30 with odds, 269 with estimates, 256 with weather, 0 with referee), 7261 player props, 5902 players\ntrack: nba 2026-11-22: snapshot 8 props, 7 games \u00b7 graded: NHL plays 15-14, best props NBA 58-73 NFL 24-25 NHL 63-59\nSite check OK \u2014 published (2026-11-22T19:52:41Z)\n"
  },
  "site": {
   "at": "2026-11-22T19:36:42+00:00",
@@ -10,7 +10,7 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-22T19:36:42+00:00",
+  "at": "2026-11-22T19:53:14+00:00",
   "ok": true,
   "issue": "",
   "gen": "Sun Nov 22 2:33 PM ET",
@@ -4128,6 +4128,16 @@
    "fails": [
     "UFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'g"
    ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-22T19:53:14+00:00",
+   "what": "nba,nfl,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
    "check_failed": false,
    "published": true
   }
