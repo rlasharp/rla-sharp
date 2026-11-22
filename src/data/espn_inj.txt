@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 20:47Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 21:25Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Cody Simon|LB|Questionable|Calf|Nov 22
@@ -16,6 +16,7 @@ Andrew Wingard|S|IR|Wrist|Dec 27
 Divine Deablo|LB|Out|Forearm|Nov 29
 Zachariah Branch|WR|Out|Hamstring|Nov 29
 #BAL
+Derrick Henry|RB|Questionable|Concussion|Nov 22
 Elijah Sarratt|WR|Out|Coach's Decision|Nov 29
 Adam Randall|RB|Out|Coach's Decision|Nov 29
 Kedon Slovis|QB|Out|Coach's Decision|Nov 29
@@ -45,7 +46,7 @@ Brady Christensen|G|IR|Hamstring|Nov 30
 Isaiah Simmons|S|IR|Knee|Dec 20
 Jonathon Brooks|RB|IR|Groin|Nov 30
 #CHI
-Roschon Johnson|RB|Out|Ankle|Nov 26
+Roschon Johnson|RB|Questionable|Ankle|Nov 26
 Case Keenum|QB|Out|Coach's Decision|Nov 26
 Jayden Loving|DT|Out|Coach's Decision|Nov 26
 Jordan McFadden|G|Out|Coach's Decision|Nov 26
@@ -129,7 +130,8 @@ Robert Hainsey|C|Out|Knee|Nov 29
 Jalen Huskey|S|Out|Coach's Decision|Nov 29
 B.J. Green II|DE|IR|Forearm|Nov 29
 #KC
-Noah Gray|TE|Questionable|Ribs|Nov 22
+Ben VanSumeren|FB|Questionable|Knee|Nov 26
+Noah Gray|TE|Questionable|Ribs|Nov 26
 Omarr Norman-Lott|DT|Out|Knee - ACL|Nov 26
 Peter Woods|DT|Out|Neck|Nov 26
 Garrett Nussmeier|QB|Out|Coach's Decision|Nov 26
@@ -166,6 +168,7 @@ Joe Cardona|LS|Out|Ankle|Nov 25
 Coleman Shelton|C|Doubtful|Hamstring|Nov 25
 Dylan McMahon|C|IR|Knee|Dec 25
 #MIA
+JuJu Brents|CB|Questionable|Shoulder|Nov 22
 Jaylin Simpson|S|Out|Knee|Nov 29
 Dante Trader Jr.|S|Out|Shoulder|Nov 29
 Caedan Wallace|OT|Out|Coach's Decision|Nov 29
@@ -191,7 +194,7 @@ Carlton Davis III|CB|Out|Knee|Nov 29
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 29
 Robert Spillane|LB|Questionable|Illness|Nov 29
 #NO
-Juwan Johnson|TE|Questionable|Hamstring|Nov 22
+Juwan Johnson|TE|Questionable|Hamstring|Nov 29
 Zach Wilson|QB|Out|Coach's Decision|Nov 29
 Pete Werner|LB|Out|Hamstring|Nov 29
 Audric Estime|RB|Out|Coach's Decision|Nov 29
@@ -218,6 +221,7 @@ Omar Cooper Jr.|WR|Out|Ankle|Nov 29
 Jarvis Brownlee Jr.|CB|Out|Coach's Decision|Nov 29
 David Onyemata|DT|IR|Abdomen|Nov 29
 #PHI
+Quinyon Mitchell|CB|Questionable|Hamstring|Nov 26
 Smael Mondon Jr.|LB|Out|Ankle|Nov 26
 Cole Payton|QB|Out|Coach's Decision|Nov 26
 Jake Majors|C|Out|Coach's Decision|Nov 26

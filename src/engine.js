@@ -18,13 +18,13 @@ const TEAM_IDS = Object.keys(TEAMS);
 // Week 11 slate (ESPN schedule, kickoff times ET; set up automatically by tools/auto_espn.py nfl-roll). wp = home win probability from feed (null = not provided)
 const SLATE = [
  {id:1,away:"IND",home:"HOU",final:[3,26],when:"Thu Nov 19 · 8:15 PM",wp:null,tv:"TNF"},
- {id:2,away:"MIA",home:"BUF",when:"Sun Nov 22 · 1:00 PM",wp:null},
- {id:3,away:"NO",home:"CHI",when:"Sun Nov 22 · 1:00 PM",wp:null},
- {id:4,away:"TEN",home:"DAL",when:"Sun Nov 22 · 1:00 PM",wp:null},
- {id:5,away:"TB",home:"DET",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:2,away:"MIA",home:"BUF",final:[9,26],when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:3,away:"NO",home:"CHI",final:[13,21],when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:4,away:"TEN",home:"DAL",final:[30,51],when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:5,away:"TB",home:"DET",final:[21,31],when:"Sun Nov 22 · 1:00 PM",wp:null},
  {id:6,away:"ARI",home:"KC",final:[7,34],when:"Sun Nov 22 · 1:00 PM",wp:null},
- {id:7,away:"PIT",home:"PHI",when:"Sun Nov 22 · 1:00 PM",wp:null},
- {id:8,away:"BAL",home:"CAR",when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:7,away:"PIT",home:"PHI",final:[16,19],when:"Sun Nov 22 · 1:00 PM",wp:null},
+ {id:8,away:"BAL",home:"CAR",final:[33,35],when:"Sun Nov 22 · 1:00 PM",wp:null},
  {id:9,away:"NYJ",home:"LAC",when:"Sun Nov 22 · 4:05 PM",wp:null},
  {id:10,away:"LV",home:"DEN",when:"Sun Nov 22 · 4:25 PM",wp:null},
  {id:11,away:"JAX",home:"NYG",when:"Sun Nov 22 · 4:25 PM",wp:null},
@@ -42,8 +42,8 @@ const LINES = {
  7:{sp:3.5,ml:[-196,164],tot:37.5},
  8:{sp:-2.5,ml:[119,-141],tot:44.5},
  9:{sp:-3,ml:[152,-181],tot:43.5},
- 10:{sp:-10.5,ml:[439,-587],tot:40.5},
- 11:{sp:6,ml:[-262,215],tot:45.5},
+ 10:{sp:-11.5,ml:[481,-660],tot:41.5},
+ 11:{sp:6,ml:[-256,211],tot:44.5},
  12:{sp:-3.5,ml:[159,-190],tot:46.5},
  13:{sp:6,ml:[-296,241],tot:54.5}
 };

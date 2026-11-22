@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 19:51Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 21:25Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -6,19 +6,18 @@ CJ McCollum|G|Out|calf strain|Dec 19
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
-Derrick White|G|Day-To-Day|shoulder|Nov 22
-Mitchell Robinson|C|Day-To-Day|illness|Nov 22
-Jayson Tatum|F|Day-To-Day|rest|Nov 22
+Mitchell Robinson|C|Out|illness|Nov 24
+Paul George|F|Out|rest|Nov 24
 #Brooklyn Nets
-Nolan Traore|G|Day-To-Day|hamstring|Nov 23
 Grant Nelson|F|Day-To-Day|ankle sprain|Nov 23
+Nolan Traore|G|Out|hamstring strain|Nov 25
 #Charlotte Hornets
 Grant Williams|F|Day-To-Day|hamstring|Nov 23
 Grayson Allen|G|Day-To-Day|concussion|Nov 23
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
-Nic Claxton|C|Day-To-Day|illness|Nov 22
+Nic Claxton|C|Out|illness|Nov 23
 Jalen Smith|F|Day-To-Day|illness|Nov 22
 Norman Powell|G|Out|hamstring strain|Nov 28
 Patrick Williams|F|Day-To-Day|thumb|Nov 22
@@ -38,7 +37,6 @@ Tarik Biberovic|F|Out|heel inflammation|Nov 27
 Julian Strawther|G|Out|knee sprain|Nov 29
 #Detroit Pistons
 Ebuka Okorie|G|Out|oblique strain|Nov 24
-Cade Cunningham|G|Day-To-Day|knee soreness|Nov 22
 Taurean Prince|F|Out|knee surgery|Dec 13
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 24
@@ -70,7 +68,7 @@ GG Jackson|F|Out|foot surgery|Jan 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Myron Gardner|F|Day-To-Day|hamstring|Nov 22
+Myron Gardner|F|Day-To-Day|undisclosed|
 Giannis Antetokounmpo|F|Day-To-Day|groin|Nov 22
 #Milwaukee Bucks
 Ousmane Dieng|F|Out|finger surgery|Dec 14
@@ -79,10 +77,10 @@ Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
-Zion Williamson|F|Day-To-Day|thigh bruise|Nov 23
 Trey Murphy III|F|Day-To-Day|knee|Nov 23
+Bryce McGowens|G|Out|elbow infection|Nov 23
+Zion Williamson|F|Day-To-Day|thigh bruise|Nov 23
 Trendon Watford|F|Out|ankle sprain|Nov 27
-Bryce McGowens|G|Out|elbow infection|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
@@ -127,7 +125,7 @@ Jayden Quaintance|F|Out|knee surgery|Dec 3
 Collin Murray-Boyles|F|Day-To-Day|concussion|Nov 23
 Kawhi Leonard|F|Out|knee inflammation|Dec 3
 RJ Barrett|F|Out|hamstring strain|Dec 13
-Nate Bittle|C|Out|foot fracture|Nov 23
+Nate Bittle|C|Out|foot fracture|Nov 27
 #Utah Jazz
 Jusuf Nurkic|C|Out|foot strain|Nov 29
 Lauri Markkanen|F|Out|hand fracture|Jan 4
