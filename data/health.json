@@ -1,19 +1,19 @@
 {
  "auto": {
-  "at": "2026-11-22T16:51:02+00:00",
+  "at": "2026-11-22T17:28:40+00:00",
   "ok": true,
-  "summary": "freshed\nnbalineups: 7 games, 0 confirmed / 70 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 241 games cached\nNBA refs: 7 crews posted today\nliveprops: 790 feed lines merged (0 skipped from other days), 753 total, unmatched names: []\nNBA data: teams 30, results 241 (through 2026-11-21), players 474, slate 7, lines 7, props 753, inj teams 31, prev-season players 190, play log 45, adv 418, qtr games 241, h2h 4/2/4/2/4/4/2\nnfl-update: 12 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 151 games (0 new), 21 referees, 7 of this week's crews posted\n216 players, 32 teams\nnfl-inj: 216 players\nnfl-qtr: 151 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 699 players, 0 ESPN requests this run\nNHL data: 5 games today, 7 tomorrow, 32 teams, 689 skaters, 67 goalies, 485 props, 364 finals, 43 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 268 upcoming matches (33 with odds, 268 with estimates, 261 with weather, 0 with referee), 8019 player props, 5900 players\ntrack: nba 2026-11-22: snapshot 8 props, 7 games; soc 2026-11-22: parlay locked (3 legs @ 6.31) \u00b7 graded: NHL plays 15-14, best props NBA 58-73 NFL 24-25 NHL 63-59\nSite check OK \u2014 published (2026-11-22T16:50:26Z)\n"
+  "summary": "sults 241 (through 2026-11-21), players 474, slate 7, lines 7, props 753, inj teams 31, prev-season players 190, play log 45, adv 418, qtr games 241, h2h 4/2/4/2/4/4/2\nnfl-update: 12 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 10 with a forecast\nnflrefs: 151 games (0 new), 21 referees, 7 of this week's crews posted\n230 players, 32 teams\nnfl-inj: 230 players\nnfl-qtr: 151 games with quarter scores\nnflbox: 0 new ESPN box scores, 0 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 699 players, 0 ESPN requests this run\nNHL data: 5 games today, 7 tomorrow, 32 teams, 689 skaters, 67 goalies, 485 props, 364 finals, 43 requests\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 267 upcoming matches (33 with odds, 267 with estimates, 260 with weather, 0 with referee), 8019 player props, 5900 players\nUFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'get' \ncfb: 2278 players with logs, 69 focus games, 664 requests\ncbb: 2635 players with logs, 173 focus games, 575 requests\nFutures: nba: 16 futures markets, 261 prices nhl: 1 futures markets, 78 prices nfl: 23 futures markets, 420 prices \ntrack: nba 2026-11-22: snapshot 8 props, 7 games \u00b7 graded: NHL plays 15-14, best props NBA 58-73 NFL 24-25 NHL 63-59\nSite check OK \u2014 published (2026-11-22T17:26:26Z)\n"
  },
  "site": {
-  "at": "2026-11-22T15:32:20+00:00",
+  "at": "2026-11-22T17:28:40+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-22T16:51:02+00:00",
+  "at": "2026-11-22T17:28:40+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sun Nov 22 11:49 AM ET",
+  "gen": "Sun Nov 22 12:25 PM ET",
   "odds_at": "2026-11-22T16:44:56+00:00",
   "backfill": "1312/1312"
  },
@@ -4084,6 +4084,18 @@
    "site_ok": true,
    "site_issue": "",
    "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-22T17:28:40+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [
+    "UFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'g"
+   ],
    "check_failed": false,
    "published": true
   }
