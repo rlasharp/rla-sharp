@@ -4,20 +4,20 @@
          (WIN DAILY odds comparison — Week 9 page not posted yet on Nov 2; added when available). US books — availability varies; in Quebec the
          only provincially regulated sportsbook is Loto-Québec's Mise-o-jeu.
    PROP_MOVE: player-prop line moves where both the opening and current number were published. */
-const MARKET_ASOF="Sun Nov 22, 10 AM ET";
+const MARKET_ASOF="Sun Nov 22, 11 AM ET";
 const MOVE={
  1:{open:{sp:-4.5,tot:49.5},now:{sp:-12.5,tot:44.5,ml:[533,-750]}},
- 2:{open:{sp:4.5,tot:48.5},now:{sp:-16.5,tot:44.5,ml:[890,-1540]}},
- 3:{open:{sp:-3.5,tot:41.5},now:{sp:-11.5,tot:47.5,ml:[479,-660]}},
- 4:{open:{sp:1.5,tot:52.5},now:{sp:-7.5,tot:54.5,ml:[309,-389]}},
+ 2:{open:{sp:4.5,tot:48.5},now:{sp:-16.5,tot:45.5,ml:[1000,-1900]}},
+ 3:{open:{sp:-3.5,tot:41.5},now:{sp:-11.5,tot:47.5,ml:[486,-670]}},
+ 4:{open:{sp:1.5,tot:52.5},now:{sp:-7.5,tot:54.5,ml:[276,-343]}},
  5:{open:{sp:3,tot:42.5},now:{sp:-3.5,tot:48.5,ml:[183,-220]}},
- 6:{open:{sp:6.5,tot:47.5},now:{sp:-15.5,tot:40.5,ml:[850,-1440]}},
- 7:{open:{sp:4.5,tot:50.5},now:{sp:3.5,tot:37.5,ml:[-201,168]}},
- 8:{open:{sp:-5.5,tot:44.5},now:{sp:-3,tot:44.5,ml:[123,-145]}},
- 9:{open:{sp:-9.5,tot:41.5},now:{sp:-3,tot:42.5,ml:[146,-173]}},
- 10:{open:{sp:-1.5,tot:43.5},now:{sp:-10.5,tot:40.5,ml:[471,-640]}},
+ 6:{open:{sp:6.5,tot:47.5},now:{sp:-15.5,tot:40.5,ml:[860,-1460]}},
+ 7:{open:{sp:4.5,tot:50.5},now:{sp:3.5,tot:37.5,ml:[-199,166]}},
+ 8:{open:{sp:-5.5,tot:44.5},now:{sp:-2.5,tot:44.5,ml:[120,-142]}},
+ 9:{open:{sp:-9.5,tot:41.5},now:{sp:-3,tot:43.5,ml:[146,-173]}},
+ 10:{open:{sp:-1.5,tot:43.5},now:{sp:-10.5,tot:40.5,ml:[445,-597]}},
  11:{open:{sp:-8.5,tot:46.5},now:{sp:6,tot:45.5,ml:[-266,219]}},
- 12:{open:{sp:-13.5,tot:45.5},now:{sp:-3.5,tot:46.5,ml:[147,-175]}},
+ 12:{open:{sp:-13.5,tot:45.5},now:{sp:-3.5,tot:46.5,ml:[148,-176]}},
  13:{open:{sp:-1.5,tot:46.5},now:{sp:6,tot:54.5,ml:[-296,241]}},
  14:{open:{sp:-3.5,tot:48.5},now:{sp:-4.5,tot:39.5,ml:[185,-225]}},
  15:{open:{sp:3,tot:48.5},now:{sp:3,tot:45.5,ml:[-185,154]}}};
