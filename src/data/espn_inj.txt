@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 09:26Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-22 11:25Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Carson Beck|QB|Out|Back|Nov 29
