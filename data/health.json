@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-22T09:43:39+00:00",
+  "at": "2026-11-22T10:30:30+00:00",
   "ok": true,
-  "summary": "socmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 279 upcoming matches (46 with odds, 279 with estimates, 272 with weather, 0 with referee), 12791 player props, 5896 players\ntrack: nba 2026-11-22: snapshot 5 props, 7 games \u00b7 graded: NHL plays 15-14, best props NBA 58-73 NFL 24-25 NHL 63-59\nSite check OK \u2014 published (2026-11-22T09:43:02Z)\n"
+  "summary": "socmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 279 upcoming matches (46 with odds, 279 with estimates, 272 with weather, 0 with referee), 12791 player props, 5896 players\ntrack: nba 2026-11-22: snapshot 5 props, 7 games \u00b7 graded: NHL plays 15-14, best props NBA 58-73 NFL 24-25 NHL 63-59\nSite check OK \u2014 published (2026-11-22T10:29:57Z)\n"
  },
  "site": {
   "at": "2026-11-22T09:31:08+00:00",
@@ -10,7 +10,7 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-22T09:43:39+00:00",
+  "at": "2026-11-22T10:30:30+00:00",
   "ok": true,
   "issue": "",
   "gen": "Sun Nov 22 4:27 AM ET",
@@ -3983,6 +3983,16 @@
   },
   {
    "at": "2026-11-22T09:43:39+00:00",
+   "what": "soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-22T10:30:30+00:00",
    "what": "soc",
    "ok": true,
    "site_ok": true,
