@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 02:57Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 03:53Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 27
@@ -88,9 +88,9 @@ Bryce McGowens|G|Out|elbow infection|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
-Karl-Anthony Towns|C|Out|illness|Nov 22
-OG Anunoby|F|Out|calf|Nov 22
-Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 22
+Karl-Anthony Towns|C|Day-To-Day|illness|Nov 22
+Jordan Clarkson|G|Day-To-Day|foot plantar fasciitis|Nov 22
+OG Anunoby|F|Day-To-Day|calf|Nov 22
 #Oklahoma City Thunder
 Shai Gilgeous-Alexander|G|Day-To-Day|back bruise|Nov 22
 Nikola Topic|G|Out|hip soreness|Nov 23
