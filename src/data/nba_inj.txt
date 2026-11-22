@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 01:51Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 02:57Z
 #Atlanta Hawks
 Kingston Flemings|G|Out|back strain|Nov 22
 Jock Landale|C|Out|hip inflammation|Nov 27
@@ -119,7 +119,6 @@ Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Precious Achiuwa|F|Day-To-Day|lower leg bruise|Nov 21
 Maxime Raynaud|C|Out|knee dislocated|Nov 25
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
