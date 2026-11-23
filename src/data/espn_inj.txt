@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 05:46Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 08:09Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Cody Simon|LB|Questionable|Calf|Nov 29
@@ -295,7 +295,6 @@ Brandon Crenshaw-Dickson|OT|Out|Coach's Decision|Nov 29
 Mohamoud Diabate|LB|Out|Coach's Decision|Nov 29
 Jaylen Harrell|LB|IR|Knee - ACL|Feb 15
 Tyjae Spears|RB|IR|Knee|Dec 20
-Fernando Carmona|G|IR|Ankle|Nov 29
 #WAS
 Lucas Patrick|G|Questionable|Concussion|Nov 23
 Amik Robertson|CB|Questionable|Ankle|Nov 23
