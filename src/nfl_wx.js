@@ -1,2 +1,2 @@
-/* NFL kickoff weather — ESPN venues + Open-Meteo forecasts (tools/nflwx.py), Week 11, 2026-11-23T01:59Z */
-var NFL_WX={"wk":11,"at":"2026-11-23T01:59Z","g":{"12":{"stad":"Estadio Banorte","city":"Mexico City","t":60,"wc":51,"pp":83,"sn":0,"ws":4,"wg":13},"4":{"dome":"AT&T Stadium"},"5":{"dome":"Ford Field"},"1":{"dome":"Reliant Stadium"},"13":{"stad":"Northwest Stadium","city":"Landover, MD","t":52,"wc":1,"pp":26,"sn":0,"ws":12,"wg":28}}};
+/* NFL kickoff weather — ESPN venues + Open-Meteo forecasts (tools/nflwx.py), Week 11, 2026-11-23T03:36Z */
+var NFL_WX={"wk":11,"at":"2026-11-23T03:36Z","g":{"12":{"stad":"Estadio Banorte","city":"Mexico City","t":60,"wc":51,"pp":78,"sn":0,"ws":4,"wg":13},"4":{"dome":"AT&T Stadium"},"5":{"dome":"Ford Field"},"1":{"dome":"Reliant Stadium"},"13":{"stad":"Northwest Stadium","city":"Landover, MD","t":52,"wc":1,"pp":26,"sn":0,"ws":12,"wg":28}}};

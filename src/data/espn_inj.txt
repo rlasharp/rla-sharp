@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 01:59Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 03:36Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Cody Simon|LB|Questionable|Calf|Nov 29
@@ -255,6 +255,7 @@ Nick Herbig|LB|Out|Hip|Nov 27
 Gennings Dunker|G|IR|Knee|Nov 27
 Mason McCormick|G|IR|Ankle|Jan 3
 #SF
+Colton McKivitz|OT|Out|Lower Leg|Nov 29
 Dre Greenlaw|LB|Out|Neck|Nov 29
 Khalid Kareem|DE|Out|Ankle|Nov 29
 Demarcus Robinson|WR|Out|Coach's Decision|Nov 29
