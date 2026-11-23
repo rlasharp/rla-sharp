@@ -1,20 +1,20 @@
 {
  "auto": {
-  "at": "2026-11-23T18:39:28+00:00",
+  "at": "2026-11-23T19:46:13+00:00",
   "ok": true,
-  "summary": "socmgr: 6 new headlines, 15 clubs with manager news\nsoccer: 274 upcoming matches (36 with odds, 274 with estimates, 254 with weather, 39 with referee), 10978 player props, 5903 players\ntrack: nba 2026-11-23: snapshot 10 props, 10 games; nhl 2026-11-23: locked 1 plays \u00b7 graded: NHL plays 15-15, best props NBA 62-77 NFL 26-33 NHL 71-61\nSite check OK \u2014 published (2026-11-23T18:38:52Z)\n"
+  "summary": "hrough 2026-11-22), players 474, slate 10, lines 10, props 1115, inj teams 29, prev-season players 274, play log 45, adv 419, qtr games 248, h2h 2/2/2/4/2/4/4/4/4/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 1 with a forecast\nnflrefs: 162 games (0 new), 21 referees, 0 of this week's crews posted\n188 players, 32 teams\nnfl-inj: 188 players\nnfl-qtr: 162 games with quarter scores\nnflbox: 0 new ESPN box scores, 11 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 699 players, 0 ESPN requests this run\nNHL data: 7 games today, 1 tomorrow, 32 teams, 688 skaters, 67 goalies, 773 props, 369 finals, 45 requests\nsocmgr: 6 new headlines, 15 clubs with manager news\nsoccer: 275 upcoming matches (36 with odds, 275 with estimates, 254 with weather, 39 with referee), 10746 player props, 5903 players\nUFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'get' \ncfb: 2278 players with logs, 69 focus games, 664 requests\ncbb: 2927 players with logs, 193 focus games, 610 requests\nFutures: nba: 18 futures markets, 235 prices nhl: 1 futures markets, 82 prices nfl: 22 futures markets, 383 prices \ntrack: nba 2026-11-23: snapshot 10 props, 10 games \u00b7 graded: NHL plays 15-15, best props NBA 62-77 NFL 26-33 NHL 71-61\nSite check OK \u2014 published (2026-11-23T19:43:56Z)\n"
  },
  "site": {
-  "at": "2026-11-23T17:39:07+00:00",
+  "at": "2026-11-23T19:46:13+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-23T18:39:28+00:00",
+  "at": "2026-11-23T19:46:13+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Mon Nov 23 12:35 PM ET",
-  "odds_at": "2026-11-23T17:02:13+00:00",
+  "gen": "Mon Nov 23 2:43 PM ET",
+  "odds_at": "2026-11-23T18:59:51+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -4412,6 +4412,18 @@
    "site_ok": true,
    "site_issue": "",
    "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-23T19:46:13+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [
+    "UFC data FAILED \u2014 kept old:     if it.get(\"type\") == \"total\" or it.get(\"name\") == \"overall\":        ^^^^^^ AttributeError: 'NoneType' object has no attribute 'g"
+   ],
    "check_failed": false,
    "published": true
   }
