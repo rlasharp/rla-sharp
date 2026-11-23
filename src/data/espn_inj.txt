@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 01:07Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 01:59Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Cody Simon|LB|Questionable|Calf|Nov 29
@@ -143,6 +143,7 @@ Kenneth Walker III|RB|Out|Groin|Nov 26
 Jaylon Moore|OT|Out|Ankle|Nov 26
 Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
+Brock Bowers|TE|Out|Ankle|Nov 29
 JJ Pegues|DT|Questionable|Forearm|Nov 22
 Tim Keenan III|DT|Questionable|Knee|Nov 29
 Adam Butler|DT|Questionable|Concussion|Nov 29
@@ -153,11 +154,10 @@ Tristin McCollum|S|Out|Coach's Decision|Nov 29
 Bryce Cabeldue|G|Out|Coach's Decision|Nov 29
 Tonka Hemingway|DT|Out|Upper Body|Nov 29
 Malik Benson|WR|Out|Coach's Decision|Nov 29
-Brock Bowers|TE|Out|Ankle|Nov 29
 #LAC
 Justin Herbert|QB|Questionable|Concussion|Nov 29
-Keaton Mitchell|RB|Questionable|Knee|Nov 29
 Akheem Mesidor|LB|Questionable|Ankle|Nov 29
+Keaton Mitchell|RB|Questionable|Knee|Nov 29
 Tarheeb Still|CB|Out|Ankle|Nov 29
 Brenen Thompson|WR|Out|Hamstring|Nov 29
 KeAndre Lambert-Smith|WR|Out|Coach's Decision|Nov 29
