@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-22 23:23Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 00:15Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -101,7 +101,7 @@ Jaylen Brown|G|Day-To-Day|hamstring not specified|Nov 23
 Dean Wade|F|Day-To-Day|hamstring soreness|Nov 23
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
-Ryan Dunn|F|Day-To-Day|quadriceps|Nov 23
+Ryan Dunn|F|Day-To-Day|quadriceps soreness|Nov 23
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|heel bruise|Nov 27
