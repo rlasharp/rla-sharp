@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-23T02:20:37+00:00",
+  "at": "2026-11-23T03:22:32+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 74 games kept (1 new), 1611 player lines\nnbaespn: 3 game(s) filled from ESPN box scores (hoopR doesn't have them yet): ORL@WSH, OKC@MIA, DET@ATL\nNBA injuries refreshed\nnbalineups: 7 games, 70 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 8 upcoming games with lines\nNBA refs: 1 summaries checked, 243 games cached\nNBA refs: 7 crews posted today\nlive feed is not from 2026-11-22 - nothing merged\nNBA data: teams 30, results 244 (through 2026-11-22), players 474, slate 7, lines 7, props 864, inj teams 30, prev-season players 190, play log 45, adv 418, qtr games 241, h2h 4/2/4/2/4/4/2\nsocmgr: 6 new headlines, 14 clubs with manager news\nsoccer: 273 upcoming matches (36 with odds, 273 with estimates, 253 with weather, 0 with referee), 9566 player props, 5903 players\ntrack: no new snapshots \u00b7 graded: NHL plays 15-15, best props NBA 58-76 NFL 24-25 NHL 64-60\nSite check OK \u2014 published (2026-11-23T02:20:03Z)\n"
+  "summary": "NBA finals from ESPN: 76 games kept (2 new), 1653 player lines\nnbaespn: 5 game(s) filled from ESPN box scores (hoopR doesn't have them yet): ORL@WSH, DEN@CHI, DAL@UTAH, OKC@MIA, DET@ATL\nNBA injuries refreshed\nnbalineups: 7 games, 70 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 10 upcoming games with lines\nNBA refs: 1 summaries checked, 244 games cached\nNBA refs: 7 crews posted today\nlive feed is not from 2026-11-22 - nothing merged\nNBA data: teams 30, results 246 (through 2026-11-22), players 474, slate 7, lines 7, props 864, inj teams 30, prev-season players 190, play log 45, adv 418, qtr games 241, h2h 4/2/4/2/4/4/2\nnhllines: 32/32 teams\nNHL PP time: 699 players, 0 ESPN requests this run\nNHL data: 5 games today, 7 tomorrow, 32 teams, 689 skaters, 67 goalies, 481 props, 368 finals, 49 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 15-15, best props NBA 60-77 NFL 24-25 NHL 67-60\nSite check OK \u2014 published (2026-11-23T03:21:58Z)\n"
  },
  "site": {
   "at": "2026-11-23T02:03:49+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-23T02:20:37+00:00",
+  "at": "2026-11-23T03:22:32+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Sun Nov 22 9:00 PM ET",
-  "odds_at": "2026-11-23T00:30:07+00:00",
+  "gen": "Sun Nov 22 10:21 PM ET",
+  "odds_at": "2026-11-23T02:26:52+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -4240,6 +4240,16 @@
   {
    "at": "2026-11-23T02:20:37+00:00",
    "what": "nba,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-23T03:22:32+00:00",
+   "what": "nba,nhl",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
