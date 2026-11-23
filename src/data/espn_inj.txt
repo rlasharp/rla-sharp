@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 04:38Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 05:46Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Cody Simon|LB|Questionable|Calf|Nov 29
@@ -265,7 +265,6 @@ Nate Hobbs|CB|IR|Groin|Nov 29
 Isaac Guerendo|RB|Out|Pectoral|Nov 29
 Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
 De'Zhaun Stribling|WR|IR|Ankle|Dec 6
-Brandon Aiyuk|WR|Out|Personal|Nov 29
 #SEA
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
