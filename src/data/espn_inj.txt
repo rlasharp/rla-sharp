@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 03:36Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 04:38Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Cody Simon|LB|Questionable|Calf|Nov 29
@@ -122,7 +122,7 @@ Jalen Travis|OT|Out|Knee|Nov 29
 Charvarius Ward|CB|Out|Knee|Nov 29
 Will Mallory|TE|Out|Hamstring|Nov 29
 #JAX
-Walker Little|OT|Questionable|Knee|Nov 22
+Walker Little|OT|Questionable|Knee|Nov 29
 Jarrian Jones|CB|Questionable|Chest|Nov 29
 Matt Dickerson|DE|Out|Neck|Nov 29
 CJ Williams|WR|Out|Coach's Decision|Nov 29
@@ -144,10 +144,10 @@ Jaylon Moore|OT|Out|Ankle|Nov 26
 Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
 Brock Bowers|TE|Out|Ankle|Nov 29
-JJ Pegues|DT|Questionable|Forearm|Nov 22
+JJ Pegues|DT|Questionable|Forearm|Nov 29
 Tim Keenan III|DT|Questionable|Knee|Nov 29
 Adam Butler|DT|Questionable|Concussion|Nov 29
-Dareke Young|WR|Questionable|Undisclosed|Nov 22
+Dareke Young|WR|Questionable|Neck|Nov 29
 Dont'e Thornton Jr.|WR|Out|Coach's Decision|Nov 29
 Dalton Johnson|S|Out|Coach's Decision|Nov 29
 Tristin McCollum|S|Out|Coach's Decision|Nov 29
@@ -297,7 +297,6 @@ Mohamoud Diabate|LB|Out|Coach's Decision|Nov 29
 Jaylen Harrell|LB|IR|Knee - ACL|Feb 15
 Tyjae Spears|RB|IR|Knee|Dec 20
 Fernando Carmona|G|IR|Ankle|Nov 29
-Wan'Dale Robinson|WR|IR|Ankle|Feb 15
 #WAS
 Lucas Patrick|G|Questionable|Concussion|Nov 23
 Amik Robertson|CB|Questionable|Ankle|Nov 23

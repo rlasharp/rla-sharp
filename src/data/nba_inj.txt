@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 03:36Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 04:38Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -55,7 +55,7 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Austin Reaves|G|Out|heel bruise|Nov 27
 #Memphis Grizzlies
-Jerami Grant|F|Day-To-Day|calf not specified|Dec 12
+Jerami Grant|F|Out|calf not specified|Dec 12
 Cameron Boozer|F|Out|ankle sprain|Nov 25
 GG Jackson|F|Out|foot surgery|Jan 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
