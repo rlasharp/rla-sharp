@@ -10,7 +10,7 @@ function socLoad(file,okVar,W,done,cb){if(window[okVar]){done();cb&&cb();return}
   const sc=document.createElement("script");sc.src=file+"?v="+(typeof BUILD_AT!=="undefined"&&BUILD_AT?BUILD_AT.replace(/\D/g,""):Math.floor(Date.now()/600000));
   sc.onload=()=>{done();W.loading=0;try{if(typeof SRCH!=="undefined")SRCH=null;const i=document.getElementById("plSearch");if(i&&document.activeElement===i&&i.value.trim().length>=2)setTimeout(()=>i.dispatchEvent(new Event("input")),0)}catch(e){}W.splice(0).forEach(f=>{try{f()}catch(e){console.error(e)}})};
   sc.onerror=()=>{W.loading=0;W.fail=Date.now();W.splice(0).forEach(f=>{try{f()}catch(e){}})};document.head.appendChild(sc)}
-function socEnsure(cb){socLoad("soccer_data.js","SOC_OK",SOC_WAIT,()=>{SOC_READY=true;try{if(typeof SOCL!=="undefined"&&SOCL.loPend){const d=SOCL.loPend;SOCL.loPend=null;socLoApply(d)}}catch(e){}},cb)}
+function socEnsure(cb){socLoad("soccer_data.js","SOC_OK",SOC_WAIT,()=>{SOC_READY=true;try{for(const f of SOC_FX||[])if(f.odds)socTotClean(f.odds)}catch(e){}try{if(typeof SOCL!=="undefined"&&SOCL.loPend){const d=SOCL.loPend;SOCL.loPend=null;socLoApply(d)}}catch(e){}},cb)}
 /* player logs come in one small file per league (soccer_p_<league>.js) + soccer_old.js for older head-to-head matches;
    pages ask only for the teams they show. Older builds had a single soccer_players.js — still supported. */
 var SOC_P=window.SOC_P||{},SOC_OLDP=window.SOC_OLDP||{};const SOCPL={have:{},busy:{},old:0};
@@ -553,13 +553,19 @@ function socPredCard(f){const x=socPred(f);if(!x)return "";const c=(lab,v,p)=>`<
    <div class="scpcs">${c("Result",socE(x.res),x.rp)}${c("Goals",x.ou[0],x.ou[1])}${c("Both score",x.btts[0],x.btts[1])}${x.cor!=null?c("Corners","~"+x.cor.toFixed(1)):""}${x.card!=null?c("Cards","~"+x.card.toFixed(1)):""}</div>
    <div class="small" style="margin-top:6px">Our numbers, not a bet tip — the verdict above says whether any price is worth it.</div></div>`}
 
+/* goal ladders whose best over + best under add up to well under 100% can't both be real full-match prices — drop those lines
+   (same rule as tools/soccerfetch.py; Nov 21-23 one book's O2.5 +500/+800 sat in the full-match ladder) */
+function socTotClean(O){const ok=L=>{const r={};for(const [ln,v] of Object.entries(L||{}))if(v[0]==null||v[2]==null||socImp(v[0])+socImp(v[2])>=.95)r[ln]=v;return r};
+  if(O.tot){O.tot=ok(O.tot);if(!O.tot[O.main_tot])delete O.main_tot;if(!Object.keys(O.tot).length)delete O.tot}
+  if(O.h1&&O.h1.tot)O.h1={...O.h1,tot:ok(O.h1.tot)};
+  const t=O.open&&O.open.tot;if(t&&t[1]!=null&&t[2]!=null&&socImp(t[1])+socImp(t[2])<.95){O.open={...O.open};delete O.open.tot}}
 /* ⚡ newer soccer odds from data/live_odds.json (refreshed every ~30 min by the odds job) — applied on top of the
    odds baked into soccer_data.js whenever they're newer, so prices stay current between site rebuilds */
 function socLoApply(d){const S=d&&d.soc;if(!S||!S.events)return 0;if(!window.SOC_OK){SOCL.loPend=d;return 0}let n=0;
   const nameIdx={};if(window.SOC_P_OK)for(const [aid,P] of Object.entries(SOC_P))nameIdx[P[1]+"|"+loNorm(P[0])]=aid;
   for(const e of S.events){if(!e.at)continue;const f=(SOC_FX||[]).find(f=>f.h===e.hid&&f.a===e.aid&&Math.abs(Date.parse(f.t)-Date.parse(e.start))<6*3600e3);if(!f)continue;
     if(f.odds&&f.odds.at&&Date.parse(f.odds.at)>=Date.parse(e.at))continue;
-    f.pid=e.pid;f.odds={};for(const k of ["ml","tot","main_tot","btts","ah","cor","main_cor","ttot","extra","open","at","h1"])if(e[k]!=null)f.odds[k]=e[k];if(e.ref&&!f.ref)f.ref=e.ref;
+    f.pid=e.pid;f.odds={};for(const k of ["ml","tot","main_tot","btts","ah","cor","main_cor","ttot","extra","open","at","h1"])if(e[k]!=null)f.odds[k]=e[k];socTotClean(f.odds);if(e.ref&&!f.ref)f.ref=e.ref;
     const old={};for(const r of SOC_PROPS)if(r[5]===f.id)old[loNorm(r[0])]=r[7];
     SOC_PROPS=SOC_PROPS.filter(r=>r[5]!==f.id);
     for(const r of S.props||[])if(r[5]===e.pid){const k=loNorm(r[0]),aid=old[k]||nameIdx[f.h+"|"+k]||nameIdx[f.a+"|"+k]||null;SOC_PROPS.push([r[0],r[1],r[2],r[3],r[4],f.id,r[6],aid])}

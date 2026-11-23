@@ -326,7 +326,38 @@ for f in FX:
     if m_:
         o = m_[0]; f["pid"] = o["pid"]
         f["odds"] = {k: o[k] for k in ("ml", "tot", "main_tot", "btts", "ah", "cor", "main_cor", "ttot", "extra", "open", "at", "h1") if k in o}
+        # a best over + best under that add up to well under 100% can't both be real full-match prices (Nov 21-23: one book's
+        # O2.5 +500/+800 sat in the full-match ladder) — drop those lines rather than show a fake edge; tools/soccer_odds.py now filters them
+        _im = lambda p: None if p is None else (100 / (p + 100) if p > 0 else -p / (-p + 100))
+        def _okl(L): return {ln: v for ln, v in (L or {}).items() if v[0] is None or v[2] is None or _im(v[0]) + _im(v[2]) >= 0.95}
+        od_ = f["odds"]
+        if od_.get("tot"):
+            od_["tot"] = _okl(od_["tot"])
+            if od_.get("main_tot") not in od_["tot"]: od_.pop("main_tot", None)
+            if not od_["tot"]: od_.pop("tot")
+        if (od_.get("h1") or {}).get("tot"): od_["h1"] = dict(od_["h1"], tot=_okl(od_["h1"]["tot"]))
+        ot = (od_.get("open") or {}).get("tot")
+        if ot and ot[1] is not None and ot[2] is not None and _im(ot[1]) + _im(ot[2]) < 0.95: od_["open"] = {k: v for k, v in od_["open"].items() if k != "tot"}
         if o.get("ref"): f["ref"] = o["ref"]
+# referee assignments: PropLine's referee list carries each referee's next match ({event_id, commence_time, home_team, away_team});
+# match it to the fixture by PropLine event id when the odds join gave one, else same competition + kickoff (±15 min) + team names
+def _toks(s): return set(norm(s).split()) - {"fc", "cf", "ac", "sc", "afc", "the", "de", "club", "cd", "ud", "fk", "sv", "vfb", "vfl", "rc", "as", "us", "ssc"}
+NEXTREF = []
+for comp, L in REFS.items():
+    for x in L:
+        nm = x[5] if len(x) > 5 else None
+        if isinstance(nm, dict) and x[0] and nm.get("commence_time"):
+            try: NEXTREF.append((comp, x[0], str(nm.get("event_id") or ""), ts(nm["commence_time"]), nm.get("home_team"), nm.get("away_team")))
+            except Exception: pass
+n_ref_new = 0
+for f in FX:
+    if f.get("ref"): continue
+    c_ = [r for r in NEXTREF if f.get("pid") and r[2] == str(f["pid"])]
+    if not c_:
+        hn, an = _toks((TEAM.get(f["h"]) or {}).get("n")), _toks((TEAM.get(f["a"]) or {}).get("n"))
+        c_ = [r for r in NEXTREF if r[0] == f["c"] and abs((r[3] - ts(f["t"])).total_seconds()) <= 900 and (hn & _toks(r[4]) or an & _toks(r[5]))]
+    if len({r[1] for r in c_}) == 1: f["ref"] = c_[0][1]; n_ref_new += 1
+if n_ref_new: log(f"soccer: {n_ref_new} referee assignments from the referees' next-match list")
 # weather (Open-Meteo), fixtures in the next 7 days, one forecast per city
 GEOF = os.path.join(R, "data/soccer_geo.json"); GEO = jload(GEOF, {})
 CC = {"England": "GB", "Scotland": "GB", "Wales": "GB", "Spain": "ES", "Italy": "IT", "Germany": "DE", "France": "FR", "Netherlands": "NL",

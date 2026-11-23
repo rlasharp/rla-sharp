@@ -52,14 +52,57 @@ def side_of(desc, home, away):
     h, a = sc(home), sc(away)
     return "home" if h > a else "away" if a > h else None
 
+def who(n, home, away):
+    """outcome name -> 'h' | 'a' | 'd' | None; tolerant of case / short names ('UNION BERLIN' vs 'Union Berlin')"""
+    n = str(n or "")
+    if n == home: return "h"
+    if n == away: return "a"
+    if n.lower() in ("draw", "tie", "x"): return "d"
+    if n.lower() == str(home).lower(): return "h"
+    if n.lower() == str(away).lower(): return "a"
+    stop = {"fc", "cf", "ac", "sc", "afc", "the", "de", "club", "cd", "ud", "fk", "sv", "rc", "us", "as"}
+    t = set(re.findall(r"[a-z]+", n.lower())) - stop
+    h, a = len(t & set(re.findall(r"[a-z]+", str(home).lower()))), len(t & set(re.findall(r"[a-z]+", str(away).lower())))
+    return "h" if h > a else "a" if a > h else None
+
+def imp(p):
+    return None if p is None else (100 / (p + 100) if p > 0 else -p / (-p + 100))
+
+def clean_ladders(raw, log=None, tag=""):
+    """raw[book][line] = {"o": price, "u": price} -> same, minus quotes that can't be right for the full match:
+    a book whose over prices don't rise with the line is dropped whole; a quote that is far from the other books
+    (15+ points of implied probability off the median, or over + the others' under not ~100-140%) is dropped (Nov 22: one book's goal ladder at
+    O2.5 +800 / O3.5 +2200 for Man City-Fulham was a different market under the full-match key)."""
+    ok = {}
+    for B, L in raw.items():
+        ov = [(float(ln), s["o"]) for ln, s in L.items() if s.get("o") is not None]
+        ov.sort()
+        if any(imp(b) > imp(a) + 0.02 for (_, a), (_, b) in zip(ov, ov[1:])):
+            if log: log(f"soccer {tag}: dropped {B}'s goal ladder (over prices not in line order)")
+            continue
+        ok[B] = L
+    def med(v): v = sorted(v); n = len(v); return v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
+    out = {}
+    for B, L in ok.items():
+        for ln, s in L.items():
+            for side, pr in s.items():
+                opp = "u" if side == "o" else "o"
+                same = [imp(ok[b][ln][side]) for b in ok if ln in ok[b] and ok[b][ln].get(side) is not None]
+                if len(same) >= 3 and abs(imp(pr) - med(same)) > 0.15: continue          # far from the other books
+                vs = [imp(ok[b][ln][opp]) for b in ok if b != B and ln in ok[b] and ok[b][ln].get(opp) is not None]
+                if vs and not 0.93 <= imp(pr) + med(vs) <= 1.4: continue                 # can't pair with the other books' opposite side
+                out.setdefault(B, {}).setdefault(ln, {})[side] = pr
+    return out
+
 def best_into(d, key, price, book):
     if price is None: return
     if key not in d or price > d[key][0]: d[key] = (price, book)
 
-def parse_event(od, home, away):
+def parse_event(od, home, away, log=None):
     """-> game dict + player props {(player, mk): {line: {"o":(price,book), "u":(price,book)}}}"""
     ml, btts, tot, cor, ttot, ah_main, extra = {}, {}, {}, {}, {"home": {}, "away": {}}, {}, {}
     main_tot, main_cor, props, h1 = {}, {}, {}, {}
+    raw_tot, raw_h1 = {}, {}   # per-book goal ladders, checked by clean_ladders before the best price is taken
     for bk in g(od, "bookmakers", []) or []:
         b = str(g(bk, "key", "")).lower()
         if b not in BOOKS: continue
@@ -72,14 +115,14 @@ def parse_event(od, home, away):
                 if per in ("h1", "1h", "first_half", "1st_half", "half1", "p1") and k in ("h2h", "totals", "both_teams_to_score") and not re.search(r"team", desc, re.I):
                     for o in oc:
                         n, p_, pt = str(g(o, "name", "")), g(o, "price"), fnum(g(o, "point"))
-                        if k == "h2h": best_into(h1.setdefault("ml", {}), "h" if n == home else "a" if n == away else "d" if n.lower() == "draw" else "?", p_, B)
+                        if k == "h2h": best_into(h1.setdefault("ml", {}), who(n, home, away) or "?", p_, B)
                         elif k == "both_teams_to_score": best_into(h1.setdefault("btts", {}), "y" if n.lower() == "yes" else "n", p_, B)
-                        elif pt is not None and n.lower() in ("over", "under"): best_into(h1.setdefault("tot", {}).setdefault(str(pt), {}), n.lower()[0], p_, B)
+                        elif pt is not None and n.lower() in ("over", "under") and p_ is not None: raw_h1.setdefault(B, {}).setdefault(str(pt), {})[n.lower()[0]] = p_
                 continue
             if k == "h2h":
                 for o in oc:
                     n, p = str(g(o, "name", "")), g(o, "price")
-                    best_into(ml, "h" if n == home else "a" if n == away else "d" if n.lower() == "draw" else "?", p, B)
+                    best_into(ml, who(n, home, away) or "?", p, B)
             elif k == "both_teams_to_score":
                 for o in oc: best_into(btts, "y" if str(g(o, "name")).lower() == "yes" else "n", g(o, "price"), B)
             elif k in ("totals", "total_corners"):
@@ -91,14 +134,17 @@ def parse_event(od, home, away):
                 for o in oc:
                     pt, side = fnum(g(o, "point")), str(g(o, "name", "")).lower()
                     if pt is None or side not in ("over", "under"): continue
-                    best_into(tgt.setdefault(str(pt), {}), side[0], g(o, "price"), B)
+                    if tgt is tot:
+                        if g(o, "price") is not None: raw_tot.setdefault(B, {}).setdefault(str(pt), {})[side[0]] = g(o, "price")
+                    else: best_into(tgt.setdefault(str(pt), {}), side[0], g(o, "price"), B)
                     if lt == "main" and not team:
-                        mm = main_tot if k == "totals" else main_cor; mm[str(pt)] = mm.get(str(pt), 0) + 1
+                        if k == "totals": main_tot.setdefault(B, set()).add(str(pt))
+                        else: main_cor[str(pt)] = main_cor.get(str(pt), 0) + 1
             elif k == "spreads" and lt == "main":
                 for o in oc:
                     n, p, pt = str(g(o, "name", "")), g(o, "price"), fnum(g(o, "point"))
                     if pt is None: continue
-                    side = "h" if n == home else "a" if n == away else None
+                    side = who(n, home, away); side = side if side in ("h", "a") else None
                     if side: ah_main.setdefault(str(pt if side == "h" else -pt), {}); best_into(ah_main[str(pt if side == "h" else -pt)], side, p, B)
             elif k in PLAYER_MK or k in EXTRA_PLAYER:
                 mk = PLAYER_MK.get(k) or EXTRA_PLAYER.get(k)
@@ -117,11 +163,26 @@ def parse_event(od, home, away):
                     pt, side = fnum(g(o, "point")), str(g(o, "name", "")).lower()
                     if side in ("over", "under", "yes", "no"):
                         best_into(extra.setdefault(k, {}).setdefault(str(pt) + ("|" + desc if "team" in desc.lower() else ""), {}), side[0], g(o, "price"), B)
+    kept_tot = set()
+    for src, dst in ((raw_tot, tot), (raw_h1, None)):
+        cl = clean_ladders(src, log, f"{home}-{away}" + (" 1H" if dst is None else ""))
+        if dst is not None: kept_tot = set(cl)
+        for B, L in cl.items():
+            for ln, sd in L.items():
+                for side, pr in sd.items():
+                    best_into((dst if dst is not None else h1.setdefault("tot", {})).setdefault(ln, {}), side, pr, B)
+    mt_n = {}
+    for B in kept_tot:
+        for ln in main_tot.get(B, ()):
+            if ln in tot: mt_n[ln] = mt_n.get(ln, 0) + 1
     def ladd(d): return {ln: [s.get("o", (None,))[0], s.get("o", (None, None))[1], s.get("u", (None,))[0], s.get("u", (None, None))[1]] for ln, s in sorted(d.items(), key=lambda x: float(x[0])) if "o" in s or "u" in s}
     out = {}
     if {"h", "d", "a"} <= set(ml): out["ml"] = {k: ml[k][0] for k in "hda"} | {k + "b": ml[k][1] for k in "hda"}
     if btts: out["btts"] = {"y": btts.get("y", (None,))[0], "yb": btts.get("y", (None, None))[1], "n": btts.get("n", (None,))[0], "nb": btts.get("n", (None, None))[1]}
-    if tot: out["tot"] = ladd(tot); out["main_tot"] = max(main_tot, key=main_tot.get) if main_tot else ("2.5" if "2.5" in tot else None)
+    if tot:
+        out["tot"] = ladd(tot)
+        both = [ln for ln, s_ in tot.items() if "o" in s_ and "u" in s_]   # main line = the most even over/under after cleaning
+        out["main_tot"] = max(mt_n, key=mt_n.get) if mt_n else min(both, key=lambda ln: abs(imp(tot[ln]["o"][0]) - imp(tot[ln]["u"][0]))) if both else ("2.5" if "2.5" in tot else None)
     if cor: out["cor"] = ladd(cor); out["main_cor"] = max(main_cor, key=main_cor.get) if main_cor else None
     if ttot["home"] or ttot["away"]: out["ttot"] = {s: ladd(v) for s, v in ttot.items() if v}
     if ah_main:
@@ -193,7 +254,7 @@ def run(client, prev, used, budget_cap, log=print):
             used += 1; log(f"soccer {e['comp']} {e['pid']}: odds failed ({ex}) — retrying with the core list")
             try: od = client.get_odds(sk, event_id=e["pid"], markets=GAME_MK + list(PLAYER_MK)); used += 1
             except Exception as ex2: log(f"soccer {e['pid']}: odds failed: {ex2}"); continue
-        game, props = parse_event(od, e["home"], e["away"])
+        game, props = parse_event(od, e["home"], e["away"], log)
         for k in ("ml", "btts", "tot", "main_tot", "cor", "main_cor", "ttot", "ah", "extra", "h1"): e.pop(k, None)
         e.update(game); e["at"] = now.isoformat(timespec="seconds")
         op = e.get("open") or {}
@@ -218,23 +279,39 @@ def run(client, prev, used, budget_cap, log=print):
                                x.get("cards_per_match"), x.get("next_match"), x.get("last_match")] for x in (r or {}).get("referees", [])]
             except Exception as ex: log(f"soccer {comp}: referees failed: {ex}")
         P["refs_at"] = now.isoformat(timespec="seconds")
-        # who has the next match: try the match context for games in the next 2 days (logged so it can be checked)
+        # one match-context read per refresh, logged, so we can see whether get_context ever names the referee
+        # (it never did Nov 20-23; it used to be called for every match in the next 48 h = ~70 requests every 6 h)
         for e in order:
             if used >= budget_cap or e.get("ref") or ts(e["start"]) - now > dt.timedelta(hours=48): continue
             try:
                 c = client.get_context(dict(COMPS)[e["comp"]], e["pid"]); used += 1
-                rn = (c or {}).get("referee") or ((c or {}).get("officials") or [{}])[0].get("name") if isinstance(c, dict) else None
-                if rn: e["ref"] = rn
-            except Exception: used += 1
-        nxt = {}
+                c = c if isinstance(c, dict) else getattr(c, "__dict__", {}) or {}
+                rn = c.get("referee")
+                if isinstance(rn, dict): rn = rn.get("name") or rn.get("referee")
+                if not rn and isinstance(c.get("officials"), list) and c["officials"]:
+                    o0 = c["officials"][0]; rn = o0.get("name") if isinstance(o0, dict) else o0
+                log(f"soccer context sample {e['comp']} {e['pid']}: keys={sorted(c)[:20]} referee={rn!r}")
+                if rn and isinstance(rn, str): e["ref"] = rn
+            except Exception as ex: used += 1; log(f"soccer context failed: {ex}")
+            break
+    # referee assignments from each referee's next match (a dict {event_id, commence_time, home_team, away_team}):
+    # PropLine event id = our pid. Runs every time (the referee list is kept between refreshes).
+    try:
+        by_ev = {}
         for comp, L in refs.items():
             for x in L:
-                if x[5]: nxt.setdefault(comp, []).append((x[0], x[5]))
-        for e in order:   # a referee whose next match starts at exactly this kickoff, and is the only one in that slot
-            if e.get("ref"): continue
-            c = [n for n, t in nxt.get(e["comp"], []) if abs((ts(t) - ts(e["start"])).total_seconds()) < 600]
-            same = [x for x in order if x["comp"] == e["comp"] and abs((ts(x["start"]) - ts(e["start"])).total_seconds()) < 600]
-            if len(c) == 1 and len(same) == 1: e["ref"] = c[0]
+                nm = x[5] if len(x) > 5 else None
+                if isinstance(nm, dict) and nm.get("event_id") and x[0]: by_ev.setdefault(str(nm["event_id"]), set()).add(x[0])
+                elif isinstance(nm, str) and x[0]:   # older format: kickoff time only -> unique referee + unique match in that slot
+                    for e in order:
+                        if e["comp"] == comp and not e.get("ref"):
+                            try:
+                                if abs((ts(nm) - ts(e["start"])).total_seconds()) < 600 and sum(1 for y in order if y["comp"] == comp and abs((ts(y["start"]) - ts(e["start"])).total_seconds()) < 600) == 1:
+                                    by_ev.setdefault(e["pid"], set()).add(x[0])
+                            except Exception: pass
+        for e in order:
+            if len(by_ev.get(str(e["pid"]), ())) == 1: e["ref"] = next(iter(by_ev[str(e["pid"])]))
+    except Exception as ex: log(f"soccer referee assignment failed: {ex}")
     out = {"at": now.isoformat(timespec="seconds"), "events": order, "props": list(props_out.values()), "refs": refs,
            "seen": seen_at, "mk_extra": sorted(mk_extra), "mk_day": P.get("mk_day") or {}, "refs_at": P.get("refs_at")}
     log(f"soccer: {len(order)} matches in the next 72 h, odds read for {n_odds}, {len(out['props'])} player props, "

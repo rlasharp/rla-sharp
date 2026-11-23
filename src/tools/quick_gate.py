@@ -69,6 +69,9 @@ def main():
         if g["sp"] in ("nba", "nhl") and 3 <= mins <= 125: key = f"{g['id']}:b{int(mins // 20)}"
         # last hour before tip / puck drop: every ~15 min (starting lineups, late scratches, confirmed goalies), the last one ~10 min out
         if g["sp"] in ("nba", "nhl") and 3 <= mins <= 60: key = f"{g['id']}:c{int(mins // 15)}"
+        # soccer: confirmed lineups land ~60 min before kickoff; the scheduled gate really runs every 40-60 min, so the old 10-45 min
+        # window was missed (Nov 22: no lineups for two 13:30Z Eredivisie games) — any run in the last hour updates once per 20-min slice
+        if g["sp"].startswith("soc") and 3 <= mins <= 60: key = f"{g['id']}:s{int(mins // 20)}"
         if g["sp"] == "nfl" and 3 <= mins <= 100: key = f"{g['id']}:n{int(mins // 30)}"   # NFL inactives ~90 min before kickoff
         if not key: continue
         pre.add(key)
