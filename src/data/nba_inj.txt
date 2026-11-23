@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 15:44Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 17:26Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -95,6 +95,7 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
+Joel Embiid|C|Day-To-Day|illness|Nov 23
 Adem Bona|C|Out|back sprain|Nov 23
 Jaylen Brown|G|Day-To-Day|hamstring not specified|Nov 23
 Dean Wade|F|Day-To-Day|hamstring soreness|Nov 23
