@@ -114,9 +114,11 @@ def athlete(aid):
     rec = get(CORE + f"athletes/{aid}/records") or {}
     R0 = {}
     for it in rec.get("items") or []:
+        if not isinstance(it, dict): continue   # ESPN sometimes returns null entries in the records list (crashed every UFC update Nov 21-23)
         if it.get("type") == "total" or it.get("name") == "overall":
             R0["rec"] = it.get("summary") or it.get("displayValue")
-            for x in it.get("stats") or []: R0[x.get("name")] = int(x.get("value") or 0)
+            for x in it.get("stats") or []:
+                if isinstance(x, dict) and x.get("name"): R0[x.get("name")] = int(float(x.get("value") or 0))
     pos = a.get("weightClass") or {}
     A = {"at": NOW.isoformat(timespec="seconds"), "n": a.get("displayName") or a.get("fullName"), "nick": a.get("nickname") or "", "age": a.get("age"),
          "ht": a.get("displayHeight") or "", "hti": a.get("height"), "wt": a.get("displayWeight") or "", "reach": a.get("displayReach") or (f"{a['reach']:.0f}\"" if isinstance(a.get("reach"), (int, float)) else ""),
@@ -163,7 +165,7 @@ def light(aid):   # opponents: name and current pro record (for "quality of oppo
     a = {"displayName": A0["n"]} if A0.get("n") else (get(CORE + f"athletes/{aid}") or {})
     if not a: return
     rec = get(CORE + f"athletes/{aid}/records") or {}
-    r = next((it.get("summary") or it.get("displayValue") for it in rec.get("items") or [] if it.get("type") == "total" or it.get("name") == "overall"), "")
+    r = next((it.get("summary") or it.get("displayValue") for it in rec.get("items") or [] if isinstance(it, dict) and (it.get("type") == "total" or it.get("name") == "overall")), "")
     C["ath"][aid] = {"at": NOW.isoformat(timespec="seconds"), "n": a.get("displayName") or a.get("fullName"), "lite": 1, "rec": r or ""}
 with ThreadPoolExecutor(12) as ex: list(ex.map(light, need))
 

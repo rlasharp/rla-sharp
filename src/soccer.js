@@ -24,7 +24,7 @@ function socPEnsure(cb,tids,old){socEnsure(async()=>{try{
       if(old&&!SOCPL.old)P.push(SOCPL.busyOld||(SOCPL.busyOld=socScript("soccer_old.js")));await Promise.all(P)}
     try{if(typeof SRCH!=="undefined")SRCH=null}catch(e){}if(typeof iaBump!=="undefined"){iaBump();iaSocAll()}}catch(e){}cb&&cb()})}
 const socE=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const socO=x=>x==null?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
+const socO=x=>x==null||!isFinite(x)||Math.abs(x)>5000?"–":(typeof oddsFmt!=="undefined"?oddsFmt(x):(x>0?"+":"")+x);
 const socImp=o=>o==null?null:o<0?-o/(-o+100):100/(o+100);
 const socPct=p=>p==null?"–":Math.round(p*100)+"%";
 const SOC_TSI={sh:0,sot:1,cor:2,fo:3,yc:4,rc:5,pos:6};
@@ -134,7 +134,13 @@ function socHitP(aid,mk,line,n){const G=socPlayerGames(aid).filter(g=>g[2]>=15).
 function socLgOk(c){return !SC.lgs.length||SC.lgs.includes(c)}
 function socLgSave(){try{localStorage.setItem("ge_soclgs",JSON.stringify(SC.lgs))}catch(e){}}
 function socFxOn(d){return (SOC_FX||[]).filter(f=>socDay(f.t)===d&&socLgOk(f.c))}
-function socEdges(f){const O=f.odds||{},P=f.proj;if(!P)return [];const C=[],add=(e,t,o,kind,side,line,book)=>{if(e!=null&&o!=null)C.push({e,t,o,spec:socSpec(f,kind,side,line,o,book)})};
+/* Our soccer estimate is simple (each team's season numbers in its own league), so when it disagrees a lot with the books
+   — most often in European cup games between teams from different leagues — the books are usually right. Leans and plays
+   therefore: (1) skip any side where our chance and the price are more than 12 points apart (our number isn't trustworthy
+   there), (2) count only half of the gap (blend with the market, like the NBA/NHL game picks), (3) skip long shots and
+   heavy favourites (outside −300…+300), where a "best price" across books is most often a stale outlier. */
+const SOCLN={w:.5,gap:.12,omin:-300,omax:300,pgap:.15,pmax:.6};
+function socEdges(f){const O=f.odds||{},P=f.proj;if(!P)return [];const C=[],add=(e,t,o,kind,side,line,book)=>{if(e==null||o==null||o<SOCLN.omin||o>SOCLN.omax||Math.abs(e)>SOCLN.gap)return;C.push({e:e*SOCLN.w,t,o,spec:socSpec(f,kind,side,line,o,book)})};
   if(O.ml)[["h",0],["d",1],["a",2]].forEach(([k,i])=>add(P.p[i]-socImp(O.ml[k]),k==="d"?"Draw":socTm(k==="h"?f.h:f.a)+" to win",O.ml[k],"ml",k,null,O.ml[k+"b"]));
   const mt=O.main_tot;if(mt&&O.tot&&O.tot[mt]&&P.o[mt]!=null){const [o,ob,u,ub]=O.tot[mt];if(o!=null)add(P.o[mt]-socImp(o),`Over ${mt} goals`,o,"tot","o",+mt,ob);if(u!=null)add(1-P.o[mt]-socImp(u),`Under ${mt} goals`,u,"tot","u",+mt,ub)}
   if(O.btts&&P.btts!=null){if(O.btts.y!=null)add(P.btts-socImp(O.btts.y),"Both teams to score",O.btts.y,"btts","y",null,O.btts.yb);if(O.btts.n!=null)add(1-P.btts-socImp(O.btts.n),"BTTS: No",O.btts.n,"btts","n",null,O.btts.nb)}
@@ -143,7 +149,7 @@ function socEdges(f){const O=f.odds||{},P=f.proj;if(!P)return [];const C=[],add=
 function socBestEdge(f){return socEdges(f)[0]||null}
 /* ⭐ soccer plays of the day (picked + locked by tools/track.js, graded there) */
 function socPickPlays(d){const F=(SOC_FX||[]).filter(f=>socDay(f.t)===d&&!socStarted(f)&&f.odds),P=[];
-  const G=F.map(f=>({f,b:socEdges(f).find(x=>x.e>=.05&&x.o>=-200&&x.o<=250)})).filter(x=>x.b).sort((a,b)=>b.b.e-a.b.e).slice(0,2);
+  const G=F.map(f=>({f,b:socEdges(f).find(x=>x.e>=.03&&x.o>=-200&&x.o<=250)})).filter(x=>x.b).sort((a,b)=>b.b.e-a.b.e).slice(0,2);
   for(const x of G)P.push(Object.assign({},x.b.spec,{type:"game",why:`our ${Math.round((x.b.e+socImp(x.b.o))*100)}% vs ${Math.round(socImp(x.b.o)*100)}% the price needs`}));
   if(window.SOC_P_OK){const used=new Set(G.map(x=>x.f.id));for(const x of socBestProps().filter(x=>socDay(x.f.t)===d&&x.edge>=.05&&x.n>=8&&x.h/x.n>=.6&&x.price>=-200&&x.price<=300)){if(P.length>=3)break;
     P.push(Object.assign(socSpec(x.f,"prop","o",x.line,x.price,x.book,{pid:x.aid,mk:x.mk,player:x.nm,title:`${x.nm} ${socPropLab(x.mk,x.line)}`}),{type:"prop",why:`hit ${x.h}/${x.n} last 10 · our ${Math.round(x.our*100)}% vs ${Math.round(x.im*100)}% needed`}))}}
@@ -200,7 +206,7 @@ function socRowEst(lab,our,o,ob,spec){const im=socImp(o),e=our!=null&&im!=null?o
   return `<tr><td>${lab}</td><td><b>${socPct(our)}</b></td><td>${o!=null?`<div class="scob"><span><b>${socO(o)}</b><div class="small">${socE(ob||"")}</div></span>${spec?socBetBtn(spec):""}</div>`:`<span class="small">no US line</span>`}</td><td class="${socEdgeCls(e)}">${e!=null?`${e>0?"+":""}${Math.round(e*100)}%<div class="small">needs ${socPct(im)}</div>`:"–"}</td></tr>`}
 /* 1) one-line verdict */
 function socVerdict(f){const P=f.proj,O=f.odds;if(!P)return {c:"",t:"Not enough matches yet for our estimate."};
-  if(O&&(O.ml||O.tot)){const b=socBestEdge(f);if(b&&b.e>=.04)return {c:"good",t:`✅ <b>Lean: ${socE(b.t)}</b> ${socO(b.o)} — our ${socPct(b.e+socImp(b.o))} vs ${socPct(socImp(b.o))} the price needs`};
+  if(O&&(O.ml||O.tot)){const b=socBestEdge(f);if(b&&b.e>=.03)return {c:"good",t:`✅ <b>Lean: ${socE(b.t)}</b> ${socO(b.o)} — our ${socPct(b.e+socImp(b.o))} vs ${socPct(socImp(b.o))} the price needs`};
     return {c:"",t:`➖ <b>No clear edge</b> — the prices are close to our numbers${b?` (closest: ${socE(b.t)} ${socO(b.o)})`:""}`}}
   const fav=P.p[0]>=P.p[2]?[f.h,P.p[0]]:[f.a,P.p[2]],ou=P.o["2.5"];
   return {c:"",t:`📊 <b>Our numbers:</b> ${socE(socTm(fav[0]))} ${socPct(fav[1])} to win · ${ou>=.5?"Over":"Under"} 2.5 goals ${socPct(ou>=.5?ou:1-ou)}${P.cor?` · ~${P.cor.t.toFixed(1)} corners`:""}${P.card?` · ~${P.card.t.toFixed(1)} cards`:""} <span class="small">(odds not posted yet)</span>`}}
@@ -305,7 +311,7 @@ function socStatOnly(f){const T={};for(const [aid,P] of Object.entries(window.SO
 function socGameProps(f){const R=(SOC_PROPS||[]).filter(r=>r[5]===f.id).map(r=>socPropEval(r,f));
   const groups={};R.forEach(x=>(groups[x.mk]=groups[x.mk]||[]).push(x));const order=["sgoal","sga","ssot","sast","s2g","sshot","sfoul","sfwon","scard"];
   return `${R.length?order.filter(k=>groups[k]).map(k=>`<div class="card"><h2>${socE(SOC_MK[k][1])}</h2>${groups[k].sort((a,b)=>(b.edge??-9)-(a.edge??-9)).map(x=>socPropRow(x,f)).join("")}</div>`).join(""):`<div class="card small">No player props posted yet for this match — books add them 1–2 days before kickoff.</div>`}${socStatOnly(f)}${socFoot()}`}
-function socBestProps(){const out=[];for(const r of SOC_PROPS||[]){const f=socFx(r[5]);if(!f||socStarted(f))continue;const x=socPropEval(r,f);if(x.edge!=null&&x.n>=5&&x.lu!=="out"&&!x.ms)out.push(Object.assign(x,{f}))}return out.sort((a,b)=>b.edge-a.edge)}
+function socBestProps(){const out=[];for(const r of SOC_PROPS||[]){const f=socFx(r[5]);if(!f||socStarted(f))continue;const x=socPropEval(r,f);if(x.edge!=null&&x.n>=5&&x.lu!=="out"&&!x.ms&&x.price!=null&&x.price>=-300&&x.price<=1000&&x.edge<=SOCLN.pgap&&!(["sgoal","s2g","sga","sast"].includes(x.mk)&&x.our>SOCLN.pmax))out.push(Object.assign(x,{f}))}return out.sort((a,b)=>b.edge-a.edge)}
 function socProps(el){socPEnsure(()=>{const L0=socBestProps(),L=L0.filter(x=>(SC.pmk==="all"||x.mk===SC.pmk)&&(SC.plg==="all"||x.f.c===SC.plg));
   const mks=[...new Set(L0.map(x=>x.mk))],lgs=[...new Set(L0.map(x=>x.f.c))];
   el.innerHTML=`<h1>🎯 Soccer player props</h1><p class="sub">Every posted player prop for the next 3 days, best edge first: our chance (his rate per 90, expected minutes, the opponent) vs the chance the price needs.</p>
@@ -352,7 +358,7 @@ function todayRowsSoc(){if(!window.SOC_OK){socEnsure(()=>{if(((location.hash||"#
 function socTodayCount(){return window.SOC_OK?(SOC_FX||[]).filter(f=>socDay(f.t)===socToday()).length:null}
 /* best angles for the Today page "Best of tonight" (matches today + tomorrow, edge ≥ 4%) */
 function socTonightItems(){if(!window.SOC_OK)return [];const d=socToday(),d1=socAddDays(d,1),L=[];
-  for(const f of (SOC_FX||[]).filter(f=>[d,d1].includes(socDay(f.t))&&!socStarted(f))){const b=socBestEdge(f);if(b&&b.e>=.04)L.push({sp:"soc",e:b.e,href:`#soccer-game-${f.id}`,t:`${socE(b.t)} ${socO(b.o)} <span class="small">${socE(socTm(f.h))} v ${socE(socTm(f.a))}</span>`})}
+  for(const f of (SOC_FX||[]).filter(f=>[d,d1].includes(socDay(f.t))&&!socStarted(f))){const b=socBestEdge(f);if(b&&b.e>=.03)L.push({sp:"soc",e:b.e,href:`#soccer-game-${f.id}`,t:`${socE(b.t)} ${socO(b.o)} <span class="small">${socE(socTm(f.h))} v ${socE(socTm(f.a))}</span>`})}
   return L}
 
 /* ================= finished matches, head to head, team pages, results, corners & cards finder ================= */
