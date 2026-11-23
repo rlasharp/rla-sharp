@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 00:15Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 01:04Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -46,7 +46,6 @@ Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Indiana Pacers
 T.J. McConnell|G|Out|hamstring|Nov 23
-Pascal Siakam|F|Day-To-Day|hip soreness|Nov 22
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -77,8 +76,8 @@ Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
+Miles McBride|G|Out|abdomen|Nov 25
 OG Anunoby|F|Out|calf soreness|Nov 25
-Karl-Anthony Towns|C|Day-To-Day|illness|Nov 22
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 25
 #Oklahoma City Thunder
 Aday Mara|C|Out|lower leg bruise|Nov 23
