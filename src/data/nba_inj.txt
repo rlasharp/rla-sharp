@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 23:30Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 23:37Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -15,8 +15,6 @@ Grant Williams|F|Out|hamstring|Nov 25
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
-Jalen Smith|F|Day-To-Day|undisclosed|
-Nic Claxton|C|Day-To-Day|undisclosed|
 Norman Powell|G|Out|hamstring strain|Nov 28
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
@@ -24,8 +22,8 @@ Jaylon Tyson|G|Out|ankle|Nov 23
 Nae'Qwan Tomlin|F|Out|back|Nov 29
 Evan Mobley|C|Out|toe sprain|Nov 29
 #Dallas Mavericks
+Tobi Lawal|F|Out|groin|Nov 27
 P.J. Washington|F|Day-To-Day|illness|Nov 24
-Tobi Lawal|F|Out|groin|Nov 24
 Dereck Lively II|C|Out|foot surgery|Nov 27
 Sergio de Larrea|F|Out|knee strain|Nov 27
 Tarik Biberovic|F|Out|heel inflammation|Nov 27
