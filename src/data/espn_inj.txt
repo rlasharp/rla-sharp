@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 17:34Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 19:41Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Out|Ankle|Nov 29
@@ -23,7 +23,6 @@ T.J. Sanders|DT|Out|Shoulder|Nov 26
 Dalton Kincaid|TE|Out|Thumb|Nov 26
 #CAR
 Bobby Okereke|LB|Out|Foot|Nov 30
-Jalen Coker|WR|Questionable|Concussion|Nov 30
 Brady Christensen|G|IR|Hamstring|Nov 30
 Isaiah Simmons|S|IR|Knee|Dec 20
 Jonathon Brooks|RB|IR|Groin|Nov 30
@@ -71,15 +70,15 @@ Isaiah McDuffie|LB|Questionable|Ribs|Nov 25
 Luke Musgrave|TE|Out|Neck|Feb 15
 Kevin Zeitler|G|Out|Triceps|Nov 25
 #HOU
+Woody Marks|RB|Out|Concussion|Nov 29
+Chris Braswell|DE|Out|Knee|Feb 15
 Wyatt Teller|G|Out|Back|Nov 29
 Brevin Jordan|TE|Out|Foot|Nov 29
-Woody Marks|RB|Out|Concussion|Nov 29
 Marvin Harrison Jr.|WR|Out|Hamstring|Nov 29
 Danielle Hunter|DE|Out|Hamstring|Nov 29
 Kayshon Boutte|WR|Questionable|Hip|Nov 29
 Keylan Rutledge|G|Questionable|Undisclosed|Nov 29
 Sheldon Rankins|DT|Questionable|Ankle|Nov 29
-Chris Braswell|DE|Doubtful|Knee|Nov 29
 #IND
 Jerry Tillery|DT|Out|Calf|Nov 29
 Jalen Travis|OT|Out|Knee|Nov 29
@@ -90,10 +89,10 @@ Sauce Gardner|CB|Out|Calf|Nov 29
 Alec Pierce|WR|IR|Heel|Feb 15
 Seth McGowan|RB|Questionable|Hamstring|Nov 29
 #JAX
+Bhayshul Tuten|RB|Questionable|Ankle|Nov 29
 Danny Striggow|DE|Out|Concussion|Nov 29
 Matt Dickerson|DE|Out|Neck|Nov 29
 Robert Hainsey|C|Out|Knee|Nov 29
-Bhayshul Tuten|RB|Questionable|Lower Body|Nov 29
 Walker Little|OT|Questionable|Knee|Nov 29
 Jarrian Jones|CB|Questionable|Chest|Nov 29
 B.J. Green II|DE|IR|Forearm|Nov 29
@@ -135,6 +134,7 @@ Terrance Ferguson|TE|IR|Hamstring|Nov 25
 Coleman Shelton|C|Doubtful|Hamstring|Nov 25
 Dylan McMahon|C|IR|Knee|Dec 25
 #MIA
+Malik Willis|QB|IR|Abdomen|Dec 13
 Jared Wayne|WR|Out|Quadriceps|Nov 29
 Bradley Pinion|P|Out|Groin|Nov 29
 JuJu Brents|CB|Questionable|Shoulder|Nov 29
@@ -193,7 +193,6 @@ Dre Greenlaw|LB|Out|Neck|Nov 29
 Khalid Kareem|DE|Out|Ankle|Nov 29
 Nate Hobbs|CB|IR|Groin|Nov 29
 Isaac Guerendo|RB|Out|Pectoral|Nov 29
-Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
 #SEA
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
@@ -203,6 +202,7 @@ Sam Darnold|QB|Out|Quadriceps|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 29
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
 #TB
+Elijah Simmons|DT|Questionable|Concussion|Nov 30
 Antoine Winfield Jr.|S|Out|Ankle|Nov 30
 Benjamin Morrison|CB|Questionable|Hamstring|Nov 30
 Jacob Parrish|CB|Questionable|Back|Nov 30
