@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 22:50Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-23 23:30Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -15,8 +15,8 @@ Grant Williams|F|Out|hamstring|Nov 25
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
-Jalen Smith|F|Day-To-Day|illness|Nov 23
-Nic Claxton|C|Day-To-Day|illness|Nov 23
+Jalen Smith|F|Day-To-Day|undisclosed|
+Nic Claxton|C|Day-To-Day|undisclosed|
 Norman Powell|G|Out|hamstring strain|Nov 28
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
@@ -46,7 +46,6 @@ Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Indiana Pacers
 T.J. McConnell|G|Out|hamstring|Nov 27
 Aaron Nesmith|G|Out|foot|Nov 27
-Pascal Siakam|F|Day-To-Day|hip not specified|Nov 23
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
 Johnny Furphy|G|Out|knee surgery|Jan 2
 Ben Sheppard|G|Out|knee|Jan 2
@@ -56,8 +55,8 @@ Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Los Angeles Lakers
 Austin Reaves|G|Out|heel bruise|Nov 27
 #Memphis Grizzlies
+Cameron Boozer|F|Out|ankle sprain|Dec 21
 Jerami Grant|F|Out|calf not specified|Dec 12
-Cameron Boozer|F|Out|ankle sprain|Nov 25
 GG Jackson|F|Out|foot surgery|Jan 18
 Scotty Pippen Jr.|G|Out|back soreness|Nov 25
 Richie Saunders|G|Out|knee surgery|Dec 1
@@ -91,10 +90,7 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
-Joel Embiid|C|Day-To-Day|illness|Nov 23
-Adem Bona|C|Out|back sprain|Nov 23
-Jaylen Brown|G|Day-To-Day|hamstring not specified|Nov 23
-Dean Wade|F|Day-To-Day|hamstring soreness|Nov 23
+Joel Embiid|C|Out|illness|Nov 25
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
@@ -114,8 +110,6 @@ Dylan Harper|G|Out|hip soreness|Dec 13
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Jaden Bradley|G|Day-To-Day|ankle sprain|Nov 23
-Collin Murray-Boyles|F|Day-To-Day|concussion|Nov 23
 Nate Bittle|C|Out|foot fracture|Nov 27
 Kawhi Leonard|F|Out|knee inflammation|Dec 3
 RJ Barrett|F|Out|hamstring strain|Dec 13

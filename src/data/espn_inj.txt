@@ -1,13 +1,13 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 22:41Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 23:30Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
+Jeremiyah Love|RB|IR|Ankle|Dec 6
 Jon Gaines II|G|Out|Ankle|Nov 29
 Carson Beck|QB|Out|Back|Nov 29
 Cody Simon|LB|Questionable|Calf|Nov 29
 Zachary Carter|DT|IR|Knee|Nov 29
 James Conner|RB|IR|Foot|Dec 20
 Gardner Minshew II|QB|IR|Elbow|Feb 15
-Jordan Burch|LB|IR|Knee - MCL|Feb 15
 #ATL
 Divine Deablo|LB|Out|Forearm|Nov 29
 Zachariah Branch|WR|Out|Hamstring|Nov 29
@@ -17,10 +17,14 @@ Nnamdi Madubuike|DT|Out|Hamstring|Nov 29
 Jaylinn Hawkins|S|Out|Knee|Nov 29
 Lamar Jackson|QB|IR|Thumb|Dec 27
 #BUF
+Greg Rousseau|LB|Questionable|Back|Nov 26
+Damar Hamlin|S|Questionable|Toe|Nov 26
+Spencer Brown|OT|Questionable|Back|Nov 26
+O'Cyrus Torrence|G|Questionable|Ankle|Nov 26
+Dalton Kincaid|TE|Out|Thumb|Nov 26
 Dorian Williams|LB|Out|Calf|Nov 26
 Christian Benford|CB|Out|Groin|Nov 26
 T.J. Sanders|DT|Out|Shoulder|Nov 26
-Dalton Kincaid|TE|Out|Thumb|Nov 26
 #CAR
 Jaycee Horn|CB|IR|Quadriceps|Dec 6
 Bobby Okereke|LB|Out|Foot|Nov 30
@@ -99,13 +103,11 @@ Walker Little|OT|Questionable|Knee|Nov 29
 Jarrian Jones|CB|Questionable|Chest|Nov 29
 B.J. Green II|DE|IR|Forearm|Nov 29
 #KC
-Trey Smith|G|Out|Concussion|Nov 26
 Kenneth Walker III|RB|Out|Groin|Nov 26
+Trey Smith|G|Out|Concussion|Nov 26
 Jaylon Moore|OT|Out|Ankle|Nov 26
 Ben VanSumeren|FB|Questionable|Knee|Nov 26
 Noah Gray|TE|Questionable|Ribs|Nov 26
-Omarr Norman-Lott|DT|Out|Knee - ACL|Nov 26
-Peter Woods|DT|Out|Neck|Nov 26
 Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
 Tonka Hemingway|DT|Out|Upper Body|Nov 29
@@ -200,10 +202,10 @@ Khalid Kareem|DE|Out|Ankle|Nov 29
 Nate Hobbs|CB|IR|Groin|Nov 29
 Isaac Guerendo|RB|Out|Pectoral|Nov 29
 #SEA
+George Holani|RB|IR|Knee - MCL|Dec 25
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
 Charles Cross|OT|Out|Ankle|Nov 29
-George Holani|RB|Questionable|Knee - MCL|Nov 29
 Sam Darnold|QB|Out|Quadriceps|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 29
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
