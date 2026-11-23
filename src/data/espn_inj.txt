@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 11:34Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-23 14:00Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Cody Simon|LB|Questionable|Calf|Nov 29
@@ -122,6 +122,8 @@ Jalen Travis|OT|Out|Knee|Nov 29
 Charvarius Ward|CB|Out|Knee|Nov 29
 Will Mallory|TE|Out|Hamstring|Nov 29
 #JAX
+Bhayshul Tuten|RB|Questionable|Undisclosed|Nov 29
+Cam Little|PK|Questionable|Lower Body|Nov 29
 Walker Little|OT|Questionable|Knee|Nov 29
 Jarrian Jones|CB|Questionable|Chest|Nov 29
 Matt Dickerson|DE|Out|Neck|Nov 29
@@ -255,6 +257,7 @@ Nick Herbig|LB|Out|Hip|Nov 27
 Gennings Dunker|G|IR|Knee|Nov 27
 Mason McCormick|G|IR|Ankle|Jan 3
 #SF
+Deommodore Lenoir|CB|Questionable|Foot|Nov 29
 Colton McKivitz|OT|Out|Lower Leg|Nov 29
 Dre Greenlaw|LB|Out|Neck|Nov 29
 Khalid Kareem|DE|Out|Ankle|Nov 29
@@ -264,7 +267,6 @@ Enrique Cruz Jr.|OT|Out|Coach's Decision|Nov 29
 Nate Hobbs|CB|IR|Groin|Nov 29
 Isaac Guerendo|RB|Out|Pectoral|Nov 29
 Christian Kirk|WR|IR|Knee - Meniscus|Dec 6
-De'Zhaun Stribling|WR|IR|Ankle|Dec 6
 #SEA
 Leonard Williams|DT|Out|Shoulder|Nov 29
 Quenton Nelson|G|Out|Knee|Nov 29
