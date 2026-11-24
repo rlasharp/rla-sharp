@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 03:33Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 04:33Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -89,7 +89,6 @@ Paolo Banchero|F|Out|ankle sprain|Nov 29
 Joel Embiid|C|Out|illness|Nov 25
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
-Collin Gillespie|G|Day-To-Day|undisclosed not specified|Nov 23
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|heel bruise|Nov 27

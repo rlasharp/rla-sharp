@@ -2,7 +2,7 @@
 /* ---------- Plays of the Week (Week 9) ----------
    Matchup-based leans built from this site's own data (game logs, defense vs position,
    score model). Numbers in each card are computed live from the loaded data. */
-const PLAYS_WEEK=11, PLAYS_ASOF="Tue Nov 17";
+const PLAYS_WEEK=12, PLAYS_ASOF="Mon Nov 23";
 const PLAYS=[
 ];
 

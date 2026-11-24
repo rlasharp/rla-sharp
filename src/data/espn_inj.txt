@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 03:34Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 04:35Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -100,7 +100,6 @@ Matt Dickerson|DE|Out|Neck|Nov 29
 Robert Hainsey|C|Out|Knee|Nov 29
 Walker Little|OT|Questionable|Knee|Nov 29
 Jarrian Jones|CB|Questionable|Chest|Nov 29
-B.J. Green II|DE|IR|Forearm|Nov 29
 #KC
 Noah Gray|TE|Questionable|Ribs|Nov 26
 Kenneth Walker III|RB|Out|Groin|Nov 26
