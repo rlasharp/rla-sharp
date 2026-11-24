@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 02:21Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 03:16Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -10,6 +10,7 @@ Mitchell Robinson|C|Out|illness|Nov 27
 #Brooklyn Nets
 Nolan Traore|G|Out|hamstring strain|Jan 27
 #Charlotte Hornets
+Ryan Kalkbrenner|C|Day-To-Day|hip soreness|Nov 25
 Grayson Allen|G|Out|concussion|Nov 25
 Grant Williams|F|Out|hamstring|Nov 25
 Kon Knueppel|G|Out|hamstring strain|Dec 12
@@ -88,6 +89,7 @@ Paolo Banchero|F|Out|ankle sprain|Nov 29
 Joel Embiid|C|Out|illness|Nov 25
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
+Collin Gillespie|G|Day-To-Day|undisclosed not specified|Nov 23
 Mark Williams|C|Out|shoulder surgery|Feb 3
 #Portland Trail Blazers
 Chris Youngblood|G|Out|heel bruise|Nov 27
