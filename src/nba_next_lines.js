@@ -1,2 +1,2 @@
 /* NBA lines for upcoming games — ESPN odds feed (tools/auto_espn.py lines-next) */
-var NBA_LINES_NEXT={};
+var NBA_LINES_NEXT={"2026-11-25|MIA@PHI":{"open":{"sp":-3.5,"tot":238.5},"sp":-3.5,"spx":-110.0,"tot":238.5,"ox":-110.0,"ux":-110.0,"mla":136.0,"mlh":-162.0,"at":"2026-11-24T11:31Z"},"2026-11-25|CLE@NY":{"open":{"sp":-5.5,"tot":220.5},"sp":-5.5,"spx":-115.0,"tot":220.5,"ox":-110.0,"ux":-110.0,"mla":186.0,"mlh":-224.0,"at":"2026-11-24T11:31Z"},"2026-11-25|MIN@OKC":{"open":{"sp":9.5,"tot":232.5},"sp":-3.5,"spx":-107.0,"tot":223.5,"ox":-110.0,"ux":-110.0,"mla":125.0,"mlh":-148.0,"at":"2026-11-24T11:31Z"},"2026-11-25|PHX@HOU":{"open":{"sp":-10.5,"tot":223.5},"sp":-10.5,"spx":-110.0,"tot":223.5,"ox":-110.0,"ux":-110.0,"mla":319.0,"mlh":-406.0,"at":"2026-11-24T11:31Z"}};
