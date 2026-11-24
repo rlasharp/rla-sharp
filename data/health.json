@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-23T23:39:18+00:00",
+  "at": "2026-11-24T00:32:06+00:00",
   "ok": true,
-  "summary": "firmed / 85 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 248 games cached\nNBA refs: 9 crews posted today\nliveprops: 1281 feed lines merged (0 skipped from other days), 1226 total, unmatched names: ['Brandon Ingram']\nNo plays qualify yet for 2026-11-23 \u2014 not locking.\nNBA data: teams 30, results 248 (through 2026-11-22), players 474, slate 10, lines 10, props 1226, inj teams 29, prev-season players 274, play log 45, adv 419, qtr games 248, h2h 2/2/2/4/2/4/4/4/4/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 1 with a forecast\nnflrefs: 162 games (0 new), 21 referees, 1 of this week's crews posted\n195 players, 32 teams\nnfl-inj: 195 players\nnfl-qtr: 162 games with quarter scores\nnflbox: 0 new ESPN box scores, 11 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 699 players, 0 ESPN requests this run\nNHL data: 7 games today, 1 tomorrow, 32 teams, 687 skaters, 67 goalies, 835 props, 369 finals, 45 requests\nsocmgr: 6 new headlines, 16 clubs with manager news\nsoccer: 283 upcoming matches (68 with odds, 283 with estimates, 266 with weather, 36 with referee), 14688 player props, 5905 players\ntrack: nba 2026-11-23: snapshot 10 props, 10 games \u00b7 graded: NHL plays 15-15, best props NBA 62-77 NFL 26-33 NHL 71-61\nSite check OK \u2014 published (2026-11-23T23:38:41Z)\n"
+  "summary": "layer lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 10 games, 55 confirmed / 45 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 2 upcoming games with lines\nNBA refs: 0 summaries checked, 248 games cached\nNBA refs: 9 crews posted today\nliveprops: 1336 feed lines merged (0 skipped from other days), 1270 total, unmatched names: ['Brandon Ingram']\nFirst game of 2026-11-23 has started \u2014 keeping 0 locked plays (use --force to override).\nNBA data: teams 30, results 248 (through 2026-11-22), players 474, slate 10, lines 10, props 1270, inj teams 28, prev-season players 274, play log 45, adv 419, qtr games 248, h2h 2/2/2/4/2/4/4/4/4/3\nnfl-update: 1 lines refreshed, 0 new finals (weeks [10, 11])\nnfl-lines-next: 16 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 11 \u00b7 3 indoors, 1 with a forecast\nnflrefs: 162 games (0 new), 21 referees, 1 of this week's crews posted\n196 players, 32 teams\nnfl-inj: 196 players\nnfl-qtr: 162 games with quarter scores\nnflbox: 0 new ESPN box scores, 11 waiting for nflverse\nsocmgr: 6 new headlines, 16 clubs with manager news\nsoccer: 283 upcoming matches (68 with odds, 283 with estimates, 266 with weather, 36 with referee), 13938 player props, 5905 players\ntrack: nba 2026-11-23: parlay locked (3 legs @ 5.04) \u00b7 graded: NHL plays 15-15, best props NBA 62-77 NFL 26-33 NHL 71-61\nSite check OK \u2014 published (2026-11-24T00:31:29Z)\n"
  },
  "site": {
   "at": "2026-11-23T23:34:33+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-23T23:39:18+00:00",
+  "at": "2026-11-24T00:32:06+00:00",
   "ok": true,
   "issue": "",
   "gen": "Mon Nov 23 6:38 PM ET",
-  "odds_at": "2026-11-23T22:53:14+00:00",
+  "odds_at": "2026-11-23T23:51:29+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -4492,6 +4492,16 @@
   {
    "at": "2026-11-23T23:39:18+00:00",
    "what": "nba,nfl,nhl,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-24T00:32:06+00:00",
+   "what": "nba,nfl,soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
