@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 17:31Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 19:40Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Questionable|Ankle|Nov 29
@@ -40,6 +40,7 @@ Jalen Davis|CB|IR|Hamstring|Nov 29
 Andrei Iosivas|WR|IR|Thumb|Nov 29
 Oren Burks|LB|IR|Groin|Dec 20
 #CLE
+Denzel Boston|WR|Questionable|Toe|Nov 29
 Raheim Sanders|RB|IR|Hip|Nov 29
 Ronnie Hickman|S|Questionable|Concussion|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
@@ -56,22 +57,21 @@ Jalen Thompson|S|IR|Hamstring|Nov 26
 Brandon Jones|S|Questionable|Hamstring|Nov 27
 Caleb Lohner|TE|IR|Foot|Nov 27
 #DET
+Skyler Gill-Howard|DT|Out|Knee|Feb 15
 Ennis Rakestraw Jr.|CB|Questionable|Shoulder|Nov 26
 DJ Wonnum|LB|Questionable|Back|Nov 26
 Chuck Clark|S|Questionable|Hamstring|Nov 26
-Skyler Gill-Howard|DT|Questionable|Knee|Nov 26
 Sam LaPorta|TE|Questionable|Ankle|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
 #GB
+Micah Parsons|DE|Questionable|Knee - ACL|Nov 25
+Josh Jacobs|RB|Questionable|Finger|Nov 25
 Kevin Zeitler|G|Questionable|Triceps|Nov 25
 Sean Rhyan|G|Questionable|Ankle|Nov 25
 Skyy Moore|WR|Questionable|Ankle|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
 Travis Glover|OT|Questionable|Shoulder|Nov 25
-Micah Parsons|DE|Out|Knee - ACL|Nov 25
-Josh Jacobs|RB|Questionable|Finger|Nov 25
 Zaire Franklin|LB|Questionable|Shin|Nov 25
-Isaiah McDuffie|LB|Questionable|Ribs|Nov 25
 Luke Musgrave|TE|Out|Neck|Feb 15
 #HOU
 Wyatt Teller|G|Questionable|Back|Nov 29
@@ -99,11 +99,12 @@ Bhayshul Tuten|RB|Questionable|Ankle|Nov 29
 Walker Little|OT|Questionable|Knee|Nov 29
 Jarrian Jones|CB|Questionable|Chest|Nov 29
 #KC
+Kenneth Walker III|RB|Questionable|Groin|Nov 26
 Trey Smith|G|Questionable|Concussion|Nov 26
 Jaylon Moore|OT|Questionable|Ankle|Nov 26
+Omarr Norman-Lott|DT|Questionable|Knee|Nov 26
 Noah Gray|TE|Questionable|Ribs|Nov 26
-Kenneth Walker III|RB|Questionable|Groin|Nov 26
-Ben VanSumeren|FB|Questionable|Knee|Nov 26
+Ben VanSumeren|FB|Questionable|Knee|Dec 27
 Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
 Tonka Hemingway|DT|Questionable|Upper Body|Nov 29
@@ -124,10 +125,8 @@ Rodney Shelley|CB|IR|Ankle|Dec 17
 #LAR
 Justin Dedich|G|IR|Hand|Nov 25
 Kobie Turner|DE|IR|Groin|Nov 25
-Myles Garrett|DE|Questionable|Knee|Nov 25
 Coleman Shelton|C|Out|Hamstring|Dec 3
 Terrance Ferguson|TE|IR|Ankle|Feb 15
-Kam Curl|S|Questionable|Toe|Nov 25
 Davante Adams|WR|IR|Hamstring|Dec 13
 Puka Nacua|WR|IR|Knee - MCL|Feb 15
 Steve Avila|G|Out|Hamstring|Dec 3
@@ -166,7 +165,7 @@ Taliese Fuaga|OT|Questionable|Knee|Nov 29
 Juwan Johnson|TE|Questionable|Hamstring|Nov 29
 Christen Miller|DT|IR|Knee|Dec 13
 #NYG
-Greg Newsome II|CB|Out|Ankle|Dec 13
+Greg Newsome II|CB|Out|Ankle|Dec 20
 Tyrone Tracy Jr.|RB|IR|Hamstring|Dec 6
 #NYJ
 Isaiah Williams|WR|Questionable|Ribs|Nov 29
