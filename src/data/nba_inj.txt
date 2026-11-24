@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 01:56Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 02:21Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -39,6 +39,7 @@ Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Indiana Pacers
+Larry Nance Jr.|F|Day-To-Day|ankle soreness|Nov 27
 T.J. McConnell|G|Out|hamstring|Nov 27
 Aaron Nesmith|G|Out|foot|Nov 27
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
