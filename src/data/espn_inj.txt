@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 04:35Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 05:37Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -141,7 +141,6 @@ Malik Willis|QB|IR|Abdomen|Dec 13
 Jared Wayne|WR|Out|Quadriceps|Nov 29
 Bradley Pinion|P|Out|Groin|Nov 29
 Jaylin Simpson|S|Out|Knee|Nov 29
-Dante Trader Jr.|S|Out|Shoulder|Nov 29
 #MIN
 Jordan Addison|WR|Out|Thumb|Nov 29
 Kyler Murray|QB|Out|Hamstring|Nov 29
