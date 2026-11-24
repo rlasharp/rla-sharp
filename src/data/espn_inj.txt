@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 15:41Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 17:31Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Questionable|Ankle|Nov 29
@@ -40,6 +40,7 @@ Jalen Davis|CB|IR|Hamstring|Nov 29
 Andrei Iosivas|WR|IR|Thumb|Nov 29
 Oren Burks|LB|IR|Groin|Dec 20
 #CLE
+Raheim Sanders|RB|IR|Hip|Nov 29
 Ronnie Hickman|S|Questionable|Concussion|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
