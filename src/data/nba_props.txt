@@ -1,16 +1,16 @@
 # player|market|line|over price|under price|book[|bestOver|bestOverBook|bestUnder|bestUnderBook]
 # markets: pts reb ast 3pm 3pa pa(pts+ast) pra pr(pts+reb) ra(reb+ast) blk stl
 # day: 2026-11-24
-# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of 2026-11-24T11:58:30+00:00 + covers.com/FanDuel pulls.
-AJ Dybantsa|3pm|1.5|130|-190|Fanatics
-AJ Dybantsa|ast|2.5|-147|111|DraftKings|||118|FanDuel
-AJ Dybantsa|pa|18.5|-126|-104|DraftKings
-AJ Dybantsa|pra|25.5|-116|-113|DraftKings|||-108|FanDuel
-AJ Dybantsa|pr|22.5|-119|-111|DraftKings|||-110|FanDuel
-AJ Dybantsa|pts|15.5|-123|-103|DraftKings
-AJ Dybantsa|ra|9.5|-102|-129|DraftKings|||-125|FanDuel
-AJ Dybantsa|reb|6.5|-104|-126|DraftKings|100|Fanatics||
-AJ Dybantsa|stl|1.5|178|-245|FanDuel
+# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of 2026-11-24T13:16:06+00:00 + covers.com/FanDuel pulls.
+AJ Dybantsa|3pm|1.5|125|-175|Fanatics|135|BetRivers||
+AJ Dybantsa|ast|2.5|-147|111|DraftKings|-135|BetMGM|118|FanDuel
+AJ Dybantsa|pa|19.5|-111|-118|DraftKings|100|Fanatics||
+AJ Dybantsa|pra|26.5|-104|-126|DraftKings
+AJ Dybantsa|pr|23.5|-105|-126|DraftKings|100|Unibet||
+AJ Dybantsa|pts|16.5|-111|-115|DraftKings|-104|FanDuel||
+AJ Dybantsa|ra|9.5|-107|-122|DraftKings|-104|FanDuel||
+AJ Dybantsa|reb|6.5|-111|-118|DraftKings|100|BetMGM||
+AJ Dybantsa|stl|1.5|178|-241|DraftKings
 Aaron Gordon|3pm|1.5|132|-175|DraftKings
 Aaron Gordon|ast|2.5|131|-173|DraftKings|142|FanDuel||
 Aaron Gordon|pa|16.5|-111|-118|DraftKings|-104|FanDuel||
@@ -19,53 +19,57 @@ Aaron Gordon|pr|19.5|-125|-105|DraftKings|-114|FanDuel||
 Aaron Gordon|pts|14.5|100|-128|DraftKings
 Aaron Gordon|ra|7.5|-133|101|DraftKings|-130|FanDuel||
 Aaron Gordon|reb|5.5|-110|-119|DraftKings|-108|FanDuel||
-Alex Sarr|3pm|1.5|130|-190|Fanatics
+Alex Sarr|3pm|1.5|120|-165|Fanatics
 Alex Sarr|ast|1.5|-115|-115|Fanatics
-Alex Sarr|pr|16.5|-114|-118|FanDuel
-Alex Sarr|pts|10.5|-102|-130|FanDuel|||-125|Fanatics
-Alex Sarr|reb|6.5|114|-152|FanDuel|||-145|Fanatics
-Anthony Black|3pm|1.5|101|-133|DraftKings|102|BetRivers|-115|BetMGM
-Anthony Black|ast|4.5|-124|-106|DraftKings|||107|BetRivers
-Anthony Black|pa|19.5|-106|-124|DraftKings|-104|FanDuel||
-Anthony Black|pra|23.5|-126|-104|DraftKings
-Anthony Black|pr|19.5|-105|-126|DraftKings|-104|FanDuel||
-Anthony Black|pts|14.5|-106|-120|DraftKings|-105|BetMGM|-115|Fanatics
-Anthony Black|ra|9.5|-106|-125|DraftKings|||-109|Unibet
-Anthony Black|reb|4.5|-117|-112|DraftKings|-115|Fanatics|100|BetMGM
-Anthony Davis|3pm|0.5|-130|100|Fanatics
-Anthony Davis|ast|2.5|136|-180|DraftKings|158|FanDuel||
-Anthony Davis|blk|1.5|178|-245|FanDuel
-Anthony Davis|pa|24.5|-111|-119|DraftKings
-Anthony Davis|pra|34.5|-119|-111|DraftKings
-Anthony Davis|pr|32.5|-112|-118|DraftKings
-Anthony Davis|pts|21.5|-124|-103|DraftKings|-114|FanDuel||
-Anthony Davis|ra|12.5|-106|-124|DraftKings|102|FanDuel||
-Anthony Davis|reb|10.5|108|-142|DraftKings|116|FanDuel||
-Anthony Davis|stl|1.5|194|-270|FanDuel
-Ausar Thompson|3pm|0.5|600|-1400|Fanatics
-Ausar Thompson|ast|3.5|-153|116|DraftKings|||120|BetMGM
-Ausar Thompson|pa|14.5|-113|-116|DraftKings|-105|Unibet|102|FanDuel
-Ausar Thompson|pra|22.5|-114|-115|DraftKings|-112|BetRivers||
-Ausar Thompson|pr|18.5|-110|-120|DraftKings|-104|Unibet|-112|FanDuel
-Ausar Thompson|pts|10.5|-106|-120|DraftKings|||-105|BetMGM
-Ausar Thompson|ra|11.5|-135|102|DraftKings
-Ausar Thompson|reb|7.5|-135|103|DraftKings|-130|BetRivers|105|Fanatics
-Bilal Coulibaly|3pm|0.5|-171|129|DraftKings|-140|Fanatics||
+Alex Sarr|pa|12.5|110|-150|Unibet
+Alex Sarr|pra|18.5|100|-130|Fanatics
+Alex Sarr|pr|15.5|-130|-102|FanDuel
+Alex Sarr|pts|10.5|-105|-121|DraftKings|100|BetRivers||
+Alex Sarr|ra|7.5|-110|-122|Unibet
+Alex Sarr|reb|6.5|101|-134|DraftKings|123|BetRivers||
+Anthony Black|3pm|1.5|-102|-129|DraftKings|105|Fanatics|-115|BetMGM
+Anthony Black|ast|4.5|-114|-115|DraftKings|-104|FanDuel|-108|BetRivers
+Anthony Black|pa|19.5|-106|-124|DraftKings|100|Fanatics||
+Anthony Black|pra|23.5|-125|-105|DraftKings|-115|Fanatics||
+Anthony Black|pr|19.5|-105|-126|DraftKings|100|Fanatics||
+Anthony Black|pts|14.5|-111|-115|DraftKings|-105|BetMGM||
+Anthony Black|ra|9.5|104|-137|DraftKings|||-120|Unibet
+Anthony Black|reb|4.5|-111|-119|DraftKings|||100|BetMGM
+Anthony Davis|3pm|0.5|-125|-105|Fanatics|||105|BetRivers
+Anthony Davis|ast|2.5|136|-180|DraftKings|154|FanDuel||
+Anthony Davis|blk|1.5|174|-235|DraftKings|178|FanDuel||
+Anthony Davis|pa|24.5|-110|-120|DraftKings|-106|Unibet||
+Anthony Davis|pra|34.5|-115|-114|DraftKings|-112|BetRivers||
+Anthony Davis|pr|32.5|-111|-118|DraftKings|-109|Unibet||
+Anthony Davis|pts|21.5|-124|-103|DraftKings|-105|BetMGM||
+Anthony Davis|ra|12.5|-106|-124|DraftKings|104|FanDuel||
+Anthony Davis|reb|10.5|107|-140|DraftKings|116|FanDuel||
+Anthony Davis|sb|2.5|119|-159|DraftKings
+Anthony Davis|stl|1.5|177|-240|DraftKings|194|FanDuel||
+Ausar Thompson|3pm|0.5|650|-1500|Fanatics
+Ausar Thompson|ast|4.5|-103|-128|DraftKings|105|Fanatics||
+Ausar Thompson|pa|15.5|-110|-120|DraftKings|-102|FanDuel||
+Ausar Thompson|pra|23.5|-115|-114|DraftKings|100|Fanatics||
+Ausar Thompson|pr|18.5|-126|-105|DraftKings|-115|Fanatics|-102|FanDuel
+Ausar Thompson|pts|10.5|-118|-108|DraftKings|-111|BetMGM||
+Ausar Thompson|ra|12.5|-114|-115|DraftKings|-105|Fanatics|-110|FanDuel
+Ausar Thompson|reb|7.5|-140|106|DraftKings|||116|FanDuel
+Bilal Coulibaly|3pm|0.5|-172|130|DraftKings|-145|Fanatics||
 Bilal Coulibaly|ast|1.5|110|-145|Fanatics
-Bilal Coulibaly|pa|8.5|102|-134|DraftKings|||-132|FanDuel
-Bilal Coulibaly|pra|11.5|-129|-102|DraftKings|||102|FanDuel
-Bilal Coulibaly|pr|10.5|-115|-114|DraftKings|-110|FanDuel||
-Bilal Coulibaly|pts|6.5|-121|-106|DraftKings|-115|Fanatics||
-Bilal Coulibaly|ra|5.5|117|-155|DraftKings|||-154|FanDuel
-Bilal Coulibaly|reb|3.5|-123|-107|DraftKings|-105|Fanatics||
-Cade Cunningham|3pm|1.5|-191|144|DraftKings|-175|BetMGM||
-Cade Cunningham|ast|8.5|-107|-123|DraftKings|100|Fanatics|-122|FanDuel
-Cade Cunningham|pa|33.5|-121|-109|DraftKings|||-108|FanDuel
-Cade Cunningham|pra|39.5|-106|-124|DraftKings|||-122|Unibet
-Cade Cunningham|pr|30.5|-111|-119|DraftKings|-108|FanDuel||
-Cade Cunningham|pts|24.5|-119|-107|DraftKings|||100|FanDuel
-Cade Cunningham|ra|13.5|-130|-101|DraftKings|-128|FanDuel|100|Unibet
-Cade Cunningham|reb|5.5|102|-134|DraftKings|120|Fanatics|-130|BetRivers
+Bilal Coulibaly|pa|8.5|100|-132|DraftKings|110|Fanatics||
+Bilal Coulibaly|pra|11.5|-128|-103|DraftKings|-105|Fanatics|102|FanDuel
+Bilal Coulibaly|pr|10.5|-114|-115|DraftKings|110|Fanatics||
+Bilal Coulibaly|pts|6.5|-120|-106|DraftKings|-105|BetMGM||
+Bilal Coulibaly|ra|4.5|-153|116|DraftKings|-140|Fanatics||
+Bilal Coulibaly|reb|3.5|-122|-108|DraftKings|105|Fanatics||
+Cade Cunningham|3pm|1.5|-192|144|DraftKings|-175|BetMGM||
+Cade Cunningham|ast|8.5|-106|-124|DraftKings|100|BetRivers||
+Cade Cunningham|pa|33.5|-125|-105|DraftKings|-109|Unibet||
+Cade Cunningham|pra|39.5|-110|-119|DraftKings|-104|BetRivers|-118|FanDuel
+Cade Cunningham|pr|30.5|-116|-113|DraftKings|-110|Fanatics||
+Cade Cunningham|pts|25.5|-105|-122|DraftKings
+Cade Cunningham|ra|13.5|-118|-112|DraftKings|-115|Fanatics|-108|FanDuel
+Cade Cunningham|reb|5.5|117|-154|DraftKings|118|FanDuel|-134|BetRivers
 Caleb Martin|3pm|0.5|-124|-106|DraftKings|||110|FanDuel
 Caleb Martin|pr|9.5|-103|-128|DraftKings|-102|FanDuel||
 Caleb Martin|pts|5.5|-110|-116|DraftKings|||-110|FanDuel
@@ -98,52 +102,52 @@ Daniel Gafford|pts|9.5|-118|-108|DraftKings|-106|FanDuel||
 Daniel Gafford|ra|8.5|-130|-102|FanDuel
 Daniel Gafford|reb|7.5|107|-141|DraftKings|122|FanDuel||
 Daniss Jenkins|3pm|2.5|130|-173|DraftKings|162|FanDuel||
-Daniss Jenkins|ast|4.5|-135|103|DraftKings|-115|BetMGM||
-Daniss Jenkins|pa|20.5|-107|-123|DraftKings|-102|FanDuel|-122|Unibet
-Daniss Jenkins|pra|24.5|-112|-118|DraftKings|-106|FanDuel||
-Daniss Jenkins|pr|19.5|-111|-119|DraftKings|-110|FanDuel|-118|Unibet
-Daniss Jenkins|pts|15.5|-106|-121|DraftKings|-104|FanDuel||
-Daniss Jenkins|ra|8.5|-141|107|DraftKings|-125|Unibet||
-Daniss Jenkins|reb|3.5|-167|126|DraftKings|-145|Fanatics||
+Daniss Jenkins|ast|4.5|-110|-119|DraftKings|||-105|Fanatics
+Daniss Jenkins|pa|19.5|-128|-103|DraftKings|-120|Fanatics||
+Daniss Jenkins|pra|24.5|-106|-124|DraftKings|||-122|FanDuel
+Daniss Jenkins|pr|19.5|-110|-120|DraftKings|100|Fanatics||
+Daniss Jenkins|pts|15.5|-106|-121|DraftKings
+Daniss Jenkins|ra|8.5|-117|-112|DraftKings|||-106|FanDuel
+Daniss Jenkins|reb|3.5|-155|118|DraftKings|-143|Unibet|122|FanDuel
 DeMar DeRozan|pts|10.5|-113|-113|DraftKings|-112|FanDuel||
-Derrick White|3pm|2.5|144|-192|DraftKings
-Derrick White|ast|4.5|-133|101|DraftKings|-106|FanDuel||
-Derrick White|pa|18.5|-124|-106|DraftKings|-102|FanDuel||
-Derrick White|pra|22.5|-105|-125|DraftKings
-Derrick White|pr|17.5|-105|-125|DraftKings
-Derrick White|pts|13.5|-120|-106|DraftKings|-110|FanDuel||
-Derrick White|ra|7.5|-144|109|DraftKings|-128|FanDuel||
-Derrick White|reb|3.5|128|-170|DraftKings|||-165|Fanatics
+Derrick White|3pm|1.5|-192|145|DraftKings|-186|FanDuel||
+Derrick White|ast|4.5|-123|-107|DraftKings|-106|FanDuel|-105|BetMGM
+Derrick White|pa|18.5|-104|-127|DraftKings|100|Fanatics||
+Derrick White|pra|21.5|-112|-117|DraftKings|-110|BetRivers|-115|Fanatics
+Derrick White|pr|16.5|-116|-113|DraftKings|-115|Fanatics|-112|FanDuel
+Derrick White|pts|13.5|-105|-121|DraftKings|||-120|FanDuel
+Derrick White|ra|7.5|-137|104|DraftKings|-129|Unibet|105|Fanatics
+Derrick White|reb|3.5|123|-162|DraftKings|126|FanDuel||
 Desmond Bane|3pm|3.5|109|-144|DraftKings|120|BetRivers||
-Desmond Bane|ast|2.5|-129|-102|DraftKings|-110|BetMGM|107|BetRivers
-Desmond Bane|pa|20.5|-107|-123|DraftKings|-104|Unibet|-118|FanDuel
-Desmond Bane|pra|23.5|-124|-106|DraftKings
-Desmond Bane|pr|20.5|-127|-104|DraftKings
-Desmond Bane|pts|17.5|-109|-117|DraftKings|-105|BetRivers|-115|Fanatics
-Desmond Bane|ra|6.5|100|-131|DraftKings|||-115|Unibet
-Desmond Bane|reb|3.5|-110|-120|DraftKings|||105|BetMGM
-Franz Wagner|3pm|1.5|132|-175|DraftKings|140|FanDuel|-155|BetMGM
-Franz Wagner|ast|6.5|-112|-117|DraftKings|||-108|FanDuel
-Franz Wagner|pa|29.5|-117|-112|DraftKings|-109|Unibet|-102|FanDuel
-Franz Wagner|pra|36.5|-108|-122|DraftKings|||-112|FanDuel
-Franz Wagner|pr|29.5|-110|-120|DraftKings|||-112|FanDuel
-Franz Wagner|pts|22.5|-118|-108|DraftKings|-114|BetRivers|-102|FanDuel
-Franz Wagner|ra|12.5|-137|104|DraftKings
-Franz Wagner|reb|6.5|-101|-130|DraftKings|108|BetRivers||
-Hugo Gonzalez|3pm|0.5|-130|100|Fanatics
-Hugo Gonzalez|pr|9.5|-106|-124|DraftKings
+Desmond Bane|ast|2.5|-141|107|DraftKings|-110|BetMGM||
+Desmond Bane|pa|20.5|-109|-121|DraftKings|-104|Unibet|-114|FanDuel
+Desmond Bane|pra|24.5|-105|-125|DraftKings|100|BetRivers|-120|Fanatics
+Desmond Bane|pr|21.5|-104|-127|DraftKings|-103|Unibet|-115|Fanatics
+Desmond Bane|pts|17.5|-110|-116|DraftKings|||-114|FanDuel
+Desmond Bane|ra|6.5|-110|-119|DraftKings|100|Fanatics|-118|Unibet
+Desmond Bane|reb|3.5|-117|-113|DraftKings|-110|Fanatics|-109|BetRivers
+Franz Wagner|3pm|1.5|132|-175|DraftKings|136|FanDuel|-150|BetMGM
+Franz Wagner|ast|6.5|-111|-118|DraftKings|||-110|BetMGM
+Franz Wagner|pa|29.5|-117|-112|DraftKings|-107|Unibet|-104|FanDuel
+Franz Wagner|pra|36.5|-112|-118|DraftKings|-110|Fanatics|-114|FanDuel
+Franz Wagner|pr|29.5|-113|-116|DraftKings|||-110|FanDuel
+Franz Wagner|pts|22.5|-123|-104|DraftKings|-108|Unibet|100|FanDuel
+Franz Wagner|ra|12.5|-132|101|DraftKings
+Franz Wagner|reb|6.5|-104|-127|DraftKings|107|BetRivers||
+Hugo Gonzalez|3pm|0.5|-130|100|Fanatics|||114|BetRivers
+Hugo Gonzalez|pr|9.5|-106|-124|DraftKings|105|Fanatics||
 Hugo Gonzalez|pts|5.5|-105|-121|DraftKings
-Hugo Gonzalez|reb|3.5|-124|-106|DraftKings|-115|Fanatics||
-Isaiah Joe|3pm|1.5|-165|125|DraftKings|||152|FanDuel
-Isaiah Joe|pts|9.5|-127|-101|DraftKings|-112|BetRivers||
+Hugo Gonzalez|reb|3.5|-123|-107|DraftKings|-115|Fanatics||
+Isaiah Joe|3pm|1.5|-171|130|DraftKings
+Isaiah Joe|pts|10.5|-110|-116|DraftKings|||-112|FanDuel
 Jalen Suggs|3pm|1.5|-126|-105|DraftKings|-125|Fanatics|110|BetMGM
-Jalen Suggs|ast|3.5|-129|-102|DraftKings|-125|BetMGM|110|FanDuel
-Jalen Suggs|pa|15.5|-104|-127|DraftKings|100|Unibet|-122|FanDuel
-Jalen Suggs|pra|19.5|-115|-115|DraftKings|-112|BetRivers|-114|FanDuel
-Jalen Suggs|pr|15.5|-118|-112|DraftKings|-110|FanDuel||
+Jalen Suggs|ast|3.5|-134|102|DraftKings|-125|BetMGM|106|BetRivers
+Jalen Suggs|pa|15.5|-107|-122|DraftKings|102|Unibet||
+Jalen Suggs|pra|19.5|-115|-115|DraftKings|-109|Unibet|-114|FanDuel
+Jalen Suggs|pr|15.5|-118|-112|DraftKings|-108|Unibet||
 Jalen Suggs|pts|11.5|-104|-122|DraftKings|100|Fanatics||
-Jalen Suggs|ra|7.5|-145|110|DraftKings
-Jalen Suggs|reb|4.5|110|-146|DraftKings|124|FanDuel|-130|BetMGM
+Jalen Suggs|ra|7.5|-140|106|DraftKings|||115|Fanatics
+Jalen Suggs|reb|4.5|121|-160|DraftKings|||-140|BetMGM
 Jamal Murray|3pm|2.5|100|-132|DraftKings|||-125|FanDuel
 Jamal Murray|ast|6.5|-104|-126|DraftKings|108|FanDuel||
 Jamal Murray|pa|30.5|-106|-124|DraftKings
@@ -152,31 +156,31 @@ Jamal Murray|pr|28.5|-107|-123|DraftKings
 Jamal Murray|pts|23.5|-115|-111|DraftKings
 Jamal Murray|ra|10.5|-132|101|DraftKings|-120|FanDuel||
 Jamal Murray|reb|4.5|104|-137|DraftKings|||-136|FanDuel
-Jayson Tatum|3pm|2.5|-135|102|DraftKings|||128|FanDuel
-Jayson Tatum|ast|6.5|-125|-105|DraftKings|-108|FanDuel||
-Jayson Tatum|pa|33.5|-121|-109|DraftKings
-Jayson Tatum|pra|41.5|-119|-110|DraftKings
-Jayson Tatum|pr|34.5|-123|-107|DraftKings|-108|FanDuel||
-Jayson Tatum|pts|26.5|-123|-104|DraftKings|-105|Fanatics||
-Jayson Tatum|ra|14.5|-108|-121|DraftKings|-102|FanDuel||
-Jayson Tatum|reb|7.5|-118|-111|DraftKings|100|Fanatics||
-Jayson Tatum|stl|0.5|-230|171|DraftKings|-205|FanDuel||
+Jayson Tatum|3pm|2.5|-139|106|DraftKings|||128|FanDuel
+Jayson Tatum|ast|6.5|-117|-112|DraftKings|-108|FanDuel||
+Jayson Tatum|pa|33.5|-117|-113|DraftKings|-113|Unibet||
+Jayson Tatum|pra|41.5|-110|-120|DraftKings|-109|BetRivers||
+Jayson Tatum|pr|34.5|-112|-117|DraftKings|-108|FanDuel||
+Jayson Tatum|pts|26.5|-117|-109|DraftKings|-105|Fanatics||
+Jayson Tatum|ra|14.5|-106|-124|DraftKings|105|Fanatics||
+Jayson Tatum|reb|7.5|-118|-112|DraftKings|100|Fanatics|-110|BetMGM
+Jayson Tatum|stl|0.5|-231|171|DraftKings|-205|FanDuel||
 John Collins|3pm|1.5|174|-233|DraftKings|182|FanDuel||
 John Collins|ast|0.5|-240|150|Fanatics
-John Collins|pa|11.5|-114|-114|FanDuel
-John Collins|pra|17.5|-108|-122|FanDuel
-John Collins|pr|16.5|-111|-119|DraftKings|-102|FanDuel||
+John Collins|pa|11.5|-113|-116|DraftKings|||-114|FanDuel
+John Collins|pra|17.5|-107|-123|DraftKings|100|Fanatics|-118|FanDuel
+John Collins|pr|16.5|-103|-128|DraftKings|100|Fanatics||
 John Collins|pts|10.5|-104|-123|DraftKings|||-105|BetMGM
-John Collins|ra|6.5|-130|-102|FanDuel
-John Collins|reb|5.5|-142|108|DraftKings|-105|BetMGM||
-Kevin Huerter|3pm|1.5|-174|131|DraftKings|-145|Fanatics||
-Kevin Huerter|ast|2.5|-115|-114|DraftKings|||110|BetRivers
-Kevin Huerter|pa|14.5|-105|-125|DraftKings|||-122|FanDuel
-Kevin Huerter|pra|17.5|-125|-105|DraftKings|||-102|FanDuel
-Kevin Huerter|pr|15.5|-105|-125|DraftKings|-102|FanDuel||
-Kevin Huerter|pts|11.5|-113|-112|DraftKings|-105|BetMGM||
-Kevin Huerter|ra|6.5|110|-145|DraftKings|||-117|Unibet
-Kevin Huerter|reb|3.5|-112|-118|DraftKings|105|Fanatics||
+John Collins|ra|6.5|-127|-103|DraftKings|-115|Fanatics|-102|FanDuel
+John Collins|reb|5.5|-119|-110|DraftKings|-105|BetMGM||
+Kevin Huerter|3pm|1.5|-175|132|DraftKings|-145|Fanatics|135|BetRivers
+Kevin Huerter|ast|2.5|-119|-110|DraftKings|||106|BetRivers
+Kevin Huerter|pa|14.5|-107|-123|DraftKings|-105|Unibet|-115|Fanatics
+Kevin Huerter|pra|17.5|-120|-110|DraftKings|||-105|Fanatics
+Kevin Huerter|pr|15.5|-103|-128|DraftKings|100|Fanatics||
+Kevin Huerter|pts|11.5|-113|-112|DraftKings|-104|BetRivers||
+Kevin Huerter|ra|6.5|115|-151|DraftKings|||-121|Unibet
+Kevin Huerter|reb|3.5|104|-137|DraftKings|105|Fanatics|-117|BetRivers
 Kyrie Irving|3pm|3.5|123|-162|DraftKings|||-144|FanDuel
 Kyrie Irving|ast|4.5|-126|-104|DraftKings|-112|FanDuel||
 Kyrie Irving|pa|28.5|-110|-119|DraftKings
@@ -185,14 +189,14 @@ Kyrie Irving|pr|27.5|-117|-113|DraftKings
 Kyrie Irving|pts|23.5|-111|-115|DraftKings
 Kyrie Irving|ra|8.5|-128|-103|DraftKings|-110|FanDuel||
 Kyrie Irving|reb|3.5|-160|121|DraftKings|-136|FanDuel||
-Kyshawn George|3pm|2.5|120|-158|DraftKings|125|Fanatics||
-Kyshawn George|ast|3.5|-156|118|DraftKings|||120|Fanatics
-Kyshawn George|pa|19.5|-120|-110|DraftKings|-102|FanDuel||
-Kyshawn George|pra|24.5|-108|-122|DraftKings
-Kyshawn George|pr|19.5|-125|-106|DraftKings|-104|FanDuel||
-Kyshawn George|pts|15.5|-113|-113|DraftKings
-Kyshawn George|ra|8.5|-101|-130|DraftKings|110|FanDuel||
-Kyshawn George|reb|4.5|108|-143|DraftKings|130|FanDuel||
+Kyshawn George|3pm|2.5|120|-158|DraftKings|128|BetRivers||
+Kyshawn George|ast|3.5|-156|118|DraftKings
+Kyshawn George|pa|19.5|-113|-116|DraftKings|100|Fanatics||
+Kyshawn George|pra|23.5|-121|-109|DraftKings|-105|Fanatics||
+Kyshawn George|pr|19.5|-117|-113|DraftKings|-104|FanDuel||
+Kyshawn George|pts|15.5|-107|-119|DraftKings
+Kyshawn George|ra|8.5|104|-136|DraftKings|114|FanDuel||
+Kyshawn George|reb|4.5|121|-160|DraftKings|130|FanDuel|-155|BetRivers
 Naji Marshall|3pm|0.5|-138|105|DraftKings|||118|FanDuel
 Naji Marshall|ast|2.5|-154|116|FanDuel
 Naji Marshall|pa|13.5|100|-132|FanDuel
@@ -201,10 +205,13 @@ Naji Marshall|pr|13.5|-106|-125|FanDuel
 Naji Marshall|pts|10.5|-108|-118|DraftKings|102|FanDuel||
 Naji Marshall|ra|5.5|-152|114|FanDuel
 Naji Marshall|reb|3.5|121|-160|DraftKings|140|FanDuel||
-Neemias Queta|ast|1.5|-165|120|Fanatics
-Neemias Queta|pr|19.5|-110|-120|DraftKings|||-106|FanDuel
-Neemias Queta|pts|10.5|-124|-103|DraftKings|||100|FanDuel
-Neemias Queta|reb|8.5|101|-133|DraftKings|||-114|FanDuel
+Neemias Queta|ast|1.5|-175|125|Fanatics|-136|BetRivers||
+Neemias Queta|pa|12.5|-125|-105|Fanatics
+Neemias Queta|pra|21.5|-115|-115|Fanatics
+Neemias Queta|pr|19.5|-113|-116|DraftKings|||-106|FanDuel
+Neemias Queta|pts|10.5|-124|-103|DraftKings|||100|BetMGM
+Neemias Queta|ra|10.5|-110|-120|Fanatics|-103|Unibet||
+Neemias Queta|reb|8.5|-104|-127|DraftKings|||-114|FanDuel
 Nikola Jokic|3pm|1.5|134|-177|DraftKings|||-152|FanDuel
 Nikola Jokic|ast|9.5|-128|-103|DraftKings|-118|FanDuel||
 Nikola Jokic|pa|35.5|-113|-116|DraftKings
@@ -218,51 +225,51 @@ P.J. Washington|3pm|1.5|-165|125|DraftKings
 P.J. Washington|pr|18.5|-107|-123|DraftKings
 P.J. Washington|pts|12.5|-106|-120|DraftKings|100|FanDuel||
 P.J. Washington|reb|5.5|-112|-118|DraftKings|108|FanDuel||
-Paul George|3pm|2.5|-125|-105|DraftKings|-120|Fanatics|104|FanDuel
-Paul George|ast|3.5|-115|-114|DraftKings|-114|FanDuel||
-Paul George|pa|22.5|-106|-124|DraftKings|||-106|FanDuel
-Paul George|pra|27.5|-116|-113|DraftKings
-Paul George|pr|23.5|-118|-111|DraftKings
-Paul George|pts|18.5|-114|-112|DraftKings|||-102|FanDuel
-Paul George|ra|8.5|-130|-102|DraftKings
+Paul George|3pm|2.5|-131|-101|DraftKings|-130|Fanatics|105|BetMGM
+Paul George|ast|3.5|-125|-105|DraftKings|-105|BetMGM||
+Paul George|pa|22.5|-124|-106|DraftKings|-105|Fanatics||
+Paul George|pra|28.5|-107|-123|DraftKings|-105|BetRivers|-122|FanDuel
+Paul George|pr|24.5|-111|-118|DraftKings|-109|Unibet||
+Paul George|pts|19.5|-105|-122|DraftKings
+Paul George|ra|8.5|-129|-102|DraftKings|-125|Fanatics||
 Paul George|reb|4.5|-156|118|DraftKings
-Paul George|stl|1.5|-141|106|DraftKings|-128|FanDuel||
-Paul Reed|pr|17.5|-109|-120|DraftKings
-Paul Reed|pts|9.5|-122|-105|DraftKings|-104|BetRivers||
-Paul Reed|reb|7.5|108|-143|DraftKings
-Payton Pritchard|3pm|1.5|-181|137|DraftKings|-165|Fanatics||
-Payton Pritchard|ast|3.5|-162|123|DraftKings|||130|FanDuel
-Payton Pritchard|pa|16.5|-122|-108|DraftKings
-Payton Pritchard|pra|19.5|-120|-110|DraftKings
-Payton Pritchard|pr|15.5|-113|-116|DraftKings
-Payton Pritchard|pts|12.5|-113|-113|DraftKings|||-102|FanDuel
-Payton Pritchard|ra|6.5|-136|104|DraftKings
-Payton Pritchard|reb|2.5|-135|102|DraftKings|-130|Fanatics|110|FanDuel
-Trae Young|3pm|1.5|-169|128|DraftKings|||144|FanDuel
-Trae Young|ast|8.5|-101|-131|DraftKings|116|FanDuel||
-Trae Young|pa|23.5|-123|-107|DraftKings|-108|FanDuel||
-Trae Young|pra|26.5|-111|-118|DraftKings
-Trae Young|pr|17.5|-119|-110|DraftKings|-110|FanDuel||
-Trae Young|pts|15.5|-106|-120|DraftKings|102|FanDuel||
-Trae Young|ra|10.5|-124|-106|DraftKings|-118|FanDuel||
-Trae Young|reb|2.5|111|-146|DraftKings|115|Fanatics|-140|FanDuel
+Paul George|stl|1.5|-144|109|DraftKings|-128|FanDuel||
+Paul Reed|pr|16.5|-119|-110|DraftKings|-115|Fanatics|-108|FanDuel
+Paul Reed|pts|9.5|-118|-108|DraftKings|-115|Fanatics|-105|BetMGM
+Paul Reed|reb|6.5|-129|-102|DraftKings|-110|BetMGM|110|BetRivers
+Payton Pritchard|3pm|1.5|-178|134|DraftKings|-175|Fanatics|140|BetRivers
+Payton Pritchard|ast|3.5|-165|125|DraftKings|-150|BetMGM|130|FanDuel
+Payton Pritchard|pa|17.5|-107|-123|DraftKings|100|Fanatics|-122|FanDuel
+Payton Pritchard|pra|20.5|-106|-124|DraftKings|||-120|FanDuel
+Payton Pritchard|pr|15.5|-126|-105|DraftKings|-115|Fanatics||
+Payton Pritchard|pts|12.5|-127|-101|DraftKings|-110|BetMGM||
+Payton Pritchard|ra|6.5|-140|106|DraftKings
+Payton Pritchard|reb|2.5|-140|106|DraftKings|||125|BetMGM
+Trae Young|3pm|1.5|-176|133|DraftKings|-175|BetRivers|142|FanDuel
+Trae Young|ast|8.5|-104|-126|DraftKings|118|FanDuel||
+Trae Young|pa|23.5|-117|-112|DraftKings|-108|FanDuel|-110|Unibet
+Trae Young|pra|26.5|-108|-122|DraftKings
+Trae Young|pr|17.5|-118|-112|DraftKings|-112|FanDuel||
+Trae Young|pts|15.5|-101|-127|DraftKings|102|FanDuel|-111|BetMGM
+Trae Young|ra|10.5|-129|-102|DraftKings|-115|Fanatics||
+Trae Young|reb|2.5|111|-146|DraftKings|125|BetMGM|-140|FanDuel
 Trae Young|stl|1.5|165|-222|DraftKings|||-220|FanDuel
-Tristan da Silva|3pm|2.5|121|-159|DraftKings|||-152|FanDuel
-Tristan da Silva|ast|1.5|115|-152|DraftKings|||-132|FanDuel
-Tristan da Silva|pa|11.5|-126|-104|DraftKings|||100|FanDuel
-Tristan da Silva|pra|15.5|-120|-110|DraftKings|||-102|FanDuel
-Tristan da Silva|pr|14.5|-105|-125|DraftKings|||-120|Unibet
-Tristan da Silva|pts|10.5|-109|-117|DraftKings|-105|Fanatics||
-Tristan da Silva|ra|5.5|112|-148|DraftKings|||-130|FanDuel
-Tristan da Silva|reb|3.5|-124|-106|DraftKings|-111|BetMGM|102|FanDuel
+Tristan da Silva|3pm|2.5|126|-166|DraftKings|||-148|FanDuel
+Tristan da Silva|ast|1.5|111|-146|DraftKings|||-132|FanDuel
+Tristan da Silva|pa|11.5|-128|-103|DraftKings
+Tristan da Silva|pra|15.5|-121|-109|DraftKings|-115|Fanatics||
+Tristan da Silva|pr|14.5|-106|-124|DraftKings|-105|Fanatics|-118|FanDuel
+Tristan da Silva|pts|10.5|-110|-116|DraftKings|||-115|Fanatics
+Tristan da Silva|ra|5.5|114|-150|DraftKings|120|Fanatics|-130|FanDuel
+Tristan da Silva|reb|3.5|-116|-113|DraftKings|-115|BetMGM|106|FanDuel
 Wendell Carter Jr.|3pm|0.5|-170|128|DraftKings|-140|BetMGM||
-Wendell Carter Jr.|ast|1.5|105|-139|DraftKings|||-130|Fanatics
-Wendell Carter Jr.|pa|12.5|-105|-125|DraftKings|102|Unibet||
-Wendell Carter Jr.|pra|20.5|-115|-115|DraftKings|-112|BetRivers|-112|FanDuel
-Wendell Carter Jr.|pr|18.5|-124|-106|DraftKings|||-102|FanDuel
-Wendell Carter Jr.|pts|10.5|-117|-109|DraftKings|-110|BetRivers||
-Wendell Carter Jr.|ra|9.5|-115|-115|DraftKings|||-108|FanDuel
-Wendell Carter Jr.|reb|7.5|-144|109|DraftKings|-140|BetMGM|110|Fanatics
+Wendell Carter Jr.|ast|1.5|105|-139|DraftKings|106|BetRivers|-125|Fanatics
+Wendell Carter Jr.|pa|12.5|-111|-119|DraftKings|107|Unibet||
+Wendell Carter Jr.|pra|20.5|-119|-110|DraftKings|-109|Unibet||
+Wendell Carter Jr.|pr|19.5|-103|-128|DraftKings
+Wendell Carter Jr.|pts|10.5|-121|-105|DraftKings|-106|BetRivers||
+Wendell Carter Jr.|ra|9.5|-113|-116|DraftKings|||-106|FanDuel
+Wendell Carter Jr.|reb|7.5|-144|110|DraftKings|||120|BetMGM
 Zaccharie Risacher|3pm|0.5|-231|172|DraftKings
 Zaccharie Risacher|pr|12.5|-119|-110|DraftKings|||-102|FanDuel
 Zaccharie Risacher|pts|8.5|-112|-114|DraftKings|||-110|FanDuel
