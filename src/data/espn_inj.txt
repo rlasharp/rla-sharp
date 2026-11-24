@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 13:56Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 15:41Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Questionable|Ankle|Nov 29
@@ -196,10 +196,10 @@ Colton McKivitz|OT|Out|Ankle|Feb 15
 Deommodore Lenoir|CB|Questionable|Foot|Nov 29
 Nate Hobbs|CB|IR|Groin|Nov 29
 #SEA
+Sam Darnold|QB|Questionable|Quadriceps|Nov 29
 Leonard Williams|DT|Questionable|Shoulder|Nov 29
 Quenton Nelson|G|Doubtful|Knee|Nov 29
 Charles Cross|OT|Questionable|Ankle|Nov 29
-Sam Darnold|QB|Questionable|Quadriceps|Nov 29
 George Holani|RB|IR|Knee - MCL|Dec 25
 Jarran Reed|DT|Questionable|Toe|Nov 29
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
