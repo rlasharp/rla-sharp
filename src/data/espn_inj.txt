@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 01:04Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 01:56Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -31,8 +31,9 @@ Brady Christensen|G|IR|Hamstring|Nov 30
 Isaiah Simmons|S|IR|Knee|Dec 20
 Jonathon Brooks|RB|IR|Groin|Nov 30
 #CHI
-Kyler Gordon|CB|Out|Shoulder|Nov 26
 Roschon Johnson|RB|Questionable|Ankle|Nov 26
+Theo Benedet|OT|Questionable|Quadriceps|Nov 26
+Kyler Gordon|CB|Out|Shoulder|Nov 26
 #CIN
 Kyle Dugger|S|Out|Quadriceps|Nov 29
 Jalen Davis|CB|IR|Hamstring|Nov 29
@@ -58,9 +59,9 @@ Jalen Thompson|S|IR|Hamstring|Nov 26
 Brandon Jones|S|Out|Hamstring|Nov 27
 Caleb Lohner|TE|IR|Foot|Nov 27
 #DET
+DJ Wonnum|LB|Questionable|Back|Nov 26
 Chuck Clark|S|Questionable|Hamstring|Nov 26
 Skyler Gill-Howard|DT|Questionable|Knee|Nov 26
-DJ Wonnum|LB|Questionable|Back|Nov 26
 Sam LaPorta|TE|Questionable|Ankle|Nov 26
 Ennis Rakestraw Jr.|CB|Out|Shoulder|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
@@ -126,6 +127,7 @@ Tarheeb Still|CB|Out|Ankle|Nov 29
 Brenen Thompson|WR|Out|Hamstring|Nov 29
 Rodney Shelley|CB|IR|Ankle|Dec 17
 #LAR
+Justin Dedich|G|IR|Hand|Nov 25
 Kobie Turner|DE|IR|Groin|Nov 25
 Myles Garrett|DE|Questionable|Knee|Nov 25
 Coleman Shelton|C|Out|Hamstring|Dec 3
@@ -134,7 +136,6 @@ Kam Curl|S|Questionable|Toe|Nov 25
 Davante Adams|WR|IR|Hamstring|Dec 13
 Puka Nacua|WR|IR|Knee - MCL|Feb 15
 Steve Avila|G|Out|Hamstring|Dec 3
-Justin Dedich|G|IR|Hand|Nov 25
 Dylan McMahon|C|IR|Knee|Dec 25
 #MIA
 Ronnie Harrison Jr.|LB|IR|Hamstring|Nov 29
@@ -152,6 +153,7 @@ Jay Ward|S|Out|Knee|Nov 29
 Isaiah Rodgers|CB|Out|Quadriceps|Nov 29
 Bo Richter|LB|IR|Foot|Dec 20
 #NE
+Alijah Vera-Tucker|G|IR|Hamstring|Nov 29
 A.J. Brown|WR|Doubtful|Hamstring|Nov 29
 Drake Maye|QB|Out|Lower Leg|Dec 27
 Romeo Doubs|WR|IR|Shoulder|Nov 29
