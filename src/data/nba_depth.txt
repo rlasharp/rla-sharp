@@ -1,15 +1,15 @@
 # ESPN depth charts (espn.com/nba/team/depth/_/name/<abbr>), 2026-27. Row = position, names = starter, 2nd, 3rd, 4th, 5th.
 #ATL
-PG|CJ McCollum|Kingston Flemings|Nickeil Alexander-Walker|Dyson Daniels|RayJ Dennis
+PG|Kingston Flemings|CJ McCollum|Nickeil Alexander-Walker|Dyson Daniels|RayJ Dennis
 SG|Nickeil Alexander-Walker|Aaron Wiggins|Luguentz Dort|CJ McCollum|Dyson Daniels
 SF|Dyson Daniels|Luguentz Dort|Aaron Wiggins|Nickeil Alexander-Walker|Corey Kispert
-PF|Jalen Johnson|Aaron Wiggins|Luguentz Dort|Asa Newell|Dorian Finney-Smith
-C|Onyeka Okongwu|Jock Landale|Zuby Ejiofor|Asa Newell|Dorian Finney-Smith
+PF|Jalen Johnson|Luguentz Dort|Asa Newell|Aaron Wiggins|Dorian Finney-Smith
+C|Onyeka Okongwu|Jock Landale|Asa Newell|Zuby Ejiofor|Dorian Finney-Smith
 #BOS
 PG|Derrick White|Payton Pritchard|Mike Conley|Devin Carter
-SG|Hugo Gonzalez|Baylor Scheierman|Payton Pritchard|Derrick White|Ron Harper Jr.
-SF|Jayson Tatum|Sam Hauser|Paul George|Baylor Scheierman|Hugo Gonzalez
-PF|Paul George|Jordan Walsh|Jayson Tatum|Sam Hauser|Baylor Scheierman
+SG|Jordan Walsh|Baylor Scheierman|Hugo Gonzalez|Derrick White|Payton Pritchard
+SF|Jayson Tatum|Jordan Walsh|Baylor Scheierman|Sam Hauser|Paul George
+PF|Paul George|Sam Hauser|Jordan Walsh|Jayson Tatum|Baylor Scheierman
 C|Neemias Queta|Mitchell Robinson|Luka Garza|Chris Cenac Jr.|Amari Williams
 #BKN
 PG|Egor Demin|Mikel Brown Jr.|Nolan Traore|Keon Ellis|Ben Saraf
@@ -19,9 +19,9 @@ PF|Julius Randle|Noah Clowney|Josh Minott|Danny Wolf|Chaney Johnson
 C|Day'Ron Sharpe|Moritz Wagner|Danny Wolf|Josh Minott|Chaney Johnson
 #CHA
 PG|Coby White|Dennis Schroder|Christian Anderson|Kylan Boswell
-SG|Kon Knueppel|Grayson Allen|Coby White|Dennis Schroder|Sion James
-SF|Brandon Miller|Sion James|Grayson Allen|Royce O'Neale|Liam McNeeley
-PF|Naz Reid|Royce O'Neale|Grant Williams|Tidjane Salaun|Sion James
+SG|Sion James|Grayson Allen|Coby White|Dennis Schroder|Liam McNeeley
+SF|Brandon Miller|Royce O'Neale|Grayson Allen|Sion James|Tidjane Salaun
+PF|Naz Reid|Grant Williams|Tidjane Salaun|Royce O'Neale|Sion James
 C|Moussa Diabate|Ryan Kalkbrenner|Naz Reid|Hannes Steinbach|PJ Hall
 #CHI
 PG|Josh Giddey|Tre Jones|Jaylin Sellers
@@ -30,110 +30,110 @@ SF|Matas Buzelis|Isaac Okoro|Norman Powell|Caleb Wilson|Leonard Miller
 PF|Caleb Wilson|Leonard Miller|Noa Essengue|Matas Buzelis|Jalen Smith
 C|Nic Claxton|Jalen Smith|Zach Collins|Tobe Awaka|Leonard Miller
 #CLE
-PG|James Harden|Craig Porter Jr.|Tyrese Proctor
-SG|Donovan Mitchell|Sam Merrill|Jaylon Tyson|Tyrese Proctor|Craig Porter Jr.
-SF|Peyton Watson|Jaylon Tyson|Mario Hezonja|Sam Merrill|Nae'Qwan Tomlin
-PF|Evan Mobley|Peyton Watson|Jaylon Tyson|Mario Hezonja|Nae'Qwan Tomlin
-C|Jarrett Allen|Evan Mobley|Thomas Bryant|Khalifa Diop|Ernest Udeh Jr.
+PG|James Harden|Tyrese Proctor|Craig Porter Jr.
+SG|Donovan Mitchell|Sam Merrill|Jaylon Tyson|Meleek Thomas|Tyrese Proctor
+SF|Peyton Watson|Jaylon Tyson|Meleek Thomas|Mario Hezonja|Nae'Qwan Tomlin
+PF|Evan Mobley|Mario Hezonja|Jaylon Tyson|Peyton Watson|Nae'Qwan Tomlin
+C|Jarrett Allen|Thomas Bryant|Evan Mobley|Khalifa Diop|Ernest Udeh Jr.
 #DAL
-PG|Kyrie Irving|Marcus Sasser|Sergio de Larrea|Walter Clayton Jr.|Cooper Flagg
-SG|Max Christie|Zaccharie Risacher|Caleb Martin|Marcus Sasser|Naji Marshall
-SF|Cooper Flagg|Naji Marshall|Zaccharie Risacher|Santi Aldama|Caleb Martin
-PF|P.J. Washington|Morez Johnson Jr.|Santi Aldama|Caleb Martin|Cooper Flagg
-C|Daniel Gafford|Dereck Lively II|Moussa Cisse|Santi Aldama|Morez Johnson Jr.
+PG|Kyrie Irving|Marcus Sasser|Walter Clayton Jr.|Sergio de Larrea|Cooper Flagg
+SG|Caleb Martin|Max Christie|Marcus Sasser|Kyrie Irving|Walter Clayton Jr.
+SF|Cooper Flagg|Zaccharie Risacher|Naji Marshall|Caleb Martin|Santi Aldama
+PF|P.J. Washington|Naji Marshall|Santi Aldama|Morez Johnson Jr.|Caleb Martin
+C|Daniel Gafford|Morez Johnson Jr.|Santi Aldama|Moussa Cisse|P.J. Washington
 #DEN
 PG|Jamal Murray|Tyus Jones|RJ Nembhard Jr.
-SG|Christian Braun|DeMar DeRozan|Julian Strawther|Spencer Jones|Tyus Jones
-SF|Cameron Johnson|Bryce Hopkins|DeMar DeRozan|Julian Strawther|Alpha Diallo
-PF|Aaron Gordon|DeMar DeRozan|Spencer Jones|Alpha Diallo|Trevon Brazile
-C|Nikola Jokic|Marvin Bagley III|DaRon Holmes II|Trevon Brazile|Aaron Gordon
+SG|Christian Braun|DeMar DeRozan|Cameron Johnson|Spencer Jones|Julian Strawther
+SF|Cameron Johnson|Spencer Jones|DeMar DeRozan|Christian Braun|Alpha Diallo
+PF|Aaron Gordon|Trevon Brazile|DeMar DeRozan|Cameron Johnson|Spencer Jones
+C|Nikola Jokic|Marvin Bagley III|Trevon Brazile|Aaron Gordon|DaRon Holmes II
 #DET
 PG|Cade Cunningham|Daniss Jenkins|Ebuka Okorie|Elijah Harkless
-SG|Duncan Robinson|Kevin Huerter|Isaiah Joe|Daniss Jenkins|Ronald Holland II
-SF|Ausar Thompson|Isaiah Joe|Kevin Huerter|Duncan Robinson|Ronald Holland II
-PF|John Collins|Ronald Holland II|Javonte Green|Taurean Prince|Isaac Jones
-C|Jalen Duren|Paul Reed|John Collins|Tolu Smith|Ugonna Onyenso
+SG|Daniss Jenkins|Kevin Huerter|Duncan Robinson|Isaiah Joe|Ronald Holland II
+SF|Duncan Robinson|Isaiah Joe|Ausar Thompson|Kevin Huerter|Javonte Green
+PF|Ausar Thompson|Javonte Green|John Collins|Ronald Holland II|Taurean Prince
+C|John Collins|Paul Reed|Tolu Smith|Ugonna Onyenso|Isaac Jones
 #GS
-PG|Stephen Curry|De'Anthony Melton|Brandin Podziemski|Will Richard|Brandon Williams
-SG|Brandin Podziemski|Gary Payton II|De'Anthony Melton|Will Richard|Gui Santos
-SF|Yaxel Lendeborg|Will Richard|Gary Payton II|Gui Santos|Georges Niang
-PF|Gui Santos|Georges Niang|Draymond Green|Yaxel Lendeborg|Graham Ike
-C|Draymond Green|Al Horford|Graham Ike|Charles Bassey|Kristaps Porzingis
+PG|Brandin Podziemski|Brandon Williams|LJ Cryer|De'Anthony Melton|Will Richard
+SG|De'Anthony Melton|Gary Payton II|Brandin Podziemski|Will Richard|Gui Santos
+SF|Will Richard|Gui Santos|Yaxel Lendeborg|Gary Payton II|Georges Niang
+PF|Yaxel Lendeborg|Georges Niang|Gui Santos|Draymond Green|Al Horford
+C|Draymond Green|Al Horford|Charles Bassey|Graham Ike|Kristaps Porzingis
 #HOU
 PG|Fred VanVleet|Marcus Smart|Amen Thompson|Bruce Thornton|Reed Sheppard
 SG|Amen Thompson|Reed Sheppard|Marcus Smart|Bogdan Bogdanovic|Tari Eason
 SF|Kevin Durant|Bogdan Bogdanovic|Tari Eason|Jae'Sean Tate|Jabari Smith Jr.
 PF|Jabari Smith Jr.|Tari Eason|Jae'Sean Tate|Alperen Sengun|Isaiah Crawford
-C|Alperen Sengun|Steven Adams|Jabari Smith Jr.|Clint Capela|Oscar Tshiebwe
+C|Alperen Sengun|Steven Adams|Clint Capela|Jabari Smith Jr.|Oscar Tshiebwe
 #IND
-PG|Tyrese Haliburton|T.J. McConnell|Andrew Nembhard|Quenton Jackson|Braden Smith
-SG|Andrew Nembhard|Kelly Oubre Jr.|Ben Sheppard|Johnny Furphy|Quenton Jackson
-SF|Aaron Nesmith|Jarace Walker|Kelly Oubre Jr.|Johnny Furphy|Kobe Brown
-PF|Pascal Siakam|Obi Toppin|Kelly Oubre Jr.|Kobe Brown|Larry Nance Jr.
+PG|Andrew Nembhard|T.J. McConnell|Quenton Jackson|Braden Smith|Tyrese Haliburton
+SG|Kelly Oubre Jr.|Quenton Jackson|Andrew Nembhard|Aaron Nesmith|Ben Sheppard
+SF|Aaron Nesmith|Jarace Walker|Kelly Oubre Jr.|Quenton Jackson|Kobe Brown
+PF|Pascal Siakam|Obi Toppin|Kelly Oubre Jr.|Larry Nance Jr.|Jarace Walker
 C|Ivica Zubac|Jay Huff|Larry Nance Jr.|Kobe Brown|Obi Toppin
 #LAC
 PG|Darius Garland|Keaton Wagler|Kris Dunn|Bradley Beal|Jalen Pickett
-SG|Kris Dunn|Bradley Beal|Keaton Wagler|Kobe Sanders|Gradey Dick
-SF|Derrick Jones Jr.|Kobe Sanders|Rui Hachimura|Gradey Dick|Nick Martinelli
-PF|Rui Hachimura|Gradey Dick|Derrick Jones Jr.|Max Strus|Baba Miller
+SG|Kris Dunn|Bradley Beal|Keaton Wagler|Kobe Sanders|Max Strus
+SF|Derrick Jones Jr.|Max Strus|Gradey Dick|Kobe Sanders|Rui Hachimura
+PF|Rui Hachimura|Kobe Sanders|Max Strus|Gradey Dick|Derrick Jones Jr.
 C|Isaiah Jackson|Brook Lopez|Baba Miller|Yanic Konan Niederhauser
 #LAL
 PG|Luka Doncic|Collin Sexton|Austin Reaves|Quentin Grimes|Bronny James
 SG|Austin Reaves|Quentin Grimes|Collin Sexton|Ziaire Williams|Cameron Carr
-SF|Ziaire Williams|Jake LaRavia|Quentin Grimes|Matisse Thybulle|Cameron Carr
-PF|Matisse Thybulle|Sandro Mamukelashvili|Jake LaRavia|Jarred Vanderbilt|Ziaire Williams
-C|Walker Kessler|Kevon Looney|Sandro Mamukelashvili|Lawson Lovering
+SF|Matisse Thybulle|Ziaire Williams|Jake LaRavia|Quentin Grimes|Cameron Carr
+PF|Jake LaRavia|Sandro Mamukelashvili|Jarred Vanderbilt|Matisse Thybulle|Ziaire Williams
+C|Walker Kessler|Sandro Mamukelashvili|Jarred Vanderbilt|Kevon Looney|Carson Cooper
 #MEM
-PG|Ty Jerome|Cam Spencer|Scotty Pippen Jr.|Javon Small|Jahmai Mashack
+PG|Ty Jerome|Scotty Pippen Jr.|Cam Spencer|Javon Small|Jahmai Mashack
 SG|Cedric Coward|Cam Spencer|Ty Jerome|Jahmai Mashack|Javon Small
-SF|Jaylen Wells|Jerami Grant|GG Jackson|Karim Lopez|Cam Spencer
-PF|Cameron Boozer|GG Jackson|Isaiah Stewart|Jerami Grant|Kris Murray
+SF|Jaylen Wells|Jerami Grant|Cam Spencer|Cedric Coward|Kris Murray
+PF|Cameron Boozer|Isaiah Stewart|Jerami Grant|Kris Murray|Taylor Hendricks
 C|Zach Edey|Isaiah Stewart|Quinten Post|Taylor Hendricks|Olivier-Maxence Prosper
 #MIA
 PG|Davion Mitchell|Dru Smith|Ryan Conwell|Tre Donaldson
 SG|Klay Thompson|Tim Hardaway Jr.|Ryan Conwell|Pelle Larsson|Myron Gardner
-SF|Andrew Wiggins|Pelle Larsson|Klay Thompson|Tim Hardaway Jr.|Myron Gardner
+SF|Pelle Larsson|Andrew Wiggins|Klay Thompson|Tim Hardaway Jr.|Myron Gardner
 PF|Giannis Antetokounmpo|Bobby Portis|Nikola Jovic|Klay Thompson|Andrew Wiggins
 C|Bam Adebayo|Bobby Portis|Nick Richards|Nikola Jovic|Vladislav Goldin
 #MIL
-PG|Ryan Rollins|Kasparas Jakucionis|Brayden Burries|Caris LeVert|Tyler Herro
-SG|Tyler Herro|AJ Green|Brayden Burries|Gary Trent Jr.|Caris LeVert
-SF|Jaime Jaquez Jr.|Ousmane Dieng|Nate Ament|AJ Green|Kyle Kuzma
-PF|Kyle Kuzma|Kel'el Ware|Nate Ament|Ousmane Dieng|Jaime Jaquez Jr.
+PG|Brayden Burries|Ryan Rollins|Kasparas Jakucionis|Tyler Herro|AJ Green
+SG|Tyler Herro|AJ Green|Ryan Rollins|Brayden Burries|Kasparas Jakucionis
+SF|Jaime Jaquez Jr.|Kasparas Jakucionis|AJ Green|Nate Ament|Kyle Kuzma
+PF|Kyle Kuzma|Nate Ament|Kel'el Ware|Ousmane Dieng|Jaime Jaquez Jr.
 C|Myles Turner|Kel'el Ware|Jericho Sims|Ousmane Dieng|Bogoljub Markovic
 #MIN
 PG|LaMelo Ball|Bones Hyland|Ayo Dosunmu|Isaiah Evans|Zyon Pullin
 SG|Ayo Dosunmu|Terrence Shannon Jr.|Isaiah Evans|Bones Hyland|Jaylen Clark
-SF|Jaden McDaniels|Terrence Shannon Jr.|Ayo Dosunmu|Jaylen Clark|Cody Williams
-PF|Jonathan Kuminga|Trey Lyles|Jaden McDaniels|Terrence Shannon Jr.|Cody Williams
-C|Rudy Gobert|Joan Beringer|Rocco Zikarsky|Trey Lyles|Enrique Freeman
+SF|Jonathan Kuminga|Jaylen Clark|Jaden McDaniels|Terrence Shannon Jr.|Ayo Dosunmu
+PF|Jaden McDaniels|Trey Lyles|Jonathan Kuminga|Terrence Shannon Jr.|Cody Williams
+C|Rudy Gobert|Joan Beringer|Trey Lyles|Johni Broome|Rocco Zikarsky
 #NO
-PG|Dejounte Murray|Jordan Poole|Jeremiah Fears|AJ Johnson
-SG|Jeremiah Fears|Bennedict Mathurin|Trey Murphy III|Jaron Pierre Jr.|Jordan Poole
-SF|Trey Murphy III|Saddiq Bey|Herbert Jones|Bennedict Mathurin|Jaron Pierre Jr.
-PF|Zion Williamson|Derik Queen|Saddiq Bey|Herbert Jones|Karlo Matkovic
-C|Yves Missi|Karlo Matkovic|DeAndre Jordan|Derik Queen|Zion Williamson
+PG|Jeremiah Fears|Dejounte Murray|Jordan Poole|AJ Johnson
+SG|Dejounte Murray|Bennedict Mathurin|Trey Murphy III|Herbert Jones|Jordan Poole
+SF|Trey Murphy III|Saddiq Bey|Herbert Jones|Bennedict Mathurin|Bryce McGowens
+PF|Zion Williamson|Derik Queen|Herbert Jones|Saddiq Bey|Karlo Matkovic
+C|Yves Missi|Karlo Matkovic|DeAndre Jordan|Derik Queen|Trendon Watford
 #NY
-PG|Jalen Brunson|Jose Alvarado|Miles McBride|Tyler Kolek|Jordan Clarkson
+PG|Jalen Brunson|Jose Alvarado|Tyler Kolek|Jordan Clarkson|Miles McBride
 SG|Josh Hart|Miles McBride|Landry Shamet|Jordan Clarkson|Pacome Dadiet
-SF|Mikal Bridges|Landry Shamet|Josh Hart|Jordan Clarkson|Pacome Dadiet
-PF|OG Anunoby|Karl-Anthony Towns|Josh Hart|Mohamed Diawara|Pacome Dadiet
+SF|Mikal Bridges|Jordan Clarkson|Landry Shamet|Josh Hart|Pacome Dadiet
+PF|OG Anunoby|Landry Shamet|Karl-Anthony Towns|Josh Hart|Mohamed Diawara
 C|Karl-Anthony Towns|Andre Drummond|James Wiseman
 #OKC
-PG|Shai Gilgeous-Alexander|Ajay Mitchell|Bennett Stirtz|Jared McCain|Nikola Topic
-SG|Jared McCain|Ajay Mitchell|Bennett Stirtz|Alex Caruso|Nikola Topic
-SF|Ajay Mitchell|Alex Caruso|Kenrich Williams|Josh Dix|Brooks Barnhizer
-PF|Kenrich Williams|Alex Caruso|Jaylin Williams|Brooks Barnhizer|Micah Peavy
-C|Isaiah Hartenstein|Jaylin Williams|Aday Mara|Thomas Sorber
+PG|Shai Gilgeous-Alexander|Bennett Stirtz|Ajay Mitchell|Jared McCain|Nikola Topic
+SG|Jared McCain|Ajay Mitchell|Bennett Stirtz|Alex Caruso|Nique Clifford
+SF|Ajay Mitchell|Alex Caruso|Kenrich Williams|Nique Clifford|Josh Dix
+PF|Kenrich Williams|Aday Mara|Jaylin Williams|Alex Caruso|Nique Clifford
+C|Isaiah Hartenstein|Aday Mara|Jaylin Williams|Thomas Sorber
 #ORL
-PG|Jase Richardson|Anthony Black|Jevon Carter|Alex Morales|Jalen Suggs
-SG|Anthony Black|Desmond Bane|Jase Richardson|Jamal Cain|Jevon Carter
-SF|Desmond Bane|Jamal Cain|Franz Wagner|Tristan da Silva|Noah Penda
+PG|Jalen Suggs|Jevon Carter|Anthony Black|Jase Richardson|Alex Morales
+SG|Anthony Black|Jase Richardson|Desmond Bane|Alex Morales|Jamal Cain
+SF|Desmond Bane|Jamal Cain|Tristan da Silva|Franz Wagner|Noah Penda
 PF|Franz Wagner|Tristan da Silva|Jamal Cain|Jonathan Isaac|Colin Castleton
 C|Wendell Carter Jr.|Nikola Vucevic|Goga Bitadze|Colin Castleton|Izaiyah Nelson
 #PHI
-PG|Tyrese Maxey|Anfernee Simons|VJ Edgecombe|Labaron Philon Jr.|Kentavious Caldwell-Pope
-SG|VJ Edgecombe|Kentavious Caldwell-Pope|Anfernee Simons|Labaron Philon Jr.|Jaylen Brown
+PG|Tyrese Maxey|Anfernee Simons|VJ Edgecombe|Kentavious Caldwell-Pope|Labaron Philon Jr.
+SG|VJ Edgecombe|Kentavious Caldwell-Pope|Anfernee Simons|Jaylen Brown|Labaron Philon Jr.
 SF|Jaylen Brown|Kentavious Caldwell-Pope|Jabari Walker|Dean Wade|LeBron James
 PF|LeBron James|Dean Wade|Dominick Barlow|Jabari Walker|Adem Bona
 C|Joel Embiid|Adem Bona|Dominick Barlow|Jabari Walker|Tacko Fall
@@ -142,31 +142,31 @@ PG|Devin Booker|Collin Gillespie|Luke Kennard|Jamaree Bouyea|Jordan Goodwin
 SG|Jalen Green|Luke Kennard|Devin Booker|Jordan Goodwin|Collin Gillespie
 SF|Dillon Brooks|Jordan Goodwin|Rasheer Fleming|Ryan Dunn|Luke Kennard
 PF|Miles Bridges|Ryan Dunn|Koa Peat|Rasheer Fleming|Dillon Brooks
-C|Khaman Maluach|Oso Ighodaro|Duop Reath|Drew Timme|Koa Peat
+C|Oso Ighodaro|Khaman Maluach|Duop Reath|Drew Timme|Koa Peat
 #POR
-PG|Ja Morant|Scoot Henderson|Damian Lillard|Jrue Holiday|Deni Avdija
-SG|Damian Lillard|Jrue Holiday|Ja Morant|Scoot Henderson|Vit Krejci
-SF|Toumani Camara|Sidy Cissoko|Vit Krejci|Jrue Holiday|Deni Avdija
+PG|Damian Lillard|Jrue Holiday|Deni Avdija|Scoot Henderson|Vit Krejci
+SG|Sidy Cissoko|Scoot Henderson|Damian Lillard|Jrue Holiday|Toumani Camara
+SF|Toumani Camara|Sidy Cissoko|Jrue Holiday|Deni Avdija|Vit Krejci
 PF|Deni Avdija|Sidy Cissoko|Micah Potter|Robert Williams III|Jayson Kent
-C|Donovan Clingan|Robert Williams III|Micah Potter|Yang Hansen|Branden Carlson
+C|Donovan Clingan|Robert Williams III|Yang Hansen|Branden Carlson|Micah Potter
 #SAC
-PG|Darius Acuff Jr.|Malik Monk|Sean Pedulla|Ben Simmons
+PG|Darius Acuff Jr.|Malik Monk|Emanuel Sharp|Sean Pedulla|Ben Simmons
 SG|Zach LaVine|Emanuel Sharp|Darius Acuff Jr.|Malik Monk|Daeqwon Plowden
-SF|De'Andre Hunter|Daeqwon Plowden|Zach LaVine|Malik Monk|Keegan Murray
+SF|De'Andre Hunter|Leaky Black|Zach LaVine|Malik Monk|Keegan Murray
 PF|Keegan Murray|Precious Achiuwa|De'Andre Hunter|Dylan Cardwell|Jonathan Mogbo
-C|Domantas Sabonis|Maxime Raynaud|Dylan Cardwell|Precious Achiuwa|Jonathan Mogbo
+C|Domantas Sabonis|Dylan Cardwell|Mason Plumlee|Jonathan Mogbo|Precious Achiuwa
 #SA
 PG|De'Aaron Fox|Dylan Harper|Jordan McLaughlin|Ja'Kobi Gillespie|David Jones Garcia
 SG|Stephon Castle|Julian Champagnie|Dylan Harper|Jordan McLaughlin|Keldon Johnson
-SF|Dylan Harper|Keldon Johnson|Devin Vassell|Carter Bryant|Julian Champagnie
+SF|Dylan Harper|Keldon Johnson|Devin Vassell|Julian Champagnie|Harrison Barnes
 PF|Devin Vassell|Tobias Harris|Julian Champagnie|Keldon Johnson|Carter Bryant
 C|Victor Wembanyama|Luke Kornet|Tarris Reed Jr.|Jayden Quaintance
 #TOR
-PG|Immanuel Quickley|Jamal Shead|Ja'Kobe Walter|Jaden Bradley|Scottie Barnes
-SG|RJ Barrett|Ja'Kobe Walter|Jamal Shead|Jaden Bradley|Alijah Martin
-SF|Kawhi Leonard|Allen Graves|Jamison Battle|Scottie Barnes|Kyle Anderson
+PG|Immanuel Quickley|Jamal Shead|Ja'Kobe Walter|Scottie Barnes|Jaden Bradley
+SG|Ja'Kobe Walter|RJ Barrett|Jamal Shead|Alijah Martin|Jaden Bradley
+SF|RJ Barrett|Jamison Battle|Ja'Kobe Walter|Allen Graves|Scottie Barnes
 PF|Scottie Barnes|Collin Murray-Boyles|Kyle Anderson|Allen Graves|RJ Barrett
-C|Jakob Poeltl|Collin Murray-Boyles|Trayce Jackson-Davis|Jamison Battle|Nate Bittle
+C|Collin Murray-Boyles|Jakob Poeltl|Trayce Jackson-Davis|Jamison Battle|Nate Bittle
 #UTAH
 PG|Keyonte George|Isaiah Collier|Darryn Peterson|Trey Alexander|Kobe Bufkin
 SG|Darryn Peterson|Brice Sensabaugh|Svi Mykhailiuk|Ace Bailey|Josh Okogie
