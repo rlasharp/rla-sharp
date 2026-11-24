@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-24T02:23:19+00:00",
+  "at": "2026-11-24T03:17:08+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 74 games kept (0 new), 1608 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 10 games, 85 confirmed / 15 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 3 upcoming games with lines\nNBA refs: 0 summaries checked, 248 games cached\nNBA refs: 9 crews posted today\nlive feed is not from 2026-11-23 - nothing merged\nFirst game of 2026-11-23 has started \u2014 keeping 0 locked plays (use --force to override).\nNBA data: teams 30, results 248 (through 2026-11-22), players 474, slate 10, lines 10, props 1270, inj teams 28, prev-season players 274, play log 45, adv 419, qtr games 248, h2h 2/2/2/4/2/4/4/4/4/3\nnhllines: 32/32 teams\nNHL PP time: 699 players, 0 ESPN requests this run\nNHL data: 7 games today, 1 tomorrow, 32 teams, 687 skaters, 67 goalies, 289 props, 369 finals, 45 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 15-15, best props NBA 62-77 NFL 26-33 NHL 71-61\nSite check OK \u2014 published (2026-11-24T02:22:45Z)\n"
+  "summary": "NBA finals from ESPN: 79 games kept (5 new), 1722 player lines\nnbaespn: 5 game(s) filled from ESPN box scores (hoopR doesn't have them yet): OKC@IND, MIL@TOR, BKN@MIN, MEM@CHA, POR@PHI\nNBA injuries refreshed\nnbalineups: 10 games, 100 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 3 upcoming games with lines\nNBA refs: 0 summaries checked, 248 games cached\nNBA refs: 9 crews posted today\nlive feed is not from 2026-11-23 - nothing merged\nFirst game of 2026-11-23 has started \u2014 keeping 0 locked plays (use --force to override).\nNBA data: teams 30, results 253 (through 2026-11-23), players 476, slate 10, lines 10, props 1270, inj teams 28, prev-season players 276, play log 45, adv 421, qtr games 248, h2h 2/2/2/4/2/4/4/4/4/3\nnhllines: 32/32 teams\nNHL PP time: 699 players, 0 ESPN requests this run\nNHL data: 7 games today, 1 tomorrow, 32 teams, 688 skaters, 67 goalies, 289 props, 372 finals, 54 requests\ntrack: no new snapshots \u00b7 graded: NHL plays 16-15, best props NBA 64-79 NFL 26-33 NHL 71-64\nSite check OK \u2014 published (2026-11-24T03:16:35Z)\n"
  },
  "site": {
   "at": "2026-11-24T01:59:55+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-24T02:23:19+00:00",
+  "at": "2026-11-24T03:17:08+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Mon Nov 23 9:22 PM ET",
-  "odds_at": "2026-11-24T01:09:27+00:00",
+  "gen": "Mon Nov 23 10:16 PM ET",
+  "odds_at": "2026-11-24T02:23:36+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -4531,6 +4531,16 @@
   },
   {
    "at": "2026-11-24T02:23:19+00:00",
+   "what": "nba,nhl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-24T03:17:08+00:00",
    "what": "nba,nhl",
    "ok": true,
    "site_ok": true,
