@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 18:19Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 19:28Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -16,6 +16,7 @@ Grayson Allen|G|Out|concussion|Nov 25
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
+Jalen Smith|F|Day-To-Day|illness|Nov 25
 Norman Powell|G|Out|hamstring strain|Nov 28
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
@@ -28,11 +29,11 @@ Dereck Lively II|C|Out|foot surgery|Nov 27
 Sergio de Larrea|F|Out|knee strain|Nov 27
 Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Detroit Pistons
-Ebuka Okorie|G|Out|oblique strain|Nov 30
+Ebuka Okorie|G|Out|oblique strain|Dec 13
+Taurean Prince|F|Out|knee surgery|Dec 26
+Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 30
 Cade Cunningham|G|Day-To-Day|knee|Nov 24
-Taurean Prince|F|Out|knee surgery|Dec 13
-Duncan Robinson|F|Out|quadriceps strain|Nov 27
 #Golden State Warriors
 Brandon Williams|G|Out|hamstring strain|Nov 25
 Stephen Curry|G|Out|abdomen|Dec 12
@@ -67,9 +68,9 @@ Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
-Miles McBride|G|Day-To-Day|abdomen|Nov 25
-OG Anunoby|F|Day-To-Day|calf soreness|Nov 25
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 25
+OG Anunoby|F|Day-To-Day|calf soreness|Nov 25
+Miles McBride|G|Day-To-Day|abdomen|Nov 25
 #Oklahoma City Thunder
 Jaylin Williams|F|Day-To-Day|back spasms|Nov 25
 Aday Mara|C|Day-To-Day|lower leg bruise|Nov 25
