@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 15:41Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 17:24Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -40,11 +40,10 @@ Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Indiana Pacers
-Aaron Nesmith|G|Day-To-Day|foot|Nov 27
 T.J. McConnell|G|Day-To-Day|hamstring|Nov 27
-Larry Nance Jr.|F|Day-To-Day|ankle soreness|Nov 27
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
-Johnny Furphy|G|Out|knee surgery|Jan 2
+Aaron Nesmith|G|Day-To-Day|foot|Nov 27
+Larry Nance Jr.|F|Day-To-Day|ankle soreness|Nov 27
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
 Bradley Beal|G|Out|knee inflammation|Nov 29
@@ -60,9 +59,9 @@ Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
 Giannis Antetokounmpo|F|Day-To-Day|groin|Nov 25
 #Minnesota Timberwolves
+Donte DiVincenzo|G|Out|achilles surgery|Jan 31
 Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
-Donte DiVincenzo|G|Out|achilles surgery|Apr 2
 #New Orleans Pelicans
 Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
@@ -114,6 +113,7 @@ Jusuf Nurkic|C|Out|foot strain|Nov 29
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
 #Washington Wizards
+Tre Mann|G|Day-To-Day|illness|Nov 24
 Tristan Vukcevic|F|Out|hip pinched nerve|Nov 30
 Reece Beekman|G|Out|shoulder|Dec 3
 Justin Champagnie|F|Out|foot not specified|Feb 25
