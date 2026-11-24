@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-24T21:41:43+00:00",
+  "at": "2026-11-24T22:45:29+00:00",
   "ok": true,
-  "summary": "socmgr: 5 new headlines, 16 clubs with manager news\nsoccer: 311 upcoming matches (57 with odds, 311 with estimates, 273 with weather, 80 with referee), 11078 player props, 5908 players\ntrack: nba 2026-11-24: snapshot 7 props, 3 games \u00b7 graded: NHL plays 16-15, best props NBA 64-84 NFL 27-42 NHL 75-67\nSite check OK \u2014 published (2026-11-24T21:41:06Z)\n"
+  "summary": "NBA finals from ESPN: 75 games kept (0 new), 1641 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 3 games, 0 confirmed / 30 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 4 upcoming games with lines\nNBA refs: 0 summaries checked, 258 games cached\nNBA refs: 3 crews posted today\nliveprops: 412 feed lines merged (273 skipped from other days), 389 total, unmatched names: []\nNo plays qualify yet for 2026-11-24 \u2014 not locking.\nNBA data: teams 30, results 258 (through 2026-11-23), players 481, slate 3, lines 3, props 389, inj teams 28, prev-season players 82, play log 45, adv 422, qtr games 258, h2h 11/3/4\nsocmgr: 5 new headlines, 16 clubs with manager news\nsoccer: 301 upcoming matches (57 with odds, 301 with estimates, 261 with weather, 73 with referee), 11788 player props, 5916 players\ntrack: nba 2026-11-24: snapshot 5 props, 3 games \u00b7 graded: NHL plays 16-15, best props NBA 64-84 NFL 27-42 NHL 75-67\nSite check OK \u2014 published (2026-11-24T22:44:52Z)\n"
  },
  "site": {
   "at": "2026-11-24T21:37:49+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-24T21:41:43+00:00",
+  "at": "2026-11-24T22:45:29+00:00",
   "ok": true,
   "issue": "",
   "gen": "Tue Nov 24 4:34 PM ET",
-  "odds_at": "2026-11-24T20:02:34+00:00",
+  "odds_at": "2026-11-24T21:57:47+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -4744,6 +4744,16 @@
   {
    "at": "2026-11-24T21:41:43+00:00",
    "what": "soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-24T22:45:29+00:00",
+   "what": "nba,soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
