@@ -1,7 +1,7 @@
 # player|market|line|over price|under price|book[|bestOver|bestOverBook|bestUnder|bestUnderBook]
 # markets: pts reb ast 3pm 3pa pa(pts+ast) pra pr(pts+reb) ra(reb+ast) blk stl
 # day: 2026-11-24
-# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of 2026-11-24T10:56:47+00:00 + covers.com/FanDuel pulls.
+# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of 2026-11-24T11:58:30+00:00 + covers.com/FanDuel pulls.
 AJ Dybantsa|3pm|1.5|130|-190|Fanatics
 AJ Dybantsa|ast|2.5|-147|111|DraftKings|||118|FanDuel
 AJ Dybantsa|pa|18.5|-126|-104|DraftKings
