@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 01:56Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 03:34Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -6,7 +6,6 @@ Jon Gaines II|G|Out|Ankle|Nov 29
 Carson Beck|QB|Out|Back|Nov 29
 Cody Simon|LB|Questionable|Calf|Nov 29
 Zachary Carter|DT|IR|Knee|Nov 29
-James Conner|RB|IR|Foot|Dec 20
 #ATL
 Divine Deablo|LB|Out|Forearm|Nov 29
 Zachariah Branch|WR|Out|Hamstring|Nov 29
@@ -65,7 +64,6 @@ Skyler Gill-Howard|DT|Questionable|Knee|Nov 26
 Sam LaPorta|TE|Questionable|Ankle|Nov 26
 Ennis Rakestraw Jr.|CB|Out|Shoulder|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
-Aidan Hutchinson|DE|IR|Knee - ACL|Feb 15
 #GB
 Skyy Moore|WR|Questionable|Ankle|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
@@ -145,7 +143,6 @@ Jared Wayne|WR|Out|Quadriceps|Nov 29
 Bradley Pinion|P|Out|Groin|Nov 29
 Jaylin Simpson|S|Out|Knee|Nov 29
 Dante Trader Jr.|S|Out|Shoulder|Nov 29
-Jordan Phillips|DT|IR|Biceps|Feb 15
 #MIN
 Jordan Addison|WR|Out|Thumb|Nov 29
 Kyler Murray|QB|Out|Hamstring|Nov 29
@@ -202,7 +199,6 @@ Deommodore Lenoir|CB|Questionable|Foot|Nov 29
 Dre Greenlaw|LB|Out|Neck|Nov 29
 Khalid Kareem|DE|Out|Ankle|Nov 29
 Nate Hobbs|CB|IR|Groin|Nov 29
-Isaac Guerendo|RB|Out|Pectoral|Nov 29
 #SEA
 Sam Darnold|QB|Out|Quadriceps|Nov 29
 George Holani|RB|IR|Knee - MCL|Dec 25
