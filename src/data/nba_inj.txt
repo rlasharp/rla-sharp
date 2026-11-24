@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 23:29Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 23:46Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -29,12 +29,13 @@ Dereck Lively II|C|Out|foot surgery|Nov 27
 Sergio de Larrea|F|Out|knee strain|Nov 27
 Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Detroit Pistons
+Cade Cunningham|G|Out|knee|Nov 27
 Ebuka Okorie|G|Out|oblique strain|Dec 13
 Taurean Prince|F|Out|knee surgery|Dec 26
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 30
-Cade Cunningham|G|Day-To-Day|knee|Nov 24
 #Golden State Warriors
+Yaxel Lendeborg|F|Day-To-Day|illness|Nov 25
 Brandon Williams|G|Out|hamstring strain|Nov 25
 Stephen Curry|G|Out|abdomen|Dec 12
 Kristaps Porzingis|C|Out|illness|Jan 2
@@ -74,11 +75,10 @@ Josh Hart|G|Day-To-Day|shoulder sprain|Nov 25
 OG Anunoby|F|Out|calf soreness|Nov 27
 Karl-Anthony Towns|C|Day-To-Day|knee|Nov 25
 #Oklahoma City Thunder
+Nikola Topic|G|Out|hip strain|Nov 28
+Jaylin Williams|F|Out|back spasms|Nov 28
 Aday Mara|C|Out|lower leg bruise|Nov 28
-Jaylin Williams|F|Day-To-Day|back spasms|Nov 28
-Nikola Topic|G|Out|hip strain|Nov 25
 Jalen Williams|G|Out|leg fracture|Mar 2
-Alex Caruso|G|Out|hip soreness|Nov 25
 Thomas Sorber|C|Out|knee|Jan 31
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
