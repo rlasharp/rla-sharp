@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 00:30Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 01:04Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -7,7 +7,6 @@ Carson Beck|QB|Out|Back|Nov 29
 Cody Simon|LB|Questionable|Calf|Nov 29
 Zachary Carter|DT|IR|Knee|Nov 29
 James Conner|RB|IR|Foot|Dec 20
-Gardner Minshew II|QB|IR|Elbow|Feb 15
 #ATL
 Divine Deablo|LB|Out|Forearm|Nov 29
 Zachariah Branch|WR|Out|Hamstring|Nov 29
@@ -17,13 +16,13 @@ Nnamdi Madubuike|DT|Out|Hamstring|Nov 29
 Jaylinn Hawkins|S|Out|Knee|Nov 29
 Lamar Jackson|QB|IR|Thumb|Dec 27
 #BUF
+Dorian Williams|LB|Out|Calf|Nov 26
 Greg Rousseau|LB|Questionable|Back|Nov 26
+Christian Benford|CB|Out|Groin|Nov 26
 Damar Hamlin|S|Questionable|Toe|Nov 26
 Spencer Brown|OT|Questionable|Back|Nov 26
 O'Cyrus Torrence|G|Questionable|Ankle|Nov 26
 Dalton Kincaid|TE|Out|Thumb|Nov 26
-Dorian Williams|LB|Out|Calf|Nov 26
-Christian Benford|CB|Out|Groin|Nov 26
 T.J. Sanders|DT|Out|Shoulder|Nov 26
 #CAR
 Jaycee Horn|CB|IR|Quadriceps|Dec 6
@@ -47,36 +46,38 @@ Oren Burks|LB|IR|Groin|Dec 20
 Ronnie Hickman|S|Out|Concussion|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
+Dee Winters|LB|Questionable|Knee|Nov 26
 Jake Ferguson|TE|Out|Knee|Nov 26
 DaRon Bland|CB|IR|Ankle|Dec 27
 P.J. Locke|S|Out|Concussion|Nov 26
 Jonathan Mingo|WR|Out|Ankle|Nov 26
 Tyler Booker|G|Out|Ankle|Dec 7
-Dee Winters|LB|Questionable|Knee|Nov 26
 Jaishawn Barham|LB|Out|Hip|Nov 26
 Jalen Thompson|S|IR|Hamstring|Nov 26
 #DEN
 Brandon Jones|S|Out|Hamstring|Nov 27
 Caleb Lohner|TE|IR|Foot|Nov 27
 #DET
+Chuck Clark|S|Questionable|Hamstring|Nov 26
+Skyler Gill-Howard|DT|Questionable|Knee|Nov 26
+DJ Wonnum|LB|Questionable|Back|Nov 26
+Sam LaPorta|TE|Questionable|Ankle|Nov 26
 Ennis Rakestraw Jr.|CB|Out|Shoulder|Nov 26
-D.J. Reed|CB|Out|Hip|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
 Aidan Hutchinson|DE|IR|Knee - ACL|Feb 15
 #GB
+Skyy Moore|WR|Questionable|Ankle|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
 Travis Glover|OT|Questionable|Shoulder|Nov 25
 Micah Parsons|DE|Out|Knee - ACL|Nov 25
 Josh Jacobs|RB|Out|Finger|Nov 25
 Zaire Franklin|LB|Out|Shin|Nov 25
 Sean Rhyan|G|Out|Ankle|Nov 25
-Skyy Moore|WR|Questionable|Ankle|Nov 25
 Isaiah McDuffie|LB|Questionable|Ribs|Nov 25
 Luke Musgrave|TE|Out|Neck|Feb 15
 Kevin Zeitler|G|Out|Triceps|Nov 25
 #HOU
 Woody Marks|RB|Out|Concussion|Nov 29
-Chris Braswell|DE|Out|Knee|Feb 15
 Wyatt Teller|G|Out|Back|Nov 29
 Brevin Jordan|TE|Out|Foot|Nov 29
 Marvin Harrison Jr.|WR|Out|Hamstring|Nov 29
@@ -125,15 +126,15 @@ Tarheeb Still|CB|Out|Ankle|Nov 29
 Brenen Thompson|WR|Out|Hamstring|Nov 29
 Rodney Shelley|CB|IR|Ankle|Dec 17
 #LAR
+Kobie Turner|DE|IR|Groin|Nov 25
+Myles Garrett|DE|Questionable|Knee|Nov 25
 Coleman Shelton|C|Out|Hamstring|Dec 3
 Terrance Ferguson|TE|IR|Ankle|Feb 15
 Kam Curl|S|Questionable|Toe|Nov 25
-Myles Garrett|DE|Questionable|Knee|Nov 25
 Davante Adams|WR|IR|Hamstring|Dec 13
 Puka Nacua|WR|IR|Knee - MCL|Feb 15
 Steve Avila|G|Out|Hamstring|Dec 3
 Justin Dedich|G|IR|Hand|Nov 25
-Kobie Turner|DE|IR|Groin|Nov 25
 Dylan McMahon|C|IR|Knee|Dec 25
 #MIA
 Ronnie Harrison Jr.|LB|IR|Hamstring|Nov 29
@@ -177,9 +178,9 @@ Omar Cooper Jr.|WR|Out|Ankle|Nov 29
 Trevin Wallace|LB|Out|Groin|Nov 29
 David Onyemata|DT|IR|Abdomen|Nov 29
 #PHI
+Will Shipley|RB|Questionable|Illness|Nov 26
 Tanner McKee|QB|Questionable|Ribs|Nov 26
 Jonathan Jones|CB|Questionable|Ankle|Nov 26
-Will Shipley|RB|Questionable|Illness|Nov 26
 Arnold Ebiketie|LB|Questionable|Oblique|Nov 26
 Dallas Goedert|TE|Questionable|Shin|Nov 26
 Saquon Barkley|RB|Questionable|Neck|Nov 26
@@ -209,10 +210,10 @@ Charles Cross|OT|Out|Ankle|Nov 29
 Jarran Reed|DT|Questionable|Toe|Nov 29
 Abraham Lucas|OT|Questionable|Ankle|Nov 29
 #TB
-Jacob Parrish|CB|Questionable|Back|Nov 30
 Elijah Simmons|DT|Questionable|Concussion|Nov 30
-Antoine Winfield Jr.|S|Out|Ankle|Nov 30
 Benjamin Morrison|CB|Questionable|Hamstring|Nov 30
+Jacob Parrish|CB|Questionable|Back|Nov 30
+Antoine Winfield Jr.|S|Out|Ankle|Nov 30
 Josh Hayes|CB|IR|Knee|Nov 30
 #TEN
 Dan Moore Jr.|OT|Questionable|Knee|Nov 29
