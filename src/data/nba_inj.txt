@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 21:33Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 22:42Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -10,11 +10,11 @@ Mitchell Robinson|C|Out|illness|Nov 27
 #Brooklyn Nets
 Nolan Traore|G|Out|hamstring strain|Jan 27
 #Charlotte Hornets
-Grant Williams|F|Day-To-Day|hamstring|Nov 25
 Ryan Kalkbrenner|C|Day-To-Day|hip soreness|Nov 25
+Dennis Schroder|G|Out|hamstring strain|Dec 12
+Sion James|G|Day-To-Day|undisclosed|Nov 25
 Grayson Allen|G|Out|concussion|Nov 25
 Kon Knueppel|G|Out|hamstring strain|Dec 12
-Dennis Schroder|G|Out|hamstring strain|Nov 25
 #Chicago Bulls
 Jalen Smith|F|Day-To-Day|illness|Nov 25
 Norman Powell|G|Out|hamstring strain|Nov 28
@@ -68,9 +68,11 @@ Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
-Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 25
-OG Anunoby|F|Day-To-Day|calf soreness|Nov 25
-Miles McBride|G|Day-To-Day|abdomen|Nov 25
+Miles McBride|G|Day-To-Day|groin soreness|Nov 25
+Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 27
+Josh Hart|G|Day-To-Day|shoulder sprain|Nov 25
+OG Anunoby|F|Out|calf soreness|Nov 27
+Karl-Anthony Towns|C|Day-To-Day|knee|Nov 25
 #Oklahoma City Thunder
 Jaylin Williams|F|Day-To-Day|back spasms|Nov 25
 Aday Mara|C|Day-To-Day|lower leg bruise|Nov 25
@@ -86,7 +88,7 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
-Joel Embiid|C|Day-To-Day|illness|Nov 25
+Joel Embiid|C|Day-To-Day|illness|Nov 27
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
