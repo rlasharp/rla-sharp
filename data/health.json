@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-24T15:46:29+00:00",
+  "at": "2026-11-24T16:14:53+00:00",
   "ok": true,
-  "summary": "s with spreads\nNFL targets/spreads/rest refreshed\nteams 32, QBs 41, weeks 1-11\nNFL pass rush vs O-line refreshed\nteams 32, through week 11, share players 402, upcoming 96\nNFL standings / schedule / shares (nflverse) refreshed\nNFL usage (snaps / targets / carries) refreshed\nnflweekly: through Week 11, 32 QB1s, 122 matchups with history\nNFL defense vs position / recent players / QB1 / head to head refreshed\nnfllogs: 3695 player-games, through Week 11\nNFL player game logs (nflverse) refreshed\nNFL box scores / red zone / pace (nflverse) refreshed\nnflx2: 415 RZ players, 55 QBs, 32 teams PROE, 96 division games, 37 kickers\nNFL red zone / QB runs / PROE / division / kickers refreshed\nnhllines: 32/32 teams\nNHL PP time: 702 players, 0 ESPN requests this run\nNHL data: 1 games today, 14 tomorrow, 32 teams, 708 skaters, 68 goalies, 99 props, 376 finals, 39 requests\nsocmgr: 6 new headlines, 16 clubs with manager news\nsoccer: 283 upcoming matches (67 with odds, 283 with estimates, 265 with weather, 37 with referee), 15591 player props, 5905 players\nUFC: 267 fighters, 2548 past fights, 253 requests\ncfb: 2278 players with logs, 69 focus games, 666 requests\ncbb: 2572 players with logs, 176 focus games, 571 requests\nFutures: nba: 22 futures markets, 426 prices nhl: 1 futures markets, 78 prices nfl: 22 futures markets, 365 prices \ntrack: nba 2026-11-24: snapshot 9 props, 3 games \u00b7 graded: NHL plays 16-15, best props NBA 64-84 NFL 27-42 NHL 75-67\nSite check OK \u2014 published (2026-11-24T15:44:10Z)\n"
+  "summary": "socmgr: 6 new headlines, 16 clubs with manager news\nsoccer: 283 upcoming matches (67 with odds, 283 with estimates, 265 with weather, 37 with referee), 15591 player props, 5905 players\ntrack: nba 2026-11-24: snapshot 9 props, 3 games \u00b7 graded: NHL plays 16-15, best props NBA 64-84 NFL 27-42 NHL 75-67\nSite check OK \u2014 published (2026-11-24T16:14:19Z)\n"
  },
  "site": {
   "at": "2026-11-24T15:46:29+00:00",
@@ -10,7 +10,7 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-24T15:46:29+00:00",
+  "at": "2026-11-24T16:14:53+00:00",
   "ok": true,
   "issue": "",
   "gen": "Tue Nov 24 10:42 AM ET",
@@ -4642,6 +4642,16 @@
   {
    "at": "2026-11-24T15:46:29+00:00",
    "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-24T16:14:53+00:00",
+   "what": "soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
