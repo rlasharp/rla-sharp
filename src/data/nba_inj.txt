@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 06:04Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 08:00Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -99,8 +99,8 @@ Shaedon Sharpe|G|Out|knee surgery|Mar 2
 Maxime Raynaud|C|Out|knee dislocated|Nov 25
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-De'Aaron Fox|G|Out|lower leg bruise|Nov 25
-Victor Wembanyama|F|Out|back|Nov 25
+Victor Wembanyama|F|Day-To-Day|back|Nov 25
+De'Aaron Fox|G|Day-To-Day|lower leg bruise|Nov 25
 Dylan Harper|G|Out|hip soreness|Dec 13
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
@@ -109,7 +109,7 @@ Nate Bittle|C|Out|foot fracture|Nov 27
 Kawhi Leonard|F|Out|knee inflammation|Dec 3
 RJ Barrett|F|Out|hamstring strain|Dec 13
 #Utah Jazz
-Jaxson Hayes|C|Out|knee not specified|Nov 27
+Jaxson Hayes|C|Day-To-Day|knee not specified|Nov 27
 Jusuf Nurkic|C|Out|foot strain|Nov 29
 Lauri Markkanen|F|Out|hand fracture|Jan 4
 Jaren Jackson Jr.|F|Out|knee not specified|Dec 14
