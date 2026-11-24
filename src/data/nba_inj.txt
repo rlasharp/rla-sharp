@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 19:40Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-24 21:33Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -105,8 +105,8 @@ Dylan Harper|G|Out|hip soreness|Dec 13
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Nate Bittle|C|Out|foot fracture|Nov 27
 Kawhi Leonard|F|Out|knee inflammation|Dec 3
+Nate Bittle|C|Out|foot fracture|Nov 27
 RJ Barrett|F|Out|hamstring strain|Dec 13
 #Utah Jazz
 Jaxson Hayes|C|Day-To-Day|knee not specified|Nov 27
