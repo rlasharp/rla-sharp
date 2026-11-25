@@ -1,6 +1,6 @@
 /* ---------- Injuries: ESPN NFL injury report (espn.com/nfl/injuries + ESPN team injury pages) ----------
    Every player ESPN lists, incl. injured reserve / PUP / NFI. Regenerate with tools/injgen.py data/espn_inj.txt "<date>". */
-const INJ_ASOF="Tue Nov 24";
+const INJ_ASOF="Wed Nov 25";
 const INJ={
   ARI:[["Jon Gaines II", "G", "Questionable", "Ankle", "Nov 29"], ["Carson Beck", "QB", "Questionable", "Back", "Nov 29"], ["Jeremiyah Love", "RB", "IR", "Ankle", "Dec 6"], ["Cody Simon", "LB", "Questionable", "Calf", "Nov 29"], ["Zachary Carter", "DT", "IR", "Knee", "Nov 29"]],
   ATL:[["Zachariah Branch", "WR", "Questionable", "Hamstring", "Nov 29"], ["Divine Deablo", "LB", "Questionable", "Forearm", "Nov 29"]],
