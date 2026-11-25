@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-25 17:28Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-25 18:11Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -10,10 +10,10 @@ Mitchell Robinson|C|Out|illness|Nov 27
 #Brooklyn Nets
 Nolan Traore|G|Out|hamstring strain|Jan 27
 #Charlotte Hornets
-Ryan Kalkbrenner|C|Day-To-Day|hip soreness|Nov 25
+Ryan Kalkbrenner|C|Out|hip soreness|Nov 28
+Grayson Allen|G|Out|concussion|Nov 28
 Dennis Schroder|G|Out|hamstring strain|Dec 12
 Sion James|G|Day-To-Day|undisclosed|Nov 25
-Grayson Allen|G|Out|concussion|Nov 25
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 #Chicago Bulls
 Jalen Smith|F|Day-To-Day|illness|Nov 25
@@ -69,11 +69,12 @@ Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
-Miles McBride|G|Day-To-Day|groin soreness|Nov 25
+Miles McBride|G|Out|groin soreness|Nov 27
+Karl-Anthony Towns|C|Day-To-Day|knee inflammation|Nov 25
+Jalen Brunson|G|Day-To-Day|illness|Nov 25
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 27
 Josh Hart|G|Day-To-Day|shoulder sprain|Nov 25
 OG Anunoby|F|Out|calf soreness|Nov 27
-Karl-Anthony Towns|C|Day-To-Day|knee|Nov 25
 #Oklahoma City Thunder
 Nikola Topic|G|Out|hip strain|Nov 28
 Jaylin Williams|F|Out|back spasms|Nov 28
