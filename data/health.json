@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-25T18:14:05+00:00",
+  "at": "2026-11-25T19:26:45+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1603 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 9 games, 0 confirmed / 90 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 261 games cached\nNBA refs: 8 crews posted today\nliveprops: 1093 feed lines merged (0 skipped from other days), 1044 total, unmatched names: []\nNo plays qualify yet for 2026-11-25 \u2014 not locking.\nNBA data: teams 30, results 261 (through 2026-11-24), players 481, slate 9, lines 9, props 1044, inj teams 28, prev-season players 247, play log 45, adv 423, qtr games 261, h2h 3/4/7/4/4/4/4/4/8\nsocmgr: 5 new headlines, 16 clubs with manager news\nsoccer: 300 upcoming matches (85 with odds, 300 with estimates, 281 with weather, 91 with referee), 19350 player props, 5916 players\ntrack: nba 2026-11-25: snapshot 8 props, 9 games; nhl 2026-11-25: locked 1 plays \u00b7 graded: NHL plays 16-15, best props NBA 65-86 NFL 27-42 NHL 76-69\nSite check OK \u2014 published (2026-11-25T18:13:28Z)\n"
+  "summary": "socmgr: 5 new headlines, 16 clubs with manager news\nsoccer: 300 upcoming matches (85 with odds, 300 with estimates, 281 with weather, 91 with referee), 19738 player props, 5916 players\ntrack: nba 2026-11-25: snapshot 8 props, 9 games \u00b7 graded: NHL plays 16-15, best props NBA 65-86 NFL 27-42 NHL 76-69\nSite check OK \u2014 published (2026-11-25T19:26:07Z)\n"
  },
  "site": {
   "at": "2026-11-25T17:33:59+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-25T18:14:05+00:00",
+  "at": "2026-11-25T19:26:45+00:00",
   "ok": true,
   "issue": "",
   "gen": "Wed Nov 25 12:30 PM ET",
-  "odds_at": "2026-11-25T17:04:01+00:00",
+  "odds_at": "2026-11-25T18:52:25+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -4954,6 +4954,16 @@
   {
    "at": "2026-11-25T18:14:05+00:00",
    "what": "nba,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-25T19:26:45+00:00",
+   "what": "soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
