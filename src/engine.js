@@ -36,20 +36,20 @@ const SLATE = [
 ];
 // REAL lines: DraftKings via ESPN, Mon Nov 23 2026 (updated by every automatic run until kickoff). sp = HOME spread, ml = [away, home]
 const LINES = {
- 1:{sp:-2.5,ml:[117,-138],tot:43.5},
- 2:{sp:1.5,ml:[-122,103],tot:55.5},
+ 1:{sp:-2.5,ml:[118,-140],tot:43.5},
+ 2:{sp:1.5,ml:[-120,101],tot:55.5},
  3:{sp:-8.5,ml:[370,-480],tot:47.5},
  4:{sp:-3,ml:[125,-148],tot:46.5},
  5:{sp:3.5,ml:[-202,169],tot:36.5},
  7:{sp:6.5,ml:[-322,261],tot:41.5},
- 8:{sp:3.5,ml:[-202,169],tot:40.5},
+ 8:{sp:3.5,ml:[-205,172],tot:40.5},
  9:{sp:-7,ml:[252,-309],tot:41.5},
  10:{sp:-14.5,ml:[740,-1160],tot:48.5},
- 11:{sp:-7,ml:[263,-327],tot:47.5},
- 12:{sp:-1.5,ml:[-108,-109],tot:35.5},
+ 11:{sp:-6.5,ml:[266,-331],tot:47.5},
+ 12:{sp:1.5,ml:[-112,-106],tot:35.5},
  14:{sp:-2.5,ml:[124,-147],tot:44.5},
- 15:{sp:-4.5,ml:[199,-241],tot:39.5},
- 16:{sp:-3,ml:[133,-157],tot:43.5}
+ 15:{sp:-4.5,ml:[196,-236],tot:39.5},
+ 16:{sp:-3,ml:[133,-158],tot:43.5}
 };
 // Public betting splits for Week 9: not posted yet when this update ran (Mon Nov 2). Values = [% of bets, % of money] on the AWAY side (moneyline, spread) or the OVER (total).
 const SPLITS = {};
