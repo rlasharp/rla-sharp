@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-25 20:38Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-25 21:38Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -57,8 +57,6 @@ Cameron Boozer|F|Out|ankle sprain|Dec 21
 Jerami Grant|F|Out|calf not specified|Dec 12
 GG Jackson|F|Out|foot surgery|Jan 18
 Richie Saunders|G|Out|knee surgery|Dec 1
-#Miami Heat
-Giannis Antetokounmpo|F|Day-To-Day|groin|Nov 25
 #Minnesota Timberwolves
 Donte DiVincenzo|G|Out|achilles surgery|Jan 3
 Jaylen Clark|G|Out|hamstring not specified|Nov 29
@@ -99,6 +97,7 @@ Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
+Zach LaVine|G|Day-To-Day|knee soreness|Nov 25
 Maxime Raynaud|C|Out|knee dislocated|Dec 2
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
