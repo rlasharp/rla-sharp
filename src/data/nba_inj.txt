@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-25 23:29Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-25 23:38Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -66,9 +66,9 @@ Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
+OG Anunoby|F|Out|calf soreness|Nov 27
 Miles McBride|G|Out|groin soreness|Nov 27
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 27
-OG Anunoby|F|Out|calf soreness|Nov 27
 #Oklahoma City Thunder
 Nikola Topic|G|Out|hip strain|Nov 28
 Jaylin Williams|F|Out|back spasms|Nov 28
@@ -83,7 +83,7 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
-Jaylen Brown|G|Day-To-Day|hamstring|Nov 25
+Jaylen Brown|G|Out|hamstring|Nov 27
 Joel Embiid|C|Out|illness|Nov 27
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
