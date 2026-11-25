@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-25 05:38Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-25 06:04Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Questionable|Ankle|Nov 29
