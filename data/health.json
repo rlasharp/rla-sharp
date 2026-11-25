@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-25T19:40:32+00:00",
+  "at": "2026-11-25T20:40:19+00:00",
   "ok": true,
-  "summary": "d\nnhllines: PIT not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: SEA not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: SJS not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: STL not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: TBL not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: TOR not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: UTA not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: VAN not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: VGK not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: WPG not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: WSH not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: 0/32 teams\nNHL PP time: 701 players, 0 ESPN requests this run\nNHL data: 14 games today, 0 tomorrow, 32 teams, 712 skaters, 68 goalies, 1550 props, 377 finals, 52 requests\nsocmgr: 5 new headlines, 16 clubs with manager news\nsoccer: 300 upcoming matches (85 with odds, 300 with estimates, 280 with weather, 90 with referee), 19738 player props, 5918 players\nUFC: 267 fighters, 2548 past fights, 253 requests\ncfb: 2215 players with logs, 67 focus games, 659 requests\ncbb: 2132 players with logs, 120 focus games, 543 requests\nFutures: nba: 17 futures markets, 272 prices nhl: 1 futures markets, 85 prices nfl: 23 futures markets, 374 prices \ntrack: nba 2026-11-25: snapshot 10 props, 9 games \u00b7 graded: NHL plays 16-15, best props NBA 65-86 NFL 27-42 NHL 76-69\nSite check OK \u2014 published (2026-11-25T19:38:18Z)\n"
+  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1603 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 9 games, 0 confirmed / 90 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 261 games cached\nNBA refs: 8 crews posted today\nliveprops: 1139 feed lines merged (0 skipped from other days), 1109 total, unmatched names: []\nNo plays qualify yet for 2026-11-25 \u2014 not locking.\nNBA data: teams 30, results 261 (through 2026-11-24), players 481, slate 9, lines 9, props 1109, inj teams 28, prev-season players 247, play log 45, adv 423, qtr games 261, h2h 3/4/7/4/4/4/4/4/8\nsocmgr: 5 new headlines, 16 clubs with manager news\nsoccer: 304 upcoming matches (89 with odds, 304 with estimates, 296 with weather, 91 with referee), 18994 player props, 5918 players\ntrack: nba 2026-11-25: snapshot 10 props, 9 games; soc 2026-11-25: parlay locked (3 legs @ 6.42) \u00b7 graded: NHL plays 16-15, best props NBA 65-86 NFL 27-42 NHL 76-69\nSite check OK \u2014 published (2026-11-25T20:39:41Z)\n"
  },
  "site": {
   "at": "2026-11-25T19:40:32+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-25T19:40:32+00:00",
+  "at": "2026-11-25T20:40:19+00:00",
   "ok": true,
   "issue": "",
   "gen": "Wed Nov 25 2:37 PM ET",
-  "odds_at": "2026-11-25T18:52:25+00:00",
+  "odds_at": "2026-11-25T19:56:59+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -4990,6 +4990,16 @@
     "nhllines: WPG not read (HTTP Error 403: Forbidden) \u2014 kept old",
     "nhllines: WSH not read (HTTP Error 403: Forbidden) \u2014 kept old"
    ],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-25T20:40:19+00:00",
+   "what": "nba,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
    "check_failed": false,
    "published": true
   }
