@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-24 23:29Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-25 02:03Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jon Gaines II|G|Questionable|Ankle|Nov 29
@@ -7,18 +7,18 @@ Jeremiyah Love|RB|IR|Ankle|Dec 6
 Cody Simon|LB|Questionable|Calf|Nov 29
 Zachary Carter|DT|IR|Knee|Nov 29
 #ATL
-Divine Deablo|LB|Questionable|Forearm|Nov 29
 Zachariah Branch|WR|Questionable|Hamstring|Nov 29
+Divine Deablo|LB|Questionable|Forearm|Nov 29
 #BAL
 Nnamdi Madubuike|DT|Questionable|Hamstring|Nov 29
 Jaylinn Hawkins|S|Questionable|Knee|Nov 29
 Marlon Humphrey|CB|Questionable|Coach's Decision|Nov 29
 Lamar Jackson|QB|IR|Thumb|Dec 27
 #BUF
+Christian Benford|CB|Questionable|Groin|Nov 26
 Dalton Kincaid|TE|Questionable|Thumb|Nov 26
 T.J. Sanders|DT|Questionable|Shoulder|Nov 26
 Dorian Williams|LB|Questionable|Calf|Nov 26
-Christian Benford|CB|Questionable|Groin|Nov 26
 O'Cyrus Torrence|G|Questionable|Ankle|Nov 26
 #CAR
 Bobby Okereke|LB|Questionable|Foot|Nov 30
@@ -28,8 +28,8 @@ Isaiah Simmons|S|IR|Knee|Dec 20
 Jonathon Brooks|RB|IR|Groin|Nov 30
 #CHI
 Elijah Hicks|S|Out|Concussion|Dec 6
-Kyler Gordon|CB|Questionable|Shoulder|Nov 26
 Roschon Johnson|RB|Questionable|Ankle|Nov 26
+Kyler Gordon|CB|Questionable|Shoulder|Nov 26
 #CIN
 Dalton Risner|G|Questionable|Knee|Nov 29
 Kyle Dugger|S|Questionable|Quadriceps|Nov 29
@@ -42,6 +42,7 @@ Raheim Sanders|RB|IR|Hip|Nov 29
 Ronnie Hickman|S|Questionable|Concussion|Nov 29
 Michael Burton|FB|IR|Calf|Dec 20
 #DAL
+Devin Moore|CB|IR|Hip|Nov 26
 Dee Winters|LB|Questionable|Knee|Nov 26
 Jonathan Mingo|WR|Questionable|Ankle|Nov 26
 P.J. Locke|S|Questionable|Concussion|Nov 26
@@ -51,25 +52,26 @@ DaRon Bland|CB|IR|Ankle|Dec 27
 Tyler Booker|G|Out|Ankle|Dec 7
 Jalen Thompson|S|IR|Hamstring|Nov 26
 #DEN
+Jonah Elliss|LB|IR|Ankle|Dec 6
 Tyler Badie|RB|IR|Thumb|Nov 27
 Sai'vion Jones|DE|Questionable|Hamstring|Nov 27
 Taylor Rapp|S|Questionable|Quadriceps|Nov 27
 J.K. Dobbins|RB|Out|Personal|Dec 6
 #DET
+Chuck Clark|S|Questionable|Hamstring|Nov 26
 Skyler Gill-Howard|DT|Out|Knee|Feb 15
 Ennis Rakestraw Jr.|CB|Questionable|Shoulder|Nov 26
 DJ Wonnum|LB|Questionable|Back|Nov 26
-Chuck Clark|S|Questionable|Hamstring|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
 #GB
+Kevin Zeitler|G|Questionable|Triceps|Nov 25
+Sean Rhyan|G|Questionable|Ankle|Nov 25
+Travis Glover|OT|Questionable|Shoulder|Nov 25
 Skyy Moore|WR|Questionable|Ankle|Nov 25
 Bo Melton|WR|Questionable|Thigh|Nov 25
 Zaire Franklin|LB|Questionable|Shin|Nov 25
 Micah Parsons|DE|Questionable|Knee - ACL|Nov 25
 Josh Jacobs|RB|Questionable|Finger|Nov 25
-Kevin Zeitler|G|Questionable|Triceps|Nov 25
-Sean Rhyan|G|Questionable|Ankle|Nov 25
-Travis Glover|OT|Questionable|Shoulder|Nov 25
 Luke Musgrave|TE|Out|Neck|Feb 15
 #HOU
 Wyatt Teller|G|Questionable|Back|Nov 29
@@ -171,12 +173,11 @@ Trevin Wallace|LB|Questionable|Groin|Nov 29
 Omar Cooper Jr.|WR|Questionable|Ankle|Nov 29
 David Onyemata|DT|IR|Abdomen|Nov 29
 #PHI
-Smael Mondon Jr.|LB|Questionable|Ankle|Nov 26
+Quinyon Mitchell|CB|Questionable|Hamstring|Nov 26
 Will Shipley|RB|Questionable|Illness|Nov 26
-Tanner McKee|QB|Questionable|Undisclosed|
+Smael Mondon Jr.|LB|Questionable|Ankle|Nov 26
 Jonathan Jones|CB|Questionable|Ankle|Nov 26
 Arnold Ebiketie|LB|Questionable|Oblique|Nov 26
-Quinyon Mitchell|CB|Questionable|Hamstring|Nov 26
 Zack Baun|LB|IR|Back|Dec 19
 Dontayvion Wicks|WR|IR|Ankle|Dec 19
 #PIT
@@ -185,7 +186,6 @@ Ben Skowronek|WR|Questionable|Calf|Nov 27
 Michael Pittman Jr.|WR|IR|Foot|Nov 27
 Alex Highsmith|LB|Doubtful|Ankle|Nov 27
 Gennings Dunker|G|IR|Knee|Nov 27
-Mason McCormick|G|IR|Ankle|Jan 3
 #SF
 Khalid Kareem|DE|Questionable|Ankle|Nov 29
 Dre Greenlaw|LB|Questionable|Neck|Nov 29
@@ -207,7 +207,6 @@ Benjamin Morrison|CB|Questionable|Hamstring|Nov 30
 Jacob Parrish|CB|Questionable|Back|Nov 30
 Josh Hayes|CB|IR|Knee|Nov 30
 #TEN
-Milo Eifler|LB|Questionable|Undisclosed|Dec 6
 Dan Moore Jr.|OT|Questionable|Knee|Nov 29
 Terrell Burgess|S|Questionable|Knee|Nov 29
 Cor'Dale Flott|CB|Questionable|Neck|Nov 29
