@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-25 23:38Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 00:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -13,15 +13,14 @@ DeMarcco Hellams|S|Questionable|Foot|Nov 29
 Matthew Bergeron|G|Questionable|Back|Nov 29
 Billy Bowman Jr.|CB|Questionable|Hamstring|Nov 29
 #BAL
+Rashod Bateman|WR|Questionable|Groin|Nov 29
 Zay Flowers|WR|Questionable|Ankle|Nov 29
 Aeneas Peebles|DT|Questionable|Elbow|Nov 29
 John Simpson|G|Questionable|Groin|Nov 29
-Rashod Bateman|WR|Questionable|Groin|Nov 29
 Derrick Henry|RB|Questionable|Concussion|Nov 29
 Mike Green|LB|Questionable|Knee|Nov 29
 Nnamdi Madubuike|DT|Questionable|Hamstring|Nov 29
 Jaylinn Hawkins|S|Questionable|Knee|Nov 29
-Marlon Humphrey|CB|Questionable|Coach's Decision|Nov 29
 #BUF
 Dorian Williams|LB|Questionable|Calf|Nov 26
 Christian Benford|CB|Questionable|Groin|Nov 26
@@ -35,14 +34,13 @@ Brady Christensen|G|IR|Hamstring|Feb 15
 Bobby Okereke|LB|Questionable|Foot|Nov 30
 Jaycee Horn|CB|IR|Quadriceps|Dec 6
 #CHI
-D'Marco Jackson|LB|Questionable|Elbow|Nov 26
 Tyrique Stevenson Sr.|CB|Questionable|Groin|Nov 26
 Kyler Gordon|CB|Out|Shoulder|Dec 6
+D'Marco Jackson|LB|Questionable|Elbow|Nov 26
 Roschon Johnson|RB|Out|Ankle|Dec 6
 Elijah Hicks|S|Out|Concussion|Dec 6
 #CIN
 Dalton Risner|G|Questionable|Knee|Nov 29
-Kyle Dugger|S|Questionable|Quadriceps|Nov 29
 Jalen Davis|CB|IR|Hamstring|Nov 29
 Andrei Iosivas|WR|IR|Thumb|Nov 29
 Oren Burks|LB|IR|Groin|Dec 20
@@ -77,24 +75,21 @@ Chuck Clark|S|Questionable|Hamstring|Nov 26
 DJ Wonnum|LB|Questionable|Back|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
 #GB
-Kevin Zeitler|G|Questionable|Triceps|Nov 25
-Sean Rhyan|G|Questionable|Ankle|Nov 25
-Travis Glover|OT|Questionable|Shoulder|Nov 25
-Skyy Moore|WR|Questionable|Ankle|Nov 25
-Bo Melton|WR|Questionable|Thigh|Nov 25
-Zaire Franklin|LB|Questionable|Shin|Nov 25
-Micah Parsons|DE|Questionable|Knee - ACL|Nov 25
-Josh Jacobs|RB|Questionable|Finger|Nov 25
+Zaire Franklin|LB|Out|Shin|Dec 6
+Donovan Jennings|G|Out|Coach's Decision|Dec 6
+Jager Burton|C|Out|Coach's Decision|Dec 6
+Mekhi Becton|G|Out|Coach's Decision|Dec 6
+Josh Jacobs|RB|Out|Finger|Dec 6
 Luke Musgrave|TE|Out|Neck|Feb 15
 #HOU
+Kayshon Boutte|WR|Questionable|Hip|Nov 29
+Marvin Harrison Jr.|WR|Questionable|Hamstring|Nov 29
 Woody Marks|RB|Questionable|Concussion|Nov 29
 Logan Hall|DE|Doubtful|Hip|Nov 29
 Jake Hummel|LB|Questionable|Abdomen|Nov 29
-Marvin Harrison Jr.|WR|Questionable|Hamstring|Nov 29
 Wyatt Teller|G|Questionable|Back|Nov 29
 Brevin Jordan|TE|Questionable|Foot|Nov 29
 Danielle Hunter|DE|Questionable|Hamstring|Nov 29
-Kayshon Boutte|WR|Questionable|Hip|Nov 29
 Keylan Rutledge|G|Questionable|Undisclosed|Nov 29
 #IND
 Drew Ogletree|TE|Questionable|Knee|Nov 29
@@ -130,22 +125,27 @@ Tonka Hemingway|DT|Questionable|Upper Body|Nov 29
 Tim Keenan III|DT|Questionable|Knee|Nov 29
 Adam Butler|DT|Questionable|Concussion|Nov 29
 #LAC
+Dalvin Tomlinson|DT|Questionable|Knee|Nov 29
+Tuli Tuipulotu|LB|Questionable|Undisclosed|Nov 29
+Deane Leonard|CB|Questionable|Groin|Nov 29
 David Njoku|TE|Questionable|Shoulder|Nov 29
+Keaton Mitchell|RB|Questionable|Knee|Nov 29
 Justin Herbert|QB|Questionable|Concussion|Nov 29
 Kendall Williamson|S|Questionable|Calf|Nov 29
 Tarheeb Still|CB|Questionable|Ankle|Nov 29
 Brenen Thompson|WR|Questionable|Hamstring|Nov 29
 Daiyan Henley|LB|Questionable|Knee|Nov 29
 Akheem Mesidor|LB|Questionable|Ankle|Nov 29
-Keaton Mitchell|RB|Questionable|Knee|Nov 29
-Rodney Shelley|CB|IR|Ankle|Dec 17
 #LAR
+Ty Simpson|QB|Out|Coach's Decision|Dec 3
+Darryl Peterson III|LB|Out|Coach's Decision|Dec 3
 Coleman Shelton|C|Out|Hamstring|Dec 3
+Desjuan Johnson|DE|Out|Coach's Decision|Dec 3
+Larrell Murchison|DE|Out|Coach's Decision|Dec 3
+Steve Avila|G|Out|Hamstring|Dec 3
 Terrance Ferguson|TE|IR|Ankle|Feb 15
 Davante Adams|WR|IR|Hamstring|Dec 13
 Puka Nacua|WR|IR|Knee - MCL|Feb 15
-Steve Avila|G|Out|Hamstring|Dec 3
-Dylan McMahon|C|IR|Knee|Dec 25
 #MIA
 Jackson Woodard|LB|Questionable|Hand|Nov 29
 Rodney McGraw|DE|Questionable|Shoulder|Nov 29
@@ -157,24 +157,23 @@ Ronnie Harrison Jr.|LB|IR|Hamstring|Nov 29
 JuJu Brents|CB|Questionable|Shoulder|Nov 29
 Malik Willis|QB|IR|Abdomen|Dec 13
 #MIN
+Harrison Smith|S|Questionable|Thigh|Nov 29
+Jalen Redmond|DT|Questionable|Ankle|Nov 29
+Christian Darrisaw|OT|Questionable|Shoulder|Nov 29
 Myles Price|WR|Questionable|Knee|Nov 29
 Kyler Murray|QB|Questionable|Hamstring|Nov 29
 Tai Felton|WR|Questionable|Hip|Nov 29
 Jordan Addison|WR|Doubtful|Thumb|Nov 29
 Isaiah Rodgers|CB|Questionable|Quadriceps|Nov 29
-Jay Ward|S|Questionable|Knee|Nov 29
-Bo Richter|LB|IR|Foot|Dec 20
 #NE
-A.J. Brown|WR|Doubtful|Hamstring|Nov 29
+Reggie Gilliam|FB|Questionable|Knee|Nov 29
 Romeo Doubs|WR|IR|Shoulder|Nov 29
+A.J. Brown|WR|Doubtful|Hamstring|Nov 29
 Walter Rouse|OL|Questionable|Concussion|Nov 29
-Brenden Schooler|S|Questionable|Hamstring|Nov 29
 Carlton Davis III|CB|Questionable|Knee|Nov 29
-Ben Brown|C|Questionable|Knee|Nov 29
 Alijah Vera-Tucker|G|IR|Hamstring|Nov 29
 Drake Maye|QB|Out|Lower Leg|Dec 27
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 29
-Robert Spillane|LB|Questionable|Illness|Nov 29
 #NO
 Asim Richards|OT|Questionable|Knee|Nov 29
 David Edwards|G|Questionable|Hamstring|Nov 29
@@ -220,9 +219,9 @@ Khalid Kareem|DE|Questionable|Ankle|Nov 29
 Dre Greenlaw|LB|Questionable|Neck|Nov 29
 Deommodore Lenoir|CB|Questionable|Foot|Nov 29
 #SEA
+Jaxon Smith-Njigba|WR|Questionable|Ankle|Nov 29
 Abraham Lucas|OT|Out|Ankle|Dec 7
 Quenton Nelson|G|Out|Knee|Dec 7
-Sam Darnold|QB|Questionable|Quadriceps|Nov 29
 Leonard Williams|DT|Questionable|Shoulder|Nov 29
 Charles Cross|OT|Questionable|Ankle|Nov 29
 George Holani|RB|IR|Knee - MCL|Dec 25
@@ -238,6 +237,7 @@ John Franklin-Myers|DE|Questionable|Back|Nov 29
 Dan Moore Jr.|OT|Questionable|Knee|Nov 29
 Terrell Burgess|S|Questionable|Knee|Nov 29
 #WAS
+Charles Omenihu|DE|Questionable|Ribs|Nov 29
 Treylon Burks|WR|Questionable|Foot|Nov 29
 Stefon Diggs|WR|Questionable|Personal|Nov 29
 Amik Robertson|CB|Questionable|Ankle|Nov 29
