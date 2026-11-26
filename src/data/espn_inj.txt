@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 17:28Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 17:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -157,7 +157,6 @@ Desjuan Johnson|DE|Out|Coach's Decision|Dec 3
 Larrell Murchison|DE|Out|Coach's Decision|Dec 3
 Steve Avila|G|Out|Hamstring|Dec 3
 Terrance Ferguson|TE|IR|Ankle|Feb 15
-Davante Adams|WR|IR|Hamstring|Dec 13
 #MIA
 Jared Wayne|WR|Questionable|Quadriceps|Nov 29
 JuJu Brents|CB|Questionable|Neck|Nov 29
