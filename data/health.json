@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-26T23:37:30+00:00",
+  "at": "2026-11-26T23:43:46+00:00",
   "ok": true,
-  "summary": "rged (734 skipped from other days), 0 total, unmatched names: []\nFirst tip is Infinity min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 270 (through 2026-11-25), players 482, slate 0, lines 9, props 0, inj teams 28, prev-season players 0, play log 45, adv 425, qtr games 270, h2h \nnfl-update: 11 lines refreshed, 0 new finals (weeks [11, 12])\nnfl-lines-next: 10 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 12 \u00b7 6 indoors, 9 with a forecast\nnflrefs: 165 games (0 new), 21 referees, 2 of this week's crews posted\n237 players, 32 teams\nnfl-inj: 237 players\nnfl-qtr: 165 games with quarter scores\nnflbox: 0 new ESPN box scores, 1 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 705 players, 0 ESPN requests this run\nNHL data: 0 games today, 15 tomorrow, 32 teams, 712 skaters, 68 goalies, 728 props, 391 finals, 38 requests\nsocmgr: 5 new headlines, 15 clubs with manager news\nsoccer: 294 upcoming matches (79 with odds, 294 with estimates, 254 with weather, 81 with referee), 24554 player props, 5976 players\nUFC: 267 fighters, 2548 past fights, 1050 requests\ncfb: 2215 players with logs, 67 focus games, 662 requests\ncbb: 2221 players with logs, 139 focus games, 549 requests\nFutures: nba: 15 futures markets, 263 prices nhl: 1 futures markets, 85 prices nfl: 19 futures markets, 325 prices \ntrack: no new snapshots \u00b7 graded: NHL plays 17-15, best props NBA 70-91 NFL 31-48 NHL 81-74\nSite check OK \u2014 published (2026-11-26T23:35:26Z)\n"
+  "summary": "nfl-update: 11 lines refreshed, 0 new finals (weeks [11, 12])\nnfl-lines-next: 10 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 12 \u00b7 6 indoors, 9 with a forecast\nnflrefs: 165 games (0 new), 21 referees, 2 of this week's crews posted\n237 players, 32 teams\nnfl-inj: 237 players\nnfl-qtr: 165 games with quarter scores\nnflbox: 0 new ESPN box scores, 1 waiting for nflverse\ntrack: no new snapshots \u00b7 graded: NHL plays 17-15, best props NBA 70-91 NFL 31-48 NHL 81-74\nSite check OK \u2014 published (2026-11-26T23:43:09Z)\n"
  },
  "site": {
   "at": "2026-11-26T23:37:30+00:00",
@@ -10,7 +10,7 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-26T23:37:30+00:00",
+  "at": "2026-11-26T23:43:46+00:00",
   "ok": true,
   "issue": "",
   "gen": "Thu Nov 26 6:34 PM ET",
@@ -5341,6 +5341,16 @@
   {
    "at": "2026-11-26T23:37:30+00:00",
    "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-26T23:43:46+00:00",
+   "what": "nfl",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
