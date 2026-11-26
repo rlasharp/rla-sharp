@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 19:50Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 21:29Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -56,16 +56,19 @@ Cameron Boozer|F|Out|ankle sprain|Dec 21
 Jerami Grant|F|Out|calf not specified|Dec 12
 GG Jackson|F|Out|foot surgery|Jan 18
 Richie Saunders|G|Out|knee surgery|Dec 1
+#Miami Heat
+Giannis Antetokounmpo|F|Day-To-Day|groin|Nov 27
+Andrew Wiggins|F|Day-To-Day|ankle sprain|Nov 27
 #Minnesota Timberwolves
 LaMelo Ball|G|Day-To-Day|ankle|Nov 27
 Donte DiVincenzo|G|Out|achilles surgery|Jan 3
 Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 #New Orleans Pelicans
+Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Julian Reese|F|Day-To-Day|knee|Dec 1
 Trendon Watford|F|Out|ankle sprain|Nov 27
-Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
-Dejounte Murray|G|Out|ankle|Nov 27
+Dejounte Murray|G|Out|ankle|Nov 29
 #New York Knicks
 Miles McBride|G|Day-To-Day|groin soreness|Nov 27
 Andre Drummond|C|Day-To-Day|head not specified|Nov 27
@@ -106,6 +109,7 @@ Dylan Harper|G|Out|hip soreness|Dec 13
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
+Alijah Martin|G|Day-To-Day|knee soreness|Nov 27
 Kawhi Leonard|F|Out|knee inflammation|Dec 3
 Nate Bittle|C|Out|foot fracture|Nov 27
 RJ Barrett|F|Out|hamstring strain|Dec 13

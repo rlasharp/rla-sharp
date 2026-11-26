@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 20:58Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 21:29Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -139,8 +139,8 @@ Adam Butler|DT|Questionable|Concussion|Nov 29
 Patrick Johnson|DE|IR|Neck|Nov 29
 Tim Keenan III|DT|Questionable|Knee|Nov 29
 #LAC
-Deane Leonard|CB|IR|Groin|Dec 27
 Justin Herbert|QB|Questionable|Concussion|Nov 29
+Deane Leonard|CB|IR|Groin|Dec 27
 Akheem Mesidor|LB|Questionable|Ankle|Nov 29
 Tuli Tuipulotu|LB|Questionable|Ankle|Nov 29
 Brenen Thompson|WR|Questionable|Hamstring|Nov 29
@@ -179,11 +179,11 @@ Jalen Redmond|DT|Questionable|Ankle|Nov 29
 Christian Darrisaw|OT|Questionable|Shoulder|Nov 29
 Myles Price|WR|Questionable|Knee|Nov 29
 #NE
+A.J. Brown|WR|Doubtful|Hamstring|Nov 29
 Walter Rouse|OL|Questionable|Concussion|Nov 29
 Carlton Davis III|CB|Questionable|Knee|Nov 29
 Reggie Gilliam|FB|Questionable|Knee|Nov 29
 Romeo Doubs|WR|IR|Shoulder|Nov 29
-A.J. Brown|WR|Doubtful|Hamstring|Nov 29
 Alijah Vera-Tucker|G|IR|Hamstring|Nov 29
 Drake Maye|QB|Out|Lower Leg|Dec 27
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 29
@@ -195,19 +195,19 @@ Asim Richards|OT|Questionable|Knee|Nov 29
 David Edwards|G|Questionable|Hamstring|Nov 29
 Taliese Fuaga|OT|Questionable|Knee|Nov 29
 #NYG
+Isaiah Likely|TE|Questionable|Groin|Nov 29
 Dru Phillips|CB|Questionable|Illness|Nov 29
 Abdul Carter|LB|Questionable|Ankle|Nov 29
 Arvell Reese|LB|Questionable|Back|Nov 29
-Isaiah Likely|TE|Questionable|Groin|Nov 29
 Shelby Harris|DT|Questionable|Illness|Nov 29
 Greg Newsome II|CB|IR|Ankle|Dec 28
 #NYJ
+Omar Cooper Jr.|WR|Questionable|Ankle|Nov 29
 David Onyemata|DT|IR|Abdomen|Nov 29
 Harrison Phillips|DT|Questionable|Ankle|Nov 29
 T'Vondre Sweat|DT|IR|Knee|Nov 29
 Joseph Ossai|DE|Questionable|Ankle|Nov 29
 Dylan Parham|G|Questionable|Knee|Nov 29
-Omar Cooper Jr.|WR|Questionable|Ankle|Nov 29
 #PHI
 Cole Payton|QB|Out|Coach's Decision|Dec 6
 Grant Calcaterra|TE|Out|Coach's Decision|Dec 6
@@ -257,9 +257,8 @@ Elijah Simmons|DT|Questionable|Concussion|Nov 30
 Benjamin Morrison|CB|Questionable|Hamstring|Nov 30
 Jacob Parrish|CB|Questionable|Back|Nov 30
 #TEN
+Dorian Mausi|LB|Questionable|Knee|Nov 29
 Cor'Dale Flott|CB|Questionable|Neck|Nov 29
-John Franklin-Myers|DE|Questionable|Back|Nov 29
-Dan Moore Jr.|OT|Questionable|Knee|Nov 29
 #WAS
 Treylon Burks|WR|Questionable|Foot|Nov 29
 Amik Robertson|CB|Questionable|Ankle|Nov 29
