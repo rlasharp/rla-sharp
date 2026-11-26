@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 01:09Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 01:59Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -33,9 +33,8 @@ Taurean Prince|F|Out|knee surgery|Dec 26
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
 Jalen Duren|C|Out|hamstring strain|Nov 30
 #Golden State Warriors
-Yaxel Lendeborg|F|Day-To-Day|illness|Nov 25
-Brandon Williams|G|Out|hamstring strain|Nov 25
 Stephen Curry|G|Out|abdomen|Dec 12
+Brandon Williams|G|Out|hamstring|Nov 25
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
@@ -83,8 +82,8 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
-Jaylen Brown|G|Out|hamstring|Nov 27
-Joel Embiid|C|Out|illness|Nov 27
+Joel Embiid|C|Day-To-Day|illness|Nov 27
+Jaylen Brown|G|Day-To-Day|hamstring|Nov 27
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
