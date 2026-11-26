@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 22:53Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 23:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -17,10 +17,10 @@ DeMarcco Hellams|S|Questionable|Foot|Nov 29
 Matthew Bergeron|G|Questionable|Back|Nov 29
 Billy Bowman Jr.|CB|Questionable|Hamstring|Nov 29
 #BAL
+Jaylinn Hawkins|S|Questionable|Knee|Nov 29
 Derrick Henry|RB|Questionable|Concussion|Nov 29
 Olaivavega Ioane|G|Questionable|Hand|Nov 29
 Chidobe Awuzie|CB|Questionable|Back|Nov 29
-Jaylinn Hawkins|S|Questionable|Knee|Nov 29
 Nnamdi Madubuike|DT|Questionable|Hamstring|Nov 29
 #BUF
 T.J. Sanders|DT|Questionable|Shoulder|Nov 26
@@ -76,8 +76,9 @@ P.J. Locke|S|Out|Concussion|Dec 7
 Jonathan Mingo|WR|Out|Ankle|Dec 7
 DaRon Bland|CB|IR|Ankle|Dec 27
 #DEN
-Tyler Badie|RB|IR|Thumb|Nov 27
-Sai'vion Jones|DE|Out|Hamstring|Dec 6
+Tyler Badie|RB|Questionable|Thumb|Nov 27
+Caleb Lohner|TE|IR|Foot|Dec 6
+Sai'vion Jones|DE|IR|Hamstring|Dec 25
 Taylor Rapp|S|Out|Quadriceps|Dec 6
 Jonah Elliss|LB|IR|Ankle|Dec 6
 #DET
@@ -172,13 +173,13 @@ Bradley Pinion|P|Questionable|Groin|Nov 29
 Ronnie Harrison Jr.|LB|IR|Hamstring|Nov 29
 Malik Willis|QB|IR|Abdomen|Dec 13
 #MIN
+Harrison Smith|S|Questionable|Thigh|Nov 29
+Myles Price|WR|Questionable|Knee|Nov 29
 Kyler Murray|QB|Questionable|Hamstring|Nov 29
 Jordan Addison|WR|Doubtful|Thumb|Nov 29
 Isaiah Rodgers|CB|Questionable|Quadriceps|Nov 29
-Harrison Smith|S|Questionable|Thigh|Nov 29
 Jalen Redmond|DT|Questionable|Ankle|Nov 29
 Christian Darrisaw|OT|Questionable|Shoulder|Nov 29
-Myles Price|WR|Questionable|Knee|Nov 29
 #NE
 Romeo Doubs|WR|IR|Shoulder|Nov 29
 A.J. Brown|WR|Doubtful|Hamstring|Nov 29
@@ -196,9 +197,9 @@ Asim Richards|OT|Questionable|Knee|Nov 29
 David Edwards|G|Questionable|Hamstring|Nov 29
 Taliese Fuaga|OT|Questionable|Knee|Nov 29
 #NYG
+Abdul Carter|LB|Questionable|Calf|Nov 29
 Isaiah Likely|TE|Questionable|Groin|Nov 29
 Dru Phillips|CB|Questionable|Illness|Nov 29
-Abdul Carter|LB|Questionable|Ankle|Nov 29
 Arvell Reese|LB|Questionable|Back|Nov 29
 Shelby Harris|DT|Questionable|Illness|Nov 29
 Greg Newsome II|CB|IR|Ankle|Dec 28
@@ -210,8 +211,8 @@ T'Vondre Sweat|DT|IR|Knee|Nov 29
 Joseph Ossai|DE|Questionable|Ankle|Nov 29
 Dylan Parham|G|Questionable|Knee|Nov 29
 #PHI
+Dallas Goedert|TE|Out|Shoulder|Dec 6
 Saquon Barkley|RB|Questionable|Neck|Nov 26
-Dallas Goedert|TE|Questionable|Shoulder|Nov 26
 Cooper DeJean|CB|Questionable|Concussion|Dec 6
 Cole Payton|QB|Out|Coach's Decision|Dec 6
 Grant Calcaterra|TE|Out|Coach's Decision|Dec 6

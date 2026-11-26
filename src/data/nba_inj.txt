@@ -1,6 +1,6 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 21:29Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 23:32Z
 #Atlanta Hawks
-Jock Landale|C|Out|hip inflammation|Nov 27
+Jock Landale|C|Out|hip inflammation|Nov 29
 Asa Newell|F|Out|toe|Mar 17
 CJ McCollum|G|Out|calf strain|Dec 19
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
@@ -8,7 +8,7 @@ Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
 Mitchell Robinson|C|Out|illness|Nov 27
 #Brooklyn Nets
-Moritz Wagner|C|Out|knee soreness|Nov 27
+Moritz Wagner|C|Out|knee soreness|Nov 28
 Nolan Traore|G|Out|hamstring strain|Jan 27
 #Charlotte Hornets
 Ryan Kalkbrenner|C|Day-To-Day|hip soreness|Nov 28
@@ -28,21 +28,21 @@ Dereck Lively II|C|Out|foot surgery|Nov 27
 Sergio de Larrea|F|Out|knee strain|Nov 27
 Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Detroit Pistons
+Duncan Robinson|F|Out|quadriceps strain|Nov 29
+Cade Cunningham|G|Out|knee|Nov 29
 Jalen Duren|C|Out|hamstring strain|Nov 30
-Cade Cunningham|G|Day-To-Day|knee|Nov 27
 Ebuka Okorie|G|Out|oblique strain|Dec 13
 Taurean Prince|F|Out|knee surgery|Dec 26
-Duncan Robinson|F|Out|quadriceps strain|Nov 27
 #Golden State Warriors
 Stephen Curry|G|Out|abdomen|Dec 12
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
 #Indiana Pacers
+Larry Nance Jr.|F|Day-To-Day|ankle soreness|Nov 27
+Aaron Nesmith|G|Day-To-Day|foot|Nov 27
 T.J. McConnell|G|Day-To-Day|hamstring|Nov 27
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
-Aaron Nesmith|G|Day-To-Day|foot|Nov 27
-Larry Nance Jr.|F|Day-To-Day|ankle soreness|Nov 27
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
 Bradley Beal|G|Out|knee inflammation|Nov 29
@@ -65,15 +65,15 @@ Donte DiVincenzo|G|Out|achilles surgery|Jan 3
 Jaylen Clark|G|Out|hamstring not specified|Nov 29
 Anthony Edwards|G|Out|knee surgery|Dec 21
 #New Orleans Pelicans
+Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Julian Reese|F|Day-To-Day|knee|Dec 1
-Trendon Watford|F|Out|ankle sprain|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 29
 #New York Knicks
 Miles McBride|G|Day-To-Day|groin soreness|Nov 27
-Andre Drummond|C|Day-To-Day|head not specified|Nov 27
-OG Anunoby|F|Out|calf soreness|Nov 27
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 27
+OG Anunoby|F|Out|calf soreness|Nov 27
+Andre Drummond|C|Day-To-Day|head not specified|Nov 27
 #Oklahoma City Thunder
 Nikola Topic|G|Out|hip strain|Nov 28
 Jaylin Williams|F|Out|back spasms|Nov 28
@@ -90,7 +90,7 @@ Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
 Joel Embiid|C|Day-To-Day|illness|Nov 27
-Jaylen Brown|G|Day-To-Day|hamstring|Nov 27
+Jaylen Brown|G|Out|hamstring|Nov 28
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
 Mark Williams|C|Out|shoulder surgery|Feb 3
