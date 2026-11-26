@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 01:59Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 02:24Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -97,7 +97,7 @@ Zach LaVine|G|Out|knee soreness|Nov 29
 Maxime Raynaud|C|Out|knee dislocated|Dec 2
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
-De'Aaron Fox|G|Day-To-Day|lower leg bruise|Nov 25
+De'Aaron Fox|G|Out|lower leg bruise|Nov 27
 Victor Wembanyama|F|Day-To-Day|back|Nov 25
 Dylan Harper|G|Out|hip soreness|Dec 13
 Tobias Harris|F|Out|calf strain|Dec 3
