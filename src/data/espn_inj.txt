@@ -1,14 +1,16 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 17:32Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 19:43Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
-Jeremiyah Love|RB|IR|Ankle|Dec 6
 Carson Beck|QB|Questionable|Back|Nov 29
+Jeremiyah Love|RB|IR|Ankle|Dec 6
 Jon Gaines II|G|Questionable|Ankle|Nov 29
 Cody Simon|LB|Questionable|Calf|Nov 29
 #ATL
-James Pearce Jr.|LB|Questionable|Back|Nov 29
-Zachariah Branch|WR|Questionable|Hamstring|Nov 29
+Kendal Daniels|LB|Questionable|Achilles|Nov 29
 Jahan Dotson|WR|Questionable|Hamstring|Nov 29
+Za'Darius Smith|DE|Questionable|Knee|Nov 29
+Cameron Thomas|DE|Questionable|Groin|Nov 29
+Zachariah Branch|WR|Questionable|Hamstring|Nov 29
 DeMarcco Hellams|S|Questionable|Foot|Nov 29
 Matthew Bergeron|G|Questionable|Back|Nov 29
 Billy Bowman Jr.|CB|Questionable|Hamstring|Nov 29
@@ -35,6 +37,7 @@ Brady Christensen|G|IR|Hamstring|Feb 15
 Bobby Okereke|LB|Questionable|Foot|Nov 30
 Jaycee Horn|CB|IR|Quadriceps|Dec 6
 #CHI
+Colston Loveland|TE|Out|Knee|Dec 6
 Case Keenum|QB|Out|Coach's Decision|Dec 6
 Isaac Yiadom|CB|Out|Coach's Decision|Dec 6
 Jayden Loving|DT|Out|Coach's Decision|Dec 6
@@ -78,7 +81,6 @@ Ennis Rakestraw Jr.|CB|Out|Shoulder|Dec 6
 Tyrus Wheat|LB|Out|Coach's Decision|Dec 6
 Keith Abney II|CB|Out|Coach's Decision|Dec 6
 Skyler Gill-Howard|DT|IR|Knee|Feb 15
-Cade Mays|C|IR|Ankle|Dec 20
 #GB
 Barryn Sorrell|DE|Questionable|Thumb|Dec 6
 Christian Watson|WR|Questionable|Concussion|Dec 6
@@ -135,16 +137,16 @@ Patrick Johnson|DE|IR|Neck|Nov 29
 Brock Bowers|TE|Questionable|Ankle|Nov 29
 Tim Keenan III|DT|Questionable|Knee|Nov 29
 #LAC
+Deane Leonard|CB|IR|Groin|Dec 27
+Justin Herbert|QB|Questionable|Concussion|Nov 29
 Akheem Mesidor|LB|Questionable|Ankle|Nov 29
 Tuli Tuipulotu|LB|Questionable|Ankle|Nov 29
 Brenen Thompson|WR|Questionable|Hamstring|Nov 29
 Dalvin Tomlinson|DT|Questionable|Knee|Nov 29
 Tarheeb Still|CB|Questionable|Ankle|Nov 29
 Daiyan Henley|LB|Questionable|Knee|Nov 29
-Deane Leonard|CB|Questionable|Groin|Nov 29
 David Njoku|TE|Questionable|Shoulder|Nov 29
 Keaton Mitchell|RB|Questionable|Knee|Nov 29
-Justin Herbert|QB|Questionable|Concussion|Nov 29
 Kendall Williamson|S|Questionable|Calf|Nov 29
 #LAR
 Bill Murray|G|Questionable|Leg|Dec 3
@@ -156,7 +158,6 @@ Coleman Shelton|C|Out|Hamstring|Dec 3
 Desjuan Johnson|DE|Out|Coach's Decision|Dec 3
 Larrell Murchison|DE|Out|Coach's Decision|Dec 3
 Steve Avila|G|Out|Hamstring|Dec 3
-Terrance Ferguson|TE|IR|Ankle|Feb 15
 #MIA
 Jared Wayne|WR|Questionable|Quadriceps|Nov 29
 JuJu Brents|CB|Questionable|Neck|Nov 29
@@ -174,7 +175,6 @@ Jalen Redmond|DT|Questionable|Ankle|Nov 29
 Christian Darrisaw|OT|Questionable|Shoulder|Nov 29
 Myles Price|WR|Questionable|Knee|Nov 29
 Kyler Murray|QB|Questionable|Hamstring|Nov 29
-Tai Felton|WR|Questionable|Hip|Nov 29
 Jordan Addison|WR|Doubtful|Thumb|Nov 29
 #NE
 Walter Rouse|OL|Questionable|Concussion|Nov 29
@@ -214,13 +214,11 @@ Jonathan Jones|CB|Out|Ankle|Dec 6
 Zack Baun|LB|IR|Back|Dec 19
 Dontayvion Wicks|WR|IR|Ankle|Dec 19
 #PIT
-DeShon Elliott|S|Questionable|Knee|Nov 27
-Michael Pittman Jr.|WR|IR|Foot|Nov 27
+Alex Highsmith|LB|Out|Ankle|Dec 6
+Michael Pittman Jr.|WR|Questionable|Foot|Nov 27
+Ben Skowronek|WR|IR|Calf|Dec 27
 Cole Holcomb|LB|Questionable|Heel|Nov 27
 Gennings Dunker|G|IR|Knee|Nov 27
-Nick Herbig|LB|Questionable|Hip|Nov 27
-Ben Skowronek|WR|Questionable|Calf|Nov 27
-Alex Highsmith|LB|Doubtful|Ankle|Nov 27
 #SF
 Austen Pleasants|OT|IR|Knee|Nov 29
 Colton McKivitz|OT|IR|Ankle|Feb 15
