@@ -1,20 +1,20 @@
 {
  "auto": {
-  "at": "2026-11-26T14:34:59+00:00",
+  "at": "2026-11-26T15:43:12+00:00",
   "ok": true,
-  "summary": "NBA finals from ESPN: 73 games kept (0 new), 1594 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 0 games, 0 confirmed / 0 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 5 upcoming games with lines\nNBA refs: 0 summaries checked, 270 games cached\nNBA refs: 0 crews posted today\nliveprops: 0 feed lines merged (240 skipped from other days), 0 total, unmatched names: []\nFirst tip is Infinity min away \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 270 (through 2026-11-25), players 482, slate 0, lines 9, props 0, inj teams 27, prev-season players 0, play log 45, adv 425, qtr games 270, h2h \nsocmgr: 5 new headlines, 17 clubs with manager news\nsoccer: 302 upcoming matches (92 with odds, 302 with estimates, 285 with weather, 83 with referee), 21023 player props, 5923 players\ntrack: no new snapshots \u00b7 graded: NHL plays 17-15, best props NBA 70-91 NFL 31-47 NHL 81-74\nSite check OK \u2014 published (2026-11-26T14:34:26Z)\n"
+  "summary": " 403: Forbidden) \u2014 kept old\nnhllines: PIT not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: SEA not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: SJS not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: STL not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: TBL not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: TOR not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: UTA not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: VAN not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: VGK not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: WPG not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: WSH not read (HTTP Error 403: Forbidden) \u2014 kept old\nnhllines: 0/32 teams\nNHL PP time: 705 players, 0 ESPN requests this run\nNHL data: 0 games today, 15 tomorrow, 32 teams, 712 skaters, 68 goalies, 380 props, 391 finals, 38 requests\nsocmgr: 5 new headlines, 17 clubs with manager news\nsoccer: 315 upcoming matches (101 with odds, 315 with estimates, 285 with weather, 83 with referee), 26707 player props, 5923 players\nUFC: 267 fighters, 2548 past fights, 253 requests\ncfb: 2215 players with logs, 67 focus games, 659 requests\ncbb: 2220 players with logs, 152 focus games, 546 requests\nFutures: nba: 14 futures markets, 260 prices nhl: 1 futures markets, 85 prices nfl: 23 futures markets, 372 prices \ntrack: no new snapshots \u00b7 graded: NHL plays 17-15, best props NBA 70-91 NFL 31-48 NHL 81-74\nSite check OK \u2014 published (2026-11-26T15:41:14Z)\n"
  },
  "site": {
-  "at": "2026-11-26T14:00:30+00:00",
+  "at": "2026-11-26T15:43:12+00:00",
   "ok": true,
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-26T14:34:59+00:00",
+  "at": "2026-11-26T15:43:12+00:00",
   "ok": true,
   "issue": "",
-  "gen": "Thu Nov 26 8:57 AM ET",
-  "odds_at": "2026-11-26T14:22:52+00:00",
+  "gen": "Thu Nov 26 10:40 AM ET",
+  "odds_at": "2026-11-26T15:35:01+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -5210,6 +5210,29 @@
    "site_ok": true,
    "site_issue": "",
    "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-26T15:43:12+00:00",
+   "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [
+    "403: Forbidden) \u2014 kept old",
+    "nhllines: PIT not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: SEA not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: SJS not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: STL not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: TBL not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: TOR not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: UTA not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: VAN not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: VGK not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: WPG not read (HTTP Error 403: Forbidden) \u2014 kept old",
+    "nhllines: WSH not read (HTTP Error 403: Forbidden) \u2014 kept old"
+   ],
    "check_failed": false,
    "published": true
   }
