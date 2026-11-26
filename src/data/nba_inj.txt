@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 14:33Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 15:39Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -28,11 +28,11 @@ Dereck Lively II|C|Out|foot surgery|Nov 27
 Sergio de Larrea|F|Out|knee strain|Nov 27
 Tarik Biberovic|F|Out|heel inflammation|Nov 27
 #Detroit Pistons
+Jalen Duren|C|Out|hamstring strain|Nov 30
 Cade Cunningham|G|Day-To-Day|knee|Nov 27
 Ebuka Okorie|G|Out|oblique strain|Dec 13
 Taurean Prince|F|Out|knee surgery|Dec 26
 Duncan Robinson|F|Out|quadriceps strain|Nov 27
-Jalen Duren|C|Out|hamstring strain|Nov 30
 #Golden State Warriors
 Stephen Curry|G|Out|abdomen|Dec 12
 Kristaps Porzingis|C|Out|illness|Jan 2
