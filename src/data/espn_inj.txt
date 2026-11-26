@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 15:39Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 17:28Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -35,11 +35,13 @@ Brady Christensen|G|IR|Hamstring|Feb 15
 Bobby Okereke|LB|Questionable|Foot|Nov 30
 Jaycee Horn|CB|IR|Quadriceps|Dec 6
 #CHI
-D'Marco Jackson|LB|Questionable|Elbow|Nov 26
-Tyrique Stevenson Sr.|CB|Questionable|Groin|Nov 26
+Case Keenum|QB|Out|Coach's Decision|Dec 6
+Isaac Yiadom|CB|Out|Coach's Decision|Dec 6
+Jayden Loving|DT|Out|Coach's Decision|Dec 6
+Jordan McFadden|G|Out|Coach's Decision|Dec 6
+Elijah Hicks|S|Out|Concussion|Dec 6
 Kyler Gordon|CB|Out|Shoulder|Dec 6
 Roschon Johnson|RB|Out|Ankle|Dec 6
-Elijah Hicks|S|Out|Concussion|Dec 6
 #CIN
 Dalton Risner|G|Questionable|Knee|Nov 29
 Jalen Davis|CB|IR|Hamstring|Nov 29
@@ -70,10 +72,12 @@ Taylor Rapp|S|Out|Quadriceps|Dec 6
 Jonah Elliss|LB|IR|Ankle|Dec 6
 Tyler Badie|RB|IR|Thumb|Nov 27
 #DET
-Skyler Gill-Howard|DT|IR|Knee|Feb 15
+DJ Wonnum|LB|Out|Back|Dec 6
+Chuck Clark|S|Out|Hamstring|Dec 6
 Ennis Rakestraw Jr.|CB|Out|Shoulder|Dec 6
-Chuck Clark|S|Questionable|Hamstring|Nov 26
-DJ Wonnum|LB|Questionable|Back|Nov 26
+Tyrus Wheat|LB|Out|Coach's Decision|Dec 6
+Keith Abney II|CB|Out|Coach's Decision|Dec 6
+Skyler Gill-Howard|DT|IR|Knee|Feb 15
 Cade Mays|C|IR|Ankle|Dec 20
 #GB
 Barryn Sorrell|DE|Questionable|Thumb|Dec 6
@@ -154,7 +158,6 @@ Larrell Murchison|DE|Out|Coach's Decision|Dec 3
 Steve Avila|G|Out|Hamstring|Dec 3
 Terrance Ferguson|TE|IR|Ankle|Feb 15
 Davante Adams|WR|IR|Hamstring|Dec 13
-Puka Nacua|WR|IR|Knee - MCL|Feb 15
 #MIA
 Jared Wayne|WR|Questionable|Quadriceps|Nov 29
 JuJu Brents|CB|Questionable|Neck|Nov 29
