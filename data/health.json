@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-26T21:59:40+00:00",
-  "ok": false,
-  "summary": "nfl-update: 11 lines refreshed, 1 new finals (weeks [11, 12])\nnfl-lines-next: 12 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 12 \u00b7 6 indoors, 9 with a forecast\nnflrefs: 165 games (1 new), 21 referees, 2 of this week's crews posted\n234 players, 32 teams\nnfl-inj: 234 players\nnfl-qtr: 165 games with quarter scores\nnflbox: 1 new ESPN box scores, 1 waiting for nflverse\nsocmgr: 5 new headlines, 15 clubs with manager news\nsoccer: 298 upcoming matches (78 with odds, 298 with estimates, 258 with weather, 84 with referee), 20281 player props, 5971 players\ntrack: no new snapshots \u00b7 graded: NHL plays 17-15, best props NBA 70-91 NFL 31-48 NHL 81-74\nSITE CHECK FAILED \u2014 live site left unchanged\n"
+  "at": "2026-11-26T22:55:11+00:00",
+  "ok": true,
+  "summary": "nfl-update: 11 lines refreshed, 1 new finals (weeks [11, 12])\nnfl-lines-next: 10 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 12 \u00b7 6 indoors, 9 with a forecast\nnflrefs: 165 games (1 new), 21 referees, 2 of this week's crews posted\n236 players, 32 teams\nnfl-inj: 236 players\nnfl-qtr: 165 games with quarter scores\nnflbox: 1 new ESPN box scores, 1 waiting for nflverse\nsocmgr: 5 new headlines, 15 clubs with manager news\nsoccer: 294 upcoming matches (79 with odds, 294 with estimates, 254 with weather, 80 with referee), 20366 player props, 5976 players\ntrack: cfb pick'em: locked 1 \u00b7 graded: NHL plays 17-15, best props NBA 70-91 NFL 31-48 NHL 81-74\nSite check OK \u2014 published (2026-11-26T22:54:39Z)\n"
  },
  "site": {
   "at": "2026-11-26T21:34:13+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-26T21:59:40+00:00",
+  "at": "2026-11-26T22:55:11+00:00",
   "ok": true,
   "issue": "",
   "gen": "Thu Nov 26 4:31 PM ET",
-  "odds_at": "2026-11-26T21:25:44+00:00",
+  "odds_at": "2026-11-26T22:29:32+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -5327,6 +5327,16 @@
    ],
    "check_failed": true,
    "published": false
+  },
+  {
+   "at": "2026-11-26T22:55:11+00:00",
+   "what": "nfl,soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
   }
  ]
 }
