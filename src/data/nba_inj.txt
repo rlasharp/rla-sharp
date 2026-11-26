@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 04:41Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 05:38Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
@@ -11,12 +11,12 @@ Mitchell Robinson|C|Out|illness|Nov 27
 Moritz Wagner|C|Out|knee soreness|Nov 27
 Nolan Traore|G|Out|hamstring strain|Jan 27
 #Charlotte Hornets
-Ryan Kalkbrenner|C|Out|hip soreness|Nov 28
+Ryan Kalkbrenner|C|Day-To-Day|hip soreness|Nov 28
 Grayson Allen|G|Out|concussion|Nov 28
 Dennis Schroder|G|Out|hamstring strain|Dec 12
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 #Chicago Bulls
-Jalen Smith|F|Out|illness|Nov 28
+Jalen Smith|F|Day-To-Day|illness|Nov 28
 Norman Powell|G|Out|hamstring strain|Nov 28
 Caleb Wilson|F|Out|hand|Dec 13
 #Cleveland Cavaliers
@@ -67,9 +67,9 @@ Trendon Watford|F|Out|ankle sprain|Nov 27
 Bennedict Mathurin|G|Out|foot plantar fasciitis|Nov 27
 Dejounte Murray|G|Out|ankle|Nov 27
 #New York Knicks
+Miles McBride|G|Day-To-Day|groin soreness|Nov 27
 Andre Drummond|C|Day-To-Day|head not specified|Nov 27
 OG Anunoby|F|Out|calf soreness|Nov 27
-Miles McBride|G|Out|groin soreness|Nov 27
 Jordan Clarkson|G|Out|foot plantar fasciitis|Nov 27
 #Oklahoma City Thunder
 Nikola Topic|G|Out|hip strain|Nov 28
@@ -96,7 +96,7 @@ Vit Krejci|G|Out|ankle|Jan 12
 Ja Morant|G|Out|hamstring not specified|Dec 1
 Shaedon Sharpe|G|Out|knee surgery|Mar 2
 #Sacramento Kings
-Zach LaVine|G|Out|knee soreness|Nov 29
+Zach LaVine|G|Day-To-Day|knee soreness|Nov 29
 Maxime Raynaud|C|Out|knee dislocated|Dec 2
 Ben Simmons|G|Out|achilles surgery|Oct 1
 #San Antonio Spurs
