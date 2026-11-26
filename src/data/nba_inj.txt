@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 11:55Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-26 13:10Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 27
 Asa Newell|F|Out|toe|Mar 17
