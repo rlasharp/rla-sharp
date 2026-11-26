@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 09:47Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 11:32Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
