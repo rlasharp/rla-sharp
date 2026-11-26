@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 11:32Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 13:55Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -143,6 +143,7 @@ Keaton Mitchell|RB|Questionable|Knee|Nov 29
 Justin Herbert|QB|Questionable|Concussion|Nov 29
 Kendall Williamson|S|Questionable|Calf|Nov 29
 #LAR
+Bill Murray|G|Questionable|Leg|Dec 3
 Tyler Higbee|TE|Questionable|Chest|Dec 3
 Davis Allen|TE|Questionable|Ankle|Dec 3
 Ty Simpson|QB|Out|Coach's Decision|Dec 3
