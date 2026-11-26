@@ -17,7 +17,7 @@ const TEAMS = {
 const TEAM_IDS = Object.keys(TEAMS);
 // Week 12 slate (ESPN schedule, kickoff times ET; set up automatically by tools/auto_espn.py nfl-roll). wp = home win probability from feed (null = not provided)
 const SLATE = [
- {id:1,away:"GB",home:"LAR",when:"Wed Nov 25 · 8:00 PM",wp:null},
+ {id:1,away:"GB",home:"LAR",final:[13,26],when:"Wed Nov 25 · 8:00 PM",wp:null},
  {id:2,away:"CHI",home:"DET",when:"Thu Nov 26 · 1:00 PM",wp:null,tv:"TNF"},
  {id:3,away:"PHI",home:"DAL",when:"Thu Nov 26 · 4:30 PM",wp:null,tv:"TNF"},
  {id:4,away:"KC",home:"BUF",when:"Thu Nov 26 · 8:20 PM",wp:null,tv:"TNF"},
@@ -38,10 +38,10 @@ const SLATE = [
 const LINES = {
  1:{sp:-2.5,ml:[119,-140],tot:43.5},
  2:{sp:1.5,ml:[-120,102],tot:55.5},
- 3:{sp:-8.5,ml:[364,-471],tot:48.5},
- 4:{sp:-3,ml:[125,-148],tot:46.5},
+ 3:{sp:-8.5,ml:[349,-448],tot:48.5},
+ 4:{sp:-3,ml:[125,-148],tot:45.5},
  5:{sp:3.5,ml:[-202,169],tot:36.5},
- 7:{sp:6,ml:[-286,235],tot:41.5},
+ 7:{sp:6,ml:[-287,236],tot:41.5},
  8:{sp:4.5,ml:[-216,180],tot:40.5},
  9:{sp:-7,ml:[251,-309],tot:41.5},
  10:{sp:-14.5,ml:[730,-1160],tot:49.5},

@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 03:42Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 04:41Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Jeremiyah Love|RB|IR|Ankle|Dec 6
@@ -65,8 +65,8 @@ Jake Ferguson|TE|Out|Knee|Dec 7
 DaRon Bland|CB|IR|Ankle|Dec 27
 Tyler Booker|G|Out|Ankle|Dec 7
 #DEN
-Taylor Rapp|S|Out|Quadriceps|Dec 6
 Sai'vion Jones|DE|Out|Hamstring|Dec 6
+Taylor Rapp|S|Out|Quadriceps|Dec 6
 Jonah Elliss|LB|IR|Ankle|Dec 6
 Tyler Badie|RB|IR|Thumb|Nov 27
 #DET
@@ -76,6 +76,7 @@ Chuck Clark|S|Questionable|Hamstring|Nov 26
 DJ Wonnum|LB|Questionable|Back|Nov 26
 Cade Mays|C|IR|Ankle|Dec 20
 #GB
+Barryn Sorrell|DE|Questionable|Thumb|Nov 25
 Christian Watson|WR|Out|Concussion|Dec 6
 Zaire Franklin|LB|Out|Shin|Dec 6
 Donovan Jennings|G|Out|Coach's Decision|Dec 6
@@ -124,11 +125,11 @@ Kenneth Walker III|RB|Out|Groin|Dec 3
 Ben VanSumeren|FB|IR|Knee|Dec 27
 Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
+Tonka Hemingway|DT|Questionable|Upper Body|Nov 29
+Adam Butler|DT|Questionable|Concussion|Nov 29
 Patrick Johnson|DE|IR|Neck|Nov 29
 Brock Bowers|TE|Questionable|Ankle|Nov 29
-Tonka Hemingway|DT|Questionable|Upper Body|Nov 29
 Tim Keenan III|DT|Questionable|Knee|Nov 29
-Adam Butler|DT|Questionable|Concussion|Nov 29
 #LAC
 Akheem Mesidor|LB|Questionable|Ankle|Nov 29
 Tuli Tuipulotu|LB|Questionable|Ankle|Nov 29
@@ -142,6 +143,7 @@ Keaton Mitchell|RB|Questionable|Knee|Nov 29
 Justin Herbert|QB|Questionable|Concussion|Nov 29
 Kendall Williamson|S|Questionable|Calf|Nov 29
 #LAR
+Tyler Higbee|TE|Questionable|Chest|Dec 3
 Davis Allen|TE|Questionable|Ankle|Dec 3
 Ty Simpson|QB|Out|Coach's Decision|Dec 3
 Darryl Peterson III|LB|Out|Coach's Decision|Dec 3
@@ -172,11 +174,11 @@ Kyler Murray|QB|Questionable|Hamstring|Nov 29
 Tai Felton|WR|Questionable|Hip|Nov 29
 Jordan Addison|WR|Doubtful|Thumb|Nov 29
 #NE
+Walter Rouse|OL|Questionable|Concussion|Nov 29
 Carlton Davis III|CB|Questionable|Knee|Nov 29
 Reggie Gilliam|FB|Questionable|Knee|Nov 29
 Romeo Doubs|WR|IR|Shoulder|Nov 29
 A.J. Brown|WR|Doubtful|Hamstring|Nov 29
-Walter Rouse|OL|Questionable|Concussion|Nov 29
 Alijah Vera-Tucker|G|IR|Hamstring|Nov 29
 Drake Maye|QB|Out|Lower Leg|Dec 27
 Dre'Mont Jones|DE|Questionable|Undisclosed|Nov 29
