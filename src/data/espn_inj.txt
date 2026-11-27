@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-26 23:42Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 00:40Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -23,12 +23,14 @@ Olaivavega Ioane|G|Questionable|Hand|Nov 29
 Chidobe Awuzie|CB|Questionable|Back|Nov 29
 Nnamdi Madubuike|DT|Questionable|Hamstring|Nov 29
 #BUF
-T.J. Sanders|DT|Questionable|Shoulder|Nov 26
-Dorian Williams|LB|Questionable|Calf|Nov 26
-Christian Benford|CB|Questionable|Groin|Nov 26
-Dalton Kincaid|TE|Questionable|Thumb|Nov 26
-O'Cyrus Torrence|G|Questionable|Ankle|Nov 26
+Christian Benford|CB|Out|Groin|Dec 6
+Jalon Kilgore|S|Out|Coach's Decision|Dec 6
+Jude Bowry|OT|Out|Coach's Decision|Dec 6
+Mike Danna|DE|Out|Coach's Decision|Dec 6
+Greg Gaines|DT|Out|Coach's Decision|Dec 6
+Skyler Bell|WR|Out|Coach's Decision|Dec 6
 #CAR
+Bobby Okereke|LB|Questionable|Foot|Nov 30
 Mitchell Evans|TE|Questionable|Achilles|Nov 30
 Tommy Tremble|TE|Questionable|Knee|Nov 30
 Jonathon Brooks|RB|IR|Groin|Nov 30
@@ -40,7 +42,6 @@ Patrick Jones II|LB|Questionable|Ankle|Nov 30
 Tetairoa McMillan|WR|Questionable|Foot|Nov 30
 Thomas Incoom|LB|IR|Calf|Nov 30
 Brady Christensen|G|IR|Hamstring|Feb 15
-Bobby Okereke|LB|Questionable|Foot|Nov 30
 Jaycee Horn|CB|IR|Quadriceps|Dec 6
 #CHI
 Caleb Williams|QB|Questionable|Abdomen|Dec 6
@@ -127,13 +128,14 @@ Dennis Gardeck|LB|Questionable|Neck|Nov 29
 Matt Dickerson|DE|Questionable|Neck|Nov 29
 Robert Hainsey|C|Questionable|Knee|Nov 29
 #KC
-Peter Woods|DT|Questionable|Neck|Nov 26
+Garrett Nussmeier|QB|Out|Coach's Decision|Dec 3
+Diego Pounds|OT|Out|Coach's Decision|Dec 3
+Melvin Smith Jr.|CB|Out|Coach's Decision|Dec 3
+Kenneth Walker III|RB|Out|Groin|Dec 3
+Marcus Harris|DT|Out|Coach's Decision|Dec 3
 Omarr Norman-Lott|DT|Out|Knee|Dec 3
 Jaylon Moore|OT|Out|Ankle|Dec 3
-Noah Gray|TE|Questionable|Ribs|Nov 26
-Kenneth Walker III|RB|Out|Groin|Dec 3
 Ben VanSumeren|FB|IR|Knee|Dec 27
-Jared Wiley|TE|IR|Ankle|Dec 21
 #LV
 Brock Bowers|TE|Questionable|Ankle|Nov 29
 Tonka Hemingway|DT|Questionable|Upper Body|Nov 29
@@ -211,6 +213,7 @@ T'Vondre Sweat|DT|IR|Knee|Nov 29
 Joseph Ossai|DE|Questionable|Ankle|Nov 29
 Dylan Parham|G|Questionable|Knee|Nov 29
 #PHI
+Marcus Epps|S|Out|Foot|Dec 6
 Dallas Goedert|TE|Out|Shoulder|Dec 6
 Saquon Barkley|RB|Questionable|Neck|Nov 26
 Cooper DeJean|CB|Questionable|Concussion|Dec 6
@@ -220,7 +223,6 @@ Ajani Cornelius|OT|Out|Coach's Decision|Dec 6
 AJ Epenesa|DE|Out|Coach's Decision|Dec 6
 Arnold Ebiketie|LB|Out|Oblique|Dec 6
 Jonathan Jones|CB|Out|Ankle|Dec 6
-Zack Baun|LB|IR|Back|Dec 19
 #PIT
 Alex Highsmith|LB|Out|Ankle|Dec 6
 Ben Skowronek|WR|IR|Calf|Dec 27
