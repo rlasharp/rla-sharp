@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 04:50Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 05:39Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -129,7 +129,8 @@ Dennis Gardeck|LB|Questionable|Neck|Nov 29
 Matt Dickerson|DE|Questionable|Neck|Nov 29
 Robert Hainsey|C|Questionable|Knee|Nov 29
 #KC
-Jalen Royals|WR|Out|Ankle|Dec 3
+Trey Smith|G|Questionable|Ankle|Dec 3
+Jalen Royals|WR|Questionable|Ankle|Dec 3
 Garrett Nussmeier|QB|Out|Coach's Decision|Dec 3
 Diego Pounds|OT|Out|Coach's Decision|Dec 3
 Melvin Smith Jr.|CB|Out|Coach's Decision|Dec 3
