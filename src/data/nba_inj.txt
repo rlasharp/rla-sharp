@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-27 21:33Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-27 22:40Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 29
 Asa Newell|F|Out|toe|Mar 17
@@ -11,8 +11,8 @@ Mitchell Robinson|C|Out|illness|Nov 29
 Moritz Wagner|C|Out|knee soreness|Nov 28
 Nolan Traore|G|Out|hamstring strain|Jan 27
 #Charlotte Hornets
-Ryan Kalkbrenner|C|Day-To-Day|hip soreness|Nov 28
 Grayson Allen|G|Out|concussion|Nov 28
+Ryan Kalkbrenner|C|Day-To-Day|hip soreness|Nov 28
 Dennis Schroder|G|Out|hamstring strain|Dec 12
 Kon Knueppel|G|Out|hamstring strain|Dec 12
 #Chicago Bulls
@@ -40,6 +40,8 @@ Stephen Curry|G|Out|abdomen|Dec 12
 Kristaps Porzingis|C|Out|illness|Jan 2
 Moses Moody|G|Out|knee surgery|Dec 1
 Jimmy Butler III|F|Out|knee surgery|Jan 2
+#Houston Rockets
+Steven Adams|C|Day-To-Day|knee|Nov 28
 #Indiana Pacers
 Larry Nance Jr.|F|Day-To-Day|ankle soreness|Nov 27
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
@@ -58,7 +60,7 @@ Jerami Grant|F|Out|calf not specified|Dec 12
 GG Jackson|F|Out|foot surgery|Jan 18
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Miami Heat
-Giannis Antetokounmpo|F|Day-To-Day|groin|Nov 27
+Giannis Antetokounmpo|F|Day-To-Day|undisclosed|
 #Milwaukee Bucks
 Kasparas Jakucionis|G|Out|ankle|Nov 28
 #Minnesota Timberwolves
