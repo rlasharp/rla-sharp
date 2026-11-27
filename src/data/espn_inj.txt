@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 02:30Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 03:40Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -68,7 +68,7 @@ Elgton Jenkins|C|Questionable|Knee|Nov 29
 Austin Barber|OT|Questionable|Knee|Nov 29
 Derek Barnett|DE|Questionable|Hamstring|Nov 29
 #DAL
-Quinnen Williams|DT|Questionable|Back|Nov 26
+Quinnen Williams|DT|Questionable|Back|Dec 7
 Jake Ferguson|TE|Out|Knee|Dec 7
 Tyler Booker|G|Out|Ankle|Dec 7
 Jonathan Bullard|DT|Out|Coach's Decision|Dec 7
@@ -79,8 +79,8 @@ Jonathan Mingo|WR|Out|Ankle|Dec 7
 DaRon Bland|CB|IR|Ankle|Dec 27
 #DEN
 Sai'vion Jones|DE|IR|Hamstring|Dec 25
-Tyler Badie|RB|Questionable|Thumb|Nov 27
 Caleb Lohner|TE|IR|Foot|Dec 6
+Tyler Badie|RB|Questionable|Thumb|Nov 27
 Taylor Rapp|S|Out|Quadriceps|Dec 6
 Jonah Elliss|LB|IR|Ankle|Dec 6
 #DET
@@ -129,6 +129,7 @@ Dennis Gardeck|LB|Questionable|Neck|Nov 29
 Matt Dickerson|DE|Questionable|Neck|Nov 29
 Robert Hainsey|C|Questionable|Knee|Nov 29
 #KC
+Jalen Royals|WR|Questionable|Ankle|Nov 26
 Garrett Nussmeier|QB|Out|Coach's Decision|Dec 3
 Diego Pounds|OT|Out|Coach's Decision|Dec 3
 Melvin Smith Jr.|CB|Out|Coach's Decision|Dec 3
@@ -215,9 +216,10 @@ T'Vondre Sweat|DT|IR|Knee|Nov 29
 Joseph Ossai|DE|Questionable|Ankle|Nov 29
 Dylan Parham|G|Questionable|Knee|Nov 29
 #PHI
+DeVonta Smith|WR|Questionable|Back|Dec 6
+Dallas Goedert|TE|Questionable|Shoulder|Dec 6
 Gabe Hall|DT|Questionable|Wrist|Nov 26
 Marcus Epps|S|Out|Foot|Dec 6
-Dallas Goedert|TE|Questionable|Shoulder|Dec 6
 Saquon Barkley|RB|Questionable|Neck|Dec 6
 Cooper DeJean|CB|Questionable|Concussion|Dec 6
 Cole Payton|QB|Out|Coach's Decision|Dec 6
