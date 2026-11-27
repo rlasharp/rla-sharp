@@ -4,7 +4,7 @@
          (WIN DAILY odds comparison — Week 9 page not posted yet on Nov 2; added when available). US books — availability varies; in Quebec the
          only provincially regulated sportsbook is Loto-Québec's Mise-o-jeu.
    PROP_MOVE: player-prop line moves where both the opening and current number were published. */
-const MARKET_ASOF="Thu Nov 26, 8 PM ET";
+const MARKET_ASOF="Thu Nov 26, 9 PM ET";
 const MOVE={
  1:{open:{sp:-4.5,tot:49.5},now:{sp:-2.5,tot:43.5,ml:[119,-140]}},
  2:{open:{sp:4.5,tot:48.5},now:{sp:1.5,tot:56.5,ml:[-115,-103]}},

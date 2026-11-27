@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 02:00Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 02:30Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -78,9 +78,9 @@ P.J. Locke|S|Out|Concussion|Dec 7
 Jonathan Mingo|WR|Out|Ankle|Dec 7
 DaRon Bland|CB|IR|Ankle|Dec 27
 #DEN
+Sai'vion Jones|DE|IR|Hamstring|Dec 25
 Tyler Badie|RB|Questionable|Thumb|Nov 27
 Caleb Lohner|TE|IR|Foot|Dec 6
-Sai'vion Jones|DE|IR|Hamstring|Dec 25
 Taylor Rapp|S|Out|Quadriceps|Dec 6
 Jonah Elliss|LB|IR|Ankle|Dec 6
 #DET
@@ -208,9 +208,9 @@ Arvell Reese|LB|Questionable|Back|Nov 29
 Shelby Harris|DT|Questionable|Illness|Nov 29
 Greg Newsome II|CB|IR|Ankle|Dec 28
 #NYJ
+Harrison Phillips|DT|Questionable|Ankle|Nov 29
 Omar Cooper Jr.|WR|Questionable|Ankle|Nov 29
 David Onyemata|DT|IR|Abdomen|Nov 29
-Harrison Phillips|DT|Questionable|Ankle|Nov 29
 T'Vondre Sweat|DT|IR|Knee|Nov 29
 Joseph Ossai|DE|Questionable|Ankle|Nov 29
 Dylan Parham|G|Questionable|Knee|Nov 29
@@ -245,6 +245,7 @@ Siran Neal|S|Questionable|Knee|Nov 29
 Sam Okuayinonu|DT|IR|Foot|Dec 17
 De'Zhaun Stribling|WR|IR|Ankle|Dec 13
 #SEA
+Anthony Bradford|G|Questionable|Knee|Nov 29
 Drew Lock|QB|Questionable|Elbow|Nov 29
 Uchenna Nwosu|LB|Questionable|Ankle|Nov 29
 Patrick O'Connell|LB|Questionable|Toe|Nov 29
@@ -252,7 +253,6 @@ Jaxon Smith-Njigba|WR|Questionable|Ankle|Nov 29
 Ernest Jones IV|LB|Questionable|Knee|Nov 29
 Quenton Nelson|G|Out|Knee|Dec 7
 Abraham Lucas|OT|Out|Ankle|Dec 7
-Anthony Bradford|G|Questionable|Knee|Nov 29
 DeMarcus Lawrence|LB|Questionable|Shoulder|Nov 29
 Jalen Milroe|QB|Questionable|Illness|Nov 29
 Leonard Williams|DT|Questionable|Shoulder|Nov 29
