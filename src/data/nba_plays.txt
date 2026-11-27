@@ -45,3 +45,5 @@
 2026-11-20|Collin Gillespie|reb|u|3.5|-163|DraftKings|PHX|UTAH
 2026-11-22|Draymond Green|pts|u|5.5|-142|DraftKings|GS|BOS
 2026-11-22|Aday Mara|pts|u|12.5|-130|Fanatics|OKC|MIA
+2026-11-27|Isaiah Joe|ra|u|5.5|-130|Unibet|DET|MIL
+2026-11-27|Ayo Dosunmu|ast|u|5.5|-140|DraftKings|MIN|MEM
