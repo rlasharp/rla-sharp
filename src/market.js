@@ -4,21 +4,21 @@
          (WIN DAILY odds comparison — Week 9 page not posted yet on Nov 2; added when available). US books — availability varies; in Quebec the
          only provincially regulated sportsbook is Loto-Québec's Mise-o-jeu.
    PROP_MOVE: player-prop line moves where both the opening and current number were published. */
-const MARKET_ASOF="Fri Nov 27, 12 AM ET";
+const MARKET_ASOF="Fri Nov 27, 3 AM ET";
 const MOVE={
  1:{open:{sp:-4.5,tot:49.5},now:{sp:-2.5,tot:43.5,ml:[119,-140]}},
  2:{open:{sp:4.5,tot:48.5},now:{sp:1.5,tot:56.5,ml:[-115,-103]}},
  3:{open:{sp:-3.5,tot:41.5},now:{sp:-8.5,tot:49.5,ml:[368,-477]}},
  4:{open:{sp:1.5,tot:52.5},now:{sp:-3,tot:46.5,ml:[131,-155]}},
- 5:{open:{sp:3,tot:42.5},now:{sp:4.5,tot:37.5,ml:[-248,205]}},
+ 5:{open:{sp:3,tot:42.5},now:{sp:4.5,tot:37.5,ml:[-247,205]}},
  6:{open:{sp:6.5,tot:47.5},now:{sp:-10,tot:49.5,ml:[423,-562]}},
  7:{open:{sp:4.5,tot:50.5},now:{sp:6,tot:41.5,ml:[-287,236]}},
  8:{open:{sp:-5.5,tot:44.5},now:{sp:5.5,tot:39.5,ml:[-246,204]}},
- 9:{open:{sp:-9.5,tot:41.5},now:{sp:-7,tot:41.5,ml:[252,-310]}},
+ 9:{open:{sp:-9.5,tot:41.5},now:{sp:-7,tot:41.5,ml:[253,-311]}},
  10:{open:{sp:-1.5,tot:43.5},now:{sp:-14.5,tot:49.5,ml:[780,-1260]}},
  11:{open:{sp:-8.5,tot:46.5},now:{sp:-6.5,tot:47.5,ml:[267,-332]}},
  12:{open:{sp:-13.5,tot:45.5},now:{sp:2.5,tot:35.5,ml:[-137,115]}},
- 13:{open:{sp:-1.5,tot:46.5},now:{sp:6.5,tot:41.5,ml:[-350,281]}},
+ 13:{open:{sp:-1.5,tot:46.5},now:{sp:6.5,tot:41.5,ml:[-351,282]}},
  14:{open:{sp:-3.5,tot:48.5},now:{sp:-3,tot:43.5,ml:[129,-152]}},
  15:{open:{sp:3,tot:48.5},now:{sp:-4.5,tot:40.5,ml:[201,-244]}}};
 // [awayLine,price,book],[homeLine,price,book] · ml [price,book] x2 · tot [line,price,book] over/under
