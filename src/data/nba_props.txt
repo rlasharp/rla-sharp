@@ -1,7 +1,7 @@
 # player|market|line|over price|under price|book[|bestOver|bestOverBook|bestUnder|bestUnderBook]
 # markets: pts reb ast 3pm 3pa pa(pts+ast) pra pr(pts+reb) ra(reb+ast) blk stl
 # day: 2026-11-27
-# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of 2026-11-27T10:56:17+00:00 + covers.com/FanDuel pulls.
+# Only real posted sportsbook lines (main lines, same book for over and under). Source: PropLine live feed as of 2026-11-27T11:57:57+00:00 + covers.com/FanDuel pulls.
 Aaron Gordon|3pm|1.5|158|-210|DraftKings|||-174|FanDuel
 Aaron Gordon|ast|2.5|-103|-128|DraftKings|114|FanDuel||
 Aaron Gordon|pa|15.5|-123|-107|DraftKings|||100|FanDuel
