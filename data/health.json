@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-27T00:41:00+00:00",
+  "at": "2026-11-27T01:15:26+00:00",
   "ok": true,
-  "summary": "nfl-update: 11 lines refreshed, 0 new finals (weeks [11, 12])\nnfl-lines-next: 10 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 12 \u00b7 6 indoors, 9 with a forecast\nnflrefs: 165 games (0 new), 21 referees, 2 of this week's crews posted\n239 players, 32 teams\nnfl-inj: 239 players\nnfl-qtr: 165 games with quarter scores\nnflbox: 0 new ESPN box scores, 1 waiting for nflverse\ntrack: no new snapshots \u00b7 graded: NHL plays 17-15, best props NBA 70-91 NFL 31-48 NHL 81-74\nSite check OK \u2014 published (2026-11-27T00:40:23Z)\n"
+  "summary": "nfl-update: 11 lines refreshed, 0 new finals (weeks [11, 12])\nnfl-lines-next: 10 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 12 \u00b7 6 indoors, 9 with a forecast\nnflrefs: 165 games (0 new), 21 referees, 2 of this week's crews posted\n240 players, 32 teams\nnfl-inj: 240 players\nnfl-qtr: 165 games with quarter scores\nnflbox: 0 new ESPN box scores, 1 waiting for nflverse\ntrack: no new snapshots \u00b7 graded: NHL plays 17-15, best props NBA 70-91 NFL 31-48 NHL 81-74\nSite check OK \u2014 published (2026-11-27T01:14:52Z)\n"
  },
  "site": {
   "at": "2026-11-26T23:37:30+00:00",
@@ -10,7 +10,7 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-27T00:41:00+00:00",
+  "at": "2026-11-27T01:15:26+00:00",
   "ok": true,
   "issue": "",
   "gen": "Thu Nov 26 6:34 PM ET",
@@ -5360,6 +5360,16 @@
   },
   {
    "at": "2026-11-27T00:41:00+00:00",
+   "what": "nfl",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-27T01:15:26+00:00",
    "what": "nfl",
    "ok": true,
    "site_ok": true,
