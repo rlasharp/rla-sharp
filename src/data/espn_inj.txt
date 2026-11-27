@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 00:40Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 01:14Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -137,8 +137,8 @@ Omarr Norman-Lott|DT|Out|Knee|Dec 3
 Jaylon Moore|OT|Out|Ankle|Dec 3
 Ben VanSumeren|FB|IR|Knee|Dec 27
 #LV
-Brock Bowers|TE|Questionable|Ankle|Nov 29
 Tonka Hemingway|DT|Questionable|Upper Body|Nov 29
+Brock Bowers|TE|Questionable|Ankle|Nov 29
 Adam Butler|DT|Questionable|Concussion|Nov 29
 Patrick Johnson|DE|IR|Neck|Nov 29
 Tim Keenan III|DT|Questionable|Knee|Nov 29
@@ -213,6 +213,7 @@ T'Vondre Sweat|DT|IR|Knee|Nov 29
 Joseph Ossai|DE|Questionable|Ankle|Nov 29
 Dylan Parham|G|Questionable|Knee|Nov 29
 #PHI
+Gabe Hall|DT|Questionable|Wrist|Nov 26
 Marcus Epps|S|Out|Foot|Dec 6
 Dallas Goedert|TE|Out|Shoulder|Dec 6
 Saquon Barkley|RB|Questionable|Neck|Nov 26
@@ -256,10 +257,10 @@ Leonard Williams|DT|Questionable|Shoulder|Nov 29
 George Holani|RB|IR|Knee - MCL|Dec 25
 Jarran Reed|DT|Questionable|Toe|Nov 29
 #TB
-Jalen McMillan|WR|IR|Knee - PCL|Nov 30
-Josiah Trotter|LB|Questionable|Oblique|Nov 30
-Christian Rozeboom|LB|IR|Finger|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 30
+Josiah Trotter|LB|Questionable|Oblique|Nov 30
+Jalen McMillan|WR|IR|Knee - PCL|Nov 30
+Christian Rozeboom|LB|IR|Finger|Nov 30
 Elijah Simmons|DT|Questionable|Concussion|Nov 30
 Benjamin Morrison|CB|Questionable|Hamstring|Nov 30
 Jacob Parrish|CB|Questionable|Back|Nov 30
