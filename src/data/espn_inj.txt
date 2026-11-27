@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 09:46Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 11:30Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
