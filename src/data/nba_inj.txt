@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-27 17:15Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-27 17:34Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 29
 Asa Newell|F|Out|toe|Mar 17
@@ -6,7 +6,7 @@ CJ McCollum|G|Out|calf strain|Dec 19
 Mouhamed Gueye|F|Out|foot fracture|Dec 12
 Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
-Mitchell Robinson|C|Out|illness|Nov 27
+Mitchell Robinson|C|Out|illness|Nov 29
 #Brooklyn Nets
 Moritz Wagner|C|Out|knee soreness|Nov 28
 Nolan Traore|G|Out|hamstring strain|Jan 27

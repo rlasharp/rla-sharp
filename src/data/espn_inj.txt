@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 15:36Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 17:34Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -44,8 +44,8 @@ Thomas Incoom|LB|IR|Calf|Nov 30
 Brady Christensen|G|IR|Hamstring|Feb 15
 Jaycee Horn|CB|IR|Quadriceps|Dec 6
 #CHI
+Colston Loveland|TE|Doubtful|Knee|Dec 6
 Caleb Williams|QB|Questionable|Abdomen|Dec 6
-Colston Loveland|TE|Questionable|Knee|Dec 6
 Case Keenum|QB|Out|Coach's Decision|Dec 6
 Isaac Yiadom|CB|Out|Coach's Decision|Dec 6
 Jayden Loving|DT|Out|Coach's Decision|Dec 6
@@ -120,7 +120,7 @@ Will Mallory|TE|Questionable|Hamstring|Nov 29
 Seth McGowan|RB|Out|Hamstring|Dec 13
 #JAX
 Bhayshul Tuten|RB|Questionable|Ankle|Nov 29
-Parker Washington|WR|Questionable|Shoulder|Nov 29
+Parker Washington|WR|Out|Shoulder|Dec 6
 Patrick Mekari|G|IR|Back|Nov 29
 Jakobi Meyers|WR|Questionable|Ankle|Nov 29
 Cole Van Lanen|OT|Questionable|Ankle|Nov 29
@@ -158,19 +158,19 @@ Daiyan Henley|LB|Questionable|Knee|Nov 29
 Keaton Mitchell|RB|Questionable|Knee|Nov 29
 Kendall Williamson|S|Questionable|Calf|Nov 29
 #LAR
+Davis Allen|TE|Doubtful|Ankle|Dec 3
 Bill Murray|G|Questionable|Leg|Dec 3
 Tyler Higbee|TE|Questionable|Chest|Dec 3
-Davis Allen|TE|Questionable|Ankle|Dec 3
 Ty Simpson|QB|Out|Coach's Decision|Dec 3
 Darryl Peterson III|LB|Out|Coach's Decision|Dec 3
-Coleman Shelton|C|Out|Hamstring|Dec 3
+Coleman Shelton|C|Out|Hamstring|Dec 13
 Desjuan Johnson|DE|Out|Coach's Decision|Dec 3
 Larrell Murchison|DE|Out|Coach's Decision|Dec 3
 Steve Avila|G|Out|Hamstring|Dec 3
 Terrance Ferguson|TE|IR|Ankle|Feb 15
 #MIA
+JuJu Brents|CB|Out|Neck|Dec 6
 Jared Wayne|WR|Questionable|Quadriceps|Nov 29
-JuJu Brents|CB|Questionable|Neck|Nov 29
 Jackson Woodard|LB|Questionable|Hand|Nov 29
 Rodney McGraw|DE|Questionable|Shoulder|Nov 29
 Austin Jackson|OT|Questionable|Elbow|Nov 29
@@ -187,8 +187,8 @@ Isaiah Rodgers|CB|Questionable|Quadriceps|Nov 29
 Jalen Redmond|DT|Questionable|Ankle|Nov 29
 Christian Darrisaw|OT|Questionable|Shoulder|Nov 29
 #NE
-Romeo Doubs|WR|IR|Shoulder|Nov 29
 A.J. Brown|WR|Doubtful|Hamstring|Nov 29
+Romeo Doubs|WR|IR|Shoulder|Nov 29
 Walter Rouse|OL|Questionable|Concussion|Nov 29
 Carlton Davis III|CB|Questionable|Knee|Nov 29
 Reggie Gilliam|FB|Questionable|Knee|Nov 29
@@ -210,8 +210,8 @@ Arvell Reese|LB|Questionable|Back|Nov 29
 Shelby Harris|DT|Questionable|Illness|Nov 29
 Greg Newsome II|CB|IR|Ankle|Dec 28
 #NYJ
+Omar Cooper Jr.|WR|Out|Ankle|Dec 13
 Harrison Phillips|DT|Questionable|Ankle|Nov 29
-Omar Cooper Jr.|WR|Questionable|Ankle|Nov 29
 David Onyemata|DT|IR|Abdomen|Nov 29
 T'Vondre Sweat|DT|IR|Knee|Nov 29
 Joseph Ossai|DE|Questionable|Ankle|Nov 29
