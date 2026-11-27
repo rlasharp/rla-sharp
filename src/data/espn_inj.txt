@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 01:14Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-27 02:00Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Karson Sharar|LB|Questionable|Groin|Nov 29
@@ -68,6 +68,7 @@ Elgton Jenkins|C|Questionable|Knee|Nov 29
 Austin Barber|OT|Questionable|Knee|Nov 29
 Derek Barnett|DE|Questionable|Hamstring|Nov 29
 #DAL
+Quinnen Williams|DT|Questionable|Back|Nov 26
 Jake Ferguson|TE|Out|Knee|Dec 7
 Tyler Booker|G|Out|Ankle|Dec 7
 Jonathan Bullard|DT|Out|Coach's Decision|Dec 7
@@ -164,6 +165,7 @@ Coleman Shelton|C|Out|Hamstring|Dec 3
 Desjuan Johnson|DE|Out|Coach's Decision|Dec 3
 Larrell Murchison|DE|Out|Coach's Decision|Dec 3
 Steve Avila|G|Out|Hamstring|Dec 3
+Terrance Ferguson|TE|IR|Ankle|Feb 15
 #MIA
 Jared Wayne|WR|Questionable|Quadriceps|Nov 29
 JuJu Brents|CB|Questionable|Neck|Nov 29
@@ -215,8 +217,8 @@ Dylan Parham|G|Questionable|Knee|Nov 29
 #PHI
 Gabe Hall|DT|Questionable|Wrist|Nov 26
 Marcus Epps|S|Out|Foot|Dec 6
-Dallas Goedert|TE|Out|Shoulder|Dec 6
-Saquon Barkley|RB|Questionable|Neck|Nov 26
+Dallas Goedert|TE|Questionable|Shoulder|Dec 6
+Saquon Barkley|RB|Questionable|Neck|Dec 6
 Cooper DeJean|CB|Questionable|Concussion|Dec 6
 Cole Payton|QB|Out|Coach's Decision|Dec 6
 Grant Calcaterra|TE|Out|Coach's Decision|Dec 6
@@ -225,10 +227,10 @@ AJ Epenesa|DE|Out|Coach's Decision|Dec 6
 Arnold Ebiketie|LB|Out|Oblique|Dec 6
 Jonathan Jones|CB|Out|Ankle|Dec 6
 #PIT
-Alex Highsmith|LB|Out|Ankle|Dec 6
-Ben Skowronek|WR|IR|Calf|Dec 27
 Cole Holcomb|LB|Questionable|Heel|Nov 27
 Gennings Dunker|G|IR|Knee|Dec 6
+Alex Highsmith|LB|Out|Ankle|Dec 6
+Ben Skowronek|WR|IR|Calf|Dec 27
 #SF
 Jordan Watkins|WR|Questionable|Groin|Nov 29
 Mike Evans|WR|Questionable|Achilles|Nov 29
@@ -257,13 +259,13 @@ Leonard Williams|DT|Questionable|Shoulder|Nov 29
 George Holani|RB|IR|Knee - MCL|Dec 25
 Jarran Reed|DT|Questionable|Toe|Nov 29
 #TB
+Jacob Parrish|CB|Questionable|Back|Nov 30
 Antoine Winfield Jr.|S|Questionable|Ankle|Nov 30
 Josiah Trotter|LB|Questionable|Oblique|Nov 30
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
 Christian Rozeboom|LB|IR|Finger|Nov 30
 Elijah Simmons|DT|Questionable|Concussion|Nov 30
 Benjamin Morrison|CB|Questionable|Hamstring|Nov 30
-Jacob Parrish|CB|Questionable|Back|Nov 30
 #TEN
 Dorian Mausi|LB|Questionable|Knee|Nov 29
 Cor'Dale Flott|CB|Questionable|Neck|Nov 29

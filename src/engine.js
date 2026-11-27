@@ -19,7 +19,7 @@ const TEAM_IDS = Object.keys(TEAMS);
 const SLATE = [
  {id:1,away:"GB",home:"LAR",final:[13,26],when:"Wed Nov 25 · 8:00 PM",wp:null},
  {id:2,away:"CHI",home:"DET",final:[39,35],when:"Thu Nov 26 · 1:00 PM",wp:null,tv:"TNF"},
- {id:3,away:"PHI",home:"DAL",when:"Thu Nov 26 · 4:30 PM",wp:null,tv:"TNF"},
+ {id:3,away:"PHI",home:"DAL",final:[39,38],when:"Thu Nov 26 · 4:30 PM",wp:null,tv:"TNF"},
  {id:4,away:"KC",home:"BUF",when:"Thu Nov 26 · 8:20 PM",wp:null,tv:"TNF"},
  {id:5,away:"DEN",home:"PIT",when:"Fri Nov 27 · 3:00 PM",wp:null},
  {id:6,away:"NO",home:"CIN",when:"Sun Nov 29 · 1:00 PM",wp:null},
