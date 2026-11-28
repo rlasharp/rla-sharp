@@ -85,7 +85,7 @@ function specProp(player,market,side){const P=PINFO[player]||{};const rp=realPro
   const line=lineFor(player,market);const odds=rp?(side==="over"?rp[1]:rp[2]):null;
   const o=P.team&&typeof oppOf!=="undefined"?oppOf(P.team):null,date=o&&typeof nflDate!=="undefined"?nflDate(o.g):null;
   return {k:"prop",player,market,side,line,team:P.team,pos:P.pos,odds,book:rp?rp[3]:null,date}}
-function specGame(g,k,teamOrSide){const L=LINES[g.id];
+function specGame(g,k,teamOrSide){const L=LINES[g.id]||{ml:[null,null],sp:null,tot:null};   /* game off the board (no line posted) */
   if(k==="ml")return {k,game:g.id,away:g.away,home:g.home,team:teamOrSide,odds:teamOrSide===g.away?L.ml[0]:L.ml[1]};
   if(k==="spread")return {k,game:g.id,away:g.away,home:g.home,team:teamOrSide,line:teamOrSide===g.home?L.sp:-L.sp,odds:-110,est:true};
   return {k:"total",game:g.id,away:g.away,home:g.home,side:teamOrSide,line:L.tot,odds:-110,est:true}}
