@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-28 16:52Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-28 17:26Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 29
 Asa Newell|F|Out|toe|Mar 17
@@ -85,7 +85,7 @@ Thomas Sorber|C|Out|knee|Jan 31
 Cason Wallace|G|Out|shoulder surgery|Mar 2
 Chet Holmgren|C|Out|knee|Jan 2
 #Orlando Magic
-Colin Castleton|C|Out|calf soreness|Nov 29
+Colin Castleton|C|Out|undisclosed|
 Kevin Porter Jr.|G|Out|not injury related|Nov 29
 Anthony Black|G|Day-To-Day|back|Nov 28
 Jonathan Isaac|F|Out|knee not specified|Nov 29

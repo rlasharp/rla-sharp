@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-28 15:26Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-28 17:28Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Zachary Carter|DT|IR|Knee|Dec 6
@@ -104,7 +104,7 @@ Jake Hummel|LB|Questionable|Abdomen|Nov 29
 #IND
 Jerry Tillery|DT|Out|Calf|Dec 13
 Jalen Travis|OT|Out|Knee|Dec 13
-Cam Taylor-Britt|CB|IR|Groin|Nov 29
+Cam Taylor-Britt|CB|Questionable|Groin|Nov 29
 Drew Ogletree|TE|Questionable|Knee|Nov 29
 Will Mallory|TE|Out|Hamstring|Dec 13
 Charvarius Ward|CB|Out|Knee|Dec 13
@@ -150,9 +150,10 @@ Keaton Mitchell|RB|Out|Knee|Dec 6
 Deane Leonard|CB|IR|Groin|Dec 27
 Dalvin Tomlinson|DT|Questionable|Knee|Nov 29
 #LAR
-Bill Murray|G|Out|Achilles|Feb 15
-Davis Allen|TE|Doubtful|Ankle|Dec 3
+Davis Allen|TE|Out|Ankle|Jan 3
 Tyler Higbee|TE|Questionable|Chest|Dec 3
+Davante Adams|WR|IR|Hamstring|Dec 13
+Bill Murray|G|Out|Achilles|Feb 15
 Ty Simpson|QB|Out|Coach's Decision|Dec 3
 Darryl Peterson III|LB|Out|Coach's Decision|Dec 3
 Coleman Shelton|C|Out|Hamstring|Dec 13
@@ -234,10 +235,10 @@ Quenton Nelson|G|Out|Knee|Dec 7
 Abraham Lucas|OT|Out|Ankle|Dec 7
 George Holani|RB|IR|Knee - MCL|Dec 25
 #TB
-Benjamin Morrison|CB|Questionable|Hamstring|Nov 30
-Antoine Winfield Jr.|S|Questionable|Ankle|Nov 30
-Tez Johnson|WR|Questionable|Illness|Nov 30
 Jalen McMillan|WR|IR|Knee - PCL|Nov 30
+Benjamin Morrison|CB|Questionable|Hamstring|Dec 6
+Antoine Winfield Jr.|S|Questionable|Ankle|Dec 6
+Tez Johnson|WR|Questionable|Illness|Nov 30
 SirVocea Dennis|LB|Questionable|Back|Nov 30
 Christian Rozeboom|LB|IR|Finger|Nov 30
 Elijah Simmons|DT|Questionable|Concussion|Nov 30
