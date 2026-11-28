@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-28T15:51:10+00:00",
+  "at": "2026-11-28T16:53:50+00:00",
   "ok": true,
-  "summary": "socmgr: 5 new headlines, 15 clubs with manager news\nsoccer: 309 upcoming matches (53 with odds, 309 with estimates, 293 with weather, 71 with referee), 19059 player props, 5979 players\ntrack: nba 2026-11-28: snapshot 3 props, 5 games; soc 2026-11-28: locked 3 plays \u00b7 graded: NHL plays 18-15, best props NBA 76-95 NFL 39-58 NHL 87-78\nSite check OK \u2014 published (2026-11-28T15:50:32Z)\n"
+  "summary": "NBA finals from ESPN: 71 games kept (0 new), 1541 player lines\nnbaespn: 0 game(s) filled from ESPN box scores (hoopR doesn't have them yet)\nNBA injuries refreshed\nnbalineups: 5 games, 0 confirmed / 50 expected starters\nNBA starting lineups refreshed\nNBA lines checked\nnba-lines-next: 0 upcoming games with lines\nNBA refs: 0 summaries checked, 281 games cached\nNBA refs: 5 crews posted today\nliveprops: 637 feed lines merged (0 skipped from other days), 597 total, unmatched names: []\nNo plays qualify yet for 2026-11-28 \u2014 not locking.\nNBA data: teams 30, results 281 (through 2026-11-27), players 484, slate 5, lines 5, props 597, inj teams 28, prev-season players 138, play log 47, adv 426, qtr games 281, h2h 4/3/4/2/2\nsocmgr: 5 new headlines, 15 clubs with manager news\nsoccer: 302 upcoming matches (53 with odds, 302 with estimates, 290 with weather, 65 with referee), 16794 player props, 5980 players\ntrack: nba 2026-11-28: snapshot 2 props, 5 games; cfb pick'em: locked 2 \u00b7 graded: NHL plays 18-15, best props NBA 76-95 NFL 39-58 NHL 87-78\nSite check OK \u2014 published (2026-11-28T16:53:14Z)\n"
  },
  "site": {
   "at": "2026-11-28T15:31:07+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-28T15:51:10+00:00",
+  "at": "2026-11-28T16:53:50+00:00",
   "ok": true,
   "issue": "",
   "gen": "Sat Nov 28 10:27 AM ET",
-  "odds_at": "2026-11-28T15:48:14+00:00",
+  "odds_at": "2026-11-28T16:48:58+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -5883,6 +5883,16 @@
   {
    "at": "2026-11-28T15:51:10+00:00",
    "what": "soc",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-28T16:53:50+00:00",
+   "what": "nba,soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
