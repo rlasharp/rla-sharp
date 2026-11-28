@@ -1,8 +1,8 @@
 {
  "auto": {
-  "at": "2026-11-28T15:31:07+00:00",
+  "at": "2026-11-28T15:51:10+00:00",
   "ok": true,
-  "summary": "way \u2014 waiting to lock (window 360 min).\nNBA data: teams 30, results 281 (through 2026-11-27), players 484, slate 5, lines 5, props 464, inj teams 28, prev-season players 138, play log 47, adv 426, qtr games 281, h2h 4/3/4/2/2\nnfl-update: 9 lines refreshed, 0 new finals (weeks [11, 12])\nnfl-lines-next: 11 upcoming games with lines\nnfl-roll: this week still has games to play\nnflwx: Week 12 \u00b7 6 indoors, 7 with a forecast\nnflrefs: 168 games (0 new), 21 referees, 0 of this week's crews posted\n215 players, 32 teams\nnfl-inj: 215 players\nnfl-qtr: 168 games with quarter scores\nnflbox: 0 new ESPN box scores, 4 waiting for nflverse\nnhllines: 32/32 teams\nNHL PP time: 706 players, 0 ESPN requests this run\nNHL data: 13 games today, 2 tomorrow, 32 teams, 713 skaters, 68 goalies, 1287 props, 406 finals, 51 requests\nsocmgr: 5 new headlines, 15 clubs with manager news\nsoccer: 309 upcoming matches (71 with odds, 309 with estimates, 290 with weather, 74 with referee), 22132 player props, 5979 players\nUFC: 268 fighters, 2573 past fights, 218 requests\ncfb: 1883 players with logs, 63 focus games, 647 requests\ncbb: 2327 players with logs, 141 focus games, 537 requests\nFutures: nba: 13 futures markets, 210 prices nhl: 1 futures markets, 78 prices nfl: 23 futures markets, 367 prices \ntrack: nba 2026-11-28: snapshot 3 props, 5 games; nhl 2026-11-28: locked 0 plays (none cleared the bar) \u00b7 graded: NHL plays 18-15, best props NBA 76-95 NFL 39-58 NHL 87-78\nSite check OK \u2014 published (2026-11-28T15:28:52Z)\n"
+  "summary": "socmgr: 5 new headlines, 15 clubs with manager news\nsoccer: 309 upcoming matches (53 with odds, 309 with estimates, 293 with weather, 71 with referee), 19059 player props, 5979 players\ntrack: nba 2026-11-28: snapshot 3 props, 5 games; soc 2026-11-28: locked 3 plays \u00b7 graded: NHL plays 18-15, best props NBA 76-95 NFL 39-58 NHL 87-78\nSite check OK \u2014 published (2026-11-28T15:50:32Z)\n"
  },
  "site": {
   "at": "2026-11-28T15:31:07+00:00",
@@ -10,11 +10,11 @@
   "issue": ""
  },
  "nhl": {
-  "at": "2026-11-28T15:31:07+00:00",
+  "at": "2026-11-28T15:51:10+00:00",
   "ok": true,
   "issue": "",
   "gen": "Sat Nov 28 10:27 AM ET",
-  "odds_at": "2026-11-28T14:05:01+00:00",
+  "odds_at": "2026-11-28T15:48:14+00:00",
   "backfill": "1312/1312"
  },
  "hist": [
@@ -5873,6 +5873,16 @@
   {
    "at": "2026-11-28T15:31:07+00:00",
    "what": "all",
+   "ok": true,
+   "site_ok": true,
+   "site_issue": "",
+   "fails": [],
+   "check_failed": false,
+   "published": true
+  },
+  {
+   "at": "2026-11-28T15:51:10+00:00",
+   "what": "soc",
    "ok": true,
    "site_ok": true,
    "site_issue": "",
