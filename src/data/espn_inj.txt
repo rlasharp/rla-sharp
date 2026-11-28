@@ -1,4 +1,4 @@
-# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-28 13:53Z
+# ESPN NFL injuries (auto, ESPN JSON feed) 2026-11-28 15:26Z
 # name|pos|status|injury|est. return     status: Out, Doubtful, Questionable, IR
 #ARI
 Zachary Carter|DT|IR|Knee|Dec 6

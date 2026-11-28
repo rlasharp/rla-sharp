@@ -1,4 +1,4 @@
-# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-28 13:53Z
+# ESPN NBA injuries (auto, ESPN JSON feed) 2026-11-28 15:26Z
 #Atlanta Hawks
 Jock Landale|C|Out|hip inflammation|Nov 29
 Asa Newell|F|Out|toe|Mar 17
@@ -8,7 +8,7 @@ Henri Veesaar|C|Out|knee|Jul 1
 #Boston Celtics
 Mitchell Robinson|C|Out|illness|Nov 29
 #Brooklyn Nets
-Moritz Wagner|C|Out|knee soreness|Nov 28
+Moritz Wagner|C|Day-To-Day|knee soreness|Nov 28
 Nolan Traore|G|Out|hamstring strain|Jan 27
 #Charlotte Hornets
 Grayson Allen|G|Out|concussion|Nov 28
@@ -49,7 +49,7 @@ T.J. McConnell|G|Out|hamstring|Nov 28
 Tyrese Haliburton|G|Out|hamstring strain|Dec 13
 Ben Sheppard|G|Out|knee|Jan 2
 #LA Clippers
-Yanic Konan Niederhauser|C|Out|toe|Nov 29
+Yanic Konan Niederhauser|C|Day-To-Day|toe|Nov 29
 Bradley Beal|G|Out|knee inflammation|Nov 29
 Jordan Miller|G|Out|shoulder surgery|Mar 2
 #Memphis Grizzlies
@@ -60,7 +60,7 @@ Jerami Grant|F|Out|calf not specified|Dec 12
 GG Jackson|F|Out|foot surgery|Jan 18
 Richie Saunders|G|Out|knee surgery|Dec 1
 #Milwaukee Bucks
-Kasparas Jakucionis|G|Out|ankle|Nov 28
+Kasparas Jakucionis|G|Day-To-Day|ankle|Nov 28
 #Minnesota Timberwolves
 LaMelo Ball|G|Out|ankle|Nov 29
 Donte DiVincenzo|G|Out|achilles surgery|Jan 3
@@ -92,9 +92,9 @@ Izaiyah Nelson|F|Out|ankle surgery|Nov 29
 Noah Penda|F|Out|hamstring strain|Nov 29
 Paolo Banchero|F|Out|ankle sprain|Nov 29
 #Philadelphia 76ers
+Dean Wade|F|Day-To-Day|hamstring|Nov 28
 Joel Embiid|C|Out|foot plantar fasciitis|Dec 1
 LeBron James|F|Out|back|Dec 1
-Dean Wade|F|Out|hamstring|Nov 28
 Jaylen Brown|G|Out|hamstring|Dec 1
 Ariel Hukporti|C|Out|achilles surgery|Oct 1
 #Phoenix Suns
@@ -113,7 +113,7 @@ Ben Simmons|G|Out|achilles surgery|Oct 1
 Tobias Harris|F|Out|calf strain|Dec 3
 Jayden Quaintance|F|Out|knee surgery|Dec 3
 #Toronto Raptors
-Ja'Kobe Walter|G|Out|quadriceps bruise|Nov 29
+Ja'Kobe Walter|G|Day-To-Day|quadriceps bruise|Nov 29
 Kawhi Leonard|F|Out|knee inflammation|Dec 3
 Nate Bittle|C|Out|foot fracture|Nov 27
 RJ Barrett|F|Out|hamstring strain|Dec 13
